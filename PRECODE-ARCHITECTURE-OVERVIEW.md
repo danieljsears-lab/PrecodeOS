@@ -1,0 +1,564 @@
+# Precode OS Architecture Overview
+<!-- ANCHOR: architecture-overview -->
+
+> AUTHORITY: Reviewer-facing architecture, layer model, principles, failure-mode analysis, enforcement model, trust boundaries, human control surface, comparison framing, evaluation criteria, adoption path, and limitations for Precode OS itself.
+> NOT_AUTHORITY: Target-project app architecture, active memory, task selection, product requirements, implementation status, route structure, schema definitions, or generated progress state.
+> LOAD_WHEN: Evaluating, explaining, positioning, or reviewing Precode OS.
+> CLASS: reference
+
+Creator: Dan Sears / Recode
+Document version: v0.2.3
+Last updated: 2026-04-27
+
+## Executive Summary
+
+Precode OS is a repo-native control and evidence-governance layer for AI-assisted software work. It is designed for builders using coding agents over many sessions, where the core risk is not whether an agent can produce code, but whether the repo can preserve intent, scope, authority, evidence, and handoff state as the work moves from idea to implementation.
+
+Precode OS is not a code generator, IDE agent, model router, autonomous software engineer, or full software development lifecycle framework. It can work with those tools, but it does not replace them. Its job is to make AI-assisted work bounded, inspectable, recoverable, and reviewable inside a real repository.
+
+The core claim is simple:
+
+> Vibe coding becomes safer when the repo has a tiny active memory, explicit authority ownership, one current execution unit, recorded evidence, and human gates at task transitions.
+
+The current implementation is a markdown-canonical, script-enforced operating layer. Markdown files own durable intent and contracts. Python and shell scripts compile state, validate invariants, record checks, generate evidence reports, and support handoff. Generated reports inform humans, but they do not become authority.
+
+## Category And Problem
+
+Precode OS sits in the category of repo-control and evidence-governance systems for vibe coding. It is closest to spec-driven and AI-SDLC frameworks in spirit, but its center of gravity is different.
+
+Spec-driven frameworks ask: "What should we specify before the AI builds?"
+
+Agent workflow frameworks ask: "Which agent or role should perform the next phase?"
+
+Project-management workflows ask: "How do we turn requirements into coordinated tasks?"
+
+Precode asks: "How does this repo know what is active, what is authoritative, what was proven, and whether it is safe to continue?"
+
+That category matters because vibe coding has a characteristic failure pattern: the agent can move faster than the user's ability to track project truth. This is especially painful for solo builders and non-technical founders, but it also appears in mature codebases when generated work spans many files, sessions, tools, or branches.
+
+### Common Vibe-Coding Failure Modes
+
+| Failure mode | What usually happens | Precode response |
+|---|---|---|
+| Scope widening | The agent adds adjacent features or refactors while implementing one request. | One active bead, files in play, one primary authority, and explicit stop conditions. |
+| Stale context | Old notes, chat summaries, generated reports, or previous plans override the current task. | Tiny active memory and a context loading order that demotes generated/source material. |
+| False done | The agent says work is complete without evidence strong enough for the risk. | Recorded checks, closeout evidence, manual verification, and review decisions. |
+| Vague product intent | A rough idea becomes code before the user problem, non-goals, and acceptance oracles are stable. | Product Definition Gate, PRD shards, requirement IDs, and PRD-to-bead compilation. |
+| Authority confusion | Product, architecture, schema, security, and acceptance facts are duplicated across docs. | Authority contracts and one owner per fact. |
+| Generated summaries become instructions | Status reports or imported evidence start choosing next work. | Generated-output demotion and promotion paths into owned docs. |
+| Uncontrolled momentum | The agent finishes one task and rolls into the next. | Review decisions and user-approved bead transitions. |
+| Tool lock-in | Each AI coding tool develops its own project memory and command habits. | Tool-neutral core with thin adapters and shared scripts. |
+| Lost handoff state | A new session or tool cannot reconstruct current scope, blockers, or evidence. | Context Packs, handoff scripts, active bead pointer, and generated handoff reports. |
+| Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
+
+Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
+
+### Failure Mode Categories
+
+Precode separates failures into three categories because each one needs a different response.
+
+| Category | Definition | Examples | Precode posture |
+|---|---|---|---|
+| AI coding agent failure | The agent misunderstands, overreaches, skips proof, or follows stale context. | Scope widening, false done, hidden product drift, uncontrolled next-task momentum. | Bound the agent with active memory, beads, checks, stop conditions, and review. |
+| Human operator failure | The user damages structure, approves too quickly, stores unsafe information, or puts facts in the wrong owner file. | Moving Markdown files, renaming docs, editing generated reports, adding a fourth active-memory file, approving the next bead casually, pasting secrets into docs. | Make rules explicit, validate what can be validated, and require human recovery when structure or approval discipline breaks. |
+| OS/tooling failure | The local environment, integrations, scripts, or generated state cannot provide a complete signal. | Stale generated reports, missing telemetry, unavailable `git` or `gh`, non-git checkout, validator coverage gaps. | Report uncertainty as evidence, degrade gracefully, and avoid guessing or mutating state. |
+
+The user guide owns beginner-facing hard rules for human behavior. This document explains the architecture boundary: Precode can detect some structural mistakes, warn about many drift patterns, and still depends on human care around file moves, renames, approvals, and secrets.
+
+## Core Design Principles
+
+### Tiny Active Memory
+
+Only three files are active memory:
+
+- `AGENT.md`
+- `DECISIONS.md`
+- `tasks/todo.md`
+
+Everything else is conditional reference, generated evidence, or archive. This keeps the startup context small enough for humans and agents to inspect.
+
+### One Owner Per Fact
+
+Every durable fact needs an owning file. Product decisions belong in `DECISIONS.md`. Route structure belongs in `ARCHITECTURE.md`. Schema semantics belong in `DATA-MODELS.md`. Current execution state belongs in `tasks/todo.md` and the active bead.
+
+This prevents a common AI failure mode where the agent patches contradictions by duplicating more text.
+
+### One Bead At A Time
+
+A bead is the smallest durable execution contract for one logical unit of work. Only one bead may be `in_progress`. The active bead names its primary authority, files in play, checks, stop conditions, and closeout evidence.
+
+### Evidence Over Confidence
+
+The OS does not accept "it should work" as completion. Checks should be run through `bash scripts/record-check.sh -- <command>` so exit codes, logs, branch, bead, and timing become durable evidence.
+
+### Generated Output Is Not Authority
+
+`OS-HEALTH.md`, `PROGRESS.md`, log summaries, imported sources, and generated handoff packets can inform humans. They must not choose tasks, approve transitions, or override active memory.
+
+### Human Approval At Transitions
+
+Agents can propose next work. Humans approve task activation, PRD approval, sensitive-surface work, external mutation, review decisions, and bead transitions.
+
+### Tool-Neutral Core, Thin Adapters
+
+Precode is designed to work across Codex, Claude, Cursor, Gemini, Antigravity, and other coding tools. Tool-specific files are compatibility shims or adapters. The shared command surface and operating model stay in the repo.
+
+## System Architecture
+
+### System Shape
+
+Precode OS lives mostly at the repo root. It surrounds the application code with a governance layer:
+
+```text
+repo/
+  AGENT.md                 active memory
+  DECISIONS.md             active memory
+  tasks/todo.md            active memory, active bead pointer
+  tasks/beads/*.md         execution contracts
+  tasks/prds/*.md          product definition shards
+  tasks/reference/*.md     protocols and playbooks
+  modes/*.md               navigator, builder, review roles
+  adapters/*.md            tool-specific shims
+  scripts/*                validators, recorders, compilers, audits
+  logs/*                   generated evidence and sidecars
+  app/ or project code     target application
+```
+
+The application can use any framework. Precode's architecture is not an app architecture. It is an operating layer around the app.
+
+### Layer Model
+
+| Layer | Purpose | Main surfaces |
+|---|---|---|
+| Repo boundary | Separate operating model from app code. | Repo root, app directory. |
+| Active-memory kernel | Define the minimal always-loaded context. | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`. |
+| Authority contracts | Declare what each file owns and must not own. | `AUTHORITY`, `NOT_AUTHORITY`, `LOAD_WHEN`, `CLASS`. |
+| Reference layer | Hold detailed product, architecture, schema, API, security, and workflow rules. | Root reference docs, `tasks/reference/`. |
+| Product Definition Gate | Prevent vague ideas from becoming implementation beads. | PRD protocol, PRD shards, `FEATURES.md`. |
+| Execution bead layer | Bound one logical unit of work. | `tasks/beads/*.md`, bead frontmatter and sections. |
+| Mode layer | Separate planning, building, and review behavior. | `modes/NAVIGATOR.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
+| Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/*.md`. |
+| Safety layer | Add constraints for scope, sensitive surfaces, and verification. | `OPERATING-CONSTRAINTS.md`, security and verification protocols. |
+| Script layer | Turn conventions into repeatable commands. | Session, checkpoint, close, record-check, transition scripts. |
+| Validator layer | Catch structural drift. | `validate-memory.sh`, advisory checks, write guard, pre-commit hook. |
+| Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
+| Handoff layer | Orient the next session or agent safely. | Handoff script, Context Pack, handoff packet. |
+
+### Artifact Lifecycle
+
+Precode's intended flow is:
+
+```text
+idea or source material
+  -> source intake
+  -> PRD shard
+  -> feature inventory
+  -> bead proposal
+  -> active bead
+  -> recorded checks
+  -> closeout evidence
+  -> review decision
+  -> user-approved transition
+```
+
+Imported notes, GitHub issues, screenshots, and generated reports are evidence. They become authority only after promotion into the correct Precode-owned file.
+
+### Runtime Loop
+
+The normal loop is:
+
+1. Start session with `bash scripts/session-start.sh`.
+2. Load active memory, active bead, and primary authority.
+3. Work inside the active bead.
+4. Run checks through `bash scripts/record-check.sh -- <command>`.
+5. Checkpoint when scope, context, or evidence becomes unclear.
+6. Close with `bash scripts/session-close.sh`.
+7. Review closeout evidence and decide `accepted`, `revise`, `split`, or `blocked`.
+8. Approve transition with `python3 scripts/bead-transition.py --approve` only when safe.
+
+## Control And Safety Model
+
+### Enforcement Model
+
+Precode uses four enforcement levels:
+
+| Level | Examples | Strength |
+|---|---|---|
+| Convention | Design principles, best practices, mode guidance. | Useful but human/agent disciplined. |
+| Structured markdown | Bead frontmatter, authority contracts, stable sections. | Machine-readable enough to validate. |
+| Script enforcement | Validation, check recording, closeout updating, transition assessment. | Repeatable local enforcement. |
+| Human gate | PRD approval, sensitive work, review decision, transition approval. | Final authority for intent and risk. |
+
+The core validator currently checks required docs, authority contracts, active-memory discipline, `tasks/todo.md` frontmatter, bead structure, closeout markers, and the one-in-progress-bead invariant.
+
+Advisory checks extend the model across context, decomposition, verification, state, orchestration, workflow selection, long-horizon planning, completion, and tool execution.
+
+Generated sidecars such as `logs/readiness.json`, `logs/authority-map.json`, and `logs/handoff-packet.json` make current state easier to inspect, but they remain evidence, not authority.
+
+For a file-by-file technical dictionary and relationship map, use `PRECODE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the inventory explains what each file owns and how the surfaces connect.
+
+### Human Control Surface
+
+Precode deliberately keeps several decisions human-gated:
+
+- PRD approval before product-feature implementation.
+- Sensitive-surface approval for auth, payments, secrets, personal data, uploads, external systems, destructive actions, and production configuration.
+- Review decision after work is closed out.
+- Bead transition approval before next work becomes active.
+- External mutation approval when tools touch GitHub, CI, deployments, dashboards, or third-party systems.
+- Blocked-work escape decisions, such as creating an unblocker bead or pausing for manual setup.
+
+This is not accidental friction. It is the safety model.
+
+### Threat Model And Trust Boundaries
+
+Precode assumes that AI coding sessions can be confused by untrusted or stale material. Its trust model separates authority from evidence.
+
+| Surface | Trust boundary |
+|---|---|
+| Active memory | Authoritative for current operating state. |
+| Active bead | Authoritative for current execution contract. |
+| Primary authority | Authoritative for the topic the bead is changing. |
+| Reference docs | Authoritative only for their declared topic. |
+| Generated reports | Evidence only; never task instructions. |
+| Imported issues, PRs, notes, screenshots | Source material only until promoted. |
+| Tool shims and adapters | Compatibility surfaces; not separate operating systems. |
+| External systems | Read-only by default unless an approved bead permits mutation. |
+| Secrets and credentials | Never stored in Precode docs or logs. |
+
+The main prompt-injection defense is procedural: source material is summarized and promoted through owned docs before it can steer work. Precode does not rely on the agent to distinguish every malicious or stale instruction in raw context.
+
+### Failure And Recovery Model
+
+Precode treats a clean stop as successful behavior when continuing would widen risk.
+
+| Failure | Expected recovery |
+|---|---|
+| Human moved or renamed a Precode Markdown file | Stop work, identify the expected path/name from `PRECODE-FILE-INVENTORY.md` or validation output, restore the file, then validate. |
+| Human directly edited generated output | Stop using that output, restore or regenerate it with the owning script, then return to source files. |
+| Human changed anchors, authority contracts, frontmatter, headings, bead state, or closeout structure | Restore the expected structure, run `bash scripts/validate-memory.sh`, then run relevant advisory checks. |
+| Human put facts in the wrong owner file | Move the fact to `DECISIONS.md`, a PRD, a bead, or the correct authority doc; do not duplicate it across files. |
+| Human approved too much too quickly | Stop, review recorded evidence, identify the approval scope, and split or block work before continuing. |
+| Human stored secrets or private dashboard values | Stop, remove the secret from files/logs where possible, rotate the credential if exposed, and record only a non-secret setup note. |
+| Active state drift | Run `python3 scripts/state-check.py`, repair `tasks/todo.md` or bead state, then validate. |
+| Context overload | Re-read active memory, active bead, and primary authority; run `python3 scripts/context-check.py`. |
+| Scope widening | Stop, split work into a follow-up bead, or revise the current bead after approval. |
+| Weak evidence | Run stronger checks or record manual verification using the verification protocol. |
+| Blocked bead | Set status to `needs_info` or `manual_testing`, record escape path, and create/note an unblocker. |
+| Unsafe handoff | Run `bash scripts/handoff.sh [next-agent]`; do not continue from generated reports alone. |
+| Generated-output confusion | Move any real instruction into the owning authority file or bead, then regenerate reports. |
+| Sensitive approval gap | Stop before mutation and ask for explicit user approval. |
+
+The recovery posture is conservative: preserve state, identify the owner file, record evidence, and resume only inside a bounded bead.
+
+### Accidental File Damage Recovery
+
+If a Precode file was moved, renamed, or directly edited by mistake:
+
+1. Stop implementation.
+2. Identify the affected file and expected owner from `PRECODE-FILE-INVENTORY.md`.
+3. Restore the expected path, filename, anchor, authority contract, frontmatter, headings, and required sections.
+4. Regenerate generated reports instead of hand-editing them.
+5. Run `bash scripts/validate-memory.sh`, then `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, and any relevant advisory check.
+6. Continue only after the active bead, primary authority, files in play, and checks are clear again.
+
+## Operating Patterns
+
+### Best Practices
+
+- Start every serious session with session start.
+- Keep beads boring, small, and reviewable.
+- Load the active bead and primary authority before changing files.
+- Prefer one observable outcome per bead.
+- Use stop conditions as guardrails, not as failure labels.
+- Run meaningful checks through `record-check.sh`.
+- Treat generated tests, screenshots, and AI critiques as review inputs until recorded.
+- Close sessions before switching agents or changing direction.
+- Keep generated reports out of active memory.
+- Promote repeated lessons into the owning protocol or rule, not into a diary.
+
+### Proven Patterns
+
+| Pattern | Why it works |
+|---|---|
+| PRD-to-bead compilation | Turns product intent into traceable execution slices. |
+| Source intake before promotion | Prevents raw notes or issues from becoming hidden instructions. |
+| Stop-if gates | Makes risky expansion visible before implementation. |
+| Review inputs vs evidence | Separates helpful observations from proof of completion. |
+| Generated health reports | Gives humans status without expanding active memory. |
+| Adapter shims | Lets different AI tools enter the same operating model. |
+| Advisory validators | Surfaces drift without letting automation choose work. |
+| Blocked-bead escape paths | Prevents stuck work from pretending to be active progress. |
+
+### Evidence Model
+
+Precode evidence has a hierarchy:
+
+1. Recorded verification checks with command, exit code, and output log.
+2. Manual verification with who checked, what was checked, environment, result, and remaining uncertainty.
+3. Closeout evidence that summarizes checks, changed files, review decision, drift, lessons, and follow-up.
+4. Generated sidecars and reports that summarize state for humans.
+5. Review inputs such as screenshots, external QA notes, AI critiques, or generated tests.
+
+Only the first three should drive acceptance. Generated reports and review inputs help review, but they do not prove completion by themselves.
+
+### Handoff And Interoperability Model
+
+Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools.
+
+Handoff should include:
+
+- current bead
+- done-when target
+- primary authority
+- files in play
+- out of scope
+- required checks
+- stop conditions
+- open questions
+- forbidden assumptions
+- generated-report warning
+
+This lets Codex, Claude, Cursor, Gemini, Antigravity, or another agent enter the same repo state without inheriting an unreliable chat transcript.
+
+## Technical Reviewer Evaluation Framework
+
+A technical reviewer can evaluate Precode OS against these criteria:
+
+| Criterion | Reviewer question |
+|---|---|
+| Context discipline | Does the system keep default context small and inspectable? |
+| Authority clarity | Can a reviewer tell which file owns each fact? |
+| Task boundedness | Is there exactly one active execution unit? |
+| Verification quality | Are completion claims backed by recorded evidence? |
+| Human gate clarity | Are product, risk, review, and transition decisions visibly human-gated? |
+| Handoff safety | Can another agent resume without trusting chat memory? |
+| Recovery behavior | Does the system have a path for drift, blockers, weak evidence, and stale reports? |
+| Interoperability | Can it work across coding tools without duplicating operating rules? |
+| Adoption overhead | Can teams adopt a small kernel first, or must they absorb the whole system? |
+| Maintainability | Can new protocols, adapters, and reports be added without expanding active memory? |
+
+The strongest evidence for Precode is not a single impressive demo. It is repeated work where beads remain bounded, checks are recorded, generated reports stay demoted, and handoffs continue to be safe across sessions and tools.
+
+## Comparison Landscape
+
+### Category Fit
+
+| Category | Primary focus | Examples | Relationship to Precode |
+|---|---|---|---|
+| Spec-driven frameworks | Define specs before AI implementation. | GitHub Spec Kit, OpenSpec, Spec Kitty. | Complementary; Precode can govern execution and evidence around specs. |
+| AI SDLC frameworks | Provide roles, phases, workflows, and lifecycle artifacts. | BMAD Method, KubeRocketAI. | Adjacent; Precode is narrower and more repo-state focused. |
+| Project-management workflows | Turn PRDs into issues, work packages, or parallel execution streams. | Claude Code PM. | Complementary; Precode is more conservative about one active bead and human transitions. |
+| Repo-control and evidence governance | Preserve current truth, authority, scope, checks, and handoff state. | Precode OS. | Precode's core category. |
+| Code-editing agents | Generate and edit code through an IDE or CLI. | Cline, Roo Code, Aider, Claude Code, Codex. | Surfaces that Precode can coordinate; not direct alternatives. |
+
+### Open-Source Comparison Matrix
+
+| System | Center of gravity | Strongest fit | Precode difference |
+|---|---|---|---|
+| [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) | AI-native SDLC with specialized agents, planning, stories, QA, and modules. | Teams or builders who want guided product and software lifecycle workflows. | Precode is less persona/workflow heavy and more focused on repo truth, evidence, and transition control. |
+| [GitHub Spec Kit](https://github.github.io/spec-kit/) | Specification-driven development where specs become executable implementation inputs. | Teams that want formal specs and plans before AI implementation. | Precode treats specs as one authority input, then governs active memory, beads, checks, and handoff. |
+| [OpenSpec](https://github.com/Fission-AI/OpenSpec) | Lightweight spec-driven proposal, specs, design, tasks, apply, and archive workflow. | Brownfield-friendly agreement-before-build workflows across AI tools. | Precode is stricter about active-memory limits, generated-output demotion, and human-approved transitions. |
+| [Claude Code PM](https://github.com/automazeio/ccpm) | PRD-to-epic-to-GitHub-Issue workflow for parallel Claude Code execution. | Coordinating multiple Claude Code agents through issues and worktrees. | Precode favors one active bead and repo-owned authority before scaling parallel work. |
+| [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) | Spec -> plan -> tasks -> agent loop -> review -> merge workflow. | Teams that want spec-driven work packages, lanes, review, and merge flow. | Precode emphasizes tiny active memory, evidence demotion, and conservative task activation. |
+| [KubeRocketAI SDLC Framework](https://krci-ai.kuberocketci.io/architecture) | AI-as-code SDLC framework with agents, rules, templates, and CLI. | Teams standardizing AI agent management across a full SDLC. | Precode is smaller, repo-native, and optimized for solo or small-team control before broad orchestration. |
+
+### Why Code-Editing Agents Are Not Direct Alternatives
+
+Cline, Roo Code, Aider, Claude Code, Codex, Cursor, and similar tools are code execution and editing surfaces. They answer: "How does an AI agent inspect and modify code?"
+
+Precode answers a different question: "What repo-owned contract tells any agent what is active, what is authoritative, what proof is required, and when to stop?"
+
+That distinction is important for evaluation. A code-editing agent can be excellent and still drift if the repo has no durable operating model. Precode can make several code-editing agents safer without competing with their editing mechanics.
+
+## Limitations And Adoption
+
+### Known Limitations
+
+- Precode is not a code generator or implementation engine.
+- Precode is not a complete test-generation or QA framework.
+- Precode does not replace senior engineering review for architecture, security, performance, or maintainability.
+- Precode's current packaging is less polished than mature installable OSS frameworks.
+- The system depends on disciplined use of active memory, beads, checks, and human gates.
+- Validators can catch structural drift, but they cannot prove product correctness.
+- Manual gates can feel slow to users who want fully autonomous coding.
+- The current scaffold is more transparent than ergonomic; onboarding can be improved.
+
+### Adoption Path
+
+Adopt Precode in tiers:
+
+| Tier | What it adds | Best for |
+|---|---|---|
+| Kernel | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, one starter bead. | First use, small projects, learning the pattern. |
+| Loop | Kernel plus session start, checkpoint, closeout, record-check, and handoff scripts. | Active AI coding with repeated sessions. |
+| Guarded | Loop plus validators, generated health, PRD gate, transition approval, adapters, and advisory checks. | Long-running repos, sensitive work, multi-tool workflows. |
+
+The recommended adoption strategy is not to copy every file at once. Start with the kernel, then add scripts and validators when the repeated failure modes become visible.
+
+### Planned Roadmap Improvements
+
+- Package a smaller public CLI surface: `precode init`, `precode validate`, `precode record-check`, `precode close`, and `precode transition`.
+- Provide explicit onboarding tiers so new users do not start with the full scaffold.
+- Add more bead templates for common work types.
+- Improve reviewer-facing health summaries without weakening generated-output demotion.
+- Add import paths from BMAD, Spec Kit, OpenSpec, GitHub issues, and hand-written notes into Precode-owned artifacts.
+- Standardize external review evidence fields for QA tools, AI review, screenshots, and human notes.
+- Improve examples from real adopted projects, not only clean scaffolds.
+
+## Reviewer Takeaway
+
+Precode OS is strongest when evaluated as a control layer for AI-assisted repo work, not as a coding agent or a broad SDLC suite. Its distinctive contribution is the combination of tiny active memory, authority contracts, one active bead, recorded evidence, generated-output demotion, and human-approved transitions.
+
+Compared with spec-driven and AI-SDLC systems, Precode is narrower but more pessimistic about drift. It assumes that momentum is dangerous unless bounded by repo-owned state and evidence. That makes it especially relevant for vibe coding, where speed is abundant but durable project truth is scarce.
+
+The system still needs better packaging, examples, and onboarding. But its architectural idea is coherent: give any AI coding agent a repo-owned memory, a scope boundary, an evidence trail, and a brake pedal.
+
+For the beginner-first explainer, read `PRECODE-OS-README.md`.
+
+For the philosophical anchor, values, and principles behind Precode's anti-drift posture, read `PRECODE-MANIFESTO.md`.
+
+
+## Deep Maintainer And Forking Notes
+
+This section owns the detail that the beginner README now points away from: full implementation surfaces, maintainer procedures, public fork guidance, and the reusable minimal pattern.
+
+### Detailed Layer Responsibilities
+
+The layer model is intentionally explicit because each layer prevents a different drift mode.
+
+| Layer | Deep responsibility |
+|---|---|
+| Repo boundary | Separate the operating layer from application code so app churn does not rewrite the OS. |
+| Active-memory kernel | Keep startup context to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
+| Authority contracts | Make every AI-facing doc declare what it owns, what it must not decide, when to load it, and its class. |
+| Reference layer | Hold product, architecture, API, schema, security, context, workflow, and protocol detail outside active memory. |
+| Product Definition Gate | Route rough ideas and source material through intake, PRD shards, requirements, and candidate beads before implementation. |
+| Execution bead layer | Make one logical unit executable, reviewable, closable, and handoff-safe. |
+| Mode layer | Separate navigator, builder, and review behavior so planning, implementation, and critique do not blur together. |
+| Adapter layer | Keep tool-specific entrypoints thin while preserving one shared command surface. |
+| Safety layer | Add stop conditions for scope, sensitive surfaces, destructive operations, generated-output demotion, and approval gates. |
+| Script layer | Turn repeated operating habits into commands with stable output and logs. |
+| Validator layer | Enforce structural invariants and expose drift before continuing implementation. |
+| Evidence layer | Preserve check results, loop events, spend, handoff state, generated maps, and health snapshots without making them authority. |
+| Handoff layer | Let a future session or different agent reconstruct scope, blockers, checks, and next safe action. |
+
+### Script And Generated Sidecar Taxonomy
+
+The script layer has four families:
+
+| Family | Examples | Purpose |
+|---|---|---|
+| Session loop | `session-start.sh`, `checkpoint.sh`, `session-close.sh`, `handoff.sh` | Orient, pause, close, and transfer work safely. |
+| Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `log-loop-event.sh`, `log-tool-run.sh` | Record what happened without relying on chat memory. |
+| Compilation and reports | `os_compiler.py`, `os-health.py`, `update-learning-diary.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence. |
+| Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `completion-check.py`, and related checkers | Surface likely drift without mutating active memory. |
+
+Generated sidecars should stay under `logs/` unless an existing generated report owns the surface. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, long-horizon, handoff, pattern, and health outputs. They are evidence only.
+
+### Validator And Hook Detail
+
+The core validator should protect invariants that are easy to explain:
+
+- required authority contracts and anchors
+- exactly three active-memory files
+- valid `tasks/todo.md` frontmatter
+- one `in_progress` bead
+- required bead sections and closeout markers
+- generated reports demoted from active memory
+- canonical adapter command surface
+- advisory version metadata coverage
+
+Good validators catch structural drift. Bad validators try to interpret every sentence. Add stricter validation only after a drift pattern repeats and can be checked reliably.
+
+### Maintainer Procedures
+
+When changing the OS itself:
+
+1. Identify the owner file or protocol first.
+2. Keep active memory unchanged unless explicitly changing the kernel.
+3. Update version metadata on touched OS-owned files.
+4. Keep generated outputs demoted.
+5. Add or update advisory checks only when they can report clear, actionable warnings.
+6. Run `bash scripts/validate-memory.sh` and `python3 scripts/version-check.py`.
+7. Regenerate health/audit outputs when reporting surfaces changed.
+
+Common maintenance moves:
+
+| Maintenance task | Owner |
+|---|---|
+| Add a protocol | `tasks/reference/EXTENSION-PROTOCOL.md` plus the new protocol file. |
+| Add a checker | The checker script, command surfaces, README pointer, and generated report only if useful. |
+| Add a bead template | `tasks/beads/README.md`. |
+| Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |
+| Change generated report behavior | Compiler/report script plus generated-output demotion check. |
+| Change version policy | `tasks/reference/VERSIONING-PROTOCOL.md` and `scripts/version-check.py`. |
+
+### Public Forking Guidance
+
+For a public-facing fork, keep the operating pattern and remove project-specific facts.
+
+Recommended public name:
+
+> Precode OS
+
+Useful naming pattern:
+
+- `Precode OS` = the generic public system
+- `YourProject OS Profile` = one project's implementation
+- `Precode Beads` = the execution units
+- `Precode Kernel` = the three-file active memory set
+
+A generic public repo can keep:
+
+```text
+precode-os/
+  AGENT.md
+  DECISIONS.md
+  tasks/todo.md
+  tasks/beads/
+  tasks/prds/
+  tasks/reference/
+  modes/
+  adapters/
+  scripts/
+  logs/
+  .github/
+  examples/
+```
+
+Generalize product-specific docs into templates. Remove business details, personal names, local paths, secrets, environment values, and domain-specific assumptions that do not belong in a reusable OS.
+
+Position Precode as:
+
+> A file-based anti-drift operating system for AI-assisted software work.
+
+Avoid positioning it as a prompt library, project-management app, fully autonomous engineer, or replacement for technical judgment.
+
+### Minimal Reusable Pattern
+
+If the full scaffold is too much, keep the smallest useful pattern:
+
+1. Three active-memory files.
+2. Authority contracts.
+3. A current-task pointer.
+4. One bead/task contract format.
+5. One primary authority per task.
+6. Generated-output demotion.
+7. Session start, checkpoint, closeout, and handoff commands.
+8. Recorded checks.
+9. Closeout evidence and review decision.
+10. Manual approval before the next task becomes active.
+11. A validator for the core invariants.
+
+Everything else can be added after the user sees a real failure mode that the extra layer would prevent.
+
+## Architecture Overview Change Log
+
+| Version | Date | Summary |
+|---|---|---|
+| v0.2.3 | 2026-04-27 | Added cross-reference to `PRECODE-MANIFESTO.md` as the philosophical anchor for Precode's anti-drift purpose, values, principles, and new-builder positioning. |
+| v0.2.2 | 2026-04-27 | Added a three-way failure taxonomy for AI coding agent, human operator, and OS/tooling failures, plus deeper recovery guidance for accidental file moves, renames, generated-report edits, owner-file mistakes, casual approvals, and secret leakage. |
+| v0.2.1 | 2026-04-27 | Added cross-reference to `PRECODE-FILE-INVENTORY.md` as the canonical file-by-file technical inventory and relationship map while keeping this document focused on architecture and maintainer framing. |
+| v0.2.0 | 2026-04-27 | Became the deeper companion to the beginner README by absorbing maintainer, forking, layer-detail, script, validator, generated-sidecar, and minimal-pattern guidance. |
+| v0.1.0 | 2026-04-26 | Initial reviewer-facing architecture overview covering Precode OS principles, failure modes, enforcement model, trust boundaries, comparisons, limitations, and adoption path. |
