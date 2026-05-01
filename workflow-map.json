@@ -1,0 +1,21 @@
+{
+  "details": {
+    "approved_prds_without_beads": [],
+    "artifact_to_produce_next": "source summary, PRD draft, challenge notes, or candidate bead proposal",
+    "blocked_gates": [],
+    "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+    "current_situation": "planning",
+    "generated_or_source_workflow_sources": [],
+    "generated_report_warning": "Generated workflow maps and OS Health are evidence only; do not use them as active memory or task selection.",
+    "human_review_prompt": "Ask: Is this the right workflow, and what owner file must approve or record the next artifact?",
+    "pending_approvals": [],
+    "prd_count": 1,
+    "recommended_workflow": "planning",
+    "related_prd": "",
+    "required_authority_source": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+    "stop_condition": "stop if workflow, authority, verification, or approval gate becomes unclear",
+    "user_approval_needed": "not before continuing current approved bead"
+  },
+  "status": "pass",
+  "warnings": []
+}

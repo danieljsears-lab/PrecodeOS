@@ -1,0 +1,78 @@
+{
+  "adapters": [
+    {
+      "load_when": "Selecting or switching the active AI coding tool for a session.",
+      "missing_commands": [],
+      "path": "adapters/README.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Adapter Index"
+    },
+    {
+      "load_when": "Using Claude Code as the active coding agent for this repo.",
+      "missing_commands": [],
+      "path": "adapters/CLAUDE.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Claude Adapter"
+    },
+    {
+      "load_when": "Using Codex as the active coding agent for this repo.",
+      "missing_commands": [],
+      "path": "adapters/CODEX.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Codex Adapter"
+    },
+    {
+      "load_when": "Using Gemini as the active coding agent for this repo.",
+      "missing_commands": [],
+      "path": "adapters/GEMINI.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Gemini Adapter"
+    },
+    {
+      "load_when": "Using Antigravity as the active coding agent for this repo.",
+      "missing_commands": [],
+      "path": "adapters/ANTIGRAVITY.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Antigravity Adapter"
+    },
+    {
+      "load_when": "Using Cursor as the active coding agent for this repo.",
+      "missing_commands": [],
+      "path": "adapters/CURSOR.md",
+      "shared_command_surface_present": true,
+      "title": "Precode OS \u2014 Cursor Adapter"
+    }
+  ],
+  "canonical_source": "AGENT.md",
+  "generated_at": "2026-04-28T18:19:09.089736+00:00",
+  "shared_command_surface": [
+    "bash scripts/install-git-hooks.sh",
+    "bash scripts/session-start.sh",
+    "bash scripts/checkpoint.sh",
+    "bash scripts/session-close.sh",
+    "bash scripts/handoff.sh [next-agent]",
+    "bash scripts/validate-memory.sh",
+    "bash scripts/write-guard.sh --post <changed-file>",
+    "bash scripts/record-check.sh -- <command>",
+    "bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command \"<summary>\"",
+    "python3 scripts/bead-transition.py",
+    "python3 scripts/os-health.py",
+    "python3 scripts/import-agent-spend.py",
+    "python3 scripts/github-audit.py",
+    "python3 scripts/import-github-sources.py",
+    "python3 scripts/extension-check.py",
+    "python3 scripts/verification-check.py",
+    "python3 scripts/decomposition-check.py",
+    "python3 scripts/state-check.py",
+    "python3 scripts/context-check.py",
+    "python3 scripts/orchestration-check.py",
+    "python3 scripts/tool-execution-check.py",
+    "python3 scripts/workflow-check.py",
+    "python3 scripts/long-horizon-check.py",
+    "python3 scripts/completion-check.py",
+    "python3 scripts/pattern-check.py",
+    "python3 scripts/version-check.py",
+    "bash scripts/log-agent-spend.sh --tool <tool> --task \"current bead\"",
+    "bash scripts/scheduled-audit.sh"
+  ]
+}

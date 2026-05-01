@@ -1,0 +1,32 @@
+{
+  "details": {
+    "approved_prds": [],
+    "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+    "current_parent_prd": "",
+    "current_recorded_check_count": 37,
+    "current_requirement_ids": [],
+    "generated_or_source_intent_sources": [],
+    "lifecycle_state": "evidence_recorded",
+    "next_bead": null,
+    "pending_approval": true,
+    "prd_count": 1,
+    "promotion_blockers": [
+      "manual verification is missing or still pending",
+      "current bead status must be review or done before promotion; found in_progress",
+      "review decision is not accepted",
+      "next bead is not named in Closeout Evidence or Handback"
+    ],
+    "trace": {
+      "bead": "tasks/beads/B000-install-precode-kernel.md",
+      "evidence": 37,
+      "prd": "not recorded",
+      "requirements": [],
+      "review_decision": "not reviewed",
+      "source": "not recorded"
+    }
+  },
+  "status": "warning",
+  "warnings": [
+    "tasks/todo.md Next Up contains work-like intent; confirm it is only a queue and not active work"
+  ]
+}

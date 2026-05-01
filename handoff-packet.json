@@ -1,0 +1,46 @@
+{
+  "details": {
+    "closeout_blockers": [
+      "manual verification is missing or still pending"
+    ],
+    "closeout_status": "incomplete",
+    "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+    "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
+    "handoff_context_missing": [],
+    "handoff_packet": {
+      "active bead": "tasks/beads/B000-install-precode-kernel.md",
+      "blockers": "manual verification is missing or still pending; current bead status must be review or done before promotion; found in_progress; review decision is not accepted; next bead is not named in Closeout Evidence or Handback",
+      "checks": "bash scripts/record-check.sh -- bash scripts/validate-memory.sh",
+      "done-when": "- The Precode OS kernel is installed and validated.\n- The target project has chosen its app directory and project-specific checks.\n- The first real product PRD or setup bead can be created.",
+      "files in play": "AGENT.md\nDECISIONS.md\ntasks/todo.md\nPROJECT-CONTEXT.md",
+      "generated-report warning": "Generated reports are evidence only.",
+      "latest evidence": "logs/check-output/20260428T181905Z-bash-scripts-validate-memory.sh.log",
+      "next safe action": "complete manual verification and review decision before transition",
+      "open questions": "- What app directory and project-specific checks should this installation use?",
+      "out of scope": "- Do not write app code during kernel setup.\n- Do not add product features before a PRD shard exists.",
+      "primary authority": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+      "state": "in_progress",
+      "stop conditions": "- App code needs to be changed.\n- Product feature scope appears before PRD approval.\n- The target project needs a decision that belongs in `DECISIONS.md`."
+    },
+    "latest_check_timestamp": "2026-04-28T18:19:05.893523+00:00",
+    "latest_session_close_timestamp": "2026-04-26T23:44:39.786815+00:00",
+    "manual_verification": "not recorded",
+    "next_bead": "not evaluated",
+    "next_bead_start_readiness": null,
+    "next_safe_action": "complete manual verification and review decision before transition",
+    "promotion_blockers": [
+      "manual verification is missing or still pending",
+      "current bead status must be review or done before promotion; found in_progress",
+      "review decision is not accepted",
+      "next bead is not named in Closeout Evidence or Handback"
+    ],
+    "promotion_status": "blocked",
+    "review_decision": "not reviewed"
+  },
+  "status": "warning",
+  "warnings": [
+    "manual verification is missing or vague",
+    "review decision is missing or invalid",
+    "active bead has recorded evidence newer than the latest session close"
+  ]
+}

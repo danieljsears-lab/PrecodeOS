@@ -1,0 +1,25 @@
+{
+  "details": {
+    "active_memory": [
+      "AGENT.md",
+      "DECISIONS.md",
+      "tasks/todo.md"
+    ],
+    "approved_prds": [],
+    "approved_prds_without_beads": [],
+    "blocked_beads": [],
+    "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+    "deferred_or_superseded_signals": [],
+    "dependency_gaps": [],
+    "follow_up_candidates": [],
+    "generated_report_warning": "Generated long-horizon maps are evidence only; do not use them as active memory, priority ordering, or task selection.",
+    "next_human_review_prompt": "Review approved, blocked, deferred, ready, and follow-up work without activating anything.",
+    "prd_drafts": [
+      "tasks/prds/PRD-000-template.md"
+    ],
+    "proposed_readiness_gaps": [],
+    "ready_beads": []
+  },
+  "status": "pass",
+  "warnings": []
+}

@@ -1,0 +1,473 @@
+{
+  "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+  "current_bead_status": "in_progress",
+  "external_audits": [
+    {
+      "details": {},
+      "name": "GitHub Repository Audit",
+      "status": "not_configured",
+      "summary": "not a git checkout or .git directory is unavailable"
+    },
+    {
+      "details": {},
+      "name": "CI Status Audit",
+      "status": "not_configured",
+      "summary": "requires git checkout and configured provider"
+    },
+    {
+      "details": {},
+      "name": "Deployment Status Audit",
+      "status": "not_configured",
+      "summary": "no deployment provider audit configured"
+    },
+    {
+      "details": {},
+      "name": "Issue Tracker Audit",
+      "status": "not_configured",
+      "summary": "no issue tracker audit configured"
+    },
+    {
+      "details": {},
+      "name": "Dependency/Security Advisory Audit",
+      "status": "not_configured",
+      "summary": "no read-only dependency or advisory source configured"
+    },
+    {
+      "details": {},
+      "name": "Error Monitoring / Observability Audit",
+      "status": "not_configured",
+      "summary": "no monitoring provider audit configured"
+    },
+    {
+      "details": {},
+      "name": "Uptime / Endpoint Audit",
+      "status": "not_configured",
+      "summary": "no safe health URL configured"
+    },
+    {
+      "details": {},
+      "name": "External Dashboard Setup Audit",
+      "status": "not_configured",
+      "summary": "manual dashboard setup status should be documented in PROJECT-CONTEXT.md when needed"
+    }
+  ],
+  "generated_at": "2026-04-28T18:19:09.587242+00:00",
+  "human_review_prompts": [
+    "Review warnings before accepting or promoting any bead.",
+    "If a finding matters, move it into the owning Precode file or create a proposed follow-up bead.",
+    "Do not continue work from this generated audit alone; start from active memory and the active bead."
+  ],
+  "local_audits": [
+    {
+      "details": {},
+      "name": "Health Refresh Audit",
+      "status": "pass",
+      "summary": "OS health refresh completed"
+    },
+    {
+      "details": {
+        "output": "logs/scheduled-audit-output/20260428T181908Z-validate-memory.log"
+      },
+      "name": "Memory Validation Audit",
+      "status": "pass",
+      "summary": "`bash scripts/validate-memory.sh` exited 0"
+    },
+    {
+      "details": {},
+      "name": "Learning Diary Refresh Audit",
+      "status": "pass",
+      "summary": "learning diary refreshed without appending a fake session"
+    },
+    {
+      "details": {
+        "dry_run_output": "logs/scheduled-audit-output/20260428T181908Z-import-agent-spend-dry-run.log",
+        "unknown_cost_entries": 0,
+        "unknown_token_entries": 0
+      },
+      "name": "Spend Telemetry Audit",
+      "status": "pass",
+      "summary": "0 spend entries; known tokens 0; known spend $0.0000"
+    },
+    {
+      "details": {},
+      "name": "Stale Bead Audit",
+      "status": "pass",
+      "summary": "active bead has recorded evidence or is not stale by first-pass criteria"
+    },
+    {
+      "details": {},
+      "name": "Closeout Completeness Audit",
+      "status": "warning",
+      "summary": "manual verification is missing; review decision is not accepted; next bead safety is not evaluated"
+    },
+    {
+      "details": {
+        "files": [
+          {
+            "path": "PROGRESS.md",
+            "status": "pass"
+          },
+          {
+            "path": "OS-HEALTH.md",
+            "status": "pass"
+          },
+          {
+            "path": "logs/learning-diary.md",
+            "status": "pass"
+          },
+          {
+            "path": "logs/memory-index.md",
+            "status": "pass"
+          },
+          {
+            "path": "logs/scheduled-audit.md",
+            "status": "pass"
+          }
+        ]
+      },
+      "name": "Generated Reports Demotion Audit",
+      "status": "pass",
+      "summary": "generated reports are demoted"
+    },
+    {
+      "details": {
+        "beads": []
+      },
+      "name": "Blocked Work Audit",
+      "status": "pass",
+      "summary": "no blocked beads found"
+    },
+    {
+      "details": {
+        "bead": "tasks/beads/B000-install-precode-kernel.md",
+        "changed_outside_files_in_play": [],
+        "code_changing": false,
+        "known_tiers": [
+          "static"
+        ],
+        "recorded_pass_commands": [
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh",
+          "bash scripts/validate-memory.sh"
+        ],
+        "sensitive_surface_detected": false,
+        "verification_type": [
+          "doc validation"
+        ]
+      },
+      "name": "Verification Quality Audit",
+      "status": "warning",
+      "summary": "manual verification is missing, pending, or does not use the stable format; review decision is not accepted"
+    },
+    {
+      "details": {
+        "bead": "tasks/beads/B000-install-precode-kernel.md",
+        "bead_kind": "setup",
+        "checks_count": 1,
+        "code_files_in_play": [],
+        "depends_on": [],
+        "files_in_play_count": 4,
+        "primary_authority": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+        "supporting_authority_hints": [
+          "PROJECT-CONTEXT.md"
+        ]
+      },
+      "name": "Decomposition Quality Audit",
+      "status": "warning",
+      "summary": "multiple apparent authority surfaces may be involved: ['PROJECT-CONTEXT.md']"
+    },
+    {
+      "details": {
+        "active_memory_claims": [
+          "AGENT.md",
+          "DECISIONS.md",
+          "tasks/todo.md"
+        ],
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "generated_reports": {
+          "OS-HEALTH.md": {
+            "mtime": "2026-04-28T18:19:09.092700+00:00",
+            "status": "pass"
+          },
+          "PROGRESS.md": {
+            "mtime": "2026-04-25T16:30:12.606569+00:00",
+            "status": "pass"
+          },
+          "logs/learning-diary.md": {
+            "mtime": "2026-04-28T18:19:09.212919+00:00",
+            "status": "pass"
+          },
+          "logs/memory-index.md": {
+            "mtime": "2026-04-28T18:19:09.090850+00:00",
+            "status": "pass"
+          },
+          "logs/scheduled-audit.md": {
+            "mtime": "2026-04-28T17:58:04.931329+00:00",
+            "status": "stale"
+          }
+        },
+        "in_progress_beads": [
+          "tasks/beads/B000-install-precode-kernel.md"
+        ],
+        "latest_event_timestamp": "2026-04-28T18:19:05.893523+00:00"
+      },
+      "name": "State Integrity Audit",
+      "status": "warning",
+      "summary": "generated report may be stale relative to latest evidence: logs/scheduled-audit.md"
+    },
+    {
+      "details": {
+        "approved_prds": [],
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "current_parent_prd": "",
+        "current_recorded_check_count": 37,
+        "current_requirement_ids": [],
+        "generated_or_source_intent_sources": [],
+        "lifecycle_state": "evidence_recorded",
+        "next_bead": null,
+        "pending_approval": true,
+        "prd_count": 1,
+        "promotion_blockers": [
+          "manual verification is missing or still pending",
+          "current bead status must be review or done before promotion; found in_progress",
+          "review decision is not accepted",
+          "next bead is not named in Closeout Evidence or Handback"
+        ],
+        "trace": {
+          "bead": "tasks/beads/B000-install-precode-kernel.md",
+          "evidence": 37,
+          "prd": "not recorded",
+          "requirements": [],
+          "review_decision": "not reviewed",
+          "source": "not recorded"
+        }
+      },
+      "name": "Intent Orchestration Audit",
+      "status": "warning",
+      "summary": "tasks/todo.md Next Up contains work-like intent; confirm it is only a queue and not active work"
+    },
+    {
+      "details": {
+        "active_bead_entries": 0,
+        "approval_gap_count": 0,
+        "class_counts": {},
+        "destructive_count": 0,
+        "entries": 0,
+        "latest_failure": null,
+        "missing_failure_category_count": 0,
+        "recent_entries": []
+      },
+      "name": "Tool Execution Audit",
+      "status": "pass",
+      "summary": "no first-pass tool execution warnings"
+    },
+    {
+      "details": {
+        "approved_prds_without_beads": [],
+        "artifact_to_produce_next": "source summary, PRD draft, challenge notes, or candidate bead proposal",
+        "blocked_gates": [],
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "current_situation": "planning",
+        "generated_or_source_workflow_sources": [],
+        "generated_report_warning": "Generated workflow maps and OS Health are evidence only; do not use them as active memory or task selection.",
+        "human_review_prompt": "Ask: Is this the right workflow, and what owner file must approve or record the next artifact?",
+        "pending_approvals": [],
+        "prd_count": 1,
+        "recommended_workflow": "planning",
+        "related_prd": "",
+        "required_authority_source": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+        "stop_condition": "stop if workflow, authority, verification, or approval gate becomes unclear",
+        "user_approval_needed": "not before continuing current approved bead"
+      },
+      "name": "Workflow Planning Audit",
+      "status": "pass",
+      "summary": "no first-pass workflow planning warnings"
+    },
+    {
+      "details": {
+        "active_memory": [
+          "AGENT.md",
+          "DECISIONS.md",
+          "tasks/todo.md"
+        ],
+        "approved_prds": [],
+        "approved_prds_without_beads": [],
+        "blocked_beads": [],
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "deferred_or_superseded_signals": [],
+        "dependency_gaps": [],
+        "follow_up_candidates": [],
+        "generated_report_warning": "Generated long-horizon maps are evidence only; do not use them as active memory, priority ordering, or task selection.",
+        "next_human_review_prompt": "Review approved, blocked, deferred, ready, and follow-up work without activating anything.",
+        "prd_drafts": [
+          "tasks/prds/PRD-000-template.md"
+        ],
+        "proposed_readiness_gaps": [],
+        "ready_beads": []
+      },
+      "name": "Long-Horizon Planning Audit",
+      "status": "pass",
+      "summary": "no first-pass long-horizon planning warnings"
+    },
+    {
+      "details": {
+        "closeout_blockers": [
+          "manual verification is missing or still pending"
+        ],
+        "closeout_status": "incomplete",
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
+        "handoff_context_missing": [],
+        "handoff_packet": {
+          "active bead": "tasks/beads/B000-install-precode-kernel.md",
+          "blockers": "manual verification is missing or still pending; current bead status must be review or done before promotion; found in_progress; review decision is not accepted; next bead is not named in Closeout Evidence or Handback",
+          "checks": "bash scripts/record-check.sh -- bash scripts/validate-memory.sh",
+          "done-when": "- The Precode OS kernel is installed and validated.\n- The target project has chosen its app directory and project-specific checks.\n- The first real product PRD or setup bead can be created.",
+          "files in play": "AGENT.md\nDECISIONS.md\ntasks/todo.md\nPROJECT-CONTEXT.md",
+          "generated-report warning": "Generated reports are evidence only.",
+          "latest evidence": "logs/check-output/20260428T181905Z-bash-scripts-validate-memory.sh.log",
+          "next safe action": "complete manual verification and review decision before transition",
+          "open questions": "- What app directory and project-specific checks should this installation use?",
+          "out of scope": "- Do not write app code during kernel setup.\n- Do not add product features before a PRD shard exists.",
+          "primary authority": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+          "state": "in_progress",
+          "stop conditions": "- App code needs to be changed.\n- Product feature scope appears before PRD approval.\n- The target project needs a decision that belongs in `DECISIONS.md`."
+        },
+        "latest_check_timestamp": "2026-04-28T18:19:05.893523+00:00",
+        "latest_session_close_timestamp": "2026-04-26T23:44:39.786815+00:00",
+        "manual_verification": "not recorded",
+        "next_bead": "not evaluated",
+        "next_bead_start_readiness": null,
+        "next_safe_action": "complete manual verification and review decision before transition",
+        "promotion_blockers": [
+          "manual verification is missing or still pending",
+          "current bead status must be review or done before promotion; found in_progress",
+          "review decision is not accepted",
+          "next bead is not named in Closeout Evidence or Handback"
+        ],
+        "promotion_status": "blocked",
+        "review_decision": "not reviewed"
+      },
+      "name": "Completion And Handoff Audit",
+      "status": "warning",
+      "summary": "manual verification is missing or vague; review decision is missing or invalid; active bead has recorded evidence newer than the latest session close"
+    },
+    {
+      "details": {
+        "current_bead": "tasks/beads/B000-install-precode-kernel.md",
+        "detected_terms": {
+          "simple_change": [
+            "text"
+          ]
+        },
+        "generated_report_warning": "Generated pattern guidance is evidence only; it must not choose tasks, approve transitions, or replace PRDs, beads, architecture docs, or decisions.",
+        "known_pattern_families": [
+          "creation",
+          "structure",
+          "behavior",
+          "product workflow"
+        ],
+        "likely_project_shape": "existing project convention",
+        "next_human_review_prompt": "Ask: Is this simple enough to build directly, or does it need an adapter, state flow, strategy boundary, access boundary, or audit trail?",
+        "owner_file_hints": [
+          "PROJECT-CONTEXT.md",
+          "CODEBASE-GUIDE.md",
+          "active bead"
+        ],
+        "recommendation": "Start with the repo's current framework and naming conventions, then introduce a pattern only if it reduces real risk or repetition.",
+        "recommended_pattern": "existing project convention",
+        "simpler_alternative": "Build directly inside the existing project convention when the work is one-off, low-risk, and has no repeated variation.",
+        "warning_count": 0
+      },
+      "name": "System Design Pattern Audit",
+      "status": "pass",
+      "summary": "no first-pass system design pattern warnings"
+    },
+    {
+      "details": {
+        "by_category": {},
+        "by_freshness": {},
+        "card_count": 0,
+        "cards": [],
+        "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting.",
+        "promotion_needed": [],
+        "stale_or_superseded": []
+      },
+      "name": "Filesystem Memory Audit",
+      "status": "pass",
+      "summary": "0 reviewed memory card(s); generated index remains evidence only"
+    },
+    {
+      "details": {
+        "docs": 59,
+        "families": {
+          "active-memory": 3,
+          "adapter": 6,
+          "bead-doc": 2,
+          "generated-evidence": 23,
+          "generated-report": 2,
+          "mode": 3,
+          "prd-doc": 2,
+          "reference-protocol": 22,
+          "root-doc": 16,
+          "script": 39,
+          "shim": 4,
+          "workflow": 1
+        },
+        "generated_outputs": 24,
+        "scripts": 39,
+        "workflows": 1
+      },
+      "name": "File Inventory Audit",
+      "status": "pass",
+      "summary": "59 docs, 39 scripts, and 24 generated outputs inventoried"
+    }
+  ],
+  "warnings": [
+    "manual verification is missing",
+    "review decision is not accepted",
+    "next bead safety is not evaluated",
+    "manual verification is missing, pending, or does not use the stable format",
+    "review decision is not accepted",
+    "multiple apparent authority surfaces may be involved: ['PROJECT-CONTEXT.md']",
+    "generated report may be stale relative to latest evidence: logs/scheduled-audit.md",
+    "tasks/todo.md Next Up contains work-like intent; confirm it is only a queue and not active work",
+    "manual verification is missing or vague",
+    "review decision is missing or invalid",
+    "active bead has recorded evidence newer than the latest session close"
+  ]
+}

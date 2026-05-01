@@ -1,0 +1,620 @@
+{
+  "active_memory": [
+    "AGENT.md",
+    "DECISIONS.md",
+    "tasks/todo.md"
+  ],
+  "docs": [
+    {
+      "anchor": "copilot-shim",
+      "authority": "Compatibility shim for GitHub Copilot coding agent instructions.",
+      "class": "reference",
+      "load_when": "GitHub Copilot loads repository instructions.",
+      "not_authority": "Shared operating model, active memory, feature requirements, route structure, schema definitions, product decisions, or implementation status.",
+      "path": ".github/copilot-instructions.md",
+      "surface": "shim",
+      "title": "Precode OS \u2014 GitHub Copilot Shim"
+    },
+    {
+      "anchor": "acceptance",
+      "authority": "Done checks, verification criteria, and feature completion gates for the target project.",
+      "class": "reference",
+      "load_when": "Defining or reviewing acceptance criteria for a PRD, feature, or bead.",
+      "not_authority": "New product behavior, route design, schema changes, or pricing decisions.",
+      "path": "ACCEPTANCE.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Acceptance Template"
+    },
+    {
+      "anchor": "agent",
+      "authority": "Shared AI coding agent operating model, active-memory contract, execution-layer entrypoints, shared commands, adapter handoff surface, and verification gate for a Precode OS repo.",
+      "class": "active-memory",
+      "load_when": "Start of every coding session and before beginning any new logical unit.",
+      "not_authority": "Product requirements, route structure, schema field definitions, business policy, or app-specific implementation status.",
+      "path": "AGENT.md",
+      "surface": "active-memory",
+      "title": "Precode OS \u2014 AI Coding Agent Entry Point"
+    },
+    {
+      "anchor": "agents-shim",
+      "authority": "Compatibility shim for AI coding agents that auto-load `AGENTS.md`.",
+      "class": "reference",
+      "load_when": "An AI coding tool automatically discovers `AGENTS.md` or a user explicitly asks for agent compatibility instructions.",
+      "not_authority": "Shared operating model, active memory, feature requirements, route structure, schema definitions, product decisions, or implementation status.",
+      "path": "AGENTS.md",
+      "surface": "shim",
+      "title": "Precode OS \u2014 Agent Shim"
+    },
+    {
+      "anchor": "api",
+      "authority": "API route rules, server-side boundaries, webhook patterns, and handler conventions for the target project.",
+      "class": "reference",
+      "load_when": "Planning or reviewing API-affecting work.",
+      "not_authority": "Product scope, route inventory ownership, UI behavior, or schema semantics.",
+      "path": "API.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 API Template"
+    },
+    {
+      "anchor": "architecture",
+      "authority": "Route structure, flow shape, module placement, and auth boundaries for the target project.",
+      "class": "reference",
+      "load_when": "Planning or reviewing architecture-affecting work.",
+      "not_authority": "Business scope, pricing policy, feature prioritization, or field-level schema semantics.",
+      "path": "ARCHITECTURE.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Architecture Template"
+    },
+    {
+      "anchor": "claude-shim",
+      "authority": "Compatibility shim for Claude-style project instruction discovery.",
+      "class": "reference",
+      "load_when": "Claude or another tool auto-loads `CLAUDE.md`.",
+      "not_authority": "Shared operating model, feature requirements, route structure, schema field definitions, product decisions, or implementation status.",
+      "path": "CLAUDE.md",
+      "surface": "shim",
+      "title": "Precode OS \u2014 Claude Shim"
+    },
+    {
+      "anchor": "codebase-guide",
+      "authority": "Repository layout, file placement, naming conventions, and code organization guidance for the target project.",
+      "class": "reference",
+      "load_when": "Deciding where code or docs belong.",
+      "not_authority": "Product requirements, schema semantics, acceptance decisions, or pricing policy.",
+      "path": "CODEBASE-GUIDE.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Codebase Guide Template"
+    },
+    {
+      "anchor": "data-models",
+      "authority": "Schema field names, entity relationships, data type shapes, and field semantic meaning for the target project.",
+      "class": "reference",
+      "load_when": "Planning or reviewing schema-affecting work.",
+      "not_authority": "UI flow, acceptance behavior, route placement, or pricing business scope.",
+      "path": "DATA-MODELS.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Data Models Template"
+    },
+    {
+      "anchor": "decisions",
+      "authority": "Hard decisions currently in force, unresolved open questions, and superseded or historical decision context for this Precode OS scaffold.",
+      "class": "active-memory",
+      "load_when": "Making or revisiting any architectural, product, or operating-system decision.",
+      "not_authority": "Detailed route structure, schema field definitions, generated progress state, or active task selection.",
+      "path": "DECISIONS.md",
+      "surface": "active-memory",
+      "title": "Precode OS \u2014 Decision Log & Open Questions"
+    },
+    {
+      "anchor": "features",
+      "authority": "Compiled feature inventory, functional requirements, priorities, and MVP slices for the target project.",
+      "class": "reference",
+      "load_when": "Compiling approved PRD shards into a feature inventory or checking requirement IDs during planning.",
+      "not_authority": "Route structure, module placement, schema field names, pricing policy, or deep PRD narrative.",
+      "path": "FEATURES.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Feature Inventory Template"
+    },
+    {
+      "anchor": "gemini-shim",
+      "authority": "Compatibility shim for Gemini-style agent memory discovery.",
+      "class": "reference",
+      "load_when": "Gemini or another tool auto-loads `GEMINI.md`.",
+      "not_authority": "Shared operating model, active memory, feature requirements, route structure, schema definitions, product decisions, or implementation status.",
+      "path": "GEMINI.md",
+      "surface": "shim",
+      "title": "Precode OS \u2014 Gemini Shim"
+    },
+    {
+      "anchor": "build-software-with-precode",
+      "authority": "Beginner-facing educational bridge explaining how software is traditionally planned, designed, built, verified, deployed, and iterated, and how non-technical users do that work with Precode OS and AI coding agents.",
+      "class": "reference",
+      "load_when": "Teaching a new non-technical user how software development works, onboarding someone from idea to first Precode project, or explaining how traditional software roles map to Precode workflows.",
+      "not_authority": "Active memory, task selection, product decisions, feature requirements, implementation plans, architecture decisions, deployment policy, or generated progress state.",
+      "path": "HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md",
+      "surface": "doc",
+      "title": "How To Build Software Using Precode OS + AI Coding Agents"
+    },
+    {
+      "anchor": "operating-constraints",
+      "authority": "Shared edit discipline, scope control, generated-output demotion, and reference-loading rules for Precode OS.",
+      "class": "reference",
+      "load_when": "Starting work, editing OS files, validating scope, or recovering from drift.",
+      "not_authority": "Feature requirements, route structure, schema definitions, product decisions, or active task selection.",
+      "path": "OPERATING-CONSTRAINTS.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Operating Constraints"
+    },
+    {
+      "anchor": "os-health",
+      "authority": "Generated OS health snapshot, loop metrics, bead status, and recent check evidence for the Precode OS workspace.",
+      "class": "generated",
+      "load_when": "Auditing Precode OS health, loop friction, check evidence, or blocked-bead status; never as active session memory.",
+      "not_authority": "Active memory, product decisions, feature requirements, implementation plans, or task selection.",
+      "path": "OS-HEALTH.md",
+      "surface": "doc",
+      "title": "Precode OS -- OS Health Report"
+    },
+    {
+      "anchor": "architecture-overview",
+      "authority": "Reviewer-facing architecture, layer model, principles, failure-mode analysis, enforcement model, trust boundaries, human control surface, comparison framing, evaluation criteria, adoption path, and limitations for Precode OS itself.",
+      "class": "reference",
+      "load_when": "Evaluating, explaining, positioning, or reviewing Precode OS.",
+      "not_authority": "Target-project app architecture, active memory, task selection, product requirements, implementation status, route structure, schema definitions, or generated progress state.",
+      "path": "PRECODE-ARCHITECTURE-OVERVIEW.md",
+      "surface": "doc",
+      "title": "Precode OS Architecture Overview"
+    },
+    {
+      "anchor": "file-inventory",
+      "authority": "Canonical technical inventory of Precode OS-owned files, file families, purposes, relationships, and maintenance expectations.",
+      "class": "reference",
+      "load_when": "Orienting a technical user or coding agent before changing Precode OS files, auditing file ownership, or tracing relationships between Precode OS surfaces.",
+      "not_authority": "Active memory, product decisions, task selection, feature requirements, implementation status, target-project architecture, generated evidence truth, or bead transition approval.",
+      "path": "PRECODE-FILE-INVENTORY.md",
+      "surface": "doc",
+      "title": "Precode OS File Inventory"
+    },
+    {
+      "anchor": "precode-manifesto",
+      "authority": "Philosophical statement of why Precode exists, who it serves, core values, and principles guiding the operating model.",
+      "class": "reference",
+      "load_when": "Explaining Precode's purpose, onboarding new builders, evaluating whether new features fit Precode's philosophy, or positioning Precode publicly.",
+      "not_authority": "Active memory, task selection, product decisions, feature requirements, implementation plans, architecture decisions, generated progress state, or implementation status.",
+      "path": "PRECODE-MANIFESTO.md",
+      "surface": "doc",
+      "title": "Precode OS Manifesto"
+    },
+    {
+      "anchor": "os-readme",
+      "authority": "Beginner-first canonical explainer for what Precode OS is, why it exists, how a non-technical builder should use it, and where to find deeper architecture or maintainer detail.",
+      "class": "reference",
+      "load_when": "Onboarding a non-technical builder, explaining the Precode OS workflow, or choosing which deeper Precode reference to read next.",
+      "not_authority": "Product requirements, active task selection, route structure, schema definitions, pricing decisions, generated progress state, or deep architecture ownership.",
+      "path": "PRECODE-OS-README.md",
+      "surface": "doc",
+      "title": "Precode OS Explainer"
+    },
+    {
+      "anchor": "precode-user-guide",
+      "authority": "Canonical hands-on user playbook for operating Precode OS as a non-technical builder.",
+      "class": "reference",
+      "load_when": "Onboarding a new user, running a Precode session, deciding what to ask an AI coding agent, or checking whether work is ready to accept.",
+      "not_authority": "Active memory, product decisions, feature requirements, route structure, schema definitions, implementation plans, generated progress state, or deep architecture guidance.",
+      "path": "PRECODE-USER-GUIDE.md",
+      "surface": "doc",
+      "title": "How To Use Precode OS"
+    },
+    {
+      "anchor": "progress",
+      "authority": "Generated snapshot of feature completion and active feature scope.",
+      "class": "generated",
+      "load_when": "Auditing generated progress only; never as active session memory.",
+      "not_authority": "Working memory, decision state, implementation plans, future scope, or task selection.",
+      "path": "PROGRESS.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Generated Progress"
+    },
+    {
+      "anchor": "project-context",
+      "authority": "Project constitution template for stack choices, implementation conventions, architecture guardrails, integration boundaries, and project-specific build rules.",
+      "class": "reference",
+      "load_when": "Shaping PRDs, deriving architecture-affecting beads, onboarding an agent, resolving implementation convention questions, or checking whether new work fits the project constitution.",
+      "not_authority": "Active memory, active task selection, feature requirements, route inventory, schema field definitions, pricing decisions, or generated progress state.",
+      "path": "PROJECT-CONTEXT.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Project Context Template"
+    },
+    {
+      "anchor": "readme",
+      "authority": "Human-readable orientation and navigation for the clean Precode OS scaffold.",
+      "class": "reference",
+      "load_when": "First opening this scaffold, navigating files, or adapting Precode OS into a target project.",
+      "not_authority": "Active memory, product decisions, feature requirements, route structure, schema definitions, or generated progress.",
+      "path": "README.md",
+      "surface": "doc",
+      "title": "Precode OS"
+    },
+    {
+      "anchor": "security",
+      "authority": "Threat model, sensitive surfaces, security constraints, and mitigation guidance for the target project.",
+      "class": "reference",
+      "load_when": "Work touches auth, payments, personal data, uploads, destructive actions, external integrations, secrets, or production configuration.",
+      "not_authority": "Feature prioritization, route inventory, schema field ownership, or active task selection.",
+      "path": "SECURITY.md",
+      "surface": "doc",
+      "title": "Precode OS \u2014 Security Template"
+    },
+    {
+      "anchor": null,
+      "authority": "Antigravity-specific startup notes, shared-script entrypoints, and manual validation reminders.",
+      "class": "reference",
+      "load_when": "Using Antigravity as the active coding agent for this repo.",
+      "not_authority": "Shared operating model, feature requirements, route structure, or schema definitions.",
+      "path": "adapters/ANTIGRAVITY.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Antigravity Adapter"
+    },
+    {
+      "anchor": null,
+      "authority": "Claude-specific startup notes, slash-command mapping, and local spend/status guidance.",
+      "class": "reference",
+      "load_when": "Using Claude Code as the active coding agent for this repo.",
+      "not_authority": "Shared operating model, feature requirements, route structure, schema definitions, or business policy.",
+      "path": "adapters/CLAUDE.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Claude Adapter"
+    },
+    {
+      "anchor": null,
+      "authority": "Codex-specific startup notes, shared-script entrypoints, and manual validation reminders.",
+      "class": "reference",
+      "load_when": "Using Codex as the active coding agent for this repo.",
+      "not_authority": "Shared operating model, feature requirements, route structure, or schema definitions.",
+      "path": "adapters/CODEX.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Codex Adapter"
+    },
+    {
+      "anchor": null,
+      "authority": "Cursor-specific startup notes, project-rule shim guidance, shared-script entrypoints, and manual validation reminders.",
+      "class": "reference",
+      "load_when": "Using Cursor as the active coding agent for this repo.",
+      "not_authority": "Shared operating model, feature requirements, route structure, schema definitions, or business policy.",
+      "path": "adapters/CURSOR.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Cursor Adapter"
+    },
+    {
+      "anchor": null,
+      "authority": "Gemini-specific startup notes, shared-script entrypoints, and manual validation reminders.",
+      "class": "reference",
+      "load_when": "Using Gemini as the active coding agent for this repo.",
+      "not_authority": "Shared operating model, feature requirements, route structure, or schema definitions.",
+      "path": "adapters/GEMINI.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Gemini Adapter"
+    },
+    {
+      "anchor": null,
+      "authority": "Tool-adapter index, adapter ownership boundaries, and where to look for tool-specific notes.",
+      "class": "reference",
+      "load_when": "Selecting or switching the active AI coding tool for a session.",
+      "not_authority": "Shared operating model, feature requirements, route structure, schema definitions, or business policy.",
+      "path": "adapters/README.md",
+      "surface": "adapter",
+      "title": "Precode OS \u2014 Adapter Index"
+    },
+    {
+      "anchor": "logs",
+      "authority": "Generated log directory description and evidence-file taxonomy.",
+      "class": "reference",
+      "load_when": "Auditing generated evidence or OS health outputs.",
+      "not_authority": "Active memory, task selection, product decisions, or implementation plans.",
+      "path": "logs/README.md",
+      "surface": "log-reference",
+      "title": "Precode OS \u2014 Logs"
+    },
+    {
+      "anchor": "mode-builder",
+      "authority": "Builder mode for the implementation loop, resume decisions, and one-bead-at-a-time execution with strong verification and clean stop states.",
+      "class": "reference",
+      "load_when": "Beginning or resuming active implementation on a bead.",
+      "not_authority": "Product prioritization, open-ended roadmap selection, pricing policy, or business decisions.",
+      "path": "modes/BUILDER.md",
+      "surface": "mode",
+      "title": "Precode OS Mode \u2014 Builder"
+    },
+    {
+      "anchor": "mode-navigator",
+      "authority": "Navigator mode for selecting the next bead, setting context, scope shaping, and handoff discipline.",
+      "class": "reference",
+      "load_when": "Choosing the next logical unit, reshaping scope, or handing work to an AI coding agent.",
+      "not_authority": "Direct implementation details, feature requirements, schema definitions, or pricing policy.",
+      "path": "modes/NAVIGATOR.md",
+      "surface": "mode",
+      "title": "Precode OS Mode \u2014 Navigator"
+    },
+    {
+      "anchor": "mode-review",
+      "authority": "Review mode for diff inspection, verification evidence, and accept-revise-split review rules.",
+      "class": "reference",
+      "load_when": "Reviewing a completed bead, checking evidence, or deciding whether work should be accepted, revised, or split.",
+      "not_authority": "New implementation scope, product reprioritization, schema-definition ownership, or pricing policy.",
+      "path": "modes/REVIEW.md",
+      "surface": "mode",
+      "title": "Precode OS Mode \u2014 Review"
+    },
+    {
+      "anchor": "b000-install-precode-kernel",
+      "authority": "Starter bead for installing and validating the Precode OS active-memory kernel in a target project.",
+      "class": "active-task",
+      "load_when": "Bootstrapping a clean Precode OS project.",
+      "not_authority": "Product feature scope, app implementation, route structure, schema definitions, or generated progress.",
+      "path": "tasks/beads/B000-install-precode-kernel.md",
+      "surface": "bead",
+      "title": "B000 \u2014 Install Precode Kernel"
+    },
+    {
+      "anchor": "bead-schema",
+      "authority": "Execution-bead format, bead states, and the `tasks/todo.md` to bead relationship.",
+      "class": "reference",
+      "load_when": "Creating, updating, or validating a bead in the scalable execution layer.",
+      "not_authority": "Product requirements, route structure, schema definitions, or generated progress.",
+      "path": "tasks/beads/README.md",
+      "surface": "bead",
+      "title": "Precode OS \u2014 Bead Schema"
+    },
+    {
+      "anchor": "prd-template",
+      "authority": "Reusable PRD shard template for defining product work before it becomes feature inventory or execution beads.",
+      "class": "reference",
+      "load_when": "Starting a new PRD shard or checking whether a PRD has enough definition to compile into `FEATURES.md`.",
+      "not_authority": "A live product commitment, active task selection, route structure, schema field definitions, or implementation status.",
+      "path": "tasks/prds/PRD-000-template.md",
+      "surface": "prd",
+      "title": "PRD-000 \u2014 Template"
+    },
+    {
+      "anchor": "prd-shards",
+      "authority": "PRD shard directory rules, PRD states, PRD ID format, and the relationship between PRDs, `FEATURES.md`, and execution beads.",
+      "class": "reference",
+      "load_when": "Creating, reviewing, approving, or backfilling a product definition before execution beads are created.",
+      "not_authority": "Active task selection, route structure, schema field definitions, pricing decisions, or implementation status.",
+      "path": "tasks/prds/README.md",
+      "surface": "prd",
+      "title": "Precode PRD Shards"
+    },
+    {
+      "anchor": "bmad-precode-comparison",
+      "authority": "Research comparison between BMAD Method and Precode OS, with development guidance for future Precode OS work.",
+      "class": "reference",
+      "load_when": "Evaluating Precode OS direction, comparing AI-agent workflow systems, planning Precode OS packaging, or deciding what BMAD concepts to adopt or reject.",
+      "not_authority": "Active task selection, target-project product requirements, current bead state, architectural decisions, schema definitions, or implementation status.",
+      "path": "tasks/reference/BMAD-PRECODE-COMPARISON.md",
+      "surface": "reference",
+      "title": "BMAD Method And Precode OS Comparison"
+    },
+    {
+      "anchor": "context-engineering-protocol",
+      "authority": "Context loading order, context tiers, source trust boundaries, prompt-injection guardrails, context reset rules, and handoff context expectations for Precode OS.",
+      "class": "reference",
+      "load_when": "Starting or handing off a session, writing prompts, reviewing context drift, importing local or external sources, switching agents, or deciding which files an agent should load.",
+      "not_authority": "Active memory expansion, product decisions, task selection, implementation plans, generated progress state, or bead transitions.",
+      "path": "tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Context Engineering Protocol"
+    },
+    {
+      "anchor": "decomposition-protocol",
+      "authority": "Bead decomposition rules, not-a-bead-yet criteria, slicing patterns, dependency mapping terms, planning-versus-execution boundaries, and appetite guidance for Precode OS.",
+      "class": "reference",
+      "load_when": "Turning PRDs, source intake, GitHub issues, rough plans, or review findings into candidate beads; splitting broad work; or reviewing whether a bead is small enough to activate.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, generated progress state, or automatic bead activation.",
+      "path": "tasks/reference/DECOMPOSITION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Decomposition Protocol"
+    },
+    {
+      "anchor": "extension-protocol",
+      "authority": "Extension rules, extension types, authority boundaries, active-memory limits, generated-output boundaries, mutation boundaries, and extension review checklist for adding Precode OS capabilities.",
+      "class": "reference",
+      "load_when": "Adding or reviewing a Precode adapter, protocol, importer, audit, generated report, bead template, or external integration.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, external mutation approval, generated progress state, or plugin registry.",
+      "path": "tasks/reference/EXTENSION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Extension Protocol"
+    },
+    {
+      "anchor": "github-integration-protocol",
+      "authority": "GitHub integration rules, read-only audit boundaries, issue and pull request source-intake rules, GitHub Actions validation expectations, and promotion paths for GitHub-derived evidence.",
+      "class": "reference",
+      "load_when": "Configuring GitHub, reviewing GitHub audit findings, importing GitHub issues or pull requests as source evidence, or adding GitHub Actions validation for Precode OS.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, bead state, repository mutation, CI rerun policy, deployment policy, or generated progress state.",
+      "path": "tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- GitHub Integration Protocol"
+    },
+    {
+      "anchor": "idea-to-prd-workflow",
+      "authority": "Guided local source intake, idea framing, PRFAQ-lite, shallow-artifact prevention, PRD readiness, and bead-derivation workflow for Precode OS.",
+      "class": "reference",
+      "load_when": "Turning a rough idea, note, chat summary, issue export, research result, screenshot, design, diagram, or manual draft into a PRD shard and candidate beads.",
+      "not_authority": "Final product decisions, active task selection, route structure, schema definitions, implementation plans, or generated progress state.",
+      "path": "tasks/reference/IDEA-TO-PRD-WORKFLOW.md",
+      "surface": "reference",
+      "title": "Precode Idea To PRD Workflow"
+    },
+    {
+      "anchor": "intent-orchestration-protocol",
+      "authority": "Intent lifecycle states, intent ownership by stage, promotion rules, mid-task intent-change handling, traceability expectations, and generated orchestration boundaries for Precode OS.",
+      "class": "reference",
+      "load_when": "Capturing rough intent, promoting source material into PRDs or decisions, changing direction mid-task, reviewing PRD-to-bead traceability, or auditing whether work is ready to proceed.",
+      "not_authority": "Active memory expansion, product decisions, task selection, implementation plans, feature approval, generated progress state, or automatic bead transitions.",
+      "path": "tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Intent Orchestration Protocol"
+    },
+    {
+      "anchor": "learning-diary-protocol",
+      "authority": "Learning-diary capture rules, privacy boundaries, generated diary shape, and lesson-promotion path for Precode OS.",
+      "class": "reference",
+      "load_when": "Creating, reviewing, or changing learner-facing session diary behavior.",
+      "not_authority": "Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, or generated progress state.",
+      "path": "tasks/reference/LEARNING-DIARY-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Learning Diary Protocol"
+    },
+    {
+      "anchor": "local-source-intake-protocol",
+      "authority": "Local source intake rules, source summary format, evidence boundaries, privacy exclusions, and promotion paths for turning local project material into Precode-owned planning artifacts.",
+      "class": "reference",
+      "load_when": "Turning local notes, docs, screenshots, chat summaries, issue exports, research files, diagrams, or manual drafts into PRD-ready source summaries.",
+      "not_authority": "Active memory, product decisions, approved requirements, active task selection, route structure, schema definitions, implementation plans, or generated progress state.",
+      "path": "tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Local Source Intake Protocol"
+    },
+    {
+      "anchor": "long-horizon-planning-protocol",
+      "authority": "Long-horizon task visibility, future-work ownership, deferred and blocked work review, and promotion rules for Precode OS.",
+      "class": "reference",
+      "load_when": "Reviewing future work, deferred ideas, blocked beads, follow-up candidates, PRD-approved but unscheduled work, dependency chains, or long-range planning health.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, generated progress state, bead activation, priority ordering, or project-board authority.",
+      "path": "tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Long-Horizon Planning Protocol"
+    },
+    {
+      "anchor": "memory-protocol",
+      "authority": "Reviewed filesystem memory rules, memory-card shape, privacy boundaries, generated memory index behavior, and promotion path for Precode OS.",
+      "class": "reference",
+      "load_when": "Creating, reviewing, searching, exporting, or changing Precode reviewed memory behavior.",
+      "not_authority": "Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, bead state, or generated progress state.",
+      "path": "tasks/reference/MEMORY-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Filesystem Memory Protocol"
+    },
+    {
+      "anchor": "planning-protocol",
+      "authority": "Experiment and rollout planning brief format for uncertain product bets, metric-backed hypotheses, exposure plans, and kill criteria.",
+      "class": "reference",
+      "load_when": "Planning a product experiment, rollout, ambiguous feature bet, or user-facing behavior change whose success needs measurement.",
+      "not_authority": "Feature scope, final decisions, active task selection, schema definitions, route structure, generated progress, or implementation status.",
+      "path": "tasks/reference/PLANNING-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS \u2014 Planning Protocol"
+    },
+    {
+      "anchor": "prd-protocol",
+      "authority": "Product Definition Gate workflow, adaptive PRD ceremony, PRD approval rules, source-input normalization, and PRD-to-feature-to-bead compilation.",
+      "class": "reference",
+      "load_when": "Turning a product idea into an approved PRD shard, compiling requirements into `FEATURES.md`, or deriving beads from product definition.",
+      "not_authority": "Feature prioritization, final product decisions, active task selection, route structure, schema definitions, or implementation status.",
+      "path": "tasks/reference/PRD-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode PRD Protocol"
+    },
+    {
+      "anchor": "prompt-patterns",
+      "authority": "Beginner-friendly prompt patterns for operating Precode OS consistently across AI coding agents.",
+      "class": "reference",
+      "load_when": "A user needs copyable prompts, an agent is preparing a handoff, or a session needs clearer context, review, intake, verification, or recovery instructions.",
+      "not_authority": "Active memory, product decisions, feature requirements, task selection, implementation plans, generated progress state, or bead transitions.",
+      "path": "tasks/reference/PROMPT-PATTERNS.md",
+      "surface": "reference",
+      "title": "Precode OS -- Prompt Patterns"
+    },
+    {
+      "anchor": "scheduled-audit-protocol",
+      "authority": "Scheduled audit rules, allowed read-only checks, forbidden automation, generated audit output, external status audit boundaries, scheduler examples, secret-handling rules, and finding-promotion paths.",
+      "class": "reference",
+      "load_when": "Adding, reviewing, running, or configuring scheduled audits for Precode OS.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, external system mutation, deployment policy, or generated progress state.",
+      "path": "tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Scheduled Audit Protocol"
+    },
+    {
+      "anchor": "session-completion-handoff-protocol",
+      "authority": "Session completion, bead closeout, review, transition proposal, transition approval, and agent handoff rules for Precode OS.",
+      "class": "reference",
+      "load_when": "Closing a session, checking whether a bead is ready for review, preparing an agent handoff, reviewing completion evidence, or deciding whether a transition proposal is safe to approve.",
+      "not_authority": "Active memory expansion, product decisions, task selection, automatic review acceptance, automatic bead activation, generated progress state, or external mutations.",
+      "path": "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Session Completion And Handoff Protocol"
+    },
+    {
+      "anchor": "state-management-protocol",
+      "authority": "Memory and state ownership, precedence rules, open-question ownership, generated-state freshness expectations, recovery workflow, and log/archive guidance for Precode OS.",
+      "class": "reference",
+      "load_when": "Repairing state drift, reviewing state integrity, changing state schemas, investigating stale generated reports, or deciding which file owns a state fact.",
+      "not_authority": "Active memory expansion, task selection, product decisions, implementation plans, generated progress state, or automatic bead transitions.",
+      "path": "tasks/reference/STATE-MANAGEMENT-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- State Management Protocol"
+    },
+    {
+      "anchor": "system-design-pattern-protocol",
+      "authority": "Prescriptive guidance for choosing practical implementation shapes, system design patterns, and owner files before coding.",
+      "class": "reference",
+      "load_when": "A feature may need architecture shape, external integration boundaries, state flows, interchangeable rules, audit trails, auth/access boundaries, or a plain-English explanation of whether a design pattern is warranted.",
+      "not_authority": "Active memory, product decisions, approved requirements, task selection, bead activation, implementation plans, generated progress state, or external mutations.",
+      "path": "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- System Design Pattern Protocol"
+    },
+    {
+      "anchor": "tool-execution-protocol",
+      "authority": "Tool-call classes, command policy expectations, non-check tool logging, failure categories, external mutation rules, secret handling, and tool-execution advisory checks for Precode OS.",
+      "class": "reference",
+      "load_when": "Choosing, recording, reviewing, or approving tool calls; adding tool integrations; handling command failures; or distinguishing tool use from verification evidence.",
+      "not_authority": "Active memory expansion, task selection, product decisions, implementation plans, automatic command approval, generated progress state, or automatic bead transitions.",
+      "path": "tasks/reference/TOOL-EXECUTION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Tool Execution Protocol"
+    },
+    {
+      "anchor": "verification-guardrail-protocol",
+      "authority": "Verification tiers, evidence-quality rules, risk-based check expectations, sensitive-surface approval gates, manual verification format, rollback expectations, and false-done warning patterns for Precode OS.",
+      "class": "reference",
+      "load_when": "Creating, reviewing, or closing beads; choosing checks; working near sensitive surfaces; or evaluating whether evidence is strong enough to accept work.",
+      "not_authority": "Active memory, task selection, product decisions, implementation plans, generated progress state, or automatic approval of bead transitions.",
+      "path": "tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Verification And Guardrail Protocol"
+    },
+    {
+      "anchor": "versioning-protocol",
+      "authority": "Version metadata rules for Precode OS-owned authority docs, reference docs, templates, adapters, shims, maintained scripts, and workflow configuration.",
+      "class": "reference",
+      "load_when": "Adding, changing, reviewing, or auditing Precode OS-owned files that should carry visible version metadata.",
+      "not_authority": "Active memory content, product decisions, task selection, bead state, generated report freshness, implementation status, or release management outside this repo.",
+      "path": "tasks/reference/VERSIONING-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Versioning Protocol"
+    },
+    {
+      "anchor": "workflow-selection-protocol",
+      "authority": "Workflow-selection guidance for choosing the next Precode planning, execution, review, unblocker, or repair path before work starts.",
+      "class": "reference",
+      "load_when": "Deciding which Precode workflow to use for a rough idea, local source material, PRD work, bead proposal, blocked task, review, closeout, or state repair.",
+      "not_authority": "Active memory, product decisions, approved requirements, task selection, bead activation, implementation plans, generated progress state, or external mutations.",
+      "path": "tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md",
+      "surface": "reference",
+      "title": "Precode OS -- Workflow Selection Protocol"
+    },
+    {
+      "anchor": "active-work",
+      "authority": "Current task, done-when target, primary authority file, files in play, checks to run, immediate next-up queue, open questions, and noticed execution facts.",
+      "class": "active-memory",
+      "load_when": "Start and end of every session and whenever task scope materially changes.",
+      "not_authority": "Resolved decisions, feature requirements, generated progress, or long-range roadmap commitments.",
+      "path": "tasks/todo.md",
+      "surface": "active-memory",
+      "title": "Precode OS \u2014 Active Work File"
+    }
+  ],
+  "generated_at": "2026-04-28T18:19:09.089094+00:00"
+}
