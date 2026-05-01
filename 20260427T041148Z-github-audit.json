@@ -1,0 +1,23 @@
+{
+  "audits": [
+    {
+      "details": {},
+      "name": "GitHub Repository Audit",
+      "status": "not_configured",
+      "summary": "not a git checkout or .git directory is unavailable"
+    },
+    {
+      "details": {},
+      "name": "CI Status Audit",
+      "status": "not_configured",
+      "summary": "requires git checkout and configured provider"
+    }
+  ],
+  "configured": false,
+  "context": {
+    "repository_root": "/Users/danielsears/Projects/precode-os"
+  },
+  "generated_at": "2026-04-27T04:11:48.598670+00:00",
+  "tool": "github-audit",
+  "warnings": []
+}
