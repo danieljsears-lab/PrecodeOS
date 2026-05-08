@@ -15,8 +15,8 @@ primary_authority: tasks/reference/IDEA-TO-PRD-WORKFLOW.md
 > CLASS: active-memory
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-03
 
 ## Current Bead
 
@@ -28,8 +28,9 @@ Last updated: 2026-04-26
 ## Done When
 
 - The Precode OS kernel is installed and validated.
-- The target project has chosen its app directory and project-specific checks.
-- The first real product PRD or setup bead can be created.
+- Precode OS itself uses the repository root as the app/workspace directory.
+- Project-specific checks for B000 are defined and recorded.
+- B000 has exact manual verification and review evidence requirements.
 
 ## Primary Authority File
 
@@ -46,6 +47,9 @@ Last updated: 2026-04-26
 ## Checks To Run
 
 - `bash scripts/record-check.sh -- bash scripts/validate-memory.sh`
+- `bash scripts/record-check.sh -- python3 scripts/version-check.py`
+- `bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check`
+- `bash scripts/record-check.sh -- python3 scripts/completion-check.py`
 
 ## Explicit Out-of-Scope
 
@@ -54,13 +58,14 @@ Last updated: 2026-04-26
 
 ## Next Up
 
-- Replace scaffold placeholders with the target project's product, stack, roles, and checks.
-- Create the first PRD shard or setup bead.
+- Review B000 closeout evidence.
+- After B000 is accepted, propose the next PRD or setup bead without activating it until `python3 scripts/bead-transition.py --approve` is explicitly approved.
 
 ## Open Questions
 
-- What app directory and project-specific checks should this installation use?
+- none
 
 ## Noticed
 
-- This is a clean Precode OS scaffold. App-specific facts should be added only by the adopting project.
+- This repository is Precode OS itself. The app/workspace directory is `.`.
+- No product feature work is active during B000.

@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-08
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -42,6 +42,7 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 - `python3 scripts/orchestration-check.py`
 - `python3 scripts/tool-execution-check.py`
 - `python3 scripts/workflow-check.py`
+- `python3 scripts/goal-frame-check.py`
 - `python3 scripts/long-horizon-check.py`
 - `python3 scripts/completion-check.py`
 - `python3 scripts/pattern-check.py`

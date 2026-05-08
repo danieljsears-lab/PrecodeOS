@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-04-27
+License: Apache-2.0
+Copyright: © 2026 Dan Sears
+Document version: v0.1.16
+Last updated: 2026-05-08
 
 ## Purpose
 
@@ -24,6 +26,10 @@ Use it to answer:
 - how it relates to nearby files
 
 This document is curated. Generated support lives in `logs/file-inventory.json` and is evidence only.
+
+## License And Provenance
+
+`LICENSE` holds the Apache-2.0 terms for open-source use. `NOTICE` preserves creator attribution for Dan Sears / Recode and the canonical site, `https://www.precodeos.org`. Core source files use SPDX headers so adopters can reuse Precode OS while keeping license and provenance visible.
 
 ## Reading Rules
 
@@ -41,16 +47,18 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 |---|---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | Always-loaded operating state. |
 | Root explainers | `README.md`, `PRECODE-MANIFESTO.md`, `PRECODE-OS-README.md`, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`, `PRECODE-USER-GUIDE.md`, `PRECODE-ARCHITECTURE-OVERVIEW.md`, `PRECODE-FILE-INVENTORY.md` | Orientation for different audiences. |
-| Project authority templates | `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
+| Maintainer planning | `maintainer/MAINTAINER-NOTES.md`, `maintainer/PRECODE-ROADMAP.md` | Dan Sears / Recode planning material for improving Precode OS itself; not active memory or user workflow authority. |
+| Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory. |
+| Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, not authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
 | Modes | `modes/*.md` | Navigator, builder, and review role guidance. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
-| Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, and generated reports. |
+| Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl` | Machine-readable generated evidence and ledgers. |
-| Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots. |
+| Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
 | Workflows | `.github/workflows/*.yml` | Repository validation automation. |
 
 ## Core Relationship Map
@@ -74,16 +82,18 @@ AGENT.md + DECISIONS.md + tasks/todo.md
 
 ```text
 local source or idea
+  -> PRODUCT.md fit check
   -> Local Source Intake
-  -> PRD shard in tasks/prds/
+  -> Alignment / Grilling
+  -> destination PRD shard in tasks/prds/
   -> FEATURES.md compiled inventory
-  -> bead proposal
+  -> journey bead proposal
   -> active bead
   -> logs/check-results.jsonl
   -> Closeout Evidence
 ```
 
-PRDs own product intent. Beads own executable work. Logs prove what happened.
+PRDs own the destination. Beads own executable journey units. Logs prove what happened.
 
 ### Diary To Reviewed Memory
 
@@ -105,6 +115,7 @@ scripts/os_compiler.py
   -> logs/authority-map.json
   -> logs/readiness.json
   -> logs/workflow-map.json
+  -> logs/goal-frame.json
   -> logs/long-horizon-map.json
   -> logs/handoff-packet.json/md
   -> logs/memory-index.json/md
@@ -117,7 +128,7 @@ Generated sidecars summarize current state but do not replace source files.
 
 ```text
 AGENT.md
-  -> adapters/README.md shared command surface
+  -> adapters/ADAPTER-INDEX.md shared command surface
   -> adapters/*.md tool-specific notes
   -> AGENTS.md / CLAUDE.md / GEMINI.md / .github/copilot-instructions.md shims
 ```
@@ -132,13 +143,19 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `DECISIONS.md` | active-memory | Hard decisions, open questions, superseded decision context. | Consulted when product, architecture, or OS decisions are made or revisited. |
 | `tasks/todo.md` | active-memory | Current bead pointer and current execution view. | Must match the one `in_progress` bead. |
 | `README.md` | reference | Short scaffold navigation and adaptation start points. | Links to major protocols and first adaptation steps. |
+| `LICENSE` | reference | Apache License 2.0 terms for use, modification, and distribution. | Root legal/provenance file; not active memory or task authority. |
+| `NOTICE` | reference | Creator attribution, canonical site, and notice text for distributions. | Preserves "Created by Dan Sears / Recode" and `https://www.precodeos.org`; complements `LICENSE`. |
+| `GOVERNANCE.md` | reference | Benevolent founder-maintainer governance model and official project authority. | Explains contribution decision rights, roadmap authority, forks, and maintainer delegation. |
+| `CONTRIBUTING.md` | reference | Contribution rules and inbound = Apache-2.0 policy. | Guides proposed changes while preserving provenance, active-memory limits, and beginner-safe behavior. |
+| `TRADEMARK.md` | reference | Precode OS brand-use and trademark guidance. | Clarifies that Apache-2.0 does not grant confusing brand use or official-project identity. |
 | `PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
-| `PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for what Precode is and why it exists. | Points technical readers to the architecture overview and this inventory. |
-| `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become planned, built, verified, deployed, and learned from without replacing the user guide. |
-| `PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users. |
-| `PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory. |
+| `PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's repo-native control layer, plain-English project-folder model, builder-facing operating system metaphor, and idea-to-evidence workflow. | Points technical readers to the architecture overview and this inventory. |
+| `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
+| `PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, and review prompts. |
+| `PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
 | `PRECODE-FILE-INVENTORY.md` | reference | Canonical technical file dictionary and relationship map. | Supported by `logs/file-inventory.json`. |
-| `PROJECT-CONTEXT.md` | reference | Target-project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |
+| `PRODUCT.md` | reference | Builder-facing product constitution: product promise, users and jobs, strategy and non-goals, current bets, success signals, design or voice pointers, and optional product-level Goal Frame. | Loaded for product planning, PRD shaping, PRD approval review, product drift checks, durable-intent orientation, and builder onboarding; not active memory or task selection. |
+| `PROJECT-CONTEXT.md` | reference | Technical project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |
 | `OPERATING-CONSTRAINTS.md` | reference | Shared edit discipline, scope control, generated-output demotion, and reference-loading rules. | Always-loaded by `AGENT.md` as shared constraints. |
 | `FEATURES.md` | reference | Compiled feature inventory and approved requirements. | Fed by approved PRD shards. |
 | `ACCEPTANCE.md` | reference | Done checks and acceptance criteria. | Used when defining or reviewing verification gates. |
@@ -149,30 +166,51 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `CODEBASE-GUIDE.md` | reference | Target-project repository layout and file placement conventions. | Not the Precode OS inventory; use this for app layout decisions. |
 | `PROGRESS.md` | generated | Generated progress snapshot. | Evidence only; not active memory. |
 | `OS-HEALTH.md` | generated | Generated OS health, warnings, loop metrics, and sidecar summary. | Evidence only; refreshed by `scripts/os-health.py`. |
+| `PRECODE-HELP.md` | generated | Generated next-step guidance, adaptive-depth summary, and files-in-play warning snapshot. | Evidence only; refreshed by `scripts/os-health.py` and not active memory. |
+
+## Maintainer File Dictionary
+
+| File | Class | What it owns | How it relates |
+|---|---|---|---|
+| `maintainer/MAINTAINER-NOTES.md` | reference | Maintainer-area orientation for Dan Sears / Recode planning material. | Explains that maintainer files are outside active memory, generated evidence, task selection, and normal user workflow authority. |
+| `maintainer/PRECODE-ROADMAP.md` | reference | Maintainer-owned roadmap for improving Precode OS, including scoring rubric, ranked candidates, priority bands, and promotion path. | Records committed maintainer direction without becoming active work, implementation status, PRD approval, or bead activation. |
 
 ## Task And Reference Dictionary
 
 | File or family | Class | What it owns | How it relates |
 |---|---|---|---|
 | `tasks/reference/*.md` | reference | Protocols and playbooks for specific Precode behaviors. | Loaded conditionally by active bead or workflow need. |
-| `tasks/reference/PRD-PROTOCOL.md` | reference | Product Definition Gate and PRD shard requirements. | Governs PRD creation and approval before feature implementation. |
+| `tasks/reference/PRD-PROTOCOL.md` | reference | Product Definition Gate, alignment summary, destination PRD rules, and PRD-to-bead requirements. | Governs PRD creation and approval before feature implementation. |
 | `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` | reference | Intake of local notes, docs, screenshots, and research as evidence. | Feeds PRD-ready summaries without creating authority. |
-| `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Bead slicing, dependencies, and not-a-bead-yet criteria. | Used before activating candidate beads. |
-| `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
+| `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
+| `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
 | `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules and promotion path. | Governs `memory/cards/` and generated memory indexes. |
-| `tasks/reference/PROMPT-PATTERNS.md` | reference | Copyable prompts for common Precode work. | Teaching aid; not authority over active memory or beads. |
-| `tasks/beads/README.md` | reference | Bead schema, templates, closeout guidance, and review rules. | Defines shape for `tasks/beads/*.md`. |
-| `tasks/beads/*.md` | execution contract | One durable unit of work, files in play, checks, stop conditions, and closeout. | One bead may be `in_progress`; active bead is pointed to by `tasks/todo.md`. |
-| `tasks/prds/README.md` | reference | PRD directory rules and shard guidance. | Supports `tasks/prds/*.md`. |
-| `tasks/prds/*.md` | reference | Product definition shards. | Feed `FEATURES.md` and candidate beads. |
+| `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` | reference | Shared domain-language workflow, project-glossary card expectations, terminology freshness, and PRD/bead naming guidance. | Used during alignment, PRD shaping, module/interface naming, review, and glossary memory creation. |
+| `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` | reference | Advisory local cleanup boundaries for truth, evidence, generated reports, bulky logs, caches, dry-run previews, and protected files. | Governs `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and generated preview manifests. |
+| `tasks/reference/RECOVERY-PROTOCOL.md` | reference | Beginner-safe recovery workflow for file damage, generated-report confusion, stale reports, active-state drift, missing proof, context loss, scope expansion, and approval confusion. | Canonical "I think I broke something" guide; informs user docs and next-step recovery prompts without authorizing destructive repair. |
+| `tasks/reference/GOAL-FRAME-PROTOCOL.md` | reference | Reviewed durable-intent orientation, allowed owner-file locations, required fields, lifecycle, reaffirmation, and forbidden uses. | Governs Goal Frame sections in `PRODUCT.md`, PRDs, beads, or `DECISIONS.md`, plus `logs/goal-frame.json` and `scripts/goal-frame-check.py`. |
+| `tasks/reference/PROMPT-PATTERNS.md` | reference | Copyable prompts for alignment, shared language, PRDs, decomposition, implementation, review, stale artifacts, and common Precode work. | Teaching aid; not authority over active memory or beads. |
+| `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` | reference template | Student-facing product ideation workbook for Claude/Codex-assisted research, ideation, challenge, refinement, and Precode ingestion packet creation. | Source evidence only; ingest through Local Source Intake before promoting anything into `PRODUCT.md`, PRDs, decisions, or beads. |
+| `tasks/templates/*.md` | reference template family | Reusable worksheets and guided artifacts outside active memory. | Templates may help create source evidence or proposals, but they do not approve work or become authority. |
+| `tasks/beads/BEAD-SCHEMA.md` | reference | Bead schema, delegation mode, test strategy, review context, adaptive-depth fields, templates, closeout guidance, and review rules. | Defines shape for `tasks/beads/*.md`. |
+| `tasks/beads/*.md` | execution contract | One durable journey unit of work, files in play, checks, stop conditions, delegation/test/review/adaptive-depth posture, and closeout. | One bead may be `in_progress`; active bead is pointed to by `tasks/todo.md`. |
+| `tasks/prds/PRD-SHARD-SCHEMA.md` | reference | PRD directory rules, destination-shard guidance, and expected domain-language sections. | Supports `tasks/prds/*.md`. |
+| `tasks/prds/*.md` | reference | Product destination shards, including domain language when terms matter. | Feed `FEATURES.md` and candidate journey beads. |
 
 ## Script Dictionary
 
 | File | Purpose | Inputs | Outputs or side effects |
 |---|---|---|---|
 | `scripts/os_parser.py` | Shared markdown/frontmatter parsing helpers. | Markdown files. | Parser utilities for other scripts. |
-| `scripts/os_compiler.py` | Compiles Precode state and sidecars. | Active memory, beads, logs, docs. | `logs/*.json`, generated handoff/memory/file inventory surfaces. |
+| `scripts/os_compiler.py` | Compiles Precode state and sidecars. | Active memory, beads, logs, docs, delegation/test/review metadata, Goal Frames, optional command guardrail input. | `logs/*.json`, generated handoff/memory/file inventory surfaces, beginner-facing decisions, and advisory warnings. |
 | `scripts/os-health.py` | Renders OS Health. | Compiled state. | `OS-HEALTH.md`, `logs/os-health.json`. |
+| `scripts/next-step.py` | Prints generated next-step guidance with a plain user decision. | Compiled state. | Human-readable stdout or advisory JSON; no state mutation. |
+| `scripts/bead-depth-check.py` | Prints adaptive bead-depth advisory findings. | Active bead metadata, risk hints, checks, stop conditions. | JSON warnings; no state mutation. |
+| `scripts/files-in-play-check.py` | Prints active-bead file mutation guardrail findings and optional command/edit-lock guidance. | Git changed paths, active bead `files_in_play`, optional `--command`, optional `--edit-lock`. | JSON warnings and plain continue/approval/stop guidance; no state mutation or command approval. |
+| `scripts/goal-frame-check.py` | Prints advisory Goal Frame findings. | Goal Frame sections in allowed owner files and compiled state. | JSON warnings; no state mutation, task selection, or approval. |
+| `scripts/clarity-scenario-check.py` | Runs deterministic beginner-decision fixtures. | In-memory bead scenarios, adaptive-depth scenarios, and command-risk examples. | Advisory JSON pass/fail result; exits nonzero if expected decisions regress. |
+| `scripts/local-hygiene-check.py` | Prints advisory Local Hygiene findings. | Compiled local hygiene state. | JSON to stdout; no cleanup mutation. |
+| `scripts/local-hygiene-dry-run.py` | Previews future archive/delete actions without performing them. | Compiled local hygiene state. | `logs/local-hygiene-preview.json`, `logs/local-hygiene-preview.md`, and stdout. |
 | `scripts/validate-memory.sh` | Validates core Precode document invariants. | Required docs, todo, beads. | Pass/fail validation output. |
 | `scripts/record-check.sh` | Runs a verification command and records evidence. | Command, active bead. | `logs/check-results.jsonl`, `logs/check-output/*`, closeout refresh. |
 | `scripts/session-start.sh` | Starts a session and prints active context. | Active memory and bead state. | Loop event and human-readable context. |
@@ -203,14 +241,14 @@ Adapters and shims point back to the shared operating model. They must not becom
 
 | File or family | Class | What it owns | How it relates |
 |---|---|---|---|
-| `adapters/README.md` | reference | Shared adapter command surface and tool-neutral expectations. | Source of truth for adapter command parity. |
+| `adapters/ADAPTER-INDEX.md` | reference | Shared adapter command surface and tool-neutral expectations. | Source of truth for adapter command parity. |
 | `adapters/*.md` | reference | Tool-specific notes for Codex, Claude, Cursor, Gemini, Antigravity, and related agents. | Thin wrappers around `AGENT.md`. |
 | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | reference shims | Auto-discovery compatibility for specific tools. | Must point back to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
 | `modes/NAVIGATOR.md` | reference | Planning/navigation role guidance. | Used when choosing work or shaping tasks. |
 | `modes/BUILDER.md` | reference | Implementation role guidance. | Used during scoped code or doc changes. |
 | `modes/REVIEW.md` | reference | Review role guidance. | Used for code review, closeout, and acceptance checks. |
-| `memory/README.md` | reference | Reviewed memory directory guidance. | Points to memory protocol and card directory. |
-| `memory/cards/README.md` | reference | Memory card format. | Defines reviewed memory card expectations. |
+| `memory/REVIEWED-MEMORY-GUIDE.md` | reference | Reviewed memory directory guidance. | Points to memory protocol and card directory. |
+| `memory/cards/MEMORY-CARD-FORMAT.md` | reference | Memory card format. | Defines reviewed memory card expectations. |
 | `memory/cards/MEMORY-CARD-template.md` | reference template | Starter shape for reviewed memory cards. | Copied for approved memory cards. |
 | `.github/workflows/precode-validate.yml` | workflow | GitHub Actions validation for Precode docs. | Runs read-only validation on pushes and pull requests. |
 
@@ -218,7 +256,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 
 | File or family | Class | Purpose | Rule |
 |---|---|---|---|
-| `logs/README.md` | reference | Log taxonomy and generated-output rules. | Versioned reference doc. |
+| `logs/LOG-EVIDENCE-TAXONOMY.md` | reference | Log taxonomy and generated-output rules. | Versioned reference doc. |
 | `logs/check-results.jsonl` | generated evidence | Append-only check result ledger. | Evidence only. |
 | `logs/check-output/*` | generated evidence family | Timestamped command output logs. | Document as a family, not individual files. |
 | `logs/loop-runs.jsonl` | generated evidence | Session start, checkpoint, and close events. | Evidence only. |
@@ -227,12 +265,14 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `logs/tool-runs.jsonl` | generated evidence | Non-check tool-run ledger. | Not verification unless also recorded as a check. |
 | `logs/os-events.jsonl` | generated evidence | Compiled event stream. | Generated from logs. |
 | `logs/os-health.json` | generated sidecar | Machine-readable OS Health payload. | Evidence only. |
+| `logs/next-step.json` | generated sidecar | Machine-readable next-step guidance. | Evidence only; not task selection or transition approval. |
 | `logs/authority-map.json` | generated sidecar | Authority contract index. | Evidence only. |
 | `logs/adapter-index.json` | generated sidecar | Adapter command-surface summary. | Evidence only. |
 | `logs/shim-index.json` | generated sidecar | Shim summary. | Evidence only. |
 | `logs/readiness.json` | generated sidecar | Bead readiness and promotion state. | Evidence only. |
 | `logs/orchestration-map.json` | generated sidecar | Intent orchestration summary. | Evidence only. |
 | `logs/workflow-map.json` | generated sidecar | Workflow selection summary. | Evidence only. |
+| `logs/goal-frame.json` | generated sidecar | Goal Frame status, freshness, required-field, and boundary warnings. | Advisory orientation only; not task selection, PRD approval, or bead activation. |
 | `logs/long-horizon-map.json` | generated sidecar | Future/blocked/deferred work summary. | Evidence only. |
 | `logs/handoff-packet.md/json` | generated report | Handoff context pack. | Orientation only; not transition approval. |
 | `logs/learning-diary.md/jsonl` | generated report | Session learning digest and entries. | Not active memory. |

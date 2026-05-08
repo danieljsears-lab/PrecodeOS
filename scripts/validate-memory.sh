@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.1
-# Last updated: 2026-04-27
+# Version: v0.1.2
+# Last updated: 2026-05-07
 # Owner: Precode OS
 set -euo pipefail
 
@@ -107,7 +107,7 @@ expected_anchors = {
     "README.md": "readme",
     "PRECODE-OS-README.md": "os-readme",
     "PRECODE-FILE-INVENTORY.md": "file-inventory",
-    "tasks/reference/BMAD-PRECODE-COMPARISON.md": "bmad-precode-comparison",
+    "tasks/reference/PRECODE-BMAD-GSTACK-COMPARISON.md": "precode-bmad-gstack-comparison",
     "PROJECT-CONTEXT.md": "project-context",
     "OPERATING-CONSTRAINTS.md": "operating-constraints",
     "FEATURES.md": "features",
@@ -177,7 +177,7 @@ closeout_markers = [
 
 in_progress: list[str] = []
 for bead_path in sorted((root / "tasks" / "beads").glob("*.md")):
-    if bead_path.name == "README.md":
+    if bead_path.name == "BEAD-SCHEMA.md":
         continue
     path = rel(bead_path)
     text = bead_path.read_text(encoding="utf-8")
@@ -193,7 +193,7 @@ for bead_path in sorted((root / "tasks" / "beads").glob("*.md")):
             add(path, 1, f"bead Closeout Evidence missing marker: {marker}")
 
 if len(in_progress) != 1:
-    add("tasks/beads/README.md", 1, f"exactly one bead must be in_progress; found {in_progress or 'none'}")
+    add("tasks/beads/BEAD-SCHEMA.md", 1, f"exactly one bead must be in_progress; found {in_progress or 'none'}")
 elif todo_fm.get("current_bead") != in_progress[0]:
     add("tasks/todo.md", 1, f"current_bead must match in_progress bead {in_progress[0]}")
 

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.3
+Last updated: 2026-05-03
 
 ## Purpose
 
@@ -16,13 +16,21 @@ This workflow helps a solo builder move from a rough product idea to an approved
 
 The workflow is intentionally light. It borrows the useful parts of progressive context, Working Backwards PRFAQ thinking, Shape Up-style bounded appetite, and small-iteration discipline, but routes every output through Precode authority ownership.
 
+Use `PRODUCT.md` as the builder-facing product constitution when the idea may affect product promise, users and jobs, strategy and non-goals, current bets, success signals, or design and voice direction. `PRODUCT.md` orients product planning; it does not approve PRDs, compile features, activate beads, or replace feature PRD shards.
+
 The path is:
 
 ```text
-local material or idea -> source intake -> guided framing -> PRFAQ-lite -> PRD shard -> FEATURES.md compile -> bead proposals
+local material or idea -> source intake -> alignment/grilling -> shared-language check -> PRFAQ-lite -> PRD shard -> FEATURES.md compile -> bead proposals
 ```
 
+The PRD shard is the destination document: it describes where the work is trying to arrive, what counts as done, and which requirements are stable enough to verify.
+
+The bead proposals are journey units: they describe the smallest safe steps toward that destination. `tasks/todo.md` is the active journey pointer and remains the only active-work selector.
+
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when explaining which lifecycle state the idea is in, deciding whether intent is ready to promote, or handling changed intent that needs a PRD amendment, decision, defer note, or follow-up bead.
+
+Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when the idea depends on domain vocabulary, aliases, UI labels, code/test naming, confusing terms, or stale vocabulary from older artifacts.
 
 None of these artifacts are active memory. The active-memory set remains:
 
@@ -61,6 +69,8 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 
 Capture the request in the builder's words before turning it into implementation.
 
+If the target project has a `PRODUCT.md`, load it when the idea is product-facing or could change product direction. Use it to check fit, name product drift, and avoid suggestions that contradict current non-goals.
+
 When the request comes from local material, first load `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` and create a short source summary.
 
 Ask only questions that can change:
@@ -79,6 +89,7 @@ Minimum output:
 
 - idea summary
 - target user
+- product-constitution fit or gap
 - suspected problem
 - desired outcome
 - known source inputs
@@ -103,7 +114,43 @@ Source inputs are evidence, not authority. Promote only stable conclusions into 
 
 Use the Local Source Intake Protocol when the source material is more than a single plain-language idea or when it includes screenshots, drafts, exports, research, conflicting notes, or possible secrets.
 
-## Stage 3: PRFAQ-Lite
+## Stage 3: Alignment / Grilling
+
+Use alignment/grilling before writing the PRD when the idea is vague, source-heavy, user-facing, risky, or likely to hide product or implementation assumptions.
+
+The goal is a shared design concept, not an early plan. The agent should interview the builder one question at a time, walk dependencies in a sensible order, and provide a recommended answer with each question so the builder can accept, reject, or adjust quickly.
+
+Good grilling questions can change:
+
+- user problem or audience
+- before/after moment
+- goals, non-goals, or appetite
+- data, architecture, or module boundary
+- testing strategy or manual QA expectation
+- sensitive-surface approval gate
+- first useful vertical slice
+- shared domain language, aliases, or terms to avoid
+
+Stop grilling when the remaining questions would only add polish, implementation trivia, or low-risk preferences that can be deferred to bead execution.
+
+Preserve the alignment output as source evidence. Summarize the stable decisions, rejected options, open questions, and stale or discarded assumptions into the PRD shard. Do not treat the raw conversation as authority.
+
+## Stage 3a: Shared-Language Check
+
+Before writing the PRD, pause when the idea contains domain terms the builder keeps explaining, terms that appear under multiple names, or labels that will affect UI, tests, code, or module boundaries.
+
+Use the Ubiquitous Language Protocol to capture:
+
+- terms introduced or reused
+- aliases the agent should understand
+- avoid or confusing terms
+- source pointers
+- UI/code/test examples when useful
+- stale vocabulary from old PRDs, issues, transcripts, or generated summaries
+
+The output can become a PRD `Domain Language` section or a proposed `project_glossary` memory card after review. It does not become active memory.
+
+## Stage 4: PRFAQ-Lite
 
 Use PRFAQ-lite when the work is new, ambiguous, customer-facing, risky, or easy to overbuild.
 
@@ -120,7 +167,9 @@ Keep it short:
 
 PRFAQ-lite can live inside the PRD shard. It does not need a separate permanent file unless the feature is large enough to justify one.
 
-## Stage 4: Anti-Shallow Check
+If PRFAQ-lite changes product-level strategy, users, non-goals, success signals, or design and voice direction, update `PRODUCT.md` after the builder reviews the change.
+
+## Stage 5: Anti-Shallow Check
 
 Before creating requirements, challenge the artifact.
 
@@ -129,6 +178,7 @@ Stop if the artifact:
 - names a solution but not a user problem
 - contains goals without non-goals
 - lacks a before/after user moment
+- contradicts `PRODUCT.md` without a reviewed product decision
 - has requirements that cannot be verified
 - says "simple" while touching auth, payments, data, uploads, external services, or destructive actions
 - needs a route, schema, security, or architecture change with no owning authority file
@@ -137,13 +187,17 @@ Stop if the artifact:
 
 If the artifact fails, keep shaping. Do not create implementation beads yet.
 
-## Stage 5: Create Or Update The PRD Shard
+## Stage 6: Create Or Update The PRD Shard
 
 Use `tasks/prds/PRD-000-template.md`.
 
 The PRD shard owns:
 
+- alignment/grilling summary
 - source inputs summary
+- domain language summary
+- destination statement
+- product-constitution fit or gap
 - PRFAQ-lite
 - problem
 - users
@@ -166,10 +220,20 @@ The PRD shard does not own:
 - pricing decisions
 - active task selection
 - generated progress
+- completed journey history after the feature has drifted
 
 Move those facts to their owning files and leave pointers in the PRD.
 
-## Stage 6: Context And Architecture Check
+## Stage 7: Context And Architecture Check
+
+Load `PRODUCT.md` when the PRD might change:
+
+- product promise
+- target users or jobs
+- strategy or non-goals
+- current bets
+- success signals
+- design or voice direction
 
 Load `PROJECT-CONTEXT.md` when the PRD or bead might change:
 
@@ -186,15 +250,17 @@ Use lightweight C4-style thinking only as needed:
 - System context: who uses this and what external systems are touched?
 - Container view: which app, service, database, queue, or external tool is involved?
 - Component view: which modules or routes are likely in play?
+- Module boundary: which interface, behavior contract, and test boundary should the human own before delegating internals?
 
 Do not create diagrams or architecture docs unless they clarify a real decision.
 
-## Stage 7: Product Definition Gate
+## Stage 8: Product Definition Gate
 
 A PRD can move to `approved` only when:
 
 - the user problem is clear
 - goals and non-goals are explicit
+- product-constitution fit has been checked when relevant
 - requirement IDs are stable
 - every requirement has an acceptance oracle
 - sensitive surfaces have approval gates
@@ -204,7 +270,7 @@ A PRD can move to `approved` only when:
 
 If the PRD is not ready, set status to `needs_info` and name the exact question or evidence needed.
 
-## Stage 8: Derive Beads
+## Stage 9: Derive Beads
 
 Derive beads from approved PRD requirements.
 
@@ -215,21 +281,25 @@ Each bead proposal must include:
 - requirement IDs
 - one primary authority file
 - done-when target
+- delegation mode
+- test strategy
+- review context
 - files likely in play
 - checks
 - manual verification
 - stop conditions
 
-Prefer the smallest valuable change that preserves quality. Move edge cases, polish, and uncertain follow-ups into later beads instead of widening the first bead.
+Prefer the smallest valuable change that preserves quality. For user-facing work, prefer a vertical journey unit that crosses enough layers to produce observable feedback instead of a horizontal schema-only, backend-only, frontend-only, or tests-later slice. Move edge cases, polish, and uncertain follow-ups into later beads instead of widening the first bead.
 
 If the work fails the Bead Decomposition Test, mark it `not a bead yet` and return to source intake, PRD shaping, decision logging, architecture/security/API/schema clarification, or an unblocker bead.
 
-## Stage 9: Handoff To Execution
+## Stage 10: Handoff To Execution
 
 Before implementation begins:
 
 - compile stable requirements into `FEATURES.md`
 - create or update candidate beads
+- update `PRODUCT.md` only if the approved PRD changed product-level promise, users, strategy, current bets, success signals, or design and voice direction
 - ensure only one bead is active
 - update `tasks/todo.md` only when the user approves activation
 - use `bash scripts/session-start.sh` before Builder work

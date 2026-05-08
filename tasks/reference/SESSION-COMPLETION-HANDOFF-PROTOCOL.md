@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-03
 
 ## Purpose
 
@@ -49,6 +49,14 @@ Closeout Evidence should include:
 - follow-up bead needed
 - blocked escape
 - evidence source
+
+For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
+
+Use `review_context` in bead frontmatter:
+
+- `same_session_ok` — narrow low-risk work can be reviewed in the same session
+- `fresh_context_recommended` — code-changing or medium-risk work should be reviewed after a context reset or handoff
+- `fresh_context_required` — high-risk, sensitive, broad, or architecture-shaping work must be reviewed in a fresh context before acceptance
 
 Manual verification should follow `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when it applies.
 

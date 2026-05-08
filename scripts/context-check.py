@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-05-07
 # Owner: Precode OS
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ def prds_missing_context_contract(root: Path) -> list[str]:
     if not prd_dir.is_dir():
         return missing
     for path in sorted(prd_dir.glob("*.md")):
-        if path.name == "README.md":
+        if path.name == "PRD-SHARD-SCHEMA.md":
             continue
         text = read_text(path)
         if "## Agent Context Contract" not in text:

@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.4
+Last updated: 2026-05-08
 
 ## State
 
@@ -49,6 +49,30 @@ Raw inputs are evidence, not authority. Use `tasks/reference/LOCAL-SOURCE-INTAKE
 - Authority files likely affected:
 - Discarded or stale inputs:
 
+## Alignment / Grilling Summary
+
+Use when the idea needed interrogation before requirements. Raw transcripts are source evidence, not authority.
+
+- Alignment method: `none | one-question-at-a-time grilling | meeting transcript follow-up | source review | other`
+- Shared design concept:
+- Key decisions reached:
+- Recommended answers accepted:
+- Recommended answers rejected or changed:
+- Remaining implementation-changing questions:
+- Stale or discarded assumptions:
+
+## Domain Language
+
+Use when terms, labels, module/interface names, tests, or source inputs need shared vocabulary. Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` for domain-heavy work.
+
+| Term | Status | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Source pointer |
+|---|---|---|---|---|---|---|
+|  | `introduced | reused | rejected | stale` |  |  |  |  |  |
+
+- Module/interface names that should match domain language:
+- Glossary-card candidate needed: `yes | no`
+- Authority owner if promoted:
+
 ## PRFAQ-Lite
 
 Use when the work is new, ambiguous, customer-facing, risky, or easy to overbuild. Keep it short.
@@ -71,6 +95,42 @@ Name the user pain, constraint, or opportunity. Include evidence when available.
 - Before:
 - After:
 - Why now:
+
+## Destination
+
+The PRD is the destination document. It defines the intended user-visible arrival point and the acceptance boundaries for journey beads.
+
+- Destination statement:
+- Definition of done:
+- First useful vertical slice:
+
+## Goal Frame
+
+Use this only when the PRD needs durable outcome orientation before workflow selection or decomposition. See `tasks/reference/GOAL-FRAME-PROTOCOL.md`.
+
+- Status: `draft`
+- Last reaffirmed:
+- Owner file: `tasks/prds/PRD-000-template.md`
+- Horizon: `feature`
+- Workflow guidance: `decomposition`
+- Goal:
+- Why now:
+- Success signal:
+- Out of scope:
+- Approval gates:
+- Reaffirmation trigger:
+
+## Product Constitution Fit
+
+Use `PRODUCT.md` when this feature could affect product promise, users and jobs, strategy and non-goals, current bets, success signals, or design and voice direction.
+
+- `PRODUCT.md` loaded: `yes | no | not needed`
+- Product promise fit:
+- User and job fit:
+- Strategy and non-goal fit:
+- Current bet or success signal affected:
+- Design or voice affected:
+- Product constitution update needed:
 
 ## Users
 
@@ -167,6 +227,16 @@ Load `PROJECT-CONTEXT.md` when this feature could affect project-wide convention
 - Security authority updates needed:
 - Decision log updates needed:
 
+## Module / Interface Candidates
+
+Use for code-changing work where the human should own shape before delegating internals.
+
+Prefer names that match the PRD `Domain Language` section and current project conventions.
+
+| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
+|---|---|---|---|---|
+|  |  |  |  |  |
+
 ## Agent Context Contract
 
 - Primary authority file:
@@ -192,9 +262,9 @@ Load `PROJECT-CONTEXT.md` when this feature could affect project-wide convention
 
 These are proposals only. Do not activate a bead until the user approves the transition.
 
-| Proposed bead | Requirement IDs | Done when | Primary authority | Verification |
-|---|---|---|---|---|
-| `B###-short-name` | `PRD-000-FR01` |  |  |  |
+| Proposed bead | Requirement IDs | Done when | Delegation mode | Test strategy | Review context | Primary authority | Verification |
+|---|---|---|---|---|---|---|---|
+| `B###-short-name` | `PRD-000-FR01` |  | `human_in_loop | afk_candidate | human_required` | `failing_first | characterization | static_only | manual_only | not_applicable` | `same_session_ok | fresh_context_recommended | fresh_context_required` |  |  |
 
 ## Compilation Notes
 

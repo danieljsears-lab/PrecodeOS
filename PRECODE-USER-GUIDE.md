@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.6.5
-Last updated: 2026-04-28
+License: Apache-2.0
+Copyright: © 2026 Dan Sears
+Document version: v0.7.7
+Last updated: 2026-05-08
 
 
 
@@ -18,9 +20,40 @@ Use this guide while you work. It tells you what to ask the agent, what good out
 
 Precode lives inside your project folder. It keeps important project truth in readable Markdown files and uses small scripts to check whether the agent is staying aligned.
 
+For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
+
 For the bigger "what and why," read `PRECODE-OS-README.md`. For Precode's philosophical anchor, read `PRECODE-MANIFESTO.md`. For the beginner bridge from idea to software-building workflow, read `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`. For deep architecture and maintainer detail, read `PRECODE-ARCHITECTURE-OVERVIEW.md`. For the full prompt catalog, read `tasks/reference/PROMPT-PATTERNS.md`.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
+
+## Use The Product Ideation Workbook Before Precode
+
+If you are a new student with a rough product idea, start with `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md` or write a PRD.
+
+Use the workbook with Claude or Codex as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, or create a PRD from the workbook by itself.
+
+Follow the workbook steps:
+
+1. Make a copy of the workbook.
+2. Pick one product idea.
+3. Paste the thinking-coach prompt into Claude or Codex.
+4. Fill out product-level thinking first.
+5. Gather source-cited research.
+6. Separate what you know, what you think, and what you need help deciding.
+7. Challenge the idea before turning it into features.
+8. Fill out feature candidates.
+9. Ask for the Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
+10. Bring only that packet into Precode Local Source Intake.
+
+When you are ready, say this inside Precode:
+
+```text
+Use Local Source Intake on this Precode Ingestion Packet.
+
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
+```
+
+Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.
 
 ## Before You Start
 
@@ -49,6 +82,51 @@ Expect this:
 
 Stop if: the agent cannot explain the current bead in plain English.
 
+## Use Goal Frames For Durable Intent
+
+Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.
+
+If you started in the Product Ideation Workbook, the safe sequence is:
+
+```text
+Initial Direction -> workbook refinement -> Candidate Goal Frame -> Local Source Intake -> reaffirmation -> PRODUCT.md Goal Frame
+```
+
+Do this:
+
+- Ask the agent to draft a Goal Frame for review.
+- Store it only inside an existing owner file: `PRODUCT.md`, a PRD, a bead, or `DECISIONS.md` when it is tied to a hard decision.
+- Reaffirm it before the agent uses it to guide workflow selection.
+- Treat stale or conflicting Goal Frames as a reason to pause and ask questions.
+
+Do not use a Goal Frame to approve a PRD, activate a bead, choose the next task, create a backlog, or start coding.
+
+Say this:
+
+```text
+This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.
+```
+
+Say this for a workbook packet:
+
+```text
+Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.
+```
+
+Say this after you reaffirm it:
+
+```text
+If I reaffirm this Goal Frame, update PRODUCT.md only with the reviewed Goal Frame section and do not create tasks or code.
+```
+
+Say this before using one:
+
+```text
+Before using this Goal Frame, ask me to reaffirm it. Use it only to explain workflow guidance. Do not activate or approve work.
+```
+
+Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent's next move.
+
 ## Do Not Move, Rename, Or Directly Edit Precode Files
 
 Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.
@@ -72,6 +150,7 @@ Do this instead:
 | Rename or reorganize files | Create a dedicated maintenance bead first. |
 | Edit a generated report | Regenerate it with the correct script instead of editing it by hand. |
 | Record a decision | Put it in `DECISIONS.md` or ask which owner file should hold it. |
+| Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
 | Remember something for later | Propose a reviewed memory card under `memory/cards/`. |
 | Add future work | Use a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
 | Fix an accidental edit or move | Stop work, identify the damage, restore structure, then run validation. |
@@ -96,6 +175,32 @@ I accidentally edited, moved, or renamed a Precode file. Help me identify the da
 
 Why this matters: Precode files are not random notes. They are a small operating system made of readable files, and the structure is part of how the system works.
 
+## Use Recovery When Something Feels Broken
+
+Use `tasks/reference/RECOVERY-PROTOCOL.md` when you think Precode is broken, confusing, stale, or out of bounds.
+
+Start with this prompt:
+
+```text
+I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.
+```
+
+Common recovery paths:
+
+| What feels wrong | What to ask for |
+|---|---|
+| A Precode file was moved or renamed | `Use the Recovery Protocol for file damage. Find the expected path, explain the repair, then validate.` |
+| A generated report was edited or looks wrong | `Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit the report.` |
+| The active bead or todo state is unclear | `Use the Recovery Protocol for active-state repair. Run state-check and explain the owner file before editing.` |
+| Checks are missing or the agent says "done" too early | `Use the Recovery Protocol for missing proof. Tell me which checks or manual verification are missing.` |
+| The session feels confused | `Use the Recovery Protocol for context loss. Re-read active memory, the active bead, and the primary authority.` |
+| Work touched files outside the task | `Use the Recovery Protocol for scope expansion. Run files-in-play-check and explain each changed path.` |
+| I approved something too quickly | `Use the Recovery Protocol for approval confusion. Review evidence and ask for accepted, revise, split, blocked, or stop.` |
+
+Recovery is not automatic cleanup. The agent should not run destructive commands, overwrite user edits, delete evidence, or treat generated reports as instructions.
+
+Why this matters: The safest recovery move is usually a clean stop plus a clear owner file. You are not expected to know the repair path before asking.
+
 ## Other Things Not To Do
 
 Use these as stop signs:
@@ -118,8 +223,10 @@ Follow these steps in order.
 | Step | Say this | Expect this | Stop if |
 |---|---|---|---|
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
+| Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | One generated "what to do now" hint: continue, ask for missing info, ask for proof, review, approve transition, repair state, or stop. | The agent treats generated help as approval or active memory. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
+| Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
 | Record checks | `Run the relevant checks through record-check.sh.` | Recorded command result and log path. | Checks are missing, failing, or not recorded. |
 | Close | `Run bash scripts/session-close.sh and summarize what changed, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
 | Review outcome | `Recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence. |
@@ -133,6 +240,7 @@ Keep this table open during normal work.
 | Step | User action | Good output | Stop if |
 |---|---|---|---|
 | Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
+| Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md` or `next-step.py` explains the generated hint. | The report replaces the active bead. |
 | Confirm | Ask whether to continue, repair, split, block, or stop. | One clear path. | Scope is vague or too broad. |
 | Work | Let the agent edit only scoped files. | Small changes tied to the bead. | It touches unrelated files. |
 | Check | Ask for recorded checks. | `record-check.sh` output and evidence path. | It says done without evidence. |
@@ -142,19 +250,40 @@ Keep this table open during normal work.
 
 Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.
 
+## Use The Plain Decision Words
+
+Precode checks should help you choose what to do, not make you learn internal labels. When a script reports a `user_decision`, read it this way:
+
+| Decision | What it means | What to say |
+|---|---|---|
+| `continue` | The current bead can keep moving inside its named scope. | `Continue inside this bead only, then record the declared checks.` |
+| `ask for missing info` | The agent needs an input, owner, manual step, or unblocker before coding. | `Do not work around the blocker. Tell me exactly what is missing.` |
+| `ask for proof` | Work may be close, but evidence, checks, or review are not enough yet. | `Show me the missing proof before I accept this.` |
+| `review` | The bead needs an acceptance decision. | `Recommend accepted, revise, split, blocked, or stop based on evidence.` |
+| `approve transition` | A next bead may be ready, but only the user can activate it. | `Show the transition proposal. Do not activate it until I approve.` |
+| `repair state` | Precode cannot safely orient because active state is unclear. | `Repair active state before editing anything.` |
+| `stop` | Scope, command risk, sensitive work, or file drift needs human judgment first. | `Stop and explain the risk in plain English.` |
+
+Why this matters: You should not have to sound technical to operate Precode. The scripts should translate risk into a small number of safe decisions.
+
 ## Choose What To Ask For
 
 Use this table when you are unsure what kind of request to make.
 
 | Situation | Ask for | Copyable request |
 |---|---|---|
+| Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
 | Rough idea, notes, screenshot, GitHub issue, research | Local source intake | `Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.` |
-| Feature idea is fuzzy | Idea-to-PRD | `Use the Idea To PRD Workflow. Clarify the user problem, non-goals, before/after moment, risks, and smallest valuable version. Do not code.` |
-| Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose beads small enough to verify. Do not activate anything.` |
+| Feature idea is fuzzy | Alignment / grilling | `Use the Idea To PRD Workflow. Interview me one question at a time, include your recommended answer, and keep going until we share the design concept. Do not plan or code yet.` |
+| Terms, labels, or names are confusing | Shared-language review | `Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
+| Durable intent needs to guide the next workflow | Goal Frame proposal or reaffirmation | `Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.` |
+| Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance oracles, module/interface candidates, and smallest first vertical slice. Do not code.` |
+| Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
 | Work may be done | Completion check or review | `Run a completion check and recommend accepted, revise, split, or blocked based on evidence.` |
+| Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
 
 Why this matters: Not every request should become code. Good Precode use starts by choosing the right kind of work.
@@ -165,7 +294,7 @@ Use these rules while the agent works:
 
 - Make it explain the bead before coding.
 - Keep work inside files in play.
-- Keep product changes inside PRDs, decisions, or approved beads.
+- Keep product constitution changes inside `PRODUCT.md`, PRDs, decisions, or approved beads according to the owner file.
 - Stop when generated reports become instructions.
 - Stop when checks are missing or vague.
 - Stop when product direction changes mid-task.
@@ -177,8 +306,12 @@ Red flags:
 | Red flag | What to say |
 |---|---|
 | Agent starts coding too soon | `Stop. Explain the active bead, primary authority, files in play, and checks first.` |
+| Agent plans before alignment is done | `Stop. Ask the next alignment question one at a time and include your recommended answer.` |
+| Agent uses the wrong term or confusing label | `Stop. Use the Ubiquitous Language Protocol and tell me which term should appear in the PRD, UI, tests, and code names.` |
 | Scope grows | `Checkpoint. Is this still one bead, or should we split?` |
 | Generated report becomes instruction | `Generated reports are evidence only. Return to active memory and the active bead.` |
+| Old PRD or issue overrides current code | `Treat that old artifact as historical evidence. Which current authority file or active bead wins?` |
+| Cleanup request sounds broad | `Stop. Use Local Hygiene first. Truth is not cleanup; evidence is preserved; caches are disposable only when ignored and regeneratable.` |
 | Agent says done without checks | `Show recorded checks, manual verification, closeout evidence, and review decision.` |
 | Product direction changes | `Stop implementation. Which owner file should capture this changed intent?` |
 | Next task begins automatically | `Stop. The next bead needs separate user approval.` |
@@ -193,6 +326,8 @@ A bead is ready to accept only when the evidence fits the risk:
 
 - recorded checks ran through `record-check.sh`
 - manual verification is recorded when needed
+- code-changing beads used or explained their `test_strategy`
+- medium/high-risk code-changing beads got the review context the bead required
 - Closeout Evidence says what changed and what remains uncertain
 - review decision is `accepted`, `revise`, `split`, or `blocked`
 - next-bead transition is still separate and user-approved
@@ -212,6 +347,7 @@ Why this matters: In Precode, done means proved and reviewed, not merely plausib
 You approve these decisions:
 
 - product direction, goals, and scope
+- product promise, target users, non-goals, current bets, success signals, and design or voice changes
 - sensitive work: auth, payments, personal data, uploads, secrets, destructive actions, deployment, production config
 - external dashboard or manual setup steps
 - new dependencies when the bead did not already allow them
@@ -226,6 +362,7 @@ Do not approve:
 - a broad refactor hidden inside a small task
 - generated reports acting as task instructions
 - manual verification that does not say what was checked
+- `afk_candidate` work that lacks bounded files, checks, stop conditions, and human review
 
 Why this matters: Precode lets the agent work quickly, but it keeps judgment and risk with the user.
 
@@ -235,12 +372,14 @@ Use reports for learning and audit. Before work resumes, return to active memory
 
 | Report or evidence | Use it for | Do not use it for |
 |---|---|---|
+| `PRECODE-HELP.md` | Quick generated hint about the next safe action, bead depth, and files-in-play warnings. | Active memory, task approval, or transition approval. |
 | `OS-HEALTH.md` | Health, warnings, state, evidence quality, spend. | Choosing the next task. |
 | `logs/learning-diary.md` | Plain-English session learning. | Implementation instructions. |
 | `memory/cards/*.md` | Reviewed lessons, preferences, glossary terms, risks, and source pointers. | Replacing `DECISIONS.md`, PRDs, beads, or active memory. |
 | `logs/memory-index.md` | Searching reviewed memory cards. | Choosing or approving work. |
 | `logs/handoff-packet.md` | Orienting another agent. | Transition approval. |
 | `logs/scheduled-audit.md` | Background read-only audit findings. | Automatic action. |
+| `logs/goal-frame.json` | Checking whether a Goal Frame is fresh, stale, missing fields, or conflicting. | Workflow authority, task approval, or bead activation. |
 | GitHub audit/source intake | External status or issue/PR evidence. | Replacing PRDs, decisions, or beads. |
 | Spend telemetry | Known token/cost visibility. | Billing truth when telemetry is incomplete. |
 
@@ -251,6 +390,82 @@ Use reports as evidence only. Before doing work, return to AGENT.md, DECISIONS.m
 ```
 
 Why this matters: Reports help you understand what happened. They do not decide what happens next.
+
+## Use Adaptive Depth And Guardrails
+
+Adaptive depth helps Precode scale the amount of ceremony to the risk. A typo fix can be `trivial`; a focused setup or feature slice can be `narrow` or `standard`; auth, payments, migrations, deployment, security, or multiple systems should usually be `high-risk` or `multi-system`.
+
+Ask for these three bead fields when risk matters:
+
+```text
+Before activating this bead, declare complexity, required_planning_depth, and autonomy_level. Then run python3 scripts/bead-depth-check.py and explain any advisory warnings.
+```
+
+If older or tiny beads do not declare these fields, that is okay. Precode may infer beginner-readable defaults and keep moving. Treat depth warnings as important only when they change what you should do next: ask for more planning, ask for stronger proof, require a human gate, or split the bead.
+
+Use this quick translation:
+
+| Work feels like... | Typical depth | Plain meaning |
+|---|---|---|
+| Tiny fix | `trivial` / `none` | Keep it small; do not turn it into a PRD. |
+| Focused normal task | `narrow` or `standard` / `brief` or `PRD` | Name scope, proof, and owner file before coding. |
+| Risky task | `high-risk` / `PRD+architecture` | Stop until risks, approval gates, and rollback or escape path are clear. |
+| Many systems | `multi-system` / `PRD+architecture+test-plan` | Split or plan carefully; do not let the agent improvise across systems. |
+| Human-owned action | `human-only` | The agent may prepare instructions, but the user owns the action or approval. |
+
+If `python3 scripts/files-in-play-check.py` warns about out-of-scope paths, pause and ask whether those changes belong in the active bead, a follow-up bead, or should be reverted by the person who made them. The warning is not permission to keep widening the task.
+
+Say this:
+
+```text
+Run the files-in-play guardrail. If any changed path is outside this bead, stop and explain whether it is generated evidence, current-bead work, or a separate follow-up.
+```
+
+Before running a risky command, ask the guardrail to classify it:
+
+```text
+Run python3 scripts/files-in-play-check.py --command "<command summary>" and explain whether the decision is continue, approval needed, or stop. Do not run the command yet.
+```
+
+Use `--edit-lock` for high-risk beads when you want an advisory check against the active bead's files in play:
+
+```text
+Run python3 scripts/files-in-play-check.py --edit-lock and explain whether any changed path is outside this bead. Treat the lock as advisory evidence, not permission.
+```
+
+## Use Alignment, AFK Candidates, And Fresh Review
+
+Use alignment/grilling before a PRD when the idea is still fuzzy. The agent should ask one question at a time, recommend an answer, and keep going until the product problem, non-goals, before/after moment, risk, first vertical slice, and proof are clear enough to summarize.
+
+Say this:
+
+```text
+Grill this idea before writing a PRD. Ask one question at a time, include your recommended answer, and stop only when the remaining questions would not change implementation.
+```
+
+Use `afk_candidate` only for scoped work that can run after context is loaded. It is not approval for parallel execution and it does not skip human QA, recorded checks, or review.
+
+Say this:
+
+```text
+Before marking this bead AFK-safe, show bounded files in play, checks, stop conditions, test strategy, and review context. Confirm it still needs human review.
+```
+
+For code-changing work, ask for the test strategy before implementation. Failing-first/TDD is preferred when practical because it makes the agent prove the test can fail before writing the fix.
+
+Say this:
+
+```text
+Before coding, declare the test_strategy. If failing_first is practical, write the failing test first, confirm it fails for the expected reason, then implement.
+```
+
+For medium/high-risk work, ask for a fresh-context review. A fresh reviewer reloads active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence instead of relying on the implementation chat.
+
+Say this:
+
+```text
+Review this bead in a fresh context. Reload active memory, the bead, primary authority, parent PRD if relevant, and the recorded evidence before recommending accepted, revise, split, or blocked.
+```
 
 ## Use Reviewed Memory
 
@@ -326,6 +541,24 @@ Choose the workflow:
 
 ```text
 Use Workflow Selection. Tell me whether this needs source intake, PRD shaping, bead decomposition, implementation, review, unblocker work, or state repair. Do not code yet.
+```
+
+Draft or reaffirm a Goal Frame:
+
+```text
+This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.
+```
+
+```text
+Turn my workbook into a Candidate Goal Frame for Precode review, but do not update PRODUCT.md.
+```
+
+```text
+Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm.
+```
+
+```text
+Check whether this Goal Frame still matches the active PRD, active bead, and current evidence. Ask me to reaffirm it before using it for workflow guidance.
 ```
 
 Keep context clean:
@@ -406,17 +639,53 @@ Checkpoint. Ask it to restate the active bead, primary authority, files in play,
 
 ### Ideas, PRDs, And Beads
 
+#### When do I use PRODUCT.md?
+
+Use `PRODUCT.md` when you are starting a product, checking whether an idea fits the product direction, or updating product promise, users, strategy, non-goals, current bets, success signals, or design and voice. It is planning context only, not active memory and not a task list.
+
 #### What is a bead?
 
 A bead is one small unit of work with a contract: objective, owner file, files in play, checks, stop conditions, and closeout evidence.
 
 #### When do I use a PRD?
 
-Use a PRD when the feature needs product clarity before coding: problem, non-goals, user moment, requirements, risks, and acceptance checks.
+Use a PRD when the feature needs a destination before coding: problem, non-goals, user moment, requirements, risks, acceptance checks, and likely journey beads.
+
+#### What is alignment or grilling?
+
+It is the conversation before the PRD where the agent asks one question at a time so you and the agent share the same design concept before anyone plans or codes.
+
+#### What is shared language?
+
+It is the small vocabulary you and the agent agree to use for the product. If you call something a "client intake," the PRD, UI, tests, and code should not quietly call it four different things unless there is a reason.
+
+#### What is a project glossary?
+
+It is a reviewed memory card for useful terms, aliases, avoid terms, examples, and source pointers. It helps future agents understand language, but it is evidence only. Current code, active beads, approved PRDs, and owner files still win.
+
+#### What is an AFK candidate?
+
+It is a bead that may be safe for an agent to execute after context is loaded. It still needs bounded scope, checks, stop conditions, manual QA when needed, and review.
+
+#### What is a vertical slice?
+
+It is a small piece of work that crosses enough layers to show real behavior. For user-facing work, prefer that over schema-only, backend-only, frontend-only, or tests-later beads.
+
+#### What should I do with an old PRD or closed issue?
+
+Treat it as historical evidence. Current active memory, current code, the active bead, the current approved PRD, and owner files are stronger than stale artifacts.
+
+#### What should I do with noisy logs or caches?
+
+Use Local Hygiene. The first commands only warn and dry-run. They should never delete, archive, compact, or move files. Evidence is preserved; caches are disposable only when ignored and regeneratable.
 
 #### What if I change direction mid-task?
 
 Stop implementation. Decide whether the change belongs in a PRD amendment, `DECISIONS.md`, an authority file, a follow-up bead, or deferral.
+
+#### What is a Goal Frame?
+
+A Goal Frame is reviewed orientation for a durable goal. It can help guide workflow selection, but it cannot approve work, activate beads, replace a PRD, or become a backlog.
 
 ### Evidence, Checks, And Done
 
@@ -456,6 +725,14 @@ No. It makes state, scope, evidence, and approvals visible so your judgment is e
 
 | Version | Date | Summary |
 |---|---|---|
+| v0.7.7 | 2026-05-08 | Added the Beginner Recovery Protocol path, "I think I broke something" prompt, and common recovery flows for file damage, generated-report confusion, active-state repair, missing proof, context loss, scope expansion, and approval confusion. |
+| v0.7.6 | 2026-05-08 | Added the Product Ideation Workbook to Candidate Goal Frame path, clarifying that workbook candidates move through Local Source Intake, user reaffirmation, and `PRODUCT.md` before they can guide workflow selection. |
+| v0.7.5 | 2026-05-08 | Added beginner-facing Goal Frame guidance for durable intent before workflow selection, including reaffirmation prompts and the rule that Goal Frames are advisory orientation rather than tasks, approvals, backlogs, or active memory. |
+| v0.7.4 | 2026-05-07 | Added the builder-facing small operating system metaphor to harmonize positioning with the reviewer-facing control layer definition used in the public explainer docs. |
+| v0.6.9 | 2026-05-03 | Added Local Hygiene prompts and red flags for advisory log/cache cleanup checks and non-destructive dry-run previews. |
+| v0.6.8 | 2026-05-03 | Added shared-language and project-glossary prompts, red flags, and FAQs for non-technical builders. |
+| v0.6.7 | 2026-05-03 | Added beginner-facing guidance for alignment/grilling, destination PRDs, journey beads, AFK candidates, test strategy, fresh-context review, vertical slices, and stale artifacts as evidence. |
+| v0.6.6 | 2026-05-03 | Added beginner-facing guidance for `PRODUCT.md` as a living product constitution used during planning and drift checks without becoming active memory or replacing PRDs. |
 | v0.6.5 | 2026-04-28 | Added beginner-facing positioning language explaining that Precode lives inside the project folder, keeps project truth in readable Markdown files, and uses small scripts to check agent alignment. |
 | v0.6.4 | 2026-04-27 | Added navigation to `PRECODE-MANIFESTO.md` for Precode's philosophical anchor, values, principles, and anti-drift stance. |
 | v0.6.3 | 2026-04-27 | Added navigation to the standalone software-building explainer for non-technical users learning how traditional software work maps to Precode OS and AI coding agents. |

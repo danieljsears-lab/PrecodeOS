@@ -7,14 +7,18 @@
 > CLASS: active-memory
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-04-27
+License: Apache-2.0
+Copyright: © 2026 Dan Sears
+Document version: v0.1.9
+Last updated: 2026-05-08
 
 ## Project
 
-This repository is a clean Precode OS scaffold.
+This repository is Precode OS itself: a repo-native control layer for AI coding agents that is markdown-canonical, script-enforced, and built to prevent quiet drift.
 
-Replace the example project placeholders with the target app's product, stack, roles, and app directory when adapting Precode OS into a real project.
+For builders, Precode functions as a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
+
+The project workspace is the repository root. Precode OS-owned work is primarily Markdown authority/reference docs, Python and Bash support scripts, generated evidence under `logs/`, GitHub Actions validation, adapters, shims, modes, memory-card templates, PRDs, and execution beads.
 
 ## Active Memory
 
@@ -24,7 +28,7 @@ Use only these files as active memory:
 - `DECISIONS.md` — hard decisions in force now, unresolved open questions, and historical context
 - `tasks/todo.md` — current-bead pointer for the active build
 
-`PROGRESS.md`, `OS-HEALTH.md`, and files in `logs/` are generated output only. Do not use them as working memory. Reviewed memory in `memory/` is evidence for explicit consultation, not active memory.
+`PRECODE-HELP.md`, `PROGRESS.md`, `OS-HEALTH.md`, and files in `logs/` are generated output only. Do not use them as working memory. Reviewed memory in `memory/` is evidence for explicit consultation, not active memory.
 
 ## Always-Loaded Rules
 
@@ -49,6 +53,7 @@ Use only these files as active memory:
 - `bash scripts/record-check.sh -- <command>`
 - `bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command "<summary>"`
 - `python3 scripts/bead-transition.py [--approve]`
+- `python3 scripts/next-step.py [--json]`
 - `python3 scripts/os-health.py`
 - `python3 scripts/import-agent-spend.py [--tool agent] [--source path] [--dry-run]`
 - `python3 scripts/github-audit.py`
@@ -60,7 +65,11 @@ Use only these files as active memory:
 - `python3 scripts/context-check.py`
 - `python3 scripts/orchestration-check.py`
 - `python3 scripts/tool-execution-check.py`
+- `python3 scripts/bead-depth-check.py`
+- `python3 scripts/files-in-play-check.py [--command "<summary>"] [--edit-lock]`
+- `python3 scripts/clarity-scenario-check.py`
 - `python3 scripts/workflow-check.py`
+- `python3 scripts/goal-frame-check.py`
 - `python3 scripts/long-horizon-check.py`
 - `python3 scripts/completion-check.py`
 - `python3 scripts/pattern-check.py`
@@ -71,7 +80,7 @@ Use only these files as active memory:
 - `python3 scripts/version-check.py`
 - `bash scripts/scheduled-audit.sh`
 
-Tool-specific notes live in `adapters/README.md`.
+Tool-specific notes live in `adapters/ADAPTER-INDEX.md`.
 
 ## Verification Gate
 

@@ -1,0 +1,30 @@
+# Version: v0.1.0
+# Last updated: 2026-04-26
+# Owner: Precode OS
+name: Precode Validate
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Precode memory
+        run: bash scripts/validate-memory.sh
+
+      - name: Advisory version check
+        run: python3 scripts/version-check.py
+
+      - name: Dry-run spend import
+        run: python3 scripts/import-agent-spend.py --dry-run
+
+      - name: Read-only GitHub audit
+        run: python3 scripts/github-audit.py

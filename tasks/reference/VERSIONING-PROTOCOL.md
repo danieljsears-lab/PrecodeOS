@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-07
 
 ## Purpose
 
@@ -26,7 +26,7 @@ Version these Precode OS-owned files:
 - adapters, shims, and mode docs under `adapters/`, `modes/`, and tool-discovery shim files
 - maintained scripts under `scripts/`
 - workflow configuration under `.github/workflows/`
-- non-generated evidence taxonomy docs such as `logs/README.md`
+- non-generated evidence taxonomy docs such as `logs/LOG-EVIDENCE-TAXONOMY.md`
 
 ## Generated Output Exclusions
 
@@ -34,7 +34,7 @@ Do not manually version generated outputs:
 
 - `OS-HEALTH.md`
 - `PROGRESS.md`
-- generated markdown under `logs/`, except `logs/README.md`
+- generated markdown under `logs/`, except `logs/LOG-EVIDENCE-TAXONOMY.md`
 - generated JSON and JSONL under `logs/`
 
 Generated outputs use timestamps, authority demotion, and regeneration commands instead of manual document versions.

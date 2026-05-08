@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-08
 
 ## Purpose
 
@@ -23,6 +23,14 @@ Active memory remains exactly:
 - `tasks/todo.md`
 
 ## Workflow Decision Path
+
+When broad durable intent is present, check whether a reviewed Goal Frame exists before choosing a workflow:
+
+```text
+broad user intent -> Goal Frame proposal/reaffirmation -> workflow selection -> intake / PRD / decomposition / bead / review
+```
+
+Goal Frames are advisory orientation only. A stale, missing, or conflicting Goal Frame should trigger a reaffirmation prompt before workflow guidance.
 
 Choose the workflow that matches the current situation:
 
@@ -67,6 +75,8 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when workflow selection reveals a feature that needs an external boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or a plain-English implementation-shape choice before coding.
+
+Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when workflow selection needs durable direction but the direction should not become a backlog, roadmap, implementation plan, or active task.
 
 ## Common Stop Conditions
 

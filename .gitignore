@@ -1,0 +1,9 @@
+.DS_Store
+logs/check-output/
+logs/scheduled-audit-output/
+logs/*.jsonl
+logs/*.json
+logs/*.md
+!logs/LOG-EVIDENCE-TAXONOMY.md
+.agent-state/
+.claude/.read-markers/

@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-04-27
+License: Apache-2.0
+Copyright: © 2026 Dan Sears
+Document version: v0.1.11
+Last updated: 2026-05-08
 
 ## Start Here: You Are Not Just Prompting
 
@@ -27,11 +29,27 @@ Your new job is not to become a product manager or a software engineer overnight
 
 Precode OS helps by giving the repo a small memory, clear owner files, one active task, recorded checks, generated learning reports, and human approval gates.
 
-**Precode is a repo-native operating layer that makes AI coding agents safer for builders who need steering, proof, memory, and recovery more than they need another autonomous agent.**
+Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
+
+In plain English: Precode lives inside your project folder, keeps important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.
+
+For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
 For the philosophical anchor behind those choices, read `PRECODE-MANIFESTO.md`.
 
 > Plain-English term: A repo is the project folder that holds your app code and the Precode files that guide the agent.
+
+### If You Only Have An Idea, Start With The Workbook
+
+If you are starting with a rough idea, use `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+
+The workbook is a thinking space. You can use Claude or Codex as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Precode Ingestion Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.
+
+Use this path when you are still asking, "What am I really trying to build?"
+
+```text
+Use this Product Ideation Workbook as evidence. Help me create a concise Precode Ingestion Packet with a Candidate Goal Frame for Precode review if the direction is stable enough. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
+```
 
 ## The Software-Building Journey In Plain English
 
@@ -40,10 +58,11 @@ Software is usually built through a set of repeatable stages. Teams may use diff
 | Stage | What it means | Who traditionally helped | What can go wrong if skipped | How Precode helps |
 |---|---|---|---|---|
 | Idea | A rough thought about something useful to build. | Founder, customer, product manager. | The agent codes a vague idea before the problem is clearly understood and well articulated. | Local Source Intake turns rough notes into facts, questions, and candidate requirements. |
-| Product shaping | Deciding who it is for, what problem it solves, and what not to build yet. | Product manager, founder, designer. | Scope grows, the first version gets too big, or the wrong user moment is built. | Idea-to-PRD and PRD protocols force problem, non-goals, risks, and smallest useful version. |
+| Product shaping | Deciding who it is for, what problem it solves, and what not to build yet. | Product manager, founder, designer. | Scope grows, the first version gets too big, or the wrong user moment is built. | `PRODUCT.md`, Idea-to-PRD, and PRD protocols force product fit, problem, non-goals, risks, and smallest useful version. |
+| Alignment | Reaching a shared design concept before writing a plan. | Founder, product manager, domain expert, engineer. | The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions. | Alignment/grilling asks one question at a time, records accepted/rejected recommendations, and summarizes only stable conclusions. |
 | Requirements | Writing what the software should do in a way that can be checked. | Product manager, engineer, QA. | "Done" becomes a feeling instead of a testable outcome. | PRDs and beads connect requirements to checks and closeout evidence. |
 | UX/design | Deciding what the user sees and how the user moves through the experience. | Designer, product manager, frontend engineer. | The feature may technically work but feel confusing or incomplete. | Manual verification, screenshots, browser checks, and review inputs capture what the user actually experiences. |
-| Architecture | Choosing the shape of the code, data, integrations, and boundaries. | Architect, senior engineer, security reviewer. | Code becomes tangled, risky, hard to change, or unsafe around data and external services. | Project context, architecture docs, and pattern guidance help the agent propose a simple shape before coding. |
+| Architecture | Choosing the shape of the code, data, integrations, and boundaries. | Architect, senior engineer, security reviewer. | Code becomes tangled, risky, hard to change, or unsafe around data and external services. | Project context, architecture docs, deep-module/interface guidance, and pattern guidance help the agent propose a simple shape before coding. |
 | Implementation | Writing or changing the code. | Engineer. | The agent changes too many files, hides product choices in code, or starts related work without approval. | One active bead names files in play, checks, stop conditions, and primary authority. |
 | Testing | Proving the change behaves correctly. | Engineer, QA, product owner. | The agent says "done" without proof, or only tests the easy part. | `record-check.sh`, verification protocols, and manual verification record evidence. |
 | Deployment | Putting the software where users can use it. | DevOps, engineer, platform owner. | Production breaks, secrets leak, data changes are unsafe, or a dashboard setting is missed. | Sensitive-surface gates require explicit approval before production, external, or dashboard actions. |
@@ -85,6 +104,8 @@ Not every software idea needs the same process. Precode is safest when you choos
 
 | Project type | What usually matters most | Early risks | Start with |
 |---|---|---|---|
+| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, or smallest useful version is clear. | Product Ideation Workbook, then Precode Ingestion Packet. |
+| Durable intent, but no workflow chosen yet | Keeping direction visible without turning it into a task list. | A broad goal silently becomes backlog, roadmap, or implementation plan. | Goal Frame proposal or reaffirmation, then workflow selection. |
 | Personal tool | Speed, usefulness, simple data, low ceremony. | The tool grows into a product before privacy, data, or deployment choices are understood. | Local Source Intake or a small implementation bead. |
 | Small SaaS app | Accounts, permissions, database, reliability, support, deployment. | Auth, personal data, billing, emails, and production setup appear quickly. | Idea-to-PRD, then decomposition into small beads. |
 | Website or landing page | Clear message, visual polish, mobile behavior, forms, analytics. | The agent builds a generic page, misses the audience, or ships unverified forms. | Local Source Intake, design review, browser verification. |
@@ -146,9 +167,16 @@ Precode turns rough intent into verified work through a file-based path.
 
 ```text
 idea or notes
+  -> Product Ideation Workbook when the idea is still rough
+  -> Precode Ingestion Packet
+  -> Candidate Goal Frame when durable intent needs orientation
+  -> Local Source Intake and reaffirmation
+  -> product constitution fit check
   -> local source intake
-  -> PRD
-  -> bead proposal
+  -> alignment / grilling
+  -> shared language
+  -> destination PRD
+  -> journey bead proposal
   -> active bead
   -> implementation
   -> recorded checks
@@ -160,9 +188,16 @@ idea or notes
 | Step | Plain-English meaning | What to ask |
 |---|---|---|
 | Idea or notes | You have something fuzzy, incomplete, or scattered. | "Summarize what is known, unknown, and risky." |
+| Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Help me create a Precode Ingestion Packet. Do not update owner files or code." |
+| Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review. | "Treat this as evidence, not authority." |
+| Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
+| Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |
+| Product constitution fit check | The agent checks whether the idea fits the product promise, users, non-goals, current bets, success signals, and design or voice. | "Use `PRODUCT.md` for planning context, not active work." |
 | Local source intake | The agent turns notes, docs, screenshots, or issues into evidence. | "Do not treat source material as authority." |
-| PRD | The product intent becomes clear enough to build from. | "Define the user, problem, non-goals, risks, and smallest first version." |
-| Bead proposal | The work is sliced into small verifiable pieces. | "Make each bead one outcome, one authority, one verification strategy." |
+| Alignment / grilling | The agent asks one question at a time until the design concept is shared. | "Ask the next question, include your recommendation, and do not plan yet." |
+| Shared language | The agent names important terms, aliases, words to avoid, and examples before they become UI, tests, or code. | "Use my words where they are correct, and tell me where a term is confusing." |
+| Destination PRD | The product intent becomes clear enough to build from. | "Define the user, problem, non-goals, risks, acceptance oracles, module/interface candidates, and smallest first version." |
+| Journey bead proposal | The work is sliced into small verifiable pieces. | "Make each bead one outcome, one authority, one verification strategy, one delegation mode, and one review context." |
 | Active bead | One task is approved for execution. | "Confirm files in play, checks, stop conditions, and primary authority." |
 | Implementation | The agent edits code or docs inside the approved scope. | "Narrate edits before making them and stay inside the bead." |
 | Recorded checks | The repo captures proof of what ran. | "Run checks through `record-check.sh`." |
@@ -180,12 +215,21 @@ Use these prompts when you do not know what to say next.
 
 | Situation | Ask the agent |
 |---|---|
-| I only have an idea. | `Use Local Source Intake. Turn my idea into facts, assumptions, open questions, possible requirements, and risks. Do not code.` |
+| I only have a rough idea. | `Use the Product Ideation Workbook as evidence. Help me create a concise Precode Ingestion Packet with a Candidate Goal Frame if the direction is stable enough. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
+| I have notes or an ingestion packet. | `Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.` |
+| My workbook includes a Candidate Goal Frame. | `Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.` |
+| My intent is durable, but I do not know the workflow yet. | `This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.` |
+| I have an old Goal Frame. | `Check whether this Goal Frame still matches the active PRD, active bead, and current evidence. Ask me to reaffirm it before using it for workflow guidance.` |
+| I need alignment before planning. | `Grill this idea one question at a time. Include your recommended answer. Do not write a PRD or plan until the design concept is shared.` |
+| I keep explaining the same terms. | `Use the Ubiquitous Language Protocol. Capture my terms, meanings, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
 | I need to know if this is worth building. | `Challenge this idea. Tell me the user problem, strongest reason to build it, biggest risk, and smallest useful test.` |
+| I do not know what to do next. | `Run python3 scripts/next-step.py and explain the generated recommendation without treating it as approval.` |
 | Help me find the smallest useful version. | `Find the smallest first version that teaches us something real without adding avoidable complexity.` |
-| Turn this into a PRD. | `Use the PRD protocol. Draft a beginner-readable PRD with problem, non-goals, before/after user moment, risks, verification evidence, and smallest first bead.` |
-| Break this into beads. | `Use the Decomposition Protocol. Propose beads that each have one outcome, one primary authority, bounded files, checks, dependencies, and stop conditions.` |
+| Turn this into a PRD. | `Use the PRD protocol. Draft a beginner-readable destination PRD with problem, non-goals, before/after user moment, risks, verification evidence, module/interface candidates, and smallest first bead.` |
+| Break this into beads. | `Use the Decomposition Protocol. Propose vertical journey beads that each have one outcome, one primary authority, bounded files, checks, dependencies, delegation mode, test strategy, review context, complexity, required planning depth, autonomy level, and stop conditions.` |
 | Implement the active bead. | `Before editing, confirm the active bead, primary authority, files in play, checks, stop conditions, and what is out of scope.` |
+| Check for scope drift. | `Run python3 scripts/files-in-play-check.py and explain whether changed files are inside this bead or should become follow-up work.` |
+| Local files or logs look messy. | `Use Local Hygiene. Run the advisory check or dry-run preview and explain what is protected, generated evidence, cache, or cleanup candidate. Do not delete, archive, move, compact, or rewrite anything.` |
 | Prove this works. | `Run the relevant checks through record-check.sh and explain the evidence in plain English.` |
 | Help me decide if it is done. | `Run a completion check. Recommend accepted, revise, split, blocked, or stop based on recorded evidence and manual verification.` |
 | Prepare this for deployment. | `List the deployment, secret, dashboard, database, rollback, and approval steps. Do not deploy until I explicitly approve.` |
@@ -203,12 +247,68 @@ Scope is the boundary around the current work. In Precode, the active bead prote
 Stop and checkpoint. Is this still one bead, or should we split the new work into a separate proposal?
 ```
 
+`files_in_play` is the practical scope list. `python3 scripts/files-in-play-check.py` compares current Git changes to that list when Git status is available. Warnings are advisory, but they are a good reason to pause before accepting a bead.
+
+### Adaptive Depth: Tiny Fixes Stay Light, Risky Work Gets Stronger
+
+Not every task needs the same ceremony. Precode can mark a bead with:
+
+- `complexity` for size and risk;
+- `required_planning_depth` for how much planning must exist before implementation;
+- `autonomy_level` for whether an agent can work with supervision, bounded AFK, or human-only action.
+
+```text
+Classify this bead's complexity, required_planning_depth, and autonomy_level. Then run bead-depth-check and explain any warnings.
+```
+
+This keeps a typo fix from needing a full PRD while still making auth, payments, data, deployment, security, and multi-system work earn stronger planning and evidence.
+
 ### Authority: Facts Live In The Right File
 
 Precode uses owner files so important facts are not scattered across chat. Product intent belongs in PRDs. Hard decisions belong in `DECISIONS.md`. Current execution belongs in `tasks/todo.md` and the active bead.
 
 ```text
 Which file owns this fact, and should we promote it there before acting on it?
+```
+
+### Destination And Journey: PRDs Are Not The Work
+
+A PRD is the destination document. It describes where the feature is trying to arrive. A bead is a journey unit. It describes one safe step toward that destination.
+
+```text
+Show me the destination PRD and the next journey bead. Confirm the bead is a vertical slice and does not activate anything without my approval.
+```
+
+### Goal Frames: Direction Is Not A Task List
+
+A Goal Frame preserves durable intent inside an existing owner file before workflow selection. It can say what you are aiming at, why now, what success would look like, what is out of scope, what approval gates matter, and when the goal needs reaffirmation.
+
+When the direction starts in the Product Ideation Workbook, the workbook should produce a Candidate Goal Frame first. Precode should run Local Source Intake, ask whether the candidate is stable enough to reaffirm, and only then update `PRODUCT.md` if you approve.
+
+It is not active memory, a backlog, a roadmap, a PRD approval, a bead transition, or permission to code.
+
+```text
+Use the Goal Frame only to explain workflow guidance. Do not activate or approve work.
+```
+
+```text
+If I reaffirm this Goal Frame, update PRODUCT.md only with the reviewed Goal Frame section and do not create tasks or code.
+```
+
+### Code Shape: Own Interfaces, Delegate Internals
+
+For meaningful code changes, ask the agent to name the module boundary, public interface, behavior contract, and test boundary before implementing internals.
+
+```text
+Before coding, identify the deep module or interface boundary. Tell me what callers should know, what internals can be delegated, and how the behavior will be tested.
+```
+
+### Shared Language: Name The Thing Before Building It
+
+Non-technical builders often know the business words before they know the software words. Precode should preserve that advantage. Ask the agent to turn your terms into a small shared vocabulary before a PRD, UI, test, or module name hardens.
+
+```text
+Use the Ubiquitous Language Protocol. Tell me the terms I introduced, what each means, aliases people may use, words to avoid, examples in UI/code/tests, and whether any term should become a reviewed project_glossary memory card.
 ```
 
 ### Evidence: Done Means Checked
@@ -230,6 +330,36 @@ Classify the risk of this task and tell me what approval gates or rollback notes
 ### State: The Repo Remembers What Chat Forgets
 
 Chat history is useful, but it is not durable project state. Precode stores durable state in files and generated evidence, so future sessions can recover what happened.
+
+### Generated Help: Orientation Is Not Approval
+
+`PRECODE-HELP.md` and `python3 scripts/next-step.py` are generated orientation hints. They can help you see whether the next human decision is continue, ask for missing info, ask for proof, review, approve transition, repair state, approval needed, or stop.
+
+They are not active memory, task selection, or approval. Before acting, return to active memory, the active bead, the primary authority file, and the user's explicit approval.
+
+```text
+Run python3 scripts/next-step.py and explain the recommendation. Treat it as generated guidance only, not permission to start or approve work.
+```
+
+### Recovery: Stop First, Then Find The Owner File
+
+When you think something is broken, use `tasks/reference/RECOVERY-PROTOCOL.md`. Recovery starts with a clean stop, not with guessing, cleanup, or rewriting reports.
+
+```text
+I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.
+```
+
+Use recovery when a file was moved or renamed, a generated report was edited or stale, active state is unclear, proof is missing, the session is confused, scope expanded, or approval happened too quickly.
+
+### Local Hygiene: Truth Is Not Cleanup
+
+When logs, caches, build output, generated files, or local clutter look confusing, use Local Hygiene instead of manually cleaning files.
+
+Local Hygiene v1 is advisory and dry-run only. It may classify files, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.
+
+```text
+Use the Local Hygiene Protocol. Run python3 scripts/local-hygiene-check.py or python3 scripts/local-hygiene-dry-run.py and explain the result. Do not mutate files.
+```
 
 ### Handoff: Future Agents Need Durable Context
 
@@ -384,6 +514,7 @@ Precode is not only a task system. It is also a learning system.
 |---|---|---|
 | Learning diary | What happened in sessions and what you learned. | Generated learning history, not authority. |
 | Reviewed memory cards | Durable lessons, preferences, glossary terms, recurring risks, source pointers. | Evidence only; consult explicitly. |
+| `PRODUCT.md` | Product promise, users, strategy, current bets, success signals, and design or voice. | Planning context, not active memory or task selection. |
 | `DECISIONS.md` | Hard decisions and important choices. | Active memory. |
 | PRDs | Product intent and requirements. | Product authority after approval. |
 | File inventory | What each Precode file is for. | Technical map, not task selection. |
@@ -399,11 +530,17 @@ Search reviewed memory for what we have learned about this topic. Do not treat m
 | Mistake | Why it hurts | Safer move |
 |---|---|---|
 | "Just code it." | The agent may build the wrong thing quickly. | Ask for intake, PRD, or workflow selection first. |
+| Treating workbook output as project truth. | Workbook notes may include guesses, research fragments, or unresolved choices. | Turn the workbook into a Precode Ingestion Packet and run Local Source Intake. |
+| Treating a Candidate Goal Frame as already approved. | Early direction can feel settled before Precode has checked stability, conflicts, and scope. | Run Local Source Intake and reaffirm before updating `PRODUCT.md`. |
+| Treating a Goal Frame as a task list. | Durable intent becomes hidden authority and can push the agent into stale work. | Reaffirm it, then use it only for workflow guidance. |
 | Vague feature request. | No one can prove whether it is done. | Ask for user problem, non-goals, and acceptance evidence. |
 | Accepting broad rewrites. | Scope and risk hide inside a large change. | Keep one bead, bounded files, and clear checks. |
-| Skipping PRD for fuzzy ideas. | Product decisions move into code by accident. | Use Idea-to-PRD or challenge planning first. |
+| Skipping alignment or PRD for fuzzy ideas. | Product decisions move into code by accident. | Use alignment/grilling, Idea-to-PRD, or challenge planning first. |
 | Approving the next task too quickly. | Work moves forward before review. | Accept, revise, split, block, or stop first. |
+| Treating generated next-step help as approval. | A generated hint can orient you, but it cannot choose or activate work. | Return to active memory, the active bead, and user approval. |
 | Treating reports as instructions. | Generated summaries can be stale or incomplete. | Return to active memory, active bead, and primary authority. |
+| Trying to fix confusion by guessing. | A rushed repair can damage authority files or evidence. | Use the Recovery Protocol and stop before editing, deleting, moving, overwriting, or regenerating files. |
+| Manually cleaning logs, caches, or generated files. | You may delete evidence or damage state while trying to tidy the workspace. | Use Local Hygiene advisory checks and dry-run previews first. |
 | Editing or moving Precode files. | Scripts and agents may lose the expected structure. | Follow `PRECODE-USER-GUIDE.md` hard rules. |
 | Storing secrets in files. | Secrets may be committed, exported, or exposed. | Use proper secret managers or dashboards. |
 | Deploying before understanding risk. | Production can affect real users, data, cost, or reputation. | Ask for deployment approval gates and rollback. |
@@ -427,5 +564,13 @@ Use these documents by situation:
 
 | Version | Date | Summary |
 |---|---|---|
+| v0.1.11 | 2026-05-08 | Added the Beginner Recovery Protocol bridge, including the "I think I broke something" prompt and a failure-mode reminder to stop before guessing or mutating files. |
+| v0.1.10 | 2026-05-08 | Clarified the Product Ideation Workbook path from Initial Direction to Candidate Goal Frame, Local Source Intake, user reaffirmation, and `PRODUCT.md` Goal Frame promotion without turning workbook output into authority. |
+| v0.1.9 | 2026-05-08 | Added Goal Frames to the beginner software-building path as reviewed orientation for durable intent before workflow selection, with reaffirmation guidance and warnings that Goal Frames are not tasks, roadmaps, approvals, or implementation plans. |
+| v0.1.8 | 2026-05-07 | Refreshed the beginner software-building bridge to reflect the current Precode path from Product Ideation Workbook to ingestion packet, product fit check, source intake, alignment, shared language, destination PRD, journey bead, evidence, and review; clarified generated next-step help and Local Hygiene as advisory surfaces, not authority or approval. |
+| v0.1.7 | 2026-05-07 | Harmonized the beginner bridge positioning with the repo-native control layer definition, plain-English project-folder translation, and builder-facing small operating system metaphor. |
+| v0.1.4 | 2026-05-03 | Added shared-language guidance and prompts for non-technical builders to align domain terms before PRD, UI, test, and code names harden. |
+| v0.1.3 | 2026-05-03 | Added alignment/grilling, destination PRDs, journey beads, vertical slices, module/interface ownership, test/review metadata, and stale-artifact awareness to the beginner software-building journey. |
+| v0.1.2 | 2026-05-03 | Added `PRODUCT.md` to the beginner idea-to-evidence path as a product constitution fit check before PRD shaping, while preserving PRDs as feature authority and beads as execution. |
 | v0.1.1 | 2026-04-27 | Added navigation to `PRECODE-MANIFESTO.md` as the philosophical anchor behind Precode's anti-drift, steering, brake, and recovery posture. |
 | v0.1.0 | 2026-04-27 | Initial standalone beginner bridge explaining the traditional software-building journey, how it changes with Precode OS and AI coding agents, adaptive project paths, translated software roles, idea-to-evidence flow, prompts by stage, mental models, a personal-tool vs SaaS walkthrough, slow-down triggers, completion evidence, learning surfaces, and common beginner failure modes. |

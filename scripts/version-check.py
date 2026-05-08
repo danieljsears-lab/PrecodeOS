@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.3
+# Last updated: 2026-05-07
 # Owner: Precode OS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import json
@@ -14,6 +16,7 @@ from os_compiler import repo_root
 
 MARKDOWN_EXCLUDES = {
     "OS-HEALTH.md",
+    "PRECODE-HELP.md",
     "PROGRESS.md",
     "logs/handoff-packet.md",
     "logs/learning-diary.md",
@@ -41,7 +44,7 @@ def markdown_files(root: Path) -> list[Path]:
         name = rel(path, root)
         if ".git/" in name or name in MARKDOWN_EXCLUDES:
             continue
-        if name.startswith("logs/") and name != "logs/README.md":
+        if name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md":
             continue
         candidates.append(path)
     return sorted(candidates)

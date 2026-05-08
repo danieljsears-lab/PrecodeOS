@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-07
 
 ## Purpose
 
@@ -35,7 +35,7 @@ Active memory remains exactly:
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
-| Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/README.md` |
+| Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
 
 ## Boundary Rules

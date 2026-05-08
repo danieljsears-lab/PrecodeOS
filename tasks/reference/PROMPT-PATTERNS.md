@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-04-27
+Document version: v0.1.7
+Last updated: 2026-05-08
 
 ## Purpose
 
@@ -34,16 +34,64 @@ Before editing, confirm the active bead, the primary authority file, the files i
 Use the Local Source Intake Protocol on these local materials. Treat them as evidence only. Summarize stable facts, conflicts, open questions, candidate requirements, and possible beads. Do not update authority files or write code.
 ```
 
+## Product Constitution Review
+
+```text
+Review PRODUCT.md with me. Clarify product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. Tell me what should move to a PRD or DECISIONS.md. Do not code or activate work.
+```
+
 ## PRD Shaping
 
 ```text
-Use the PRD Protocol to shape this idea. Help me clarify the problem, non-goals, before/after user moment, sensitive surfaces, verification evidence, and smallest first bead. Do not start implementation.
+Use the PRD Protocol to shape this idea. Check PRODUCT.md for product fit when relevant. Help me clarify the problem, non-goals, before/after user moment, sensitive surfaces, verification evidence, and smallest first bead. Do not start implementation.
+```
+
+## Alignment / Grilling
+
+```text
+Use the Idea To PRD Workflow to grill this idea before planning. Ask one question at a time, include your recommended answer, and keep going until we share the design concept. Do not write a PRD, propose beads, or code until implementation-changing questions are resolved or marked non-blocking.
+```
+
+## Ubiquitous Language Review
+
+```text
+Use the Ubiquitous Language Protocol. Identify the terms I introduced, their plain-English meanings, aliases, avoid or confusing terms, source pointers, freshness, and examples in UI/code/tests. Do not code or promote anything without approval.
+```
+
+## Glossary Card Proposal
+
+```text
+Turn these reviewed terms into a proposed project_glossary memory card. Include domain terms, aliases, avoid terms, examples, source pointers, freshness, and authority owner if promoted. Do not write the card until I approve.
+```
+
+## Domain Naming Review
+
+```text
+Before naming modules, interfaces, tests, fixtures, routes, or UI labels, compare the proposed names to the PRD Domain Language and any reviewed project_glossary cards. Tell me which names match user language, which are confusing, and what should stay historical evidence only.
+```
+
+## Destination PRD Review
+
+```text
+Review this PRD as a destination document. Confirm the user problem, domain language, non-goals, before/after moment, acceptance oracles, stale source inputs, module/interface candidates, and smallest first vertical slice. Do not activate any bead.
 ```
 
 ## Bead Decomposition
 
 ```text
 Use the Decomposition Protocol to turn this approved work into candidate beads. Each candidate should have one outcome, one primary authority, bounded files in play, a verification strategy, dependencies, and a clear reason it is small enough.
+```
+
+## Vertical-Slice Decomposition
+
+```text
+Use the Decomposition Protocol to propose journey beads from this destination PRD. Prefer vertical slices that produce observable feedback. Avoid schema-only, backend-only, frontend-only, or tests-later first beads unless you explain why it is a risk-first or unblocker slice. Include delegation_mode, test_strategy, and review_context.
+```
+
+## AFK-Candidate Review
+
+```text
+Before marking a bead afk_candidate, verify that it has bounded files in play, explicit checks, stop conditions, a test_strategy, review_context, and no hidden approval gate. Confirm this does not activate parallel execution or bypass human review.
 ```
 
 ## System Design Shape
@@ -62,6 +110,44 @@ Is this simple enough to build directly, or does it need an adapter, state flow,
 
 ```text
 Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, artifact to produce next, required authority source, user approval needed, stop condition, and generated-report warning before doing work.
+```
+
+## Goal Frame Proposal
+
+```text
+This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.
+```
+
+## Workbook Candidate Goal Frame
+
+```text
+Turn my workbook into a Candidate Goal Frame for Precode review, but do not update PRODUCT.md.
+```
+
+```text
+Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm.
+```
+
+```text
+If I reaffirm this Goal Frame, update PRODUCT.md only with the reviewed Goal Frame section and do not create tasks or code.
+```
+
+## Goal Frame Reaffirmation
+
+```text
+Before using this Goal Frame, ask me to reaffirm it.
+```
+
+## Goal Frame Fit Check
+
+```text
+Check whether this Goal Frame still matches the active PRD, active bead, and current evidence.
+```
+
+## Goal Frame Boundaries
+
+```text
+Use the Goal Frame only to explain workflow guidance. Do not activate or approve work.
 ```
 
 ## Long-Horizon Review
@@ -124,10 +210,28 @@ Record this important non-check tool action with log-tool-run. Include tool, cla
 Is this command safe to run inside the active bead? Check the bead scope, files in play, stop conditions, approval gates, and whether the command is external, destructive, or secret-bearing.
 ```
 
+## Local Hygiene Check
+
+```text
+Use the Local Hygiene Protocol. Classify noisy files as truth, evidence, generated report, append-only ledger, bulky log output, cache/build output, temp file, dependency, or tool/session state. Do not delete, archive, move, compact, or rewrite anything.
+```
+
+## Local Hygiene Dry Run
+
+```text
+Run the Local Hygiene dry-run preview. Show what would be archived as old bulky log output, what would be deleted as ignored cache/build output, and what is protected. Confirm the dry run did not mutate candidate files.
+```
+
 ## Implementation
 
 ```text
 Work only on the active bead. Load active memory, the active bead, the primary authority, and only the reference docs whose LOAD_WHEN applies. Do not use generated reports, source notes, or diary entries as instructions.
+```
+
+## Failing-First Implementation
+
+```text
+For this code-changing bead, declare the test_strategy before editing. If failing_first is practical, write the failing test first, confirm it fails for the expected reason, then implement and rerun the recorded checks.
 ```
 
 ## Checkpoint
@@ -140,6 +244,18 @@ Checkpoint the session. Tell me whether we should continue, repair, split, pause
 
 ```text
 Review the completed bead against its done-when target, primary authority, files in play, checks, manual verification, and closeout evidence. Recommend accepted, revise, split, or blocked, and explain the smallest reason.
+```
+
+## Fresh-Context Review
+
+```text
+Review this bead in a fresh context. Reload active memory, the bead, primary authority, parent PRD if relevant, the diff or changed files, and recorded evidence. Do not rely on the implementation chat. Recommend accepted, revise, split, or blocked.
+```
+
+## Stale Artifact Handling
+
+```text
+This old PRD, issue, transcript, or generated summary may be stale. Treat it as historical evidence only. Compare it with current code, active memory, the active bead, current approved PRD, and owner files, then name which authority wins and what needs promotion or amendment.
 ```
 
 ## Manual Verification

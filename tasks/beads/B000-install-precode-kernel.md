@@ -11,11 +11,16 @@ files_in_play:
   - AGENT.md
   - DECISIONS.md
   - tasks/todo.md
+  - tasks/beads/B000-install-precode-kernel.md
   - PROJECT-CONTEXT.md
 checks:
   - bash scripts/record-check.sh -- bash scripts/validate-memory.sh
+  - bash scripts/record-check.sh -- python3 scripts/version-check.py
+  - bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check
+  - bash scripts/record-check.sh -- python3 scripts/completion-check.py
 verification_type:
   - doc validation
+  - static advisory
 ---
 
 # B000 — Install Precode Kernel
@@ -27,8 +32,8 @@ verification_type:
 > CLASS: active-task
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-03
 
 ## State
 
@@ -60,39 +65,45 @@ Install the smallest working Precode OS kernel and adapt placeholders for the ta
 ## Done When
 
 - Active memory is exactly `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-- `PROJECT-CONTEXT.md` names the target project's stack, conventions, and integration boundaries.
+- `PROJECT-CONTEXT.md` names Precode OS itself, its stack, roles, repository-root app directory, conventions, checks, and integration boundaries.
 - Project-specific checks are listed in the active bead.
 - Memory validation passes.
+- Manual verification and review evidence requirements are exact enough for a reviewer to accept, revise, split, or block B000.
 
 ## Files In Play
 
 - `AGENT.md`
 - `DECISIONS.md`
 - `tasks/todo.md`
+- `tasks/beads/B000-install-precode-kernel.md`
 - `PROJECT-CONTEXT.md`
 
 ## Checks
 
 - `bash scripts/record-check.sh -- bash scripts/validate-memory.sh`
+- `bash scripts/record-check.sh -- python3 scripts/version-check.py`
+- `bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check`
+- `bash scripts/record-check.sh -- python3 scripts/completion-check.py`
 
 ## Verification Type
 
 - doc validation
+- static advisory
 
 ## Stop If
 
 - App code needs to be changed.
 - Product feature scope appears before PRD approval.
-- The target project needs a decision that belongs in `DECISIONS.md`.
+- A new unresolved project decision appears that belongs in `DECISIONS.md`.
 
 ## Closeout Evidence
 
-- Checks run: `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-27T16:52:49.055373+00:00; log `logs/check-output/20260427T165248Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-27T17:19:26.328250+00:00; log `logs/check-output/20260427T171926Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-27T20:39:24.762485+00:00; log `logs/check-output/20260427T203924Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-27T21:27:25.651710+00:00; log `logs/check-output/20260427T212725Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-27T22:28:23.516733+00:00; log `logs/check-output/20260427T222823Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-28T17:45:40.637258+00:00; log `logs/check-output/20260428T174540Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-28T17:58:00.109089+00:00; log `logs/check-output/20260428T175759Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-04-28T18:19:05.893523+00:00; log `logs/check-output/20260428T181905Z-bash-scripts-validate-memory.sh.log`
+- Checks run: `env PYTHONPYCACHEPREFIX=/private/tmp/precode-pycache python3 -m py_compile scripts/os_compiler.py scripts/os-health.py scripts/local-hygiene-check.py scripts/local-hygiene-dry-run.py` -> pass (exit 0) at 2026-05-04T03:17:18.159395+00:00; log `logs/check-output/20260504T031718Z-env-PYTHONPYCACHEPREFIX-private-tmp-precode-pycache-python3-m-py_compile-scripts-os_compiler.py-scripts-os-health.py-scripts-local-hygiene-check.py-scripts-local-hygiene-dry-run.py.log` | `python3 scripts/context-check.py` -> pass (exit 0) at 2026-05-04T03:17:22.017846+00:00; log `logs/check-output/20260504T031721Z-python3-scripts-context-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-05-04T03:17:26.017161+00:00; log `logs/check-output/20260504T031725Z-python3-scripts-completion-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-07T23:35:38.096135+00:00; log `logs/check-output/20260507T233538Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-07T23:40:58.344137+00:00; log `logs/check-output/20260507T234058Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T14:11:37.859318+00:00; log `logs/check-output/20260508T141137Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T14:44:51.443514+00:00; log `logs/check-output/20260508T144451Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T15:14:35.647894+00:00; log `logs/check-output/20260508T151435Z-bash-scripts-validate-memory.sh.log`
 - Result: latest recorded command status is pass (exit 0)
-- Manual verification: not recorded
+- Manual verification: Who checked: Codex. What was checked: inspected `PROJECT-CONTEXT.md`, `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, and `tasks/beads/B000-install-precode-kernel.md`; confirmed B000 now describes Precode OS itself, names the repository root as the app/workspace directory, lists the product stack, roles, integrations, project-specific checks, review evidence, and no next-bead activation. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-03. Result: pass for review preparation. Remaining uncertainty: Dan/reviewer still needs to make the formal review decision.
 - Files changed: none at last evidence update
 - Next bead: not evaluated
-- Review decision: not reviewed
+- Review decision: blocked from transition until Dan/reviewer accepts, revises, splits, or blocks B000; evidence is ready for review.
 - Drift observed: none recorded
 - Lesson to promote: none
 - Follow-up bead needed: not evaluated
@@ -101,5 +112,5 @@ Install the smallest working Precode OS kernel and adapt placeholders for the ta
 
 ## Handback
 
-- Replace scaffold placeholders with target-project facts.
-- Run recorded validation before accepting this bead.
+- Review the recorded checks and manual verification statement.
+- Accept, revise, split, or block B000 without activating the next bead.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-05-07
 # Owner: Precode OS
 from __future__ import annotations
 
@@ -42,13 +42,13 @@ def check_markdown(path: Path, root: Path, issues: list[dict[str, Any]]) -> None
     text = path.read_text(encoding="utf-8")
     name = rel(path, root)
     values = contract(text)
-    anchor_required = name.startswith("tasks/reference/") or (name.startswith("logs/") and name != "logs/README.md")
+    anchor_required = name.startswith("tasks/reference/") or (name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md")
     if anchor_required and not anchor(text):
         add_issue(issues, name, "missing canonical anchor")
     for field in CONTRACT_FIELDS:
         if field not in values:
             add_issue(issues, name, f"missing authority contract field: {field}")
-    if (name.startswith("logs/") and name != "logs/README.md") or values.get("CLASS") == "generated":
+    if (name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md") or values.get("CLASS") == "generated":
         if values.get("CLASS") != "generated":
             add_issue(issues, name, "generated markdown under logs should use CLASS: generated")
         demotion_text = text.lower()

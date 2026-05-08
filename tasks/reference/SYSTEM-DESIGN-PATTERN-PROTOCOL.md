@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.2
+Last updated: 2026-05-03
 
 ## Purpose
 
@@ -34,6 +34,7 @@ Start with these defaults:
 | Feature needs to know who did what, when, or why | Audit trail | Irreversible or important actions stay explainable later. | `DATA-MODELS.md`, `SECURITY.md`, or `ARCHITECTURE.md` | "What action history should be recorded and where?" | Evidence records the action, actor, timestamp, result, and relevant object without storing secrets. |
 | Feature involves login, roles, permissions, private data, uploads, billing, or security config | Auth/access boundary | Sensitive decisions must be centralized and reviewed before users can be exposed. | `SECURITY.md` and `ARCHITECTURE.md` | "Define the access boundary and approval gate before coding." | Verification proves allowed and denied access paths, plus manual approval for sensitive changes. |
 | Feature is a one-off copy, layout, styling, or small local behavior change | Direct change using existing conventions | A named pattern would add ceremony without reducing risk. | active bead | "Is this simple enough to build directly?" | The changed file stays narrow, checks pass, and no new architecture is introduced. |
+| Feature needs meaningful internal logic, cross-layer behavior, or repeatable business rules | Deep module with interface-first design | The human keeps the codebase shape in mind while the agent can implement internals behind a stable boundary. | `ARCHITECTURE.md`, `PROJECT-CONTEXT.md`, or PRD | "Define the public interface, behavior contract, and test boundary before coding internals." | Tests exercise the module through its public interface; callers do not depend on scattered helper details. |
 
 If no row fits, stop and ask what shape the feature wants before implementation.
 
@@ -50,11 +51,31 @@ Use pattern names only after naming the problem they solve.
 
 - One giant file doing everything.
 - Business rules scattered across UI, API, database, and background-job code.
+- Many shallow helper modules where every tiny function needs its own fragile test boundary.
 - External APIs called directly from many places.
 - Workflows tracked only in comments, vague text, or hidden assumptions.
 - Factories, strategies, state machines, or adapters before there is real complexity.
 - Generated code treated as owned architecture without human review.
 - Pattern names used as decoration instead of solving a specific risk.
+
+## Deep Module Guidance
+
+Prefer deep modules when work has enough logic to deserve a stable boundary.
+
+The human or reviewer should own:
+
+- public interface
+- module responsibility
+- behavior contract
+- test boundary
+- caller expectations
+- domain language used in module, interface, UI, test, and fixture names
+
+The coding agent may own the internal implementation once those boundaries are clear.
+
+Avoid delegating the shape of the codebase to the agent by accepting many shallow modules, scattered business rules, or tests wrapped around every tiny helper. A better test usually exercises a useful behavior through a small public interface and leaves internal details free to change.
+
+Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when naming a boundary requires domain terms, aliases, or stale vocabulary review.
 
 ## Pattern Decision Ownership
 

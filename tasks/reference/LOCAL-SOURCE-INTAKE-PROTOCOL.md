@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.2
+Last updated: 2026-05-08
 
 ## Purpose
 
@@ -16,6 +16,7 @@ Local Source Intake helps a solo builder turn messy project material into truste
 
 The intake output is not the plan. It is a short, inspectable evidence summary that can feed:
 
+- `PRODUCT.md`
 - `tasks/prds/*.md`
 - `FEATURES.md`
 - `DECISIONS.md`
@@ -42,6 +43,7 @@ Supported source types include:
 - chat transcript summaries
 - GitHub, Linear, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
+- Product Ideation Workbook Precode Ingestion Packets, including Candidate Goal Frames
 - customer quotes or feedback snippets
 - existing feature, architecture, API, schema, security, or acceptance docs
 - hand-written task lists or migration notes
@@ -64,6 +66,7 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether sourc
 
 Examples:
 
+- A product constitution fact belongs in `PRODUCT.md`.
 - A product requirement belongs in a PRD shard and compiled `FEATURES.md`.
 - A hard product or technical decision belongs in `DECISIONS.md`.
 - A route or module-placement fact belongs in `ARCHITECTURE.md`.
@@ -91,6 +94,7 @@ Source summary:
 - Candidate requirements:
 - Candidate non-goals:
 - Candidate acceptance signals:
+- Candidate Goal Frame:
 - Authority files likely affected:
 - Recommended next step:
 ```
@@ -103,8 +107,9 @@ Keep the summary short. If the material is large, summarize the decision-relevan
 2. Remove secrets, credentials, and irrelevant private detail.
 3. Extract stable facts, assumptions, conflicts, and open questions.
 4. Name candidate requirements and non-goals only as candidates.
-5. Identify affected authority files.
-6. Decide whether the next step is PRFAQ-lite, PRD drafting, decision logging, architecture/security/schema/API update, or no action.
+5. If a Candidate Goal Frame is present, summarize whether it is stable, conflicting, incomplete, stale, or too task-like.
+6. Identify affected authority files.
+7. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, decision logging, architecture/security/schema/API update, or no action.
 
 Stop before PRD drafting if the source material lacks:
 
@@ -120,6 +125,8 @@ Promote stable conclusions only after user review.
 
 | Intake finding | Destination |
 |---|---|
+| Product promise, users and jobs, strategy, non-goals, current bets, success signals, design or voice pointers | `PRODUCT.md` |
+| Reviewed and reaffirmed product-level Goal Frame candidate | `PRODUCT.md` `## Goal Frame` section |
 | Product problem, users, goals, non-goals, requirements | `tasks/prds/*.md` |
 | Compiled feature or functional requirement | `FEATURES.md` |
 | Hard decision or unresolved implementation-changing question | `DECISIONS.md` |
@@ -129,6 +136,8 @@ Promote stable conclusions only after user review.
 | Security, privacy, secret, or threat-model fact | `SECURITY.md` |
 | Done check or acceptance criterion | `ACCEPTANCE.md` |
 | Executable unit of work | `tasks/beads/*.md` after PRD readiness |
+
+A workbook Candidate Goal Frame must not skip review. Promote it only after the intake summary and user reaffirmation, and keep it out of `tasks/todo.md`.
 
 ## Review Inputs
 
@@ -146,6 +155,10 @@ They become evidence only when:
 Use the Local Source Intake Protocol on these notes.
 Do not write code.
 Summarize stable facts, assumptions, conflicts, open questions, candidate requirements, and likely authority files.
+```
+
+```text
+Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable, conflicting, incomplete, stale, or too task-like. Do not update PRODUCT.md until I reaffirm it.
 ```
 
 ```text

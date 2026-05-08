@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.3
+Last updated: 2026-05-06
 
 ## Purpose
 
@@ -80,6 +80,28 @@ Use the smallest proof that controls the risk.
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
 
+Adaptive-depth metadata should raise verification expectations when risk rises. `high-risk` and `multi-system` beads should usually include manual, integration, browser, or external evidence; `human-only` beads should name the human approval or manual action; `bounded-afk` beads need bounded files in play, explicit checks, and stop conditions.
+
+`python3 scripts/files-in-play-check.py` is an advisory guardrail that compares current Git changes to the active bead `files_in_play`. Out-of-scope warnings should be resolved by narrowing the work, splitting a follow-up bead, or explaining generated evidence before acceptance.
+
+The guardrail can also classify a proposed command with `--command "<command summary>"` and can show an optional advisory edit lock with `--edit-lock`. These checks should reduce beginner confusion by saying `continue`, `approval needed`, or `stop`; they do not grant command approval, enforce filesystem permissions, or replace sensitive-surface gates.
+
+## Test Strategy
+
+Use these `test_strategy` values in bead frontmatter when helpful:
+
+| Strategy | Use When |
+|---|---|
+| `failing_first` | Code-changing work can be driven by a focused red/green/refactor loop. |
+| `characterization` | Existing behavior must be pinned before refactor or repair. |
+| `static_only` | Docs, schemas, metadata, or static checks are enough for the risk. |
+| `manual_only` | Human QA is the acceptance oracle and automation is not practical for the slice. |
+| `not_applicable` | The bead does not change behavior or code in a way that needs a test strategy. |
+
+Prefer `failing_first` for code-changing beads when the codebase has a usable test boundary. Confirm the failing test fails for the expected reason before implementing. If failing-first is not practical, record why in the bead or Closeout Evidence.
+
+Human QA and manual verification remain the taste and acceptance layer. Automated checks reduce risk; they do not replace human judgment for product fit, UX quality, or sensitive approval gates.
+
 ## Sensitive-Surface Gates
 
 Pause for explicit user approval before work mutates or configures:
@@ -143,6 +165,7 @@ Generated health or audit reports may warn when:
 - review decision is not accepted
 - closeout exists but required checks are missing or failing
 - active changes appear outside `files_in_play`
+- adaptive-depth fields are missing or inconsistent with the bead's risk
 - sensitive-surface work lacks approval, manual verification, rollback, or blocked escape notes
 - generated tests, screenshots, or external status are treated as proof without recorded evidence
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-05-08
 # Owner: Precode OS
 set -euo pipefail
 
@@ -48,6 +48,28 @@ print("\nBead Checks:")
 print(bead_sections.get("Checks", "").strip() or "- (missing)")
 print("\nStop Conditions:")
 print(bead_sections.get("Stop If", "").strip() or "- (missing)")
+try:
+    from pathlib import Path
+    import sys
+
+    sys.path.insert(0, "scripts")
+    from os_compiler import compile_state
+
+    goal_frame = (compile_state(Path(".")).get("goal_frame") or {})
+    goal_details = goal_frame.get("details") or {}
+    current_goal = goal_details.get("current") or {}
+except Exception:
+    current_goal = {}
+print("\nGoal Frame:")
+if current_goal:
+    print(f"- Status: {current_goal.get('status', 'missing')}")
+    print(f"- Owner file: {current_goal.get('path', 'not recorded')}")
+    print(f"- Horizon: {current_goal.get('horizon', 'not recorded')}")
+    print(f"- Workflow guidance: {current_goal.get('workflow_guidance', 'not recorded')}")
+    print(f"- Goal: {current_goal.get('goal', 'not recorded')}")
+    print("- Warning: Goal Frames are advisory only; they do not approve work or replace active memory.")
+else:
+    print("- No current Goal Frame.")
 print("\nGenerated Report Warning:")
 print("- Generated reports are evidence only. Do not use them as active memory, task plans, or implementation instructions.")
 PY

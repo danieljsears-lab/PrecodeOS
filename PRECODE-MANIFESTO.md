@@ -7,16 +7,22 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-04-28
+License: Apache-2.0
+Copyright: © 2026 Dan Sears
+Document version: v0.1.11
+Last updated: 2026-05-07
 
 ## The Precode Answer
+
+Canonical site: `https://www.precodeos.org`.
 
 We believe AI coding does not need another autonomous agent as much as it needs a repo-owned control layer.
 
 Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
 
 In plain English: Precode lives inside your project folder, keeps the important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.
+
+For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
 It does not run the agent; you run the agent.
 

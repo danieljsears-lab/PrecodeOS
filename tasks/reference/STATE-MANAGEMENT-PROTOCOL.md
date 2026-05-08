@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-08
 
 ## Purpose
 
@@ -32,6 +32,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 | Bead frontmatter | machine-readable bead state | narrative explanation |
 | Bead sections | human execution contract and closeout | global product decisions |
 | PRDs and `FEATURES.md` | approved product definition and requirement inventory | active task selection |
+| Goal Frames inside owner files | reviewed durable orientation for workflow selection | backlog, roadmap, implementation plan, approval, or active task |
 | Reference docs | durable protocols and ownership rules | active execution state |
 | JSON/JSONL logs | append-only historical evidence | instructions or task selection |
 | Generated reports | compiled snapshots and warnings | authority, planning, or next-task decisions |
@@ -44,6 +45,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 - Bead files are the durable execution contracts.
 - JSON/JSONL logs are historical evidence.
 - Generated files are compiled snapshots only.
+- Goal Frames inside owner files are advisory orientation. If stale or conflicting, they require reaffirmation before they guide workflow selection.
 - If generated output conflicts with active memory or a bead, inspect the source file and regenerate the output.
 
 ## Open Question Ownership
@@ -76,6 +78,8 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when state repair needs to 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when state repair discovers future or deferred work that should be summarized but not moved into active memory.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when state repair affects closeout, handoff, review decision, or transition readiness.
+
+Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when state repair finds stale durable intent, a Goal Frame that looks like a task list, or generated next-step guidance relying on unreaffirmed direction.
 
 When state looks inconsistent:
 

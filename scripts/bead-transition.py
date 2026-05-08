@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-05-06
 # Owner: Precode OS
 from __future__ import annotations
 
@@ -27,6 +27,12 @@ BEAD_FRONTMATTER_ORDER = [
     "files_in_play",
     "checks",
     "verification_type",
+    "delegation_mode",
+    "test_strategy",
+    "review_context",
+    "complexity",
+    "required_planning_depth",
+    "autonomy_level",
 ]
 
 TODO_FRONTMATTER_ORDER = [
@@ -53,6 +59,9 @@ def transition_assessment(root: Path) -> dict[str, object]:
             "primary_authority": bead.primary_authority,
             "done_when": bead.sections.get("Done When", ""),
             "checks": bead.checks,
+            "complexity": bead.complexity,
+            "required_planning_depth": bead.required_planning_depth,
+            "autonomy_level": bead.autonomy_level,
             "stop_if": bead.sections.get("Stop If", ""),
         }
 
@@ -100,6 +109,10 @@ def print_proposal(assessment: dict[str, object]) -> None:
         print("\nChecks:")
         for check in next_summary.get("checks") or []:
             print(f"- `{check}`")
+        print("\nAdaptive depth:")
+        print(f"- Complexity: `{next_summary.get('complexity') or 'unspecified'}`")
+        print(f"- Required planning depth: `{next_summary.get('required_planning_depth') or 'unspecified'}`")
+        print(f"- Autonomy level: `{next_summary.get('autonomy_level') or 'unspecified'}`")
         print("\nStop If:")
         print(next_summary.get("stop_if") or "- (missing)")
     print("\nRecent recorded checks:")

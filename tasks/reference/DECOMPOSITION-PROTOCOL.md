@@ -7,12 +7,12 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.2
+Last updated: 2026-05-06
 
 ## Purpose
 
-Decomposition turns a shaped idea into work small enough to verify.
+Decomposition turns a shaped destination into journey units small enough to verify.
 
 This protocol helps Precode avoid premature implementation, overbroad beads, hidden dependencies, and mixed planning plus coding.
 
@@ -37,6 +37,10 @@ A candidate bead is ready to propose only when it has:
 - one observable outcome
 - one primary authority file
 - one main verification strategy
+- explicit delegation mode
+- explicit test strategy when code changes
+- explicit review context
+- adaptive depth when risk affects ceremony: `complexity`, `required_planning_depth`, and `autonomy_level`
 - bounded files in play
 - clear dependency status
 - clear stop conditions
@@ -78,6 +82,10 @@ Use the slice that best reduces risk:
 
 Do not combine slicing patterns unless the work is still one logical unit with one verification strategy.
 
+For user-facing behavior, reject first beads that are only `schema first`, `backend first`, `frontend first`, `service first`, or `tests later` unless the bead is explicitly a risk-first or unblocker slice. Those are usually horizontal slices that delay end-to-end feedback.
+
+A strong first vertical slice should cross enough layers to produce something observable, even if the UI, rules, data shape, or edge cases are intentionally thin.
+
 ## Dependency Mapping Terms
 
 Use these terms in bead notes, handback, or planning output:
@@ -89,6 +97,14 @@ Use these terms in bead notes, handback, or planning output:
 - `waits for manual setup`
 - `waits for PRD approval`
 - `waits for external status`
+
+Use these delegation terms in bead frontmatter:
+
+- `human_in_loop` — the builder must actively answer, judge, QA, or approve during the work
+- `afk_candidate` — a coding agent can plausibly execute the scoped work after context is loaded
+- `human_required` — the work depends on human-only access, taste, domain judgment, or approval
+
+`afk_candidate` does not activate parallel execution and does not bypass review. It only describes delegation safety.
 
 If a dependency blocks activation, it belongs in `depends_on`, the PRD open questions, or a named unblocker bead.
 
@@ -116,6 +132,8 @@ Execution beads may produce:
 
 Execution beads should not reshape product definition. If new product scope appears, stop and promote it through PRD or decision ownership.
 
+When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
+
 ## Appetite And Timebox
 
 Use appetite to keep work finite:
@@ -125,6 +143,16 @@ Use appetite to keep work finite:
 | `tiny` | One small doc, config, script, copy, or isolated fix |
 | `small` | One narrow behavior or setup step, usually one session |
 | `medium` | One verifiable slice with multiple files but one outcome |
+
+Adaptive-depth fields make appetite machine-readable:
+
+| Field | Values | Use |
+|---|---|---|
+| `complexity` | `trivial`, `narrow`, `standard`, `high-risk`, `multi-system` | Describes risk/size so tiny work stays light and risky work gets more scrutiny. |
+| `required_planning_depth` | `none`, `brief`, `PRD`, `PRD+architecture`, `PRD+architecture+test-plan` | Describes how much product/architecture/test planning must exist before work starts. |
+| `autonomy_level` | `supervised`, `bounded-afk`, `human-only` | Describes whether an agent can work after context load or whether human action/judgment owns the step. |
+
+Use `python3 scripts/bead-depth-check.py` to surface advisory mismatches, such as a high-risk bead with brief planning or a bounded-AFK bead without checks and stop conditions.
 
 Split when:
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-04-27
+# Version: v0.1.12
+# Last updated: 2026-05-08
 # Owner: Precode OS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 from collections import Counter
@@ -30,7 +32,7 @@ APP_DIR = "app"
 ACTIVE_MEMORY = ["AGENT.md", "DECISIONS.md", "tasks/todo.md"]
 SHIM_DOCS = ["AGENTS.md", "GEMINI.md", ".github/copilot-instructions.md", "CLAUDE.md"]
 ADAPTER_DOCS = [
-    "adapters/README.md",
+    "adapters/ADAPTER-INDEX.md",
     "adapters/CLAUDE.md",
     "adapters/CODEX.md",
     "adapters/GEMINI.md",
@@ -41,6 +43,12 @@ FRONTMATTER_EMPTY_MARKERS = {"", "none", "n/a", "na", "null", "not applicable"}
 PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "fail", "failed", "needs_info", "manual_testing"}
 APPROVED_MARKERS = ("accepted", "approve", "approved")
 VERIFICATION_TIERS = {"static", "unit", "integration", "browser", "manual", "external"}
+DELEGATION_MODES = {"human_in_loop", "afk_candidate", "human_required"}
+TEST_STRATEGIES = {"failing_first", "characterization", "static_only", "manual_only", "not_applicable"}
+REVIEW_CONTEXTS = {"same_session_ok", "fresh_context_recommended", "fresh_context_required"}
+COMPLEXITY_LEVELS = {"trivial", "narrow", "standard", "high-risk", "multi-system"}
+REQUIRED_PLANNING_DEPTHS = {"none", "brief", "PRD", "PRD+architecture", "PRD+architecture+test-plan"}
+AUTONOMY_LEVELS = {"supervised", "bounded-afk", "human-only"}
 CODE_EXTENSIONS = {
     ".py",
     ".sh",
@@ -86,13 +94,79 @@ PLANNING_BEAD_KINDS = {"planning", "review", "prfaq", "challenge", "source_intak
 IMPLEMENTATION_BEAD_KINDS = {"implementation", "feature"}
 VAGUE_DONE_TERMS = {"improve", "better", "clean up", "polish", "etc", "and then", "as needed", "various"}
 DEPENDENCY_HINT_TERMS = {"blocked by", "depends on", "waits for", "manual setup", "external status"}
-GENERATED_REPORTS = ["PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
-LOOP_FRESHNESS_REPORTS = {"OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
+HORIZONTAL_SLICE_TERMS = {
+    "schema first",
+    "database first",
+    "migration first",
+    "backend first",
+    "api first",
+    "service first",
+    "frontend first",
+    "ui first",
+    "tests later",
+    "test later",
+}
+USER_FACING_TERMS = {"user-facing", "dashboard", "screen", "page", "route", "frontend", "ui", "browser", "user can", "visible"}
+GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
+LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
 GENERATED_JSON_FAMILIES = {
     "logs/*.json",
     "logs/*.jsonl",
     "logs/check-output/*",
     "logs/scheduled-audit-output/*",
+}
+LOCAL_HYGIENE_RETENTION_DAYS = 90
+LOCAL_HYGIENE_BULKY_LOG_DIRS = {"logs/check-output", "logs/scheduled-audit-output"}
+LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
+    "logs/LOG-EVIDENCE-TAXONOMY.md",
+    "logs/adapter-index.json",
+    "logs/agent-spend.jsonl",
+    "logs/authority-map.json",
+    "logs/bead-transitions.jsonl",
+    "logs/check-results.jsonl",
+    "logs/file-inventory.json",
+    "logs/github-source-intake.jsonl",
+    "logs/github-source-intake.md",
+    "logs/goal-frame.json",
+    "logs/handoff-packet.json",
+    "logs/handoff-packet.md",
+    "logs/handoffs.jsonl",
+    "logs/learning-diary.jsonl",
+    "logs/learning-diary.md",
+    "logs/local-hygiene-preview.json",
+    "logs/local-hygiene-preview.md",
+    "logs/next-step.json",
+    "logs/long-horizon-map.json",
+    "logs/loop-runs.jsonl",
+    "logs/memory-index.json",
+    "logs/memory-index.md",
+    "logs/orchestration-map.json",
+    "logs/os-events.jsonl",
+    "logs/os-health.json",
+    "logs/pattern-guidance.json",
+    "logs/readiness.json",
+    "logs/scheduled-audit.json",
+    "logs/scheduled-audit.md",
+    "logs/shim-index.json",
+    "logs/tool-runs.jsonl",
+    "logs/workflow-map.json",
+}
+LOCAL_HYGIENE_CACHE_NAMES = {
+    ".cache",
+    ".next",
+    ".nuxt",
+    ".parcel-cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".turbo",
+    ".venv",
+    ".vite",
+    "__pycache__",
+    "build",
+    "coverage",
+    "dist",
+    "node_modules",
+    "target",
 }
 LONG_TERM_QUESTION_TERMS = {"roadmap", "someday", "eventually", "long-term", "future", "nice to have", "maybe later"}
 TOOL_CLASSES = {"read_only", "verification", "generated_refresh", "local_mutation", "external_mutation", "destructive", "secret_bearing"}
@@ -108,6 +182,67 @@ TOOL_FAILURE_CATEGORIES = {
     "unknown",
 }
 TOOL_APPROVAL_CLASSES = {"external_mutation", "destructive", "secret_bearing"}
+COMMAND_DESTRUCTIVE_TERMS = {
+    "rm ",
+    "rm -rf",
+    "remove ",
+    "delete ",
+    "reset --hard",
+    "git reset --hard",
+    "git clean",
+    "drop table",
+    "drop database",
+    "truncate table",
+    "delete production",
+    "destroy",
+    "force push",
+    "push --force",
+    "git push --force",
+    "rollback production",
+}
+COMMAND_SENSITIVE_TERMS = {
+    "secret",
+    "token",
+    "credential",
+    "password",
+    "env ",
+    ".env",
+    "auth",
+    "oauth",
+    "permission",
+    "permissions",
+    "payment",
+    "billing",
+    "stripe",
+    "migration",
+    "migrate",
+    "database",
+    "deploy",
+    "production",
+    "--prod",
+    "dashboard",
+    "github",
+    "gh ",
+    "workflow",
+}
+COMMAND_EXTERNAL_MUTATION_TERMS = {
+    "deploy",
+    "push",
+    "merge",
+    "release",
+    "publish",
+    "gh pr merge",
+    "gh issue edit",
+    "gh pr comment",
+    "gh label",
+    "gh workflow run",
+    "vercel",
+    "supabase",
+    "stripe",
+}
+COMMAND_LOCAL_MUTATION_TERMS = {"apply_patch", "write", "edit", "mv ", "cp ", "npm install", "pip install", "migration", "migrate"}
+COMMAND_VERIFICATION_TERMS = {"test", "check", "validate", "lint", "py_compile", "typecheck", "pytest", "vitest", "jest"}
+COMMAND_GENERATED_REFRESH_TERMS = {"os-health", "next-step", "file-inventory", "memory-index", "scheduled-audit"}
 WORKFLOW_GENERATED_REPORTS = {"OS-HEALTH.md", "PROGRESS.md", "logs/learning-diary.md", "logs/scheduled-audit.md"}
 LONG_HORIZON_TERMS = {"backlog", "roadmap", "milestone", "someday", "future", "later", "nice to have", "parking lot"}
 LONG_HORIZON_REVISIT_TERMS = {"revisit", "after", "when", "until", "owner", "decision", "prd", "bead", "manual", "external", "defer", "deferred"}
@@ -210,6 +345,32 @@ MEMORY_FRESHNESS = {"current", "watch", "stale", "superseded"}
 MEMORY_STATUS = {"reviewed", "needs_promotion", "superseded", "archived"}
 MEMORY_SECRET_TERMS = {"api_key", "api key", "token", "password", "secret", "credential", "private key"}
 MEMORY_AUTHORITY_TERMS = {"must implement", "next task", "active memory", "approve transition", "decision:"}
+GOAL_FRAME_STATUSES = {"draft", "active", "reaffirm_needed", "retired"}
+GOAL_FRAME_HORIZONS = {"session", "feature", "product"}
+GOAL_FRAME_WORKFLOWS = {"intake", "PRD", "prd", "decomposition", "implementation", "review", "repair", "long-horizon"}
+GOAL_FRAME_REQUIRED_FIELDS = {
+    "status",
+    "last_reaffirmed",
+    "horizon",
+    "workflow_guidance",
+    "goal",
+    "why_now",
+    "success_signal",
+    "out_of_scope",
+    "approval_gates",
+    "reaffirmation_trigger",
+}
+GOAL_FRAME_TASKLIKE_TERMS = {
+    "backlog",
+    "roadmap",
+    "task list",
+    "next task",
+    "activate",
+    "approve transition",
+    "implement ",
+    "build ",
+    "ship ",
+}
 
 
 @dataclass
@@ -227,6 +388,12 @@ class BeadRecord:
     files_in_play: list[str]
     checks: list[str]
     verification_type: list[str]
+    delegation_mode: str
+    test_strategy: str
+    review_context: str
+    complexity: str
+    required_planning_depth: str
+    autonomy_level: str
     closeout: dict[str, str]
     handback: str
     frontmatter: dict[str, Any]
@@ -315,7 +482,7 @@ def parse_next_bead_reference(value: str, root: Path) -> str | None:
 
 
 def bead_paths(root: Path) -> list[Path]:
-    return sorted(path for path in (root / "tasks" / "beads").glob("*.md") if path.name != "README.md")
+    return sorted(path for path in (root / "tasks" / "beads").glob("*.md") if path.name != "BEAD-SCHEMA.md")
 
 
 def parse_closeout_values(section: str) -> dict[str, str]:
@@ -350,6 +517,28 @@ def read_bead(path: Path, root: Path) -> BeadRecord:
     verification_type = normalize_list(doc.frontmatter.get("verification_type")) or normalize_list(
         bullet_items(doc.sections.get("Verification Type", ""))
     )
+    delegation_mode = normalize_optional(
+        str(doc.frontmatter.get("delegation_mode") or first_bullet(doc.sections.get("Delegation Mode", "")) or "")
+    )
+    test_strategy = normalize_optional(
+        str(doc.frontmatter.get("test_strategy") or first_bullet(doc.sections.get("Test Strategy", "")) or "")
+    )
+    review_context = normalize_optional(
+        str(doc.frontmatter.get("review_context") or first_bullet(doc.sections.get("Review Context", "")) or "")
+    )
+    complexity = normalize_optional(
+        str(doc.frontmatter.get("complexity") or first_bullet(doc.sections.get("Complexity", "")) or "")
+    )
+    required_planning_depth = normalize_optional(
+        str(
+            doc.frontmatter.get("required_planning_depth")
+            or first_bullet(doc.sections.get("Required Planning Depth", ""))
+            or ""
+        )
+    )
+    autonomy_level = normalize_optional(
+        str(doc.frontmatter.get("autonomy_level") or first_bullet(doc.sections.get("Autonomy Level", "")) or "")
+    )
 
     return BeadRecord(
         rel_path=rel_path(path, root),
@@ -365,6 +554,12 @@ def read_bead(path: Path, root: Path) -> BeadRecord:
         files_in_play=files_in_play,
         checks=checks,
         verification_type=verification_type,
+        delegation_mode=delegation_mode,
+        test_strategy=test_strategy,
+        review_context=review_context,
+        complexity=complexity,
+        required_planning_depth=required_planning_depth,
+        autonomy_level=autonomy_level,
         closeout=parse_closeout_values(doc.sections.get("Closeout Evidence", "")),
         handback=doc.sections.get("Handback", ""),
         frontmatter=doc.frontmatter,
@@ -393,6 +588,131 @@ def read_todo_state(root: Path) -> dict[str, Any]:
             str(doc.frontmatter.get("active_feature_window") or state_values.get("active_feature_window") or "")
         ),
         "primary_authority": primary_authority,
+    }
+
+
+def goal_frame_candidate_paths(root: Path) -> list[Path]:
+    paths: list[Path] = []
+    for rel in ("PRODUCT.md", "DECISIONS.md"):
+        path = root / rel
+        if path.is_file():
+            paths.append(path)
+    paths.extend(sorted((root / "tasks" / "prds").glob("*.md")))
+    paths.extend(bead_paths(root))
+    return paths
+
+
+def normalize_goal_frame_status(value: str) -> str:
+    status = normalize_status(value or "draft")
+    return status if status in GOAL_FRAME_STATUSES else status or "draft"
+
+
+def parse_goal_frame(path: Path, root: Path) -> dict[str, Any] | None:
+    doc = MarkdownDocument.load(path)
+    section = doc.sections.get("Goal Frame", "")
+    if not section:
+        return None
+
+    values = colon_bullets(section)
+    rel = rel_path(path, root)
+    status = normalize_goal_frame_status(values.get("status", "draft"))
+    frame = {
+        "path": rel,
+        "title": heading_title(read_text(path)),
+        "status": status,
+        "last_reaffirmed": normalize_optional(values.get("last_reaffirmed", "")),
+        "owner_file": normalize_optional(values.get("owner_file", rel)) or rel,
+        "horizon": normalize_optional(values.get("horizon", "")),
+        "workflow_guidance": normalize_optional(values.get("workflow_guidance", "")),
+        "goal": normalize_optional(values.get("goal", "")),
+        "why_now": normalize_optional(values.get("why_now", "")),
+        "success_signal": normalize_optional(values.get("success_signal", "")),
+        "out_of_scope": normalize_optional(values.get("out_of_scope", "")),
+        "approval_gates": normalize_optional(values.get("approval_gates", "")),
+        "reaffirmation_trigger": normalize_optional(values.get("reaffirmation_trigger", "")),
+        "section": section,
+    }
+    frame["missing_fields"] = sorted(
+        key for key in GOAL_FRAME_REQUIRED_FIELDS
+        if not normalize_optional(str(frame.get(key) or ""))
+    )
+    return frame
+
+
+def goal_frame_tasklike_warnings(frame: dict[str, Any]) -> list[str]:
+    if frame.get("status") not in {"active", "reaffirm_needed"}:
+        return []
+    text = str(frame.get("section") or "").lower()
+    found = sorted(term.strip() for term in GOAL_FRAME_TASKLIKE_TERMS if term in text)
+    if not found:
+        return []
+    return [f"{frame.get('path')} Goal Frame may be acting like a task list or roadmap ({', '.join(found[:4])})"]
+
+
+def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str, Any]:
+    frames = [frame for path in goal_frame_candidate_paths(root) if (frame := parse_goal_frame(path, root))]
+    warnings: list[str] = []
+
+    for frame in frames:
+        status = str(frame.get("status") or "draft")
+        if status not in GOAL_FRAME_STATUSES:
+            warnings.append(f"{frame.get('path')} Goal Frame has unknown status `{status}`")
+        if frame.get("horizon") and frame.get("horizon") not in GOAL_FRAME_HORIZONS:
+            warnings.append(f"{frame.get('path')} Goal Frame has unknown horizon `{frame.get('horizon')}`")
+        if frame.get("workflow_guidance") and frame.get("workflow_guidance") not in GOAL_FRAME_WORKFLOWS:
+            warnings.append(
+                f"{frame.get('path')} Goal Frame has unknown workflow guidance `{frame.get('workflow_guidance')}`"
+            )
+        if status in {"active", "reaffirm_needed"}:
+            missing = frame.get("missing_fields") or []
+            if missing:
+                warnings.append(f"{frame.get('path')} Goal Frame is missing required fields: {', '.join(missing)}")
+        if status == "active" and not frame.get("last_reaffirmed"):
+            warnings.append(f"{frame.get('path')} Goal Frame is active but has no last reaffirmed date")
+        if status == "active" and not frame.get("reaffirmation_trigger"):
+            warnings.append(f"{frame.get('path')} Goal Frame is active but has no reaffirmation trigger")
+        if status == "reaffirm_needed":
+            warnings.append(f"{frame.get('path')} Goal Frame requires user reaffirmation before guiding workflow")
+        if current_bead and status == "active" and frame.get("path") == current_bead.rel_path and current_bead.status in {
+            "review",
+            "done",
+            "needs_info",
+            "manual_testing",
+        }:
+            warnings.append(
+                f"{frame.get('path')} Goal Frame should be reaffirmed because the active bead is `{current_bead.status}`"
+            )
+        warnings.extend(goal_frame_tasklike_warnings(frame))
+
+    current: dict[str, Any] | None = None
+    active_frames = [frame for frame in frames if frame.get("status") == "active"]
+    if current_bead:
+        current = next((frame for frame in active_frames if frame.get("path") == current_bead.rel_path), None)
+        if not current and current_bead.parent_prd:
+            current = next((frame for frame in active_frames if frame.get("path") == current_bead.parent_prd), None)
+    if not current:
+        current = next((frame for frame in active_frames if frame.get("path") == "PRODUCT.md"), None)
+    if not current:
+        current = next((frame for frame in active_frames), None)
+    if not current:
+        current = next((frame for frame in frames if frame.get("status") == "reaffirm_needed"), None)
+
+    if current and current.get("status") == "active" and any(
+        warning.startswith(str(current.get("path"))) for warning in warnings
+    ):
+        current = {**current, "status": "reaffirm_needed"}
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current": {key: value for key, value in (current or {}).items() if key != "section"},
+            "frames": [{key: value for key, value in frame.items() if key != "section"} for frame in frames],
+            "frame_count": len(frames),
+            "active_count": len(active_frames),
+            "advisory_only": True,
+            "generated_report_warning": "Goal Frame summaries are generated evidence only; they must not choose tasks, approve PRDs, activate beads, or override active memory.",
+        },
     }
 
 
@@ -549,9 +869,21 @@ def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[di
     tier_set = set(tier.lower() for tier in bead.verification_type)
     inferred_tiers = check_tiers(passing_commands)
     known_tiers = sorted((tier_set & VERIFICATION_TIERS) | inferred_tiers)
+    kind = bead.bead_kind.lower().strip()
+    risk_level = str(bead.frontmatter.get("risk_level") or "").lower().strip()
 
     if code_changing and passing_commands and set(passing_commands) <= {"bash scripts/validate-memory.sh"}:
         warnings.append("only memory validation is recorded for a code-changing bead")
+    if code_changing and not bead.test_strategy:
+        warnings.append("code-changing bead should declare test_strategy")
+    if bead.test_strategy and bead.test_strategy not in TEST_STRATEGIES:
+        warnings.append(f"test_strategy has an unknown value: {bead.test_strategy}")
+    if bead.review_context and bead.review_context not in REVIEW_CONTEXTS:
+        warnings.append(f"review_context has an unknown value: {bead.review_context}")
+    if kind in IMPLEMENTATION_BEAD_KINDS and risk_level == "medium" and bead.review_context not in {"fresh_context_recommended", "fresh_context_required"}:
+        warnings.append("medium-risk implementation bead should recommend fresh-context review")
+    if kind in IMPLEMENTATION_BEAD_KINDS and risk_level == "high" and bead.review_context != "fresh_context_required":
+        warnings.append("high-risk implementation bead should require fresh-context review")
     if not manual_verification_structured(bead.closeout.get("manual_verification", "")):
         warnings.append("manual verification is missing, pending, or does not use the stable format")
     if not review_decision_accepted(bead.closeout.get("review_decision", "")):
@@ -582,6 +914,9 @@ def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[di
     details = {
         "bead": bead.rel_path,
         "verification_type": bead.verification_type,
+        "test_strategy": bead.test_strategy,
+        "review_context": bead.review_context,
+        "risk_level": risk_level,
         "known_tiers": known_tiers,
         "code_changing": code_changing,
         "recorded_pass_commands": passing_commands,
@@ -603,6 +938,13 @@ def decomposition_quality(bead: BeadRecord | None) -> dict[str, Any]:
     kind = bead.bead_kind.lower().strip()
     files = bead.files_in_play
     code_files = [path for path in files if looks_code_path(path)]
+    broad_files = [
+        path
+        for path in files
+        if path.strip() in {".", "./", "*", "/*", "tasks", "tasks/", "scripts", "scripts/"}
+        or path.strip().endswith("/")
+        or path.strip().endswith("/*")
+    ]
     supporting_authority_hints = [
         path
         for path in files
@@ -618,6 +960,19 @@ def decomposition_quality(bead: BeadRecord | None) -> dict[str, Any]:
         warnings.append("checks are missing")
     if not bead.primary_authority:
         warnings.append("primary authority is missing")
+    if bead.delegation_mode and bead.delegation_mode not in DELEGATION_MODES:
+        warnings.append(f"delegation_mode has an unknown value: {bead.delegation_mode}")
+    if bead.review_context and bead.review_context not in REVIEW_CONTEXTS:
+        warnings.append(f"review_context has an unknown value: {bead.review_context}")
+    if bead.test_strategy and bead.test_strategy not in TEST_STRATEGIES:
+        warnings.append(f"test_strategy has an unknown value: {bead.test_strategy}")
+    if bead.delegation_mode == "afk_candidate":
+        if not files or len(files) > 8 or broad_files:
+            warnings.append("afk_candidate bead should have bounded files_in_play")
+        if not bead.checks:
+            warnings.append("afk_candidate bead should list checks")
+        if not stop_if.strip():
+            warnings.append("afk_candidate bead should list stop conditions")
     if supporting_authority_hints:
         warnings.append(f"multiple apparent authority surfaces may be involved: {supporting_authority_hints[:6]}")
     if kind in IMPLEMENTATION_BEAD_KINDS and (not bead.parent_prd or bead.parent_prd == "none" or not bead.requirement_ids):
@@ -635,12 +990,27 @@ def decomposition_quality(bead: BeadRecord | None) -> dict[str, Any]:
     dependency_text = "\n".join([stop_if, handback]).lower()
     if not bead.depends_on and any(term in dependency_text for term in DEPENDENCY_HINT_TERMS):
         warnings.append("dependency hints appear in Stop If or Handback but depends_on is empty")
+    slice_text = "\n".join(
+        [
+            bead.title,
+            bead.primary_authority,
+            bead.sections.get("Objective", ""),
+            done_when,
+            handback,
+        ]
+    ).lower()
+    if kind in IMPLEMENTATION_BEAD_KINDS and any(term in slice_text for term in USER_FACING_TERMS) and any(term in slice_text for term in HORIZONTAL_SLICE_TERMS):
+        warnings.append("user-facing feature bead appears horizontal; prefer a first vertical slice with observable feedback")
 
     details = {
         "bead": bead.rel_path,
         "bead_kind": bead.bead_kind,
+        "delegation_mode": bead.delegation_mode,
+        "test_strategy": bead.test_strategy,
+        "review_context": bead.review_context,
         "primary_authority": bead.primary_authority,
         "files_in_play_count": len(files),
+        "broad_files_in_play": broad_files,
         "checks_count": len(bead.checks),
         "depends_on": bead.depends_on,
         "code_files_in_play": code_files,
@@ -756,7 +1126,7 @@ def prd_records(root: Path) -> list[dict[str, Any]]:
     if not prd_dir.is_dir():
         return records
     for path in sorted(prd_dir.glob("*.md")):
-        if path.name == "README.md":
+        if path.name == "PRD-SHARD-SCHEMA.md":
             continue
         doc = MarkdownDocument.load(path)
         rel = rel_path(path, root)
@@ -1644,6 +2014,489 @@ def follow_up_suggestion(bead: BeadRecord, close_state: dict[str, Any]) -> str:
     return "none"
 
 
+def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
+    warnings: list[str] = []
+    if not bead:
+        return {
+            "status": "warning",
+            "warnings": ["current bead is missing"],
+            "details": {
+                "plain_english_summary": "I cannot judge planning depth because there is no active bead.",
+                "user_decision": "repair state",
+                "why_this_matters": "Precode needs one active bead before it can tell whether planning is too light or too heavy.",
+                "stop_if": "Stop if the agent cannot name the active bead.",
+                "approval_prompt": "Ask the agent to repair active state before continuing.",
+                "advisory_only": True,
+            },
+        }
+
+    stop_text = (bead.sections.get("Stop If", "") or "").strip()
+    sensitive_text = " ".join(
+        [
+            bead.title,
+            bead.bead_kind,
+            bead.primary_authority,
+            " ".join(bead.requirement_ids),
+            " ".join(bead.files_in_play),
+            bead.sections.get("Objective", ""),
+            bead.sections.get("Done When", ""),
+            stop_text,
+        ]
+    ).lower()
+    sensitive_surface = any(term in sensitive_text for term in SENSITIVE_SURFACE_TERMS)
+    file_count = len(bead.files_in_play)
+    inferred_complexity = "standard"
+    if file_count <= 2 and not sensitive_surface:
+        inferred_complexity = "trivial"
+    elif file_count <= 5 and not sensitive_surface:
+        inferred_complexity = "narrow"
+    elif sensitive_surface:
+        inferred_complexity = "high-risk"
+    if file_count > 20:
+        inferred_complexity = "multi-system"
+
+    inferred_depth = "brief"
+    if inferred_complexity == "trivial":
+        inferred_depth = "none"
+    elif inferred_complexity == "standard":
+        inferred_depth = "PRD"
+    elif inferred_complexity == "high-risk":
+        inferred_depth = "PRD+architecture"
+    elif inferred_complexity == "multi-system":
+        inferred_depth = "PRD+architecture+test-plan"
+
+    inferred_autonomy = "supervised"
+    if sensitive_surface or inferred_complexity in {"high-risk", "multi-system"}:
+        inferred_autonomy = "human-only"
+
+    complexity = bead.complexity or inferred_complexity
+    required_depth = bead.required_planning_depth or inferred_depth
+    autonomy = bead.autonomy_level or inferred_autonomy
+    inferred_defaults = {
+        "complexity": {"value": inferred_complexity, "used": not bool(bead.complexity)},
+        "required_planning_depth": {"value": inferred_depth, "used": not bool(bead.required_planning_depth)},
+        "autonomy_level": {"value": inferred_autonomy, "used": not bool(bead.autonomy_level)},
+    }
+
+    if bead.complexity and bead.complexity not in COMPLEXITY_LEVELS:
+        warnings.append(f"unknown complexity `{bead.complexity}`")
+    if bead.required_planning_depth and bead.required_planning_depth not in REQUIRED_PLANNING_DEPTHS:
+        warnings.append(f"unknown required_planning_depth `{bead.required_planning_depth}`")
+    if bead.autonomy_level and bead.autonomy_level not in AUTONOMY_LEVELS:
+        warnings.append(f"unknown autonomy_level `{bead.autonomy_level}`")
+
+    if bead.complexity == "trivial" and file_count > 5:
+        warnings.append("trivial bead has more than 5 files in play; consider narrow or split scope")
+    if complexity in {"high-risk", "multi-system"}:
+        if required_depth in {"", "none", "brief"}:
+            warnings.append("high-risk or multi-system bead should require PRD+architecture planning depth or stronger")
+        if not any(tier in {"integration", "browser", "manual", "external"} for tier in bead.verification_type):
+            warnings.append("high-risk or multi-system bead should include runtime, manual, or external verification")
+        if not stop_text:
+            warnings.append("high-risk or multi-system bead should name stop conditions")
+    if sensitive_surface and required_depth in {"", "none", "brief"}:
+        warnings.append("sensitive-surface bead should not use none/brief planning depth without explicit rationale")
+    if autonomy == "bounded-afk":
+        if not bead.checks:
+            warnings.append("bounded-afk bead needs explicit checks")
+        if not stop_text:
+            warnings.append("bounded-afk bead needs explicit stop conditions")
+        if file_count > 20:
+            warnings.append("bounded-afk bead exceeds the 20-file operating limit")
+    if autonomy == "human-only":
+        gate_text = " ".join([stop_text, bead.handback, bead.closeout.get("blocked_escape", "")]).lower()
+        if not any(term in gate_text for term in ("manual", "approval", "human", "user", "dashboard", "external")):
+            warnings.append("human-only bead should name the manual gate, approval, or human-owned action")
+
+    if warnings:
+        user_decision = "approval needed" if sensitive_surface or autonomy == "human-only" else "ask for proof"
+        summary = "This bead may need clearer planning, proof, or human approval before a beginner should trust it."
+        stop_if = "Stop if the agent cannot explain the planning depth, checks, stop conditions, or approval gate in plain English."
+        approval_prompt = "Ask the agent what planning or approval is missing before continuing."
+    else:
+        user_decision = "continue"
+        summary = "The planning depth looks proportionate for this bead."
+        stop_if = "Stop if the task grows beyond the named files, risk, or checks."
+        approval_prompt = "No extra planning approval is suggested by adaptive depth."
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "complexity": complexity,
+            "required_planning_depth": required_depth,
+            "autonomy_level": autonomy,
+            "files_in_play_count": file_count,
+            "checks_count": len(bead.checks),
+            "verification_type": bead.verification_type,
+            "sensitive_surface_detected": sensitive_surface,
+            "inferred_defaults": inferred_defaults,
+            "plain_english_summary": summary,
+            "user_decision": user_decision,
+            "why_this_matters": "Adaptive depth keeps tiny work light while asking for more planning and proof when risk rises.",
+            "stop_if": stop_if,
+            "approval_prompt": approval_prompt,
+            "advisory_only": True,
+        },
+    }
+
+
+def git_status_changed_paths(root: Path) -> tuple[list[str], str | None]:
+    if not (root / ".git").exists():
+        return [], "git status unavailable: workspace root is not a git checkout"
+    result = subprocess.run(["git", "status", "--short"], cwd=root, check=False, capture_output=True, text=True)
+    if result.returncode != 0:
+        message = (result.stderr or result.stdout or "git status unavailable").strip()
+        return [], message
+    paths: list[str] = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        value = line[3:].strip() if len(line) > 3 else line.strip()
+        if " -> " in value:
+            value = value.split(" -> ", 1)[1]
+        paths.append(value)
+    return paths, None
+
+
+def path_matches_scope(path: str, allowed: str) -> bool:
+    cleaned_path = path.strip().strip('"')
+    cleaned_allowed = allowed.strip().strip('"').rstrip("/")
+    if not cleaned_path or not cleaned_allowed:
+        return False
+    return cleaned_path == cleaned_allowed or cleaned_path.startswith(f"{cleaned_allowed}/")
+
+
+def generated_guardrail_allowed(path: str) -> bool:
+    return (
+        path in {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
+        or path.startswith("logs/")
+        or path.endswith(".pyc")
+        or "/__pycache__/" in path
+    )
+
+
+def command_classification(command: str, bead: BeadRecord | None) -> dict[str, Any]:
+    command_text = command.strip()
+    lower = command_text.lower()
+    if not command_text:
+        return {}
+
+    bead_text = ""
+    if bead:
+        bead_text = " ".join(
+            [
+                bead.title,
+                bead.bead_kind,
+                bead.primary_authority,
+                " ".join(bead.files_in_play),
+                bead.sections.get("Objective", ""),
+                bead.sections.get("Done When", ""),
+                bead.sections.get("Stop If", ""),
+            ]
+        ).lower()
+    sensitive_surface = any(term in lower or term in bead_text for term in SENSITIVE_SURFACE_TERMS | COMMAND_SENSITIVE_TERMS)
+
+    if any(term in lower for term in COMMAND_DESTRUCTIVE_TERMS):
+        tool_class = "destructive"
+        user_decision = "stop"
+        summary = "This command looks destructive. Stop and get explicit approval before running it."
+        approval_prompt = "Ask the user to approve the exact destructive command, expected effect, rollback or escape path, and evidence plan."
+    elif any(term in lower for term in COMMAND_SENSITIVE_TERMS):
+        tool_class = "secret_bearing" if any(term in lower for term in ("secret", "token", "credential", "password", ".env")) else "external_mutation"
+        user_decision = "approval needed"
+        summary = "This command touches a sensitive surface. Ask for approval before running it."
+        approval_prompt = "Ask the user to approve the exact sensitive action, scope, risk, and rollback or blocked escape path."
+    elif any(term in lower for term in COMMAND_EXTERNAL_MUTATION_TERMS):
+        tool_class = "external_mutation"
+        user_decision = "approval needed"
+        summary = "This command may mutate an external service or shared branch. Ask for approval before running it."
+        approval_prompt = "Ask the user to approve the exact external mutation and recovery plan."
+    elif any(term in lower for term in COMMAND_GENERATED_REFRESH_TERMS):
+        tool_class = "generated_refresh"
+        user_decision = "continue"
+        summary = "This command looks like a generated Precode refresh. It can continue, but it is not proof by itself."
+        approval_prompt = "No special approval suggested; record separate checks if this is evidence for done."
+    elif any(term in lower for term in COMMAND_VERIFICATION_TERMS):
+        tool_class = "verification"
+        user_decision = "continue"
+        summary = "This command looks like verification. It is safe to run as evidence if it stays inside the current bead."
+        approval_prompt = "No special approval suggested."
+    elif any(term in lower for term in COMMAND_LOCAL_MUTATION_TERMS):
+        tool_class = "local_mutation"
+        if sensitive_surface:
+            user_decision = "approval needed"
+            summary = "This command may change local files on a sensitive bead. Ask for approval before running it."
+            approval_prompt = "Ask the user to approve the sensitive local mutation, expected files, and rollback or escape path."
+        else:
+            user_decision = "continue"
+            summary = "This command may change local project files. Continue only if the paths stay inside files_in_play."
+            approval_prompt = "Ask for approval if this widens scope, installs dependencies, or touches sensitive files."
+    else:
+        tool_class = "read_only"
+        user_decision = "continue"
+        summary = "This command does not look destructive or sensitive from its summary."
+        approval_prompt = "No special approval suggested."
+
+    return {
+        "command": command_text,
+        "class": tool_class,
+        "user_decision": user_decision,
+        "plain_english_summary": summary,
+        "why_this_matters": "Non-technical builders need command risk translated before a tool mutates files, services, secrets, or production state.",
+        "stop_if": "Stop if the command deletes, force-resets, migrates, deploys, exposes secrets, or touches production without explicit approval.",
+        "approval_prompt": approval_prompt,
+        "sensitive_surface_detected": sensitive_surface,
+        "advisory_only": True,
+    }
+
+
+def files_in_play_guardrail(root: Path, bead: BeadRecord | None, command: str = "", edit_lock: bool = False) -> dict[str, Any]:
+    warnings: list[str] = []
+    changed_paths, git_warning = git_status_changed_paths(root)
+    if git_warning:
+        warnings.append(git_warning)
+
+    allowed = bead.files_in_play if bead else []
+    out_of_scope = [
+        path
+        for path in changed_paths
+        if not generated_guardrail_allowed(path) and not any(path_matches_scope(path, item) for item in allowed)
+    ]
+    if out_of_scope:
+        warnings.append(f"changed paths outside active bead files_in_play: {out_of_scope[:12]}")
+    if bead and not allowed:
+        warnings.append("active bead has no files_in_play for mutation guardrail comparison")
+    command_state = command_classification(command, bead) if command else {}
+    if command_state and command_state.get("user_decision") in {"approval needed", "stop"}:
+        warnings.append(str(command_state.get("plain_english_summary")))
+
+    edit_lock_state = {
+        "enabled": edit_lock,
+        "allowed_paths": allowed,
+        "generated_outputs_allowed": ["logs/*", "OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"],
+        "advisory_only": True,
+    }
+    if edit_lock and out_of_scope:
+        edit_lock_state["user_decision"] = "stop"
+        edit_lock_state["plain_english_summary"] = "The optional edit lock found changed paths outside this bead. Stop and ask whether this is a separate bead."
+    elif edit_lock:
+        edit_lock_state["user_decision"] = "continue"
+        edit_lock_state["plain_english_summary"] = "The optional edit lock did not find changed paths outside this bead."
+
+    if out_of_scope:
+        user_decision = "stop"
+        summary = "The agent appears to have changed files outside the approved task. Stop and ask whether this is generated evidence, current-bead work, or a separate bead."
+        stop_if = "Stop if any changed path is outside files_in_play and is not generated Precode output."
+        approval_prompt = "Ask the user whether to narrow the change, split a follow-up bead, or explicitly approve the scope change."
+    elif command_state:
+        user_decision = str(command_state.get("user_decision") or "continue")
+        summary = str(command_state.get("plain_english_summary") or "Command risk was classified.")
+        stop_if = str(command_state.get("stop_if") or "Stop if command scope or risk is unclear.")
+        approval_prompt = str(command_state.get("approval_prompt") or "No special approval suggested.")
+    else:
+        user_decision = "continue"
+        summary = "No out-of-scope changed files were detected by this advisory guardrail."
+        stop_if = "Stop if future edits touch files outside files_in_play, sensitive surfaces, or generated reports as if they were task authority."
+        approval_prompt = "No extra approval suggested by files-in-play."
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path if bead else "missing",
+            "advisory_only": True,
+            "changed_paths": changed_paths,
+            "allowed_paths": allowed,
+            "out_of_scope_paths": out_of_scope,
+            "generated_outputs_allowed": ["logs/*", "OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"],
+            "git_status_available": git_warning is None,
+            "plain_english_summary": summary,
+            "user_decision": user_decision,
+            "why_this_matters": "Files in play are the beginner-readable boundary for what the agent is allowed to change during this bead.",
+            "stop_if": stop_if,
+            "approval_prompt": approval_prompt,
+            "command_classification": command_state,
+            "edit_lock": edit_lock_state,
+        },
+    }
+
+
+def next_step_guidance(
+    todo: dict[str, Any],
+    bead: BeadRecord | None,
+    promotion_state: dict[str, Any],
+    completion_state: dict[str, Any],
+    workflow_state: dict[str, Any],
+    depth_state: dict[str, Any],
+    guardrail_state: dict[str, Any],
+    goal_frame_state: dict[str, Any],
+) -> dict[str, Any]:
+    warnings: list[str] = []
+    todo_sections = todo.get("sections") or {}
+    open_questions = str(todo_sections.get("Open Questions", "")).strip()
+    blockers: list[str] = []
+    action = "repair active state before continuing"
+    category = "state-repair"
+    user_decision = "repair state"
+    summary = "Repair Precode state before continuing."
+    stop_if = "Stop if the agent cannot name the active bead, authority file, files in play, and checks."
+    approval_prompt = "Ask the agent to repair active state before editing."
+
+    if not bead:
+        blockers.append("current bead is missing")
+    else:
+        closeout_blockers = (completion_state.get("details") or {}).get("closeout_blockers") or []
+        promotion_blockers = promotion_state.get("blockers") or []
+        guard_details = guardrail_state.get("details") or {}
+        out_of_scope = guard_details.get("out_of_scope_paths") or []
+        if bead.status in {"needs_info", "manual_testing"}:
+            category = "unblock"
+            action = "record the missing input, owner, and blocked escape path or create a narrow unblocker bead"
+            user_decision = "ask for missing info"
+            summary = "Do not code around the blocker. Name the missing input, owner, and safe escape path."
+            stop_if = "Stop if the agent proposes a workaround instead of documenting the blocker or creating a narrow unblocker bead."
+            approval_prompt = "Ask the user for the missing input or approval to create a narrow unblocker bead."
+        elif out_of_scope:
+            category = "scope-repair"
+            action = "stop and resolve changed files outside the active bead before continuing"
+            user_decision = "stop"
+            summary = "Stop: changed files appear outside the approved task."
+            stop_if = "Stop until each out-of-scope path is explained as generated evidence, current-bead work, or a separate follow-up."
+            approval_prompt = "Ask the user whether to revert, split, or explicitly approve the scope change."
+        elif promotion_state.get("eligible"):
+            category = "transition-approval"
+            action = "review the transition proposal; user approval is required before activating the next bead"
+            user_decision = "approve transition"
+            summary = "Review the proposed next bead. Do not activate it until the user approves the transition."
+            stop_if = "Stop if acceptance evidence or next-bead readiness is unclear."
+            approval_prompt = "Ask the user whether to approve the transition with `python3 scripts/bead-transition.py --approve`."
+        elif bead.status in {"review", "done"}:
+            category = "review"
+            action = "resolve promotion blockers before proposing or approving the next bead"
+            blockers.extend(str(item) for item in promotion_blockers[:6])
+            user_decision = "review"
+            summary = "Review the evidence and blockers before accepting, revising, splitting, or blocking the bead."
+            stop_if = "Stop if the recommendation relies on confidence instead of recorded evidence."
+            approval_prompt = "Ask the user for a review decision: accepted, revise, split, blocked, or stop."
+        elif closeout_blockers:
+            category = "closeout"
+            action = "finish active bead evidence, manual verification, and review decision"
+            blockers.extend(str(item) for item in closeout_blockers[:6])
+            user_decision = "ask for proof"
+            summary = "The work may be close, but proof or review evidence is missing."
+            stop_if = "Stop if checks, manual verification, or review decision are missing."
+            approval_prompt = "Ask the agent to record the missing proof before accepting work."
+        else:
+            category = "execute"
+            action = "work only inside the active bead, then run and record its declared checks"
+            user_decision = "continue"
+            summary = "Continue inside the active bead only, then record the declared checks."
+            stop_if = "Stop if scope widens, sensitive work appears, files drift outside files_in_play, or the proof path becomes unclear."
+            approval_prompt = "No new approval is suggested before continuing the current approved bead."
+
+    if open_questions and "none" not in open_questions.lower():
+        warnings.append("tasks/todo.md has open questions that may need resolution before implementation")
+    if depth_state.get("status") == "warning":
+        depth_warnings = depth_state.get("warnings") or []
+        if depth_warnings:
+            warnings.append(f"adaptive depth affects this decision: {depth_warnings[0]}")
+            if category == "execute":
+                category = "depth-review"
+                user_decision = "ask for proof"
+                summary = "Before continuing, ask whether the bead needs more planning, checks, stop conditions, or approval."
+                approval_prompt = "Ask the agent to explain the adaptive-depth warning in plain English."
+    guard_details = guardrail_state.get("details") or {}
+    if guard_details.get("out_of_scope_paths"):
+        warnings.append("files-in-play guardrail found out-of-scope changed files")
+    goal_details = goal_frame_state.get("details") or {}
+    current_goal = goal_details.get("current") or {}
+    if current_goal:
+        goal_status = str(current_goal.get("status") or "draft")
+        if goal_status == "reaffirm_needed":
+            warnings.append("current Goal Frame requires reaffirmation before guiding workflow")
+            if category == "execute":
+                category = "goal-reaffirmation"
+                user_decision = "ask for reaffirmation"
+                summary = "Reaffirm the current Goal Frame before using it to guide workflow."
+                action = "ask the user whether the current Goal Frame still applies"
+                stop_if = "Stop if the Goal Frame is stale, conflicts with the active bead, or starts acting like a task list."
+                approval_prompt = "Ask the user to reaffirm, revise, or retire the Goal Frame before using it for workflow guidance."
+        elif goal_status == "active":
+            warnings.extend(str(warning) for warning in (goal_frame_state.get("warnings") or [])[:3])
+    elif goal_frame_state.get("warnings"):
+        warnings.append("Goal Frame warnings exist, but no current active Goal Frame was selected")
+
+    recovery_flow, beginner_prompt = recovery_prompt_for_next_step(category, warnings, blockers)
+
+    return {
+        "status": "warning" if warnings or blockers else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path if bead else todo.get("current_bead") or "missing",
+            "current_bead_status": bead.status if bead else "missing",
+            "recommended_action": action,
+            "action_category": category,
+            "plain_english_summary": summary,
+            "user_decision": user_decision,
+            "why_this_matters": "Precode should reduce the beginner's next decision to continue, ask, review, approve, repair, or stop.",
+            "stop_if": stop_if,
+            "approval_prompt": approval_prompt,
+            "blockers": sorted(set(blockers)),
+            "open_questions": open_questions or "none",
+            "needs_prd": bool((workflow_state.get("details") or {}).get("artifact_to_produce_next") == "PRD shard"),
+            "needs_review": category in {"review", "transition-approval", "closeout"},
+            "needs_transition": bool(promotion_state.get("eligible")),
+            "next_bead": promotion_state.get("next_bead") or "not recorded",
+            "goal_frame": current_goal or {},
+            "goal_frame_advisory": "Goal Frames can guide workflow selection only; they cannot choose tasks, approve transitions, or override active memory.",
+            "recovery_flow": recovery_flow,
+            "recovery_protocol": "tasks/reference/RECOVERY-PROTOCOL.md",
+            "beginner_prompt": beginner_prompt,
+            "advisory_only": True,
+        },
+    }
+
+
+def recovery_prompt_for_next_step(category: str, warnings: list[str], blockers: list[str]) -> tuple[str, str]:
+    warning_text = " ".join(warnings).lower()
+    blocker_text = " ".join(blockers).lower()
+    combined = f"{warning_text} {blocker_text}"
+    if "generated report" in combined or "generated-report" in combined:
+        return (
+            "generated-report-confusion",
+            "Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit generated reports or treat them as authority.",
+        )
+    prompts = {
+        "state-repair": (
+            "active-state-repair",
+            "Use the Recovery Protocol for active-state repair. Stop before editing, identify the owner file, then validate memory and state.",
+        ),
+        "scope-repair": (
+            "scope-expansion",
+            "Use the Recovery Protocol for scope expansion. Explain each out-of-scope path as generated evidence, current-bead work, or separate follow-up before continuing.",
+        ),
+        "closeout": (
+            "missing-proof",
+            "Use the Recovery Protocol for missing proof. Name the missing checks or manual verification before accepting the work.",
+        ),
+        "unblock": (
+            "blocked-work",
+            "Use the Recovery Protocol for blocked work. Record the missing input, owner, and escape path instead of coding around the blocker.",
+        ),
+        "depth-review": (
+            "planning-or-proof-review",
+            "Use the Recovery Protocol for unclear proof or planning depth. Stop and ask whether the work needs stronger checks, stop conditions, or approval.",
+        ),
+        "goal-reaffirmation": (
+            "context-reaffirmation",
+            "Use the Recovery Protocol for context confusion. Reaffirm the Goal Frame before letting it guide workflow.",
+        ),
+    }
+    return prompts.get(category, ("none", ""))
+
+
 def gather_markdown_docs(root: Path) -> list[Path]:
     patterns = [
         "*.md",
@@ -1651,7 +2504,7 @@ def gather_markdown_docs(root: Path) -> list[Path]:
         "tasks/**/*.md",
         "modes/*.md",
         ".github/copilot-instructions.md",
-        "logs/README.md",
+        "logs/LOG-EVIDENCE-TAXONOMY.md",
         ".claude/commands/*.md",
         ".claude/rules/*.md",
     ]
@@ -1676,6 +2529,8 @@ def surface_group(rel: str) -> str:
         return "prd"
     if rel.startswith("tasks/reference/"):
         return "reference"
+    if rel.startswith("tasks/templates/"):
+        return "template"
     if rel.startswith("modes/"):
         return "mode"
     if rel.startswith("logs/"):
@@ -1738,8 +2593,8 @@ def maintained_markdown_docs(root: Path) -> list[Path]:
     return [
         path
         for path in gather_markdown_docs(root)
-        if rel_path(path, root) not in {"OS-HEALTH.md", "PROGRESS.md"}
-        and (not rel_path(path, root).startswith("logs/") or rel_path(path, root) == "logs/README.md")
+        if rel_path(path, root) not in {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
+        and (not rel_path(path, root).startswith("logs/") or rel_path(path, root) == "logs/LOG-EVIDENCE-TAXONOMY.md")
     ]
 
 
@@ -1752,11 +2607,293 @@ def workflow_paths(root: Path) -> list[Path]:
 
 def generated_output_paths(root: Path) -> list[Path]:
     paths: set[Path] = set()
-    for pattern in ("OS-HEALTH.md", "PROGRESS.md", "logs/*.md", "logs/*.json", "logs/*.jsonl"):
+    for pattern in ("OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md", "logs/*.md", "logs/*.json", "logs/*.jsonl"):
         for path in root.glob(pattern):
-            if path.is_file() and rel_path(path, root) != "logs/README.md":
+            if path.is_file() and rel_path(path, root) != "logs/LOG-EVIDENCE-TAXONOMY.md":
                 paths.add(path)
     return sorted(paths)
+
+
+def file_size(path: Path) -> int:
+    try:
+        if path.is_file():
+            return path.stat().st_size
+        if path.is_dir():
+            return sum(item.stat().st_size for item in path.rglob("*") if item.is_file())
+    except OSError:
+        return 0
+    return 0
+
+
+def git_command(root: Path, args: list[str]) -> subprocess.CompletedProcess[str] | None:
+    try:
+        return subprocess.run(
+            ["git", *args],
+            cwd=root,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except OSError:
+        return None
+
+
+def git_available(root: Path) -> bool:
+    result = git_command(root, ["rev-parse", "--is-inside-work-tree"])
+    return bool(result and result.returncode == 0 and result.stdout.strip() == "true")
+
+
+def git_ignored(root: Path, rel: str) -> bool:
+    result = git_command(root, ["check-ignore", "--quiet", rel])
+    return bool(result and result.returncode == 0)
+
+
+def git_tracked(root: Path, rel: str) -> bool:
+    result = git_command(root, ["ls-files", "--error-unmatch", rel])
+    return bool(result and result.returncode == 0)
+
+
+def protected_evidence_outputs(root: Path, beads: list[Bead], check_results: list[dict[str, Any]], current_bead: Bead | None) -> set[str]:
+    protected_beads: set[str] = set()
+    if current_bead:
+        protected_beads.add(current_bead.rel_path)
+    for bead in beads:
+        review_decision = normalize_inline_status_value(bead.closeout.get("review_decision", ""))
+        if bead.status != "done" or not any(marker in review_decision for marker in APPROVED_MARKERS):
+            protected_beads.add(bead.rel_path)
+
+    outputs: set[str] = set()
+    for row in check_results:
+        output = str(row.get("output") or "").strip()
+        if output and row.get("bead") in protected_beads:
+            outputs.add(output)
+    return outputs
+
+
+def local_hygiene_summary(
+    root: Path,
+    beads: list[Bead],
+    check_results: list[dict[str, Any]],
+    current_bead: Bead | None,
+    *,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    warnings: list[str] = []
+    now = now or datetime.now(timezone.utc)
+    cutoff = now.timestamp() - (LOCAL_HYGIENE_RETENTION_DAYS * 24 * 60 * 60)
+    protected_outputs = protected_evidence_outputs(root, beads, check_results, current_bead)
+
+    missing_referenced_outputs: list[str] = []
+    for row in check_results:
+        output = str(row.get("output") or "").strip()
+        if output and not (root / output).is_file():
+            missing_referenced_outputs.append(output)
+    if missing_referenced_outputs:
+        warnings.append(f"{len(set(missing_referenced_outputs))} referenced check-output file(s) are missing")
+
+    bulky_outputs: list[dict[str, Any]] = []
+    protected_bulky_outputs: list[dict[str, Any]] = []
+    for directory in sorted(LOCAL_HYGIENE_BULKY_LOG_DIRS):
+        base = root / directory
+        if not base.is_dir():
+            continue
+        for path in sorted(item for item in base.rglob("*") if item.is_file()):
+            rel = rel_path(path, root)
+            mtime = file_mtime(path) or datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+            item = {
+                "path": rel,
+                "bytes": file_size(path),
+                "mtime": mtime.isoformat(),
+                "age_days": max(0, int((now - mtime).total_seconds() // 86400)),
+                "rule": f"bulky generated output older than {LOCAL_HYGIENE_RETENTION_DAYS} days",
+            }
+            if rel in protected_outputs:
+                protected_bulky_outputs.append({**item, "reason": "referenced by current or unaccepted bead evidence"})
+                continue
+            if path.stat().st_mtime < cutoff:
+                bulky_outputs.append(item)
+
+    if bulky_outputs:
+        warnings.append(f"{len(bulky_outputs)} bulky log output file(s) exceed {LOCAL_HYGIENE_RETENTION_DAYS}-day retention")
+
+    logs_dir = root / "logs"
+    unexpected_logs: list[str] = []
+    if logs_dir.is_dir():
+        for path in sorted(item for item in logs_dir.rglob("*") if item.is_file()):
+            rel = rel_path(path, root)
+            top_family = "/".join(rel.split("/")[:2])
+            if top_family in LOCAL_HYGIENE_BULKY_LOG_DIRS:
+                continue
+            if rel not in LOCAL_HYGIENE_EXPECTED_LOG_FILES:
+                unexpected_logs.append(rel)
+    if unexpected_logs:
+        warnings.append(f"{len(unexpected_logs)} unexpected file(s) found under logs/")
+
+    git_ok = git_available(root)
+    cache_candidates: list[dict[str, Any]] = []
+    cache_observed_not_candidate: list[dict[str, Any]] = []
+    for path in sorted(root.rglob("*")):
+        if not path.is_dir() or path.name not in LOCAL_HYGIENE_CACHE_NAMES:
+            continue
+        rel = rel_path(path, root)
+        if rel.startswith(".git/") or rel == ".git":
+            continue
+        ignored = git_ignored(root, rel) if git_ok else False
+        tracked = git_tracked(root, rel) if git_ok else False
+        item = {
+            "path": rel,
+            "bytes": file_size(path),
+            "rule": "known cache/build/dependency directory that is ignored or untracked",
+            "git_ignored": ignored,
+            "git_tracked": tracked,
+            "git_available": git_ok,
+        }
+        if ignored or (git_ok and not tracked):
+            cache_candidates.append(item)
+        else:
+            cache_observed_not_candidate.append({**item, "reason": "not proven ignored or untracked"})
+
+    if cache_candidates:
+        warnings.append(f"{len(cache_candidates)} ignored or untracked cache/build directorie(s) are cleanup candidates")
+
+    details = {
+        "retention_days": LOCAL_HYGIENE_RETENTION_DAYS,
+        "advisory_only": True,
+        "cleanup_modes_enabled": [],
+        "next_safe_action": "review candidates; no files are moved, deleted, archived, or compacted by Local Hygiene v1",
+        "bulky_log_candidates": bulky_outputs,
+        "bulky_log_candidate_count": len(bulky_outputs),
+        "bulky_log_candidate_bytes": sum(item["bytes"] for item in bulky_outputs),
+        "cache_candidates": cache_candidates,
+        "cache_candidate_count": len(cache_candidates),
+        "cache_candidate_bytes": sum(item["bytes"] for item in cache_candidates),
+        "protected_evidence_outputs": sorted(protected_outputs),
+        "protected_bulky_outputs": protected_bulky_outputs,
+        "unexpected_logs": unexpected_logs,
+        "missing_referenced_outputs": sorted(set(missing_referenced_outputs)),
+        "cache_observed_not_candidate": cache_observed_not_candidate,
+        "generated_preview_files": ["logs/local-hygiene-preview.json", "logs/local-hygiene-preview.md"],
+        "truth_is_not_cleanup": True,
+    }
+    return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
+
+
+def local_hygiene_preview_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
+    details = summary.get("details") if isinstance(summary.get("details"), dict) else {}
+    actions: list[dict[str, Any]] = []
+    for item in details.get("bulky_log_candidates") or []:
+        if not isinstance(item, dict):
+            continue
+        actions.append(
+            {
+                "action": "would_archive_log_output",
+                "path": item.get("path"),
+                "bytes": item.get("bytes", 0),
+                "reason": item.get("rule"),
+                "mutates_now": False,
+            }
+        )
+    for item in details.get("cache_candidates") or []:
+        if not isinstance(item, dict):
+            continue
+        actions.append(
+            {
+                "action": "would_delete_cache",
+                "path": item.get("path"),
+                "bytes": item.get("bytes", 0),
+                "reason": item.get("rule"),
+                "mutates_now": False,
+            }
+        )
+    for path in details.get("protected_evidence_outputs") or []:
+        actions.append(
+            {
+                "action": "protected",
+                "path": path,
+                "reason": "referenced by current or unaccepted bead evidence",
+                "mutates_now": False,
+            }
+        )
+
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "status": summary.get("status", "missing"),
+        "advisory_only": True,
+        "mutates_files": False,
+        "warnings": summary.get("warnings") or [],
+        "summary": {
+            "would_archive_log_output": sum(1 for action in actions if action.get("action") == "would_archive_log_output"),
+            "would_delete_cache": sum(1 for action in actions if action.get("action") == "would_delete_cache"),
+            "protected": sum(1 for action in actions if action.get("action") == "protected"),
+            "candidate_bytes": int(details.get("bulky_log_candidate_bytes") or 0) + int(details.get("cache_candidate_bytes") or 0),
+        },
+        "actions": actions,
+        "source": "scripts/local-hygiene-dry-run.py",
+        "next_safe_action": details.get("next_safe_action") or "review candidates only",
+    }
+
+
+def render_local_hygiene_preview_markdown(preview: dict[str, Any]) -> str:
+    actions = preview.get("actions") if isinstance(preview.get("actions"), list) else []
+    rows = []
+    for action in actions:
+        if not isinstance(action, dict):
+            continue
+        rows.append(
+            "| "
+            + " | ".join(
+                [
+                    str(action.get("action") or "missing"),
+                    f"`{action.get('path') or 'missing'}`",
+                    str(action.get("bytes", "")),
+                    str(action.get("reason") or "").replace("|", "\\|"),
+                ]
+            )
+            + " |"
+        )
+    table = "\n".join(
+        [
+            "| Action | Path | Bytes | Reason |",
+            "| --- | --- | --- | --- |",
+            *rows,
+        ]
+    ) if rows else "- No local hygiene actions would be taken."
+
+    warnings = preview.get("warnings") if isinstance(preview.get("warnings"), list) else []
+    summary = preview.get("summary") if isinstance(preview.get("summary"), dict) else {}
+    return f"""# Precode OS -- Local Hygiene Dry-Run Preview
+<!-- ANCHOR: local-hygiene-preview -->
+
+> AUTHORITY: Generated preview of local hygiene archive/delete candidates.
+> NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, bead state, cleanup approval, archive approval, delete approval, or generated progress state.
+> LOAD_WHEN: Reviewing local hygiene candidates; never as active session memory or cleanup permission.
+> CLASS: generated
+>
+> Generated from `scripts/local-hygiene-dry-run.py`.
+> Do not use this file as active memory.
+> This dry-run does not move, delete, archive, compact, or rewrite candidate files.
+
+Generated at: `{preview.get('generated_at')}`
+
+## Summary
+
+- Status: {preview.get('status', 'missing')}
+- Advisory only: {preview.get('advisory_only', True)}
+- Mutates files: {preview.get('mutates_files', False)}
+- Would archive log outputs: {summary.get('would_archive_log_output', 0)}
+- Would delete caches: {summary.get('would_delete_cache', 0)}
+- Protected evidence entries: {summary.get('protected', 0)}
+- Candidate bytes: {summary.get('candidate_bytes', 0)}
+- Next safe action: {preview.get('next_safe_action', 'review candidates only')}
+
+## Warnings
+
+{chr(10).join(f"- {warning}" for warning in warnings) if warnings else "- No local hygiene warnings."}
+
+## Planned Actions
+
+{table}
+"""
 
 
 def inventory_family_for(rel: str) -> str:
@@ -1770,6 +2907,8 @@ def inventory_family_for(rel: str) -> str:
         return "mode"
     if rel.startswith("tasks/reference/"):
         return "reference-protocol"
+    if rel.startswith("tasks/templates/"):
+        return "template"
     if rel.startswith("tasks/beads/"):
         return "bead-doc"
     if rel.startswith("tasks/prds/"):
@@ -1782,7 +2921,7 @@ def inventory_family_for(rel: str) -> str:
         return "workflow"
     if rel.startswith("logs/"):
         return "generated-evidence"
-    if rel in {"OS-HEALTH.md", "PROGRESS.md"}:
+    if rel in {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}:
         return "generated-report"
     return "root-doc"
 
@@ -1792,6 +2931,7 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
         return True
     family_tokens = [
         ("tasks/reference/", "`tasks/reference/*.md`"),
+        ("tasks/templates/", "`tasks/templates/*.md`"),
         ("tasks/beads/", "`tasks/beads/*.md`"),
         ("tasks/prds/", "`tasks/prds/*.md`"),
         ("scripts/", "`scripts/*.py`"),
@@ -1869,7 +3009,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
             {
                 "path": rel,
                 "family": inventory_family_for(rel),
-                "documented_as_family": rel.startswith("logs/") and rel != "logs/README.md",
+                "documented_as_family": rel.startswith("logs/") and rel != "logs/LOG-EVIDENCE-TAXONOMY.md",
                 "generated_demotion": demoted,
             }
         )
@@ -1903,7 +3043,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
 
 
 def shared_command_surface(root: Path) -> list[str]:
-    adapter_index_doc = MarkdownDocument.load(root / "adapters" / "README.md")
+    adapter_index_doc = MarkdownDocument.load(root / "adapters" / "ADAPTER-INDEX.md")
     return [strip_inline_code(item) for item in bullet_items(adapter_index_doc.sections.get("Shared Command Surface", ""))]
 
 
@@ -2149,7 +3289,7 @@ def memory_card_paths(root: Path) -> list[Path]:
     return sorted(
         path
         for path in base.glob("*.md")
-        if path.name != "README.md" and not path.name.lower().startswith("memory-card-template")
+        if path.name != "MEMORY-CARD-FORMAT.md" and not path.name.lower().startswith("memory-card-template")
     )
 
 
@@ -2200,6 +3340,7 @@ def memory_summary(root: Path) -> dict[str, Any]:
     by_freshness: Counter[str] = Counter()
     promotion_needed: list[str] = []
     stale_or_superseded: list[str] = []
+    glossary_terms: list[dict[str, Any]] = []
 
     for path in memory_card_paths(root):
         rel = rel_path(path, root)
@@ -2213,6 +3354,7 @@ def memory_summary(root: Path) -> dict[str, Any]:
         sources = normalize_list(meta.get("source_pointers") if isinstance(meta.get("source_pointers"), list) else [meta.get("source_pointers")])
         topics = normalize_list(meta.get("topics") if isinstance(meta.get("topics"), list) else [meta.get("topics")])
         summary_text = section_excerpt(text, "Summary")
+        glossary_text = section_excerpt(text, "Project Glossary") or section_excerpt(text, "Glossary Terms") or section_excerpt(text, "Domain Terms")
 
         if category not in MEMORY_CATEGORIES:
             warnings.append(f"{rel} has missing or unsupported category")
@@ -2226,6 +3368,12 @@ def memory_summary(root: Path) -> dict[str, Any]:
             warnings.append(f"{rel} has no source pointers")
         if not summary_text:
             warnings.append(f"{rel} has no Summary section")
+        if category == "project_glossary":
+            normalized_glossary = " ".join(glossary_text.lower().split())
+            if not glossary_text or normalized_glossary in {"not applicable", "n/a", "none"}:
+                warnings.append(f"{rel} is a project_glossary card with no glossary terms section")
+            if not topics and not glossary_text:
+                warnings.append(f"{rel} is a project_glossary card with no topics or glossary terms")
 
         lower_text = text.lower()
         if any(term in lower_text for term in MEMORY_SECRET_TERMS):
@@ -2239,6 +3387,19 @@ def memory_summary(root: Path) -> dict[str, Any]:
             promotion_needed.append(rel)
         if freshness in {"stale", "superseded"} or status in {"superseded", "archived"}:
             stale_or_superseded.append(rel)
+        if category == "project_glossary":
+            glossary_terms.append(
+                {
+                    "path": rel,
+                    "title": title,
+                    "freshness": freshness or "missing",
+                    "status": status or "missing",
+                    "topics": topics,
+                    "authority_owner_if_promoted": str(meta.get("authority_owner_if_promoted") or "none"),
+                    "summary": " ".join(summary_text.split())[:240],
+                    "glossary_excerpt": " ".join(glossary_text.split())[:360],
+                }
+            )
 
         if category:
             by_category[category] += 1
@@ -2267,6 +3428,7 @@ def memory_summary(root: Path) -> dict[str, Any]:
         "card_count": len(cards),
         "by_category": dict(sorted(by_category.items())),
         "by_freshness": dict(sorted(by_freshness.items())),
+        "glossary_terms": glossary_terms,
         "promotion_needed": promotion_needed,
         "stale_or_superseded": stale_or_superseded,
         "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting.",
@@ -2325,6 +3487,7 @@ Use this index to find reviewed memory cards. Before acting, return to active me
 
 - Status: {memory.get('status', 'missing')}
 - Reviewed memory cards: {details.get('card_count', 0)}
+- Project glossary cards: {len(details.get('glossary_terms') or [])}
 - Promotion-needed cards: {len(details.get('promotion_needed') or [])}
 - Stale or superseded cards: {len(details.get('stale_or_superseded') or [])}
 
@@ -2338,7 +3501,7 @@ Use this index to find reviewed memory cards. Before acting, return to active me
 """
 
 
-def compile_state(root: Path) -> dict[str, Any]:
+def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
     branch = run_git(["rev-parse", "--abbrev-ref", "HEAD"], root) or "unknown"
     changed = [line for line in run_git(["status", "--short"], root).splitlines() if line.strip()]
@@ -2424,6 +3587,7 @@ def compile_state(root: Path) -> dict[str, Any]:
     current_tool_execution = tool_execution_quality(root, current_bead, tool_rows, check_results, changed)
     current_workflow_planning = workflow_planning(root, todo, current_bead, beads)
     current_long_horizon_planning = long_horizon_planning(root, todo, current_bead, beads)
+    current_goal_frame = goal_frame_summary(root, current_bead)
     current_completion_handoff = completion_handoff_quality(
         root,
         todo,
@@ -2434,9 +3598,22 @@ def compile_state(root: Path) -> dict[str, Any]:
         events,
         promotion_state,
     )
+    current_bead_depth = bead_depth_quality(current_bead)
+    current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)
+    current_next_step = next_step_guidance(
+        todo,
+        current_bead,
+        promotion_state,
+        current_completion_handoff,
+        current_workflow_planning,
+        current_bead_depth,
+        current_files_in_play_guardrail,
+        current_goal_frame,
+    )
     current_pattern_guidance = system_design_pattern_guidance(root, todo, current_bead, beads)
     current_memory = memory_summary(root)
     current_file_inventory = compile_file_inventory(root)
+    current_local_hygiene = local_hygiene_summary(root, beads, check_results, current_bead)
 
     loop_metrics = {
         "events": len(events),
@@ -2478,6 +3655,12 @@ def compile_state(root: Path) -> dict[str, Any]:
                 "files_in_play": bead.files_in_play,
                 "checks": bead.checks,
                 "verification_type": bead.verification_type,
+                "delegation_mode": bead.delegation_mode,
+                "test_strategy": bead.test_strategy,
+                "review_context": bead.review_context,
+                "complexity": bead.complexity,
+                "required_planning_depth": bead.required_planning_depth,
+                "autonomy_level": bead.autonomy_level,
             }
             for bead in beads
         ],
@@ -2493,10 +3676,15 @@ def compile_state(root: Path) -> dict[str, Any]:
         "tool_execution": current_tool_execution,
         "workflow_planning": current_workflow_planning,
         "long_horizon_planning": current_long_horizon_planning,
+        "goal_frame": current_goal_frame,
         "completion_handoff": current_completion_handoff,
+        "next_step": current_next_step,
+        "bead_depth": current_bead_depth,
+        "files_in_play_guardrail": current_files_in_play_guardrail,
         "pattern_guidance": current_pattern_guidance,
         "memory": current_memory,
         "file_inventory": current_file_inventory,
+        "local_hygiene": current_local_hygiene,
         "readiness": {
             "generated_at": now,
             "current_bead": current_rel,
@@ -2540,6 +3728,7 @@ def render_handoff_packet(payload: dict[str, Any]) -> str:
 > CLASS: generated
 >
 > Generated from `scripts/os_compiler.py`.
+> Generated by Precode OS, created by Dan Sears / Recode.
 > Do not use this file as active memory.
 > Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 
@@ -2591,6 +3780,89 @@ Generated at: `{payload.get('generated_at')}`
 """
 
 
+def render_precode_help(payload: dict[str, Any]) -> str:
+    next_step = payload.get("next_step") or {}
+    next_details = next_step.get("details") or {}
+    depth = payload.get("bead_depth") or {}
+    depth_details = depth.get("details") or {}
+    guardrail = payload.get("files_in_play_guardrail") or {}
+    guardrail_details = guardrail.get("details") or {}
+    goal_frame = payload.get("goal_frame") or {}
+    goal_details = goal_frame.get("details") or {}
+    current_goal = goal_details.get("current") or {}
+    blockers = next_details.get("blockers") or []
+
+    return f"""# Precode Help
+<!-- ANCHOR: precode-help -->
+
+> AUTHORITY: Generated next-step guidance for the current Precode OS workspace.
+> NOT_AUTHORITY: Active memory, task selection authority, product decisions, implementation plans, review acceptance, bead transition approval, or command approval.
+> LOAD_WHEN: A user wants a quick generated hint about what Precode expects next; never as active session memory.
+> CLASS: generated
+>
+> Generated from `scripts/os_compiler.py`.
+> Generated by Precode OS, created by Dan Sears / Recode.
+> Do not use this file as active memory.
+> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+
+Generated at: `{payload.get('generated_at')}`
+
+## Next Step
+
+- What to do now: {next_details.get('plain_english_summary', next_details.get('recommended_action', 'repair active state before continuing'))}
+- User decision: `{next_details.get('user_decision', 'repair state')}`
+- Active bead: `{next_details.get('current_bead', 'missing')}`
+- State: `{next_details.get('current_bead_status', 'missing')}`
+- Recommended action: {next_details.get('recommended_action', 'repair active state before continuing')}
+- Action category: `{next_details.get('action_category', 'unknown')}`
+- Stop if: {next_details.get('stop_if', 'stop if workflow, scope, evidence, or approval is unclear')}
+- Approval prompt: {next_details.get('approval_prompt', 'No approval prompt compiled.')}
+- Needs review: {next_details.get('needs_review', False)}
+- Needs transition approval: {next_details.get('needs_transition', False)}
+- Next bead: `{next_details.get('next_bead', 'not recorded')}`
+
+## Goal Frame
+
+- Status: {current_goal.get('status', 'none')}
+- Owner file: `{current_goal.get('path', 'not recorded')}`
+- Horizon: `{current_goal.get('horizon', 'not recorded')}`
+- Workflow guidance: `{current_goal.get('workflow_guidance', 'not recorded')}`
+- Goal: {current_goal.get('goal', 'not recorded')}
+- Reaffirmation trigger: {current_goal.get('reaffirmation_trigger', 'not recorded')}
+- Advisory warning: {next_details.get('goal_frame_advisory', 'Goal Frames are advisory only.')}
+
+{chr(10).join(f"- Warning: {warning}" for warning in (goal_frame.get('warnings') or [])) if goal_frame.get('warnings') else "- No Goal Frame warnings."}
+
+## Blockers
+
+{chr(10).join(f"- {blocker}" for blocker in blockers) if blockers else "- No compiled next-step blockers."}
+
+## Adaptive Depth
+
+- Status: {depth.get('status', 'missing')}
+- Complexity: `{depth_details.get('complexity', 'unspecified')}`
+- Required planning depth: `{depth_details.get('required_planning_depth', 'unspecified')}`
+- Autonomy level: `{depth_details.get('autonomy_level', 'unspecified')}`
+- User decision: `{depth_details.get('user_decision', 'continue')}`
+- Why this matters: {depth_details.get('why_this_matters', 'Adaptive depth keeps planning proportional to risk.')}
+- Stop if: {depth_details.get('stop_if', 'Stop if risk and planning depth do not match.')}
+
+{chr(10).join(f"- Warning: {warning}" for warning in (depth.get('warnings') or [])) if depth.get('warnings') else "- No adaptive-depth warnings."}
+
+## Files In Play Guardrail
+
+- Status: {guardrail.get('status', 'missing')}
+- Git status available: {guardrail_details.get('git_status_available', False)}
+- Changed paths: {len(guardrail_details.get('changed_paths') or [])}
+- Out-of-scope paths: {len(guardrail_details.get('out_of_scope_paths') or [])}
+- User decision: `{guardrail_details.get('user_decision', 'continue')}`
+- Why this matters: {guardrail_details.get('why_this_matters', 'Files in play keep edits inside the approved bead.')}
+- Stop if: {guardrail_details.get('stop_if', 'Stop if changed paths are outside files_in_play.')}
+
+{chr(10).join(f"- Warning: {warning}" for warning in (guardrail.get('warnings') or [])) if guardrail.get('warnings') else "- No files-in-play guardrail warnings."}
+"""
+
+
 def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "authority-map.json", payload["authority_map"])
     write_json(root / "logs" / "adapter-index.json", payload["adapter_index"])
@@ -2599,10 +3871,13 @@ def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "orchestration-map.json", payload["intent_orchestration"])
     write_json(root / "logs" / "workflow-map.json", payload["workflow_planning"])
     write_json(root / "logs" / "long-horizon-map.json", payload["long_horizon_planning"])
+    write_json(root / "logs" / "goal-frame.json", payload["goal_frame"])
     write_json(root / "logs" / "handoff-packet.json", payload["completion_handoff"])
+    write_json(root / "logs" / "next-step.json", payload["next_step"])
     write_json(root / "logs" / "pattern-guidance.json", payload["pattern_guidance"])
     write_json(root / "logs" / "memory-index.json", payload["memory"])
     (root / "logs" / "memory-index.md").write_text(render_memory_index_markdown(payload["memory"]), encoding="utf-8")
     write_json(root / "logs" / "file-inventory.json", payload["file_inventory"])
     (root / "logs" / "handoff-packet.md").write_text(render_handoff_packet(payload), encoding="utf-8")
+    (root / "PRECODE-HELP.md").write_text(render_precode_help(payload), encoding="utf-8")
     write_events_jsonl(root / "logs" / "os-events.jsonl", payload["events"])

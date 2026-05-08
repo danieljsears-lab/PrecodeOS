@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-27
+Document version: v0.1.1
+Last updated: 2026-05-03
 
 ---
 memory_id: MEMORY-000
@@ -36,6 +36,14 @@ topics:
 ## Source Notes
 
 - Cite the bead, PRD, diary entry, check, intake summary, or approved user note that supports this memory.
+
+## Project Glossary
+
+Use this section only when `category: project_glossary`; otherwise write `Not applicable`.
+
+| Term | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Authority owner if promoted |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
 
 ## Promotion Review
 
