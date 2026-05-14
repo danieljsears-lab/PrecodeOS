@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.30
-Last updated: 2026-05-13
+Document version: v0.1.31
+Last updated: 2026-05-14
 
 ## Purpose
 
@@ -160,7 +160,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `AGENT.md` | active-memory | Shared AI coding agent operating model, command surface, active-memory contract, and verification gate. | Loaded every session; points to scripts, adapters, and the active-memory set. |
 | `DECISIONS.md` | active-memory | Hard decisions, open questions, superseded decision context. | Consulted when product, architecture, or OS decisions are made or revisited. |
 | `tasks/todo.md` | active-memory | Current bead pointer and current execution view. | Must match the one `in_progress` bead. |
-| `README.md` | reference | Short scaffold navigation and adaptation start points. | Links to major protocols and first adaptation steps. |
+| `README.md` | reference | Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS. | Points to the Builder OS map, practical guides, reviewer surfaces, contribution policy, governance, trademark guidance, and this inventory for exhaustive navigation. |
 | `LICENSE` | reference | Apache License 2.0 terms for use, modification, and distribution. | Root legal/provenance file; not active memory or task authority. |
 | `NOTICE` | reference | Creator attribution, copyright ownership, canonical site, trademark notice, and distribution notice text. | Complements `LICENSE`; preserves "Created by Dan Sears / Recode", `https://www.precodeos.org`, and PrecodeOS trademark attribution. |
 | `GOVERNANCE.md` | reference | Benevolent founder-maintainer governance model and official project authority. | Explains contribution decision rights, roadmap authority, forks, and maintainer delegation. |
