@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.3
-Last updated: 2026-05-13
+Document version: v0.1.4
+Last updated: 2026-05-14
 
 ## Purpose
 
@@ -71,6 +71,8 @@ Step 3. Open Claude or Codex and paste the thinking-coach prompt.
 
 Use the prompt in the next section. Ask the agent to interview you, challenge assumptions, and organize your thinking. Do not let the agent decide the product for you.
 
+If you are in a bootcamp or sprint setting, paste the Bootcamp MVP Context Preamble first. It tells the agent to keep useful challenge, but stop expanding the idea beyond a small first version.
+
 Step 4. Fill out product-level sections first.
 
 Start with the product promise, audience, jobs, pains, alternatives, non-goals, success signals, design/voice, and user language.
@@ -91,7 +93,7 @@ Use the fields:
 
 Step 7. Challenge the idea before turning it into features.
 
-Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet.
+Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet. For a 4-week MVP, ask it to separate blockers from concerns that can move to the not-yet list.
 
 Step 8. Use Purposeful Ideation tool cards when the idea still feels fuzzy, too broad, too obvious, or too large.
 
@@ -123,6 +125,36 @@ This is not a Goal Frame yet. It is early evidence that may later become a Candi
 
 ## Copyable Claude/Codex Prompts
 
+### Bootcamp MVP Context Preamble
+
+Paste this before a workbook, ideation, challenge, refinement, or ingestion prompt when you are trying to shape a small first version for a 4-week bootcamp project.
+
+```text
+Context for this session:
+I am a beginner building a 4-week MVP, not a polished company-scale product.
+
+Help me make the idea concrete, small, and safe enough to move forward. Challenge only the issues that would change what I should build or validate in the next 4 weeks. Do not expand the scope, add enterprise features, invent future platform requirements, or keep poking holes after the first version is good enough to define.
+
+Sort concerns into:
+- Must decide now:
+- Good enough for MVP:
+- Defer / Not yet:
+
+Treat this workbook as evidence, not authority. Do not edit PRODUCT.md, create a PRD, create beads, or write code. Recommend, but do not decide for me.
+```
+
+### Close-The-Loop Prompt
+
+Use this when Claude or Codex keeps challenging, widening scope, or asking questions after the useful decision is clear enough.
+
+```text
+Stop challenging and produce the requested output now.
+
+Only ask another question if the answer would prevent an unsafe, impossible, misleading, or implementation-changing output. Move all non-blocking concerns to Defer / Not yet. Keep the output beginner-safe, concrete, and scoped to a 4-week MVP.
+
+Remember: this workbook is evidence, not authority. Do not edit PRODUCT.md, create a PRD, create beads, or write code.
+```
+
 ### Thinking-Coach Prompt
 
 ```text
@@ -146,7 +178,7 @@ Give me source-cited summaries. For each source, include the link, date or recen
 ```text
 Challenge this idea before I turn it into features.
 
-Identify weak assumptions, missing user evidence, risky scope, vague success criteria, privacy or safety concerns, sensitive surfaces, and reasons not to build yet. Keep the tone supportive and practical. Then recommend the smallest safe next learning step. Do not make the decision for me.
+Identify weak assumptions, missing user evidence, risky scope, vague success criteria, privacy or safety concerns, sensitive surfaces, and reasons not to build yet. Sort them into Must decide now, Good enough for MVP, and Defer / Not yet. Keep the tone supportive and practical. Then recommend the smallest safe next learning step. Do not make the decision for me.
 ```
 
 ### Refinement Prompt
@@ -1228,7 +1260,7 @@ Before creating the ingestion packet, ask Claude or Codex:
 ```text
 Review the feature candidates. Tell me which are product-level ideas, which are feature-level ideas, which are too broad, which touch sensitive surfaces, and which could be the smallest first useful slice.
 
-Reality check: gently challenge the scope. What would make this first version too large, too risky, or too hard to verify? What should move to the not-yet list?
+Reality check: gently challenge the scope. What would make this first version too large, too risky, or too hard to verify? Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet.
 ```
 
 Continue only when the first useful slice is narrow enough to explain in plain English.

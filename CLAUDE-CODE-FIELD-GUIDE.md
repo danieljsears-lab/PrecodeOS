@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-10
+Document version: v0.1.3
+Last updated: 2026-05-14
 Companion to: `PRECODE-USER-GUIDE.md` and `tasks/reference/PROMPT-PATTERNS.md`
 
 ---
@@ -189,6 +189,40 @@ If no: correct Claude before it writes a single line of code.
 
 ---
 
+### When Claude Over-Challenges A 4-Week MVP
+
+Claude is useful when it catches real risks. It becomes unhelpful when it treats a bootcamp MVP like a company-scale product, keeps adding future features, or keeps asking questions after the first version is clear enough.
+
+For a 4-week MVP, your job is not to remove every uncertainty. Your job is to choose a small, safe first version, defer the rest, and keep Precode authority boundaries intact.
+
+Paste this at the start of an ideation, planning, or PRD-shaping session:
+
+```text
+Context for this session:
+I am a beginner building a 4-week MVP, not a polished company-scale product.
+
+Help me make the idea concrete, small, and safe enough to move forward. Challenge only the issues that would change what I should build or validate in the next 4 weeks. Do not expand the scope, add enterprise features, invent future platform requirements, or keep poking holes after the first version is good enough to define.
+
+Sort concerns into:
+- Must decide now:
+- Good enough for MVP:
+- Defer / Not yet:
+
+Treat workbook notes, chat notes, and generated summaries as evidence, not authority. Do not edit PRODUCT.md, create a PRD, create beads, or write code unless the active Precode workflow explicitly allows it and I approve.
+```
+
+Paste this when Claude keeps challenging after the useful decision is clear:
+
+```text
+Stop challenging and produce the requested output now.
+
+Only ask another question if the answer would prevent an unsafe, impossible, misleading, or implementation-changing output. Move all non-blocking concerns to Defer / Not yet. Keep the output beginner-safe, concrete, and scoped to a 4-week MVP.
+
+Keep Precode authority boundaries: evidence is not approval, generated output is not authority, and no PRODUCT.md, PRD, bead, or code change happens without the required review and approval.
+```
+
+---
+
 ## The Daily Loop
 
 Every work session follows the same rhythm. Once this loop feels natural, you'll know exactly what to do at every moment.
@@ -327,6 +361,27 @@ Don't code yet. Just tell me the steps you would take to accomplish this.
 I'll approve the approach before you start.
 ```
 *Why it works: Separates thinking from doing. Catches wrong directions early.*
+
+---
+
+**Keep a 4-week MVP small**
+```
+Context: I am building a 4-week MVP. Challenge only issues that would
+change the next 4-week build decision. Sort concerns into Must decide
+now, Good enough for MVP, and Defer / Not yet. Do not expand scope.
+```
+*Why it works: Keeps useful critique while stopping future-version sprawl.*
+
+---
+
+**Close the loop when the answer is good enough**
+```
+Stop challenging and produce the requested output now. Only ask another
+question if the answer would prevent an unsafe, impossible, misleading,
+or implementation-changing output. Move non-blocking concerns to Defer /
+Not yet.
+```
+*Why it works: Gives Claude a clear stop signal without ignoring real blockers.*
 
 ---
 
@@ -497,7 +552,7 @@ In many Claude Code setups, you can use slash commands for quick actions:
 
 ## When Things Go Sideways
 
-These are the 5 most common problems beginners hit. Each one has a name, a 2-sentence description, and a recovery prompt.
+These are the common problems beginners hit. Each one has a name, a 2-sentence description, and a recovery prompt.
 
 ---
 
@@ -572,6 +627,23 @@ Stop the current approach. I want a different strategy. Explain:
 what is blocking you, what you've already tried, and what you
 would try next if you were starting fresh. Do not continue the
 previous approach.
+```
+
+---
+
+### 6. Over-Challenged MVP
+
+**What happened:** Claude keeps challenging a small bootcamp idea, adding future features, or asking questions after the first version is good enough to define.
+
+**Why it happens:** Claude is trying to be careful, but it is optimizing for exhaustive product critique instead of a 4-week MVP.
+
+**Recovery:**
+```
+Stop expanding the critique. List only the concerns that would block a
+safe 4-week MVP. Move optional concerns, future features, and polish to
+Defer / Not yet. Then produce the requested output now. Do not edit
+PRODUCT.md, create a PRD, create beads, or write code unless the active
+Precode workflow explicitly allows it and I approve.
 ```
 
 ---
