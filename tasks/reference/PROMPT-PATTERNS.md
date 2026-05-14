@@ -1,14 +1,16 @@
-# Precode OS -- Prompt Patterns
+# PrecodeOS -- Prompt Patterns
 <!-- ANCHOR: prompt-patterns -->
 
-> AUTHORITY: Beginner-friendly prompt patterns for operating Precode OS consistently across AI coding agents.
+> AUTHORITY: Beginner-friendly prompt patterns for operating PrecodeOS consistently across AI coding agents.
 > NOT_AUTHORITY: Active memory, product decisions, feature requirements, task selection, implementation plans, generated progress state, or bead transitions.
 > LOAD_WHEN: A user needs copyable prompts, an agent is preparing a handoff, or a session needs clearer context, review, intake, verification, or recovery instructions.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.9
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -110,6 +112,24 @@ Is this simple enough to build directly, or does it need an adapter, state flow,
 
 ```text
 Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, artifact to produce next, required authority source, user approval needed, stop condition, and generated-report warning before doing work.
+```
+
+## Routing Check
+
+```text
+Use the Agent Routing Protocol. Tell me whether this work should use fast, default, deep, or long-horizon routing; why that tier is sufficient; what would trigger escalation; and which adapter-specific controls apply. Do not let routing override the active bead, files in play, approval gates, or review.
+```
+
+## Context Budget Check
+
+```text
+Check the context budget before continuing. If the session is near the 80% pressure point or feels crowded, prepare a checkpoint with the active bead, primary authority, files in play, latest evidence, changed files, remaining work, and next exact check.
+```
+
+## Compact Or Handoff Context Pack
+
+```text
+Prepare a compact Context Pack before compaction, restart, or handoff. Include current bead, done-when target, primary authority, files in play, out of scope, checks and latest evidence, stop conditions, approval gates, decisions or assumptions from this session, changed files, remaining work, and next exact check. After compaction or restart, reload active memory, the active bead, and the primary authority before continuing.
 ```
 
 ## Goal Frame Proposal

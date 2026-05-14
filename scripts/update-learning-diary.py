@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # Version: v0.1.1
 # Last updated: 2026-04-27
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -281,7 +283,7 @@ def render_markdown(entries: list[dict[str, Any]]) -> str:
 
     memory_candidates = memory_candidate_lines(entries)
 
-    return f"""# Precode OS -- Learning Diary
+    return f"""# PrecodeOS -- Learning Diary
 <!-- ANCHOR: learning-diary -->
 
 > AUTHORITY: Generated learner-facing digest of recent Precode sessions and task evidence.

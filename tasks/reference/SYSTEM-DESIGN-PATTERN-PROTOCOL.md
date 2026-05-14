@@ -1,4 +1,4 @@
-# Precode OS -- System Design Pattern Protocol
+# PrecodeOS -- System Design Pattern Protocol
 <!-- ANCHOR: system-design-pattern-protocol -->
 
 > AUTHORITY: Prescriptive guidance for choosing practical implementation shapes, system design patterns, and owner files before coding.
@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 

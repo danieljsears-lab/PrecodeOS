@@ -1,4 +1,4 @@
-# Precode OS — Cursor Adapter
+# PrecodeOS — Cursor Adapter
 
 > AUTHORITY: Cursor-specific startup notes, project-rule shim guidance, shared-script entrypoints, and manual validation reminders.
 > NOT_AUTHORITY: Shared operating model, feature requirements, route structure, schema definitions, or business policy.
@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+Document version: v0.1.2
+Last updated: 2026-05-10
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -55,6 +55,12 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 Cursor should follow the same one-bead execution contract as any other AI coding agent.
 After edits, run `bash scripts/write-guard.sh --post <changed-file>` unless a repository hook already ran the equivalent check.
 Before closing the loop, run checks through `bash scripts/record-check.sh -- <command>` so the active bead receives command evidence.
+
+## Routing Mapping
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared routing rules before choosing Cursor-specific controls.
+
+Map `fast`, `default`, `deep`, and `long-horizon` to Cursor's available model, effort, agent, or context controls only when the active tool exposes them. If Cursor does not expose a native compaction threshold or delegation control, fall back to Precode checkpoint, Context Pack, handoff, and fresh-context review discipline.
 
 If Cursor exposes usage or cost telemetry, treat it as advisory only and record durable session totals with:
 

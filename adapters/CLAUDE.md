@@ -1,4 +1,4 @@
-# Precode OS — Claude Adapter
+# PrecodeOS — Claude Adapter
 
 > AUTHORITY: Claude-specific startup notes, slash-command mapping, and local spend/status guidance.
 > NOT_AUTHORITY: Shared operating model, feature requirements, route structure, schema definitions, or business policy.
@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+Document version: v0.1.2
+Last updated: 2026-05-10
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -48,6 +48,29 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 - Optional Claude slash commands may wrap the shared scripts.
 - Optional Claude-specific hooks or status lines must stay convenience-only and point back to the shared command surface.
 - Shared repo scripts remain the canonical command surface whenever possible.
+
+## Routing Mapping
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared routing rules before choosing Claude-specific controls.
+
+- `fast` maps to Haiku or low-effort Sonnet when available and the task is low-risk.
+- `default` maps to Sonnet for ordinary scoped coding, synthesis, and repo exploration.
+- `deep` maps to Opus or `opusplan` for planning, architecture, ambiguous debugging, and high-stakes review.
+- `long-horizon` may use an extended context option only when the active bead is approved, bounded, and checkpointed.
+
+`CLAUDE_CODE_SUBAGENT_MODEL` may set the model used for Claude subagents, but subagents still follow Precode delegation boundaries: no bead activation, no scope widening, no approval bypass, and no independent escalation when the task was undersized.
+
+## Context Budget
+
+Treat about 80% context usage as the point to prepare a checkpoint, compact, restart, or handoff.
+
+For Claude sessions, a local or team preference may set:
+
+```bash
+CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=80
+```
+
+This is optional guidance, not a Precode invariant. Lower values can make sense for very long sessions or volatile tool output. After compaction, reload active memory, the active bead, and the primary authority before continuing.
 
 ## Spend Notes
 

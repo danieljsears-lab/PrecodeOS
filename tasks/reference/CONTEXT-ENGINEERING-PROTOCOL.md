@@ -1,14 +1,16 @@
-# Precode OS -- Context Engineering Protocol
+# PrecodeOS -- Context Engineering Protocol
 <!-- ANCHOR: context-engineering-protocol -->
 
-> AUTHORITY: Context loading order, context tiers, source trust boundaries, prompt-injection guardrails, context reset rules, and handoff context expectations for Precode OS.
+> AUTHORITY: Context loading order, context tiers, source trust boundaries, prompt-injection guardrails, context reset rules, and handoff context expectations for PrecodeOS.
 > NOT_AUTHORITY: Active memory expansion, product decisions, task selection, implementation plans, generated progress state, or bead transitions.
 > LOAD_WHEN: Starting or handing off a session, writing prompts, reviewing context drift, importing local or external sources, switching agents, or deciding which files an agent should load.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.5
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -79,6 +81,7 @@ A session start or handoff should be able to explain this compact Context Pack:
 - files in play
 - out of scope
 - required checks
+- allowed actions and proof needed when the active bead has a Run Contract
 - stop conditions
 - open questions
 - forbidden assumptions
@@ -87,6 +90,28 @@ A session start or handoff should be able to explain this compact Context Pack:
 The Context Pack is a snapshot for orientation. It must not choose the next bead, approve a transition, or replace the active bead.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when a Context Pack is being prepared for session close, review, or agent handoff.
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when context pressure affects model tier, delegation, tool choice, compaction, restart, or handoff decisions.
+
+## Context Budget
+
+Treat about 80% context usage as the point to prepare a checkpoint, compaction, restart, or handoff. This is a recommended operating threshold, not a hard invariant.
+
+Before compacting, restarting, or handing off because context is crowded, prepare a Context Pack that includes:
+
+- current bead
+- done-when target
+- primary authority
+- files in play
+- out of scope
+- required checks and latest evidence
+- allowed actions and proof needed when the active bead has a Run Contract
+- stop conditions and approval gates
+- decisions or assumptions made this session
+- changed files
+- remaining work and next exact check
+
+After compaction, restart, or handoff, re-read active memory, the active bead, and the primary authority before continuing. Do not rely on chat history to preserve authority, scope, or approval gates.
 
 ## Context Reset
 

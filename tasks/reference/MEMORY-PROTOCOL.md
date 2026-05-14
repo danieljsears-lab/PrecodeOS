@@ -1,14 +1,16 @@
-# Precode OS -- Filesystem Memory Protocol
+# PrecodeOS -- Filesystem Memory Protocol
 <!-- ANCHOR: memory-protocol -->
 
-> AUTHORITY: Reviewed filesystem memory rules, memory-card shape, privacy boundaries, generated memory index behavior, and promotion path for Precode OS.
+> AUTHORITY: Reviewed filesystem memory rules, memory-card shape, privacy boundaries, generated memory index behavior, and promotion path for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, bead state, or generated progress state.
 > LOAD_WHEN: Creating, reviewing, searching, exporting, or changing Precode reviewed memory behavior.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.2
+Last updated: 2026-05-11
 
 ## Purpose
 

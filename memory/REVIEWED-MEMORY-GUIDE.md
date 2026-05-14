@@ -1,9 +1,9 @@
-# Precode OS -- Reviewed Memory
+# PrecodeOS -- Reviewed Memory
 <!-- ANCHOR: reviewed-memory -->
 
 > AUTHORITY: Reviewed memory directory guidance and filesystem memory card orientation.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, bead state, or generated progress state.
-> LOAD_WHEN: Reviewing or creating filesystem memory cards for Precode OS.
+> LOAD_WHEN: Reviewing or creating filesystem memory cards for PrecodeOS.
 > CLASS: reference
 
 Creator: Dan Sears / Recode

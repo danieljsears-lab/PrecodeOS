@@ -1,9 +1,52 @@
-.DS_Store
+# Legacy private manifest path
+.precode-public-ignore-manifest.md
+
+# Maintainer-only local material
+_maintainer/
+
+# Generated Precode reports and evidence
+OS-HEALTH.md
+PRECODE-HELP.md
+PROGRESS.md
 logs/check-output/
 logs/scheduled-audit-output/
 logs/*.jsonl
 logs/*.json
 logs/*.md
+logs/*.yaml
 !logs/LOG-EVIDENCE-TAXONOMY.md
+
+# Local agent, editor, and IDE state
 .agent-state/
-.claude/.read-markers/
+.claude/
+.codex/
+.cursor/
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+
+# Python, test, and coverage caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local virtual environments
+.venv/
+venv/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.crt
+secrets/
+credentials/

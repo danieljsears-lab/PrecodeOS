@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Version: v0.1.1
 # Last updated: 2026-05-08
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -31,7 +33,7 @@ todo_sections = state["todo_sections"]
 bead_sections = state["bead_sections"]
 bead_bullets = state["bead_bullets"]
 
-print("Precode OS Session Start")
+print("PrecodeOS Session Start")
 print(f"Branch: {branch}")
 print("Active memory: AGENT.md, DECISIONS.md, tasks/todo.md")
 print("\nContext Pack:")

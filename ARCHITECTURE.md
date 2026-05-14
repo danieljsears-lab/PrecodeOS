@@ -1,4 +1,4 @@
-# Precode OS — Architecture Template
+# PrecodeOS — Architecture Template
 <!-- ANCHOR: architecture -->
 
 > AUTHORITY: Route structure, flow shape, module placement, and auth boundaries for the target project.

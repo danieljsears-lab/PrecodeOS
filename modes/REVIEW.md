@@ -1,4 +1,4 @@
-# Precode OS Mode — Review
+# PrecodeOS Mode — Review
 <!-- ANCHOR: mode-review -->
 
 > AUTHORITY: Review mode for diff inspection, verification evidence, and accept-revise-split review rules.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-05-08
-# Owner: Precode OS
+# Version: v0.1.2
+# Last updated: 2026-05-11
+# Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
@@ -15,6 +15,7 @@ from os_compiler import (
     bead_depth_quality,
     command_classification,
     next_step_guidance,
+    run_contract_quality,
 )
 
 
@@ -51,6 +52,7 @@ def bead(**overrides: Any) -> BeadRecord:
         complexity="",
         required_planning_depth="",
         autonomy_level="",
+        run_contract={"present": False, "required": False, "required_reasons": []},
         closeout={},
         handback="",
         frontmatter={},
@@ -70,6 +72,7 @@ def next_payload(
     closeout_blockers: list[str] | None = None,
     guardrail: dict[str, Any] | None = None,
     depth: dict[str, Any] | None = None,
+    run_contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
         {"sections": {"Open Questions": "- none"}, "current_bead": "tasks/beads/B999-clarity-fixture.md"},
@@ -79,6 +82,7 @@ def next_payload(
         {"details": {}},
         depth or {"status": "pass", "warnings": [], "details": {}},
         guardrail or {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
+        run_contract or {"status": "pass", "warnings": [], "details": {}},
         {"status": "pass", "warnings": [], "details": {}},
     )
 
@@ -230,6 +234,44 @@ def main() -> int:
     for name, actual, expected in depth_scenarios:
         assert_decision(f"adaptive-depth: {name}", str(actual), expected, failures)
 
+    run_contract_scenarios = [
+        ("low risk omitted", run_contract_quality(bead(), [])["details"].get("user_decision"), "continue"),
+        (
+            "bounded afk missing",
+            run_contract_quality(bead(autonomy_level="bounded-afk"), [])["details"].get("user_decision"),
+            "stop",
+        ),
+        (
+            "sensitive missing",
+            run_contract_quality(bead(primary_authority="SECURITY.md", sections={"Objective": "Update auth.", "Stop If": "none"}), [])[
+                "details"
+            ].get("user_decision"),
+            "stop",
+        ),
+        (
+            "required missing proof",
+            run_contract_quality(
+                bead(
+                    run_contract={
+                        "present": True,
+                        "required": True,
+                        "allowed_paths": ["PROJECT-CONTEXT.md"],
+                        "allowed_tool_classes": ["read_only", "verification"],
+                        "proof_needed": ["manual"],
+                        "approval_required_before": ["external mutation"],
+                        "stop_if": ["proof unclear"],
+                        "rollback_or_blocked_escape": "not applicable",
+                        "expires_when": "review",
+                    }
+                ),
+                [],
+            )["details"].get("user_decision"),
+            "ask for proof",
+        ),
+    ]
+    for name, actual, expected in run_contract_scenarios:
+        assert_decision(f"run-contract: {name}", str(actual), expected, failures)
+
     command_scenarios = [
         ("verification", command_classification("python3 scripts/version-check.py", bead()).get("user_decision"), "continue"),
         ("force push", command_classification("git push --force origin main", bead()).get("user_decision"), "stop"),
@@ -248,7 +290,11 @@ def main() -> int:
     payload = {
         "tool": "clarity-scenario-check",
         "status": "pass" if not failures else "fail",
-        "scenario_count": len(next_scenarios) + len(recovery_scenarios) + len(depth_scenarios) + len(command_scenarios),
+        "scenario_count": len(next_scenarios)
+        + len(recovery_scenarios)
+        + len(depth_scenarios)
+        + len(run_contract_scenarios)
+        + len(command_scenarios),
         "stable_decisions": sorted(STABLE_DECISIONS),
         "failures": failures,
     }

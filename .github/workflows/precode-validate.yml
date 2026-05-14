@@ -1,6 +1,6 @@
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
 name: Precode Validate
 
 on:
@@ -22,6 +22,15 @@ jobs:
 
       - name: Advisory version check
         run: python3 scripts/version-check.py
+
+      - name: Advisory public repo check
+        run: python3 scripts/public-repo-check.py
+
+      - name: Advisory file inventory check
+        run: python3 scripts/file-inventory.py --check
+
+      - name: Advisory completion check
+        run: python3 scripts/completion-check.py
 
       - name: Dry-run spend import
         run: python3 scripts/import-agent-spend.py --dry-run

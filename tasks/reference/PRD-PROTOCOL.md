@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.4
+Last updated: 2026-05-11
 
 ## Purpose
 

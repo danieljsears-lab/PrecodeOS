@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -33,9 +35,11 @@ for path in "${staged_paths[@]}"; do
   esac
 done
 
-for path in "${staged_shell[@]}"; do
-  bash -n "$path"
-done
+if [[ ${#staged_shell[@]} -gt 0 ]]; then
+  for path in "${staged_shell[@]}"; do
+    bash -n "$path"
+  done
+fi
 
 if [[ ${#staged_python[@]} -gt 0 ]]; then
   python3 -m py_compile "${staged_python[@]}"
@@ -43,5 +47,14 @@ fi
 
 echo "pre-commit: running full memory validation"
 bash scripts/validate-memory.sh
+
+echo "pre-commit: running advisory public repo check"
+python3 scripts/public-repo-check.py
+
+echo "pre-commit: running advisory file inventory check"
+python3 scripts/file-inventory.py --check
+
+echo "pre-commit: running advisory completion check"
+python3 scripts/completion-check.py
 
 echo "pre-commit: validation passed"

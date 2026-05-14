@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Version: v0.1.4
 # Last updated: 2026-05-08
-# Owner: Precode OS
+# Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations

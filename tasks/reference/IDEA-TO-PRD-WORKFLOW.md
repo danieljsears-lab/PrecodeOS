@@ -1,14 +1,16 @@
 # Precode Idea To PRD Workflow
 <!-- ANCHOR: idea-to-prd-workflow -->
 
-> AUTHORITY: Guided local source intake, idea framing, PRFAQ-lite, shallow-artifact prevention, PRD readiness, and bead-derivation workflow for Precode OS.
+> AUTHORITY: Guided local source intake, idea framing, PRFAQ-lite, shallow-artifact prevention, PRD readiness, and bead-derivation workflow for PrecodeOS.
 > NOT_AUTHORITY: Final product decisions, active task selection, route structure, schema definitions, implementation plans, or generated progress state.
 > LOAD_WHEN: Turning a rough idea, note, chat summary, issue export, research result, screenshot, design, diagram, or manual draft into a PRD shard and candidate beads.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.5
+Last updated: 2026-05-12
 
 ## Purpose
 
@@ -31,6 +33,8 @@ The bead proposals are journey units: they describe the smallest safe steps towa
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when explaining which lifecycle state the idea is in, deciding whether intent is ready to promote, or handling changed intent that needs a PRD amendment, decision, defer note, or follow-up bead.
 
 Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when the idea depends on domain vocabulary, aliases, UI labels, code/test naming, confusing terms, or stale vocabulary from older artifacts.
+
+Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the idea is broad, risky, market-facing, paid, evidence-poor, solution-first, or when the main uncertainty is whether the problem, user, current workaround, demand signal, or smallest learning step is real enough to justify a PRD.
 
 None of these artifacts are active memory. The active-memory set remains:
 
@@ -68,6 +72,10 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 ## Stage 1: Intake Local Sources Or The Idea
 
 Capture the request in the builder's words before turning it into implementation.
+
+If the idea sounds exciting but weakly evidenced, too broad, paid, market-facing, or solution-first, run Product Discovery Validation before drafting a PRD. The output should be a short Discovery Summary with the target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and advisory `proceed | pause | narrow | kill` recommendation.
+
+If discovery recommends `pause`, `narrow`, or `kill`, do not draft requirements yet. Return the Discovery Summary, name what evidence or narrowing is needed, and remind the builder that discovery is evidence only, not product approval or task activation.
 
 If the target project has a `PRODUCT.md`, load it when the idea is product-facing or could change product direction. Use it to check fit, name product drift, and avoid suggestions that contradict current non-goals.
 
@@ -169,6 +177,8 @@ PRFAQ-lite can live inside the PRD shard. It does not need a separate permanent 
 
 If PRFAQ-lite changes product-level strategy, users, non-goals, success signals, or design and voice direction, update `PRODUCT.md` after the builder reviews the change.
 
+If PRFAQ-lite exposes weak problem evidence, no current workaround, no believable demand signal, or a first slice too large to learn from, return to Product Discovery Validation instead of polishing the PRD.
+
 ## Stage 5: Anti-Shallow Check
 
 Before creating requirements, challenge the artifact.
@@ -259,6 +269,7 @@ Do not create diagrams or architecture docs unless they clarify a real decision.
 A PRD can move to `approved` only when:
 
 - the user problem is clear
+- discovery evidence is summarized or explicitly skipped with a reason when worth-building uncertainty was material
 - goals and non-goals are explicit
 - product-constitution fit has been checked when relevant
 - requirement IDs are stable

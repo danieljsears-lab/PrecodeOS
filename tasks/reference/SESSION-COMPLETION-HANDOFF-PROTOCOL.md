@@ -1,14 +1,16 @@
-# Precode OS -- Session Completion And Handoff Protocol
+# PrecodeOS -- Session Completion And Handoff Protocol
 <!-- ANCHOR: session-completion-handoff-protocol -->
 
-> AUTHORITY: Session completion, bead closeout, review, transition proposal, transition approval, and agent handoff rules for Precode OS.
+> AUTHORITY: Session completion, bead closeout, review, transition proposal, transition approval, and agent handoff rules for PrecodeOS.
 > NOT_AUTHORITY: Active memory expansion, product decisions, task selection, automatic review acceptance, automatic bead activation, generated progress state, or external mutations.
 > LOAD_WHEN: Closing a session, checking whether a bead is ready for review, preparing an agent handoff, reviewing completion evidence, or deciding whether a transition proposal is safe to approve.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -49,6 +51,7 @@ Closeout Evidence should include:
 - follow-up bead needed
 - blocked escape
 - evidence source
+- allowed actions and proof needed when the bead has a Run Contract
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -71,6 +74,7 @@ A handoff should be able to explain:
 - files in play
 - out of scope
 - checks
+- allowed actions and proof needed when the bead has a Run Contract
 - stop conditions
 - open questions
 - latest evidence

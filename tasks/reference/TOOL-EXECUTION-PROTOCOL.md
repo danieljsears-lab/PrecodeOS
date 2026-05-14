@@ -1,14 +1,16 @@
-# Precode OS -- Tool Execution Protocol
+# PrecodeOS -- Tool Execution Protocol
 <!-- ANCHOR: tool-execution-protocol -->
 
-> AUTHORITY: Tool-call classes, command policy expectations, non-check tool logging, failure categories, external mutation rules, secret handling, and tool-execution advisory checks for Precode OS.
+> AUTHORITY: Tool-call classes, command policy expectations, non-check tool logging, failure categories, external mutation rules, secret handling, and tool-execution advisory checks for PrecodeOS.
 > NOT_AUTHORITY: Active memory expansion, task selection, product decisions, implementation plans, automatic command approval, generated progress state, or automatic bead transitions.
 > LOAD_WHEN: Choosing, recording, reviewing, or approving tool calls; adding tool integrations; handling command failures; or distinguishing tool use from verification evidence.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-06
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.5
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -19,6 +21,8 @@ A command can be useful without proving the work is done. Precode separates:
 - tool use: an action happened
 - verification evidence: a check proved something and was recorded
 - user approval: a human approved a risky action
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token read-only tools, browser or screenshot-heavy tools, delegated agents, and external mutation tools.
 
 Active memory remains exactly:
 
@@ -51,6 +55,20 @@ When a bead expects risky tools, the bead should name:
 - rollback, cleanup, or blocked escape notes
 
 Low-risk doc or validation beads can rely on the normal `Checks`, `Stop If`, and `Closeout Evidence` sections. Sensitive or external work should be explicit before the command runs.
+
+## Allowed Actions
+
+Risk-triggered run contracts use allowed actions as the plain-language wrapper over capability leases. A capability lease is not new permission; it is a stricter statement of the permissions already implied by the active bead, `files_in_play`, tool-call classes, approval gates, and stop conditions.
+
+Use a bead Run Contract when sensitive, external, destructive, or `bounded-afk` work needs tighter boundaries:
+
+- allowed paths or actions
+- allowed tool classes
+- forbidden actions
+- approval required before risky actions
+- expiration condition
+
+The lease is advisory contract state. It does not override sandbox permissions, approve commands automatically, widen `files_in_play`, or bypass user approval. `python3 scripts/run-contract-check.py` warns when allowed actions are broader than the active bead or when risky work lacks approval and recovery details.
 
 ## Evidence Distinction
 
@@ -98,6 +116,18 @@ External mutations require all of these:
 - post-action evidence is recorded
 
 Scheduled audits, importers, generated reports, and advisory checks must remain read-only.
+
+## Tool Routing Preference
+
+Prefer the lowest-token, lowest-side-effect tool that can answer the question:
+
+1. local text search or structured file reads for repo facts
+2. read-only commands or dry-run checks for local state
+3. text fetches or official docs for public web facts when current information matters
+4. browser or screenshot-heavy tools only for dynamic pages, authenticated flows, visual QA, or interactions text tools cannot inspect
+5. external mutation tools only when the active bead allows them and the user approves the manual gate
+
+This preference does not replace evidence requirements. A cheap tool answer is still source material unless it is recorded through the appropriate verification path.
 
 ## Secret Handling
 

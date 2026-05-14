@@ -1,4 +1,4 @@
-# Precode OS — Bead Schema
+# PrecodeOS — Bead Schema
 <!-- ANCHOR: bead-schema -->
 
 > AUTHORITY: Execution-bead format, bead states, and the `tasks/todo.md` to bead relationship.
@@ -7,12 +7,12 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-08
+Document version: v0.1.6
+Last updated: 2026-05-11
 
 ## Purpose
 
-A bead is the smallest durable execution unit in the Precode OS loop system.
+A bead is the smallest durable execution unit in the PrecodeOS loop system.
 
 `tasks/todo.md` keeps the current pointer.
 Each bead holds the full contract for one logical unit of implementation or review.
@@ -41,6 +41,7 @@ These keys are optional for backward compatibility but recommended for new or am
 - `complexity` — `trivial | narrow | standard | high-risk | multi-system`
 - `required_planning_depth` — `none | brief | PRD | PRD+architecture | PRD+architecture+test-plan`
 - `autonomy_level` — `supervised | bounded-afk | human-only`
+- `run_contract` — optional future structured form for risk-triggered allowed actions and proof needed
 
 `delegation_mode` describes whether a scoped bead is safe to hand to an agent after context is loaded. It does not activate parallel work, bypass human review, or override the one-active-bead rule.
 
@@ -49,6 +50,8 @@ These keys are optional for backward compatibility but recommended for new or am
 `review_context` records whether review can happen in the same session or should reload the work in a fresh context before acceptance.
 
 `complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; `python3 scripts/bead-depth-check.py` reports advisory warnings when the declared depth looks inconsistent with the bead's risk, files in play, checks, or stop conditions.
+
+`run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter.
 
 Frontmatter is the canonical machine-readable metadata surface.
 The mirrored sections below stay readable for humans and for transition-safe validation, but runtime scripts should prefer frontmatter and compiled sidecars over ad hoc prose parsing.
@@ -67,6 +70,8 @@ Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when closing a sess
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 
+Use `python3 scripts/run-contract-check.py` when a bead has or should have a risk-triggered run contract.
+
 ## Required Bead Sections
 
 - `State`
@@ -83,8 +88,29 @@ Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-re
 - `Test Strategy`
 - `Review Context`
 - `Stop If`
+- `Run Contract` when the bead is sensitive, external, destructive, or `bounded-afk`
 - `Closeout Evidence`
 - `Handback`
+
+## Run Contract
+
+Use this section only when the bead needs tighter execution policy. Omit it for ordinary low-risk work.
+
+```text
+## Run Contract
+
+- Required: true
+- Allowed paths: `path/or/file.md`, `another/path`
+- Allowed tool classes: `read_only`, `verification`, `local_mutation`
+- Forbidden actions: deploy, merge, migrate, edit secrets
+- Approval required before: external mutation, destructive command, secret-bearing action
+- Proof needed: `static`, `manual`
+- Stop if: allowed actions, proof needed, approval, or rollback path becomes unclear
+- Rollback or blocked escape: name rollback, blocked escape, unblocker, or why rollback is not applicable
+- Expires when: bead reaches review or done
+```
+
+Plain user-facing wording should be: Allowed actions, Proof needed, Approval required before, and Stop if. The internal terms are capability lease for allowed actions and proof lanes for proof needed.
 
 ## Goal Frame
 
@@ -120,6 +146,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - Code-changing beads should declare `test_strategy` and `review_context`.
 - New or amended beads should declare `complexity`, `required_planning_depth`, and `autonomy_level` when the risk level affects planning, verification, or delegation safety.
 - `afk_candidate` beads must have bounded files in play, explicit checks, stop conditions, and review evidence before acceptance.
+- Sensitive, external, destructive, or `bounded-afk` beads should include a Run Contract that names allowed actions, proof needed, approval gates, stop conditions, expiration, and rollback or blocked escape.
 - `tasks/todo.md` must point to the current active bead.
 - If a task grows past one logical unit, split it into another bead rather than widening the current one.
 - Planning beads may produce PRDs, open questions, candidate requirements, architecture notes, source summaries, or candidate beads; they should not edit app code.

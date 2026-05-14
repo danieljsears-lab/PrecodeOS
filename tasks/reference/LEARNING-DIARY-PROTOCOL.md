@@ -1,14 +1,16 @@
-# Precode OS -- Learning Diary Protocol
+# PrecodeOS -- Learning Diary Protocol
 <!-- ANCHOR: learning-diary-protocol -->
 
-> AUTHORITY: Learning-diary capture rules, privacy boundaries, generated diary shape, and lesson-promotion path for Precode OS.
+> AUTHORITY: Learning-diary capture rules, privacy boundaries, generated diary shape, and lesson-promotion path for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, or generated progress state.
 > LOAD_WHEN: Creating, reviewing, or changing learner-facing session diary behavior.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-04-27
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.2
+Last updated: 2026-05-11
 
 ## Purpose
 

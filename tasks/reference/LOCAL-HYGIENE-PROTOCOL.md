@@ -1,14 +1,16 @@
-# Precode OS -- Local Hygiene Protocol
+# PrecodeOS -- Local Hygiene Protocol
 <!-- ANCHOR: local-hygiene-protocol -->
 
-> AUTHORITY: Local hygiene categories, advisory cleanup policy, cache/build-output boundaries, bulky log-output retention rules, dry-run preview behavior, and cleanup protection rules for Precode OS.
+> AUTHORITY: Local hygiene categories, advisory cleanup policy, cache/build-output boundaries, bulky log-output retention rules, dry-run preview behavior, and cleanup protection rules for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, bead state, cleanup approval, archive approval, delete approval, external mutation approval, or generated progress state.
 > LOAD_WHEN: Reviewing local clutter, cache/build outputs, bulky generated logs, unexpected files under `logs/`, cleanup candidates, or dry-run cleanup previews.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.1
+Last updated: 2026-05-11
 
 ## Purpose
 

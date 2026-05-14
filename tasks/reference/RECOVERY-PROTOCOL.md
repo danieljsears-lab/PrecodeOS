@@ -1,4 +1,4 @@
-# Precode OS -- Recovery Protocol
+# PrecodeOS -- Recovery Protocol
 <!-- ANCHOR: recovery-protocol -->
 
 > AUTHORITY: Beginner-safe recovery workflow for damaged Precode structure, stale or misused generated reports, broken active state, missing proof, confused sessions, accidental scope expansion, and approval confusion.
@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.2
+Last updated: 2026-05-13
 
 ## Purpose
 
@@ -110,8 +112,4 @@ Resume only when the agent can say:
 
 If that explanation is not possible, stop and keep recovery in progress.
 
-## Change Log
-
-| Version | Date | Summary |
-|---|---|---|
-| v0.1.0 | 2026-05-08 | Added beginner-safe recovery flows for file damage, generated-report confusion, active-state drift, missing proof, context loss, scope expansion, and approval confusion. |
+Maintainer-local document history for this recovery protocol lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

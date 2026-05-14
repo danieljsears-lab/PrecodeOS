@@ -1,14 +1,16 @@
-# Precode OS -- State Management Protocol
+# PrecodeOS -- State Management Protocol
 <!-- ANCHOR: state-management-protocol -->
 
-> AUTHORITY: Memory and state ownership, precedence rules, open-question ownership, generated-state freshness expectations, recovery workflow, and log/archive guidance for Precode OS.
+> AUTHORITY: Memory and state ownership, precedence rules, open-question ownership, generated-state freshness expectations, recovery workflow, and log/archive guidance for PrecodeOS.
 > NOT_AUTHORITY: Active memory expansion, task selection, product decisions, implementation plans, generated progress state, or automatic bead transitions.
 > LOAD_WHEN: Repairing state drift, reviewing state integrity, changing state schemas, investigating stale generated reports, or deciding which file owns a state fact.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -31,6 +33,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 | Active memory | session entrypoint, hard decisions, current bead pointer | full history, generated summaries, broad project docs |
 | Bead frontmatter | machine-readable bead state | narrative explanation |
 | Bead sections | human execution contract and closeout | global product decisions |
+| Bead Run Contract | risk-triggered allowed actions, proof needed, approval gates, and expiration | active memory, automatic command approval, or broader scope than the bead |
 | PRDs and `FEATURES.md` | approved product definition and requirement inventory | active task selection |
 | Goal Frames inside owner files | reviewed durable orientation for workflow selection | backlog, roadmap, implementation plan, approval, or active task |
 | Reference docs | durable protocols and ownership rules | active execution state |
@@ -43,8 +46,10 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 - Sections are canonical for the human-readable task contract.
 - `tasks/todo.md` is the current pointer and current execution view.
 - Bead files are the durable execution contracts.
+- Bead Run Contract sections are canonical for risk-triggered execution policy when present.
 - JSON/JSONL logs are historical evidence.
 - Generated files are compiled snapshots only.
+- `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles, not authority.
 - Goal Frames inside owner files are advisory orientation. If stale or conflicting, they require reaffirmation before they guide workflow selection.
 - If generated output conflicts with active memory or a bead, inspect the source file and regenerate the output.
 

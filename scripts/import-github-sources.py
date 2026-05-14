@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
@@ -135,7 +137,7 @@ def normalize(data: dict[str, Any], source_hint: str) -> dict[str, Any]:
 
 def render_markdown(entries: list[dict[str, Any]]) -> str:
     blocks = [
-        "# Precode OS -- GitHub Source Intake",
+        "# PrecodeOS -- GitHub Source Intake",
         "<!-- ANCHOR: github-source-intake -->",
         "",
         "> AUTHORITY: Generated GitHub issue and pull request source-intake summaries.",

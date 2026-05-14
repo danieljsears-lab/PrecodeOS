@@ -1,4 +1,4 @@
-# Precode OS Mode — Builder
+# PrecodeOS Mode — Builder
 <!-- ANCHOR: mode-builder -->
 
 > AUTHORITY: Builder mode for the implementation loop, resume decisions, and one-bead-at-a-time execution with strong verification and clean stop states.

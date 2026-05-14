@@ -1,14 +1,16 @@
-# Precode OS -- Goal Frame Protocol
+# PrecodeOS -- Goal Frame Protocol
 <!-- ANCHOR: goal-frame-protocol -->
 
-> AUTHORITY: Goal Frame purpose, allowed locations, advisory workflow use, reaffirmation rules, auto-suggestion boundaries, and stale-goal guardrails for Precode OS.
+> AUTHORITY: Goal Frame purpose, allowed locations, advisory workflow use, reaffirmation rules, auto-suggestion boundaries, and stale-goal guardrails for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, implementation plans, backlog, roadmap, or generated progress state.
 > LOAD_WHEN: A user wants to persist a durable goal, workflow arc, north-star outcome, or broad intent without creating active work or when `next-step.py` reports Goal Frame warnings.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.2
+Last updated: 2026-05-11
 
 ## Purpose
 

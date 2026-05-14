@@ -1,4 +1,4 @@
-# Precode OS — Agent Shim
+# PrecodeOS — Agent Shim
 <!-- ANCHOR: agents-shim -->
 
 > AUTHORITY: Compatibility shim for AI coding agents that auto-load `AGENTS.md`.
@@ -7,13 +7,15 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.2
+Last updated: 2026-05-12
 
 Read and follow:
 
 - `AGENT.md`
 - `DECISIONS.md`
 - `tasks/todo.md`
+
+If the user explicitly asks about maintaining, analyzing, or planning changes to PrecodeOS itself, first read `_maintainer/MAINTAINER-NOTES.md`.
 
 If this file conflicts with `AGENT.md`, `AGENT.md` wins.

@@ -1,4 +1,4 @@
-# Precode OS — Logs
+# PrecodeOS — Logs
 <!-- ANCHOR: logs -->
 
 > AUTHORITY: Generated log directory description and evidence-file taxonomy.

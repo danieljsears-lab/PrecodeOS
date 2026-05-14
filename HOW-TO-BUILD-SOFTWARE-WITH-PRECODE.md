@@ -1,16 +1,16 @@
-# How To Build Software Using Precode OS + AI Coding Agents
+# How To Build Software Using PrecodeOS + AI Coding Agents
 <!-- ANCHOR: build-software-with-precode -->
 
-> AUTHORITY: Beginner-facing educational bridge explaining how software is traditionally planned, designed, built, verified, deployed, and iterated, and how non-technical users do that work with Precode OS and AI coding agents.
+> AUTHORITY: Beginner-facing educational bridge explaining how software is traditionally planned, designed, built, verified, deployed, and iterated, and how non-technical users do that work with PrecodeOS and AI coding agents.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, architecture decisions, deployment policy, or generated progress state.
 > LOAD_WHEN: Teaching a new non-technical user how software development works, onboarding someone from idea to first Precode project, or explaining how traditional software roles map to Precode workflows.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
-Copyright: © 2026 Dan Sears
-Document version: v0.1.11
-Last updated: 2026-05-08
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.15
+Last updated: 2026-05-13
 
 ## Start Here: You Are Not Just Prompting
 
@@ -27,17 +27,23 @@ Your new job is not to become a product manager or a software engineer overnight
 - ask for evidence before accepting work
 - learn from what happened
 
-Precode OS helps by giving the repo a small memory, clear owner files, one active task, recorded checks, generated learning reports, and human approval gates.
+PrecodeOS helps by giving the repo a small memory, clear owner files, one active task, recorded checks, generated learning reports, and human approval gates.
 
-Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
+PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. It keeps the project human-owned by making intent, scope, approval, proof, and recovery visible inside the repo.
+
+PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
 
 In plain English: Precode lives inside your project folder, keeps important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.
 
 For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
+PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
+
 For the philosophical anchor behind those choices, read `PRECODE-MANIFESTO.md`.
 
 > Plain-English term: A repo is the project folder that holds your app code and the Precode files that guide the agent.
+
+> Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.
 
 ### If You Only Have An Idea, Start With The Workbook
 
@@ -58,6 +64,7 @@ Software is usually built through a set of repeatable stages. Teams may use diff
 | Stage | What it means | Who traditionally helped | What can go wrong if skipped | How Precode helps |
 |---|---|---|---|---|
 | Idea | A rough thought about something useful to build. | Founder, customer, product manager. | The agent codes a vague idea before the problem is clearly understood and well articulated. | Local Source Intake turns rough notes into facts, questions, and candidate requirements. |
+| Discovery validation | Checking whether the problem, current workaround, evidence, and riskiest assumption are real enough to justify PRD work. | Founder, product manager, researcher. | A polished PRD describes the wrong thing beautifully. | Product Discovery Validation produces a short Discovery Summary and advisory `proceed`, `pause`, `narrow`, or `kill` recommendation. |
 | Product shaping | Deciding who it is for, what problem it solves, and what not to build yet. | Product manager, founder, designer. | Scope grows, the first version gets too big, or the wrong user moment is built. | `PRODUCT.md`, Idea-to-PRD, and PRD protocols force product fit, problem, non-goals, risks, and smallest useful version. |
 | Alignment | Reaching a shared design concept before writing a plan. | Founder, product manager, domain expert, engineer. | The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions. | Alignment/grilling asks one question at a time, records accepted/rejected recommendations, and summarizes only stable conclusions. |
 | Requirements | Writing what the software should do in a way that can be checked. | Product manager, engineer, QA. | "Done" becomes a feeling instead of a testable outcome. | PRDs and beads connect requirements to checks and closeout evidence. |
@@ -104,7 +111,7 @@ Not every software idea needs the same process. Precode is safest when you choos
 
 | Project type | What usually matters most | Early risks | Start with |
 |---|---|---|---|
-| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, or smallest useful version is clear. | Product Ideation Workbook, then Precode Ingestion Packet. |
+| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Discovery Validation when worth-building is uncertain, then Precode Ingestion Packet. |
 | Durable intent, but no workflow chosen yet | Keeping direction visible without turning it into a task list. | A broad goal silently becomes backlog, roadmap, or implementation plan. | Goal Frame proposal or reaffirmation, then workflow selection. |
 | Personal tool | Speed, usefulness, simple data, low ceremony. | The tool grows into a product before privacy, data, or deployment choices are understood. | Local Source Intake or a small implementation bead. |
 | Small SaaS app | Accounts, permissions, database, reliability, support, deployment. | Auth, personal data, billing, emails, and production setup appear quickly. | Idea-to-PRD, then decomposition into small beads. |
@@ -170,6 +177,7 @@ idea or notes
   -> Product Ideation Workbook when the idea is still rough
   -> Precode Ingestion Packet
   -> Candidate Goal Frame when durable intent needs orientation
+  -> Product Discovery Validation when worth-building is uncertain
   -> Local Source Intake and reaffirmation
   -> product constitution fit check
   -> local source intake
@@ -191,6 +199,7 @@ idea or notes
 | Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Help me create a Precode Ingestion Packet. Do not update owner files or code." |
 | Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review. | "Treat this as evidence, not authority." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
+| Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
 | Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |
 | Product constitution fit check | The agent checks whether the idea fits the product promise, users, non-goals, current bets, success signals, and design or voice. | "Use `PRODUCT.md` for planning context, not active work." |
 | Local source intake | The agent turns notes, docs, screenshots, or issues into evidence. | "Do not treat source material as authority." |
@@ -216,6 +225,7 @@ Use these prompts when you do not know what to say next.
 | Situation | Ask the agent |
 |---|---|
 | I only have a rough idea. | `Use the Product Ideation Workbook as evidence. Help me create a concise Precode Ingestion Packet with a Candidate Goal Frame if the direction is stable enough. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
+| I need to know if this is worth defining. | `Use Product Discovery Validation. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | I have notes or an ingestion packet. | `Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.` |
 | My workbook includes a Candidate Goal Frame. | `Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.` |
 | My intent is durable, but I do not know the workflow yet. | `This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.` |
@@ -530,6 +540,7 @@ Search reviewed memory for what we have learned about this topic. Do not treat m
 | Mistake | Why it hurts | Safer move |
 |---|---|---|
 | "Just code it." | The agent may build the wrong thing quickly. | Ask for intake, PRD, or workflow selection first. |
+| Skipping discovery for a broad, paid, or weakly evidenced idea. | The agent may write a convincing PRD for a problem that has no real pull. | Use Product Discovery Validation and ask for current workaround, evidence strength, riskiest assumption, and smallest non-code learning step. |
 | Treating workbook output as project truth. | Workbook notes may include guesses, research fragments, or unresolved choices. | Turn the workbook into a Precode Ingestion Packet and run Local Source Intake. |
 | Treating a Candidate Goal Frame as already approved. | Early direction can feel settled before Precode has checked stability, conflicts, and scope. | Run Local Source Intake and reaffirm before updating `PRODUCT.md`. |
 | Treating a Goal Frame as a task list. | Durable intent becomes hidden authority and can push the agent into stale work. | Reaffirm it, then use it only for workflow guidance. |
@@ -560,17 +571,4 @@ Use these documents by situation:
 | More copyable prompts. | `tasks/reference/PROMPT-PATTERNS.md` |
 | Technical map of Precode files. | `PRECODE-FILE-INVENTORY.md` |
 
-## Change Log
-
-| Version | Date | Summary |
-|---|---|---|
-| v0.1.11 | 2026-05-08 | Added the Beginner Recovery Protocol bridge, including the "I think I broke something" prompt and a failure-mode reminder to stop before guessing or mutating files. |
-| v0.1.10 | 2026-05-08 | Clarified the Product Ideation Workbook path from Initial Direction to Candidate Goal Frame, Local Source Intake, user reaffirmation, and `PRODUCT.md` Goal Frame promotion without turning workbook output into authority. |
-| v0.1.9 | 2026-05-08 | Added Goal Frames to the beginner software-building path as reviewed orientation for durable intent before workflow selection, with reaffirmation guidance and warnings that Goal Frames are not tasks, roadmaps, approvals, or implementation plans. |
-| v0.1.8 | 2026-05-07 | Refreshed the beginner software-building bridge to reflect the current Precode path from Product Ideation Workbook to ingestion packet, product fit check, source intake, alignment, shared language, destination PRD, journey bead, evidence, and review; clarified generated next-step help and Local Hygiene as advisory surfaces, not authority or approval. |
-| v0.1.7 | 2026-05-07 | Harmonized the beginner bridge positioning with the repo-native control layer definition, plain-English project-folder translation, and builder-facing small operating system metaphor. |
-| v0.1.4 | 2026-05-03 | Added shared-language guidance and prompts for non-technical builders to align domain terms before PRD, UI, test, and code names harden. |
-| v0.1.3 | 2026-05-03 | Added alignment/grilling, destination PRDs, journey beads, vertical slices, module/interface ownership, test/review metadata, and stale-artifact awareness to the beginner software-building journey. |
-| v0.1.2 | 2026-05-03 | Added `PRODUCT.md` to the beginner idea-to-evidence path as a product constitution fit check before PRD shaping, while preserving PRDs as feature authority and beads as execution. |
-| v0.1.1 | 2026-04-27 | Added navigation to `PRECODE-MANIFESTO.md` as the philosophical anchor behind Precode's anti-drift, steering, brake, and recovery posture. |
-| v0.1.0 | 2026-04-27 | Initial standalone beginner bridge explaining the traditional software-building journey, how it changes with Precode OS and AI coding agents, adaptive project paths, translated software roles, idea-to-evidence flow, prompts by stage, mental models, a personal-tool vs SaaS walkthrough, slow-down triggers, completion evidence, learning surfaces, and common beginner failure modes. |
+Maintainer-local document history for this beginner software-building bridge lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

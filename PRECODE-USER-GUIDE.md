@@ -1,16 +1,16 @@
-# How To Use Precode OS
+# How To Use PrecodeOS
 <!-- ANCHOR: precode-user-guide -->
 
-> AUTHORITY: Canonical hands-on user playbook for operating Precode OS as a non-technical builder.
+> AUTHORITY: Canonical hands-on user playbook for operating PrecodeOS as a non-technical builder.
 > NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, implementation plans, generated progress state, or deep architecture guidance.
 > LOAD_WHEN: Onboarding a new user, running a Precode session, deciding what to ask an AI coding agent, or checking whether work is ready to accept.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
-Copyright: © 2026 Dan Sears
-Document version: v0.7.7
-Last updated: 2026-05-08
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.7.14
+Last updated: 2026-05-13
 
 
 
@@ -18,11 +18,15 @@ Last updated: 2026-05-08
 
 Use this guide while you work. It tells you what to ask the agent, what good output looks like, when to stop, and what you must approve.
 
+Precode matters in daily use because AI coding agents can move faster than you can understand, verify, and recover from. This guide helps you keep intent, scope, approval, proof, and recovery visible while the agent works.
+
 Precode lives inside your project folder. It keeps important project truth in readable Markdown files and uses small scripts to check whether the agent is staying aligned.
 
 For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
-For the bigger "what and why," read `PRECODE-OS-README.md`. For Precode's philosophical anchor, read `PRECODE-MANIFESTO.md`. For the beginner bridge from idea to software-building workflow, read `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`. For deep architecture and maintainer detail, read `PRECODE-ARCHITECTURE-OVERVIEW.md`. For the full prompt catalog, read `tasks/reference/PROMPT-PATTERNS.md`.
+PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
+
+For the bigger "what and why," read `PRECODE-OS-README.md`. For Precode's philosophical anchor, read `PRECODE-MANIFESTO.md`. For the beginner bridge from idea to software-building workflow, read `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`. If you are using Claude Code in a bootcamp or first student session, read `CLAUDE-CODE-FIELD-GUIDE.md`. For deep architecture and maintainer detail, read `PRECODE-ARCHITECTURE-OVERVIEW.md`. For the full prompt catalog, read `tasks/reference/PROMPT-PATTERNS.md`.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
@@ -55,11 +59,35 @@ Treat it as evidence, not authority. Summarize stable facts, assumptions, confli
 
 Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.
 
+## Validate Product Discovery Before PRD Shaping
+
+Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
+
+This is not a proof machine. It helps you see:
+
+- who has the problem
+- what they do today instead
+- what evidence is strong or weak
+- which assumption could break the idea
+- what non-code learning step should happen first
+- whether the safer recommendation is `proceed`, `pause`, `narrow`, or `kill`
+
+Say this:
+
+```text
+Use Product Discovery Validation on this idea.
+Interview me one question at a time. Challenge assumptions supportively.
+Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
+Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+Skip this for tiny fixes, already-approved PRD follow-through, clear bugs, or narrow maintenance work.
+
 ## Before You Start
 
 Do this before letting an agent edit files:
 
-- Open the repo or project folder that contains Precode OS.
+- Open the repo or project folder that contains PrecodeOS.
 - Confirm the agent is using Precode instructions.
 - Ask the agent to load active memory only: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 - Ask the agent to identify the active bead and primary authority file.
@@ -250,6 +278,26 @@ Keep this table open during normal work.
 
 Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.
 
+## Checkpoint Before Context Gets Crowded
+
+Long sessions can get fuzzy even when the agent is still trying hard. When the conversation feels crowded, the agent is repeating itself, or a lot of files and tool outputs have passed through the chat, pause before the context gets full.
+
+Say this:
+
+```text
+Use the Agent Routing Protocol and Context Engineering Protocol. If this session is near the context pressure point, prepare a Context Pack before compacting, restarting, or handing off. Include the bead, primary authority, files in play, latest evidence, changed files, remaining work, and next exact check.
+```
+
+Good output includes:
+
+- the active bead and primary authority
+- what changed
+- what evidence exists
+- what is still uncertain
+- the next exact check or question
+
+Why this matters: You are not trying to tune the model. You are making sure the agent has enough clean room to finish, verify, and hand off without losing the task.
+
 ## Use The Plain Decision Words
 
 Precode checks should help you choose what to do, not make you learn internal labels. When a script reports a `user_decision`, read it this way:
@@ -273,6 +321,7 @@ Use this table when you are unsure what kind of request to make.
 | Situation | Ask for | Copyable request |
 |---|---|---|
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
+| Broad, risky, paid, market-facing, or weakly evidenced idea | Product Discovery Validation | `Use Product Discovery Validation. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | Rough idea, notes, screenshot, GitHub issue, research | Local source intake | `Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.` |
 | Feature idea is fuzzy | Alignment / grilling | `Use the Idea To PRD Workflow. Interview me one question at a time, include your recommended answer, and keep going until we share the design concept. Do not plan or code yet.` |
 | Terms, labels, or names are confusing | Shared-language review | `Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
@@ -307,6 +356,7 @@ Red flags:
 |---|---|
 | Agent starts coding too soon | `Stop. Explain the active bead, primary authority, files in play, and checks first.` |
 | Agent plans before alignment is done | `Stop. Ask the next alignment question one at a time and include your recommended answer.` |
+| Agent turns a weakly evidenced idea into a PRD | `Stop. Use Product Discovery Validation first. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill.` |
 | Agent uses the wrong term or confusing label | `Stop. Use the Ubiquitous Language Protocol and tell me which term should appear in the PRD, UI, tests, and code names.` |
 | Scope grows | `Checkpoint. Is this still one bead, or should we split?` |
 | Generated report becomes instruction | `Generated reports are evidence only. Return to active memory and the active bead.` |
@@ -431,6 +481,12 @@ Use `--edit-lock` for high-risk beads when you want an advisory check against th
 
 ```text
 Run python3 scripts/files-in-play-check.py --edit-lock and explain whether any changed path is outside this bead. Treat the lock as advisory evidence, not permission.
+```
+
+For sensitive, external, destructive, or bounded-AFK work, ask for the stricter plain-English contract before work starts:
+
+```text
+Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, and rollback or blocked escape path. Then run python3 scripts/run-contract-check.py.
 ```
 
 ## Use Alignment, AFK Candidates, And Fresh Review
@@ -721,36 +777,4 @@ No. It makes state, scope, evidence, and approvals visible so your judgment is e
 
 ---
 
-## Change Log
-
-| Version | Date | Summary |
-|---|---|---|
-| v0.7.7 | 2026-05-08 | Added the Beginner Recovery Protocol path, "I think I broke something" prompt, and common recovery flows for file damage, generated-report confusion, active-state repair, missing proof, context loss, scope expansion, and approval confusion. |
-| v0.7.6 | 2026-05-08 | Added the Product Ideation Workbook to Candidate Goal Frame path, clarifying that workbook candidates move through Local Source Intake, user reaffirmation, and `PRODUCT.md` before they can guide workflow selection. |
-| v0.7.5 | 2026-05-08 | Added beginner-facing Goal Frame guidance for durable intent before workflow selection, including reaffirmation prompts and the rule that Goal Frames are advisory orientation rather than tasks, approvals, backlogs, or active memory. |
-| v0.7.4 | 2026-05-07 | Added the builder-facing small operating system metaphor to harmonize positioning with the reviewer-facing control layer definition used in the public explainer docs. |
-| v0.6.9 | 2026-05-03 | Added Local Hygiene prompts and red flags for advisory log/cache cleanup checks and non-destructive dry-run previews. |
-| v0.6.8 | 2026-05-03 | Added shared-language and project-glossary prompts, red flags, and FAQs for non-technical builders. |
-| v0.6.7 | 2026-05-03 | Added beginner-facing guidance for alignment/grilling, destination PRDs, journey beads, AFK candidates, test strategy, fresh-context review, vertical slices, and stale artifacts as evidence. |
-| v0.6.6 | 2026-05-03 | Added beginner-facing guidance for `PRODUCT.md` as a living product constitution used during planning and drift checks without becoming active memory or replacing PRDs. |
-| v0.6.5 | 2026-04-28 | Added beginner-facing positioning language explaining that Precode lives inside the project folder, keeps project truth in readable Markdown files, and uses small scripts to check agent alignment. |
-| v0.6.4 | 2026-04-27 | Added navigation to `PRECODE-MANIFESTO.md` for Precode's philosophical anchor, values, principles, and anti-drift stance. |
-| v0.6.3 | 2026-04-27 | Added navigation to the standalone software-building explainer for non-technical users learning how traditional software work maps to Precode OS and AI coding agents. |
-| v0.6.2 | 2026-04-27 | Added beginner-safe hard rules for not moving, renaming, or directly editing Precode Markdown files; added do-this-instead recovery prompts and a prioritized human-safety table for common operator mistakes. |
-| v0.6.1 | 2026-04-27 | Added prescriptive reviewed-memory guidance, report-reading rules for memory cards and generated memory indexes, and copyable prompts for searching memory, proposing memory cards, and checking whether memory should be promoted to an authority owner file. |
-| v0.6.0 | 2026-04-27 | Refactored the guide into a prescriptive user playbook focused on how to run sessions, choose requests, keep agents bounded, verify done, approve safely, read reports, and follow a first-use progression with only enough what/why context to support action. |
-| v0.5.5 | 2026-04-26 | Added beginner-facing system design pattern guidance for choosing direct changes, adapters, state flows, strategy boundaries, auth/access boundaries, and audit trails before coding. |
-| v0.5.4 | 2026-04-26 | Added beginner-facing completion and handoff guidance explaining checkpoint, session close, closeout, review, handoff, and next-bead approval, plus prompts for completion checks, handoff packets, and transition readiness. |
-| v0.5.3 | 2026-04-26 | Added beginner-facing long-horizon planning guidance explaining where future work belongs, how to read the generated long-horizon map, and how to review approved, blocked, deferred, or ready work without activating anything. |
-| v0.5.2 | 2026-04-26 | Added beginner-facing workflow selection guidance, a "Which Workflow Should I Use?" table, a copyable workflow-selection prompt, and notes about workflow planning warnings in generated reports. |
-| v0.5.1 | 2026-04-26 | Added beginner-facing tool execution guidance explaining the difference between tool runs, verification checks, and user-approved risky actions, plus prompts for classifying and recording tool calls. |
-| v0.5.0 | 2026-04-26 | Added beginner-facing intent orchestration guidance explaining how changed intent is handled, how to ask for an idea-to-evidence trace, and how OS Health can warn when intent promotion or follow-up ownership is unclear. |
-| v0.4.5 | 2026-04-26 | Added beginner-facing context engineering guidance explaining how to load the right files, avoid treating generated reports or source notes as instructions, and ask for a compact Context Pack before implementation or handoff. |
-| v0.4.4 | 2026-04-26 | Added beginner-facing state integrity guidance explaining that Precode separates current memory, durable task state, historical evidence, and generated reports, and that reports may warn when those layers drift or become stale. |
-| v0.4.3 | 2026-04-26 | Added beginner-facing decomposition guidance explaining that good beads are small enough to verify and that OS Health may warn about broad scope, vague done criteria, mixed planning and implementation, or unclear dependencies. |
-| v0.4.2 | 2026-04-26 | Added beginner-facing verification quality guidance explaining that stronger work needs stronger proof and that OS Health may warn when evidence is too weak for the bead's risk. |
-| v0.4.1 | 2026-04-26 | Added beginner-facing GitHub guidance for read-only audits, issue and pull request source intake, and the rule that GitHub status is evidence rather than Precode authority. |
-| v0.4.0 | 2026-04-26 | Added scheduled audit guidance for opt-in background reporting, including `logs/scheduled-audit.md`, quiet-drift warnings, and the rule that audits are evidence, not instructions. |
-| v0.3.0 | 2026-04-25 | Added student-facing "Why this matters" explanations and a categorized FAQ for common vibe-coding questions about scope creep, active memory, beads, evidence, checkpoints, generated reports, manual approvals, blocked work, multi-agent continuity, and spend visibility. |
-| v0.2.0 | 2026-04-25 | Added the local-source-intake path so non-technical users can turn local notes, docs, screenshots, issue exports, research, diagrams, and drafts into PRD-ready summaries without making those sources active memory. |
-| v0.1.0 | 2026-04-25 | Initial beginner-facing guide covering the daily Precode loop, active memory, PRD-to-bead flow, manual approvals, prompts, generated reports, and spend visibility notes. |
+Maintainer-local document history for this user guide lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

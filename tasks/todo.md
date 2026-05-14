@@ -1,12 +1,12 @@
 ---
 current_bead: tasks/beads/B000-install-precode-kernel.md
 current_state: in_progress
-build_lane: Precode OS adoption
-active_feature_window: Kernel setup
+build_lane: PrecodeOS adoption
+active_feature_window: Install-ready package baseline
 primary_authority: tasks/reference/IDEA-TO-PRD-WORKFLOW.md
 ---
 
-# Precode OS — Active Work File
+# PrecodeOS — Active Work File
 <!-- ANCHOR: active-work -->
 
 > AUTHORITY: Current task, done-when target, primary authority file, files in play, checks to run, immediate next-up queue, open questions, and noticed execution facts.
@@ -22,14 +22,16 @@ Last updated: 2026-05-03
 
 - `tasks/beads/B000-install-precode-kernel.md`
 - State: `in_progress`
-- Build lane: Precode OS adoption
-- Active feature window: Kernel setup
+- Build lane: PrecodeOS adoption
+- Active feature window: Install-ready package baseline
 
 ## Done When
 
-- The Precode OS kernel is installed and validated.
-- Precode OS itself uses the repository root as the app/workspace directory.
-- Project-specific checks for B000 are defined and recorded.
+- PrecodeOS is reviewed as an install-ready package baseline.
+- Active memory remains exactly `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+- PrecodeOS itself uses the repository root as the app/workspace directory.
+- Package docs, shims, adapters, reference protocols, scripts, generated-output policy, maintainer boundary, and package hygiene are in B000 scope.
+- Project-specific package checks for B000 are defined and recorded.
 - B000 has exact manual verification and review evidence requirements.
 
 ## Primary Authority File
@@ -38,28 +40,36 @@ Last updated: 2026-05-03
 
 ## Files In Play
 
-- `AGENT.md`
-- `DECISIONS.md`
-- `tasks/todo.md`
-- `tasks/beads/B000-install-precode-kernel.md`
-- `PROJECT-CONTEXT.md`
+- `*.md`
+- `.github`
+- `.gitignore`
+- `_maintainer`
+- `adapters`
+- `maintainer`
+- `NOTICE`
+- `scripts`
+- `tasks`
+- `TRADEMARK`
 
 ## Checks To Run
 
 - `bash scripts/record-check.sh -- bash scripts/validate-memory.sh`
 - `bash scripts/record-check.sh -- python3 scripts/version-check.py`
 - `bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check`
+- `bash scripts/record-check.sh -- python3 scripts/public-repo-check.py`
+- `bash scripts/record-check.sh -- python3 scripts/files-in-play-check.py`
 - `bash scripts/record-check.sh -- python3 scripts/completion-check.py`
 
 ## Explicit Out-of-Scope
 
-- Do not write app code during kernel setup.
+- Do not write product app code during package baseline review.
 - Do not add product features before a PRD shard exists.
+- Do not publish, deploy, mutate external repository settings, or start an installer mutation flow during B000 closeout.
 
 ## Next Up
 
-- Review B000 closeout evidence.
-- After B000 is accepted, propose the next PRD or setup bead without activating it until `python3 scripts/bead-transition.py --approve` is explicitly approved.
+- B000 package-baseline scope is accepted for review closeout.
+- Propose the next PRD or setup bead without activating it until `python3 scripts/bead-transition.py --approve` is explicitly approved.
 
 ## Open Questions
 
@@ -67,5 +77,8 @@ Last updated: 2026-05-03
 
 ## Noticed
 
-- This repository is Precode OS itself. The app/workspace directory is `.`.
+- This repository is PrecodeOS itself and should be install-ready as an OS package. The app/workspace directory is `.`.
 - No product feature work is active during B000.
+- The broad package file set is intentional current-bead scope for B000 package-readiness review, not drift.
+- Generated root reports and `logs/` remain generated evidence only, not active memory or package authority.
+- Maintainer-only planning now lives under `_maintainer/`; old `maintainer/` paths are intentionally outside public package scope.

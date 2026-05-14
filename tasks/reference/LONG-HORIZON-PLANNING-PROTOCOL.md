@@ -1,14 +1,16 @@
-# Precode OS -- Long-Horizon Planning Protocol
+# PrecodeOS -- Long-Horizon Planning Protocol
 <!-- ANCHOR: long-horizon-planning-protocol -->
 
-> AUTHORITY: Long-horizon task visibility, future-work ownership, deferred and blocked work review, and promotion rules for Precode OS.
+> AUTHORITY: Long-horizon task visibility, future-work ownership, deferred and blocked work review, and promotion rules for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, generated progress state, bead activation, priority ordering, or project-board authority.
 > LOAD_WHEN: Reviewing future work, deferred ideas, blocked beads, follow-up candidates, PRD-approved but unscheduled work, dependency chains, or long-range planning health.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.1
+Last updated: 2026-05-11
 
 ## Purpose
 

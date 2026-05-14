@@ -1,7 +1,7 @@
-# Precode OS — Operating Constraints
+# PrecodeOS — Operating Constraints
 <!-- ANCHOR: operating-constraints -->
 
-> AUTHORITY: Shared edit discipline, scope control, generated-output demotion, and reference-loading rules for Precode OS.
+> AUTHORITY: Shared edit discipline, scope control, generated-output demotion, and reference-loading rules for PrecodeOS.
 > NOT_AUTHORITY: Feature requirements, route structure, schema definitions, product decisions, or active task selection.
 > LOAD_WHEN: Starting work, editing OS files, validating scope, or recovering from drift.
 > CLASS: reference

@@ -1,4 +1,4 @@
-# Precode OS — Product Constitution Template
+# PrecodeOS — Product Constitution Template
 <!-- ANCHOR: product-constitution -->
 
 > AUTHORITY: Builder-facing product constitution, product promise, users and jobs, strategy and non-goals, current product bets, success signals, and design or voice pointers for the target project.

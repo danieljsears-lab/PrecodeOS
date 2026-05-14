@@ -1,4 +1,4 @@
-# Precode OS Mode — Navigator
+# PrecodeOS Mode — Navigator
 <!-- ANCHOR: mode-navigator -->
 
 > AUTHORITY: Navigator mode for selecting the next bead, setting context, scope shaping, and handoff discipline.

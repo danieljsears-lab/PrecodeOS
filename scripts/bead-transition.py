@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # Version: v0.1.1
 # Last updated: 2026-05-06
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
@@ -151,7 +153,7 @@ def rewrite_todo(root: Path, current_rel: str, next_rel: str) -> None:
     next_bead = read_bead(root / next_rel, root)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    build_lane = todo_state.get("build_lane") or "Precode OS adoption"
+    build_lane = todo_state.get("build_lane") or "PrecodeOS adoption"
     active_feature_window = todo_state.get("active_feature_window") or "Features 0-9"
 
     frontmatter = {
@@ -169,7 +171,7 @@ def rewrite_todo(root: Path, current_rel: str, next_rel: str) -> None:
         explicit_out = "- Stop condition: pause and ask before crossing this bead boundary."
 
     todo = f"""{replace_frontmatter('', frontmatter, key_order=TODO_FRONTMATTER_ORDER).strip()}
-# Precode OS — Active Work File
+# PrecodeOS — Active Work File
 <!-- ANCHOR: active-work -->
 > AUTHORITY: Current task, done-when target, primary authority file, files in play, checks to run, immediate next-up queue, open questions, and noticed execution facts.
 > NOT_AUTHORITY: Resolved decisions, feature requirements, generated progress, or long-range roadmap commitments.

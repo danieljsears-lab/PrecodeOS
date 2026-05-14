@@ -1,4 +1,4 @@
-# Precode OS Manifesto
+# PrecodeOS Manifesto
 <!-- ANCHOR: precode-manifesto -->
 
 > AUTHORITY: Philosophical statement of why Precode exists, who it serves, core values, and principles guiding the operating model.
@@ -8,17 +8,19 @@
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
-Copyright: © 2026 Dan Sears
-Document version: v0.1.11
-Last updated: 2026-05-07
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.13
+Last updated: 2026-05-13
 
 ## The Precode Answer
 
 Canonical site: `https://www.precodeos.org`.
 
+PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
+
 We believe AI coding does not need another autonomous agent as much as it needs a repo-owned control layer.
 
-Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
+PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.
 
 In plain English: Precode lives inside your project folder, keeps the important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.
 
@@ -33,6 +35,10 @@ Precode is not anti-AI. Precode is anti-AI-drift. This distinction is critical.
 It is not here to kill ambition. It is here to keep ambition oriented.
 
 It gives builders rails without taking away the wheel.
+
+## Why The Name
+
+“Precode” names the work that must happen before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means Precode is the small operating layer around the agent and the repo, not a replacement for the agent, the app, or the builder’s judgment.
 
 ## Builders Are The Future
 

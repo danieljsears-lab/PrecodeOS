@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-08
+Document version: v0.1.5
+Last updated: 2026-05-12
 
 ## State
 
@@ -48,6 +48,17 @@ Raw inputs are evidence, not authority. Use `tasks/reference/LOCAL-SOURCE-INTAKE
 - Candidate non-goals:
 - Authority files likely affected:
 - Discarded or stale inputs:
+
+## Discovery Evidence
+
+Use when the idea was broad, risky, market-facing, paid, evidence-poor, solution-first, or otherwise needed Product Discovery Validation before PRD shaping. Keep this as a bridge summary, not a full research report.
+
+- Discovery completed: `yes | no | skipped`
+- Reason skipped:
+- Evidence strength: `very weak | weak | medium | strong | strongest | not assessed`
+- Riskiest assumption:
+- Discovery recommendation: `proceed | pause | narrow | kill | not assessed`
+- Discovery Summary reference:
 
 ## Alignment / Grilling Summary
 

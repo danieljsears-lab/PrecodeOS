@@ -1,14 +1,16 @@
-# Precode OS -- Decomposition Protocol
+# PrecodeOS -- Decomposition Protocol
 <!-- ANCHOR: decomposition-protocol -->
 
-> AUTHORITY: Bead decomposition rules, not-a-bead-yet criteria, slicing patterns, dependency mapping terms, planning-versus-execution boundaries, and appetite guidance for Precode OS.
+> AUTHORITY: Bead decomposition rules, not-a-bead-yet criteria, slicing patterns, dependency mapping terms, planning-versus-execution boundaries, and appetite guidance for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, generated progress state, or automatic bead activation.
 > LOAD_WHEN: Turning PRDs, source intake, GitHub issues, rough plans, or review findings into candidate beads; splitting broad work; or reviewing whether a bead is small enough to activate.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-06
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.4
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -23,6 +25,8 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when t
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when candidate beads, dependencies, blocked work, or deferred slices need long-horizon review before activation.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` before decomposition when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or direct-versus-pattern decision.
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when decomposition affects model tier, subagent delegation, long-horizon execution, or context-budget decisions.
 
 Active memory remains exactly:
 
@@ -104,7 +108,7 @@ Use these delegation terms in bead frontmatter:
 - `afk_candidate` — a coding agent can plausibly execute the scoped work after context is loaded
 - `human_required` — the work depends on human-only access, taste, domain judgment, or approval
 
-`afk_candidate` does not activate parallel execution and does not bypass review. It only describes delegation safety.
+`afk_candidate` does not activate parallel execution, choose a smarter model, authorize subagents, widen files in play, or bypass review. It only describes whether a scoped bead is safe to hand to an agent after context is loaded.
 
 If a dependency blocks activation, it belongs in `depends_on`, the PRD open questions, or a named unblocker bead.
 

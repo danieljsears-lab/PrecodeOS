@@ -1,4 +1,4 @@
-# Precode OS — Acceptance Template
+# PrecodeOS — Acceptance Template
 <!-- ANCHOR: acceptance -->
 
 > AUTHORITY: Done checks, verification criteria, and feature completion gates for the target project.

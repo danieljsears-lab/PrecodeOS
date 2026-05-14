@@ -1,4 +1,4 @@
-# Precode OS — Security Template
+# PrecodeOS — Security Template
 <!-- ANCHOR: security -->
 
 > AUTHORITY: Threat model, sensitive surfaces, security constraints, and mitigation guidance for the target project.

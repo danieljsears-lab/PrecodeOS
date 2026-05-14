@@ -1,18 +1,20 @@
-# Precode OS -- GitHub Integration Protocol
+# PrecodeOS -- GitHub Integration Protocol
 <!-- ANCHOR: github-integration-protocol -->
 
 > AUTHORITY: GitHub integration rules, read-only audit boundaries, issue and pull request source-intake rules, GitHub Actions validation expectations, and promotion paths for GitHub-derived evidence.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, bead state, repository mutation, CI rerun policy, deployment policy, or generated progress state.
-> LOAD_WHEN: Configuring GitHub, reviewing GitHub audit findings, importing GitHub issues or pull requests as source evidence, or adding GitHub Actions validation for Precode OS.
+> LOAD_WHEN: Configuring GitHub, reviewing GitHub audit findings, importing GitHub issues or pull requests as source evidence, or adding GitHub Actions validation for PrecodeOS.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.1
+Last updated: 2026-05-11
 
 ## Purpose
 
-GitHub can help Precode OS see repository status, CI status, pull request context, and issue context.
+GitHub can help PrecodeOS see repository status, CI status, pull request context, and issue context.
 
 GitHub must not become a second operating system. GitHub issues, pull requests, checks, comments, labels, project boards, and Actions are evidence or external status until a user promotes stable conclusions into the correct Precode owner file.
 

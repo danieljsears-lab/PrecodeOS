@@ -1,14 +1,16 @@
-# Precode OS -- Ubiquitous Language Protocol
+# PrecodeOS -- Ubiquitous Language Protocol
 <!-- ANCHOR: ubiquitous-language-protocol -->
 
-> AUTHORITY: Shared domain-language workflow, project-glossary card expectations, terminology freshness rules, and PRD/bead language guidance for Precode OS.
+> AUTHORITY: Shared domain-language workflow, project-glossary card expectations, terminology freshness rules, and PRD/bead language guidance for PrecodeOS.
 > NOT_AUTHORITY: Active memory, product decisions, feature requirements, task selection, implementation plans, route structure, schema definitions, generated progress state, or code naming decisions without owner-file approval.
 > LOAD_WHEN: A feature, PRD, bead, review, source intake, or memory card depends on domain vocabulary, confusing terms, user language, module/interface names, or stale terminology.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-03
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.1
+Last updated: 2026-05-11
 
 ## Purpose
 

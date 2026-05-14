@@ -1,4 +1,4 @@
-# Precode OS — Codebase Guide Template
+# PrecodeOS — Codebase Guide Template
 <!-- ANCHOR: codebase-guide -->
 
 > AUTHORITY: Repository layout, file placement, naming conventions, and code organization guidance for the target project.

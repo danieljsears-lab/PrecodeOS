@@ -1,22 +1,24 @@
-# Precode OS Architecture Overview
+# PrecodeOS Architecture Overview
 <!-- ANCHOR: architecture-overview -->
 
-> AUTHORITY: Reviewer-facing architecture, layer model, principles, failure-mode analysis, enforcement model, trust boundaries, human control surface, comparison framing, evaluation criteria, adoption path, and limitations for Precode OS itself.
+> AUTHORITY: Reviewer-facing architecture, layer model, principles, failure-mode analysis, enforcement model, trust boundaries, human control surface, comparison framing, evaluation criteria, adoption path, and limitations for PrecodeOS itself.
 > NOT_AUTHORITY: Target-project app architecture, active memory, task selection, product requirements, implementation status, route structure, schema definitions, or generated progress state.
-> LOAD_WHEN: Evaluating, explaining, positioning, or reviewing Precode OS.
+> LOAD_WHEN: Evaluating, explaining, positioning, or reviewing PrecodeOS.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
-Copyright: © 2026 Dan Sears
-Document version: v0.3.4
-Last updated: 2026-05-08
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.3.12
+Last updated: 2026-05-13
 
 ## Executive Summary
 
-Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. It is designed for builders using coding agents over many sessions, where the core risk is not whether an agent can produce code, but whether the repo can preserve intent, scope, authority, evidence, handoff state, and the next safe action as the work moves from idea to implementation.
+PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. It is designed for builders using coding agents over many sessions, where the core risk is not whether an agent can produce code, but whether the repo can preserve intent, scope, authority, evidence, handoff state, and the next safe action as the work moves from idea to implementation.
 
-Precode OS is not a code generator, IDE agent, model router, autonomous software engineer, or full software development lifecycle framework. It can work with those tools, but it does not replace them. Its job is to make AI-assisted work bounded, inspectable, recoverable, and reviewable inside a real repository.
+PrecodeOS is not a code generator, IDE agent, model router, autonomous software engineer, or full software development lifecycle framework. It can work with those tools, but it does not replace them. Its job is to make AI-assisted work bounded, inspectable, recoverable, and reviewable inside a real repository.
+
+PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. Architecturally, it keeps the project human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces rather than hidden chat assumptions.
 
 The core claim is simple:
 
@@ -24,9 +26,11 @@ The core claim is simple:
 
 Markdown files own durable intent and contracts. Python and shell scripts compile state, validate invariants, record checks, generate evidence reports, and support handoff. Generated reports inform humans, but they do not become authority.
 
+PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. `NOTICE` and `TRADEMARK.md` preserve attribution and brand-use boundaries while `LICENSE` preserves Apache-2.0 reuse terms.
+
 ## Category And Problem
 
-Precode OS sits in the category of repo-control and evidence-governance systems for vibe coding. It is closest to spec-driven and AI-SDLC frameworks in spirit, but its center of gravity is different.
+PrecodeOS sits in the category of repo-control and evidence-governance systems for vibe coding. It is closest to spec-driven and AI-SDLC frameworks in spirit, but its center of gravity is different.
 
 Spec-driven frameworks ask: "What should we specify before the AI builds?"
 
@@ -45,15 +49,15 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Scope widening | The agent adds adjacent features or refactors while implementing one request. | One active bead, files in play, one primary authority, explicit stop conditions, and advisory files-in-play guardrails. |
 | Stale context | Old notes, chat summaries, generated reports, completed PRDs, closed issues, or previous journey notes override the current task. | Tiny active memory and a context loading order that demotes generated, source, and stale historical material. |
 | False done | The agent says work is complete without evidence strong enough for the risk. | Recorded checks, closeout evidence, manual verification, and review decisions. |
-| Vague product intent | A rough idea becomes code before the product fit, shared design concept, non-goals, and acceptance oracles are stable. | `PRODUCT.md`, alignment/grilling, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
+| Vague product intent | A rough idea becomes code before worth-building evidence, product fit, shared design concept, non-goals, and acceptance oracles are stable. | Optional Product Discovery Validation, `PRODUCT.md`, alignment/grilling, Goal Frames when durable intent needs review, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
 | Language drift | Product docs, UI labels, tests, module names, and old artifacts use different words for the same concept. | Ubiquitous language protocol, PRD domain-language sections, reviewed glossary memory, and stale-vocabulary demotion. |
 | Authority confusion | Product, architecture, schema, security, and acceptance facts are duplicated across docs. | Authority contracts and one owner per fact. |
 | Generated summaries become instructions | Status reports or imported evidence start choosing next work. | Generated-output demotion and promotion paths into owned docs. |
 | Uncontrolled momentum | The agent finishes one task and rolls into the next. | Review decisions and user-approved bead transitions. |
-| Tool lock-in | Each AI coding tool develops its own project memory and command habits. | Tool-neutral core with thin adapters and shared scripts. |
+| Tool lock-in | Each AI coding tool develops its own project memory, model-routing habits, and command style. | Tool-neutral core with thin adapters, shared scripts, and Agent Routing discipline for model tier, context budget, delegation, and tool choice. |
 | Lost handoff state | A new session or tool cannot reconstruct current scope, blockers, or evidence. | Context Packs, handoff scripts, active bead pointer, and generated handoff reports. |
 | Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
-| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, and generated files as the same kind of clutter. | Local Hygiene categorization, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
+| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, maintainer-only material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
 
 Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
 
@@ -99,6 +103,8 @@ The OS does not accept "it should work" as completion. Checks should be run thro
 
 `OS-HEALTH.md`, `PROGRESS.md`, log summaries, imported sources, and generated handoff packets can inform humans. They must not choose tasks, approve transitions, or override active memory.
 
+Maintainer-local changelog history can explain how surfaces changed, but it does not select work, approve decisions, or replace the current owner file.
+
 ### Human Approval At Transitions
 
 Agents can propose next work. Humans approve task activation, PRD approval, sensitive-surface work, external mutation, review decisions, and bead transitions.
@@ -111,7 +117,7 @@ Precode is designed to work across Codex, Claude, Cursor, Gemini, Antigravity, a
 
 ### System Shape
 
-Precode OS lives mostly at the repo root. It surrounds the application code with a governance layer:
+PrecodeOS lives mostly at the repo root. It surrounds the application code with a governance layer:
 
 ```text
 repo/
@@ -139,18 +145,23 @@ The application can use any framework. Precode's architecture is not an app arch
 | Active-memory kernel | Define the minimal always-loaded context. | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`. |
 | Authority contracts | Declare what each file owns and must not own. | `AUTHORITY`, `NOT_AUTHORITY`, `LOAD_WHEN`, `CLASS`. |
 | Reference layer | Hold product constitution, architecture, schema, API, security, and workflow rules. | `PRODUCT.md`, root reference docs, `tasks/reference/`. |
+| Discovery validation layer | Test worth-building uncertainty before product definition hardens into tasks. | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, Discovery Summary, proceed/pause/narrow/kill recommendation. |
+| Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |
 | Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`. |
 | Execution bead layer | Bound one journey unit of work. | `tasks/beads/*.md`, bead frontmatter and sections, delegation mode, test strategy, review context. |
 | Adaptive-depth layer | Scale planning and autonomy expectations to the bead's risk while giving beginners a plain continue/ask/stop decision. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`. |
+| Run-contract layer | Tighten high-risk execution policy without burdening ordinary beads. | bead `Run Contract` sections, `scripts/run-contract-check.py`, `logs/run-contract.json`, `logs/run-contract.yaml`. |
 | Mode layer | Separate planning, building, and review behavior. | `modes/NAVIGATOR.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
 | Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/*.md`. |
+| Agent-routing layer | Keep model tier, context budget, delegation, and tool choice proportional to the bead. | `tasks/reference/AGENT-ROUTING-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, tool-specific adapters. |
 | Safety layer | Add constraints for scope, sensitive surfaces, and verification. | `OPERATING-CONSTRAINTS.md`, security and verification protocols. |
 | Script layer | Turn conventions into repeatable commands. | Session, checkpoint, close, record-check, transition scripts. |
 | Validator layer | Catch structural drift and advisory guardrail gaps. | `validate-memory.sh`, advisory checks, files-in-play guardrail, command classification, advisory edit lock, write guard, pre-commit hook. |
 | Next-step layer | Give humans a generated hint without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, plain `user_decision` guidance. |
 | Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
-| Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
+| Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
+| Public-package hygiene layer | Keep maintainer-only files and local/private material out of the reusable public package. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `.gitignore`, `scripts/public-repo-check.py`. |
 | Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`. |
 | Handoff layer | Orient the next session or agent safely. | Handoff script, Context Pack, handoff packet. |
 
@@ -160,8 +171,11 @@ Precode's intended flow is:
 
 ```text
 idea or source material
-  -> product constitution fit check
+  -> optional product ideation workbook
+  -> optional Product Discovery Validation when worth-building risk is high
   -> source intake
+  -> product constitution fit check
+  -> Goal Frame proposal and reaffirmation when durable intent needs orientation
   -> alignment/grilling
   -> shared-language check when terms matter
   -> destination PRD shard
@@ -174,7 +188,7 @@ idea or source material
   -> user-approved transition
 ```
 
-Imported notes, GitHub issues, screenshots, generated reports, completed PRDs, archived beads, old alignment transcripts, and glossary memory are evidence. They become authority only after promotion into the correct Precode-owned file.
+Workbook packets, Discovery Summaries, imported notes, GitHub issues, screenshots, generated reports, completed PRDs, archived beads, old alignment transcripts, changelog entries, and glossary memory are evidence or history. They become authority only after promotion into the correct Precode-owned file.
 
 ### Runtime Loop
 
@@ -206,7 +220,7 @@ The core validator currently checks required docs, authority contracts, active-m
 
 Advisory checks extend the model across context, decomposition, verification, state, orchestration, workflow selection, long-horizon planning, completion, and tool execution.
 
-Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, and `logs/handoff-packet.json` make current state easier to inspect, but they remain evidence, not authority.
+Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/handoff-packet.json`, and `logs/run-contract.json` make current state easier to inspect, but they remain evidence, not authority.
 
 `PRECODE-HELP.md` is the human-readable generated next-step snapshot. It can explain blockers, adaptive-depth warnings, and files-in-play warnings, but it cannot select work, approve review, or activate a bead.
 
@@ -233,10 +247,16 @@ Precode assumes that AI coding sessions can be confused by untrusted or stale ma
 |---|---|
 | Active memory | Authoritative for current operating state. |
 | Active bead | Authoritative for current execution contract. |
+| Bead Run Contract | Risk-triggered allowed actions, proof needed, approval gates, and stop conditions inside the active bead. |
 | Primary authority | Authoritative for the topic the bead is changing. |
 | Reference docs | Authoritative only for their declared topic. |
+| Goal Frames | Reviewed durable orientation only; never backlog, roadmap, task selection, PRD approval, or bead activation. |
+| Discovery Summaries | Advisory pre-PRD evidence only; proceed means ready for the next planning workflow, not approved to build. |
 | Generated reports | Evidence only; never task instructions. |
 | Imported issues, PRs, notes, screenshots | Source material only until promoted. |
+| Maintainer-local changelog | Human-readable history only; not public package authority, current authority, generated evidence, or transition approval. |
+| Maintainer files | Maintainer-only planning and package-boundary context; not active memory, public package authority, or normal user workflow instructions. |
+| Public-repo checks | Advisory public/private boundary findings only; not cleanup approval or a publishing action. |
 | Completed PRDs, archived beads, closed issue imports, old transcripts | Historical evidence only; current authority wins on conflict. |
 | Tool shims and adapters | Compatibility surfaces; not separate operating systems. |
 | External systems | Read-only by default unless an approved bead permits mutation. |
@@ -312,11 +332,15 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 | Vertical slices | Give feedback across enough layers before the agent builds too far horizontally. |
 | Deep modules | Let humans own code shape while agents implement internals behind a clear interface. |
 | Source intake before promotion | Prevents raw notes or issues from becoming hidden instructions. |
+| Discovery before PRD when evidence is weak | Keeps solution-first ideas from becoming polished requirements too early. |
+| Goal Frame reaffirmation | Lets durable intent orient workflow selection without becoming a hidden task list. |
 | Stop-if gates | Makes risky expansion visible before implementation. |
 | Review inputs vs evidence | Separates helpful observations from proof of completion. |
 | Generated health reports | Gives humans status without expanding active memory. |
 | Adapter shims | Lets different AI tools enter the same operating model. |
+| Agent routing | Keeps model depth, context, delegation, and tool use proportional to risk. |
 | Advisory validators | Surfaces drift without letting automation choose work. |
+| Public-repo hygiene checks | Keeps maintainer-only and private-local material from leaking into the reusable package. |
 | Blocked-bead escape paths | Prevents stuck work from pretending to be active progress. |
 
 ### Evidence Model
@@ -327,9 +351,10 @@ Precode evidence has a hierarchy:
 2. Manual verification with who checked, what was checked, environment, result, and remaining uncertainty.
 3. Closeout evidence that summarizes checks, changed files, review decision, drift, lessons, and follow-up.
 4. Generated sidecars and reports that summarize state for humans.
-5. Review inputs such as screenshots, external QA notes, AI critiques, or generated tests.
+5. Review inputs such as Discovery Summaries, Goal Frame fit notes, screenshots, external QA notes, AI critiques, or generated tests.
+6. Human-readable maintainer-local history.
 
-Only the first three should drive acceptance. Generated reports and review inputs help review, but they do not prove completion by themselves.
+Only the first three should drive acceptance. Generated reports, review inputs, and history help review, but they do not prove completion by themselves.
 
 ### Handoff And Interoperability Model
 
@@ -352,7 +377,7 @@ This lets Codex, Claude, Cursor, Gemini, Antigravity, or another agent enter the
 
 ## Technical Reviewer Evaluation Framework
 
-A technical reviewer can evaluate Precode OS against these criteria:
+A technical reviewer can evaluate PrecodeOS against these criteria:
 
 | Criterion | Reviewer question |
 |---|---|
@@ -377,8 +402,9 @@ The strongest evidence for Precode is not a single impressive demo. It is repeat
 |---|---|---|---|
 | Spec-driven frameworks | Define specs before AI implementation. | GitHub Spec Kit, OpenSpec, Spec Kitty. | Complementary; Precode can govern execution and evidence around specs. |
 | AI SDLC frameworks | Provide roles, phases, workflows, and lifecycle artifacts. | BMAD Method, KubeRocketAI. | Adjacent; Precode is narrower and more repo-state focused. |
+| AI delivery workflows | Add ordered specialist commands for planning, review, browser QA, release, and retrospective discipline. | gStack. | Complementary; Precode can provide repo-owned authority, evidence, scope, and transition control under or beside delivery workflows. |
 | Project-management workflows | Turn PRDs into issues, work packages, or parallel execution streams. | Claude Code PM. | Complementary; Precode is more conservative about one active bead and human transitions. |
-| Repo-control and evidence governance | Preserve current truth, authority, scope, checks, and handoff state. | Precode OS. | Precode's core category. |
+| Repo-control and evidence governance | Preserve current truth, authority, scope, checks, and handoff state. | PrecodeOS. | Precode's core category. |
 | Code-editing agents | Generate and edit code through an IDE or CLI. | Cline, Roo Code, Aider, Claude Code, Codex. | Surfaces that Precode can coordinate; not direct alternatives. |
 
 ### Open-Source Comparison Matrix
@@ -386,11 +412,14 @@ The strongest evidence for Precode is not a single impressive demo. It is repeat
 | System | Center of gravity | Strongest fit | Precode difference |
 |---|---|---|---|
 | [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) | AI-native SDLC with specialized agents, planning, stories, QA, and modules. | Teams or builders who want guided product and software lifecycle workflows. | Precode is less persona/workflow heavy and more focused on repo truth, evidence, and transition control. |
+| [gStack](https://github.com/garrytan/gstack) | Opinionated software delivery workflow for Claude Code, Codex, and compatible agents. | Founders, technical leads, and agent users who want ordered planning, review, QA, and shipping loops. | Precode is the repo-owned authority, evidence, and control layer; gStack is a specialist workflow stack that can run above or alongside it. |
 | [GitHub Spec Kit](https://github.github.io/spec-kit/) | Specification-driven development where specs become executable implementation inputs. | Teams that want formal specs and plans before AI implementation. | Precode treats specs as one authority input, then governs active memory, beads, checks, and handoff. |
 | [OpenSpec](https://github.com/Fission-AI/OpenSpec) | Lightweight spec-driven proposal, specs, design, tasks, apply, and archive workflow. | Brownfield-friendly agreement-before-build workflows across AI tools. | Precode is stricter about active-memory limits, generated-output demotion, and human-approved transitions. |
 | [Claude Code PM](https://github.com/automazeio/ccpm) | PRD-to-epic-to-GitHub-Issue workflow for parallel Claude Code execution. | Coordinating multiple Claude Code agents through issues and worktrees. | Precode favors one active bead and repo-owned authority before scaling parallel work. |
 | [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) | Spec -> plan -> tasks -> agent loop -> review -> merge workflow. | Teams that want spec-driven work packages, lanes, review, and merge flow. | Precode emphasizes tiny active memory, evidence demotion, and conservative task activation. |
 | [KubeRocketAI SDLC Framework](https://krci-ai.kuberocketci.io/architecture) | AI-as-code SDLC framework with agents, rules, templates, and CLI. | Teams standardizing AI agent management across a full SDLC. | Precode is smaller, repo-native, and optimized for solo or small-team control before broad orchestration. |
+
+For deeper BMAD and gStack comparison, use `tasks/reference/PRECODE-BMAD-GSTACK-COMPARISON.md`. This architecture overview keeps only the reviewer-facing landscape summary.
 
 ### Why Code-Editing Agents Are Not Direct Alternatives
 
@@ -427,17 +456,18 @@ The recommended adoption strategy is not to copy every file at once. Start with 
 
 ### Planned Roadmap Improvements
 
-- Package a smaller public CLI surface: `precode init`, `precode validate`, `precode record-check`, `precode close`, and `precode transition`.
-- Provide explicit onboarding tiers so new users do not start with the full scaffold.
-- Add more bead templates for common work types.
-- Improve reviewer-facing health summaries without weakening generated-output demotion.
-- Add import paths from BMAD, Spec Kit, OpenSpec, GitHub issues, and hand-written notes into Precode-owned artifacts.
-- Standardize external review evidence fields for QA tools, AI review, screenshots, and human notes.
-- Improve examples from real adopted projects, not only clean scaffolds.
+The canonical detailed roadmap, candidate scoring, and maintainer priority order live in `_maintainer/PRECODE-ROADMAP.md`. This public architecture overview only previews direction:
+
+- improve onboarding and bootstrap so builders can adopt the smallest useful Precode tier first
+- keep sharpening next-step clarity around continue, ask, prove, approve, repair, and stop
+- harden adaptive depth plus file/command guardrails before adding heavier layers
+- add risk-triggered run contracts for allowed actions, proof needed, approval gates, and stop conditions only where they prove value
+- strengthen evidence, release readiness, and review lanes without turning Precode into a specialist-team simulator
+- add import bridges and optional packs later, after the kernel remains quiet and trusted
 
 ## Reviewer Takeaway
 
-Precode OS is strongest when evaluated as a control layer for AI-assisted repo work, not as a coding agent or a broad SDLC suite. Its distinctive contribution is the combination of tiny active memory, authority contracts, one active bead, recorded evidence, generated-output demotion, and human-approved transitions.
+PrecodeOS is strongest when evaluated as a control layer for AI-assisted repo work, not as a coding agent or a broad SDLC suite. Its distinctive contribution is the combination of tiny active memory, authority contracts, one active bead, recorded evidence, generated-output demotion, and human-approved transitions.
 
 Compared with spec-driven and AI-SDLC systems, Precode is narrower but more pessimistic about drift. It assumes that momentum is dangerous unless bounded by repo-owned state and evidence. That makes it especially relevant for vibe coding, where speed is abundant but durable project truth is scarce.
 
@@ -462,14 +492,18 @@ The layer model is intentionally explicit because each layer prevents a differen
 | Active-memory kernel | Keep startup context to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
 | Authority contracts | Make every AI-facing doc declare what it owns, what it must not decide, when to load it, and its class. |
 | Reference layer | Hold product, architecture, API, schema, security, context, workflow, and protocol detail outside active memory. |
+| Discovery validation layer | Keep broad, risky, market-facing, paid, evidence-poor, or solution-first ideas as evidence until the builder chooses the next workflow. |
+| Goal-frame layer | Store durable orientation only inside existing owner files after review and reaffirmation, while preventing it from becoming backlog, roadmap, or task authority. |
 | Product Definition Gate | Route rough ideas and source material through intake, PRD shards, requirements, and candidate beads before implementation. |
 | Execution bead layer | Make one logical unit executable, reviewable, closable, and handoff-safe. |
 | Mode layer | Separate navigator, builder, and review behavior so planning, implementation, and critique do not blur together. |
 | Adapter layer | Keep tool-specific entrypoints thin while preserving one shared command surface. |
+| Agent-routing layer | Choose model depth, context budget, delegation, and tool route without overriding active bead scope, files in play, approvals, or review. |
 | Safety layer | Add stop conditions for scope, sensitive surfaces, destructive operations, generated-output demotion, and approval gates. |
 | Script layer | Turn repeated operating habits into commands with stable output and logs. |
 | Validator layer | Enforce structural invariants and expose drift before continuing implementation. |
 | Evidence layer | Preserve check results, loop events, spend, handoff state, generated maps, and health snapshots without making them authority. |
+| Public-package hygiene layer | Check maintainer-only, private-local, ignored, and public-package candidate files without publishing, deleting, or mutating the package. |
 | Handoff layer | Let a future session or different agent reconstruct scope, blockers, checks, and next safe action. |
 
 ### Script And Generated Sidecar Taxonomy
@@ -481,9 +515,9 @@ The script layer has four families:
 | Session loop | `session-start.sh`, `checkpoint.sh`, `session-close.sh`, `handoff.sh` | Orient, pause, close, and transfer work safely. |
 | Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `log-loop-event.sh`, `log-tool-run.sh` | Record what happened without relying on chat memory. |
 | Compilation and reports | `os_compiler.py`, `os-health.py`, `update-learning-diary.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence. |
-| Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `completion-check.py`, and related checkers | Surface likely drift without mutating active memory. |
+| Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `public-repo-check.py`, and related checkers | Surface likely drift without mutating active memory. |
 
-Generated sidecars should stay under `logs/` unless an existing generated report owns the surface. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, long-horizon, handoff, pattern, and health outputs. They are evidence only.
+Generated sidecars should stay under `logs/` unless an existing generated report owns the surface. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, and health outputs. They are evidence only.
 
 ### Validator And Hook Detail
 
@@ -522,6 +556,7 @@ Common maintenance moves:
 | Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |
 | Change generated report behavior | Compiler/report script plus generated-output demotion check. |
 | Change version policy | `tasks/reference/VERSIONING-PROTOCOL.md` and `scripts/version-check.py`. |
+| Change public package boundary | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `.gitignore`, and `scripts/public-repo-check.py`. |
 
 ### Public Forking Guidance
 
@@ -529,11 +564,11 @@ For a public-facing fork, keep the operating pattern and remove project-specific
 
 Recommended public name:
 
-> Precode OS
+> PrecodeOS
 
 Useful naming pattern:
 
-- `Precode OS` = the generic public system
+- `PrecodeOS` = the generic public system
 - `YourProject OS Profile` = one project's implementation
 - `Precode Beads` = the execution units
 - `Precode Kernel` = the three-file active memory set
@@ -582,17 +617,4 @@ If the full scaffold is too much, keep the smallest useful pattern:
 
 Everything else can be added after the user sees a real failure mode that the extra layer would prevent.
 
-## Architecture Overview Change Log
-
-| Version | Date | Summary |
-|---|---|---|
-| v0.3.4 | 2026-05-08 | Pointed the failure and recovery model to the canonical Beginner Recovery Protocol and clarified that the architecture overview summarizes, rather than owns, the full recovery triage workflow. |
-| v0.3.3 | 2026-05-07 | Harmonized architecture positioning with the repo-native, markdown-canonical, script-enforced control layer definition while preserving the evidence-governance framing for technical reviewers. |
-| v0.2.7 | 2026-05-03 | Added Local Hygiene architecture guidance for advisory log/cache cleanup, dry-run previews, protected evidence, and cleanup trust boundaries. |
-| v0.2.6 | 2026-05-03 | Added ubiquitous-language and project-glossary architecture guidance for terminology drift, PRD domain language, code/test naming, and stale vocabulary trust boundaries. |
-| v0.2.5 | 2026-05-03 | Updated the architecture model for alignment/grilling, destination PRDs, journey beads, AFK metadata as advisory only, fresh-context review, deep modules, vertical slices, and stale-artifact trust boundaries. |
-| v0.2.3 | 2026-04-27 | Added cross-reference to `PRECODE-MANIFESTO.md` as the philosophical anchor for Precode's anti-drift purpose, values, principles, and new-builder positioning. |
-| v0.2.2 | 2026-04-27 | Added a three-way failure taxonomy for AI coding agent, human operator, and OS/tooling failures, plus deeper recovery guidance for accidental file moves, renames, generated-report edits, owner-file mistakes, casual approvals, and secret leakage. |
-| v0.2.1 | 2026-04-27 | Added cross-reference to `PRECODE-FILE-INVENTORY.md` as the canonical file-by-file technical inventory and relationship map while keeping this document focused on architecture and maintainer framing. |
-| v0.2.0 | 2026-04-27 | Became the deeper companion to the beginner README by absorbing maintainer, forking, layer-detail, script, validator, generated-sidecar, and minimal-pattern guidance. |
-| v0.1.0 | 2026-04-26 | Initial reviewer-facing architecture overview covering Precode OS principles, failure modes, enforcement model, trust boundaries, comparisons, limitations, and adoption path. |
+Maintainer-local document history for this architecture overview lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

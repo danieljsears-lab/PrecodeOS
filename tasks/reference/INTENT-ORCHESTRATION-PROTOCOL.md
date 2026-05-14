@@ -1,14 +1,16 @@
-# Precode OS -- Intent Orchestration Protocol
+# PrecodeOS -- Intent Orchestration Protocol
 <!-- ANCHOR: intent-orchestration-protocol -->
 
-> AUTHORITY: Intent lifecycle states, intent ownership by stage, promotion rules, mid-task intent-change handling, traceability expectations, and generated orchestration boundaries for Precode OS.
+> AUTHORITY: Intent lifecycle states, intent ownership by stage, promotion rules, mid-task intent-change handling, traceability expectations, and generated orchestration boundaries for PrecodeOS.
 > NOT_AUTHORITY: Active memory expansion, product decisions, task selection, implementation plans, feature approval, generated progress state, or automatic bead transitions.
 > LOAD_WHEN: Capturing rough intent, promoting source material into PRDs or decisions, changing direction mid-task, reviewing PRD-to-bead traceability, or auditing whether work is ready to proceed.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.2
+Last updated: 2026-05-11
 
 ## Purpose
 

@@ -1,24 +1,26 @@
-# Precode OS -- Versioning Protocol
+# PrecodeOS -- Versioning Protocol
 <!-- ANCHOR: versioning-protocol -->
 
-> AUTHORITY: Version metadata rules for Precode OS-owned authority docs, reference docs, templates, adapters, shims, maintained scripts, and workflow configuration.
+> AUTHORITY: Version metadata rules for PrecodeOS-owned authority docs, reference docs, templates, adapters, shims, maintained scripts, and workflow configuration.
 > NOT_AUTHORITY: Active memory content, product decisions, task selection, bead state, generated report freshness, implementation status, or release management outside this repo.
-> LOAD_WHEN: Adding, changing, reviewing, or auditing Precode OS-owned files that should carry visible version metadata.
+> LOAD_WHEN: Adding, changing, reviewing, or auditing PrecodeOS-owned files that should carry visible version metadata.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-07
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 
-Versioning makes Precode OS files easier to audit, teach, fork, and compare across projects.
+Versioning makes PrecodeOS files easier to audit, teach, fork, and compare across projects.
 
 Version metadata is descriptive. It does not make a file active memory, choose tasks, approve transitions, or replace the authority contract.
 
 ## Files That Must Be Versioned
 
-Version these Precode OS-owned files:
+Version these PrecodeOS-owned files:
 
 - active memory: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`
 - root reference docs such as `README.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ARCHITECTURE.md`, `API.md`, `SECURITY.md`, and related OS-owned reference files
@@ -45,6 +47,8 @@ Markdown authority and reference files should include this block immediately aft
 
 ```text
 Creator: Dan Sears / Recode
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
 Document version: v0.1.0
 Last updated: 2026-04-26
 ```
@@ -60,7 +64,9 @@ Maintained Python and shell scripts should include:
 ```text
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 ```
 
 GitHub workflow YAML should include the same comment block at the top.

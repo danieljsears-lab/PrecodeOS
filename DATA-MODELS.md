@@ -1,4 +1,4 @@
-# Precode OS — Data Models Template
+# PrecodeOS — Data Models Template
 <!-- ANCHOR: data-models -->
 
 > AUTHORITY: Schema field names, entity relationships, data type shapes, and field semantic meaning for the target project.

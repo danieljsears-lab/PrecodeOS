@@ -1,7 +1,7 @@
-# Precode OS — AI Coding Agent Entry Point
+# PrecodeOS — AI Coding Agent Entry Point
 <!-- ANCHOR: agent -->
 
-> AUTHORITY: Shared AI coding agent operating model, active-memory contract, execution-layer entrypoints, shared commands, adapter handoff surface, and verification gate for a Precode OS repo.
+> AUTHORITY: Shared AI coding agent operating model, active-memory contract, execution-layer entrypoints, shared commands, adapter handoff surface, and verification gate for a PrecodeOS repo.
 > NOT_AUTHORITY: Product requirements, route structure, schema field definitions, business policy, or app-specific implementation status.
 > LOAD_WHEN: Start of every coding session and before beginning any new logical unit.
 > CLASS: active-memory
@@ -9,16 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.9
-Last updated: 2026-05-08
+Document version: v0.1.10
+Last updated: 2026-05-11
 
 ## Project
 
-This repository is Precode OS itself: a repo-native control layer for AI coding agents that is markdown-canonical, script-enforced, and built to prevent quiet drift.
+This repository is PrecodeOS itself: a repo-native control layer for AI coding agents that is markdown-canonical, script-enforced, and built to prevent quiet drift.
 
 For builders, Precode functions as a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
-The project workspace is the repository root. Precode OS-owned work is primarily Markdown authority/reference docs, Python and Bash support scripts, generated evidence under `logs/`, GitHub Actions validation, adapters, shims, modes, memory-card templates, PRDs, and execution beads.
+The project workspace is the repository root. PrecodeOS-owned work is primarily Markdown authority/reference docs, Python and Bash support scripts, generated evidence under `logs/`, GitHub Actions validation, adapters, shims, modes, memory-card templates, PRDs, and execution beads.
 
 ## Active Memory
 
@@ -67,6 +67,7 @@ Use only these files as active memory:
 - `python3 scripts/tool-execution-check.py`
 - `python3 scripts/bead-depth-check.py`
 - `python3 scripts/files-in-play-check.py [--command "<summary>"] [--edit-lock]`
+- `python3 scripts/run-contract-check.py`
 - `python3 scripts/clarity-scenario-check.py`
 - `python3 scripts/workflow-check.py`
 - `python3 scripts/goal-frame-check.py`

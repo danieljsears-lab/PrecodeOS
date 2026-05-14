@@ -1,4 +1,4 @@
-# Precode OS — API Template
+# PrecodeOS — API Template
 <!-- ANCHOR: api -->
 
 > AUTHORITY: API route rules, server-side boundaries, webhook patterns, and handler conventions for the target project.

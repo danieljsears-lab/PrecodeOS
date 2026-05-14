@@ -1,7 +1,7 @@
-# Precode OS — Project Context
+# PrecodeOS — Project Context
 <!-- ANCHOR: project-context -->
 
-> AUTHORITY: Technical project constitution for stack choices, implementation conventions, architecture guardrails, integration boundaries, and project-specific build rules for Precode OS itself.
+> AUTHORITY: Technical project constitution for stack choices, implementation conventions, architecture guardrails, integration boundaries, and project-specific build rules for PrecodeOS itself.
 > NOT_AUTHORITY: Active memory, active task selection, feature requirements, route inventory, schema field definitions, pricing decisions, or generated progress state.
 > LOAD_WHEN: Shaping PRDs, deriving architecture-affecting beads, onboarding an agent, resolving implementation convention questions, or checking whether new work fits the project constitution.
 > CLASS: reference
@@ -12,7 +12,7 @@ Last updated: 2026-05-08
 
 ## Purpose
 
-`PROJECT-CONTEXT.md` is the technical project constitution for Precode OS itself.
+`PROJECT-CONTEXT.md` is the technical project constitution for PrecodeOS itself.
 
 It gives agents and builders a stable place to look for how this repository builds and verifies the OS without adding another active-memory file.
 
@@ -28,9 +28,9 @@ Use `PRODUCT.md` for builder-facing product direction: product promise, users an
 
 ## Project Shape
 
-- Product summary: Precode OS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. For builders, it functions as a small operating system for AI coding work by showing what matters, what is active, what is proven, and when to stop.
+- Product summary: PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. For builders, it functions as a small operating system for AI coding work by showing what matters, what is active, what is proven, and when to stop.
 - Stack: Markdown authority/reference/execution documents; Python 3 compiler, validation, audit, and report scripts; Bash session/check/evidence wrappers; GitHub Actions for repository validation; JSON/JSONL generated evidence in `logs/`.
-- Primary users or roles: Dan Sears / Recode as maintainer and builder; solo non-technical or technical builders adopting Precode OS; AI coding agents operating as navigator, builder, and review roles; reviewers who inspect bead closeout and transition safety.
+- Primary users or roles: Dan Sears / Recode as maintainer and builder; solo non-technical or technical builders adopting PrecodeOS; AI coding agents operating as navigator, builder, and review roles; reviewers who inspect bead closeout and transition safety.
 - App directory: `.` (the repository root). There is no separate application runtime directory for B000.
 - Deployment target: GitHub repository distribution and local filesystem use. GitHub Actions runs validation on pull requests and pushes.
 

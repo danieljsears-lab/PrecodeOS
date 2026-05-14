@@ -8,27 +8,34 @@ depends_on: []
 parent_prd: none
 requirement_ids: []
 files_in_play:
-  - AGENT.md
-  - DECISIONS.md
-  - tasks/todo.md
-  - tasks/beads/B000-install-precode-kernel.md
-  - PROJECT-CONTEXT.md
+  - "*.md"
+  - .github
+  - .gitignore
+  - _maintainer
+  - adapters
+  - maintainer
+  - NOTICE
+  - scripts
+  - tasks
+  - TRADEMARK
 checks:
   - bash scripts/record-check.sh -- bash scripts/validate-memory.sh
   - bash scripts/record-check.sh -- python3 scripts/version-check.py
   - bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check
+  - bash scripts/record-check.sh -- python3 scripts/public-repo-check.py
+  - bash scripts/record-check.sh -- python3 scripts/files-in-play-check.py
   - bash scripts/record-check.sh -- python3 scripts/completion-check.py
 verification_type:
   - doc validation
   - static advisory
 ---
 
-# B000 — Install Precode Kernel
+# B000 — Install Precode Package Baseline
 <!-- ANCHOR: b000-install-precode-kernel -->
 
-> AUTHORITY: Starter bead for installing and validating the Precode OS active-memory kernel in a target project.
+> AUTHORITY: Starter bead for installing and validating the PrecodeOS active-memory kernel in a target project.
 > NOT_AUTHORITY: Product feature scope, app implementation, route structure, schema definitions, or generated progress.
-> LOAD_WHEN: Bootstrapping a clean Precode OS project.
+> LOAD_WHEN: Bootstrapping a clean PrecodeOS project.
 > CLASS: active-task
 
 Creator: Dan Sears / Recode
@@ -60,29 +67,38 @@ Last updated: 2026-05-03
 
 ## Objective
 
-Install the smallest working Precode OS kernel and adapt placeholders for the target project.
+Install and review PrecodeOS as an install-ready package baseline, including the active-memory kernel, package docs, agent shims, adapters, reference protocols, support scripts, generated-output policy, and public/private maintainer boundary.
 
 ## Done When
 
-- Active memory is exactly `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-- `PROJECT-CONTEXT.md` names Precode OS itself, its stack, roles, repository-root app directory, conventions, checks, and integration boundaries.
-- Project-specific checks are listed in the active bead.
-- Memory validation passes.
-- Manual verification and review evidence requirements are exact enough for a reviewer to accept, revise, split, or block B000.
+- Active memory remains exactly `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+- PrecodeOS is documented as an install-ready package, with the repository root as the workspace.
+- Package-owned root docs, agent shims, adapters, reference protocols, support scripts, and package hygiene checks are in scope for B000.
+- Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are treated as generated evidence, not package source or active memory.
+- Maintainer-only files live under `_maintainer/`; old `maintainer/` paths are intentionally removed from public package scope.
+- Project-specific package checks are listed in the active bead and recorded before acceptance.
+- Manual verification and review evidence explicitly cover the broad package baseline so it is accepted as current-bead work, not drift.
 
 ## Files In Play
 
-- `AGENT.md`
-- `DECISIONS.md`
-- `tasks/todo.md`
-- `tasks/beads/B000-install-precode-kernel.md`
-- `PROJECT-CONTEXT.md`
+- `*.md`
+- `.github`
+- `.gitignore`
+- `_maintainer`
+- `adapters`
+- `maintainer`
+- `NOTICE`
+- `scripts`
+- `tasks`
+- `TRADEMARK`
 
 ## Checks
 
 - `bash scripts/record-check.sh -- bash scripts/validate-memory.sh`
 - `bash scripts/record-check.sh -- python3 scripts/version-check.py`
 - `bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check`
+- `bash scripts/record-check.sh -- python3 scripts/public-repo-check.py`
+- `bash scripts/record-check.sh -- python3 scripts/files-in-play-check.py`
 - `bash scripts/record-check.sh -- python3 scripts/completion-check.py`
 
 ## Verification Type
@@ -92,18 +108,19 @@ Install the smallest working Precode OS kernel and adapt placeholders for the ta
 
 ## Stop If
 
-- App code needs to be changed.
+- Product app code or external runtime setup needs to be changed.
 - Product feature scope appears before PRD approval.
 - A new unresolved project decision appears that belongs in `DECISIONS.md`.
+- Package-readiness work crosses into a new product feature, installer mutation flow, external publishing, deployment, or repository-host mutation.
 
 ## Closeout Evidence
 
-- Checks run: `env PYTHONPYCACHEPREFIX=/private/tmp/precode-pycache python3 -m py_compile scripts/os_compiler.py scripts/os-health.py scripts/local-hygiene-check.py scripts/local-hygiene-dry-run.py` -> pass (exit 0) at 2026-05-04T03:17:18.159395+00:00; log `logs/check-output/20260504T031718Z-env-PYTHONPYCACHEPREFIX-private-tmp-precode-pycache-python3-m-py_compile-scripts-os_compiler.py-scripts-os-health.py-scripts-local-hygiene-check.py-scripts-local-hygiene-dry-run.py.log` | `python3 scripts/context-check.py` -> pass (exit 0) at 2026-05-04T03:17:22.017846+00:00; log `logs/check-output/20260504T031721Z-python3-scripts-context-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-05-04T03:17:26.017161+00:00; log `logs/check-output/20260504T031725Z-python3-scripts-completion-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-07T23:35:38.096135+00:00; log `logs/check-output/20260507T233538Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-07T23:40:58.344137+00:00; log `logs/check-output/20260507T234058Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T14:11:37.859318+00:00; log `logs/check-output/20260508T141137Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T14:44:51.443514+00:00; log `logs/check-output/20260508T144451Z-bash-scripts-validate-memory.sh.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-08T15:14:35.647894+00:00; log `logs/check-output/20260508T151435Z-bash-scripts-validate-memory.sh.log`
+- Checks run: `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-13T18:46:03.751873+00:00; log `logs/check-output/20260513T184603Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/file-inventory.py --check` -> pass (exit 0) at 2026-05-13T18:46:03.779545+00:00; log `logs/check-output/20260513T184603Z-python3-scripts-file-inventory.py-check.log` | `python3 scripts/version-check.py` -> pass (exit 0) at 2026-05-13T18:46:03.787420+00:00; log `logs/check-output/20260513T184603Z-python3-scripts-version-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-13T20:22:06.647038+00:00; log `logs/check-output/20260513T202206Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/file-inventory.py --check` -> pass (exit 0) at 2026-05-13T20:22:06.708568+00:00; log `logs/check-output/20260513T202206Z-python3-scripts-file-inventory.py-check.log` | `python3 scripts/version-check.py` -> pass (exit 0) at 2026-05-13T20:22:06.715859+00:00; log `logs/check-output/20260513T202206Z-python3-scripts-version-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-05-13T20:22:06.797356+00:00; log `logs/check-output/20260513T202206Z-python3-scripts-completion-check.py.log` | `python3 scripts/files-in-play-check.py` -> pass (exit 0) at 2026-05-13T20:22:06.800226+00:00; log `logs/check-output/20260513T202206Z-python3-scripts-files-in-play-check.py.log`
 - Result: latest recorded command status is pass (exit 0)
-- Manual verification: Who checked: Codex. What was checked: inspected `PROJECT-CONTEXT.md`, `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, and `tasks/beads/B000-install-precode-kernel.md`; confirmed B000 now describes Precode OS itself, names the repository root as the app/workspace directory, lists the product stack, roles, integrations, project-specific checks, review evidence, and no next-bead activation. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-03. Result: pass for review preparation. Remaining uncertainty: Dan/reviewer still needs to make the formal review decision.
-- Files changed: none at last evidence update
-- Next bead: not evaluated
-- Review decision: blocked from transition until Dan/reviewer accepts, revises, splits, or blocks B000; evidence is ready for review.
+- Manual verification: Who checked: Codex. What was checked: inspected the B000 package baseline scope, the short positioning update, and the `PRECODE-OS-README.md` active-memory table; confirmed the table now shows `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md` with current line counts and byte sizes, the explainer remains a beginner-first conceptual map, generated reports remain evidence only, and no next bead was activated. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-13. Result: pass for B000 package-baseline acceptance after fresh recorded checks. Remaining uncertainty: public-repo-check still reports untracked public candidates until package files are staged or otherwise resolved; next bead selection remains intentionally unactivated.
+- Files changed: 130 changed path(s) at last evidence update
+- Next bead: none
+- Review decision: accepted for B000 package-baseline scope; broad package-readiness changes are approved current-bead work, not drift, and no next bead is activated by this acceptance.
 - Drift observed: none recorded
 - Lesson to promote: none
 - Follow-up bead needed: not evaluated
@@ -112,5 +129,5 @@ Install the smallest working Precode OS kernel and adapt placeholders for the ta
 
 ## Handback
 
-- Review the recorded checks and manual verification statement.
-- Accept, revise, split, or block B000 without activating the next bead.
+- Package-baseline scope is accepted.
+- Do not activate a next bead until Dan approves a separate transition proposal with `python3 scripts/bead-transition.py --approve`.

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Version: v0.1.2
 # Last updated: 2026-05-07
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

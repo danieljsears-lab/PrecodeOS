@@ -1,4 +1,4 @@
-# Precode OS -- Local Source Intake Protocol
+# PrecodeOS -- Local Source Intake Protocol
 <!-- ANCHOR: local-source-intake-protocol -->
 
 > AUTHORITY: Local source intake rules, source summary format, evidence boundaries, privacy exclusions, and promotion paths for turning local project material into Precode-owned planning artifacts.
@@ -7,8 +7,10 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-08
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 

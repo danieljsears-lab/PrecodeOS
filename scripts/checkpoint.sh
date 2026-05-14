@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -20,7 +22,7 @@ print(state.get("current_bead") or "")
 PY
 )"
 
-echo "Precode OS Checkpoint"
+echo "PrecodeOS Checkpoint"
 echo "Branch: $branch"
 echo "Current bead: ${current_bead:-unknown}"
 echo

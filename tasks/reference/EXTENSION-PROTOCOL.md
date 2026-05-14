@@ -1,18 +1,20 @@
-# Precode OS -- Extension Protocol
+# PrecodeOS -- Extension Protocol
 <!-- ANCHOR: extension-protocol -->
 
-> AUTHORITY: Extension rules, extension types, authority boundaries, active-memory limits, generated-output boundaries, mutation boundaries, and extension review checklist for adding Precode OS capabilities.
+> AUTHORITY: Extension rules, extension types, authority boundaries, active-memory limits, generated-output boundaries, mutation boundaries, and extension review checklist for adding PrecodeOS capabilities.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, external mutation approval, generated progress state, or plugin registry.
 > LOAD_WHEN: Adding or reviewing a Precode adapter, protocol, importer, audit, generated report, bead template, or external integration.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-07
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.3
+Last updated: 2026-05-11
 
 ## Purpose
 
-Extensions let Precode OS grow without turning into a giant prompt or a hidden automation system.
+Extensions let PrecodeOS grow without turning into a giant prompt or a hidden automation system.
 
 An extension may add a tool surface, workflow protocol, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
 
@@ -35,6 +37,7 @@ Active memory remains exactly:
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
+| Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
 
@@ -68,6 +71,10 @@ Generated markdown must clearly say it is not active memory, not a task plan, an
 Generated evidence should live under `logs/` unless a legacy Precode report already owns the surface.
 
 Generated JSON and JSONL files must be treated as evidence only. They may feed summaries, audits, or human review, but they must not directly rewrite active memory, bead state, PRDs, decisions, or product authority files.
+
+`logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
+
+ZYAL-like export belongs in an adapter or extension that maps the generic Precode run-contract profile to that host. The generic Precode profile must prove useful before any host-specific contract becomes a maintained surface.
 
 ## Mutation Rules
 

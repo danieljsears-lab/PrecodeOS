@@ -1,14 +1,16 @@
-# Precode OS -- Scheduled Audit Protocol
+# PrecodeOS -- Scheduled Audit Protocol
 <!-- ANCHOR: scheduled-audit-protocol -->
 
 > AUTHORITY: Scheduled audit rules, allowed read-only checks, forbidden automation, generated audit output, external status audit boundaries, scheduler examples, secret-handling rules, and finding-promotion paths.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, external system mutation, deployment policy, or generated progress state.
-> LOAD_WHEN: Adding, reviewing, running, or configuring scheduled audits for Precode OS.
+> LOAD_WHEN: Adding, reviewing, running, or configuring scheduled audits for PrecodeOS.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.1
+Last updated: 2026-05-11
 
 ## Purpose
 

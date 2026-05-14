@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Version: v0.1.3
 # Last updated: 2026-05-07
-# Owner: Precode OS
+# Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
@@ -24,7 +24,7 @@ MARKDOWN_EXCLUDES = {
 }
 SCRIPT_VERSION_RE = re.compile(r"^# Version: v\d+\.\d+\.\d+$", re.MULTILINE)
 SCRIPT_UPDATED_RE = re.compile(r"^# Last updated: \d{4}-\d{2}-\d{2}$", re.MULTILINE)
-SCRIPT_OWNER_RE = re.compile(r"^# Owner: Precode OS$", re.MULTILINE)
+SCRIPT_OWNER_RE = re.compile(r"^# Owner: PrecodeOS$", re.MULTILINE)
 DOC_VERSION_RE = re.compile(r"^Document version: v\d+\.\d+\.\d+$", re.MULTILINE)
 DOC_UPDATED_RE = re.compile(r"^Last updated: \d{4}-\d{2}-\d{2}$", re.MULTILINE)
 DOC_CREATOR_RE = re.compile(r"^Creator: Dan Sears / Recode$", re.MULTILINE)

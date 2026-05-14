@@ -1,4 +1,4 @@
-# Precode OS — GitHub Copilot Shim
+# PrecodeOS — GitHub Copilot Shim
 <!-- ANCHOR: copilot-shim -->
 
 > AUTHORITY: Compatibility shim for GitHub Copilot coding agent instructions.

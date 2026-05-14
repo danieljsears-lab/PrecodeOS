@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Version: v0.1.0
 # Last updated: 2026-04-26
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -65,7 +67,7 @@ if open_question_lines and not any(marker in normalized_open for marker in none_
 
 next_check = checks[0]
 
-print("Precode OS Agent Handoff")
+print("PrecodeOS Agent Handoff")
 print(f"Target agent: {target_agent}")
 print(f"Current branch: {branch}")
 print("Last validator result: PASS (bash scripts/validate-memory.sh --session-start)")

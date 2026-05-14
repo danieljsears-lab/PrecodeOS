@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # Version: v0.1.2
 # Last updated: 2026-04-27
-# Owner: Precode OS
+# Owner: PrecodeOS
+# Created by Dan Sears / Recode.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
@@ -333,10 +335,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
     warnings = payload["warnings"]
     prompts = payload["human_review_prompts"]
 
-    return f"""# Precode OS -- Scheduled Audit
+    return f"""# PrecodeOS -- Scheduled Audit
 <!-- ANCHOR: scheduled-audit -->
 
-> AUTHORITY: Generated scheduled audit snapshot for Precode OS local and external status checks.
+> AUTHORITY: Generated scheduled audit snapshot for PrecodeOS local and external status checks.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, bead state, external system mutation, or generated progress state.
 > LOAD_WHEN: Reviewing scheduled audit findings; never as active session memory.
 > CLASS: generated

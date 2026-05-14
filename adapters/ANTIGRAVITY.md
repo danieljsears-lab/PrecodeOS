@@ -1,4 +1,4 @@
-# Precode OS — Antigravity Adapter
+# PrecodeOS — Antigravity Adapter
 
 > AUTHORITY: Antigravity-specific startup notes, shared-script entrypoints, and manual validation reminders.
 > NOT_AUTHORITY: Shared operating model, feature requirements, route structure, or schema definitions.
@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+Document version: v0.1.2
+Last updated: 2026-05-10
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -45,6 +45,12 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
 Antigravity should follow the same execution contract and shared verification steps as any other agent.
 After markdown edits, run `bash scripts/validate-memory.sh [changed-path]` before ending the session.
+
+## Routing Mapping
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared routing rules before choosing Antigravity-specific controls.
+
+Map `fast`, `default`, `deep`, and `long-horizon` to Antigravity's available model, effort, context, or delegation controls only when the active tool exposes them. If Antigravity does not expose a native compaction threshold or delegation control, fall back to Precode checkpoint, Context Pack, handoff, and fresh-context review discipline.
 
 If you have tool-native spend telemetry, treat it as advisory only and record durable session totals with:
 

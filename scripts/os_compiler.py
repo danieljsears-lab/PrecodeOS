@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# Version: v0.1.12
-# Last updated: 2026-05-08
-# Owner: Precode OS
+# Version: v0.1.16
+# Last updated: 2026-05-12
+# Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from fnmatch import fnmatch
 import json
 import re
 import subprocess
@@ -145,6 +146,8 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/os-health.json",
     "logs/pattern-guidance.json",
     "logs/readiness.json",
+    "logs/run-contract.json",
+    "logs/run-contract.yaml",
     "logs/scheduled-audit.json",
     "logs/scheduled-audit.md",
     "logs/shim-index.json",
@@ -182,6 +185,13 @@ TOOL_FAILURE_CATEGORIES = {
     "unknown",
 }
 TOOL_APPROVAL_CLASSES = {"external_mutation", "destructive", "secret_bearing"}
+RUN_CONTRACT_PROOF_LANES = VERIFICATION_TIERS
+RUN_CONTRACT_REQUIRED_REASONS = {
+    "bounded_afk",
+    "sensitive_surface",
+    "external_mutation",
+    "destructive",
+}
 COMMAND_DESTRUCTIVE_TERMS = {
     "rm ",
     "rm -rf",
@@ -394,6 +404,7 @@ class BeadRecord:
     complexity: str
     required_planning_depth: str
     autonomy_level: str
+    run_contract: dict[str, Any]
     closeout: dict[str, str]
     handback: str
     frontmatter: dict[str, Any]
@@ -425,6 +436,23 @@ def normalize_list(items: list[Any] | None) -> list[str]:
             continue
         values.append(value)
     return values
+
+
+def split_list_value(value: Any) -> list[str]:
+    if isinstance(value, list):
+        return normalize_list(value)
+    text = strip_inline_code(str(value or ""))
+    if not text or text.lower() in FRONTMATTER_EMPTY_MARKERS:
+        return []
+    if "\n" in text:
+        return normalize_list([line.strip().removeprefix("-").strip() for line in text.splitlines()])
+    return normalize_list([item.strip() for item in re.split(r",|;", text)])
+
+
+def normalize_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value or "").strip().lower() in {"true", "yes", "required", "enabled"}
 
 
 def number_or_none(value: Any) -> float | None:
@@ -489,6 +517,50 @@ def parse_closeout_values(section: str) -> dict[str, str]:
     return colon_bullets(section)
 
 
+def normalize_run_contract(raw: Any, section: str, bead_defaults: dict[str, Any]) -> dict[str, Any]:
+    section_values = colon_bullets(section)
+    data = raw if isinstance(raw, dict) else {}
+
+    def field(name: str, *aliases: str) -> Any:
+        for key in (name, *aliases):
+            if key in data:
+                return data.get(key)
+            normalized = re.sub(r"[^a-z0-9]+", "_", key.strip().lower()).strip("_")
+            if normalized in section_values:
+                return section_values.get(normalized)
+        return None
+
+    allowed_paths = split_list_value(field("allowed_paths", "allowed files", "allowed actions")) or list(
+        bead_defaults.get("files_in_play") or []
+    )
+    proof_needed = split_list_value(field("proof_needed", "proof lanes", "proof required"))
+    allowed_tool_classes = split_list_value(field("allowed_tool_classes", "allowed tool classes"))
+    approval_required_before = split_list_value(field("approval_required_before", "approval gates"))
+    stop_if = split_list_value(field("stop_if", "stop conditions")) or split_list_value(bead_defaults.get("stop_if"))
+    forbidden_actions = split_list_value(field("forbidden_actions", "forbidden commands", "forbidden"))
+
+    required_raw = field("required")
+    required = normalize_bool(required_raw) if required_raw is not None else False
+
+    has_contract = bool(data or section.strip() or required or proof_needed or allowed_tool_classes or approval_required_before)
+    return {
+        "present": has_contract,
+        "required": required,
+        "required_reasons": [],
+        "allowed_paths": allowed_paths,
+        "allowed_tool_classes": allowed_tool_classes,
+        "forbidden_actions": forbidden_actions,
+        "approval_required_before": approval_required_before,
+        "proof_needed": [item.lower() for item in proof_needed],
+        "stop_if": stop_if,
+        "rollback_or_blocked_escape": normalize_optional(
+            str(field("rollback_or_blocked_escape", "rollback", "blocked escape") or "")
+        ),
+        "expires_when": normalize_optional(str(field("expires_when", "expiration", "lease expires when") or "")),
+        "advisory_only": True,
+    }
+
+
 def read_bead(path: Path, root: Path) -> BeadRecord:
     text = read_text(path)
     doc = MarkdownDocument.load(path)
@@ -539,6 +611,14 @@ def read_bead(path: Path, root: Path) -> BeadRecord:
     autonomy_level = normalize_optional(
         str(doc.frontmatter.get("autonomy_level") or first_bullet(doc.sections.get("Autonomy Level", "")) or "")
     )
+    run_contract = normalize_run_contract(
+        doc.frontmatter.get("run_contract"),
+        doc.sections.get("Run Contract", ""),
+        {
+            "files_in_play": files_in_play,
+            "stop_if": doc.sections.get("Stop If", ""),
+        },
+    )
 
     return BeadRecord(
         rel_path=rel_path(path, root),
@@ -560,6 +640,7 @@ def read_bead(path: Path, root: Path) -> BeadRecord:
         complexity=complexity,
         required_planning_depth=required_planning_depth,
         autonomy_level=autonomy_level,
+        run_contract=run_contract,
         closeout=parse_closeout_values(doc.sections.get("Closeout Evidence", "")),
         handback=doc.sections.get("Handback", ""),
         frontmatter=doc.frontmatter,
@@ -859,7 +940,7 @@ def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[di
     outside_files = [
         path
         for path in changed_names
-        if path not in files_in_play
+        if not any(path_matches_scope(path, item) for item in files_in_play)
         and not path.startswith("logs/")
         and path not in {"OS-HEALTH.md", "PROGRESS.md"}
     ]
@@ -924,6 +1005,125 @@ def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[di
         "sensitive_surface_detected": sensitive,
     }
     return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
+
+
+def run_contract_required_reasons(bead: BeadRecord) -> list[str]:
+    combined_text = " ".join(
+        [
+            bead.bead_kind,
+            bead.primary_authority,
+            " ".join(bead.files_in_play),
+            " ".join(bead.checks),
+            " ".join(bead.verification_type),
+            bead.sections.get("Objective", ""),
+            bead.sections.get("Done When", ""),
+            bead.sections.get("Stop If", ""),
+            bead.handback,
+        ]
+    ).lower()
+    reasons: list[str] = []
+    if bead.autonomy_level == "bounded-afk" or bead.delegation_mode == "afk_candidate":
+        reasons.append("bounded_afk")
+    if any(term in combined_text for term in SENSITIVE_SURFACE_TERMS):
+        reasons.append("sensitive_surface")
+    if any(term in combined_text for term in COMMAND_EXTERNAL_MUTATION_TERMS):
+        reasons.append("external_mutation")
+    if any(term in combined_text for term in COMMAND_DESTRUCTIVE_TERMS):
+        reasons.append("destructive")
+    return sorted(set(reasons))
+
+
+def run_contract_quality(bead: BeadRecord | None, check_results: list[dict[str, Any]]) -> dict[str, Any]:
+    warnings: list[str] = []
+    if bead is None:
+        return {"status": "warning", "warnings": ["current bead is missing"], "details": {"present": False}}
+
+    contract = dict(bead.run_contract or {})
+    reasons = run_contract_required_reasons(bead)
+    present = bool(contract.get("present"))
+    required = bool(reasons or contract.get("required"))
+    contract["required"] = required
+    contract["required_reasons"] = reasons
+
+    if required and not present:
+        warnings.append("run contract is required for this bead's risk, but no Run Contract section or frontmatter exists")
+
+    if present:
+        allowed_paths = contract.get("allowed_paths") or []
+        too_broad_paths = [
+            path
+            for path in allowed_paths
+            if path.strip() in {".", "./", "*", "/*"}
+            or path.strip().endswith("/*")
+            or (path.strip().endswith("/") and path.strip().rstrip("/") not in {item.rstrip("/") for item in bead.files_in_play})
+        ]
+        outside_paths = [
+            path
+            for path in allowed_paths
+            if not any(path_matches_scope(path, item) or path_matches_scope(item, path) for item in bead.files_in_play)
+        ]
+        if too_broad_paths:
+            warnings.append(f"run contract allowed actions are too broad: {too_broad_paths[:6]}")
+        if outside_paths:
+            warnings.append(f"run contract allowed paths are outside files_in_play: {outside_paths[:6]}")
+        if required and not allowed_paths:
+            warnings.append("run contract should name allowed actions or paths")
+        allowed_tool_classes = contract.get("allowed_tool_classes") or []
+        unknown_tool_classes = [item for item in allowed_tool_classes if item not in TOOL_CLASSES]
+        if unknown_tool_classes:
+            warnings.append(f"run contract has unknown allowed tool classes: {unknown_tool_classes[:6]}")
+        approval_required = contract.get("approval_required_before") or []
+        if any(reason in reasons for reason in ("sensitive_surface", "external_mutation", "destructive")) and not approval_required:
+            warnings.append("run contract should name what requires approval before risky action")
+        proof_needed = contract.get("proof_needed") or []
+        unknown_proof = [item for item in proof_needed if item not in RUN_CONTRACT_PROOF_LANES]
+        if unknown_proof:
+            warnings.append(f"run contract has unknown proof needed lanes: {unknown_proof[:6]}")
+        bead_rows = [row for row in check_results if row.get("bead") == bead.rel_path]
+        passing_commands = [str(row.get("command") or "") for row in bead_rows if row.get("status") == "pass"]
+        known_tiers = set(bead.verification_type) | check_tiers(passing_commands)
+        if manual_verification_structured(bead.closeout.get("manual_verification", "")):
+            known_tiers.add("manual")
+        missing_proof = [lane for lane in proof_needed if lane in RUN_CONTRACT_PROOF_LANES and lane not in known_tiers]
+        if missing_proof:
+            warnings.append(f"run contract proof needed is not reflected in verification type, checks, or closeout: {missing_proof[:6]}")
+        rollback = str(contract.get("rollback_or_blocked_escape") or bead.closeout.get("blocked_escape") or "").lower()
+        if any(reason in reasons for reason in ("sensitive_surface", "external_mutation", "destructive")) and not any(
+            term in rollback for term in ("rollback", "escape", "unblocker", "not applicable")
+        ):
+            warnings.append("run contract should name rollback, blocked escape, unblocker, or why rollback is not applicable")
+        if required and not contract.get("expires_when"):
+            warnings.append("run contract should say when the allowed actions expire")
+
+    if warnings:
+        if any("approval" in warning or "destructive" in warning for warning in warnings):
+            user_decision = "approval needed"
+        elif any("required" in warning or "outside" in warning or "too broad" in warning for warning in warnings):
+            user_decision = "stop"
+        else:
+            user_decision = "ask for proof"
+        summary = "The bead needs clearer allowed actions, proof, approval, or recovery before risky work continues."
+    else:
+        user_decision = "continue"
+        summary = "No run-contract warnings apply to this bead."
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "present": present,
+            "required": required,
+            "required_reasons": reasons,
+            "contract": contract,
+            "plain_english_summary": summary,
+            "user_decision": user_decision,
+            "why_this_matters": "Risk-triggered run contracts make allowed actions and proof needed explicit before high-risk work proceeds.",
+            "stop_if": "Stop if allowed actions, proof needed, approval gates, or rollback/escape path are unclear.",
+            "approval_prompt": "Ask the user to approve the exact risky action only after allowed actions, proof needed, and recovery path are named.",
+            "advisory_only": True,
+        },
+    }
 
 
 def decomposition_quality(bead: BeadRecord | None) -> dict[str, Any]:
@@ -1742,6 +1942,8 @@ def completion_handoff_quality(
         "files in play": "\n".join(bead.files_in_play),
         "out of scope": todo_sections.get("Explicit Out-of-Scope", ""),
         "checks": "\n".join(bead.checks),
+        "allowed actions": "\n".join((bead.run_contract or {}).get("allowed_paths") or []),
+        "proof needed": "\n".join((bead.run_contract or {}).get("proof_needed") or []),
         "stop conditions": bead.sections.get("Stop If", ""),
         "open questions": todo_sections.get("Open Questions", ""),
         "latest evidence": bead_rows[-1].get("output") if bead_rows else "",
@@ -1749,6 +1951,9 @@ def completion_handoff_quality(
         "next safe action": "",
         "generated-report warning": "Generated reports are evidence only.",
     }
+    if not (bead.run_contract or {}).get("present"):
+        required_context["allowed actions"] = "not applicable; no run contract declared"
+        required_context["proof needed"] = "not applicable; no run contract declared"
 
     close_state = close_readiness(bead, current_checks)
     if bead.status in {"needs_info", "manual_testing"}:
@@ -2165,6 +2370,8 @@ def path_matches_scope(path: str, allowed: str) -> bool:
     cleaned_allowed = allowed.strip().strip('"').rstrip("/")
     if not cleaned_path or not cleaned_allowed:
         return False
+    if any(char in cleaned_allowed for char in "*?[]"):
+        return fnmatch(cleaned_path, cleaned_allowed)
     return cleaned_path == cleaned_allowed or cleaned_path.startswith(f"{cleaned_allowed}/")
 
 
@@ -2331,6 +2538,7 @@ def next_step_guidance(
     workflow_state: dict[str, Any],
     depth_state: dict[str, Any],
     guardrail_state: dict[str, Any],
+    run_contract_state: dict[str, Any],
     goal_frame_state: dict[str, Any],
 ) -> dict[str, Any]:
     warnings: list[str] = []
@@ -2407,6 +2615,27 @@ def next_step_guidance(
                 user_decision = "ask for proof"
                 summary = "Before continuing, ask whether the bead needs more planning, checks, stop conditions, or approval."
                 approval_prompt = "Ask the agent to explain the adaptive-depth warning in plain English."
+    if run_contract_state.get("status") == "warning":
+        contract_warnings = run_contract_state.get("warnings") or []
+        contract_details = run_contract_state.get("details") or {}
+        if contract_warnings:
+            warnings.append(f"run contract affects this decision: {contract_warnings[0]}")
+            if category == "execute":
+                category = "run-contract-review"
+                user_decision = str(contract_details.get("user_decision") or "ask for proof")
+                summary = str(
+                    contract_details.get("plain_english_summary")
+                    or "Before continuing, clarify allowed actions and proof needed."
+                )
+                action = "clarify allowed actions, proof needed, approval gates, and stop conditions before risky work"
+                stop_if = str(
+                    contract_details.get("stop_if")
+                    or "Stop if allowed actions, proof needed, approval gates, or rollback path are unclear."
+                )
+                approval_prompt = str(
+                    contract_details.get("approval_prompt")
+                    or "Ask the user to approve risky work only after the run contract is clear."
+                )
     guard_details = guardrail_state.get("details") or {}
     if guard_details.get("out_of_scope_paths"):
         warnings.append("files-in-play guardrail found out-of-scope changed files")
@@ -2594,6 +2823,7 @@ def maintained_markdown_docs(root: Path) -> list[Path]:
         path
         for path in gather_markdown_docs(root)
         if rel_path(path, root) not in {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
+        and not rel_path(path, root).startswith("_maintainer/")
         and (not rel_path(path, root).startswith("logs/") or rel_path(path, root) == "logs/LOG-EVIDENCE-TAXONOMY.md")
     ]
 
@@ -2861,7 +3091,7 @@ def render_local_hygiene_preview_markdown(preview: dict[str, Any]) -> str:
 
     warnings = preview.get("warnings") if isinstance(preview.get("warnings"), list) else []
     summary = preview.get("summary") if isinstance(preview.get("summary"), dict) else {}
-    return f"""# Precode OS -- Local Hygiene Dry-Run Preview
+    return f"""# PrecodeOS -- Local Hygiene Dry-Run Preview
 <!-- ANCHOR: local-hygiene-preview -->
 
 > AUTHORITY: Generated preview of local hygiene archive/delete candidates.
@@ -2979,7 +3209,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
     for path in sorted((root / "scripts").glob("*.py")) + sorted((root / "scripts").glob("*.sh")):
         rel = rel_path(path, root)
         header = script_header(path)
-        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "Precode OS":
+        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
             warnings.append(f"{rel} is missing script version header metadata")
         if inventory_text and not inventory_family_covered(rel, inventory_text):
             warnings.append(f"{rel} is not referenced in PRECODE-FILE-INVENTORY.md")
@@ -2989,7 +3219,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
     for path in workflow_paths(root):
         rel = rel_path(path, root)
         header = script_header(path)
-        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "Precode OS":
+        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
             warnings.append(f"{rel} is missing workflow version header metadata")
         if inventory_text and not inventory_family_covered(rel, inventory_text):
             warnings.append(f"{rel} is not referenced in PRECODE-FILE-INVENTORY.md")
@@ -3465,7 +3695,7 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
         ]
     ) if rows else "- No reviewed memory cards found."
 
-    return f"""# Precode OS -- Memory Index
+    return f"""# PrecodeOS -- Memory Index
 <!-- ANCHOR: memory-index -->
 
 > AUTHORITY: Generated index of reviewed Precode filesystem memory cards.
@@ -3600,6 +3830,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
     )
     current_bead_depth = bead_depth_quality(current_bead)
     current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)
+    current_run_contract = run_contract_quality(current_bead, check_results)
     current_next_step = next_step_guidance(
         todo,
         current_bead,
@@ -3608,6 +3839,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         current_workflow_planning,
         current_bead_depth,
         current_files_in_play_guardrail,
+        current_run_contract,
         current_goal_frame,
     )
     current_pattern_guidance = system_design_pattern_guidance(root, todo, current_bead, beads)
@@ -3661,6 +3893,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
                 "complexity": bead.complexity,
                 "required_planning_depth": bead.required_planning_depth,
                 "autonomy_level": bead.autonomy_level,
+                "run_contract": bead.run_contract,
             }
             for bead in beads
         ],
@@ -3681,6 +3914,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "next_step": current_next_step,
         "bead_depth": current_bead_depth,
         "files_in_play_guardrail": current_files_in_play_guardrail,
+        "run_contract": current_run_contract,
         "pattern_guidance": current_pattern_guidance,
         "memory": current_memory,
         "file_inventory": current_file_inventory,
@@ -3703,6 +3937,36 @@ def write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def render_simple_yaml(value: Any, indent: int = 0) -> str:
+    pad = " " * indent
+    if isinstance(value, dict):
+        lines: list[str] = []
+        for key, item in value.items():
+            if isinstance(item, (dict, list)):
+                lines.append(f"{pad}{key}:")
+                lines.append(render_simple_yaml(item, indent + 2))
+            else:
+                lines.append(f"{pad}{key}: {json.dumps(item)}")
+        return "\n".join(lines)
+    if isinstance(value, list):
+        if not value:
+            return f"{pad}[]"
+        lines = []
+        for item in value:
+            if isinstance(item, (dict, list)):
+                lines.append(f"{pad}-")
+                lines.append(render_simple_yaml(item, indent + 2))
+            else:
+                lines.append(f"{pad}- {json.dumps(item)}")
+        return "\n".join(lines)
+    return f"{pad}{json.dumps(value)}"
+
+
+def write_yaml(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(render_simple_yaml(payload) + "\n", encoding="utf-8")
+
+
 def write_events_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -3719,16 +3983,16 @@ def render_handoff_packet(payload: dict[str, Any]) -> str:
     def item(name: str) -> str:
         return str(packet.get(name) or "not recorded")
 
-    return f"""# Precode OS -- Handoff Packet
+    return f"""# PrecodeOS -- Handoff Packet
 <!-- ANCHOR: handoff-packet -->
 
-> AUTHORITY: Generated handoff orientation snapshot for the current Precode OS session.
+> AUTHORITY: Generated handoff orientation snapshot for the current PrecodeOS session.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, review acceptance, transition approval, implementation plans, or external mutations.
 > LOAD_WHEN: Preparing an agent handoff or reviewing completion state; never as active session memory.
 > CLASS: generated
 >
 > Generated from `scripts/os_compiler.py`.
-> Generated by Precode OS, created by Dan Sears / Recode.
+> Generated by PrecodeOS, created by Dan Sears / Recode.
 > Do not use this file as active memory.
 > Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 
@@ -3757,6 +4021,14 @@ Generated at: `{payload.get('generated_at')}`
 ## Checks
 
 {item('checks')}
+
+## Allowed Actions
+
+{item('allowed actions')}
+
+## Proof Needed
+
+{item('proof needed')}
 
 ## Stop Conditions
 
@@ -3787,6 +4059,8 @@ def render_precode_help(payload: dict[str, Any]) -> str:
     depth_details = depth.get("details") or {}
     guardrail = payload.get("files_in_play_guardrail") or {}
     guardrail_details = guardrail.get("details") or {}
+    run_contract = payload.get("run_contract") or {}
+    run_details = run_contract.get("details") or {}
     goal_frame = payload.get("goal_frame") or {}
     goal_details = goal_frame.get("details") or {}
     current_goal = goal_details.get("current") or {}
@@ -3795,13 +4069,13 @@ def render_precode_help(payload: dict[str, Any]) -> str:
     return f"""# Precode Help
 <!-- ANCHOR: precode-help -->
 
-> AUTHORITY: Generated next-step guidance for the current Precode OS workspace.
+> AUTHORITY: Generated next-step guidance for the current PrecodeOS workspace.
 > NOT_AUTHORITY: Active memory, task selection authority, product decisions, implementation plans, review acceptance, bead transition approval, or command approval.
 > LOAD_WHEN: A user wants a quick generated hint about what Precode expects next; never as active session memory.
 > CLASS: generated
 >
 > Generated from `scripts/os_compiler.py`.
-> Generated by Precode OS, created by Dan Sears / Recode.
+> Generated by PrecodeOS, created by Dan Sears / Recode.
 > Do not use this file as active memory.
 > Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 
@@ -3860,6 +4134,17 @@ Generated at: `{payload.get('generated_at')}`
 - Stop if: {guardrail_details.get('stop_if', 'Stop if changed paths are outside files_in_play.')}
 
 {chr(10).join(f"- Warning: {warning}" for warning in (guardrail.get('warnings') or [])) if guardrail.get('warnings') else "- No files-in-play guardrail warnings."}
+
+## Run Contract
+
+- Status: {run_contract.get('status', 'missing')}
+- Present: {run_details.get('present', False)}
+- Required: {run_details.get('required', False)}
+- User decision: `{run_details.get('user_decision', 'continue')}`
+- Why this matters: {run_details.get('why_this_matters', 'Run contracts clarify allowed actions and proof needed when risk rises.')}
+- Stop if: {run_details.get('stop_if', 'Stop if allowed actions, proof needed, approval gates, or rollback path are unclear.')}
+
+{chr(10).join(f"- Warning: {warning}" for warning in (run_contract.get('warnings') or [])) if run_contract.get('warnings') else "- No run-contract warnings."}
 """
 
 
@@ -3874,6 +4159,8 @@ def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "goal-frame.json", payload["goal_frame"])
     write_json(root / "logs" / "handoff-packet.json", payload["completion_handoff"])
     write_json(root / "logs" / "next-step.json", payload["next_step"])
+    write_json(root / "logs" / "run-contract.json", payload["run_contract"])
+    write_yaml(root / "logs" / "run-contract.yaml", payload["run_contract"])
     write_json(root / "logs" / "pattern-guidance.json", payload["pattern_guidance"])
     write_json(root / "logs" / "memory-index.json", payload["memory"])
     (root / "logs" / "memory-index.md").write_text(render_memory_index_markdown(payload["memory"]), encoding="utf-8")

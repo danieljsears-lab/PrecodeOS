@@ -1,14 +1,16 @@
-# Precode OS -- Verification And Guardrail Protocol
+# PrecodeOS -- Verification And Guardrail Protocol
 <!-- ANCHOR: verification-guardrail-protocol -->
 
-> AUTHORITY: Verification tiers, evidence-quality rules, risk-based check expectations, sensitive-surface approval gates, manual verification format, rollback expectations, and false-done warning patterns for Precode OS.
+> AUTHORITY: Verification tiers, evidence-quality rules, risk-based check expectations, sensitive-surface approval gates, manual verification format, rollback expectations, and false-done warning patterns for PrecodeOS.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, generated progress state, or automatic approval of bead transitions.
 > LOAD_WHEN: Creating, reviewing, or closing beads; choosing checks; working near sensitive surfaces; or evaluating whether evidence is strong enough to accept work.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-06
+License: Apache-2.0
+Copyright: © 2026 Dan Sears / Recode
+Document version: v0.1.5
+Last updated: 2026-05-11
 
 ## Purpose
 
@@ -40,6 +42,16 @@ Use these tier names in bead `verification_type` whenever possible:
 | `external` | Read-only status from GitHub, CI, deployment, uptime, monitoring, security advisory, or dashboard systems |
 
 Legacy labels such as `doc validation` are acceptable during migration, but new beads should use the tier names.
+
+## Proof Needed
+
+Risk-triggered run contracts use proof needed as the plain-language wrapper over verification tiers. Internally this is the proof-lane model: a bead can say which evidence lanes must be satisfied before acceptance.
+
+Use the same tier names as `verification_type`: `static`, `unit`, `integration`, `browser`, `manual`, and `external`.
+
+Proof needed does not replace checks or Closeout Evidence. It makes the expected evidence explicit so `python3 scripts/run-contract-check.py` can warn when the declared proof is not reflected in `verification_type`, recorded checks, or structured manual verification.
+
+Ordinary low-risk beads can omit proof-needed language and rely on normal `verification_type` plus checks. Sensitive, external, destructive, or `bounded-afk` beads should name proof needed in the bead Run Contract.
 
 ## Evidence Vs Review Input
 

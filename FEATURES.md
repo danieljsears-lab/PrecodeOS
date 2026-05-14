@@ -1,4 +1,4 @@
-# Precode OS — Feature Inventory Template
+# PrecodeOS — Feature Inventory Template
 <!-- ANCHOR: features -->
 
 > AUTHORITY: Compiled feature inventory, functional requirements, priorities, and MVP slices for the target project.

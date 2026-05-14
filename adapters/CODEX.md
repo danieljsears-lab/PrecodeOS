@@ -1,4 +1,4 @@
-# Precode OS — Codex Adapter
+# PrecodeOS — Codex Adapter
 
 > AUTHORITY: Codex-specific startup notes, shared-script entrypoints, and manual validation reminders.
 > NOT_AUTHORITY: Shared operating model, feature requirements, route structure, or schema definitions.
@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-08
+Document version: v0.1.2
+Last updated: 2026-05-10
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -45,6 +45,19 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
 Codex does not rely on another tool's slash-command surface.
 When markdown files change, run `bash scripts/validate-memory.sh [changed-path]` before closing the loop.
+
+## Routing Mapping
+
+Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared routing rules before choosing Codex-specific controls.
+
+- `fast` maps to a smaller available model or lower reasoning effort when the task is mechanical, low-risk, and easy to verify.
+- `default` maps to the inherited/default Codex model and medium reasoning for ordinary scoped implementation, synthesis, and repo exploration.
+- `deep` maps to a stronger Codex/OpenAI coding model or higher reasoning effort for architecture, ambiguous debugging, security-sensitive review, and high-blast-radius decisions.
+- `long-horizon` maps to Codex cloud/background delegation only when the active bead is approved, files in play and checks are clear, and review remains human-gated.
+
+If Codex does not expose a native compaction threshold, treat about 80% context pressure as a checkpoint, Context Pack, handoff, or fresh-session trigger. Reload active memory, the active bead, and the primary authority after any restart or handoff.
+
+Codex subagents or delegated workers may be used only when the work is bounded, materially useful, and not a hidden bead transition. If a delegated task needs broader scope, stronger reasoning, or new approval, it reports back instead of escalating independently.
 
 If you have tool-native spend telemetry, treat it as advisory only and record durable session totals with:
 

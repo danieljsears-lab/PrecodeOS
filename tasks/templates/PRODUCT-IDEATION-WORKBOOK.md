@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.1
-Last updated: 2026-05-08
+Document version: v0.1.3
+Last updated: 2026-05-13
 
 ## Purpose
 
@@ -27,9 +27,10 @@ You do not need product-management vocabulary to use this workbook. You only nee
 - Who is this really for?
 - What hurts today?
 - What do they do instead?
+- What evidence says this problem is real?
 - What changes after?
 - What must not be built yet?
-- What would prove this is useful?
+- What would make this worth defining, testing, or building?
 - What could make this a bad idea?
 
 The workbook includes optional tool cards. Use them when a section feels fuzzy or too broad. Skip them when your answer is already clear.
@@ -90,17 +91,21 @@ Use the fields:
 
 Step 7. Challenge the idea before turning it into features.
 
-Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, and reasons not to build yet.
+Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet.
 
-Step 8. Fill out feature-level candidates.
+Step 8. Use Purposeful Ideation tool cards when the idea still feels fuzzy, too broad, too obvious, or too large.
+
+Paste your rough idea into the `Context` line. Let the agent ask questions. You choose the direction.
+
+Step 9. Fill out feature-level candidates.
 
 Only after product framing and research are clear, list candidate features, before/after user moments, acceptance signals, risks, sensitive surfaces, dependencies, and first useful slices.
 
-Step 9. Ask Claude/Codex to create the Precode Ingestion Packet.
+Step 10. Ask Claude/Codex to create the Precode Ingestion Packet.
 
 Use the ingestion prompt near the end of this workbook. Keep the packet concise. Include a Candidate Goal Frame only when the durable direction is stable enough to review.
 
-Step 10. Bring only the ingestion packet into Precode Local Source Intake.
+Step 11. Bring only the ingestion packet into Precode Local Source Intake.
 
 When you are ready, ask Precode to ingest the packet as local source evidence. Do not ask Precode to edit `PRODUCT.md`, create a PRD, or activate work until you have reviewed the intake summary.
 
@@ -166,6 +171,11 @@ Use this format:
 - Source-cited research summary:
 - Strongest evidence:
 - Weakest assumption:
+- Current alternatives or workarounds:
+- Evidence strength:
+- Demand or pricing signal:
+- Smallest non-code learning step:
+- What would change my mind:
 - Stable facts:
 - Assumptions:
 - Open questions:
@@ -175,6 +185,12 @@ Use this format:
 - Smallest useful version:
 - Not-yet list:
 - Success signals:
+- Purposeful ideation tools used:
+- Constraint chosen:
+- Main contradiction or tradeoff:
+- Lateral move or surprising connection:
+- Riskiest hypothesis:
+- Options intentionally not pursued:
 - Risks and sensitive surfaces:
 - Candidate Goal Frame For Precode Review:
   - Goal:
@@ -336,6 +352,21 @@ List what users do today, even if it is messy:
 |  |  |  |  |
 
 PRD bridge: this later helps a PRD explain alternatives considered and why the product should exist.
+
+### Tool Card: The Demand Signal Check
+
+Use this when the idea might become a business, paid feature, public product, or significant time investment.
+
+Look for evidence that costs the user something: time, money, switching effort, signup intent, repeated return, referral, or willingness to pay.
+
+| Possible demand signal | What happened? | What it suggests | Confidence |
+|---|---|---|---|
+| User spends time on a workaround |  |  | high / medium / low |
+| User pays for a partial solution |  |  | high / medium / low |
+| User signs up, joins a waitlist, or asks for access |  |  | high / medium / low |
+| User changes behavior after seeing a prototype or promise |  |  | high / medium / low |
+
+PRD bridge: this later helps a PRD explain whether the idea has demand evidence or only interest.
 
 ### Tool Card: The Before/After Flip
 
@@ -532,6 +563,10 @@ Weakest evidence so far:
 
 - 
 
+Evidence strength:
+
+- `very weak | weak | medium | strong | strongest`
+
 PRD bridge: this later helps a PRD separate problem evidence from assumptions.
 
 ### Source-Cited Research
@@ -605,6 +640,33 @@ Examples:
 
 PRD bridge: this later helps a PRD name risks, assumptions, and open questions.
 
+### Tool Card: The Smallest Non-Code Learning Step
+
+Use this when you are tempted to build before you know whether the idea is worth defining.
+
+Choose the smallest way to learn without writing product code:
+
+- interview three people who recently had the problem
+- map the current workaround from start to finish
+- show a sketch or clickable prototype
+- run a landing-page, waitlist, or fake-door test
+- ask for budget, switching effort, or current spend evidence
+- manually perform the service once before automating it
+
+Smallest non-code learning step:
+
+- 
+
+What result would make me proceed:
+
+- 
+
+What result would make me pause, narrow, or kill:
+
+- 
+
+PRD bridge: this later helps Precode decide whether to run Product Discovery Validation, Local Source Intake, or Idea-to-PRD.
+
 ## Stop Before Continuing: Research Check
 
 Before turning research into conclusions, ask Claude or Codex:
@@ -616,6 +678,386 @@ Reality check: gently challenge my confidence. What am I treating as proven that
 ```
 
 Continue only when you know which claims are supported, which are assumptions, and which questions still need validation.
+
+## Purposeful Ideation Tool Cards
+
+Use these optional cards when you want Claude, Claude Code, ChatGPT, Codex, Gemini, or another agent to act as a thought partner before you turn the idea into features.
+
+Paste your rough idea into the `Context` line. Let the agent ask questions. You choose the direction.
+
+These cards guide ideation only. They do not create authority, approve PRDs, activate beads, or start implementation.
+
+### Prompt Pattern
+
+Use this reusable shape when you want a general-purpose prompt instead of a specific tool card.
+
+```text
+Act as my product thought partner.
+
+Context:
+[Paste my rough idea, notes, audience, or uncertainty.]
+
+Task:
+[Use this thinking tool to help me clarify the idea.]
+
+Rules:
+- Ask one question at a time if you need more information.
+- Separate facts, assumptions, and open questions.
+- Recommend, but do not decide for me.
+- Do not write code, a PRD, or an implementation plan.
+- Keep the output practical and beginner-friendly.
+
+Output:
+- What is clear:
+- What is assumed:
+- Best next question:
+- Recommended direction:
+- Smallest next step:
+```
+
+### Tool Card: Constraint Box
+
+Purpose: Reduce overwhelm by choosing one useful limit.
+
+Role: Student chooses the constraint; agent suggests tradeoffs.
+
+Type: Narrowing / anti-overbuild.
+
+Starting prompt:
+
+```text
+Act as my product thought partner.
+
+Context:
+[Paste my rough idea.]
+
+Task:
+Use a constraint lens to narrow this idea into a clearer first version.
+
+Rules:
+- Suggest 3 useful constraints, such as audience, deadline, platform, budget, workflow, data type, privacy boundary, or non-goal.
+- Explain how each constraint changes the product.
+- Recommend one constraint, but do not decide for me.
+- Do not write a PRD or code.
+
+Output:
+- Constraint options:
+- Recommended constraint:
+- What this removes:
+- What this makes clearer:
+- Smallest useful first version:
+```
+
+### Tool Card: Jobs To Be Done
+
+Purpose: Identify what progress the user is trying to make.
+
+Role: Student describes the user; agent uncovers situation, job, workaround, and switching reason.
+
+Type: User/job discovery.
+
+Starting prompt:
+
+```text
+Act as my Jobs to Be Done coach.
+
+Context:
+[Paste my idea and who I think it is for.]
+
+Task:
+Help me understand the user's real job, not just the product idea.
+
+Rules:
+- Ask one question at a time if needed.
+- Focus on a real situation, current workaround, desired progress, and reason to switch.
+- Separate facts from assumptions.
+- Do not suggest features yet.
+
+Output:
+- Target user:
+- Situation that triggers the need:
+- Job they are trying to do:
+- Current workaround:
+- Why they might switch:
+- Biggest assumption:
+- Best next question:
+```
+
+### Tool Card: Double Diamond
+
+Purpose: Stop premature feature generation.
+
+Role: Student provides the rough idea; agent separates problem discovery from solution shaping.
+
+Type: Problem framing / diverge-converge.
+
+Starting prompt:
+
+```text
+Act as my product discovery partner.
+
+Context:
+[Paste my rough idea.]
+
+Task:
+Use the Double Diamond to help me explore the problem before jumping to solutions.
+
+Rules:
+- First explore possible users, pains, causes, and current alternatives.
+- Then narrow to one clear problem statement.
+- Do not suggest product features until the problem is defined.
+- Keep the language plain and practical.
+
+Output:
+- Possible users:
+- Possible pains:
+- Current alternatives:
+- Strongest problem candidate:
+- One clear problem statement:
+- What we should not solve yet:
+- Next question:
+```
+
+### Tool Card: SIT Remix
+
+Purpose: Generate variations from existing components.
+
+Role: Student names the current product/workflow pieces; agent remixes them.
+
+Type: Structured creative remixing.
+
+Starting prompt:
+
+```text
+Act as my product remix partner.
+
+Context:
+[Paste my idea and list any parts, pages, workflows, or user actions it might include.]
+
+Task:
+Use Systematic Inventive Thinking to create practical variations of this idea.
+
+Rules:
+- Try subtraction, division, multiplication, task unification, and attribute dependency.
+- For each variation, explain what user problem it might solve better.
+- Avoid random feature lists.
+- Do not write a PRD or code.
+
+Output:
+- Subtraction idea:
+- Division idea:
+- Multiplication idea:
+- Task unification idea:
+- Attribute dependency idea:
+- Most promising variation:
+- Why it is promising:
+```
+
+### Tool Card: TRIZ Contradiction
+
+Purpose: Make tradeoffs explicit.
+
+Role: Student names what they want to improve; agent finds the tension.
+
+Type: Contradiction / tradeoff thinking.
+
+Starting prompt:
+
+```text
+Act as a TRIZ-inspired product thought partner.
+
+Context:
+[Paste my idea and any tradeoff I am worried about.]
+
+Task:
+Help me find the main contradiction in this idea.
+
+Rules:
+- Phrase the contradiction as: "We want more X, but that makes Y worse."
+- Suggest ways to improve both sides or avoid the tradeoff.
+- Keep this at the product level unless I ask for technical details.
+- Do not write implementation steps.
+
+Output:
+- Main contradiction:
+- Why it matters:
+- Possible resolution 1:
+- Possible resolution 2:
+- Possible resolution 3:
+- Best next question:
+```
+
+### Tool Card: OODA Loop
+
+Purpose: Move through uncertainty with a small learning cycle.
+
+Role: Student shares what is known/confusing; agent organizes the next decision loop.
+
+Type: Adaptive decision-making.
+
+Starting prompt:
+
+```text
+Act as my decision-making coach.
+
+Context:
+[Paste my idea, what I know, and what feels uncertain.]
+
+Task:
+Use an OODA loop to help me decide what to do next.
+
+Rules:
+- Observe only what is known or reasonably evidenced.
+- Orient around user, problem, constraints, and uncertainty.
+- Recommend one decision.
+- Suggest one small action to learn more.
+- Do not write a PRD or code.
+
+Output:
+- Observe:
+- Orient:
+- Decide:
+- Act:
+- What would change the decision:
+```
+
+### Tool Card: Lean Startup
+
+Purpose: Convert risky assumptions into small tests.
+
+Role: Student identifies what must be true; agent recommends the smallest test.
+
+Type: Hypothesis testing / validated learning.
+
+Starting prompt:
+
+```text
+Act as my Lean Startup coach.
+
+Context:
+[Paste my idea and why I think it might work.]
+
+Task:
+Treat this idea as a set of hypotheses and find the riskiest one.
+
+Rules:
+- Identify assumptions about desirability, viability, feasibility, usability, or trust.
+- Recommend the smallest credible test.
+- Define what result would mean proceed, pause, narrow, or kill.
+- Do not suggest building a full product.
+
+Output:
+- Riskiest hypothesis:
+- Why it is risky:
+- Smallest test:
+- Proceed signal:
+- Pause or narrow signal:
+- Kill signal:
+- Next step:
+```
+
+### Tool Card: de Bono Lateral Move
+
+Purpose: Escape obvious ideas.
+
+Role: Student says where they are stuck; agent challenges assumptions and creates practical alternatives.
+
+Type: Lateral thinking / pattern break.
+
+Starting prompt:
+
+```text
+Act as my lateral thinking partner.
+
+Context:
+[Paste my idea and where my thinking feels stuck.]
+
+Task:
+Use Edward de Bono-style lateral thinking to find a fresh angle.
+
+Rules:
+- Challenge one hidden assumption.
+- Create one provocative "what if."
+- Use one random input or analogy.
+- Then translate only the useful parts into practical product options.
+- Do not turn this into a feature dump.
+
+Output:
+- Hidden assumption:
+- Provocation:
+- Random input or analogy:
+- Practical option 1:
+- Practical option 2:
+- What to test or ask next:
+```
+
+### Tool Card: Six Hats Mini-Review
+
+Purpose: Evaluate an idea from several thinking modes without muddled debate.
+
+Role: Student provides candidate direction; agent reviews it from distinct angles.
+
+Type: Structured review.
+
+Starting prompt:
+
+```text
+Act as my balanced product reviewer.
+
+Context:
+[Paste my idea or candidate direction.]
+
+Task:
+Use a Six Thinking Hats mini-review to evaluate this idea.
+
+Rules:
+- Keep each hat short.
+- Separate facts, instincts, benefits, risks, creative alternatives, and process.
+- End with the next best question or action.
+- Do not decide for me.
+
+Output:
+- White hat, facts:
+- Red hat, instincts:
+- Yellow hat, benefits:
+- Black hat, risks:
+- Green hat, alternatives:
+- Blue hat, next process step:
+```
+
+### Tool Card: Connections Map
+
+Purpose: Find useful analogies and cross-domain links.
+
+Role: Student provides idea and inspirations; agent maps useful adjacent patterns.
+
+Type: Analogy / synthesis.
+
+Starting prompt:
+
+```text
+Act as my connections-mapping partner.
+
+Context:
+[Paste my idea, audience, and any inspirations.]
+
+Task:
+Find useful connections between this idea and adjacent domains, existing tools, user habits, everyday analogies, or constraints.
+
+Rules:
+- Look for practical connections, not trivia.
+- Explain why each connection matters.
+- Separate interesting-but-distracting links from useful product insight.
+- Do not write a PRD or code.
+
+Output:
+- Useful connection 1:
+- Useful connection 2:
+- Useful connection 3:
+- Distracting connection to ignore:
+- Product insight:
+- Next question:
+```
 
 ## Feature-Level Thinking
 
@@ -810,6 +1252,16 @@ Strongest evidence:
 
 Weakest assumption:
 
+Current alternatives or workarounds:
+
+Evidence strength:
+
+Demand or pricing signal:
+
+Smallest non-code learning step:
+
+What would change my mind:
+
 Stable facts:
 
 Assumptions:
@@ -827,6 +1279,18 @@ Smallest useful version:
 Not-yet list:
 
 Success signals:
+
+Purposeful ideation tools used:
+
+Constraint chosen:
+
+Main contradiction or tradeoff:
+
+Lateral move or surprising connection:
+
+Riskiest hypothesis:
+
+Options intentionally not pursued:
 
 Risks and sensitive surfaces:
 
