@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.12
-Last updated: 2026-05-13
+Document version: v0.3.15
+Last updated: 2026-05-17
 
 ## Executive Summary
 
@@ -224,7 +224,7 @@ Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/a
 
 `PRECODE-HELP.md` is the human-readable generated next-step snapshot. It can explain blockers, adaptive-depth warnings, and files-in-play warnings, but it cannot select work, approve review, or activate a bead.
 
-For a file-by-file technical dictionary and relationship map, use `PRECODE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the inventory explains what each file owns and how the surfaces connect.
+For a file-by-file technical dictionary and relationship map, use `docs/PRECODE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the inventory explains what each file owns and how the surfaces connect.
 
 ### Human Control Surface
 
@@ -272,7 +272,7 @@ Precode treats a clean stop as successful behavior when continuing would widen r
 
 | Failure | Expected recovery |
 |---|---|
-| Human moved or renamed a Precode Markdown file | Stop work, identify the expected path/name from `PRECODE-FILE-INVENTORY.md` or validation output, restore the file, then validate. |
+| Human moved or renamed a Precode Markdown file | Stop work, identify the expected path/name from `docs/PRECODE-FILE-INVENTORY.md` or validation output, restore the file, then validate. |
 | Human directly edited generated output | Stop using that output, restore or regenerate it with the owning script, then return to source files. |
 | Human changed anchors, authority contracts, frontmatter, headings, bead state, or closeout structure | Restore the expected structure, run `bash scripts/validate-memory.sh`, then run relevant advisory checks. |
 | Human put facts in the wrong owner file | Move the fact to `DECISIONS.md`, a PRD, a bead, or the correct authority doc; do not duplicate it across files. |
@@ -295,7 +295,7 @@ The recovery posture is conservative: preserve state, identify the owner file, r
 If a Precode file was moved, renamed, or directly edited by mistake:
 
 1. Stop implementation.
-2. Identify the affected file and expected owner from `PRECODE-FILE-INVENTORY.md`.
+2. Identify the affected file and expected owner from `docs/PRECODE-FILE-INVENTORY.md`.
 3. Restore the expected path, filename, anchor, authority contract, frontmatter, headings, and required sections.
 4. Regenerate generated reports instead of hand-editing them.
 5. Run `bash scripts/validate-memory.sh`, then `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, and any relevant advisory check.
@@ -419,7 +419,7 @@ The strongest evidence for Precode is not a single impressive demo. It is repeat
 | [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) | Spec -> plan -> tasks -> agent loop -> review -> merge workflow. | Teams that want spec-driven work packages, lanes, review, and merge flow. | Precode emphasizes tiny active memory, evidence demotion, and conservative task activation. |
 | [KubeRocketAI SDLC Framework](https://krci-ai.kuberocketci.io/architecture) | AI-as-code SDLC framework with agents, rules, templates, and CLI. | Teams standardizing AI agent management across a full SDLC. | Precode is smaller, repo-native, and optimized for solo or small-team control before broad orchestration. |
 
-For deeper BMAD and gStack comparison, use `tasks/reference/PRECODE-BMAD-GSTACK-COMPARISON.md`. This architecture overview keeps only the reviewer-facing landscape summary.
+The deeper BMAD and gStack research comparison is maintainer-local, not part of public package navigation. This architecture overview keeps only the reviewer-facing landscape summary.
 
 ### Why Code-Editing Agents Are Not Direct Alternatives
 
@@ -473,9 +473,7 @@ Compared with spec-driven and AI-SDLC systems, Precode is narrower but more pess
 
 The system still needs better packaging, examples, and onboarding. But its architectural idea is coherent: give any AI coding agent a repo-owned memory, a scope boundary, an evidence trail, and a brake pedal.
 
-For the beginner-first explainer, read `PRECODE-OS-README.md`.
-
-For the philosophical anchor, values, and principles behind Precode's anti-drift posture, read `PRECODE-MANIFESTO.md`.
+For the public document compass, read `README.md`. This architecture overview is the reviewer and maintainer companion, not the beginner navigation surface.
 
 
 ## Deep Maintainer And Forking Notes

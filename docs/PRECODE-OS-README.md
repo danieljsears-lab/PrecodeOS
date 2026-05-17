@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.3
-Last updated: 2026-05-13
+Document version: v0.8.7
+Last updated: 2026-05-17
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -119,8 +119,7 @@ Main surfaces:
 - `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md` for active memory
 - `PRODUCT.md` for product promise, users, strategy, current bets, success signals, design, voice, and durable Goal Frames
 - `PROJECT-CONTEXT.md` for app directory, stack, checks, conventions, and integration boundaries
-- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when the next kind of work is unclear
-- `tasks/reference/GOAL-FRAME-PROTOCOL.md` when durable intent needs orientation before workflow selection
+- the user guide when the next kind of work is unclear
 
 Plain-English posture: before asking the agent to build, make sure it can explain the current task, the owner file, the checks, and what needs approval.
 
@@ -131,10 +130,7 @@ Decide answers: "Is this idea ready to become planned work?"
 Main surfaces:
 
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
-- `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` when worth-building uncertainty is high
-- `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` for notes, docs, screenshots, issues, and research as evidence
-- `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` for alignment, grilling, and destination PRD shaping
-- `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when product terms, UI labels, code names, or test names could drift
+- discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
 Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: `proceed`, `pause`, `narrow`, or `kill`.
 
@@ -148,10 +144,8 @@ Main surfaces:
 
 - `tasks/prds/*.md` for destination PRD shards
 - `FEATURES.md` for compiled approved feature inventory
-- `tasks/reference/PRD-PROTOCOL.md` for the Product Definition Gate
-- `tasks/reference/DECOMPOSITION-PROTOCOL.md` for vertical journey beads
 - `tasks/beads/BEAD-SCHEMA.md` for bead shape, delegation mode, test strategy, review context, adaptive-depth fields, and closeout
-- `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when implementation shape, interfaces, data flows, or strategy boundaries matter
+- PRD, decomposition, and system-design protocols when planning needs them
 
 A PRD is a destination document. It explains what should be true for the product.
 
@@ -167,8 +161,7 @@ Main surfaces:
 - `tasks/beads/*.md` for current execution scope
 - `modes/NAVIGATOR.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
 - `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` for tool-specific shims
-- `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for model tier, context budget, delegation, and tool-routing language
-- `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` for risky tool calls, approval-sensitive actions, and tool-run logging
+- agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance
 - Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions
 
 Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.
@@ -180,8 +173,7 @@ Prove answers: "What evidence says this is done?"
 Main surfaces:
 
 - `bash scripts/record-check.sh -- <command>` to record checks as evidence
-- `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` for risk-based proof expectations
-- `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` for closeout, review decisions, transition proposal, and handoff
+- verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval
 - `scripts/*-check.py` advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more
 - Closeout Evidence in the active bead
 
@@ -200,11 +192,7 @@ Recover answers: "What do I do when something feels broken or confusing?"
 
 Main surfaces:
 
-- `tasks/reference/RECOVERY-PROTOCOL.md` for beginner-safe recovery
-- `tasks/reference/STATE-MANAGEMENT-PROTOCOL.md` when active state, precedence, or freshness is unclear
-- `tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md` when context is overloaded, stale, or unsafe
-- `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` for advisory cleanup boundaries around logs, caches, generated reports, and protected evidence
-- `tasks/reference/MEMORY-PROTOCOL.md` for reviewed memory cards and promotion paths
+- the recovery, state-management, context, local-hygiene, and memory protocols when the user guide or active state calls for them
 - `bash scripts/handoff.sh [next-agent]` and generated handoff packets for continuity
 
 Recovery starts by stopping. Identify the symptom, find the owner file, repair source state, validate, and resume only when the next bounded action is clear.
@@ -289,31 +277,17 @@ Stop or checkpoint when:
 
 Stopping is not failure. In Precode, stopping is how the builder keeps the project understandable.
 
-## What The Main Surfaces Do
+## How To Use This Map
 
-| Area | Files or families | Plain-English role |
-|---|---|---|
-| Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | What every agent starts from. |
-| Beginner education | `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`, `PRECODE-USER-GUIDE.md`, `CLAUDE-CODE-FIELD-GUIDE.md` | How to work with Precode in practice. |
-| Product direction | `PRODUCT.md`, Goal Frames, `tasks/prds/*.md`, `FEATURES.md` | What should exist, for whom, and why. |
-| Technical project rules | `PROJECT-CONTEXT.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Where implementation facts belong. |
-| Current work | `tasks/beads/*.md` | One scoped execution contract at a time. |
-| Protocols | `tasks/reference/*.md` | Durable playbooks for discovery, intake, PRDs, planning, routing, execution, proof, recovery, and handoff. |
-| Modes and adapters | `modes/*.md`, `adapters/*.md`, shims | Tool-neutral roles plus tool-specific compatibility. |
-| Scripts | `scripts/*` | Validation, state compilation, check recording, health, handoff, and advisory guardrails. |
-| Reviewed memory | `memory/cards/*.md` | Reusable reviewed lessons, preferences, risks, glossary terms, and source pointers; evidence only. |
-| Generated evidence | `PRECODE-HELP.md`, `OS-HEALTH.md`, `PROGRESS.md`, `logs/*` | Snapshots, warnings, output, sidecars, and handoff context; never active memory. |
+This explainer names the six rooms and the Builder OS mental model behind them. It is not the canonical document router and it is not the exhaustive file dictionary.
+
+- Use `README.md` when you need the public document compass.
+- Use `docs/PRECODE-USER-GUIDE.md` when you are operating a PrecodeOS repo.
+- Use `docs/PRECODE-FILE-INVENTORY.md` when you need every file, protocol, script, and relationship.
 
 ## Where To Go Next
 
-| Need | Read next |
-|---|---|
-| "I am new and need to understand how software gets built with agents." | `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` |
-| "I am operating a Precode project and need prompts, steps, and stop rules." | `PRECODE-USER-GUIDE.md` |
-| "I am using Claude Code in a first session or bootcamp-style setting." | `CLAUDE-CODE-FIELD-GUIDE.md` |
-| "I need the full file dictionary and technical map." | `PRECODE-FILE-INVENTORY.md` |
-| "I am reviewing architecture, trust boundaries, generated sidecars, validators, limitations, or maintainer detail." | `PRECODE-ARCHITECTURE-OVERVIEW.md` |
-| "I need Precode's philosophy and public positioning." | `PRECODE-MANIFESTO.md` |
+For the canonical document compass, use `README.md`. If you are already operating a PrecodeOS repo, use `docs/PRECODE-USER-GUIDE.md` as the day-to-day home base.
 
 ## Adapting Precode To Your Project
 
@@ -343,7 +317,7 @@ Explain everything in plain English.
 
 ## Deeper Architecture And Maintainer Notes
 
-Use `PRECODE-ARCHITECTURE-OVERVIEW.md` when you need:
+Use `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` when you need:
 
 - the full layer-by-layer architecture
 - script and validator internals
@@ -354,6 +328,6 @@ Use `PRECODE-ARCHITECTURE-OVERVIEW.md` when you need:
 - comparison landscape
 - limitations and adoption path
 
-This README is the beginner-first map. The architecture overview is the maintainer and reviewer companion.
+This explainer is the conceptual Builder OS map. `README.md` is the public document compass, and the architecture overview is the maintainer and reviewer companion.
 
 Maintainer-local document history for this explainer lives in `_maintainer/CHANGELOG.md`; it is not part of normal public package navigation.

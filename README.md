@@ -38,17 +38,9 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 
 ## Start Here
 
-If you are new to PrecodeOS, start with the Builder OS map:
+If you are using PrecodeOS in a project, start with [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). It is the day-to-day operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
 
-- [`PRECODE-OS-README.md`](PRECODE-OS-README.md) explains the six rooms of PrecodeOS: Orient, Decide, Plan, Build, Prove, and Recover.
-
-Then choose the guide that matches your role:
-
-- New builder: [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md)
-- Day-to-day operator: [`PRECODE-USER-GUIDE.md`](PRECODE-USER-GUIDE.md)
-- Claude Code student or bootcamp user: [`CLAUDE-CODE-FIELD-GUIDE.md`](CLAUDE-CODE-FIELD-GUIDE.md)
-- Technical reviewer: [`PRECODE-ARCHITECTURE-OVERVIEW.md`](PRECODE-ARCHITECTURE-OVERVIEW.md)
-- File-level navigator: [`PRECODE-FILE-INVENTORY.md`](PRECODE-FILE-INVENTORY.md)
+If you are still learning what PrecodeOS is, use the compass below.
 
 ## Quickstart
 
@@ -95,19 +87,22 @@ bash scripts/record-check.sh -- <command>
 
 Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
 
-## Docs Map
+## Docs Compass
 
-| Need | Go to |
+| If you need to... | Go to |
 |---|---|
-| Understand the Builder OS model | [`PRECODE-OS-README.md`](PRECODE-OS-README.md) |
-| Learn how ideas become software with PrecodeOS | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Operate a PrecodeOS repo day to day | [`PRECODE-USER-GUIDE.md`](PRECODE-USER-GUIDE.md) |
-| Use Claude Code with PrecodeOS | [`CLAUDE-CODE-FIELD-GUIDE.md`](CLAUDE-CODE-FIELD-GUIDE.md) |
-| Review architecture and trust boundaries | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](PRECODE-ARCHITECTURE-OVERVIEW.md) |
-| Find every file, protocol, script, and relationship | [`PRECODE-FILE-INVENTORY.md`](PRECODE-FILE-INVENTORY.md) |
-| Contribute safely | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
-| Understand governance | [`GOVERNANCE.md`](GOVERNANCE.md) |
-| Use the name or describe a fork | [`TRADEMARK.md`](TRADEMARK.md) |
+| Start using PrecodeOS in a project | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
+| Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
+| Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook when prompted |
+| Work with an agent right now | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
+| Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
+| Find the exact owner file, script, protocol, or relationship | [`PRECODE-FILE-INVENTORY.md`](docs/PRECODE-FILE-INVENTORY.md) |
+| Take a maintainer or contributor action | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`GOVERNANCE.md`](GOVERNANCE.md), or [`TRADEMARK.md`](TRADEMARK.md) |
+
+Do not start by browsing `tasks/reference/`. Protocols are loaded when the user guide, the README compass, active memory, or an agent prompt such as "use workflow selection" calls for one.
 
 ## For Reviewers And Contributors
 
@@ -141,5 +136,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.21
-Last updated: 2026-05-14
+Document version: v0.1.24
+Last updated: 2026-05-17

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.31
-Last updated: 2026-05-14
+Document version: v0.1.33
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -34,10 +34,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 ## Reading Rules
 
 - Start here when you need a technical map of PrecodeOS.
-- Use `PRECODE-MANIFESTO.md` for Precode's philosophical anchor, values, principles, and anti-drift stance.
-- Use `PRECODE-OS-README.md` for beginner-facing explanation.
-- Use `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` for the beginner bridge from software-building lifecycle concepts to Precode and AI-agent workflow.
-- Use `PRECODE-ARCHITECTURE-OVERVIEW.md` for architecture, principles, and maintainer framing.
+- Use `README.md` when you need the public document compass.
 - Use `CODEBASE-GUIDE.md` for target-project layout guidance, not PrecodeOS internals.
 - Do not treat generated outputs or inventory warnings as task selection.
 
@@ -46,7 +43,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Area | Files or families | Purpose |
 |---|---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | Always-loaded operating state. |
-| Root explainers | `README.md`, `PRECODE-MANIFESTO.md`, `PRECODE-OS-README.md`, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`, `PRECODE-USER-GUIDE.md`, `CLAUDE-CODE-FIELD-GUIDE.md`, `PRECODE-ARCHITECTURE-OVERVIEW.md`, `PRECODE-FILE-INVENTORY.md` | Orientation for different audiences. |
+| Reader-facing docs | `docs/*.md` | Long-form human guides for philosophy, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing. |
 | Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, not authority. |
@@ -153,7 +150,7 @@ AGENT.md
 
 Adapters and shims point back to the shared operating model. They must not become alternate Precode systems.
 
-## Root File Dictionary
+## Root And Reader Doc Dictionary
 
 | File | Class | What it owns | How it relates |
 |---|---|---|---|
@@ -166,14 +163,14 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `GOVERNANCE.md` | reference | Benevolent founder-maintainer governance model and official project authority. | Explains contribution decision rights, roadmap authority, forks, and maintainer delegation. |
 | `CONTRIBUTING.md` | reference | Contribution rules and inbound = Apache-2.0 policy. | Guides proposed changes while preserving provenance, active-memory limits, and beginner-safe behavior. |
 | `TRADEMARK.md` | reference | PrecodeOS trademark ownership, brand-use, allowed descriptive references, fork naming, and official-project identity guidance. | Clarifies that Apache-2.0 does not grant confusing brand use, trademark rights, or official-project identity. |
-| `PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
-| `PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Points users to the how-to guide, user guide, architecture overview, file inventory, and manifesto. |
+| `docs/PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
+| `docs/PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Points users to the how-to guide, user guide, architecture overview, file inventory, and manifesto. |
 | `_maintainer/CHANGELOG.md` | private-reference | Maintainer-local project and document history, including moved public document-history sections. | Provides maintainer history only; does not approve work, select tasks, replace owner files, act as generated evidence, or belong to public package navigation. |
-| `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
-| `PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, and review prompts. |
-| `CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not maintainer-only material. |
-| `PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
-| `PRECODE-FILE-INVENTORY.md` | reference | Canonical technical file dictionary and relationship map. | Supported by `logs/file-inventory.json`. |
+| `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
+| `docs/PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, and review prompts. |
+| `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not maintainer-only material. |
+| `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
+| `docs/PRECODE-FILE-INVENTORY.md` | reference | Canonical technical file dictionary and relationship map. | Supported by `logs/file-inventory.json`. |
 | `PRODUCT.md` | reference | Builder-facing product constitution: product promise, users and jobs, strategy and non-goals, current bets, success signals, design or voice pointers, and optional product-level Goal Frame. | Loaded for product planning, PRD shaping, PRD approval review, product drift checks, durable-intent orientation, and builder onboarding; not active memory or task selection. |
 | `PROJECT-CONTEXT.md` | reference | Technical project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |
 | `OPERATING-CONSTRAINTS.md` | reference | Shared edit discipline, scope control, generated-output demotion, and reference-loading rules. | Always-loaded by `AGENT.md` as shared constraints. |

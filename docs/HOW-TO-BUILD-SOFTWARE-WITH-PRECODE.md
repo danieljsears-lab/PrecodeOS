@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-05-13
+Document version: v0.1.17
+Last updated: 2026-05-17
 
 ## Start Here: You Are Not Just Prompting
 
@@ -39,7 +39,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the philosophical anchor behind those choices, read `PRECODE-MANIFESTO.md`.
+For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.md`.
 
 > Plain-English term: A repo is the project folder that holds your app code and the Precode files that guide the agent.
 
@@ -552,23 +552,14 @@ Search reviewed memory for what we have learned about this topic. Do not treat m
 | Treating reports as instructions. | Generated summaries can be stale or incomplete. | Return to active memory, active bead, and primary authority. |
 | Trying to fix confusion by guessing. | A rushed repair can damage authority files or evidence. | Use the Recovery Protocol and stop before editing, deleting, moving, overwriting, or regenerating files. |
 | Manually cleaning logs, caches, or generated files. | You may delete evidence or damage state while trying to tidy the workspace. | Use Local Hygiene advisory checks and dry-run previews first. |
-| Editing or moving Precode files. | Scripts and agents may lose the expected structure. | Follow `PRECODE-USER-GUIDE.md` hard rules. |
+| Editing or moving Precode files. | Scripts and agents may lose the expected structure. | Follow `docs/PRECODE-USER-GUIDE.md` hard rules. |
 | Storing secrets in files. | Secrets may be committed, exported, or exposed. | Use proper secret managers or dashboards. |
 | Deploying before understanding risk. | Production can affect real users, data, cost, or reputation. | Ask for deployment approval gates and rollback. |
 
-For the hard operating rules, use `PRECODE-USER-GUIDE.md`.
+For the hard operating rules, use `docs/PRECODE-USER-GUIDE.md`.
 
 ## Where To Go Next
 
-Use these documents by situation:
-
-| Need | Read |
-|---|---|
-| Why Precode exists at this moment in AI coding. | `PRECODE-MANIFESTO.md` |
-| What Precode is and why it exists. | `PRECODE-OS-README.md` |
-| What to do during an actual session. | `PRECODE-USER-GUIDE.md` |
-| Deep technical architecture and maintainer framing. | `PRECODE-ARCHITECTURE-OVERVIEW.md` |
-| More copyable prompts. | `tasks/reference/PROMPT-PATTERNS.md` |
-| Technical map of Precode files. | `PRECODE-FILE-INVENTORY.md` |
+For the canonical document compass, use `README.md`. If you are ready to operate a PrecodeOS repo, use `docs/PRECODE-USER-GUIDE.md`.
 
 Maintainer-local document history for this beginner software-building bridge lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

@@ -9,9 +9,9 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-14
-Companion to: `PRECODE-USER-GUIDE.md` and `tasks/reference/PROMPT-PATTERNS.md`
+Document version: v0.1.5
+Last updated: 2026-05-17
+Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
 
@@ -733,7 +733,4 @@ Reviewed + accepted    ← Strongest. You signed off.
 
 ---
 
-*For deeper reading:*
-- *Full prompt catalog →* `tasks/reference/PROMPT-PATTERNS.md`
-- *Full user playbook →* `PRECODE-USER-GUIDE.md`
-- *Software-building lifecycle →* `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`
+*For the full document compass, go back to `README.md`. For day-to-day operation, use `docs/PRECODE-USER-GUIDE.md`.*

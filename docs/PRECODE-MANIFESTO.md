@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-05-13
+Document version: v0.1.14
+Last updated: 2026-05-17
 
 ## The Precode Answer
 

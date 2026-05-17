@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-12
+Document version: v0.1.1
+Last updated: 2026-05-17
 
 ## State
 
@@ -65,9 +65,9 @@ Last updated: 2026-05-12
   - `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`
   - `tasks/prds/PRD-000-template.md`
   - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md`
-  - `PRECODE-USER-GUIDE.md`
-  - `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`
-  - `PRECODE-FILE-INVENTORY.md`
+  - `docs/PRECODE-USER-GUIDE.md`
+  - `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`
+  - `docs/PRECODE-FILE-INVENTORY.md`
 - Discarded or stale inputs:
   - Mandatory scorecard or full product-management framework
 
@@ -240,9 +240,9 @@ Precode helps shape ideas into PRDs, but it does not yet fully help builders dec
   - `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`
   - `tasks/prds/PRD-000-template.md`
   - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md`
-  - `PRECODE-USER-GUIDE.md`
-  - `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`
-  - `PRECODE-FILE-INVENTORY.md`
+  - `docs/PRECODE-USER-GUIDE.md`
+  - `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`
+  - `docs/PRECODE-FILE-INVENTORY.md`
 - Files or folders likely in play:
   - listed above
 - Files or folders out of scope:

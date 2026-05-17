@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.14
-Last updated: 2026-05-13
+Document version: v0.7.16
+Last updated: 2026-05-17
 
 
 
@@ -26,7 +26,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the bigger "what and why," read `PRECODE-OS-README.md`. For Precode's philosophical anchor, read `PRECODE-MANIFESTO.md`. For the beginner bridge from idea to software-building workflow, read `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`. If you are using Claude Code in a bootcamp or first student session, read `CLAUDE-CODE-FIELD-GUIDE.md`. For deep architecture and maintainer detail, read `PRECODE-ARCHITECTURE-OVERVIEW.md`. For the full prompt catalog, read `tasks/reference/PROMPT-PATTERNS.md`.
+For the full document compass, go back to `README.md`. This guide is the operational home base: use it when you are about to work with an agent, decide whether to stop, approve risk, or check proof.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 

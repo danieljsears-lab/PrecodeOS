@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.2
-# Last updated: 2026-05-07
+# Version: v0.1.4
+# Last updated: 2026-05-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -107,9 +107,8 @@ expected_anchors = {
     "DECISIONS.md": "decisions",
     "tasks/todo.md": "active-work",
     "README.md": "readme",
-    "PRECODE-OS-README.md": "os-readme",
-    "PRECODE-FILE-INVENTORY.md": "file-inventory",
-    "tasks/reference/PRECODE-BMAD-GSTACK-COMPARISON.md": "precode-bmad-gstack-comparison",
+    "docs/PRECODE-OS-README.md": "os-readme",
+    "docs/PRECODE-FILE-INVENTORY.md": "file-inventory",
     "PROJECT-CONTEXT.md": "project-context",
     "OPERATING-CONSTRAINTS.md": "operating-constraints",
     "FEATURES.md": "features",
@@ -140,7 +139,7 @@ active_claims = re.findall(r"^- `([^`]+)`", agent, re.MULTILINE)
 expected_active = ["AGENT.md", "DECISIONS.md", "tasks/todo.md"]
 if active_claims[:3] != expected_active:
     add("AGENT.md", 1, "active memory must begin with AGENT.md, DECISIONS.md, and tasks/todo.md")
-if "PROJECT-CONTEXT.md" in active_claims or "PRECODE-OS-README.md" in active_claims:
+if "PROJECT-CONTEXT.md" in active_claims or "PRECODE-OS-README.md" in active_claims or "docs/PRECODE-OS-README.md" in active_claims:
     add("AGENT.md", 1, "reference docs must not be promoted into active memory")
 
 todo_text = read("tasks/todo.md")

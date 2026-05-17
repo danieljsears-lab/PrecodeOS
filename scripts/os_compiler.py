@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.16
-# Last updated: 2026-05-12
+# Version: v0.1.17
+# Last updated: 2026-05-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -2729,6 +2729,7 @@ def recovery_prompt_for_next_step(category: str, warnings: list[str], blockers: 
 def gather_markdown_docs(root: Path) -> list[Path]:
     patterns = [
         "*.md",
+        "docs/*.md",
         "adapters/*.md",
         "tasks/**/*.md",
         "modes/*.md",
@@ -2752,6 +2753,8 @@ def surface_group(rel: str) -> str:
         return "shim"
     if rel.startswith("adapters/"):
         return "adapter"
+    if rel.startswith("docs/"):
+        return "doc"
     if rel.startswith("tasks/beads/"):
         return "bead"
     if rel.startswith("tasks/prds/"):
@@ -3137,6 +3140,8 @@ def inventory_family_for(rel: str) -> str:
         return "mode"
     if rel.startswith("tasks/reference/"):
         return "reference-protocol"
+    if rel.startswith("docs/"):
+        return "reader-doc"
     if rel.startswith("tasks/templates/"):
         return "template"
     if rel.startswith("tasks/beads/"):
@@ -3160,6 +3165,7 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
     if f"`{rel}`" in inventory_text or rel in inventory_text:
         return True
     family_tokens = [
+        ("docs/", "`docs/*.md`"),
         ("tasks/reference/", "`tasks/reference/*.md`"),
         ("tasks/templates/", "`tasks/templates/*.md`"),
         ("tasks/beads/", "`tasks/beads/*.md`"),
@@ -3176,7 +3182,7 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
 
 def compile_file_inventory(root: Path) -> dict[str, Any]:
     warnings: list[str] = []
-    inventory_path = root / "PRECODE-FILE-INVENTORY.md"
+    inventory_path = root / "docs" / "PRECODE-FILE-INVENTORY.md"
     inventory_text = read_text(inventory_path)
 
     docs: list[dict[str, Any]] = []
@@ -3190,7 +3196,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         if not metadata.get("version") or not metadata.get("last_updated"):
             warnings.append(f"{rel} is missing version metadata")
         if inventory_text and not inventory_family_covered(rel, inventory_text):
-            warnings.append(f"{rel} is not referenced in PRECODE-FILE-INVENTORY.md")
+            warnings.append(f"{rel} is not referenced in docs/PRECODE-FILE-INVENTORY.md")
         docs.append(
             {
                 "path": rel,
@@ -3212,7 +3218,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
             warnings.append(f"{rel} is missing script version header metadata")
         if inventory_text and not inventory_family_covered(rel, inventory_text):
-            warnings.append(f"{rel} is not referenced in PRECODE-FILE-INVENTORY.md")
+            warnings.append(f"{rel} is not referenced in docs/PRECODE-FILE-INVENTORY.md")
         scripts.append({"path": rel, "family": "script", **header})
 
     workflows: list[dict[str, Any]] = []
@@ -3222,7 +3228,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
             warnings.append(f"{rel} is missing workflow version header metadata")
         if inventory_text and not inventory_family_covered(rel, inventory_text):
-            warnings.append(f"{rel} is not referenced in PRECODE-FILE-INVENTORY.md")
+            warnings.append(f"{rel} is not referenced in docs/PRECODE-FILE-INVENTORY.md")
         workflows.append({"path": rel, "family": "workflow", **header})
 
     generated: list[dict[str, Any]] = []
@@ -3255,7 +3261,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         "status": "warning" if warnings else "pass",
         "warnings": warnings,
         "active_memory": ACTIVE_MEMORY,
-        "canonical_inventory": "PRECODE-FILE-INVENTORY.md",
+        "canonical_inventory": "docs/PRECODE-FILE-INVENTORY.md",
         "generated_is_not_authority": True,
         "counts": {
             "docs": len(docs),

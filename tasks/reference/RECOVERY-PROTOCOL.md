@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-13
+Document version: v0.1.3
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -49,7 +49,7 @@ I think I broke something in Precode. Stop work, identify the symptom, name the 
 
 | Symptom | First check | Safe recovery path | Do not do |
 |---|---|---|---|
-| File was moved or renamed | Compare the expected path with `PRECODE-FILE-INVENTORY.md` and validation output. | Restore the expected path/name, then run `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check`. | Do not invent a new path or update references just to match the mistake. |
+| File was moved or renamed | Compare the expected path with `docs/PRECODE-FILE-INVENTORY.md` and validation output. | Restore the expected path/name, then run `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check`. | Do not invent a new path or update references just to match the mistake. |
 | Generated report was edited | Identify the source script that owns the report. | Stop using the edited report, restore or regenerate it from source state, then return to owner files. | Do not treat the edited report as authority. |
 | Generated report looks stale | Check whether source files, checks, closeout, or transitions changed after the report. | Refresh the report with the owning script after source state is coherent. | Do not hand-edit generated Markdown. |
 | Active state is broken | Run `python3 scripts/state-check.py`. | Repair `tasks/todo.md` or the active bead so they agree, then validate memory. | Do not continue implementation while the active bead is unclear. |

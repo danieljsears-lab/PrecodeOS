@@ -39,8 +39,8 @@ verification_type:
 > CLASS: active-task
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-03
+Document version: v0.1.2
+Last updated: 2026-05-17
 
 ## State
 
@@ -117,7 +117,7 @@ Install and review PrecodeOS as an install-ready package baseline, including the
 
 - Checks run: `python3 scripts/version-check.py` -> pass (exit 0) at 2026-05-14T04:38:15.078989+00:00; log `logs/check-output/20260514T043814Z-python3-scripts-version-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-05-14T04:38:50.089803+00:00; log `logs/check-output/20260514T043850Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/file-inventory.py --check` -> pass (exit 0) at 2026-05-14T04:38:50.124965+00:00; log `logs/check-output/20260514T043850Z-python3-scripts-file-inventory.py-check.log` | `python3 scripts/version-check.py` -> pass (exit 0) at 2026-05-14T04:38:50.131252+00:00; log `logs/check-output/20260514T043850Z-python3-scripts-version-check.py.log` | `python3 scripts/files-in-play-check.py` -> pass (exit 0) at 2026-05-14T04:39:00.207378+00:00; log `logs/check-output/20260514T043900Z-python3-scripts-files-in-play-check.py.log` | `python3 scripts/public-repo-check.py` -> pass (exit 0) at 2026-05-14T04:39:00.870320+00:00; log `logs/check-output/20260514T043900Z-python3-scripts-public-repo-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-05-14T04:39:04.707899+00:00; log `logs/check-output/20260514T043904Z-python3-scripts-completion-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-05-14T04:39:20.764171+00:00; log `logs/check-output/20260514T043920Z-python3-scripts-completion-check.py.log`
 - Result: latest recorded command status is pass (exit 0)
-- Manual verification: Who checked: Codex. What was checked: inspected the B000 package baseline scope, the public GitHub `README.md` restructure, and the related `PRECODE-FILE-INVENTORY.md` description; confirmed the README now opens with badges and a builder-first promise, gives copyable clone/validation quickstart commands, points exhaustive navigation to the file inventory, preserves Precode metadata in the parser-visible top section and document footer, keeps generated reports as evidence only, and does not activate a next bead. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-14. Result: pass for B000 package-baseline acceptance after fresh recorded checks. Remaining uncertainty: completion-check still reports evidence newer than the latest session close until a new closeout is recorded; next bead selection remains intentionally unactivated.
+- Manual verification: Who checked: Codex. What was checked: inspected the B000 package baseline scope, the public GitHub `README.md` restructure, and the related `docs/PRECODE-FILE-INVENTORY.md` description; confirmed the README now opens with badges and a builder-first promise, gives copyable clone/validation quickstart commands, points exhaustive navigation to the file inventory, preserves Precode metadata in the parser-visible top section and document footer, keeps generated reports as evidence only, and does not activate a next bead. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-14. Result: pass for B000 package-baseline acceptance after fresh recorded checks. Remaining uncertainty: completion-check still reports evidence newer than the latest session close until a new closeout is recorded; next bead selection remains intentionally unactivated.
 - Files changed: 3 changed path(s) at last evidence update
 - Next bead: none
 - Review decision: accepted for B000 package-baseline scope; broad package-readiness changes are approved current-bead work, not drift, and no next bead is activated by this acceptance.
