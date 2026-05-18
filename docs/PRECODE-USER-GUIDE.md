@@ -30,6 +30,8 @@ For the full document compass, go back to `README.md`. This guide is the operati
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, copying the public package files into a new or existing project, excluding private and generated material, and validating before work starts.
 
+If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBOOK.md`. If setup, active state, validation, or generated reports feel wrong, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
+
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
 ## Use The Product Ideation Workbook Before Precode

@@ -18,6 +18,8 @@ Use this guide when you want to put PrecodeOS into a project for the first time.
 
 PrecodeOS is not an app you launch. It is a small repo-native operating layer for AI coding work: Markdown authority files, task contracts, adapter notes, validation scripts, and generated evidence rules that live inside a project folder.
 
+If you are helping someone else through setup, use `docs/PRECODE-SUPPORT-RUNBOOK.md` alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+
 The safest setup path is manual and visible:
 
 1. Pull PrecodeOS from its public GitHub repository.
@@ -305,6 +307,8 @@ If setup is blocked, record the blocker in plain English and propose a narrow se
 
 After guided setup, use:
 
+- `docs/PRECODE-SUPPORT-RUNBOOK.md` when assisting another user through adoption and first use
+- `docs/PRECODE-TROUBLESHOOTING.md` when setup, state, checks, or generated reports are confusing
 - `docs/PRECODE-USER-GUIDE.md` for day-to-day operation
 - `docs/PRECODE-OS-README.md` for the Builder OS mental model
 - `docs/PRECODE-FILE-INVENTORY.md` for the canonical file dictionary

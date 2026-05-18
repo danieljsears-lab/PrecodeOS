@@ -40,6 +40,8 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 
 If you are using PrecodeOS in a project, start with [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). It is the day-to-day operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
 
+If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). If state, setup, validation, or generated reports feel confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md).
+
 If you are still learning what PrecodeOS is, use the compass below.
 
 ## Quickstart
@@ -54,6 +56,7 @@ bash scripts/validate-memory.sh
 
 To adapt PrecodeOS into a target project, start with these files:
 
+- `docs/PRECODE-GUIDED-SETUP.md` for the step-by-step setup path and copy boundaries.
 - `PRODUCT.md` for the product promise, users, strategy, bets, success signals, and voice.
 - `PROJECT-CONTEXT.md` for stack, app directory, conventions, checks, and integration boundaries.
 - `DECISIONS.md` for hard decisions and open questions.
@@ -101,12 +104,14 @@ python3 scripts/next-step.py
 | If you need to... | Go to |
 |---|---|
 | Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
+| Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
 | Start using PrecodeOS in a project | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
 | Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook when prompted |
 | Work with an agent right now | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
-| Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
+| Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
 | Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
 | Find the exact owner file, script, protocol, or relationship | [`PRECODE-FILE-INVENTORY.md`](docs/PRECODE-FILE-INVENTORY.md) |
