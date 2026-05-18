@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-05-17
+Document version: v0.1.19
+Last updated: 2026-05-18
 
 ## Start Here: You Are Not Just Prompting
 
@@ -47,15 +47,19 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 ### If You Only Have An Idea, Start With The Workbook
 
-If you are starting with a rough idea, use `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+If you are a non-technical builder starting with a net-new rough idea, use `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
 
 The workbook is a thinking space. You can use Claude or Codex as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Precode Ingestion Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.
+
+After at most three high-level product or business questions, ask for a Product Brief. That gives you visible progress before the agent moves into deeper discovery or PRD shaping.
 
 Use this path when you are still asking, "What am I really trying to build?"
 
 ```text
-Use this Product Ideation Workbook as evidence. Help me create a concise Precode Ingestion Packet with a Candidate Goal Frame for Precode review if the direction is stable enough. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
 ```
+
+Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 
 ## The Software-Building Journey In Plain English
 
@@ -66,7 +70,7 @@ Software is usually built through a set of repeatable stages. Teams may use diff
 | Idea | A rough thought about something useful to build. | Founder, customer, product manager. | The agent codes a vague idea before the problem is clearly understood and well articulated. | Local Source Intake turns rough notes into facts, questions, and candidate requirements. |
 | Discovery validation | Checking whether the problem, current workaround, evidence, and riskiest assumption are real enough to justify PRD work. | Founder, product manager, researcher. | A polished PRD describes the wrong thing beautifully. | Product Discovery Validation produces a short Discovery Summary and advisory `proceed`, `pause`, `narrow`, or `kill` recommendation. |
 | Product shaping | Deciding who it is for, what problem it solves, and what not to build yet. | Product manager, founder, designer. | Scope grows, the first version gets too big, or the wrong user moment is built. | `PRODUCT.md`, Idea-to-PRD, and PRD protocols force product fit, problem, non-goals, risks, and smallest useful version. |
-| Alignment | Reaching a shared design concept before writing a plan. | Founder, product manager, domain expert, engineer. | The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions. | Alignment/grilling asks one question at a time, records accepted/rejected recommendations, and summarizes only stable conclusions. |
+| Alignment | Reaching a shared design concept before writing a plan. | Founder, product manager, domain expert, engineer. | The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions. | Alignment starts with plain product questions, summarizes a Product Brief, and lets the agent translate technical implications later. |
 | Requirements | Writing what the software should do in a way that can be checked. | Product manager, engineer, QA. | "Done" becomes a feeling instead of a testable outcome. | PRDs and beads connect requirements to checks and closeout evidence. |
 | UX/design | Deciding what the user sees and how the user moves through the experience. | Designer, product manager, frontend engineer. | The feature may technically work but feel confusing or incomplete. | Manual verification, screenshots, browser checks, and review inputs capture what the user actually experiences. |
 | Architecture | Choosing the shape of the code, data, integrations, and boundaries. | Architect, senior engineer, security reviewer. | Code becomes tangled, risky, hard to change, or unsafe around data and external services. | Project context, architecture docs, deep-module/interface guidance, and pattern guidance help the agent propose a simple shape before coding. |
@@ -111,7 +115,7 @@ Not every software idea needs the same process. Precode is safest when you choos
 
 | Project type | What usually matters most | Early risks | Start with |
 |---|---|---|---|
-| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Discovery Validation when worth-building is uncertain, then Precode Ingestion Packet. |
+| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Brief after at most three high-level questions, Product Discovery Validation when worth-building is uncertain, then Precode Ingestion Packet. |
 | Durable intent, but no workflow chosen yet | Keeping direction visible without turning it into a task list. | A broad goal silently becomes backlog, roadmap, or implementation plan. | Goal Frame proposal or reaffirmation, then workflow selection. |
 | Personal tool | Speed, usefulness, simple data, low ceremony. | The tool grows into a product before privacy, data, or deployment choices are understood. | Local Source Intake or a small implementation bead. |
 | Small SaaS app | Accounts, permissions, database, reliability, support, deployment. | Auth, personal data, billing, emails, and production setup appear quickly. | Idea-to-PRD, then decomposition into small beads. |
@@ -174,14 +178,15 @@ Precode turns rough intent into verified work through a file-based path.
 
 ```text
 idea or notes
-  -> Product Ideation Workbook when the idea is still rough
+  -> Product Ideation Workbook for net-new rough product ideas
+  -> Product Brief after at most three high-level questions
   -> Precode Ingestion Packet
   -> Candidate Goal Frame when durable intent needs orientation
   -> Product Discovery Validation when worth-building is uncertain
   -> Local Source Intake and reaffirmation
   -> product constitution fit check
   -> local source intake
-  -> alignment / grilling
+  -> alignment / Product Brief
   -> shared language
   -> destination PRD
   -> journey bead proposal
@@ -196,16 +201,17 @@ idea or notes
 | Step | Plain-English meaning | What to ask |
 |---|---|---|
 | Idea or notes | You have something fuzzy, incomplete, or scattered. | "Summarize what is known, unknown, and risky." |
-| Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Help me create a Precode Ingestion Packet. Do not update owner files or code." |
+| Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
+| Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question." |
 | Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review. | "Treat this as evidence, not authority." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
 | Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |
 | Product constitution fit check | The agent checks whether the idea fits the product promise, users, non-goals, current bets, success signals, and design or voice. | "Use `PRODUCT.md` for planning context, not active work." |
 | Local source intake | The agent turns notes, docs, screenshots, or issues into evidence. | "Do not treat source material as authority." |
-| Alignment / grilling | The agent asks one question at a time until the design concept is shared. | "Ask the next question, include your recommendation, and do not plan yet." |
+| Alignment / Product Brief | The agent asks plain product questions until the design concept is shared. | "Ask high-level questions first and summarize a Product Brief after at most three questions." |
 | Shared language | The agent names important terms, aliases, words to avoid, and examples before they become UI, tests, or code. | "Use my words where they are correct, and tell me where a term is confusing." |
-| Destination PRD | The product intent becomes clear enough to build from. | "Define the user, problem, non-goals, risks, acceptance oracles, module/interface candidates, and smallest first version." |
+| Destination PRD | The product intent becomes clear enough to build from. | "Define the user, problem, non-goals, risks, acceptance checks, agent-facing technical translation, and smallest first version." |
 | Journey bead proposal | The work is sliced into small verifiable pieces. | "Make each bead one outcome, one authority, one verification strategy, one delegation mode, and one review context." |
 | Active bead | One task is approved for execution. | "Confirm files in play, checks, stop conditions, and primary authority." |
 | Implementation | The agent edits code or docs inside the approved scope. | "Narrate edits before making them and stay inside the bead." |
@@ -224,18 +230,18 @@ Use these prompts when you do not know what to say next.
 
 | Situation | Ask the agent |
 |---|---|
-| I only have a rough idea. | `Use the Product Ideation Workbook as evidence. Help me create a concise Precode Ingestion Packet with a Candidate Goal Frame if the direction is stable enough. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
+| I only have a rough idea. | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
 | I need to know if this is worth defining. | `Use Product Discovery Validation. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | I have notes or an ingestion packet. | `Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.` |
 | My workbook includes a Candidate Goal Frame. | `Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.` |
 | My intent is durable, but I do not know the workflow yet. | `This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.` |
 | I have an old Goal Frame. | `Check whether this Goal Frame still matches the active PRD, active bead, and current evidence. Ask me to reaffirm it before using it for workflow guidance.` |
-| I need alignment before planning. | `Grill this idea one question at a time. Include your recommended answer. Do not write a PRD or plan until the design concept is shared.` |
+| I need alignment before planning. | `Align this idea one high-level product or business question at a time. Include your recommended answer. After at most three questions, summarize a Product Brief. Do not write a PRD or plan until the design concept is shared.` |
 | I keep explaining the same terms. | `Use the Ubiquitous Language Protocol. Capture my terms, meanings, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
 | I need to know if this is worth building. | `Challenge this idea. Tell me the user problem, strongest reason to build it, biggest risk, and smallest useful test.` |
 | I do not know what to do next. | `Run python3 scripts/next-step.py and explain the generated recommendation without treating it as approval.` |
 | Help me find the smallest useful version. | `Find the smallest first version that teaches us something real without adding avoidable complexity.` |
-| Turn this into a PRD. | `Use the PRD protocol. Draft a beginner-readable destination PRD with problem, non-goals, before/after user moment, risks, verification evidence, module/interface candidates, and smallest first bead.` |
+| Turn this into a PRD. | `Use the PRD protocol. Draft a beginner-readable destination PRD with problem, non-goals, before/after user moment, risks, verification evidence, agent-facing technical translation, and smallest first bead.` |
 | Break this into beads. | `Use the Decomposition Protocol. Propose vertical journey beads that each have one outcome, one primary authority, bounded files, checks, dependencies, delegation mode, test strategy, review context, complexity, required planning depth, autonomy level, and stop conditions.` |
 | Implement the active bead. | `Before editing, confirm the active bead, primary authority, files in play, checks, stop conditions, and what is out of scope.` |
 | Check for scope drift. | `Run python3 scripts/files-in-play-check.py and explain whether changed files are inside this bead or should become follow-up work.` |
@@ -548,7 +554,7 @@ Search reviewed memory for what we have learned about this topic. Do not treat m
 | Treating a Goal Frame as a task list. | Durable intent becomes hidden authority and can push the agent into stale work. | Reaffirm it, then use it only for workflow guidance. |
 | Vague feature request. | No one can prove whether it is done. | Ask for user problem, non-goals, and acceptance evidence. |
 | Accepting broad rewrites. | Scope and risk hide inside a large change. | Keep one bead, bounded files, and clear checks. |
-| Skipping alignment or PRD for fuzzy ideas. | Product decisions move into code by accident. | Use alignment/grilling, Idea-to-PRD, or challenge planning first. |
+| Skipping alignment or PRD for fuzzy ideas. | Product decisions move into code by accident. | Use Product Brief alignment, Idea-to-PRD, or challenge planning first. |
 | Approving the next task too quickly. | Work moves forward before review. | Accept, revise, split, block, or stop first. |
 | Treating generated next-step help as approval. | A generated hint can orient you, but it cannot choose or activate work. | Return to active memory, the active bead, and user approval. |
 | Treating reports as instructions. | Generated summaries can be stale or incomplete. | Return to active memory, active bead, and primary authority. |

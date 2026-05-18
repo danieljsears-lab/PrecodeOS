@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-12
+Document version: v0.1.6
+Last updated: 2026-05-18
 
 ## State
 
@@ -49,6 +49,20 @@ Raw inputs are evidence, not authority. Use `tasks/reference/LOCAL-SOURCE-INTAKE
 - Authority files likely affected:
 - Discarded or stale inputs:
 
+## Product Brief
+
+Use this for net-new, rough product ideas from non-technical builders. It is builder-facing evidence, not approval, and should be produced after at most three high-level product or business questions.
+
+- Product idea:
+- Intended user:
+- Painful before moment:
+- Better after moment:
+- Current workaround or evidence:
+- Assumptions:
+- Not-yet list:
+- Smallest useful version:
+- Next best question:
+
 ## Discovery Evidence
 
 Use when the idea was broad, risky, market-facing, paid, evidence-poor, solution-first, or otherwise needed Product Discovery Validation before PRD shaping. Keep this as a bridge summary, not a full research report.
@@ -60,11 +74,11 @@ Use when the idea was broad, risky, market-facing, paid, evidence-poor, solution
 - Discovery recommendation: `proceed | pause | narrow | kill | not assessed`
 - Discovery Summary reference:
 
-## Alignment / Grilling Summary
+## Alignment Summary
 
-Use when the idea needed interrogation before requirements. Raw transcripts are source evidence, not authority.
+Use when the idea needed interrogation before requirements. For non-technical builders, summarize the product story before dense requirement or technical sections. Raw transcripts are source evidence, not authority.
 
-- Alignment method: `none | one-question-at-a-time grilling | meeting transcript follow-up | source review | other`
+- Alignment method: `none | one-question-at-a-time alignment | meeting transcript follow-up | source review | other`
 - Shared design concept:
 - Key decisions reached:
 - Recommended answers accepted:
@@ -74,7 +88,7 @@ Use when the idea needed interrogation before requirements. Raw transcripts are 
 
 ## Domain Language
 
-Use when terms, labels, module/interface names, tests, or source inputs need shared vocabulary. Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` for domain-heavy work.
+Use when terms, labels, module/interface names, tests, or source inputs need shared vocabulary. Keep the builder-facing meaning plain; module, code, and test examples are agent-facing translation. Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` for domain-heavy work.
 
 | Term | Status | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Source pointer |
 |---|---|---|---|---|---|---|
@@ -169,7 +183,7 @@ Use `PRODUCT.md` when this feature could affect product promise, users and jobs,
 
 ## Requirements
 
-Use stable IDs. Keep each item observable and small enough to map to beads.
+Agent-facing translation from the builder-approved product story. Use stable IDs. Keep each item observable and small enough to map to beads.
 
 ### Functional Requirements
 
@@ -197,11 +211,15 @@ Use stable IDs. Keep each item observable and small enough to map to beads.
 
 ## Acceptance Oracle Matrix
 
+Agent-facing verification translation. The builder should be able to read the expected behavior and manual check in plain English, but the agent owns the check mapping.
+
 | Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
 |---|---|---|---|---|---|
 | `PRD-000-FR01` |  |  |  |  | bead closeout |
 
 ## Risk And Permission Model
+
+Agent-facing risk translation with human approval gates in plain English.
 
 ### Sensitive Surfaces
 
@@ -228,7 +246,7 @@ Use stable IDs. Keep each item observable and small enough to map to beads.
 
 ## Architecture / Project Context Impact
 
-Load `PROJECT-CONTEXT.md` when this feature could affect project-wide conventions, stack choices, integration boundaries, or implementation rules.
+Agent-facing technical translation. Load `PROJECT-CONTEXT.md` when this feature could affect project-wide conventions, stack choices, integration boundaries, or implementation rules. Do not ask the builder to choose architecture internals unless a real tradeoff or approval gate is exposed.
 
 - Project context impact: `none | minor | material`
 - `PROJECT-CONTEXT.md` loaded: `yes | no | not needed`
@@ -240,7 +258,7 @@ Load `PROJECT-CONTEXT.md` when this feature could affect project-wide convention
 
 ## Module / Interface Candidates
 
-Use for code-changing work where the human should own shape before delegating internals.
+Agent-facing implementation-shape translation. Use for code-changing work where the human should approve the plain-English behavior boundary before internals are delegated.
 
 Prefer names that match the PRD `Domain Language` section and current project conventions.
 
@@ -249,6 +267,8 @@ Prefer names that match the PRD `Domain Language` section and current project co
 |  |  |  |  |  |
 
 ## Agent Context Contract
+
+Agent-facing execution context. This section keeps future coding agents bounded; it is not a client interview worksheet.
 
 - Primary authority file:
 - Secondary reference files:

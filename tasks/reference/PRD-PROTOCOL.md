@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-11
+Document version: v0.1.5
+Last updated: 2026-05-18
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-local material or idea -> source intake -> alignment/grilling -> PRD shard -> FEATURES.md inventory -> execution beads -> recorded evidence
+workbook or local material -> Product Brief -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> execution beads -> recorded evidence
 ```
 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
@@ -44,25 +44,35 @@ Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when requirements, UI labe
 
 Every feature needs a PRD shard before coding begins.
 
-The PRD does not need to be large. It needs to be clear enough that a solo non-technical builder can answer:
+The PRD does not need to be large. It needs to be clear enough that a solo non-technical builder can understand and approve:
 
 - where the idea came from
-- what alignment/grilling established
+- what the Product Brief and alignment conversation established
 - which shared terms, aliases, and avoid terms matter
 - what user problem is being solved
 - what is explicitly not being solved
 - what the user can do after the change that they cannot do now
 - whether the work fits the product constitution in `PRODUCT.md`
-- which requirement IDs exist
-- how each requirement will be verified
+- how the agent translated the builder's intent into requirement IDs
+- how each requirement will be verified in plain English
 - which risks require human approval
 - which source inputs are evidence and which facts have been promoted
-- whether project context or architecture boundaries are affected
+- whether project context or architecture boundaries are affected, explained without making the builder choose implementation internals
 - which beads should be created first
 
 ## Adaptive Ceremony
 
 Use the smallest PRD that controls the risk.
+
+## Founder-Friendly Ramp
+
+For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions.
+
+The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+The agent owns the technical translation after the builder confirms the product story. Requirement IDs, acceptance-check matrices, architecture/project context impact, module/interface candidates, agent context contracts, and bead proposals are internal control surfaces unless the builder must approve a specific risk or tradeoff.
+
+Bypass this ramp for bugs, maintenance, approved PRD follow-through, narrow feature changes, and tiny low-risk work where the product problem and scope are already clear.
 
 ### Low Risk
 
@@ -111,7 +121,7 @@ If the work is an experiment or rollout, also load `tasks/reference/PLANNING-PRO
 
 Capture the user's plain-language request without converting it to implementation yet.
 
-Ask only questions that can change product definition, risk, scope, or verification.
+Ask only questions that can change product definition, risk, scope, or verification. For early founder intake, keep those questions product-facing: user, pain, before/after moment, current workaround, evidence, business constraint, scope boundary, and non-goals.
 
 When the idea may change product promise, target users, non-goals, current bets, success signals, or design and voice direction, load `PRODUCT.md` and check fit before drafting requirements.
 
@@ -119,9 +129,11 @@ If the request comes from notes, docs, GitHub issues, research, screenshots, cha
 
 ### 2. Align Before Writing Requirements
 
-Use a grilling session when the idea is ambiguous, risky, source-heavy, user-facing, or likely to hide product, architecture, testing, or approval decisions.
+Use an alignment session when the idea is ambiguous, risky, source-heavy, user-facing, or likely to hide product, architecture, testing, or approval decisions.
 
 Ask one question at a time. Include a recommended answer with each question. Keep going until the builder and agent have a shared design concept that can be summarized into a PRD without relying on chat history.
+
+For non-technical builders, summarize progress as a Product Brief after at most three high-level questions. Defer architecture, module/interface, test-strategy, owner-file, acceptance-matrix, and system-behavior questions until product alignment is stable or a surfaced risk requires approval.
 
 Do not produce a plan while implementation-changing alignment questions remain. Store only the stable alignment summary, rejected options, and open questions in the PRD. The raw transcript remains source evidence.
 
@@ -144,6 +156,7 @@ If the shared language should survive beyond the PRD, propose a reviewed `projec
 
 Use lightweight framing before requirements:
 
+- `Product Brief`: non-authoritative summary of the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question
 - `Product Fit`: how the idea aligns with `PRODUCT.md`, or which product-constitution gap must be resolved
 - `Domain Language`: terms introduced, reused, rejected, or likely to shape UI/code/test names
 - `User Moment`: before/after description of what changes for the user
@@ -153,6 +166,8 @@ Use lightweight framing before requirements:
 - `Module / Interface Shape`: which deep module, public interface, behavior contract, or test boundary should be human-owned before internals are delegated
 - `Anti-Shallow Checks`: missing problem, missing non-goals, unverifiable requirements, or hidden sensitive surfaces
 - `Smallest First Bead`: the narrowest useful execution unit, with likely checks and manual verification
+
+Treat the technical items in this framing list as agent translation work. Ask the builder to approve plain-English tradeoffs, not to invent architecture or testing vocabulary.
 
 Do not create implementation beads while these sections still expose unresolved implementation-changing gaps.
 
@@ -257,7 +272,7 @@ A feature is ready for implementation when:
 Stop before bead creation if:
 - the PRD is not approved
 - requirement IDs are missing
-- acceptance oracles are vague
+- acceptance checks are vague
 - non-goals are missing for broad work
 - risks require a human decision
 - the feature would need route, schema, or security changes that have no owning authority file update

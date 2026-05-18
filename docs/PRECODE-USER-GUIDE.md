@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.18
+Document version: v0.7.19
 Last updated: 2026-05-18
 
 
@@ -34,9 +34,25 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 
 ## Use The Product Ideation Workbook Before Precode
 
-If you are a new student with a rough product idea, start with `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md` or write a PRD.
+If you are a non-technical builder with a net-new, rough product idea, start with `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+
+Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 
 Use the workbook with Claude or Codex as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, or create a PRD from the workbook by itself.
+
+To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.
+
+Say this:
+
+```text
+I am a non-technical founder with a rough product idea.
+
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake.
 
 Follow the workbook steps:
 
@@ -63,7 +79,7 @@ Stop if the workbook contains secrets, private raw transcripts, dashboard values
 
 ## Validate Product Discovery Before PRD Shaping
 
-Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
+Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
 
 This is not a proof machine. It helps you see:
 
@@ -322,13 +338,14 @@ Use this table when you are unsure what kind of request to make.
 
 | Situation | Ask for | Copyable request |
 |---|---|---|
+| Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not write a PRD or code.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
-| Broad, risky, paid, market-facing, or weakly evidenced idea | Product Discovery Validation | `Use Product Discovery Validation. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
+| Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Validation | `Use Product Discovery Validation. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | Rough idea, notes, screenshot, GitHub issue, research | Local source intake | `Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.` |
-| Feature idea is fuzzy | Alignment / grilling | `Use the Idea To PRD Workflow. Interview me one question at a time, include your recommended answer, and keep going until we share the design concept. Do not plan or code yet.` |
+| Feature idea is fuzzy | Alignment / Product Brief | `Use the Idea To PRD Workflow. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief. Do not plan or code yet.` |
 | Terms, labels, or names are confusing | Shared-language review | `Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
 | Durable intent needs to guide the next workflow | Goal Frame proposal or reaffirmation | `Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.` |
-| Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance oracles, module/interface candidates, and smallest first vertical slice. Do not code.` |
+| Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.` |
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
@@ -493,12 +510,12 @@ Before continuing, show the allowed actions, proof needed, approval required bef
 
 ## Use Alignment, AFK Candidates, And Fresh Review
 
-Use alignment/grilling before a PRD when the idea is still fuzzy. The agent should ask one question at a time, recommend an answer, and keep going until the product problem, non-goals, before/after moment, risk, first vertical slice, and proof are clear enough to summarize.
+Use alignment before a PRD when the idea is still fuzzy. For a non-technical founder, the agent should start with high-level product and business questions, recommend an answer when useful, and summarize a Product Brief after at most three questions.
 
 Say this:
 
 ```text
-Grill this idea before writing a PRD. Ask one question at a time, include your recommended answer, and stop only when the remaining questions would not change implementation.
+Align this idea before writing a PRD. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief and one next best question. Do not ask me to choose architecture, module boundaries, test strategy, owner files, or acceptance matrices yet.
 ```
 
 Use `afk_candidate` only for scoped work that can run after context is loaded. It is not approval for parallel execution and it does not skip human QA, recorded checks, or review.
@@ -711,9 +728,9 @@ A bead is one small unit of work with a contract: objective, owner file, files i
 
 Use a PRD when the feature needs a destination before coding: problem, non-goals, user moment, requirements, risks, acceptance checks, and likely journey beads.
 
-#### What is alignment or grilling?
+#### What is alignment?
 
-It is the conversation before the PRD where the agent asks one question at a time so you and the agent share the same design concept before anyone plans or codes.
+It is the conversation before the PRD where the agent helps you share the same design concept before anyone plans or codes. For rough founder ideas, it should start with simple product questions and a Product Brief before technical translation.
 
 #### What is shared language?
 

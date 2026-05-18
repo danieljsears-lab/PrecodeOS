@@ -9,16 +9,18 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.4
-Last updated: 2026-05-14
+Document version: v0.1.5
+Last updated: 2026-05-18
 
 ## Purpose
 
-Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, or create implementation work.
+Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, or create implementation work for a net-new, rough product idea.
 
 This workbook helps you gather your thoughts offline with Claude or Codex as a thinking coach. It helps you research, explain, challenge, and narrow your idea so Precode can later ingest a clean summary through Local Source Intake.
 
 Important rule: this workbook is evidence, not authority. Nothing in this file becomes true for the project until you review it and Precode promotes stable conclusions into the right owner file.
+
+Bypass this workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
 
 ## How This Workbook Thinks
 
@@ -36,6 +38,24 @@ You do not need product-management vocabulary to use this workbook. You only nee
 The workbook includes optional tool cards. Use them when a section feels fuzzy or too broad. Skip them when your answer is already clear.
 
 The tool cards are not extra homework. They are small thinking moves that help you turn a rough idea into a cleaner packet for Precode Local Source Intake.
+
+## Three Questions, Then A Product Brief
+
+To reduce overwhelm, the first pass should not feel like a long interview or technical test. After at most three high-level product or business questions, ask the agent to summarize progress as a Product Brief and ask one next best question.
+
+The Product Brief is evidence only. It does not approve a PRD, create beads, update `PRODUCT.md`, or permit coding.
+
+Product Brief:
+
+- Product idea:
+- Intended user:
+- Painful before moment:
+- Better after moment:
+- Current workaround or evidence:
+- Assumptions:
+- Not-yet list:
+- Smallest useful version:
+- Next best question:
 
 ## Stop Before You Paste Sensitive Information
 
@@ -69,7 +89,7 @@ Do not put every possible idea into one workbook. One workbook should cover one 
 
 Step 3. Open Claude or Codex and paste the thinking-coach prompt.
 
-Use the prompt in the next section. Ask the agent to interview you, challenge assumptions, and organize your thinking. Do not let the agent decide the product for you.
+Use the prompt in the next section. Ask the agent to interview you, challenge assumptions, and organize your thinking. After at most three high-level questions, make it produce a Product Brief so you can see progress before deeper discovery. Do not let the agent decide the product for you.
 
 If you are in a bootcamp or sprint setting, paste the Bootcamp MVP Context Preamble first. It tells the agent to keep useful challenge, but stop expanding the idea beyond a small first version.
 
@@ -161,6 +181,8 @@ Remember: this workbook is evidence, not authority. Do not edit PRODUCT.md, crea
 Act as my product thinking coach for this workbook.
 
 Help me research, ideate, challenge, and refine one product idea. Interview me one question at a time. Give me a recommended answer when useful, but do not decide for me. Use plain language, not product-management jargon. Separate what I know, what I think, and what I need help deciding. Challenge me gently when my idea is vague, too broad, unsupported, or risky. Do not write code. Do not create a PRD. Do not tell me to paste secrets, credentials, private customer data, dashboard values, billing details, or sensitive personal data.
+
+After at most three high-level product or business questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
 
 Start by asking me to describe the product idea in plain English.
 ```

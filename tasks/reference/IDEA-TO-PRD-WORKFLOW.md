@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-12
+Document version: v0.1.6
+Last updated: 2026-05-18
 
 ## Purpose
 
@@ -20,11 +20,13 @@ The workflow is intentionally light. It borrows the useful parts of progressive 
 
 Use `PRODUCT.md` as the builder-facing product constitution when the idea may affect product promise, users and jobs, strategy and non-goals, current bets, success signals, or design and voice direction. `PRODUCT.md` orients product planning; it does not approve PRDs, compile features, activate beads, or replace feature PRD shards.
 
-The path is:
+For a net-new, rough product idea from a non-technical builder, the default path is:
 
 ```text
-local material or idea -> source intake -> alignment/grilling -> shared-language check -> PRFAQ-lite -> PRD shard -> FEATURES.md compile -> bead proposals
+Product Ideation Workbook -> Product Brief -> Local Source Intake -> gentle PRD ramp -> technical shaping only when needed -> PRD shard -> FEATURES.md compile -> bead proposals
 ```
+
+Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
 
 The PRD shard is the destination document: it describes where the work is trying to arrive, what counts as done, and which requirements are stable enough to verify.
 
@@ -49,7 +51,7 @@ Use these as optional Navigator lenses, not first-class modes or named agents.
 | Lens | Job | Use When |
 |---|---|---|
 | Analyst lens | Find the real problem, evidence, assumptions, and alternatives | The idea is vague, market-shaped, or based on a hunch |
-| Product Manager lens | Turn the problem into goals, non-goals, requirements, and acceptance oracles | The builder wants to know what should actually ship |
+| Product Manager lens | Turn the problem into goals, non-goals, requirements, and acceptance checks | The builder wants to know what should actually ship |
 | Architect lens | Check stack fit, project conventions, integration boundaries, and implementation risk | The idea touches architecture, data, auth, payments, dependencies, or external services |
 | Reviewer lens | Challenge shallow artifacts before code starts | The PRD sounds polished but still cannot guide beads |
 
@@ -73,6 +75,22 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 
 Capture the request in the builder's words before turning it into implementation.
 
+For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority.
+
+Use a founder-friendly question budget during early intake: after at most three high-level product or business questions, produce a short `Product Brief` and one next best question. The Product Brief is evidence only and should include:
+
+- product idea
+- intended user
+- painful before moment
+- better after moment
+- current workaround or evidence
+- assumptions
+- not-yet list
+- smallest useful version
+- next best question
+
+Early questions should ask about the user, pain, before/after moment, current workaround, evidence, business constraint, scope boundary, and what not to build yet. Do not ask the builder to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior unless a concrete risk has already surfaced.
+
 If the idea sounds exciting but weakly evidenced, too broad, paid, market-facing, or solution-first, run Product Discovery Validation before drafting a PRD. The output should be a short Discovery Summary with the target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and advisory `proceed | pause | narrow | kill` recommendation.
 
 If discovery recommends `pause`, `narrow`, or `kill`, do not draft requirements yet. Return the Discovery Summary, name what evidence or narrowing is needed, and remind the builder that discovery is evidence only, not product approval or task activation.
@@ -95,7 +113,7 @@ Do not ask questions that can be answered by reading the repo.
 
 Minimum output:
 
-- idea summary
+- Product Brief or idea summary
 - target user
 - product-constitution fit or gap
 - suspected problem
@@ -122,24 +140,27 @@ Source inputs are evidence, not authority. Promote only stable conclusions into 
 
 Use the Local Source Intake Protocol when the source material is more than a single plain-language idea or when it includes screenshots, drafts, exports, research, conflicting notes, or possible secrets.
 
-## Stage 3: Alignment / Grilling
+## Stage 3: Alignment
 
-Use alignment/grilling before writing the PRD when the idea is vague, source-heavy, user-facing, risky, or likely to hide product or implementation assumptions.
+Use alignment before writing the PRD when the idea is vague, source-heavy, user-facing, risky, or likely to hide product or implementation assumptions.
 
 The goal is a shared design concept, not an early plan. The agent should interview the builder one question at a time, walk dependencies in a sensible order, and provide a recommended answer with each question so the builder can accept, reject, or adjust quickly.
 
-Good grilling questions can change:
+For non-technical builders, keep the first alignment pass conversational and product-facing. Ask at most three high-level questions before summarizing progress as a Product Brief. Translate technical implications yourself after the builder confirms the product story.
+
+Good alignment questions can change:
 
 - user problem or audience
 - before/after moment
 - goals, non-goals, or appetite
-- data, architecture, or module boundary
-- testing strategy or manual QA expectation
-- sensitive-surface approval gate
+- current workaround, evidence, or demand signal
+- business constraint, trust concern, or sensitive-surface approval gate
 - first useful vertical slice
 - shared domain language, aliases, or terms to avoid
 
-Stop grilling when the remaining questions would only add polish, implementation trivia, or low-risk preferences that can be deferred to bead execution.
+Later technical questions can change data, architecture, module boundary, testing strategy, manual QA expectation, or owner-file impact. Ask those only after product alignment is stable or when a surfaced risk would make the Product Brief misleading.
+
+Stop alignment when the remaining questions would only add polish, implementation trivia, or low-risk preferences that can be deferred to bead execution.
 
 Preserve the alignment output as source evidence. Summarize the stable decisions, rejected options, open questions, and stale or discarded assumptions into the PRD shard. Do not treat the raw conversation as authority.
 
@@ -201,9 +222,11 @@ If the artifact fails, keep shaping. Do not create implementation beads yet.
 
 Use `tasks/prds/PRD-000-template.md`.
 
+Keep the builder-facing story at the top of the PRD: Product Brief, problem, user moment, destination, goals, non-goals, and risks in plain English. Dense requirement IDs, acceptance checks, architecture impact, module/interface candidates, and agent context are agent-facing translation layers. The agent should draft those from the aligned product story instead of testing the builder on technical vocabulary.
+
 The PRD shard owns:
 
-- alignment/grilling summary
+- alignment summary
 - source inputs summary
 - domain language summary
 - destination statement

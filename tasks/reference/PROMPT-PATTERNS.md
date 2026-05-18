@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-05-11
+Document version: v0.1.10
+Last updated: 2026-05-18
 
 ## Purpose
 
@@ -42,16 +42,26 @@ Use the Local Source Intake Protocol on these local materials. Treat them as evi
 Review PRODUCT.md with me. Clarify product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. Tell me what should move to a PRD or DECISIONS.md. Do not code or activate work.
 ```
 
+## Founder-Friendly Product Brief
+
+```text
+I am a non-technical founder with a rough product idea.
+
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
 ## PRD Shaping
 
 ```text
-Use the PRD Protocol to shape this idea. Check PRODUCT.md for product fit when relevant. Help me clarify the problem, non-goals, before/after user moment, sensitive surfaces, verification evidence, and smallest first bead. Do not start implementation.
+Use the PRD Protocol to shape this idea. Check PRODUCT.md for product fit when relevant. If this is a net-new rough product idea, start from the workbook or Product Brief and keep early questions product-facing. Help me clarify the problem, non-goals, before/after user moment, sensitive surfaces, verification evidence, and smallest first bead. Translate technical sections for me after product alignment. Do not start implementation.
 ```
 
-## Alignment / Grilling
+## Alignment / Product Brief
 
 ```text
-Use the Idea To PRD Workflow to grill this idea before planning. Ask one question at a time, include your recommended answer, and keep going until we share the design concept. Do not write a PRD, propose beads, or code until implementation-changing questions are resolved or marked non-blocking.
+Use the Idea To PRD Workflow to align this idea before planning. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize progress as a Product Brief plus one next best question. Do not ask me to choose architecture, module boundaries, test strategy, owner files, or acceptance matrices until a real risk surfaces. Do not write a PRD, propose beads, or code until implementation-changing questions are resolved or marked non-blocking.
 ```
 
 ## Ubiquitous Language Review
@@ -75,7 +85,7 @@ Before naming modules, interfaces, tests, fixtures, routes, or UI labels, compar
 ## Destination PRD Review
 
 ```text
-Review this PRD as a destination document. Confirm the user problem, domain language, non-goals, before/after moment, acceptance oracles, stale source inputs, module/interface candidates, and smallest first vertical slice. Do not activate any bead.
+Review this PRD as a destination document. Confirm the user problem, domain language, non-goals, before/after moment, plain-English acceptance checks, stale source inputs, agent-facing technical translation, and smallest first vertical slice. Do not activate any bead.
 ```
 
 ## Bead Decomposition
