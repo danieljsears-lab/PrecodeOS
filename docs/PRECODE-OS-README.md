@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.8
-Last updated: 2026-05-17
+Document version: v0.8.9
+Last updated: 2026-05-18
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -290,6 +290,8 @@ This explainer names the six rooms and the Builder OS mental model behind them. 
 For the canonical document compass, use `README.md`. If you are already operating a PrecodeOS repo, use `docs/PRECODE-USER-GUIDE.md` as the day-to-day home base.
 
 ## Adapting Precode To Your Project
+
+For first-time setup, use `docs/PRECODE-GUIDED-SETUP.md`. It starts by pulling the public PrecodeOS repo from GitHub, then guides a manual, visible setup into a new or existing project without treating PrecodeOS as an app to run.
 
 Start small:
 

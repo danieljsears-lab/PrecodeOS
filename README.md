@@ -100,6 +100,7 @@ python3 scripts/next-step.py
 
 | If you need to... | Go to |
 |---|---|
+| Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
 | Start using PrecodeOS in a project | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
@@ -145,5 +146,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-05-17
+Document version: v0.1.26
+Last updated: 2026-05-18

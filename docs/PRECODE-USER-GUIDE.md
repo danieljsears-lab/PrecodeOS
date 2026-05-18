@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.17
-Last updated: 2026-05-17
+Document version: v0.7.18
+Last updated: 2026-05-18
 
 
 
@@ -27,6 +27,8 @@ For builders, Precode feels like a small operating system for AI coding work: it
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
 For the full document compass, go back to `README.md`. This guide is the operational home base: use it when you are about to work with an agent, decide whether to stop, approve risk, or check proof.
+
+If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, copying the public package files into a new or existing project, excluding private and generated material, and validating before work starts.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
