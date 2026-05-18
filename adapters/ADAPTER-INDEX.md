@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-11
+Document version: v0.1.5
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -37,6 +37,7 @@ Every adapter should point back to the same repo-level commands:
 - `bash scripts/record-check.sh -- <command>`
 - `bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command "<summary>"`
 - `python3 scripts/bead-transition.py`
+- `python3 scripts/next-step.py [--json]`
 - `python3 scripts/os-health.py`
 - `python3 scripts/import-agent-spend.py`
 - `python3 scripts/github-audit.py`
@@ -71,5 +72,7 @@ Use `bash scripts/log-agent-spend.sh --tool <tool> --task "current bead"` as the
 ## Routing Discipline
 
 Adapters translate the shared `fast`, `default`, `deep`, and `long-horizon` routing tiers into tool-native model, effort, delegation, and compaction controls when those controls exist.
+
+`python3 scripts/next-step.py` owns the generated Router Decision. Adapters may display or explain its `user_decision`, `single_next_protocol`, `load_plan`, and `context_footprint`, but they must not treat those fields as approval or active memory.
 
 If a tool does not expose a native control, fall back to Precode checkpoint, Context Pack, handoff, and review discipline. Adapter-specific routing notes must not expand active memory, activate beads, override files in play, or bypass human approval gates.

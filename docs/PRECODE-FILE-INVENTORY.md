@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.33
-Last updated: 2026-05-17
+Document version: v0.1.35
+Last updated: 2026-05-18
 
 ## Purpose
 
@@ -48,13 +48,13 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing. |
 | Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, not authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
-| Modes | `modes/*.md` | Navigator, builder, and review role guidance. |
+| Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/roadmap-maintenance.py` | Private maintainer index, history, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
-| Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
+| Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
 | Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
 | Workflows | `.github/workflows/*.yml` | Repository validation automation. |
 
@@ -126,6 +126,7 @@ The diary is generated learning. Memory cards are reviewed evidence. Owner files
 
 ```text
 scripts/os_compiler.py
+  -> scripts/precode_routing.py
   -> logs/authority-map.json
   -> logs/readiness.json
   -> logs/workflow-map.json
@@ -181,9 +182,9 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `DATA-MODELS.md` | reference | Schema fields, entities, data relationships, and semantic meaning. | Primary authority for schema-affecting beads. |
 | `SECURITY.md` | reference | Security, privacy, auth, and sensitive-surface rules. | Primary authority for security-affecting beads. |
 | `CODEBASE-GUIDE.md` | reference | Target-project repository layout and file placement conventions. | Not the PrecodeOS inventory; use this for app layout decisions. |
-| `PROGRESS.md` | generated | Generated progress snapshot. | Evidence only; not active memory. |
+| `PROGRESS.md` | generated | Short user-facing progress snapshot for current work, completion picture, proof status, and attention prompts. | Evidence only; not active memory, task authority, or roadmap authority. |
 | `OS-HEALTH.md` | generated | Generated OS health, warnings, loop metrics, and sidecar summary. | Evidence only; refreshed by `scripts/os-health.py`. |
-| `PRECODE-HELP.md` | generated | Generated next-step guidance, adaptive-depth summary, and files-in-play warning snapshot. | Evidence only; refreshed by `scripts/os-health.py` and not active memory. |
+| `PRECODE-HELP.md` | generated | Generated next-step guidance, load plan, context footprint, adaptive-depth summary, and files-in-play warning snapshot. | Evidence only; refreshed by `scripts/os-health.py` and not active memory. |
 
 ## Task And Reference Dictionary
 
@@ -216,9 +217,11 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | File | Purpose | Inputs | Outputs or side effects |
 |---|---|---|---|
 | `scripts/os_parser.py` | Shared markdown/frontmatter parsing helpers. | Markdown files. | Parser utilities for other scripts. |
-| `scripts/os_compiler.py` | Compiles Precode state and sidecars. | Active memory, beads, logs, docs, delegation/test/review metadata, Goal Frames, run contracts, optional command guardrail input. | `logs/*.json`, `logs/run-contract.yaml`, generated handoff/memory/file inventory surfaces, beginner-facing decisions, and advisory warnings. |
+| `scripts/os_compiler.py` | Compiles Precode state and sidecars while delegating router decisions to internal service modules. | Active memory, beads, logs, docs, delegation/test/review metadata, Goal Frames, run contracts, optional command guardrail input. | `logs/*.json`, `logs/run-contract.yaml`, generated progress/handoff/memory/file inventory surfaces, beginner-facing decisions, and advisory warnings. |
+| `scripts/precode_routing.py` | Internal router service for next-step decisions, load plans, recovery routing, and context-footprint fields. | Active state passed from `os_compiler.py`, active bead, guardrail states, run-contract state, Goal Frame state. | Advisory next-step payload fields such as `single_next_protocol`, `load_plan`, `context_footprint`, and `why_not_more_context`; no standalone public command. |
 | `scripts/os-health.py` | Renders OS Health. | Compiled state. | `OS-HEALTH.md`, `logs/os-health.json`. |
-| `scripts/next-step.py` | Prints generated next-step guidance with a plain user decision. | Compiled state. | Human-readable stdout or advisory JSON; no state mutation. |
+| `scripts/progress.py` | Renders the generated user-facing progress snapshot. | Compiled state. | `PROGRESS.md`, `logs/progress.json`. |
+| `scripts/next-step.py` | Prints canonical generated next-step routing guidance with a plain user decision. | Compiled state. | Human-readable stdout or advisory JSON including `single_next_protocol`, `load_plan`, and `context_footprint`; no state mutation. |
 | `scripts/bead-depth-check.py` | Prints adaptive bead-depth advisory findings. | Active bead metadata, risk hints, checks, stop conditions. | JSON warnings; no state mutation. |
 | `scripts/files-in-play-check.py` | Prints active-bead file mutation guardrail findings and optional command/edit-lock guidance. | Git changed paths, active bead `files_in_play`, optional `--command`, optional `--edit-lock`. | JSON warnings and plain continue/approval/stop guidance; no state mutation or command approval. |
 | `scripts/run-contract-check.py` | Prints advisory run-contract findings. | Active bead Run Contract, files in play, verification tiers, recorded checks, and closeout. | JSON warnings about allowed actions, proof needed, approvals, and recovery; no state mutation or command approval. |
@@ -229,7 +232,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/public-repo-check.py` | Checks public repository hygiene against the private ignore manifest and git ignore rules. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md` when present, `.gitignore`, and git-tracked/untracked paths. | Advisory JSON for missing ignore rules, tracked ignored files, and untracked public candidates; no state mutation. |
 | `scripts/validate-memory.sh` | Validates core Precode document invariants. | Required docs, todo, beads. | Pass/fail validation output. |
 | `scripts/record-check.sh` | Runs a verification command and records evidence. | Command, active bead. | `logs/check-results.jsonl`, `logs/check-output/*`, closeout refresh. |
-| `scripts/session-start.sh` | Starts a session and prints active context. | Active memory and bead state. | Loop event and human-readable context. |
+| `scripts/session-start.sh` | Starts a session and prints active context plus the canonical next-step router decision. | Active memory, bead state, and `scripts/next-step.py`. | Loop event, human-readable Context Pack, generated Router Decision display, and OS health refresh. |
 | `scripts/checkpoint.sh` | Records checkpoint context. | Active bead and current state. | `logs/loop-runs.jsonl`. |
 | `scripts/session-close.sh` | Closes a session and refreshes reports. | Active bead, checks, closeout. | Session close event, diary/health refresh, transition proposal when eligible. |
 | `scripts/handoff.sh` | Produces handoff context. | Active state and optional next-agent name. | `logs/handoffs.jsonl`, handoff packet refresh. |
@@ -261,6 +264,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `adapters/*.md` | reference | Tool-specific notes for Codex, Claude, Cursor, Gemini, Antigravity, and related agents. | Thin wrappers around `AGENT.md` that translate shared routing tiers into provider-native controls when available. |
 | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | reference shims | Auto-discovery compatibility for specific tools. | Must point back to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
 | `modes/NAVIGATOR.md` | reference | Planning/navigation role guidance. | Used when choosing work or shaping tasks. |
+| `modes/EXPLORER.md` | reference | Explorer role contract for bounded read-only repo inspection and source summarization. | Used when a narrow question needs cited repo facts before navigator, builder, or review decisions. |
 | `modes/BUILDER.md` | reference | Implementation role guidance. | Used during scoped code or doc changes. |
 | `modes/REVIEW.md` | reference | Review role guidance. | Used for code review, closeout, and acceptance checks. |
 | `memory/REVIEWED-MEMORY-GUIDE.md` | reference | Reviewed memory directory guidance. | Points to memory protocol and card directory. |
@@ -281,7 +285,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/tool-runs.jsonl` | generated evidence | Non-check tool-run ledger. | Not verification unless also recorded as a check. |
 | `logs/os-events.jsonl` | generated evidence | Compiled event stream. | Generated from logs. |
 | `logs/os-health.json` | generated sidecar | Machine-readable OS Health payload. | Evidence only. |
-| `logs/next-step.json` | generated sidecar | Machine-readable next-step guidance. | Evidence only; not task selection or transition approval. |
+| `logs/next-step.json` | generated sidecar | Machine-readable next-step guidance, load plan, single next protocol, and context footprint. | Evidence only; not task selection, transition approval, command approval, or active memory. |
 | `logs/run-contract.json` and `logs/run-contract.yaml` | generated sidecar | Active bead run-contract execution profile. | Evidence only; not authority, command approval, or host-specific ZYAL contract. |
 | `logs/authority-map.json` | generated sidecar | Authority contract index. | Evidence only. |
 | `logs/adapter-index.json` | generated sidecar | Adapter command-surface summary. | Evidence only. |

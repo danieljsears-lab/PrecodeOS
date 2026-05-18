@@ -87,6 +87,15 @@ bash scripts/record-check.sh -- <command>
 
 Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
 
+For the immediate "what now?" question, use:
+
+```bash
+bash scripts/session-start.sh
+python3 scripts/next-step.py
+```
+
+`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
+
 ## Docs Compass
 
 | If you need to... | Go to |
@@ -136,5 +145,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.24
+Document version: v0.1.25
 Last updated: 2026-05-17

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-11
+Document version: v0.1.6
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -93,9 +93,13 @@ Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when a Context Pack
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when context pressure affects model tier, delegation, tool choice, compaction, restart, or handoff decisions.
 
+`python3 scripts/next-step.py` is the decisive generated router for the next human decision. It may name one `single_next_protocol`, a `load_plan`, and a `context_footprint`. Treat those fields as advisory routing evidence: they help avoid over-loading protocols, but they do not approve work, select tasks, or replace active memory.
+
 ## Context Budget
 
 Treat about 80% context usage as the point to prepare a checkpoint, compaction, restart, or handoff. This is a recommended operating threshold, not a hard invariant.
+
+When `next-step` reports a context footprint, use it as a rough map of what the router expects to be loaded: active memory, active bead, primary authority, one next protocol when needed, and generated report surfaces touched. Approximate line counts are not token guarantees; they are an early warning against reading the whole OS when one owner file would do.
 
 Before compacting, restarting, or handing off because context is crowded, prepare a Context Pack that includes:
 
@@ -131,6 +135,12 @@ Recovery path:
 4. Run `python3 scripts/context-check.py`.
 5. Checkpoint or close the session.
 6. Promote any real change through the correct owner file or an approved follow-up bead.
+
+## Router Discipline
+
+The router-first rule is: `next-step` owns the generated "what now?" decision, `session-start.sh` displays that decision in the session Context Pack, and future diagnostic commands may explain warnings without becoming a second task selector.
+
+Do not add a broad diagnostic or installable CLI path until the existing router and session-start surfaces are quiet, trusted, and documented.
 
 ## Advisory Check
 

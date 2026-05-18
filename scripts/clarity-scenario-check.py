@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-05-11
+# Version: v0.1.3
+# Last updated: 2026-05-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 import json
+from pathlib import Path
 from typing import Any
 
 from os_compiler import (
@@ -75,6 +76,7 @@ def next_payload(
     run_contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
+        Path("."),
         {"sections": {"Open Questions": "- none"}, "current_bead": "tasks/beads/B999-clarity-fixture.md"},
         current,
         promotion or {"eligible": False, "blockers": [], "next_bead": "not recorded"},
@@ -105,6 +107,20 @@ def assert_recovery_flow(name: str, payload: dict[str, Any], expected: str, fail
         failures.append({"scenario": f"{name} protocol", "expected": "tasks/reference/RECOVERY-PROTOCOL.md", "actual": protocol})
     if expected != "none" and not prompt:
         failures.append({"scenario": f"{name} prompt", "expected": "beginner prompt", "actual": prompt})
+
+
+def assert_router_contract(name: str, payload: dict[str, Any], failures: list[dict[str, str]]) -> None:
+    details = payload.get("details") or {}
+    if not details.get("single_next_protocol"):
+        failures.append({"scenario": f"{name} single protocol", "expected": "single_next_protocol", "actual": "missing"})
+    load_plan = details.get("load_plan") or {}
+    if load_plan.get("router_owner") != "scripts/next-step.py":
+        failures.append({"scenario": f"{name} router owner", "expected": "scripts/next-step.py", "actual": str(load_plan.get("router_owner"))})
+    footprint = details.get("context_footprint") or {}
+    if "AGENT.md" not in (footprint.get("active_memory") or []):
+        failures.append({"scenario": f"{name} footprint", "expected": "active memory footprint", "actual": str(footprint)})
+    if footprint.get("advisory_only") is not True:
+        failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(footprint.get("advisory_only"))})
 
 
 def main() -> int:
@@ -186,6 +202,7 @@ def main() -> int:
     ]
     for name, payload, expected in recovery_scenarios:
         assert_recovery_flow(f"next-step recovery: {name}", payload, expected, failures)
+        assert_router_contract(f"next-step router: {name}", payload, failures)
 
     depth_scenarios = [
         ("omitted fields", bead_depth_quality(bead())["details"].get("user_decision"), "continue"),

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-03
+Document version: v0.1.2
+Last updated: 2026-05-17
 
 ## Responsibilities
 
@@ -21,6 +21,13 @@ Last updated: 2026-05-03
 - prefer fresh-context review when `review_context` recommends or requires it
 - verify the stop state is explicit
 - accept, request revision, or split follow-on work
+
+## Contract Card
+
+- Load: active memory, active bead, primary authority, recorded evidence, and the diff or changed-file summary.
+- Decide: `accepted`, `revise`, `split`, `blocked`, or stop based on evidence.
+- Do not: add new implementation scope, approve the next bead, or accept confidence as proof.
+- Return: findings tied to files or evidence, missing proof if any, and the review decision recommendation.
 
 ## Review Questions
 

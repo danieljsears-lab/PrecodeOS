@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.16
+Document version: v0.7.17
 Last updated: 2026-05-17
 
 
@@ -251,7 +251,7 @@ Follow these steps in order.
 | Step | Say this | Expect this | Stop if |
 |---|---|---|---|
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
-| Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | One generated "what to do now" hint: continue, ask for missing info, ask for proof, review, approve transition, repair state, or stop. | The agent treats generated help as approval or active memory. |
+| Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. | The agent treats generated help as approval or active memory. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
 | Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
@@ -268,7 +268,7 @@ Keep this table open during normal work.
 | Step | User action | Good output | Stop if |
 |---|---|---|---|
 | Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
-| Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md` or `next-step.py` explains the generated hint. | The report replaces the active bead. |
+| Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md`, `session-start.sh`, or `next-step.py` explains the same generated router decision. | The report replaces the active bead. |
 | Confirm | Ask whether to continue, repair, split, block, or stop. | One clear path. | Scope is vague or too broad. |
 | Work | Let the agent edit only scoped files. | Small changes tied to the bead. | It touches unrelated files. |
 | Check | Ask for recorded checks. | `record-check.sh` output and evidence path. | It says done without evidence. |
@@ -670,6 +670,8 @@ Scope creep, stale context, confident wrong code, vague done, skipped checks, sk
 #### What habit should I build first?
 
 Start every serious session with `bash scripts/session-start.sh`, then make the agent explain the bead before coding.
+
+`session-start.sh` now also displays the `next-step` router decision. If you run `python3 scripts/next-step.py` separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet.
 
 #### What if I do not understand a file?
 

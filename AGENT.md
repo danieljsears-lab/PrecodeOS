@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.10
-Last updated: 2026-05-11
+Document version: v0.1.11
+Last updated: 2026-05-17
 
 ## Project
 
@@ -39,7 +39,7 @@ Use only these files as active memory:
 
 - `tasks/beads/` — one durable execution contract per logical unit
 - `tasks/prds/` — product definition shards used before feature work becomes beads
-- `modes/` — navigator, builder, and review role guidance
+- `modes/` — navigator, explorer, builder, and review role guidance
 - `tasks/reference/` — durable specs and playbooks outside active memory
 - `tasks/archive/` — historical task docs that do not drive active work
 

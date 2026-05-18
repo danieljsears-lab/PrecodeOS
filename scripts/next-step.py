@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-05-08
+# Version: v0.1.5
+# Last updated: 2026-05-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -46,8 +46,29 @@ def render(payload: dict[str, object]) -> str:
             ]
         )
     approval_prompt = details.get("approval_prompt")
+    load_plan = details.get("load_plan") or {}
+    footprint = details.get("context_footprint") or {}
     if approval_prompt:
         lines.append(f"- Approval prompt: {approval_prompt}")
+    if load_plan:
+        lines.extend(
+            [
+                "- Load plan:",
+                f"  - Required first: `{', '.join(load_plan.get('required_first') or [])}`",
+                f"  - Single next protocol: `{load_plan.get('single_next_protocol', 'not recorded')}`",
+                f"  - Why not more context: {load_plan.get('why_not_more_context', 'Load only what the active bead proves is needed.')}",
+            ]
+        )
+    if footprint:
+        lines.extend(
+            [
+                "- Context footprint:",
+                f"  - Required context: `{', '.join(footprint.get('required_context') or [])}`",
+                f"  - Conditional references: `{', '.join(footprint.get('conditional_references') or []) or 'none'}`",
+                f"  - Generated reports touched: `{', '.join(footprint.get('generated_reports_touched') or [])}`",
+                f"  - Approx document lines: `{footprint.get('approx_document_lines', 'unknown')}`",
+            ]
+        )
     recovery_flow = str(details.get("recovery_flow") or "none")
     beginner_prompt = str(details.get("beginner_prompt") or "")
     if recovery_flow != "none" and beginner_prompt:

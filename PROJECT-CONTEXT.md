@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.7
+Document version: v0.2.8
 Last updated: 2026-05-17
 
 ## Purpose
@@ -30,7 +30,7 @@ Use `PRODUCT.md` for builder-facing product direction: product promise, users an
 
 - Product summary: PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. For builders, it functions as a small operating system for AI coding work by showing what matters, what is active, what is proven, and when to stop.
 - Stack: Markdown authority/reference/execution documents; Python 3 compiler, validation, audit, and report scripts; Bash session/check/evidence wrappers; GitHub Actions for repository validation; JSON/JSONL generated evidence in `logs/`.
-- Primary users or roles: Dan Sears / Recode as maintainer and builder; solo non-technical or technical builders adopting PrecodeOS; AI coding agents operating as navigator, builder, and review roles; reviewers who inspect bead closeout and transition safety.
+- Primary users or roles: Dan Sears / Recode as maintainer and builder; solo non-technical or technical builders adopting PrecodeOS; AI coding agents operating as navigator, explorer, builder, and review roles; reviewers who inspect bead closeout and transition safety.
 - App directory: `.` (the repository root). There is no separate application runtime directory for B000.
 - Deployment target: GitHub repository distribution and local filesystem use. GitHub Actions runs validation on pull requests and pushes.
 
@@ -66,6 +66,9 @@ Use `PRODUCT.md` for builder-facing product direction: product promise, users an
 ## Implementation Conventions
 
 - Follow the existing framework, folder, and naming patterns before introducing a new pattern.
+- Keep public script entrypoints stable when refactoring internals; new helper modules may live under `scripts/` when they preserve current command behavior.
+- Keep `scripts/next-step.py` as the canonical generated router for the next human decision, with `session-start.sh` displaying the same decision rather than inventing a second router.
+- Use context-footprint output as advisory routing evidence: active memory, active bead, primary authority, one next protocol when needed, generated reports touched, and approximate document lines.
 - Do not add a dependency unless the active bead allows it or the user approves it.
 - Keep UI work consistent with the existing design system.
 - Keep server-side validation and authorization close to the route/action boundary.
@@ -150,6 +153,9 @@ For Python script behavior changes, add a targeted command that exercises the ch
 ## Implementation Shape
 
 - Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` before introducing or rejecting a design pattern, external service boundary, state flow, strategy-style rule boundary, audit trail, or auth/access boundary.
+- When `scripts/os_compiler.py` grows a distinct domain, extract that domain into an internal service module while keeping existing command paths and generated JSON shapes stable.
+- Keep role contracts compact: Navigator, Explorer, Builder, and Review should say what to load, decide, avoid, and return without becoming new active-memory files or autonomous personas.
+- Defer a broad diagnostic `doctor` command and installable `precode` CLI until router-first behavior and bootstrap/install needs are proven.
 - Treat PRD shards as destination documents and beads as journey units; `tasks/todo.md` remains the active journey pointer.
 - New or amended code-changing beads should declare advisory `delegation_mode`, `test_strategy`, and `review_context` metadata when useful.
 - Prefer vertical slices for user-facing work, failing-first test strategy when practical, and fresh-context review for medium/high-risk code-changing work.

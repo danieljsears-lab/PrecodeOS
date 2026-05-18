@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-11
+Document version: v0.1.6
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -84,6 +84,8 @@ A logged tool run does not count as a passing check unless it is also recorded t
 
 Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation.
 
+`next-step` is the canonical generated router for the next human decision. Its `load_plan`, `single_next_protocol`, and `context_footprint` fields are context-routing evidence only; they do not approve tool calls or widen allowed tool classes.
+
 `python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command.
 
 `python3 scripts/files-in-play-check.py --edit-lock` is also advisory. It compares current changed paths with the active bead's `files_in_play` and generated-output exceptions. It does not create a filesystem lock, approve edits, or replace human review.
@@ -128,6 +130,8 @@ Prefer the lowest-token, lowest-side-effect tool that can answer the question:
 5. external mutation tools only when the active bead allows them and the user approves the manual gate
 
 This preference does not replace evidence requirements. A cheap tool answer is still source material unless it is recorded through the appropriate verification path.
+
+When a host supports subagents, map them to Precode's compact role contracts instead of broad personas. Explorer should stay read-only, Builder should stay inside files in play, and Review should judge evidence rather than continue implementation.
 
 ## Secret Handling
 

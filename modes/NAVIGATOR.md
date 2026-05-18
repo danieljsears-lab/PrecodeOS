@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-17
 
 ## Responsibilities
 
@@ -20,6 +20,13 @@ Last updated: 2026-04-26
 - shape the Context Pack before handoff
 - keep scope bounded
 - decide when to split or pause work
+
+## Contract Card
+
+- Load: active memory, active bead, primary authority, and only the protocol named by `python3 scripts/next-step.py` when the next action is unclear.
+- Decide: the next workflow step, scope boundary, handoff shape, or split recommendation.
+- Do not: activate beads, approve transitions, edit implementation files, or let generated reports become instructions.
+- Return: one recommended next human decision, the owner file or protocol that supports it, and any approval gate.
 
 ## Navigator Checklist
 

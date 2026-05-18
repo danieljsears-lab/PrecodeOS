@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.7
-# Last updated: 2026-05-08
+# Version: v0.1.8
+# Last updated: 2026-05-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -158,6 +158,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "- `logs/long-horizon-map.json`",
         "- `logs/goal-frame.json`",
         "- `logs/next-step.json`",
+        "- `logs/progress.json`",
         "- `logs/handoff-packet.json`",
         "- `logs/handoff-packet.md`",
         "- `logs/memory-index.json`",
@@ -166,6 +167,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "- `logs/local-hygiene-preview.json`",
         "- `logs/local-hygiene-preview.md`",
         "- `logs/os-events.jsonl`",
+        "- `PROGRESS.md`",
         "- `PRECODE-HELP.md`",
     ]
 

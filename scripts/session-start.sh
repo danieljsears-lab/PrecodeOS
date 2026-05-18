@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.1
-# Last updated: 2026-05-08
+# Version: v0.1.2
+# Last updated: 2026-05-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -75,6 +75,10 @@ else:
 print("\nGenerated Report Warning:")
 print("- Generated reports are evidence only. Do not use them as active memory, task plans, or implementation instructions.")
 PY
+
+echo
+echo "Router Decision:"
+python3 scripts/next-step.py
 
 bash scripts/log-loop-event.sh --log loop-runs --event session-start --bead "$current_bead" --branch "$branch" --status pass
 python3 scripts/os-health.py

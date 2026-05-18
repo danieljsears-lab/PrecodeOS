@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-11
+Document version: v0.1.4
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -40,6 +40,7 @@ Active memory remains exactly:
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
+| Role contract | Compact mode card for bounded agent behavior | `modes/*.md` |
 
 ## Boundary Rules
 
@@ -74,6 +75,8 @@ Generated JSON and JSONL files must be treated as evidence only. They may feed s
 
 `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
 
+`logs/next-step.json` may include generated router fields such as `load_plan`, `single_next_protocol`, and `context_footprint`. These fields are advisory evidence for context loading and user decisions, not command approval, bead activation, or active memory.
+
 ZYAL-like export belongs in an adapter or extension that maps the generic Precode run-contract profile to that host. The generic Precode profile must prove useful before any host-specific contract becomes a maintained surface.
 
 ## Mutation Rules
@@ -102,6 +105,10 @@ Extension findings become action only after user review:
 | Work to perform | Proposed or approved bead |
 | Repeated process lesson | Relevant protocol, adapter, or agent rule |
 | Generated report gap | Follow-up bead or validator/audit improvement |
+
+## Deferred Wrapper Rule
+
+Do not introduce a broad `precode doctor` command or installable `precode` CLI as an extension until the existing router, session-start, bootstrap, and generated evidence surfaces prove stable. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
 
 ## Extension Checklist
 

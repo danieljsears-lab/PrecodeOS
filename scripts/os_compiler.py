@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.17
-# Last updated: 2026-05-17
+# Version: v0.1.19
+# Last updated: 2026-05-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -27,6 +27,7 @@ from os_parser import (
     split_frontmatter,
     strip_inline_code,
 )
+from precode_routing import next_step_guidance
 
 
 APP_DIR = "app"
@@ -109,7 +110,7 @@ HORIZONTAL_SLICE_TERMS = {
 }
 USER_FACING_TERMS = {"user-facing", "dashboard", "screen", "page", "route", "frontend", "ui", "browser", "user can", "visible"}
 GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
-LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
+LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
 GENERATED_JSON_FAMILIES = {
     "logs/*.json",
     "logs/*.jsonl",
@@ -145,6 +146,7 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/os-events.jsonl",
     "logs/os-health.json",
     "logs/pattern-guidance.json",
+    "logs/progress.json",
     "logs/readiness.json",
     "logs/run-contract.json",
     "logs/run-contract.yaml",
@@ -2530,202 +2532,6 @@ def files_in_play_guardrail(root: Path, bead: BeadRecord | None, command: str = 
     }
 
 
-def next_step_guidance(
-    todo: dict[str, Any],
-    bead: BeadRecord | None,
-    promotion_state: dict[str, Any],
-    completion_state: dict[str, Any],
-    workflow_state: dict[str, Any],
-    depth_state: dict[str, Any],
-    guardrail_state: dict[str, Any],
-    run_contract_state: dict[str, Any],
-    goal_frame_state: dict[str, Any],
-) -> dict[str, Any]:
-    warnings: list[str] = []
-    todo_sections = todo.get("sections") or {}
-    open_questions = str(todo_sections.get("Open Questions", "")).strip()
-    blockers: list[str] = []
-    action = "repair active state before continuing"
-    category = "state-repair"
-    user_decision = "repair state"
-    summary = "Repair Precode state before continuing."
-    stop_if = "Stop if the agent cannot name the active bead, authority file, files in play, and checks."
-    approval_prompt = "Ask the agent to repair active state before editing."
-
-    if not bead:
-        blockers.append("current bead is missing")
-    else:
-        closeout_blockers = (completion_state.get("details") or {}).get("closeout_blockers") or []
-        promotion_blockers = promotion_state.get("blockers") or []
-        guard_details = guardrail_state.get("details") or {}
-        out_of_scope = guard_details.get("out_of_scope_paths") or []
-        if bead.status in {"needs_info", "manual_testing"}:
-            category = "unblock"
-            action = "record the missing input, owner, and blocked escape path or create a narrow unblocker bead"
-            user_decision = "ask for missing info"
-            summary = "Do not code around the blocker. Name the missing input, owner, and safe escape path."
-            stop_if = "Stop if the agent proposes a workaround instead of documenting the blocker or creating a narrow unblocker bead."
-            approval_prompt = "Ask the user for the missing input or approval to create a narrow unblocker bead."
-        elif out_of_scope:
-            category = "scope-repair"
-            action = "stop and resolve changed files outside the active bead before continuing"
-            user_decision = "stop"
-            summary = "Stop: changed files appear outside the approved task."
-            stop_if = "Stop until each out-of-scope path is explained as generated evidence, current-bead work, or a separate follow-up."
-            approval_prompt = "Ask the user whether to revert, split, or explicitly approve the scope change."
-        elif promotion_state.get("eligible"):
-            category = "transition-approval"
-            action = "review the transition proposal; user approval is required before activating the next bead"
-            user_decision = "approve transition"
-            summary = "Review the proposed next bead. Do not activate it until the user approves the transition."
-            stop_if = "Stop if acceptance evidence or next-bead readiness is unclear."
-            approval_prompt = "Ask the user whether to approve the transition with `python3 scripts/bead-transition.py --approve`."
-        elif bead.status in {"review", "done"}:
-            category = "review"
-            action = "resolve promotion blockers before proposing or approving the next bead"
-            blockers.extend(str(item) for item in promotion_blockers[:6])
-            user_decision = "review"
-            summary = "Review the evidence and blockers before accepting, revising, splitting, or blocking the bead."
-            stop_if = "Stop if the recommendation relies on confidence instead of recorded evidence."
-            approval_prompt = "Ask the user for a review decision: accepted, revise, split, blocked, or stop."
-        elif closeout_blockers:
-            category = "closeout"
-            action = "finish active bead evidence, manual verification, and review decision"
-            blockers.extend(str(item) for item in closeout_blockers[:6])
-            user_decision = "ask for proof"
-            summary = "The work may be close, but proof or review evidence is missing."
-            stop_if = "Stop if checks, manual verification, or review decision are missing."
-            approval_prompt = "Ask the agent to record the missing proof before accepting work."
-        else:
-            category = "execute"
-            action = "work only inside the active bead, then run and record its declared checks"
-            user_decision = "continue"
-            summary = "Continue inside the active bead only, then record the declared checks."
-            stop_if = "Stop if scope widens, sensitive work appears, files drift outside files_in_play, or the proof path becomes unclear."
-            approval_prompt = "No new approval is suggested before continuing the current approved bead."
-
-    if open_questions and "none" not in open_questions.lower():
-        warnings.append("tasks/todo.md has open questions that may need resolution before implementation")
-    if depth_state.get("status") == "warning":
-        depth_warnings = depth_state.get("warnings") or []
-        if depth_warnings:
-            warnings.append(f"adaptive depth affects this decision: {depth_warnings[0]}")
-            if category == "execute":
-                category = "depth-review"
-                user_decision = "ask for proof"
-                summary = "Before continuing, ask whether the bead needs more planning, checks, stop conditions, or approval."
-                approval_prompt = "Ask the agent to explain the adaptive-depth warning in plain English."
-    if run_contract_state.get("status") == "warning":
-        contract_warnings = run_contract_state.get("warnings") or []
-        contract_details = run_contract_state.get("details") or {}
-        if contract_warnings:
-            warnings.append(f"run contract affects this decision: {contract_warnings[0]}")
-            if category == "execute":
-                category = "run-contract-review"
-                user_decision = str(contract_details.get("user_decision") or "ask for proof")
-                summary = str(
-                    contract_details.get("plain_english_summary")
-                    or "Before continuing, clarify allowed actions and proof needed."
-                )
-                action = "clarify allowed actions, proof needed, approval gates, and stop conditions before risky work"
-                stop_if = str(
-                    contract_details.get("stop_if")
-                    or "Stop if allowed actions, proof needed, approval gates, or rollback path are unclear."
-                )
-                approval_prompt = str(
-                    contract_details.get("approval_prompt")
-                    or "Ask the user to approve risky work only after the run contract is clear."
-                )
-    guard_details = guardrail_state.get("details") or {}
-    if guard_details.get("out_of_scope_paths"):
-        warnings.append("files-in-play guardrail found out-of-scope changed files")
-    goal_details = goal_frame_state.get("details") or {}
-    current_goal = goal_details.get("current") or {}
-    if current_goal:
-        goal_status = str(current_goal.get("status") or "draft")
-        if goal_status == "reaffirm_needed":
-            warnings.append("current Goal Frame requires reaffirmation before guiding workflow")
-            if category == "execute":
-                category = "goal-reaffirmation"
-                user_decision = "ask for reaffirmation"
-                summary = "Reaffirm the current Goal Frame before using it to guide workflow."
-                action = "ask the user whether the current Goal Frame still applies"
-                stop_if = "Stop if the Goal Frame is stale, conflicts with the active bead, or starts acting like a task list."
-                approval_prompt = "Ask the user to reaffirm, revise, or retire the Goal Frame before using it for workflow guidance."
-        elif goal_status == "active":
-            warnings.extend(str(warning) for warning in (goal_frame_state.get("warnings") or [])[:3])
-    elif goal_frame_state.get("warnings"):
-        warnings.append("Goal Frame warnings exist, but no current active Goal Frame was selected")
-
-    recovery_flow, beginner_prompt = recovery_prompt_for_next_step(category, warnings, blockers)
-
-    return {
-        "status": "warning" if warnings or blockers else "pass",
-        "warnings": warnings,
-        "details": {
-            "current_bead": bead.rel_path if bead else todo.get("current_bead") or "missing",
-            "current_bead_status": bead.status if bead else "missing",
-            "recommended_action": action,
-            "action_category": category,
-            "plain_english_summary": summary,
-            "user_decision": user_decision,
-            "why_this_matters": "Precode should reduce the beginner's next decision to continue, ask, review, approve, repair, or stop.",
-            "stop_if": stop_if,
-            "approval_prompt": approval_prompt,
-            "blockers": sorted(set(blockers)),
-            "open_questions": open_questions or "none",
-            "needs_prd": bool((workflow_state.get("details") or {}).get("artifact_to_produce_next") == "PRD shard"),
-            "needs_review": category in {"review", "transition-approval", "closeout"},
-            "needs_transition": bool(promotion_state.get("eligible")),
-            "next_bead": promotion_state.get("next_bead") or "not recorded",
-            "goal_frame": current_goal or {},
-            "goal_frame_advisory": "Goal Frames can guide workflow selection only; they cannot choose tasks, approve transitions, or override active memory.",
-            "recovery_flow": recovery_flow,
-            "recovery_protocol": "tasks/reference/RECOVERY-PROTOCOL.md",
-            "beginner_prompt": beginner_prompt,
-            "advisory_only": True,
-        },
-    }
-
-
-def recovery_prompt_for_next_step(category: str, warnings: list[str], blockers: list[str]) -> tuple[str, str]:
-    warning_text = " ".join(warnings).lower()
-    blocker_text = " ".join(blockers).lower()
-    combined = f"{warning_text} {blocker_text}"
-    if "generated report" in combined or "generated-report" in combined:
-        return (
-            "generated-report-confusion",
-            "Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit generated reports or treat them as authority.",
-        )
-    prompts = {
-        "state-repair": (
-            "active-state-repair",
-            "Use the Recovery Protocol for active-state repair. Stop before editing, identify the owner file, then validate memory and state.",
-        ),
-        "scope-repair": (
-            "scope-expansion",
-            "Use the Recovery Protocol for scope expansion. Explain each out-of-scope path as generated evidence, current-bead work, or separate follow-up before continuing.",
-        ),
-        "closeout": (
-            "missing-proof",
-            "Use the Recovery Protocol for missing proof. Name the missing checks or manual verification before accepting the work.",
-        ),
-        "unblock": (
-            "blocked-work",
-            "Use the Recovery Protocol for blocked work. Record the missing input, owner, and escape path instead of coding around the blocker.",
-        ),
-        "depth-review": (
-            "planning-or-proof-review",
-            "Use the Recovery Protocol for unclear proof or planning depth. Stop and ask whether the work needs stronger checks, stop conditions, or approval.",
-        ),
-        "goal-reaffirmation": (
-            "context-reaffirmation",
-            "Use the Recovery Protocol for context confusion. Reaffirm the Goal Frame before letting it guide workflow.",
-        ),
-    }
-    return prompts.get(category, ("none", ""))
-
-
 def gather_markdown_docs(root: Path) -> list[Path]:
     patterns = [
         "*.md",
@@ -3838,6 +3644,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
     current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)
     current_run_contract = run_contract_quality(current_bead, check_results)
     current_next_step = next_step_guidance(
+        root,
         todo,
         current_bead,
         promotion_state,
@@ -4071,6 +3878,8 @@ def render_precode_help(payload: dict[str, Any]) -> str:
     goal_details = goal_frame.get("details") or {}
     current_goal = goal_details.get("current") or {}
     blockers = next_details.get("blockers") or []
+    load_plan = next_details.get("load_plan") or {}
+    context_footprint = next_details.get("context_footprint") or {}
 
     return f"""# Precode Help
 <!-- ANCHOR: precode-help -->
@@ -4095,11 +3904,32 @@ Generated at: `{payload.get('generated_at')}`
 - State: `{next_details.get('current_bead_status', 'missing')}`
 - Recommended action: {next_details.get('recommended_action', 'repair active state before continuing')}
 - Action category: `{next_details.get('action_category', 'unknown')}`
+- Single next protocol: `{next_details.get('single_next_protocol', 'not recorded')}`
+- Why not more context: {next_details.get('why_not_more_context', 'Load only what the active bead proves is needed.')}
 - Stop if: {next_details.get('stop_if', 'stop if workflow, scope, evidence, or approval is unclear')}
 - Approval prompt: {next_details.get('approval_prompt', 'No approval prompt compiled.')}
 - Needs review: {next_details.get('needs_review', False)}
 - Needs transition approval: {next_details.get('needs_transition', False)}
 - Next bead: `{next_details.get('next_bead', 'not recorded')}`
+
+## Load Plan
+
+- Router owner: `{load_plan.get('router_owner', 'scripts/next-step.py')}`
+- Required first: `{', '.join(load_plan.get('required_first') or [])}`
+- Then load: `{', '.join(load_plan.get('then_load') or [])}`
+- Single next protocol: `{load_plan.get('single_next_protocol', 'not recorded')}`
+- Why not more context: {load_plan.get('why_not_more_context', 'Load only what the active bead proves is needed.')}
+
+## Context Footprint
+
+- Active memory: `{', '.join(context_footprint.get('active_memory') or [])}`
+- Active bead: `{context_footprint.get('active_bead', 'missing')}`
+- Primary authority: `{context_footprint.get('primary_authority', 'missing')}`
+- Required context: `{', '.join(context_footprint.get('required_context') or [])}`
+- Conditional references: `{', '.join(context_footprint.get('conditional_references') or []) or 'none'}`
+- Generated reports touched: `{', '.join(context_footprint.get('generated_reports_touched') or [])}`
+- Approx document lines: `{context_footprint.get('approx_document_lines', 'unknown')}`
+- Budget rule: {context_footprint.get('budget_rule', 'Prepare a checkpoint, compaction, restart, or handoff around 80% context usage.')}
 
 ## Goal Frame
 
@@ -4154,6 +3984,198 @@ Generated at: `{payload.get('generated_at')}`
 """
 
 
+def markdown_table(rows: list[list[str]]) -> str:
+    if not rows:
+        return ""
+    escaped = [[str(cell).replace("|", "\\|") for cell in row] for row in rows]
+    header = "| " + " | ".join(escaped[0]) + " |"
+    divider = "| " + " | ".join("---" for _ in escaped[0]) + " |"
+    body = ["| " + " | ".join(row) + " |" for row in escaped[1:]]
+    return "\n".join([header, divider, *body])
+
+
+def first_bullets(text: str, limit: int = 4) -> list[str]:
+    items = bullet_items(text)
+    return items[:limit]
+
+
+def progress_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    todo = payload.get("todo") or {}
+    todo_sections = todo.get("sections") or {}
+    current_checks = payload.get("active_bead_checks") or []
+    missing_checks = sum(1 for row in current_checks if row.get("status") == "missing")
+    failing_checks = sum(1 for row in current_checks if row.get("status") == "fail")
+    passing_checks = sum(1 for row in current_checks if row.get("status") == "pass")
+    readiness = payload.get("readiness") or {}
+    promotion = readiness.get("current_promotion") or {}
+    next_step = payload.get("next_step") or {}
+    next_details = next_step.get("details") or {}
+    state = payload.get("state_integrity") or {}
+
+    attention: list[str] = []
+    if missing_checks:
+        attention.append(f"{missing_checks} declared check(s) have no recorded evidence.")
+    if failing_checks:
+        attention.append(f"{failing_checks} declared check(s) are currently failing.")
+    for blocker in (promotion.get("blockers") or [])[:4]:
+        attention.append(str(blocker))
+    for warning in (next_step.get("warnings") or []):
+        text = str(warning)
+        if "adaptive depth" in text:
+            message = "Planning and proof depth need review before continuing."
+        elif "run contract" in text:
+            message = "Run contract details may be needed before this bead is accepted."
+        else:
+            message = text
+        if message not in attention:
+            attention.append(message)
+        if len(attention) >= 7:
+            break
+
+    stale_reports = [
+        str(warning).split(":", 1)[1].strip()
+        for warning in (state.get("warnings") or [])
+        if str(warning).startswith("generated report may be stale relative to latest evidence:")
+        and "PROGRESS.md" not in str(warning)
+    ]
+    if stale_reports:
+        attention.append("Some generated reports may be stale; refresh generated reports before reviewing them.")
+    for warning in (state.get("warnings") or []):
+        text = str(warning)
+        if text.startswith("generated report may be stale relative to latest evidence:"):
+            continue
+        if text not in attention:
+            attention.append(text)
+        if len(attention) >= 8:
+            break
+
+    return {
+        "generated_at": payload.get("generated_at"),
+        "source": "scripts/progress.py or scripts/os-health.py via scripts/os_compiler.py",
+        "current_work": {
+            "current_bead": payload.get("current_bead") or "missing",
+            "status": payload.get("current_bead_status") or "missing",
+            "build_lane": todo.get("build_lane") or "not recorded",
+            "active_feature_window": todo.get("active_feature_window") or "not recorded",
+            "primary_authority": todo.get("primary_authority") or "not recorded",
+            "done_when": first_bullets(str(todo_sections.get("Done When", ""))),
+            "next_step": next_details.get("plain_english_summary", next_details.get("recommended_action", "repair active state before continuing")),
+            "user_decision": next_details.get("user_decision", "repair state"),
+            "stop_if": next_details.get("stop_if", "stop if workflow, scope, evidence, or approval is unclear"),
+        },
+        "completion": {
+            "bead_status_counts": payload.get("bead_status_counts") or {},
+            "beads": [
+                {
+                    "bead_id": bead.get("bead_id") or "",
+                    "title": bead.get("title") or bead.get("rel_path") or "untitled",
+                    "status": bead.get("status") or "missing",
+                    "path": bead.get("rel_path") or "",
+                }
+                for bead in (payload.get("beads") or [])
+            ],
+        },
+        "proof": {
+            "declared_checks": len(current_checks),
+            "passing_checks": passing_checks,
+            "missing_checks": missing_checks,
+            "failing_checks": failing_checks,
+            "checks": current_checks,
+        },
+        "needs_attention": attention,
+        "boundaries": [
+            "Generated reports are evidence only.",
+            "Repair owner files first, then regenerate this report.",
+            "Active memory remains AGENT.md, DECISIONS.md, and tasks/todo.md.",
+        ],
+    }
+
+
+def render_progress_markdown(payload: dict[str, Any]) -> str:
+    progress = progress_payload(payload)
+    current = progress["current_work"]
+    completion = progress["completion"]
+    proof = progress["proof"]
+    counts = completion.get("bead_status_counts") or {}
+    checks = proof.get("checks") or []
+
+    status_rows = [["Status", "Count"]] + [[f"`{status}`", str(count)] for status, count in sorted(counts.items())]
+    bead_rows = [["Bead", "Status", "Path"]] + [
+        [
+            str(bead.get("title") or bead.get("bead_id") or "untitled"),
+            f"`{bead.get('status', 'missing')}`",
+            f"`{bead.get('path', '')}`",
+        ]
+        for bead in completion.get("beads", [])
+    ]
+    check_rows = [["Command", "Status", "Evidence"]] + [
+        [
+            f"`{row.get('command', 'missing')}`",
+            str(row.get("status", "missing")),
+            f"`{row.get('output')}`" if row.get("output") else "missing",
+        ]
+        for row in checks
+    ]
+    done_when = current.get("done_when") or []
+    attention = progress.get("needs_attention") or []
+
+    return f"""# PrecodeOS -- Generated Progress
+<!-- ANCHOR: progress -->
+
+> AUTHORITY: Generated user-facing progress snapshot for the current PrecodeOS workspace.
+> NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, roadmap authority, review acceptance, bead transition approval, or proof by itself.
+> LOAD_WHEN: A user wants a short generated answer to where the work is and what appears complete; never as active session memory.
+> CLASS: generated
+>
+> Generated from `scripts/progress.py` or `scripts/os-health.py`.
+> Generated by PrecodeOS, created by Dan Sears / Recode.
+> Do not use this file as active memory.
+> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+
+Generated at: `{progress.get('generated_at')}`
+
+## Where You Are
+
+- Current bead: `{current.get('current_bead')}`
+- State: `{current.get('status')}`
+- Build lane: {current.get('build_lane')}
+- Active feature window: {current.get('active_feature_window')}
+- Primary authority: `{current.get('primary_authority')}`
+- What to do now: {current.get('next_step')}
+- User decision: `{current.get('user_decision')}`
+- Stop if: {current.get('stop_if')}
+
+## Done When
+
+{chr(10).join(f"- {item}" for item in done_when) if done_when else "- No current Done When bullets found."}
+
+## Completion Picture
+
+{markdown_table(status_rows) if len(status_rows) > 1 else "- No bead status counts found."}
+
+{markdown_table(bead_rows) if len(bead_rows) > 1 else "- No beads found."}
+
+## Proof Status
+
+- Declared checks: {proof.get('declared_checks', 0)}
+- Passing checks: {proof.get('passing_checks', 0)}
+- Missing checks: {proof.get('missing_checks', 0)}
+- Failing checks: {proof.get('failing_checks', 0)}
+
+{markdown_table(check_rows) if len(check_rows) > 1 else "- No declared active-bead checks found."}
+
+## Needs Attention
+
+{chr(10).join(f"- {item}" for item in attention) if attention else "- No compiled progress blockers or warnings."}
+
+## Boundaries
+
+- Generated reports are evidence only.
+- Repair owner files first, then regenerate this report.
+- Active memory remains `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+"""
+
+
 def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "authority-map.json", payload["authority_map"])
     write_json(root / "logs" / "adapter-index.json", payload["adapter_index"])
@@ -4168,9 +4190,11 @@ def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "run-contract.json", payload["run_contract"])
     write_yaml(root / "logs" / "run-contract.yaml", payload["run_contract"])
     write_json(root / "logs" / "pattern-guidance.json", payload["pattern_guidance"])
+    write_json(root / "logs" / "progress.json", progress_payload(payload))
     write_json(root / "logs" / "memory-index.json", payload["memory"])
     (root / "logs" / "memory-index.md").write_text(render_memory_index_markdown(payload["memory"]), encoding="utf-8")
     write_json(root / "logs" / "file-inventory.json", payload["file_inventory"])
     (root / "logs" / "handoff-packet.md").write_text(render_handoff_packet(payload), encoding="utf-8")
+    (root / "PROGRESS.md").write_text(render_progress_markdown(payload), encoding="utf-8")
     (root / "PRECODE-HELP.md").write_text(render_precode_help(payload), encoding="utf-8")
     write_events_jsonl(root / "logs" / "os-events.jsonl", payload["events"])

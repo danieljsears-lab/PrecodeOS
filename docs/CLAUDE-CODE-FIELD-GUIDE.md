@@ -9,7 +9,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.5
+Document version: v0.1.6
 Last updated: 2026-05-17
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
@@ -146,6 +146,8 @@ bash scripts/session-start.sh
 ```
 
 Claude will run the session start script. It prepares the session and helps orient Claude to the Precode files for your project.
+
+Session start also prints a **Router Decision** from `python3 scripts/next-step.py`. That is Precode's generated "what now?" hint. It should name the user decision, the one next protocol or mode to load if needed, and a rough context footprint. It is guidance only; it cannot approve work or replace the bead.
 
 ---
 
@@ -658,6 +660,7 @@ Precode workflow explicitly allows it and I approve.
 
 ```bash
 bash scripts/session-start.sh     # Start every session with this
+python3 scripts/next-step.py      # Show the same generated Router Decision
 bash scripts/checkpoint.sh        # Mid-session status check
 bash scripts/session-close.sh     # End every session with this
 ```

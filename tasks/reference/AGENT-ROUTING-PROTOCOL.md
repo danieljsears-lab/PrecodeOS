@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-11
+Document version: v0.1.3
+Last updated: 2026-05-17
 
 ## Purpose
 
@@ -72,6 +72,8 @@ After compaction, restart, or handoff, re-read active memory, the active bead, a
 
 Delegation may help when a bounded side task can run separately from the main context.
 
+Precode role contracts are intentionally small: Navigator, Explorer, Builder, and Review describe what to load, decide, avoid, and return. They are not autonomous personas, task selectors, or a fake product organization. Use them to keep a host tool's native subagents or modes bounded by the active bead and Run Contract.
+
 Delegation must not:
 
 - activate another bead
@@ -83,6 +85,8 @@ Delegation must not:
 - turn an `afk_candidate` bead into unsupervised product or architecture ownership
 
 Prefer delegation for bounded repo exploration, focused review, isolated implementation slices with disjoint files, or long-running verification that can report back with evidence. Sensitive, external, destructive, or `bounded-afk` delegated work should have a Run Contract before delegation.
+
+Explorer is the preferred contract for read-only repo discovery. It returns findings and cited paths; it does not edit, activate, approve, or continue into implementation.
 
 ## Tool Routing
 
@@ -97,6 +101,10 @@ Use this default order when it fits the task:
 5. External mutation tools only when the active bead allows them and the user approves the manual gate.
 
 If a repeated tool pattern becomes durable and useful, propose a reusable command, script, skill, or adapter improvement through the Extension Protocol. Do not create hidden automation from a one-off workaround.
+
+`python3 scripts/next-step.py` owns generated routing output. It may expose `single_next_protocol`, `load_plan`, and `context_footprint` so the agent can choose the smallest useful context before reaching for heavier tools.
+
+A future `precode doctor` or installable `precode` CLI should wrap proven commands only after the router and bootstrap surfaces have stabilized; do not make them prerequisites for normal repo use.
 
 ## Adapter Mapping
 

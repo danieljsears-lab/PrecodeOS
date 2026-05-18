@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.15
+Document version: v0.3.16
 Last updated: 2026-05-17
 
 ## Executive Summary
@@ -128,7 +128,7 @@ repo/
   tasks/beads/*.md         execution contracts
   tasks/prds/*.md          product definition shards
   tasks/reference/*.md     protocols and playbooks
-  modes/*.md               navigator, builder, review roles
+  modes/*.md               navigator, explorer, builder, review roles
   adapters/*.md            tool-specific shims
   scripts/*                validators, recorders, compilers, audits
   logs/*                   generated evidence and sidecars
@@ -152,13 +152,13 @@ The application can use any framework. Precode's architecture is not an app arch
 | Execution bead layer | Bound one journey unit of work. | `tasks/beads/*.md`, bead frontmatter and sections, delegation mode, test strategy, review context. |
 | Adaptive-depth layer | Scale planning and autonomy expectations to the bead's risk while giving beginners a plain continue/ask/stop decision. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`. |
 | Run-contract layer | Tighten high-risk execution policy without burdening ordinary beads. | bead `Run Contract` sections, `scripts/run-contract-check.py`, `logs/run-contract.json`, `logs/run-contract.yaml`. |
-| Mode layer | Separate planning, building, and review behavior. | `modes/NAVIGATOR.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
+| Mode layer | Separate planning, exploration, building, and review behavior with compact role contracts. | `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
 | Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/*.md`. |
 | Agent-routing layer | Keep model tier, context budget, delegation, and tool choice proportional to the bead. | `tasks/reference/AGENT-ROUTING-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, tool-specific adapters. |
 | Safety layer | Add constraints for scope, sensitive surfaces, and verification. | `OPERATING-CONSTRAINTS.md`, security and verification protocols. |
 | Script layer | Turn conventions into repeatable commands. | Session, checkpoint, close, record-check, transition scripts. |
 | Validator layer | Catch structural drift and advisory guardrail gaps. | `validate-memory.sh`, advisory checks, files-in-play guardrail, command classification, advisory edit lock, write guard, pre-commit hook. |
-| Next-step layer | Give humans a generated hint without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, plain `user_decision` guidance. |
+| Next-step layer | Give humans the canonical generated "what now?" decision without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, `user_decision`, `single_next_protocol`, `load_plan`, and `context_footprint`. |
 | Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
 | Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
 | Public-package hygiene layer | Keep maintainer-only files and local/private material out of the reusable public package. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `.gitignore`, `scripts/public-repo-check.py`. |
@@ -222,7 +222,11 @@ Advisory checks extend the model across context, decomposition, verification, st
 
 Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/handoff-packet.json`, and `logs/run-contract.json` make current state easier to inspect, but they remain evidence, not authority.
 
-`PRECODE-HELP.md` is the human-readable generated next-step snapshot. It can explain blockers, adaptive-depth warnings, and files-in-play warnings, but it cannot select work, approve review, or activate a bead.
+`next-step.py` is the canonical generated router for the next human decision. `session-start.sh` displays the same decision inside the session Context Pack so the first command and the standalone router do not compete.
+
+`PRECODE-HELP.md` is the human-readable generated next-step snapshot. It can explain blockers, adaptive-depth warnings, files-in-play warnings, the one next protocol to load, and rough context footprint, but it cannot select work, approve review, or activate a bead.
+
+Context-footprint fields are intentionally approximate. They show active memory, active bead, primary authority, conditional references, generated reports touched, and rough document lines so agents avoid loading every protocol when one owner file is enough.
 
 For a file-by-file technical dictionary and relationship map, use `docs/PRECODE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the inventory explains what each file owns and how the surfaces connect.
 
@@ -360,6 +364,15 @@ Only the first three should drive acceptance. Generated reports, review inputs, 
 
 Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools.
 
+### Router-First Modularity
+
+Precode's current architecture direction is router-first externally and modular internally.
+
+- Externally, `next-step.py` owns the generated "what now?" decision; `session-start.sh` presents it; future diagnostic wrappers may explain warnings after the router is trusted.
+- Internally, compiler domains should move out of `scripts/os_compiler.py` into small service modules when they become distinct, while preserving existing command paths and generated JSON shapes.
+- Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
+- A broad `precode doctor` command and installable `precode` CLI are deferred until router behavior and bootstrap/install needs are stable.
+
 Handoff should include:
 
 - current bead
@@ -494,7 +507,7 @@ The layer model is intentionally explicit because each layer prevents a differen
 | Goal-frame layer | Store durable orientation only inside existing owner files after review and reaffirmation, while preventing it from becoming backlog, roadmap, or task authority. |
 | Product Definition Gate | Route rough ideas and source material through intake, PRD shards, requirements, and candidate beads before implementation. |
 | Execution bead layer | Make one logical unit executable, reviewable, closable, and handoff-safe. |
-| Mode layer | Separate navigator, builder, and review behavior so planning, implementation, and critique do not blur together. |
+| Mode layer | Separate navigator, explorer, builder, and review behavior so planning, inspection, implementation, and critique do not blur together. |
 | Adapter layer | Keep tool-specific entrypoints thin while preserving one shared command surface. |
 | Agent-routing layer | Choose model depth, context budget, delegation, and tool route without overriding active bead scope, files in play, approvals, or review. |
 | Safety layer | Add stop conditions for scope, sensitive surfaces, destructive operations, generated-output demotion, and approval gates. |
@@ -512,7 +525,7 @@ The script layer has four families:
 |---|---|---|
 | Session loop | `session-start.sh`, `checkpoint.sh`, `session-close.sh`, `handoff.sh` | Orient, pause, close, and transfer work safely. |
 | Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `log-loop-event.sh`, `log-tool-run.sh` | Record what happened without relying on chat memory. |
-| Compilation and reports | `os_compiler.py`, `os-health.py`, `update-learning-diary.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence. |
+| Compilation and reports | `os_compiler.py`, `precode_routing.py`, `os-health.py`, `update-learning-diary.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence and route the next human decision. |
 | Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `public-repo-check.py`, and related checkers | Surface likely drift without mutating active memory. |
 
 Generated sidecars should stay under `logs/` unless an existing generated report owns the surface. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, and health outputs. They are evidence only.

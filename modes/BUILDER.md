@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-05-17
 
 ## Responsibilities
 
@@ -22,6 +22,13 @@ Last updated: 2026-04-26
 - update the bead Closeout Evidence before stopping
 - record drift observed, lesson to promote, follow-up bead needed, and blocked escape status in Closeout Evidence
 - stop in a known state
+
+## Contract Card
+
+- Load: active memory, active bead, primary authority, parent PRD only when cited, and the single next protocol from `next-step` when a warning blocks execution.
+- Decide: implementation steps inside the active bead only.
+- Do not: widen files in play, approve sensitive or external work, start the next bead, or treat generated help as authority.
+- Return: changed files, recorded checks, manual verification status, closeout evidence, and the next exact check or stop reason.
 
 ## Resume Decision Table
 

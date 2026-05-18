@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-11
+Document version: v0.1.7
+Last updated: 2026-05-18
 
 ## Purpose
 
@@ -157,7 +157,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - High-risk or sensitive beads must name approval gates and rollback, blocked escape, or unblocker guidance before acceptance.
 - Learning promotion is part of closeout: product or technical decisions move to `DECISIONS.md`, repeated agent mistakes move to the shared lessons/rules layer, validator misses become validator follow-up work, and authority mismatches move to the owning authority file.
 - If a bead is blocked by manual setup or missing information, set it to `needs_info` or `manual_testing`, record a blocked escape path, and create or name a narrower unblocker bead instead of widening the current bead.
-- `python3 scripts/os-health.py` compiles bead metadata into generated sidecars, including `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/adapter-index.json`, `logs/shim-index.json`, and `logs/os-events.jsonl`.
+- `python3 scripts/os-health.py` compiles bead metadata into generated sidecars, including `logs/readiness.json`, `logs/next-step.json`, `logs/progress.json`, `logs/authority-map.json`, `logs/adapter-index.json`, `logs/shim-index.json`, and `logs/os-events.jsonl`.
 - `python3 scripts/files-in-play-check.py` compares current Git changes to the active bead `files_in_play` and warns about out-of-scope paths without approving or blocking the work.
 - `python3 scripts/files-in-play-check.py --command "<command summary>"` classifies command risk as a plain `continue`, `approval needed`, or `stop` decision before the command runs.
 - `python3 scripts/files-in-play-check.py --edit-lock` shows an optional advisory lock view for high-risk beads; it is evidence only, not a real filesystem lock or approval.

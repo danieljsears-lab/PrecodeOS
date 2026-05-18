@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
+Document version: v0.1.18
 Last updated: 2026-05-17
 
 ## Start Here: You Are Not Just Prompting
@@ -343,7 +343,9 @@ Chat history is useful, but it is not durable project state. Precode stores dura
 
 ### Generated Help: Orientation Is Not Approval
 
-`PRECODE-HELP.md` and `python3 scripts/next-step.py` are generated orientation hints. They can help you see whether the next human decision is continue, ask for missing info, ask for proof, review, approve transition, repair state, approval needed, or stop.
+`PRECODE-HELP.md`, `bash scripts/session-start.sh`, and `python3 scripts/next-step.py` now point at the same generated router decision. They can help you see whether the next human decision is continue, ask for missing info, ask for proof, review, approve transition, repair state, approval needed, or stop.
+
+`next-step.py` is the decisive generated "what now?" surface. It may also name one next protocol or mode to load and a rough context footprint so the agent does not read the whole Precode system when one owner file is enough.
 
 They are not active memory, task selection, or approval. Before acting, return to active memory, the active bead, the primary authority file, and the user's explicit approval.
 

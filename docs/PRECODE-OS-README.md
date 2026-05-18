@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.7
+Document version: v0.8.8
 Last updated: 2026-05-17
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -67,7 +67,7 @@ Precode does not try to make the agent autonomous. It makes the project legible:
 | Scope quietly grows. | One active bead, files in play, stop conditions, and files-in-play checks bound execution. |
 | The agent says "done" without proof. | Checks are recorded and review decisions tie acceptance to evidence. |
 | Generated summaries start driving work. | Generated reports are useful evidence, never authority. |
-| The builder feels lost. | Next-step, recovery, user guide, and handoff surfaces explain what to do next. |
+| The builder feels lost. | The `next-step` router, session start, recovery, user guide, and handoff surfaces explain what to do next. |
 
 Precode is for builders who want speed without giving up direction, evidence, or the ability to stop.
 
@@ -95,7 +95,7 @@ Examples:
 
 | Generated surface | Use it for | Do not use it for |
 |---|---|---|
-| `PRECODE-HELP.md` | Quick next-step and warning snapshot. | Active memory, task selection, or transition approval. |
+| `PRECODE-HELP.md` | Quick next-step, load plan, context-footprint, and warning snapshot. | Active memory, task selection, or transition approval. |
 | `OS-HEALTH.md` | Health, warnings, evidence quality, spend, and state snapshots. | Active memory or acceptance by itself. |
 | `PROGRESS.md` | Generated progress summary. | Product decisions or current task authority. |
 | `logs/*.md`, `logs/*.json`, `logs/*.jsonl` | Evidence, sidecars, handoff, diary, indexes, and check output. | Replacing owner files. |
@@ -159,7 +159,7 @@ Main surfaces:
 
 - `tasks/todo.md` for the active bead pointer
 - `tasks/beads/*.md` for current execution scope
-- `modes/NAVIGATOR.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
+- `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
 - `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` for tool-specific shims
 - agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance
 - Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions
