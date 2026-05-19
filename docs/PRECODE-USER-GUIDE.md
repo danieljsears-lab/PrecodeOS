@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.19
-Last updated: 2026-05-18
+Document version: v0.7.20
+Last updated: 2026-05-19
 
 
 
@@ -65,9 +65,10 @@ Follow the workbook steps:
 5. Gather source-cited research.
 6. Separate what you know, what you think, and what you need help deciding.
 7. Challenge the idea before turning it into features.
-8. Fill out feature candidates.
-9. Ask for the Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
-10. Bring only that packet into Precode Local Source Intake.
+8. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
+9. Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.
+10. Ask for the Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
+11. Bring only that packet into Precode Local Source Intake.
 
 When you are ready, say this inside Precode:
 
@@ -78,6 +79,50 @@ Treat it as evidence, not authority. Summarize stable facts, assumptions, confli
 ```
 
 Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.
+
+## Use The Exploration Loop Before PRD Commitment
+
+Use the Exploration Loop when you have already collected material and want help thinking with it before committing to a PRD. This is especially useful for bootcamp MVPs, scattered workbook notes, rough feature lists, user quotes, research snippets, screenshots, sketches, chat summaries, Candidate Goal Frames, or prior not-yet ideas.
+
+The loop should not restart the interview or ask you to repeat what you already wrote. It should first summarize what is known, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.
+
+Say this:
+
+```text
+Use the Exploration Loop on the content I already have.
+
+First summarize what is already known from my notes: users, pains, goals, candidate features, evidence, assumptions, risks, and not-yet ideas. Do not ask me to repeat information already present.
+
+Then help me discover what I have not considered yet. Ask one targeted question at a time only when the answer could change the product direction, evidence strength, first useful slice, risk, or PRD readiness.
+
+Translate user moments into capability candidates, not approved features. Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet. End with an Exploration Evidence Packet and a compact candidate matrix. Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+Good Exploration Loop output includes:
+
+- existing content used
+- product idea in plain English
+- intended user and situation
+- painful before moment
+- better after moment
+- current workaround or evidence
+- new things discovered during the loop
+- capability candidates
+- overlooked alternatives or adjacent ideas
+- weakest assumptions
+- risks or sensitive surfaces
+- not-yet list
+- smallest useful MVP slice
+- smallest learning step
+- recommended next Precode path
+
+Use this compact matrix:
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak evidence, use Product Discovery Validation next.
 
 ## Validate Product Discovery Before PRD Shaping
 
@@ -341,6 +386,7 @@ Use this table when you are unsure what kind of request to make.
 | Situation | Ask for | Copyable request |
 |---|---|---|
 | Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not write a PRD or code.` |
+| Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
 | Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Validation | `Use Product Discovery Validation. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | Rough idea, notes, screenshot, GitHub issue, research | Local source intake | `Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.` |

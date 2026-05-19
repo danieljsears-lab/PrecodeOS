@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.9
-Last updated: 2026-05-18
+Document version: v0.8.10
+Last updated: 2026-05-19
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -132,6 +132,8 @@ Main surfaces:
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
+Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
+
 Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: `proceed`, `pause`, `narrow`, or `kill`.
 
 Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.
@@ -204,6 +206,7 @@ Precode turns rough ideas into verified work through a repeatable path:
 ```text
 idea or source material
   -> optional product ideation workbook
+  -> optional Exploration Loop
   -> optional Product Discovery Validation
   -> Local Source Intake
   -> product constitution fit check
@@ -299,12 +302,13 @@ Start small:
 2. Fill in `PRODUCT.md` with your product promise, users, strategy, current bets, success signals, and design or voice pointers.
 3. Fill in `PROJECT-CONTEXT.md` with your app directory, stack, conventions, checks, and integration boundaries.
 4. Use one starter bead to install or verify the kernel.
-5. Use Product Discovery Validation only when the idea's worth-building evidence is uncertain.
-6. Align/grill the first real product feature before writing the destination PRD.
-7. Clarify shared language when the feature has domain terms, labels, or naming risk.
-8. Split the destination into one small vertical journey bead.
-9. Record checks before accepting the bead.
-10. Add validators, audits, adapters, and integrations only when they solve a real repeated problem.
+5. Use the Exploration Loop when existing notes need sharper thinking before PRD commitment.
+6. Use Product Discovery Validation only when the idea's worth-building evidence is uncertain.
+7. Align/grill the first real product feature before writing the destination PRD.
+8. Clarify shared language when the feature has domain terms, labels, or naming risk.
+9. Split the destination into one small vertical journey bead.
+10. Record checks before accepting the bead.
+11. Add validators, audits, adapters, and integrations only when they solve a real repeated problem.
 
 Do not ask an agent to set up everything in one pass. Ask it to create or adapt the kernel first, explain the files in plain English, and stop for review.
 

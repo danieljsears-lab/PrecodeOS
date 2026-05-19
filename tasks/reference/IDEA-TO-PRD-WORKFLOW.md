@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-18
+Document version: v0.1.7
+Last updated: 2026-05-19
 
 ## Purpose
 
@@ -23,7 +23,7 @@ Use `PRODUCT.md` as the builder-facing product constitution when the idea may af
 For a net-new, rough product idea from a non-technical builder, the default path is:
 
 ```text
-Product Ideation Workbook -> Product Brief -> Local Source Intake -> gentle PRD ramp -> technical shaping only when needed -> PRD shard -> FEATURES.md compile -> bead proposals
+Product Ideation Workbook -> Product Brief -> Exploration Loop when useful -> Local Source Intake -> gentle PRD ramp -> technical shaping only when needed -> PRD shard -> FEATURES.md compile -> bead proposals
 ```
 
 Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
@@ -90,6 +90,12 @@ Use a founder-friendly question budget during early intake: after at most three 
 - next best question
 
 Early questions should ask about the user, pain, before/after moment, current workaround, evidence, business constraint, scope boundary, and what not to build yet. Do not ask the builder to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior unless a concrete risk has already surfaced.
+
+Use the workbook's Exploration Loop after the Product Brief when the builder has already collected useful material but is not ready to commit to PRD shaping. It can reuse Product Briefs, workbook notes, rough feature lists, research snippets, user quotes, chat summaries, screenshots, sketches, Candidate Goal Frames, and prior not-yet ideas. The loop should first summarize what is already known, then ask only targeted questions that could expose a missing user, vague before moment, current workaround, competing behavior, trust or privacy concern, smaller first slice, weak assumption, or better capability candidate.
+
+The Exploration Loop output is evidence only. It should package a short narrative evidence packet and a compact capability-candidate matrix. It must not become a feature list, backlog, roadmap, requirements section, PRD approval, bead proposal, `PRODUCT.md` update, or implementation permission.
+
+Stop the Exploration Loop before PRD shaping when evidence is weak, the conversation stops producing new insight, or too many candidates need narrowing. If weak evidence is the main blocker, run Product Discovery Validation before drafting a PRD.
 
 If the idea sounds exciting but weakly evidenced, too broad, paid, market-facing, or solution-first, run Product Discovery Validation before drafting a PRD. The output should be a short Discovery Summary with the target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and advisory `proceed | pause | narrow | kill` recommendation.
 

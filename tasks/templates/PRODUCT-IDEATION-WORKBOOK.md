@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.5
-Last updated: 2026-05-18
+Document version: v0.1.6
+Last updated: 2026-05-19
 
 ## Purpose
 
@@ -115,19 +115,23 @@ Step 7. Challenge the idea before turning it into features.
 
 Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet. For a 4-week MVP, ask it to separate blockers from concerns that can move to the not-yet list.
 
-Step 8. Use Purposeful Ideation tool cards when the idea still feels fuzzy, too broad, too obvious, or too large.
+Step 8. Use the Exploration Loop when you already have notes to reuse.
+
+The Exploration Loop is for Product Briefs, workbook notes, rough feature lists, research snippets, user quotes, chat summaries, screenshots, sketches, Candidate Goal Frames, or not-yet ideas that should shape the next question. It should help you notice missing angles, weak assumptions, overlooked users, hidden risks, smaller slices, and capability ideas you had not considered. It should not ask you to repeat content already present.
+
+Step 9. Use Purposeful Ideation tool cards when the idea still feels fuzzy, too broad, too obvious, or too large.
 
 Paste your rough idea into the `Context` line. Let the agent ask questions. You choose the direction.
 
-Step 9. Fill out feature-level candidates.
+Step 10. Fill out feature-level candidates.
 
 Only after product framing and research are clear, list candidate features, before/after user moments, acceptance signals, risks, sensitive surfaces, dependencies, and first useful slices.
 
-Step 10. Ask Claude/Codex to create the Precode Ingestion Packet.
+Step 11. Ask Claude/Codex to create the Precode Ingestion Packet.
 
 Use the ingestion prompt near the end of this workbook. Keep the packet concise. Include a Candidate Goal Frame only when the durable direction is stable enough to review.
 
-Step 11. Bring only the ingestion packet into Precode Local Source Intake.
+Step 12. Bring only the ingestion packet into Precode Local Source Intake.
 
 When you are ready, ask Precode to ingest the packet as local source evidence. Do not ask Precode to edit `PRODUCT.md`, create a PRD, or activate work until you have reviewed the intake summary.
 
@@ -203,6 +207,53 @@ Challenge this idea before I turn it into features.
 Identify weak assumptions, missing user evidence, risky scope, vague success criteria, privacy or safety concerns, sensitive surfaces, and reasons not to build yet. Sort them into Must decide now, Good enough for MVP, and Defer / Not yet. Keep the tone supportive and practical. Then recommend the smallest safe next learning step. Do not make the decision for me.
 ```
 
+### Exploration Loop Prompt
+
+Use this when you already have content from this workbook, a Product Brief, rough feature list, research, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas.
+
+```text
+Use the Exploration Loop on the content I already have.
+
+First summarize what is already known from my notes: users, pains, goals, candidate features, evidence, assumptions, risks, and not-yet ideas. Do not ask me to repeat information already present.
+
+Then help me discover what I have not considered yet. Ask one targeted question at a time only when the answer could change the product direction, evidence strength, first useful slice, risk, or PRD readiness.
+
+Look especially for:
+- a user or situation I have overlooked
+- a painful before moment that is still vague
+- a current workaround or competing behavior
+- a trust, privacy, cost, effort, or safety risk
+- a smaller first slice
+- a reason this may not be worth building yet
+- a capability that supports the user outcome better than the obvious feature
+
+Translate user moments into capability candidates, not approved features. Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet.
+
+End with an Exploration Evidence Packet:
+- Existing content used:
+- Product idea in plain English:
+- Intended user and situation:
+- Painful before moment:
+- Better after moment:
+- Current workaround or evidence:
+- New things discovered during the loop:
+- Capability candidates:
+- Overlooked alternatives or adjacent ideas:
+- Weakest assumptions:
+- Risks or sensitive surfaces:
+- Not-yet list:
+- Smallest useful MVP slice:
+- Smallest learning step:
+- Recommended next Precode path:
+
+Then include this compact matrix:
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
+
+Treat the output as evidence only. Do not call it a feature list, roadmap, backlog, requirements, or PRD. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
 ### Refinement Prompt
 
 ```text
@@ -230,6 +281,10 @@ Use this format:
 - Demand or pricing signal:
 - Smallest non-code learning step:
 - What would change my mind:
+- Exploration Loop summary:
+- New things discovered during exploration:
+- Capability candidates:
+- Overlooked alternatives or adjacent ideas:
 - Stable facts:
 - Assumptions:
 - Open questions:
@@ -732,6 +787,64 @@ Reality check: gently challenge my confidence. What am I treating as proven that
 ```
 
 Continue only when you know which claims are supported, which are assumptions, and which questions still need validation.
+
+## Exploration Loop
+
+Use this when you already have material and want the agent to think with it before you commit to PRD shaping. The loop can use Product Briefs, workbook notes, rough feature lists, research snippets, user quotes, chat summaries, screenshots, sketches, Candidate Goal Frames, and prior not-yet ideas.
+
+The agent should not ask you to repeat what is already in the notes. It should summarize the current shape, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.
+
+Existing content used:
+
+- 
+
+What the idea seems to be becoming:
+
+- 
+
+New things discovered:
+
+- 
+
+Overlooked alternatives or adjacent ideas:
+
+- 
+
+Weakest assumptions:
+
+- 
+
+Must decide now:
+
+- 
+
+Good enough for MVP:
+
+- 
+
+Defer / Not yet:
+
+- 
+
+### Capability Candidate Matrix
+
+These are candidate capabilities, not approved features, a backlog, requirements, or permission to code.
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+### Stop Before Continuing: Exploration Check
+
+Before turning exploration into feature candidates, ask Claude or Codex:
+
+```text
+Review the Exploration Loop output. Tell me what reused prior content, what was newly discovered, what still feels like a guess, which capability candidates are strongest, and which ones should move to Defer / Not yet.
+
+Reality check: was this loop actually useful, or did it only restate what I already knew? Name the one new insight, risk, narrowing move, or assumption that most changes what I should do next.
+```
+
+Continue only when the loop has produced at least one useful new insight, risk, narrowing move, or assumption. If it has not, close the loop and package the existing evidence instead of continuing to ask questions.
 
 ## Purposeful Ideation Tool Cards
 
@@ -1315,6 +1428,14 @@ Demand or pricing signal:
 Smallest non-code learning step:
 
 What would change my mind:
+
+Exploration Loop summary:
+
+New things discovered during exploration:
+
+Capability candidates:
+
+Overlooked alternatives or adjacent ideas:
 
 Stable facts:
 
