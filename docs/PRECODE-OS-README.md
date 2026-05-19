@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.10
+Document version: v0.8.11
 Last updated: 2026-05-19
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -40,6 +40,7 @@ Precode gives the repo a small operating model:
 
 - tiny active memory
 - one current task
+- Build Loop Health for focused, stoppable, closeable, evidenced work
 - clear owner files for durable facts
 - optional discovery before PRD work
 - PRDs before feature implementation when intent is fuzzy or risky
@@ -79,9 +80,9 @@ Only three files are active memory:
 
 | File | Job | Current size |
 |---|---|---|
-| `AGENT.md` | Tells the AI coding agent how to work in this repo. | 95 lines / 4,522 bytes |
-| `DECISIONS.md` | Records hard decisions, open questions, and superseded context. | 37 lines / 1,985 bytes |
-| `tasks/todo.md` | Points to the active bead and current execution view. | 84 lines / 3,189 bytes |
+| `AGENT.md` | Tells the AI coding agent how to work in this repo. | 96 lines / 4,582 bytes |
+| `DECISIONS.md` | Records hard decisions, open questions, and superseded context. | 37 lines / 1,982 bytes |
+| `tasks/todo.md` | Points to the active bead and current execution view. | 84 lines / 3,183 bytes |
 
 Everything else is reference, evidence, template, archive, adapter, or generated output. Load it only when the current work needs it.
 
@@ -161,6 +162,7 @@ Main surfaces:
 
 - `tasks/todo.md` for the active bead pointer
 - `tasks/beads/*.md` for current execution scope
+- `python3 scripts/loop-health.py` for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, and easy to steer
 - `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
 - `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` for tool-specific shims
 - agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance
@@ -253,6 +255,7 @@ bash scripts/record-check.sh -- <command>
 bash scripts/session-close.sh
 bash scripts/handoff.sh next-agent
 python3 scripts/next-step.py
+python3 scripts/loop-health.py
 python3 scripts/bead-depth-check.py
 python3 scripts/files-in-play-check.py
 python3 scripts/files-in-play-check.py --command "<command summary>"

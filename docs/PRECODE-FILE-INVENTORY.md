@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.35
-Last updated: 2026-05-18
+Document version: v0.1.36
+Last updated: 2026-05-19
 
 ## Purpose
 
@@ -225,6 +225,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/os-health.py` | Renders OS Health. | Compiled state. | `OS-HEALTH.md`, `logs/os-health.json`. |
 | `scripts/progress.py` | Renders the generated user-facing progress snapshot. | Compiled state. | `PROGRESS.md`, `logs/progress.json`. |
 | `scripts/next-step.py` | Prints canonical generated next-step routing guidance with a plain user decision. | Compiled state. | Human-readable stdout or advisory JSON including `single_next_protocol`, `load_plan`, and `context_footprint`; no state mutation. |
+| `scripts/loop-health.py` | Prints advisory Build Loop Health for the current work loop. | Compiled state plus the active bead contract. | Compact stdout, verbose dimensions, or advisory JSON; no state mutation, scoring, task selection, or approval. |
 | `scripts/bead-depth-check.py` | Prints adaptive bead-depth advisory findings. | Active bead metadata, risk hints, checks, stop conditions. | JSON warnings; no state mutation. |
 | `scripts/files-in-play-check.py` | Prints active-bead file mutation guardrail findings and optional command/edit-lock guidance. | Git changed paths, active bead `files_in_play`, optional `--command`, optional `--edit-lock`. | JSON warnings and plain continue/approval/stop guidance; no state mutation or command approval. |
 | `scripts/run-contract-check.py` | Prints advisory run-contract findings. | Active bead Run Contract, files in play, verification tiers, recorded checks, and closeout. | JSON warnings about allowed actions, proof needed, approvals, and recovery; no state mutation or command approval. |

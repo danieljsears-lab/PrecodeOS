@@ -95,9 +95,12 @@ For the immediate "what now?" question, use:
 ```bash
 bash scripts/session-start.sh
 python3 scripts/next-step.py
+python3 scripts/loop-health.py
 ```
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
+
+`loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, and easy to steer. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
 
 ## Docs Compass
 
@@ -151,5 +154,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-05-18
+Document version: v0.1.27
+Last updated: 2026-05-19

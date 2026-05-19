@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-05-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -25,6 +25,14 @@ PY
 echo "PrecodeOS Checkpoint"
 echo "Branch: $branch"
 echo "Current bead: ${current_bead:-unknown}"
+loop_health_json="$(python3 scripts/loop-health.py --json)"
+python3 - "$loop_health_json" <<'PY'
+import json
+import sys
+
+payload = json.loads(sys.argv[1])
+print(f"Build Loop Health: {payload.get('status', 'Watch')} - {payload.get('next_move', 'Run python3 scripts/loop-health.py --verbose for details.')}")
+PY
 echo
 echo "Modified files:"
 git status --short || true

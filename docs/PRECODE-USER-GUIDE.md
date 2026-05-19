@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.20
+Document version: v0.7.21
 Last updated: 2026-05-19
 
 
@@ -175,6 +175,29 @@ Expect this:
 
 Stop if: the agent cannot explain the current bead in plain English.
 
+## Check Build Loop Health
+
+Build Loop Health is a quiet Precode signal for whether the current work is focused, stoppable, closeable, evidenced, and easy to steer. It evaluates the loop, not you.
+
+Use it when the session feels busy, when scope starts to grow, at checkpoint, or before closeout:
+
+```bash
+python3 scripts/loop-health.py
+python3 scripts/loop-health.py --verbose
+```
+
+Good output gives one status, one top risk, and one next move. `Clear` means keep going inside the current boundary. `Watch` means one thing needs attention. `Drift Risk` or `Recenter` means the loop is getting hard to steer. `Stop and Review` means the current work is ready or risky enough that evidence should be reviewed before adding more.
+
+If you are exploring before a bead exists, that is allowed. When the exploration starts to matter, ask the agent to create or select a lightweight explorer bead with one question and one stopping condition.
+
+Say this:
+
+```text
+Run python3 scripts/loop-health.py and explain the top risk in plain English. If I am exploring without a bead, help me create a lightweight explorer bead with one question and one stopping condition before any implementation.
+```
+
+Why this matters: Precode should protect you from accidental sprawl without making creative exploration feel wrong.
+
 ## Use Goal Frames For Durable Intent
 
 Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.
@@ -317,6 +340,7 @@ Follow these steps in order.
 |---|---|---|---|
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
 | Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. | The agent treats generated help as approval or active memory. |
+| Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, and next move. | The agent treats loop health as a grade or hard approval. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
 | Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
@@ -334,6 +358,7 @@ Keep this table open during normal work.
 |---|---|---|---|
 | Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
 | Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md`, `session-start.sh`, or `next-step.py` explains the same generated router decision. | The report replaces the active bead. |
+| Check loop health | Ask for Build Loop Health when scope or stopping point feels fuzzy. | One status, top risk, and next move. | The signal becomes a score of you instead of the work loop. |
 | Confirm | Ask whether to continue, repair, split, block, or stop. | One clear path. | Scope is vague or too broad. |
 | Work | Let the agent edit only scoped files. | Small changes tied to the bead. | It touches unrelated files. |
 | Check | Ask for recorded checks. | `record-check.sh` output and evidence path. | It says done without evidence. |

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.11
-Last updated: 2026-05-17
+Document version: v0.1.12
+Last updated: 2026-05-19
 
 ## Project
 
@@ -54,6 +54,7 @@ Use only these files as active memory:
 - `bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command "<summary>"`
 - `python3 scripts/bead-transition.py [--approve]`
 - `python3 scripts/next-step.py [--json]`
+- `python3 scripts/loop-health.py [--verbose|--json]`
 - `python3 scripts/os-health.py`
 - `python3 scripts/import-agent-spend.py [--tool agent] [--source path] [--dry-run]`
 - `python3 scripts/github-audit.py`

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
-# Last updated: 2026-05-17
+# Version: v0.1.4
+# Last updated: 2026-05-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 from dataclasses import replace
+import importlib.util
 import json
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,16 @@ STABLE_DECISIONS = {
     "approval needed",
     "stop",
 }
+
+
+def load_loop_health_module() -> Any:
+    path = Path(__file__).with_name("loop-health.py")
+    spec = importlib.util.spec_from_file_location("loop_health", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Could not load loop-health.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def bead(**overrides: Any) -> BeadRecord:
@@ -123,8 +134,55 @@ def assert_router_contract(name: str, payload: dict[str, Any], failures: list[di
         failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(footprint.get("advisory_only"))})
 
 
+def loop_context(**overrides: Any) -> dict[str, Any]:
+    base = {
+        "bead": {"checks": ["python3 scripts/version-check.py"]},
+        "current_bead": "tasks/beads/B999-clarity-fixture.md",
+        "status": "in_progress",
+        "execution_mode": "builder",
+        "bead_kind": "implementation",
+        "done_when": "- One observable outcome is proven.",
+        "objective": "Complete one bounded fixture.",
+        "stop_if": "- Scope or proof becomes unclear.",
+        "open_questions": "- none",
+        "next_up": "- none",
+    }
+    base.update(overrides)
+    return base
+
+
+def loop_state(**overrides: Any) -> dict[str, Any]:
+    base = {
+        "changed_paths": [],
+        "state_integrity": {
+            "warnings": [],
+            "details": {"in_progress_beads": ["tasks/beads/B999-clarity-fixture.md"]},
+        },
+        "files_in_play_guardrail": {"details": {"out_of_scope_paths": []}},
+        "completion_handoff": {"details": {}},
+        "readiness": {"current_promotion": {"eligible": False}},
+        "active_bead_checks": [],
+        "workflow_planning": {"warnings": []},
+        "intent_orchestration": {"warnings": []},
+    }
+    base.update(overrides)
+    return base
+
+
+def loop_status(loop_health: Any, context: dict[str, Any], state: dict[str, Any]) -> str:
+    dimensions = {
+        "Focus": loop_health.focus_dimension(state, context),
+        "Stop Condition": loop_health.stop_condition_dimension(context),
+        "Closure": loop_health.closure_dimension(state, context),
+        "Evidence": loop_health.evidence_dimension(state, context),
+        "Leverage": loop_health.leverage_dimension(state, context),
+    }
+    return str(loop_health.overall_status(dimensions))
+
+
 def main() -> int:
     failures: list[dict[str, str]] = []
+    loop_health = load_loop_health_module()
 
     next_scenarios = [
         ("missing bead", (next_payload(None)["details"] or {}).get("user_decision"), "repair state"),
@@ -304,6 +362,40 @@ def main() -> int:
     for name, actual, expected in command_scenarios:
         assert_decision(f"command: {name}", str(actual), expected, failures)
 
+    loop_scenarios = [
+        ("clear builder", loop_context(), loop_state(), "Clear"),
+        ("vague done when", loop_context(done_when="- Improve the thing as needed."), loop_state(), "Watch"),
+        (
+            "multiple active beads",
+            loop_context(),
+            loop_state(state_integrity={"warnings": [], "details": {"in_progress_beads": ["B001", "B002"]}}),
+            "Recenter",
+        ),
+        (
+            "no active bead with implementation changes",
+            loop_context(bead=None, current_bead="", done_when=""),
+            loop_state(changed_paths=["app/page.tsx"], state_integrity={"warnings": [], "details": {"in_progress_beads": []}}),
+            "Recenter",
+        ),
+        (
+            "bounded explorer",
+            loop_context(execution_mode="explorer", objective="Explore the question: which user pain matters first?"),
+            loop_state(),
+            "Clear",
+        ),
+        (
+            "explorer missing question",
+            loop_context(execution_mode="explorer", objective="Look around.", done_when="- Notes exist."),
+            loop_state(),
+            "Watch",
+        ),
+        ("review closeout", loop_context(status="review"), loop_state(), "Stop and Review"),
+    ]
+    for name, context, state, expected in loop_scenarios:
+        actual = loop_status(loop_health, context, state)
+        if actual != expected:
+            failures.append({"scenario": f"loop-health: {name}", "expected": expected, "actual": actual})
+
     payload = {
         "tool": "clarity-scenario-check",
         "status": "pass" if not failures else "fail",
@@ -311,7 +403,8 @@ def main() -> int:
         + len(recovery_scenarios)
         + len(depth_scenarios)
         + len(run_contract_scenarios)
-        + len(command_scenarios),
+        + len(command_scenarios)
+        + len(loop_scenarios),
         "stable_decisions": sorted(STABLE_DECISIONS),
         "failures": failures,
     }
