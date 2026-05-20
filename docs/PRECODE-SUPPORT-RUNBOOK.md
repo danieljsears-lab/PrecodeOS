@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-05-20
 
 ## Purpose
@@ -225,18 +225,47 @@ Instructors own the learning and product-thinking layer:
 
 - help students move from rough ideas to prototype progress
 - ask clarifying and challenging questions
-- summarize evidence
+- help the student summarize evidence
 - explain PrecodeOS concepts in plain language
 - protect student ownership of product decisions, approvals, and acceptance
-
-Support engineers own technical unblocking only when needed:
-
-- implement narrow technical fixes or prototype work when a student is blocked
-- explain the technical change plainly
-- avoid owning product direction, scope, acceptance, or evidence interpretation
 - preserve the distinction between "prototype works" and "idea is validated"
 
-For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. A student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction.
+The Student owns the product direction, decisions, approvals, and acceptance for their prototype.
+
+The Student should:
+
+- explain the intended user, painful before moment, better after moment, and first useful slice in plain language
+- make and approve product decisions, scope tradeoffs, non-goals, and acceptance calls
+- use PrecodeOS prompts and evidence gates to stay oriented, bounded, and able to verify progress
+- summarize what evidence supports continuing, narrowing, pausing, or changing direction
+- ask instructors for product-thinking help when the idea, scope, or evidence is unclear
+- ask support engineers for technical help when system setup, troubleshooting, or implementation blockers stop progress
+- avoid treating "the prototype works" as proof that the idea is validated
+
+Mentors are past bootcamp students who help first-time students navigate the cohort as guides, advisors, connectors, peers, and role models.
+
+Mentors should:
+
+- help students build confidence by sharing lived experience from the bootcamp
+- provide light product idea support without owning product direction, scope, approval, acceptance, or evidence interpretation
+- help students understand which role to ask for help: instructor for product thinking, support engineer for technical unblocking
+- encourage students through uncertainty, stuck points, and normal first-time-builder discomfort
+- model good PrecodeOS habits such as asking clarifying questions, keeping scope small, and separating working prototypes from validated ideas
+- connect students to relevant cohort resources, examples, instructors, support engineers, or peers
+- avoid replacing instructors, performing technical troubleshooting, or becoming the hidden product owner
+
+Support engineers own technical support and unblocking when needed:
+
+- help students with system requirements installation and maintenance
+- perform technical troubleshooting and diagnosis
+- implement narrow technical fixes when a student is blocked
+- manage the escalation workflow, ensuring that issues are resolved promptly and efficiently
+- explain the technical change plainly
+- avoid owning product direction, scope, acceptance, or evidence interpretation
+
+Mentor involvement may be lightly noted when it materially affects student confidence, navigation, or routing. Do not turn mentorship into heavy evidence overhead.
+
+For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. The Student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction.
 
 ## Repair Path For Incorrect Setup
 
