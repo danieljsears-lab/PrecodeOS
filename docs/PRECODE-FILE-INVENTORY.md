@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.36
-Last updated: 2026-05-19
+Document version: v0.1.37
+Last updated: 2026-05-20
 
 ## Purpose
 
@@ -52,7 +52,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
-| Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/roadmap-maintenance.py` | Private maintainer index, history, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
+| Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/roadmap-maintenance.py` | Private maintainer index, history, alpha/beta evidence planning, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
 | Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
@@ -67,6 +67,8 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 `_maintainer/MAINTAINER-NOTES.md` is the maintainer index. When Dan asks to maintain, analyze, or plan changes to PrecodeOS itself, agents read this file first, then load only the relevant maintainer roadmap, strategy, or reference files for the request.
 
 `_maintainer/CHANGELOG.md` is maintainer-local human-readable project and document history for PrecodeOS. It is not public package authority or normal user-facing navigation.
+
+`_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md` is the maintainer-owned alpha and beta operating plan for using early cohorts to drive PrecodeOS use, feedback, and evidence. It is not public package authority or normal user workflow guidance.
 
 `_maintainer/PRECODE-ROADMAP.md` is the canonical detailed maintainer roadmap for PrecodeOS ranking, source-derived roadmap themes, and prioritization.
 

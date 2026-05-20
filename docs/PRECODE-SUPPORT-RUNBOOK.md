@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-18
+Document version: v0.1.1
+Last updated: 2026-05-20
 
 ## Purpose
 
@@ -216,6 +216,27 @@ Key ideas to reinforce:
 - unclear state is a reason to stop, not push through
 
 If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
+
+## Bootcamp Role Boundaries
+
+Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.
+
+Instructors own the learning and product-thinking layer:
+
+- help students move from rough ideas to prototype progress
+- ask clarifying and challenging questions
+- summarize evidence
+- explain PrecodeOS concepts in plain language
+- protect student ownership of product decisions, approvals, and acceptance
+
+Support engineers own technical unblocking only when needed:
+
+- implement narrow technical fixes or prototype work when a student is blocked
+- explain the technical change plainly
+- avoid owning product direction, scope, acceptance, or evidence interpretation
+- preserve the distinction between "prototype works" and "idea is validated"
+
+For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. A student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction.
 
 ## Repair Path For Incorrect Setup
 
