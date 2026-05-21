@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
+Document version: v0.1.4
 Last updated: 2026-05-21
 
 ## Purpose
@@ -233,6 +233,66 @@ Key ideas to reinforce:
 - unclear state is a reason to stop, not push through
 
 If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
+
+## Engineer Initiation From User Packet
+
+Use this section when an engineer receives a user's Precode Ingestion Packet, frontend design files, and optional existing PRD.
+
+Treat the packet, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence. They are not automatic Precode authority, implementation instructions, PRD approval, bead activation, or permission to code.
+
+The initiation path is:
+
+```text
+ingestion packet + design files + optional PRD
+  -> Local Source Intake
+  -> owner-file map
+  -> PRD readiness or amendment
+  -> design/architecture impact check
+  -> candidate beads
+  -> user-approved active bead
+  -> implementation
+```
+
+Start by classifying the project state:
+
+| Entry state | First move | Do not do |
+|---|---|---|
+| Fresh Precode setup | Set up and validate Precode first, then ingest the packet and design files. | Do not let source inputs skip setup validation. |
+| Existing non-Precode project | Inspect the repo, existing docs, existing PRD/design, app directory, checks, and conflicts before adapting Precode. | Do not overwrite project conventions or treat the external PRD as already approved Precode authority. |
+| Existing Precode project | Load active memory, identify the active bead, then intake the new packet, design, or PRD as local source evidence. | Do not widen the active bead, amend a PRD, or start coding without the normal approval path. |
+
+Copyable engineer prompt:
+
+```text
+I am initiating PrecodeOS from user-provided source inputs.
+
+Inputs:
+- Precode Ingestion Packet: [path or pasted reviewed summary]
+- Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
+- Existing PRD, if any: [path]
+
+Treat these inputs as evidence, not authority. Do not write code yet.
+
+First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
+
+Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, design implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, and affected owner files.
+
+Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, design/architecture impact review, decomposition into candidate beads, or a narrow unblocker.
+
+Stop before updating authority files, approving a PRD, activating a bead, or coding.
+```
+
+For design-heavy inputs, the engineer should explicitly identify:
+
+- visual intent
+- screens, states, and user flows
+- interactions, empty states, loading states, and error states
+- responsive expectations
+- design-system constraints or missing design-system decisions
+- accessibility concerns
+- unresolved design decisions that could change implementation
+
+Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, `PRODUCT.md`, `PROJECT-CONTEXT.md`, or another owner file, current authority wins until the user approves an amendment.
 
 ## Demo And Engineering Readiness
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-11
+Document version: v0.1.4
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -41,11 +41,13 @@ Supported source types include:
 
 - notes and markdown docs
 - text files and manual drafts
-- screenshots, wireframes, and design images
+- screenshots, wireframes, design images, frontend design files, Figma exports, and design-system notes
 - chat transcript summaries
 - GitHub, Linear, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
 - Product Ideation Workbook Precode Ingestion Packets, including Candidate Goal Frames
+- user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
+- existing PRDs or product specs that need Precode review, amendment, or adaptation
 - customer quotes or feedback snippets
 - existing feature, architecture, API, schema, security, or acceptance docs
 - hand-written task lists or migration notes
@@ -97,11 +99,21 @@ Source summary:
 - Candidate non-goals:
 - Candidate acceptance signals:
 - Candidate Goal Frame:
+- Design inputs:
+- Visual intent:
+- Screens, states, and user flows:
+- Interaction notes:
+- Responsive expectations:
+- Design-system constraints:
+- Accessibility concerns:
+- Unresolved design decisions:
 - Authority files likely affected:
 - Recommended next step:
 ```
 
 Keep the summary short. If the material is large, summarize the decision-relevant parts and link or name the local source path instead of copying it wholesale.
+
+Use the design fields only when the source includes design files, screenshots, wireframes, Figma exports, or UI references. If a design detail would change implementation, treat it as an open question until the user or owning PRD confirms it.
 
 ## Intake Workflow
 
@@ -110,8 +122,9 @@ Keep the summary short. If the material is large, summarize the decision-relevan
 3. Extract stable facts, assumptions, conflicts, and open questions.
 4. Name candidate requirements and non-goals only as candidates.
 5. If a Candidate Goal Frame is present, summarize whether it is stable, conflicting, incomplete, stale, or too task-like.
-6. Identify affected authority files.
-7. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, decision logging, architecture/security/schema/API update, or no action.
+6. If design files are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, and unresolved design decisions.
+7. Identify affected authority files.
+8. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, or no action.
 
 Stop before PRD drafting if the source material lacks:
 
@@ -173,4 +186,11 @@ List the questions that could change implementation.
 Review these screenshots and notes as local source inputs.
 Do not create beads yet.
 Tell me whether the Product Definition Gate is ready or what is missing.
+```
+
+```text
+Use Local Source Intake on this user packet, frontend design, and optional existing PRD.
+Treat every input as evidence, not authority.
+Classify stable facts, conflicts, stale inputs, open questions, design implications, candidate requirements, candidate non-goals, candidate acceptance signals, affected owner files, and the next safe Precode action.
+Do not update authority files, approve or amend a PRD, create or activate beads, or write code until I review the intake summary.
 ```

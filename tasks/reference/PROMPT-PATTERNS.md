@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-05-18
+Document version: v0.1.11
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -34,6 +34,27 @@ Before editing, confirm the active bead, the primary authority file, the files i
 
 ```text
 Use the Local Source Intake Protocol on these local materials. Treat them as evidence only. Summarize stable facts, conflicts, open questions, candidate requirements, and possible beads. Do not update authority files or write code.
+```
+
+## Engineer Initiation
+
+```text
+I am initiating PrecodeOS from user-provided source inputs.
+
+Inputs:
+- Precode Ingestion Packet: [path or pasted reviewed summary]
+- Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
+- Existing PRD, if any: [path]
+
+Treat these inputs as evidence, not authority. Do not write code yet.
+
+First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
+
+Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, design implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, and affected owner files.
+
+Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, design/architecture impact review, decomposition into candidate beads, or a narrow unblocker.
+
+Stop before updating authority files, approving a PRD, activating a bead, or coding.
 ```
 
 ## Product Constitution Review
