@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.1
-# Last updated: 2026-05-19
+# Version: v0.1.2
+# Last updated: 2026-05-21
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -19,7 +19,7 @@ import sys
 payload = json.loads(sys.argv[1])
 print(f"Build Loop Health: {payload.get('status', 'Watch')} - {payload.get('next_move', 'Run python3 scripts/loop-health.py --verbose for details.')}")
 PY
-bash scripts/record-check.sh -- bash scripts/validate-memory.sh
+bash scripts/record-check.sh -- bash scripts/validate-memory.sh --session-close
 python3 scripts/update-bead-closeout.py
 python3 scripts/os-health.py
 python3 scripts/bead-transition.py

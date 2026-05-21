@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-18
+Document version: v0.1.1
+Last updated: 2026-05-21
 
 ## What This Guide Is For
 
@@ -244,6 +244,8 @@ Name any missing information and stop for my review.
 ## Support Engineer Runbook
 
 Use this section when you are helping someone else adopt PrecodeOS.
+
+For a short support slot, start with the fast support flow in `docs/PRECODE-SUPPORT-RUNBOOK.md`, then use this guide for the setup mechanics.
 
 ### Preflight
 

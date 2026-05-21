@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-20
+Document version: v0.1.3
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -25,6 +25,23 @@ The support posture is:
 - no separate support handoff artifact is required
 
 PrecodeOS is not an app to launch. It is a repo-native operating layer: Markdown authority files, task contracts, adapters, scripts, and generated-evidence rules that live inside a project folder.
+
+## Fast Support Slot Flow
+
+Use this flow when a support engineer has a short onboarding, setup, or unblocker slot.
+
+1. Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.
+2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
+3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
+4. If Precode setup is the issue, use `docs/PRECODE-GUIDED-SETUP.md`. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. Run only the narrow checks that match the symptom, then explain the result in plain language.
+6. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
+
+Support can say:
+
+```text
+I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.
+```
 
 ## Case Priority
 
@@ -217,6 +234,21 @@ Key ideas to reinforce:
 
 If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
 
+## Demo And Engineering Readiness
+
+Use this section when a student is preparing to show or hand off a prototype during a cohort, workshop, or support slot.
+
+Before a demo or engineer session:
+
+- refresh or start the local app early enough to catch slow reloads
+- have auth, login, and required test accounts ready
+- skip onboarding during the demo unless onboarding is the product being tested
+- keep the demo focused on the value proposition and feedback-worthy slice
+- ask the student what exact feedback or technical unblock they need
+- separate "prototype runs" from "idea is validated"
+
+If the app does not start, loads slowly, or auth blocks the demo, move to `docs/PRECODE-TROUBLESHOOTING.md`. Do not use a demo deadline as a reason to skip active memory, validation, secrets boundaries, or user approval.
+
 ## Bootcamp Role Boundaries
 
 Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.
@@ -262,6 +294,8 @@ Support engineers own technical support and unblocking when needed:
 - manage the escalation workflow, ensuring that issues are resolved promptly and efficiently
 - explain the technical change plainly
 - avoid owning product direction, scope, acceptance, or evidence interpretation
+
+When routing is unclear, ask what decision is actually blocked. Product direction, scope, user evidence, and acceptance go back to the student with instructor support. Cohort navigation and confidence can involve mentors. Local setup, repo state, validation failures, local runtime, auth, and implementation blockers belong with support engineers. PrecodeOS package defects or unclear official guidance should be escalated to the Precode maintainer or lead support channel.
 
 Mentor involvement may be lightly noted when it materially affects student confidence, navigation, or routing. Do not turn mentorship into heavy evidence overhead.
 

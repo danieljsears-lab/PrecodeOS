@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.4
-# Last updated: 2026-05-17
+# Version: v0.1.5
+# Last updated: 2026-05-21
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -10,6 +10,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 json_output=false
 strict=false
 session_start=false
+session_close=false
 declare -a paths=()
 
 while [[ $# -gt 0 ]]; do
@@ -26,6 +27,10 @@ while [[ $# -gt 0 ]]; do
       session_start=true
       shift
       ;;
+    --session-close)
+      session_close=true
+      shift
+      ;;
     --changed-only)
       shift
       ;;
@@ -36,7 +41,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-python3 - "$repo_root" "$json_output" "$strict" "$session_start" "${paths[@]-}" <<'PY'
+python3 - "$repo_root" "$json_output" "$strict" "$session_start" "$session_close" "${paths[@]-}" <<'PY'
 from __future__ import annotations
 
 import json
@@ -48,7 +53,8 @@ root = Path(sys.argv[1])
 json_output = sys.argv[2] == "true"
 strict = sys.argv[3] == "true"
 session_start = sys.argv[4] == "true"
-raw_paths = sys.argv[5:]
+session_close = sys.argv[5] == "true"
+raw_paths = sys.argv[6:]
 
 issues: list[dict[str, object]] = []
 
@@ -118,6 +124,9 @@ expected_anchors = {
     "API.md": "api",
     "SECURITY.md": "security",
     "CODEBASE-GUIDE.md": "codebase-guide",
+}
+
+generated_anchors = {
     "PROGRESS.md": "progress",
     "OS-HEALTH.md": "os-health",
 }
@@ -126,6 +135,20 @@ for path, expected in expected_anchors.items():
     text = read(path)
     if not text:
         add(path, 1, "required Precode document is missing")
+        continue
+    if anchor(text) != expected:
+        add(path, 1, f"expected canonical anchor '{expected}'")
+    values = contract(text)
+    for key in ("AUTHORITY", "NOT_AUTHORITY", "LOAD_WHEN", "CLASS"):
+        if key not in values:
+            add(path, 1, f"missing authority contract field: {key}")
+
+require_generated_reports = strict or session_close
+for path, expected in generated_anchors.items():
+    text = read(path)
+    if not text:
+        if require_generated_reports:
+            add(path, 1, "required generated Precode report is missing")
         continue
     if anchor(text) != expected:
         add(path, 1, f"expected canonical anchor '{expected}'")
@@ -198,9 +221,11 @@ if len(in_progress) != 1:
 elif todo_fm.get("current_bead") != in_progress[0]:
     add("tasks/todo.md", 1, f"current_bead must match in_progress bead {in_progress[0]}")
 
-if strict:
-    for path in ("PROGRESS.md", "OS-HEALTH.md"):
+if require_generated_reports:
+    for path in generated_anchors:
         text = read(path)
+        if not text:
+            continue
         if "> CLASS: generated" not in text:
             add(path, 1, "generated reports must use CLASS: generated")
         if "Do not use this file" not in text:

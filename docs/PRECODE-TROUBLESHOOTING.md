@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-18
+Document version: v0.1.1
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -266,6 +266,84 @@ Safe path:
 
 Do not let early coding become implicit approval.
 
+### Local App Will Not Start Or Loads Too Slowly
+
+Likely causes:
+
+- commands are being run from the wrong folder
+- dependencies are missing or stale
+- the dev server is already running, hung, or on a different port
+- the project has not recorded its real app directory or checks
+- support is treating PrecodeOS itself as the app runtime
+
+First checks:
+
+```bash
+pwd
+git status
+ls
+```
+
+If the project has known package scripts, inspect them before running anything that installs or rewrites files.
+
+Safe path:
+
+- confirm whether this is the PrecodeOS package source or the student's target app
+- identify the app directory and expected dev command from `PROJECT-CONTEXT.md`, package files, or existing docs
+- restart or rerun only the narrow local command needed for the student's app
+- record any missing setup fact in the proper owner file after user approval
+
+Do not install dependencies, change package files, rewrite configuration, or edit app code unless the user approves a narrow technical fix.
+
+### Auth, Login, Or Onboarding Blocks A Demo
+
+Likely causes:
+
+- test credentials or accounts were not prepared
+- onboarding is being shown even though it is not the demo focus
+- auth setup depends on secrets, dashboards, or external services
+- support is trying to solve a product-flow decision as a technical bug
+
+First checks:
+
+```bash
+git status
+```
+
+Safe path:
+
+- ask whether auth or onboarding is core to the product being demonstrated
+- if not core, help the student reach the value-bearing screen without changing product scope
+- if credentials, dashboard setup, or secrets are involved, stop and ask for explicit user-controlled handling
+- if the auth flow itself is the feature, route scope and acceptance questions back to the student or instructor
+
+Do not paste secrets into prompts, commit credentials, bypass security casually, or decide that onboarding should be removed from the product.
+
+### Support Is Unsure Who Owns The Blocker
+
+Likely causes:
+
+- the blocker mixes product uncertainty with technical setup
+- the student is asking support to choose scope, evidence, or acceptance
+- a mentor, instructor, and support engineer are each seeing a different part of the issue
+- the agent is widening a support request into implementation
+
+First checks:
+
+```bash
+bash scripts/session-start.sh
+python3 scripts/next-step.py
+```
+
+Safe path:
+
+- if the blocked decision is product direction, scope, user evidence, or acceptance, route back to student-owned product work with instructor support
+- if the blocked issue is local setup, repo state, validation, runtime, auth, or a narrow implementation failure, keep it with support
+- if the blocked issue is PrecodeOS package behavior or unclear official guidance, escalate rather than inventing policy
+- name the route in the support closeout so the student knows where to go next
+
+Do not let technical support become hidden product ownership.
+
 ## Process Phase Index
 
 | Phase | Common failure | First guide |
@@ -276,6 +354,7 @@ Do not let early coding become implicit approval.
 | Owner-file adaptation | Assumptions are written as settled facts | `docs/PRECODE-USER-GUIDE.md` |
 | Validation | Active memory or inventory checks fail | this guide |
 | First session | Current bead or next step is unclear | this guide |
+| Local runtime | App will not start, reloads slowly, or auth blocks a demo | this guide |
 | Repair | Files moved, renamed, overwritten, or generated reports edited | `tasks/reference/RECOVERY-PROTOCOL.md` |
 
 ## Script And Check Index

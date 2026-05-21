@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.12
-Last updated: 2026-05-19
+Document version: v0.1.13
+Last updated: 2026-05-21
 
 ## Project
 
@@ -49,7 +49,7 @@ Use only these files as active memory:
 - `bash scripts/checkpoint.sh`
 - `bash scripts/session-close.sh`
 - `bash scripts/handoff.sh [next-agent]`
-- `bash scripts/validate-memory.sh [--strict|--session-start|--json|changed-path]`
+- `bash scripts/validate-memory.sh [--strict|--session-start|--session-close|--json|changed-path]`
 - `bash scripts/record-check.sh -- <command>`
 - `bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command "<summary>"`
 - `python3 scripts/bead-transition.py [--approve]`

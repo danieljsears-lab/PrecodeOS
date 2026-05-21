@@ -57,7 +57,9 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 
 If you are using PrecodeOS in a project, start with [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). It is the day-to-day operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
 
-If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). If state, setup, validation, or generated reports feel confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md).
+If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
+
+If state, setup, validation, app startup, auth, or generated reports feel confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) before editing. If you are setting up PrecodeOS in a target project, keep [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) open beside the runbook.
 
 If you are still learning what PrecodeOS is, use the compass below.
 
@@ -242,5 +244,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.29
+Document version: v0.1.30
 Last updated: 2026-05-21
