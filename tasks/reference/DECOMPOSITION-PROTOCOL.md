@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-11
+Document version: v0.1.5
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -137,6 +137,8 @@ Execution beads may produce:
 Execution beads should not reshape product definition. If new product scope appears, stop and promote it through PRD or decision ownership.
 
 When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
+
+External sprint plans, Ember `Backend-dev-plan.md` sprints, backend implementation lists, or client project plans are source inputs for decomposition, not beads by default. Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when those plans arrive from a client engagement. Precode may split, merge, reorder, defer, or reject external sprint items so each candidate bead still has one outcome, one primary authority, bounded files in play, checks, and stop conditions.
 
 ## Appetite And Timebox
 

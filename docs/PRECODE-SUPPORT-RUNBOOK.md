@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
+Document version: v0.1.5
 Last updated: 2026-05-21
 
 ## Purpose
@@ -294,6 +294,37 @@ For design-heavy inputs, the engineer should explicitly identify:
 
 Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, `PRODUCT.md`, `PROJECT-CONTEXT.md`, or another owner file, current authority wins until the user approves an amendment.
 
+## Client Engagement Intake
+
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when a client arrives with an existing project, external PRD, frontend design files, Ember Handover Agent artifacts, `Backend-dev-plan.md`, backend sprint plans, or an existing codebase.
+
+Support and engineers should answer immediate engagement questions this way:
+
+- Separate backend repo, monorepo, or single repo is a client-owned topology decision. Precode records the decision in `PROJECT-CONTEXT.md` and layout conventions in `CODEBASE-GUIDE.md`; it does not prescribe the topology.
+- External PRDs and product specs feed Local Source Intake and PRD normalization. They do not replace Precode PRD shards.
+- Ember handover artifacts and backend sprint plans feed Local Source Intake and Decomposition. They do not become parallel Precode execution tracks by default.
+- Existing codebases are valid source inputs, inspected read-only first, then mapped to owner files, conflicts, and setup or PRD/adaptation needs.
+- Client PRDs that do not match Precode's PRD shape are normalized through Local Source Intake first, then the PRD Protocol creates or amends a Precode PRD shard.
+
+Copyable client engagement prompt:
+
+```text
+Use the Client Engagement Intake Protocol.
+
+Client materials:
+- Existing project or repository: [path/link/status]
+- Client PRD or product spec: [path/link]
+- Frontend design files, screenshots, Figma export, or design-system notes: [path/link]
+- Ember Handover Agent or backend plan, including Backend-dev-plan.md if present: [path/link]
+- Sprint plan or implementation task list: [path/link]
+
+Treat all client materials as evidence, not authority. Do not write code, approve a PRD, create or activate beads, change repo topology, run installers, mutate external systems, or overwrite project files.
+
+First classify the entry state, repo topology, existing codebase facts, source conflicts, privacy or secrets redactions, owner files likely affected, and whether the client PRD needs normalization into a Precode PRD shard.
+
+Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, PRD amendment, architecture/API/data/security owner-file update, decomposition into candidate beads, or a narrow unblocker.
+```
+
 ## Demo And Engineering Readiness
 
 Use this section when a student is preparing to show or hand off a prototype during a cohort, workshop, or support slot.
@@ -399,3 +430,4 @@ Your durable project state is in the Precode files, not in my notes. Start next 
 - `docs/PRECODE-USER-GUIDE.md` for day-to-day use
 - `docs/PRECODE-FILE-INVENTORY.md` for the canonical file dictionary
 - `tasks/reference/RECOVERY-PROTOCOL.md` for conservative repair
+- `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` for client PRDs, external designs, backend plans, sprint plans, and existing codebases

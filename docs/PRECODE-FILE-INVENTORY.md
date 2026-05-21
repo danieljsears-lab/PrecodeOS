@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.37
-Last updated: 2026-05-20
+Document version: v0.1.38
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -197,7 +197,8 @@ Adapters and shims point back to the shared operating model. They must not becom
 |---|---|---|---|
 | `tasks/reference/*.md` | reference | Protocols and playbooks for specific Precode behaviors, with standard license and copyright metadata. | Loaded conditionally by active bead or workflow need. |
 | `tasks/reference/PRD-PROTOCOL.md` | reference | Product Definition Gate, alignment summary, destination PRD rules, and PRD-to-bead requirements. | Governs PRD creation and approval before feature implementation. |
-| `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` | reference | Intake of local notes, docs, screenshots, and research as evidence. | Feeds PRD-ready summaries without creating authority. |
+| `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` | reference | Intake of local notes, docs, screenshots, client handoff artifacts, existing codebases, and research as evidence. | Feeds PRD-ready summaries without creating authority. |
+| `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` | reference | Client-engagement intake for external PRDs, design files, backend handoff plans, sprint plans, repo topology choices, and existing codebases. | Normalizes client materials into Precode owner files, PRD shards, and candidate beads without making external artifacts authority. |
 | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` | reference | Advisory product-discovery validation before PRD shaping, including evidence ladder, assumption categories, current-workaround analysis, Core Four methods, Discovery Summary format, and `proceed | pause | narrow | kill` recommendations. | Used when worth-building uncertainty is higher than what-to-build uncertainty; feeds Local Source Intake or Idea-to-PRD as evidence only. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |

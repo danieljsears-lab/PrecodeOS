@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-18
+Document version: v0.1.6
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -29,6 +29,8 @@ Execution beads are journey units derived from that destination. `tasks/todo.md`
 Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD amendment, or product drift checks. `PRODUCT.md` orients the product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. It does not approve features, activate beads, or replace PRD shards.
 
 Use `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` when the idea is sourced from local notes, docs, screenshots, chat summaries, issue exports, research files, or manual drafts.
+
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a client PRD, existing codebase, frontend design handoff, Ember/backend plan, sprint plan, or repo-topology decision.
 
 Use `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` when the idea is rough, ambiguous, customer-facing, or still needs guided framing.
 
@@ -126,6 +128,22 @@ Ask only questions that can change product definition, risk, scope, or verificat
 When the idea may change product promise, target users, non-goals, current bets, success signals, or design and voice direction, load `PRODUCT.md` and check fit before drafting requirements.
 
 If the request comes from notes, docs, GitHub issues, research, screenshots, chat summaries, issue exports, or manual drafts, use the Local Source Intake Protocol and summarize those inputs in the PRD `Source Inputs` section. Source inputs are evidence, not authority.
+
+### 1a. External PRD Normalization
+
+When a client brings an external PRD, product spec, design handoff, backend plan, sprint plan, or existing codebase, do not treat that artifact as a Precode PRD.
+
+First use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` and `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` to summarize:
+
+- source inputs and references
+- stable client facts
+- stale or conflicting inputs
+- open questions that could change implementation
+- repo topology and existing codebase facts when relevant
+- design, architecture, API, schema, security, or acceptance impacts
+- owner files likely affected
+
+Then create or amend a Precode PRD shard using the normal PRD workflow. The external PRD remains source evidence until the Precode PRD shard is reviewed and approved.
 
 ### 2. Align Before Writing Requirements
 

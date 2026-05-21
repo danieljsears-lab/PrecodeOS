@@ -3,13 +3,13 @@
 
 > AUTHORITY: Local source intake rules, source summary format, evidence boundaries, privacy exclusions, and promotion paths for turning local project material into Precode-owned planning artifacts.
 > NOT_AUTHORITY: Active memory, product decisions, approved requirements, active task selection, route structure, schema definitions, implementation plans, or generated progress state.
-> LOAD_WHEN: Turning local notes, docs, screenshots, chat summaries, issue exports, research files, diagrams, or manual drafts into PRD-ready source summaries.
+> LOAD_WHEN: Turning local notes, docs, screenshots, chat summaries, issue exports, research files, diagrams, manual drafts, client handoff artifacts, or existing codebases into PRD-ready source summaries.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
+Document version: v0.1.5
 Last updated: 2026-05-21
 
 ## Purpose
@@ -48,6 +48,8 @@ Supported source types include:
 - Product Ideation Workbook Precode Ingestion Packets, including Candidate Goal Frames
 - user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
 - existing PRDs or product specs that need Precode review, amendment, or adaptation
+- existing codebases, repository snapshots, route trees, package manifests, tests, CI configs, and README conventions inspected read-only
+- client backend handover plans, Ember Handover Agent artifacts such as `Backend-dev-plan.md`, sprint plans, and implementation task lists
 - customer quotes or feedback snippets
 - existing feature, architecture, API, schema, security, or acceptance docs
 - hand-written task lists or migration notes
@@ -67,6 +69,8 @@ Source inputs are evidence, not authority.
 Do not let local notes, screenshots, exports, or generated summaries drive active task selection directly. Promote only stable conclusions into the owning Precode file.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether source material should become intake evidence, PRD shaping, a challenge-planning bead, or a narrow execution bead.
+
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when source material comes from a client engagement, existing repo, external PRD, Ember/backend handoff, sprint plan, or repo-topology decision.
 
 Examples:
 
@@ -107,6 +111,9 @@ Source summary:
 - Design-system constraints:
 - Accessibility concerns:
 - Unresolved design decisions:
+- Existing codebase facts:
+- Repo topology:
+- External plan or sprint inputs:
 - Authority files likely affected:
 - Recommended next step:
 ```
@@ -114,6 +121,8 @@ Source summary:
 Keep the summary short. If the material is large, summarize the decision-relevant parts and link or name the local source path instead of copying it wholesale.
 
 Use the design fields only when the source includes design files, screenshots, wireframes, Figma exports, or UI references. If a design detail would change implementation, treat it as an open question until the user or owning PRD confirms it.
+
+Use the existing-codebase and external-plan fields only when the source includes a repository, codebase snapshot, backend plan, sprint plan, or implementation task list. Inspect those sources read-only during intake and treat conflicts with current code, active memory, approved current PRDs, or owner files as open questions or amendment candidates.
 
 ## Intake Workflow
 
@@ -124,7 +133,8 @@ Use the design fields only when the source includes design files, screenshots, w
 5. If a Candidate Goal Frame is present, summarize whether it is stable, conflicting, incomplete, stale, or too task-like.
 6. If design files are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, and unresolved design decisions.
 7. Identify affected authority files.
-8. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, or no action.
+8. If an existing codebase or external plan is present, summarize repo topology, app directories, existing checks, implementation constraints, sprint-plan inputs, conflicts, and stale assumptions.
+9. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, or no action.
 
 Stop before PRD drafting if the source material lacks:
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
+Document version: v0.1.12
 Last updated: 2026-05-21
 
 ## Purpose
@@ -55,6 +55,25 @@ Then use Local Source Intake to summarize stable facts, assumptions, conflicts o
 Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, design/architecture impact review, decomposition into candidate beads, or a narrow unblocker.
 
 Stop before updating authority files, approving a PRD, activating a bead, or coding.
+```
+
+## Client Engagement Intake
+
+```text
+Use the Client Engagement Intake Protocol.
+
+Client materials:
+- Existing project or repository: [path/link/status]
+- Client PRD or product spec: [path/link]
+- Frontend design files, screenshots, Figma export, or design-system notes: [path/link]
+- Ember Handover Agent or backend plan, including Backend-dev-plan.md if present: [path/link]
+- Sprint plan or implementation task list: [path/link]
+
+Treat all client materials as evidence, not authority. Do not write code, approve a PRD, create or activate beads, change repo topology, run installers, mutate external systems, or overwrite project files.
+
+First classify the entry state, repo topology, existing codebase facts, source conflicts, privacy or secrets redactions, owner files likely affected, and whether the client PRD needs normalization into a Precode PRD shard.
+
+Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, PRD amendment, architecture/API/data/security owner-file update, decomposition into candidate beads, or a narrow unblocker.
 ```
 
 ## Product Constitution Review
