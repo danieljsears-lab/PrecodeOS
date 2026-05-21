@@ -75,6 +75,20 @@ It helps you find current authority, keep scope bounded, prove what changed, han
 - Founder or student projects that need structure without heavyweight process.
 - Product discovery, PRDs, small execution beads, and recorded proof.
 
+## When To Use PrecodeOS
+
+PrecodeOS is worth it when the cost of getting lost is bigger than the cost of adding structure.
+
+| Use PrecodeOS when... | Skip it when... |
+|---|---|
+| You are building a real product, multi-page app, or MVP you expect to keep improving. | You are making a quick sketch, tiny demo, or throwaway experiment. |
+| The idea is fuzzy and needs to become buildable instructions. | You already know the exact change and it is small, obvious, and low-risk. |
+| AI needs to remember decisions across multiple steps, sessions, or files. | You only need one quick task and drift would not really matter. |
+| You want checkpoints because mistakes, regressions, or confusion would be painful. | Mistakes are cheap and you are comfortable moving fast without much process. |
+| Future-you, another human, a client, or another agent will need to understand what happened. | It is just you for an hour and there is nothing worth preserving. |
+
+**The bright line**: <u>use PrecodeOS when you are building something you care about, expect to revisit, or do not want AI to slowly derail. Skip it when you are doing a quick sketch, demo, or throwaway experiment.</u>
+
 ## Quickstart
 
 Clone the public repository and run the first memory check:
@@ -228,5 +242,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.28
-Last updated: 2026-05-20
+Document version: v0.1.29
+Last updated: 2026-05-21
