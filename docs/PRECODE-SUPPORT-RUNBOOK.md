@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-21
+Document version: v0.1.6
+Last updated: 2026-05-22
 
 ## Purpose
 
@@ -340,6 +340,8 @@ Before a demo or engineer session:
 
 If the app does not start, loads slowly, or auth blocks the demo, move to `docs/PRECODE-TROUBLESHOOTING.md`. Do not use a demo deadline as a reason to skip active memory, validation, secrets boundaries, or user approval.
 
+For student-by-student completion evidence, use `tasks/templates/STUDENT-COMPLETION-EVIDENCE-PACKET.md`. The packet is the shared progress artifact for the student, instructor, and support engineer. It should stay short, public-safe, and evidence-only: instructors can help summarize product evidence, support engineers can note narrow technical unblocks, and the student owns product decisions, approvals, acceptance, and next direction.
+
 ## Bootcamp Role Boundaries
 
 Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.
@@ -390,7 +392,7 @@ When routing is unclear, ask what decision is actually blocked. Product directio
 
 Mentor involvement may be lightly noted when it materially affects student confidence, navigation, or routing. Do not turn mentorship into heavy evidence overhead.
 
-For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. The Student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction.
+For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. The Student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction. Use `tasks/templates/STUDENT-COMPLETION-EVIDENCE-PACKET.md` when the cohort needs a consistent completion snapshot.
 
 ## Repair Path For Incorrect Setup
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.21
-Last updated: 2026-05-19
+Document version: v0.7.22
+Last updated: 2026-05-23
 
 
 
@@ -156,6 +156,7 @@ Do this before letting an agent edit files:
 - Confirm the agent is using Precode instructions.
 - Ask the agent to load active memory only: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 - Ask the agent to identify the active bead and primary authority file.
+- Work on one feature slice or bead at a time.
 - Do not approve broad changes, sensitive work, dependency changes, production actions, or the next bead yet.
 
 Say this:
@@ -173,7 +174,7 @@ Expect this:
 - stop conditions
 - blockers or open questions
 
-Stop if: the agent cannot explain the current bead in plain English.
+Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.
 
 ## Check Build Loop Health
 
@@ -249,6 +250,7 @@ Precode works because specific Markdown files have specific names, locations, he
 
 Hard rules:
 
+- Do not rename the project root folder casually. That folder is the repo that mirrors GitHub and contains both the app code and the Precode operating files.
 - Do not move Markdown files.
 - Do not rename Markdown files.
 - Do not directly edit Markdown files until the agent has identified which file owns the fact and what structure must be preserved.
@@ -264,6 +266,7 @@ Do this instead:
 |---|---|
 | Change a Precode file | Ask the agent which owner file should change and what validation should run. |
 | Rename or reorganize files | Create a dedicated maintenance bead first. |
+| Rename the project folder | Stop and ask an engineer or maintainer how the local folder, Git remote, GitHub repo, and editor workspace should stay connected. |
 | Edit a generated report | Regenerate it with the correct script instead of editing it by hand. |
 | Record a decision | Put it in `DECISIONS.md` or ask which owner file should hold it. |
 | Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
@@ -281,6 +284,12 @@ Say this before moving or renaming anything:
 
 ```text
 I want to rename or move a Precode file. Stop and tell me what scripts, anchors, links, authority contracts, or active-memory rules this could break.
+```
+
+Say this before renaming the project folder:
+
+```text
+I want to rename the project root folder. Stop and tell me what this could break in Git, GitHub, my editor workspace, app paths, and Precode validation before anything is renamed.
 ```
 
 Say this if something already went wrong:
@@ -354,6 +363,8 @@ Why this matters: A session needs a clean beginning, bounded middle, and recorde
 
 Keep this table open during normal work.
 
+Beginner rule: one bead, one feature slice, one focused chat. When a bead is accepted or you are moving to the next feature slice, start a fresh chat, reload active memory, and make the agent confirm the new bead before coding again.
+
 | Step | User action | Good output | Stop if |
 |---|---|---|---|
 | Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
@@ -365,8 +376,15 @@ Keep this table open during normal work.
 | Checkpoint | Pause when confused or scope grows. | Restated task, changed files, next check. | It resists narrowing. |
 | Close | Ask for session close. | Closeout evidence and review state. | It starts the next bead. |
 | Approve | Approve only after review. | Accepted, revise, split, blocked, or transition. | Manual verification is unclear. |
+| Commit | Commit and push each completed, checked slice. | A small commit named for the user-visible slice or repair. | Changes pile up across features or the name is vague, such as `updates` or `fixes`. |
 
 Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.
+
+Use this before committing:
+
+```text
+Give me a commit-ready summary for this completed slice: files changed, evidence recorded, manual verification still needed, and a concise commit name that describes the user-visible feature or repair.
+```
 
 ## Checkpoint Before Context Gets Crowded
 
@@ -764,6 +782,8 @@ Scope creep, stale context, confident wrong code, vague done, skipped checks, sk
 Start every serious session with `bash scripts/session-start.sh`, then make the agent explain the bead before coding.
 
 `session-start.sh` now also displays the `next-step` router decision. If you run `python3 scripts/next-step.py` separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet.
+
+After a checked slice is accepted, commit and push it before starting the next slice. Name the commit for the visible outcome, such as `add onboarding checklist` or `repair login redirect`, not a vague label like `updates`.
 
 #### What if I do not understand a file?
 

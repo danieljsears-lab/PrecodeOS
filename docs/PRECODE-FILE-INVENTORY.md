@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.38
-Last updated: 2026-05-21
+Document version: v0.1.39
+Last updated: 2026-05-22
 
 ## Purpose
 
@@ -46,7 +46,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Reader-facing docs | `docs/*.md` | Long-form human guides for philosophy, guided setup, support assistance, troubleshooting, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing. |
-| Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, not authority. |
+| Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, completion evidence, and public-safe cohort snapshots, not authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
 | Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |

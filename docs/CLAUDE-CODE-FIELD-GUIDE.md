@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-17
+Document version: v0.1.7
+Last updated: 2026-05-23
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -80,12 +80,15 @@ If Claude needs to compact, restart, or hand off, ask for a Context Pack first. 
 
 Do this every single session, before you type anything to Claude.
 
+Field rule: one bead, one feature slice, one chat. When you finish and accept a slice, commit it, push it, then start a fresh chat for the next slice.
+
 ### The Pre-Session Checklist
 
 - [ ] I know which bead (task card) we're working on today
 - [ ] I can say in one sentence what "done" looks like for this bead
 - [ ] I am not expecting Claude to figure out what to build — I have a specific task
 - [ ] I have not asked Claude to work on two things at once
+- [ ] I am in the project root folder, and I have not renamed it
 
 **Fill in before every session:**
 
@@ -480,7 +483,7 @@ This is actually a feature, not a bug. It means you control what Claude knows.
 
 ### The golden rule: one topic per task
 
-**One bead. One topic. One session focus.**
+**One bead. One feature slice. One chat.**
 
 Mixing topics in a single session is the fastest way to lose control. When you ask Claude to work on two things at once:
 - It loses track of scope
@@ -489,6 +492,8 @@ Mixing topics in a single session is the fastest way to lose control. When you a
 - You can't tell what changed or why
 
 If a new idea comes up mid-session: write it down. Don't ask Claude to switch. Finish the current bead first.
+
+When the bead is accepted, ask for a commit-ready summary, commit and push the slice, then open a fresh chat for the next feature slice. Do not let one long chat carry multiple features.
 
 **Fill in when a new idea comes up:**
 
@@ -521,6 +526,36 @@ to be, what files you'll touch, and what done looks like.
 
 ---
 
+### Commit before the next slice
+
+Do not let changes pile up across features. After one slice is checked and accepted, ask Claude for a summary, then commit and push before starting the next slice.
+
+Use a name that describes the visible outcome or repair:
+
+```text
+add onboarding checklist
+repair login redirect
+tighten beginner setup guide
+```
+
+Avoid names that only describe activity:
+
+```text
+updates
+fixes
+changes
+```
+
+Ask Claude:
+
+```text
+Give me a commit-ready summary for this completed slice: files changed,
+evidence recorded, manual verification still needed, and a concise commit
+name that describes the user-visible feature or repair.
+```
+
+---
+
 ### Slash commands
 
 In many Claude Code setups, you can use slash commands for quick actions:
@@ -542,6 +577,7 @@ In many Claude Code setups, you can use slash commands for quick actions:
 **Clear and restart when:**
 - Claude starts referencing the wrong task
 - You've switched topics mid-session (you shouldn't, but if you did)
+- The current bead was accepted and you are starting the next feature slice
 - Claude is repeating the same wrong approach
 - The session has gone on a long time and Claude seems to have lost the thread
 
@@ -549,6 +585,8 @@ In many Claude Code setups, you can use slash commands for quick actions:
 - You're still working on the same bead
 - Claude's last response was correct and on-scope
 - You're just asking a follow-up question about the current task
+
+Before clearing for the next feature slice, make sure the accepted slice has evidence, a commit, and a push. A fresh chat is clean context; it is not a replacement for saving the work in Git.
 
 ---
 
@@ -650,6 +688,22 @@ Precode workflow explicitly allows it and I approve.
 
 ---
 
+### 7. Root Folder Renamed
+
+**What happened:** The project root folder was renamed casually, or Claude suggests renaming it as cleanup.
+
+**Why it happens:** Beginners sometimes treat the folder name like a desktop label, but it is the repo that connects your editor, Git, GitHub, app paths, and Precode files.
+
+**Recovery:**
+```
+STOP. Do not rename, move, copy, delete, or overwrite anything else.
+Tell me the current project root, Git remote, branch, changed files, and
+whether Precode validation still runs. Explain the safest repair path
+before making any changes.
+```
+
+---
+
 ## Quick Reference Card
 
 *Keep this visible while you work.*
@@ -704,9 +758,10 @@ Reviewed + accepted    ← Strongest. You signed off.
 
 ### Memory Rules at a Glance
 
-- **One bead. One topic. One session.** Never split your attention.
+- **One bead. One feature slice. One chat.** Never split your attention.
 - **Load context first. Always.** Never "continue from yesterday."
 - **Scope explicitly.** Tell Claude what NOT to touch, not just what to build.
+- **Commit small checked slices.** Push before starting the next slice.
 - **Ask Claude to confirm** what it understood before it starts.
 - **`/clear` when confused.** Reset + reload beats spiraling.
 
