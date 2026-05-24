@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="PrecodeOS docs-html.py">
+  <meta name="generated-at" content="2026-05-24">
+  <title>PrecodeOS Manifesto · PrecodeOS Docs</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1c2520;
+  --muted: #637067;
+  --line: #d8dfda;
+  --paper: #fffdf8;
+  --wash: #f7f1e8;
+  --wash-2: #edf5f2;
+  --accent: #176c63;
+  --accent-2: #b65332;
+  --accent-3: #284f8f;
+  --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255,253,248,.94), rgba(247,241,232,.98)),
+    var(--wash);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+.shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+}
+.brand { display: grid; gap: 4px; margin-bottom: 22px; }
+.brand strong { font-size: 18px; }
+.brand span, .notice, .meta, .toc a, .doc-card p, .lane p { color: var(--muted); }
+.notice {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent-2);
+  background: #fffaf1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.nav-group { margin-top: 22px; }
+.nav-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+main { min-width: 0; }
+.hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
+.hero { display: grid; gap: 18px; padding-top: 58px; }
+.eyebrow {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: 0; }
+h1 { max-width: 850px; margin: 0; font-size: 48px; }
+h2 { margin-top: 42px; font-size: 28px; }
+h3 { margin-top: 30px; font-size: 21px; }
+h4 { margin-top: 24px; font-size: 17px; }
+.lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
+.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.lane, .doc-card, .page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.lane { padding: 18px; }
+.lane h2 { margin: 0 0 8px; font-size: 22px; }
+.lane ul, .toc ul { margin: 12px 0 0; padding-left: 20px; }
+.doc-list { display: grid; gap: 12px; margin-top: 18px; }
+.doc-card { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--ink); }
+.doc-card:hover { border-color: var(--accent); }
+.doc-card strong { font-size: 18px; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+.article > :first-child { margin-top: 0; }
+.article p, .article li { max-width: 78ch; }
+.toc {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, .88);
+  padding: 16px;
+}
+.toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
+.toc .level-3 { padding-left: 12px; }
+code {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: #f3f0e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .92em;
+}
+pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #1d2521;
+  color: #f8fbf7;
+}
+pre code { border: 0; padding: 0; background: transparent; color: inherit; }
+blockquote {
+  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 10px 18px;
+  background: var(--wash-2);
+  color: #314139;
+}
+.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
+.page-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.page-nav a { padding: 14px; color: var(--ink); text-decoration: none; }
+.page-nav span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(--muted); font-size: 13px; }
+@media (max-width: 920px) {
+  .shell { display: block; }
+  .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .layout { display: block; }
+  .toc { position: relative; top: auto; margin-top: 18px; }
+  h1 { font-size: 36px; }
+}
+@media (max-width: 620px) {
+  .hero, .content { padding: 30px 18px; }
+  .article { padding: 22px; }
+  .page-nav { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    
+<aside class="sidebar">
+  <div class="brand">
+    <strong>PrecodeOS Docs</strong>
+    <span>Generated public reading surface</span>
+  </div>
+  <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
+  <nav class="nav-group" aria-label="Docs">
+    <p class="nav-label">Compass</p>
+    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link active" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-FILE-INVENTORY.html">PrecodeOS File Inventory</a>
+  </nav>
+</aside>
+
+    <main>
+      
+<section class="hero">
+  <p class="eyebrow">PrecodeOS Doc</p>
+  <h1>PrecodeOS Manifesto</h1>
+  <p class="lede">The Precode Answer</p>
+  <p class="meta"><a href="../docs/PRECODE-MANIFESTO.md">Source Markdown</a><span>v0.1.14</span><span>Updated 2026-05-17</span></p>
+</section>
+<section class="content layout">
+  <article class="article">
+    <h2 id="the-precode-answer">The Precode Answer</h2>
+<p>Canonical site: <code>https://www.precodeos.org</code>.</p>
+<p>PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See <code>NOTICE</code> and <code>TRADEMARK.md</code> for license, attribution, and brand-use guidance.</p>
+<p>We believe AI coding does not need another autonomous agent as much as it needs a repo-owned control layer.</p>
+<p>PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.</p>
+<p>In plain English: Precode lives inside your project folder, keeps the important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.</p>
+<p>For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.</p>
+<p>It does not run the agent; you run the agent.</p>
+<p>It gives any agent a tiny active memory, clear authority boundaries, one approved task, recorded evidence, and human gates so fast AI coding stays understandable, bounded, and recoverable.</p>
+<p>Precode is not anti-AI. Precode is anti-AI-drift. This distinction is critical.</p>
+<p>It is not here to kill ambition. It is here to keep ambition oriented.</p>
+<p>It gives builders rails without taking away the wheel.</p>
+<h2 id="why-the-name">Why The Name</h2>
+<p>“Precode” names the work that must happen before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means Precode is the small operating layer around the agent and the repo, not a replacement for the agent, the app, or the builder’s judgment.</p>
+<h2 id="builders-are-the-future">Builders Are The Future</h2>
+<p>We believe non-traditional builders are the future.</p>
+<p>AI coding agents have changed who gets to build software. It&#x27;s a magical moment in history. People once locked-out of building by lack of experience, technical fluency, knowledge role, tooling, process, or budget can now turn ideas into working software.</p>
+<p>Founders. Operators. Creators. Domain Experts. Students. Curious beginners.</p>
+<p>They are the reason Precode exists. Precode exists to enable them, empower them, support them, and protect their momentum without taking away their agency.</p>
+<p>The issue is not that new builders lack talent. The issue is that the AI coding tools give them too much power before guidance.</p>
+<p>The shift is loud. The drift is quiet.</p>
+<p>The shift gives builders power. Quiet drift takes their bearings.</p>
+<p>Precode exists between the shift and the drift.</p>
+<h2 id="the-problem">The Problem</h2>
+<p>We believe the core problem is not that AI coding agents cannot write good code. They can write excellent code.</p>
+<p>The core problem is that they can write code faster with less oversight than new builders can understand, verify, direct, and recover from it. The human problem is missing judgment. The agent problem is confident motion. The system problem is lost project truth.</p>
+<p>Intent drifts from implementation, scope drifts from the approved task, confidence drifts from evidence, and generated output drifts from human understanding.</p>
+<p>For technical builders, the AI coding tool capability is real. LLMs and agent harnesses are powerful. They have crossed a threshold. Code is data-dense, precise, text-based, and verifiable. A perfect combination for experienced developers.</p>
+<p>For non-technical builders, the vibe coding pitch is seductive. Feel a vibe. Describe what you want. Be an approval monkey for code you don&#x27;t understand. Let the agent build it. Ship whatever emerges. Repeat.</p>
+<p>That kind of works in a demo. Sometimes. But a demo is not a working system. Ever.</p>
+<p>The promise breaks when real projects start to scale and require product judgment, architecture choices, verification and security, deployment safety, recovery, and durable memory.</p>
+<p>&lt;u&gt;Vibe coding gives beginners acceleration and top speed before it gives them steering or brakes.&lt;/u&gt; It&#x27;s exhilirating. And dangerous.</p>
+<p>The builder still owns the product, but the project can outrun the builder. Precode exists to add the map, the steering, the brake, and the recovery system. Precode exists to close that gap.</p>
+<h2 id="code-is-not-understanding">Code Is Not Understanding</h2>
+<p>We believe code is not understanding.</p>
+<p>AI can generate code faster than a beginner can build a mental map of what that code means.</p>
+<p>Code is a liability. Understanding is the asset.</p>
+<p>Code has value only when it produces functionality the builder can trust, explain, maintain, and change. Without understanding, code becomes weight: more to maintain, more to secure, more to debug, more to fear.</p>
+<p>Precode stands in a long tradition that treats software as understanding made operational, not output made impressive.</p>
+<p>It lets agents inspect, draft, implement, explain, check, summarize, and propose, but the work must stay human-owned. The agent may move fast, but the project must remain understandable; the agent may generate code, but the builder must keep ownership of intent; the agent may sound confident, but the repo must preserve evidence.</p>
+<p>A project is not alive because it runs. It is alive because someone can still understand it, question it, change it, and recover it.</p>
+<h2 id="the-line-precode-holds">The Line Precode Holds</h2>
+<p>We believe this is the line Precode holds: acceleration vs. steering, speed vs. judgment, motion vs. progress, easy vs. simple.</p>
+<p>Speed is a gift until it outruns direction. The easiest prompt can create the hardest system to understand, and code can change while the project loses its way.</p>
+<p>Capability vs. permission. Confidence vs. evidence. Output vs. understanding.</p>
+<p>An agent can do many things, but fluent output is not proof, certainty is not a check, and receiving code is not the same as owning what it means.</p>
+<p>Chat memory vs. repo memory. Magic vs. durable learning. Drift vs. recovery. Agent output vs. human ownership.</p>
+<p>The conversation fades, but the project must remember. The point is not only to receive software; the point is to become more capable while building it.</p>
+<p>Drift often happens quietly. Lurking in the shadows and underneath the bed. Unseen and unknown. The agent sounds confident, the project appears to move, code gets written, and things seem normal until checks fail, scope grows, files sprawl, blockers appear, bugs derail progress, or confidence collapses.</p>
+<p>Precode moderates speed to the conditions. Speed must answer to understanding, proof, risk, and recovery.</p>
+<p>Capability is not permission. Precode inserts judgment between ability and action by asking whether this is the active task, who owns the fact, what is out of scope, what evidence will prove it, what good looks like, what risk it touches, what needs human approval, and what happens if it goes wrong.</p>
+<p>These questions are not bureaucracy. They are the steering wheel.</p>
+<h2 id="core-values-and-principles">Core Values And Principles</h2>
+<p>We believe five values should guide Precode without turning the manifesto into an operating rulebook.</p>
+<p>Human Agency: builders own intent, approval, and acceptance. Agents propose, explain, and implement. They do not own the product.</p>
+<p>Understanding: builders should not be reduced to approving code they cannot explain. Precode helps them build a mental map over time.</p>
+<p>Evidence: confidence is not evidence. Work is accepted because it is proven.</p>
+<p>Restraint: speed matters. So do scope, risk, judgment, and recovery. The system should make it easy to stop before the wrong work gets expensive.</p>
+<p>Recoverability: drift, blockers, and mistakes will happen. A good system helps the builder recover without losing the thread.</p>
+<p>These principles turn AI coding from a burst of motion into a repeatable practice:</p>
+<ul><li>Active memory stays tiny.</li><li>The repo remembers what chat forgets.</li><li>One active bead at a time.</li><li>Every durable fact needs an owner file.</li><li>Generated reports are evidence, not authority.</li><li>Agents may propose; humans approve.</li><li>Confidence is not evidence.</li><li>Sensitive work gets stronger gates.</li><li>Stop conditions are a feature, not friction.</li><li>Recovery is part of the system.</li><li>Learning accumulates in reviewable files.</li></ul>
+<h2 id="what-precode-refuses-and-gives">What Precode Refuses And Gives</h2>
+<p>We believe refusing the wrong things is part of protecting the builder.</p>
+<p>Precode refuses infinite context as a substitute for clarity, and gives builders tiny active memory. It refuses chat as project memory, and gives owner files for truth. It refuses confidence as proof, and gives recorded evidence.</p>
+<p>It refuses hidden product decisions inside implementation, and gives PRDs when ideas are fuzzy. It refuses uncontrolled next-task momentum, and gives beads, stop conditions, and human-approved transitions.</p>
+<p>It refuses generated reports as instructions, and gives generated reports without granting them authority. It refuses magic that leaves beginners blamed when the spell breaks, and gives them a diary, reviewed memory, better questions, recovery, and learning that survives the session.</p>
+<p>Most of all, it gives builders a way to keep building after the first magical demo becomes a real project.</p>
+<h2 id="the-call">The Call</h2>
+<p>We believe the future of software should include the people who were never handed the map.</p>
+<p>The future of software should not belong only to people who already know how software teams work and products get built. Builders are the future. AI coding agents can widen the circle.</p>
+<p>That matters.</p>
+<p>But empowerment without guidance is not democratization.</p>
+<p>It is abandonment dressed as magic.</p>
+<p>Precode exists so new builders can move with power and remain oriented.</p>
+<p>So they can learn while building. So they can recover from drift. So they can keep ownership of what they are making.</p>
+<p>Build with AI. Keep the project human-owned. Move fast enough to learn.</p>
+<p>Move at the speed the conditions can bear.</p>
+    <nav class="page-nav" aria-label="Previous and next docs"><a href="CLAUDE-CODE-FIELD-GUIDE.html"><span>Previous</span>Claude Code Field Guide For Students</a><a href="PRECODE-ARCHITECTURE-OVERVIEW.html"><span>Next</span>PrecodeOS Architecture Overview</a></nav>
+  </article>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#the-precode-answer">The Precode Answer</a><a class="level-2" href="#why-the-name">Why The Name</a><a class="level-2" href="#builders-are-the-future">Builders Are The Future</a><a class="level-2" href="#the-problem">The Problem</a><a class="level-2" href="#code-is-not-understanding">Code Is Not Understanding</a><a class="level-2" href="#the-line-precode-holds">The Line Precode Holds</a><a class="level-2" href="#core-values-and-principles">Core Values And Principles</a><a class="level-2" href="#what-precode-refuses-and-gives">What Precode Refuses And Gives</a><a class="level-2" href="#the-call">The Call</a></aside>
+</section>
+
+      <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
+    </main>
+  </div>
+</body>
+</html>

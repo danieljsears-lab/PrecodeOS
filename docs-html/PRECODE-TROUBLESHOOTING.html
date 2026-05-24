@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="PrecodeOS docs-html.py">
+  <meta name="generated-at" content="2026-05-24">
+  <title>PrecodeOS Troubleshooting · PrecodeOS Docs</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1c2520;
+  --muted: #637067;
+  --line: #d8dfda;
+  --paper: #fffdf8;
+  --wash: #f7f1e8;
+  --wash-2: #edf5f2;
+  --accent: #176c63;
+  --accent-2: #b65332;
+  --accent-3: #284f8f;
+  --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255,253,248,.94), rgba(247,241,232,.98)),
+    var(--wash);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+.shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+}
+.brand { display: grid; gap: 4px; margin-bottom: 22px; }
+.brand strong { font-size: 18px; }
+.brand span, .notice, .meta, .toc a, .doc-card p, .lane p { color: var(--muted); }
+.notice {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent-2);
+  background: #fffaf1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.nav-group { margin-top: 22px; }
+.nav-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+main { min-width: 0; }
+.hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
+.hero { display: grid; gap: 18px; padding-top: 58px; }
+.eyebrow {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: 0; }
+h1 { max-width: 850px; margin: 0; font-size: 48px; }
+h2 { margin-top: 42px; font-size: 28px; }
+h3 { margin-top: 30px; font-size: 21px; }
+h4 { margin-top: 24px; font-size: 17px; }
+.lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
+.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.lane, .doc-card, .page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.lane { padding: 18px; }
+.lane h2 { margin: 0 0 8px; font-size: 22px; }
+.lane ul, .toc ul { margin: 12px 0 0; padding-left: 20px; }
+.doc-list { display: grid; gap: 12px; margin-top: 18px; }
+.doc-card { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--ink); }
+.doc-card:hover { border-color: var(--accent); }
+.doc-card strong { font-size: 18px; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+.article > :first-child { margin-top: 0; }
+.article p, .article li { max-width: 78ch; }
+.toc {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, .88);
+  padding: 16px;
+}
+.toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
+.toc .level-3 { padding-left: 12px; }
+code {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: #f3f0e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .92em;
+}
+pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #1d2521;
+  color: #f8fbf7;
+}
+pre code { border: 0; padding: 0; background: transparent; color: inherit; }
+blockquote {
+  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 10px 18px;
+  background: var(--wash-2);
+  color: #314139;
+}
+.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
+.page-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.page-nav a { padding: 14px; color: var(--ink); text-decoration: none; }
+.page-nav span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(--muted); font-size: 13px; }
+@media (max-width: 920px) {
+  .shell { display: block; }
+  .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .layout { display: block; }
+  .toc { position: relative; top: auto; margin-top: 18px; }
+  h1 { font-size: 36px; }
+}
+@media (max-width: 620px) {
+  .hero, .content { padding: 30px 18px; }
+  .article { padding: 22px; }
+  .page-nav { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    
+<aside class="sidebar">
+  <div class="brand">
+    <strong>PrecodeOS Docs</strong>
+    <span>Generated public reading surface</span>
+  </div>
+  <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
+  <nav class="nav-group" aria-label="Docs">
+    <p class="nav-label">Compass</p>
+    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link active" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-FILE-INVENTORY.html">PrecodeOS File Inventory</a>
+  </nav>
+</aside>
+
+    <main>
+      
+<section class="hero">
+  <p class="eyebrow">PrecodeOS Doc</p>
+  <h1>PrecodeOS Troubleshooting</h1>
+  <p class="lede">Purpose</p>
+  <p class="meta"><a href="../docs/PRECODE-TROUBLESHOOTING.md">Source Markdown</a><span>v0.1.1</span><span>Updated 2026-05-21</span></p>
+</section>
+<section class="content layout">
+  <article class="article">
+    <h2 id="purpose">Purpose</h2>
+<p>Use this guide when PrecodeOS feels confusing or broken.</p>
+<p>The safe troubleshooting posture is:</p>
+<ul><li>stop before making the problem larger</li><li>describe the symptom in plain English</li><li>identify the owner file or generated report</li><li>run read-only or advisory checks first</li><li>repair source files, not generated reports</li><li>validate before resuming</li></ul>
+<p>This guide helps route common first-time issues. It does not approve destructive commands, broad overwrites, task transitions, app-code changes, external mutations, or edits to secrets and private data.</p>
+<h2 id="first-move">First Move</h2>
+<p>Ask the agent:</p>
+<pre><code class="language-text">Stop implementation. Tell me what symptom we are troubleshooting, which Precode files or generated reports are involved, what read-only checks you will use first, and what you will not change without approval.</code></pre>
+<p>If the agent cannot explain the current state, reload active memory if it exists:</p>
+<pre><code class="language-text">Load only AGENT.md, DECISIONS.md, and tasks/todo.md. Then explain the active bead, primary authority, files in play, checks, stop conditions, and blockers.</code></pre>
+<h2 id="symptom-lookup">Symptom Lookup</h2>
+<h3 id="i-don-t-know-what-precode-wants-me-to-do-next">&quot;I Don&#x27;t Know What Precode Wants Me To Do Next&quot;</h3>
+<p>Likely causes:</p>
+<ul><li>session has not been started from active memory</li><li>generated next-step output is being treated as authority</li><li>active bead is unclear or missing</li><li>the user is jumping from setup into implementation too early</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">bash scripts/session-start.sh
+python3 scripts/next-step.py</code></pre>
+<p>Safe path:</p>
+<ul><li>ask the agent to explain active memory, active bead, primary authority, checks, and stop conditions</li><li>treat <code>next-step</code> as generated guidance only</li><li>do not approve a transition or start coding until the active bead is clear</li></ul>
+<p>Stop if the agent cannot explain the current bead in plain English.</p>
+<h3 id="active-bead-or-tasks-todo-md-is-confusing">Active Bead Or <code>tasks/todo.md</code> Is Confusing</h3>
+<p>Likely causes:</p>
+<ul><li><code>tasks/todo.md</code> does not match the in-progress bead</li><li>more than one bead appears active</li><li>a copied setup left stale task state from another repo</li><li>a generated report is being used instead of active memory</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">bash scripts/validate-memory.sh
+python3 scripts/state-check.py</code></pre>
+<p>Safe path:</p>
+<ul><li>compare <code>tasks/todo.md</code> with the bead it names</li><li>confirm there is only one active bead</li><li>repair source state before refreshing generated reports</li><li>use <code>tasks/reference/RECOVERY-PROTOCOL.md</code> if state is broken</li></ul>
+<p>Do not continue implementation while the active bead is unclear.</p>
+<h3 id="generated-reports-are-being-treated-as-authority">Generated Reports Are Being Treated As Authority</h3>
+<p>Likely reports:</p>
+<ul><li><code>OS-HEALTH.md</code></li><li><code>PRECODE-HELP.md</code></li><li><code>PROGRESS.md</code></li><li><code>logs/*.md</code></li><li><code>logs/*.json</code></li><li><code>logs/*.jsonl</code></li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">python3 scripts/state-check.py
+python3 scripts/workflow-check.py</code></pre>
+<p>Safe path:</p>
+<ul><li>identify which source files the report summarizes</li><li>repair source files first if needed</li><li>refresh generated reports only after source state is coherent</li><li>return to active memory and the active bead for decisions</li></ul>
+<p>Do not hand-edit generated Markdown to make it look correct.</p>
+<h3 id="wrong-source-folder-or-target-folder">Wrong Source Folder Or Target Folder</h3>
+<p>Likely causes:</p>
+<ul><li>the PrecodeOS package checkout and target project folder were mixed up</li><li>commands were run from the package source instead of the target project</li><li>a user treated PrecodeOS itself as the app to execute</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">pwd
+git status
+find . -maxdepth 2 -type f | sort</code></pre>
+<p>Safe path:</p>
+<ul><li>name the package source and target project explicitly</li><li>stop setup until both folders are clear</li><li>use <code>docs/PRECODE-GUIDED-SETUP.md</code> for copy groups and exclusions</li></ul>
+<p>Do not copy files in either direction until source and target are unambiguous.</p>
+<h3 id="copied-excluded-files-or-missed-public-files">Copied Excluded Files Or Missed Public Files</h3>
+<p>Likely causes:</p>
+<ul><li>copied <code>_maintainer/</code>, generated reports, generated logs, local editor state, caches, or secrets</li><li>missed active memory, scripts, task structure, adapters, or owner files</li><li>used a bulk copy without file-group review</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">python3 scripts/file-inventory.py --check
+bash scripts/validate-memory.sh</code></pre>
+<p>Safe path:</p>
+<ul><li>compare against <code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>remove or ignore excluded material only with user approval</li><li>copy missing public package files by supervised group</li><li>re-run validation before first use</li></ul>
+<p>Do not delete files, rewrite history, or overwrite conflicts just to make the inventory quiet.</p>
+<h3 id="validate-memory-fails"><code>validate-memory</code> Fails</h3>
+<p>Likely causes:</p>
+<ul><li>missing active memory file</li><li>broken bead pointer</li><li>malformed bead or active work metadata</li><li>copied stale state from another repo</li></ul>
+<p>First check:</p>
+<pre><code class="language-bash">bash scripts/validate-memory.sh</code></pre>
+<p>Safe path:</p>
+<ul><li>read the failure message</li><li>identify the owner file named by the failure</li><li>repair the source file with the smallest safe edit</li><li>re-run validation</li></ul>
+<p>Do not patch generated reports as a substitute for fixing active memory.</p>
+<h3 id="file-inventory-check-fails-or-warns"><code>file-inventory --check</code> Fails Or Warns</h3>
+<p>Likely causes:</p>
+<ul><li>new public docs are not listed in the inventory</li><li>file metadata is missing or stale</li><li>generated or private files are being considered public</li><li>expected package files are missing</li></ul>
+<p>First check:</p>
+<pre><code class="language-bash">python3 scripts/file-inventory.py --check</code></pre>
+<p>Safe path:</p>
+<ul><li>decide whether the warning is source truth, generated evidence, or a package-boundary issue</li><li>update <code>docs/PRECODE-FILE-INVENTORY.md</code> when a new public file is intentional</li><li>keep <code>_maintainer/</code> and generated reports out of public setup instructions</li></ul>
+<p>Do not treat an advisory inventory warning as task selection or transition approval.</p>
+<h3 id="existing-project-has-conflict-or-overwrite-risk">Existing Project Has Conflict Or Overwrite Risk</h3>
+<p>Likely conflicts:</p>
+<ul><li><code>README.md</code></li><li>product, architecture, API, security, or data-model docs</li><li>CI files</li><li>package manager files</li><li>app source code</li><li>environment files</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">git status
+find . -maxdepth 2 -type f | sort</code></pre>
+<p>Safe path:</p>
+<ul><li>name each conflict before editing</li><li>preserve existing project files</li><li>propose how existing facts map into Precode owner files</li><li>stop for approval before changing docs, CI, hooks, package files, or app code</li></ul>
+<p>Do not flatten an existing project into the Precode package shape.</p>
+<h3 id="agent-starts-coding-before-setup-or-orientation-is-complete">Agent Starts Coding Before Setup Or Orientation Is Complete</h3>
+<p>Likely causes:</p>
+<ul><li>the user asked for implementation before setup validation</li><li>the agent skipped active memory</li><li>the active bead is setup, but the agent widened scope</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">bash scripts/validate-memory.sh
+python3 scripts/files-in-play-check.py
+python3 scripts/workflow-check.py</code></pre>
+<p>Safe path:</p>
+<ul><li>stop implementation</li><li>ask the agent to restate the active bead and files in play</li><li>finish setup or orientation first</li><li>create or approve an implementation bead only through the normal Precode flow</li></ul>
+<p>Do not let early coding become implicit approval.</p>
+<h3 id="local-app-will-not-start-or-loads-too-slowly">Local App Will Not Start Or Loads Too Slowly</h3>
+<p>Likely causes:</p>
+<ul><li>commands are being run from the wrong folder</li><li>dependencies are missing or stale</li><li>the dev server is already running, hung, or on a different port</li><li>the project has not recorded its real app directory or checks</li><li>support is treating PrecodeOS itself as the app runtime</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">pwd
+git status
+ls</code></pre>
+<p>If the project has known package scripts, inspect them before running anything that installs or rewrites files.</p>
+<p>Safe path:</p>
+<ul><li>confirm whether this is the PrecodeOS package source or the student&#x27;s target app</li><li>identify the app directory and expected dev command from <code>PROJECT-CONTEXT.md</code>, package files, or existing docs</li><li>restart or rerun only the narrow local command needed for the student&#x27;s app</li><li>record any missing setup fact in the proper owner file after user approval</li></ul>
+<p>Do not install dependencies, change package files, rewrite configuration, or edit app code unless the user approves a narrow technical fix.</p>
+<h3 id="auth-login-or-onboarding-blocks-a-demo">Auth, Login, Or Onboarding Blocks A Demo</h3>
+<p>Likely causes:</p>
+<ul><li>test credentials or accounts were not prepared</li><li>onboarding is being shown even though it is not the demo focus</li><li>auth setup depends on secrets, dashboards, or external services</li><li>support is trying to solve a product-flow decision as a technical bug</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">git status</code></pre>
+<p>Safe path:</p>
+<ul><li>ask whether auth or onboarding is core to the product being demonstrated</li><li>if not core, help the student reach the value-bearing screen without changing product scope</li><li>if credentials, dashboard setup, or secrets are involved, stop and ask for explicit user-controlled handling</li><li>if the auth flow itself is the feature, route scope and acceptance questions back to the student or instructor</li></ul>
+<p>Do not paste secrets into prompts, commit credentials, bypass security casually, or decide that onboarding should be removed from the product.</p>
+<h3 id="support-is-unsure-who-owns-the-blocker">Support Is Unsure Who Owns The Blocker</h3>
+<p>Likely causes:</p>
+<ul><li>the blocker mixes product uncertainty with technical setup</li><li>the student is asking support to choose scope, evidence, or acceptance</li><li>a mentor, instructor, and support engineer are each seeing a different part of the issue</li><li>the agent is widening a support request into implementation</li></ul>
+<p>First checks:</p>
+<pre><code class="language-bash">bash scripts/session-start.sh
+python3 scripts/next-step.py</code></pre>
+<p>Safe path:</p>
+<ul><li>if the blocked decision is product direction, scope, user evidence, or acceptance, route back to student-owned product work with instructor support</li><li>if the blocked issue is local setup, repo state, validation, runtime, auth, or a narrow implementation failure, keep it with support</li><li>if the blocked issue is PrecodeOS package behavior or unclear official guidance, escalate rather than inventing policy</li><li>name the route in the support closeout so the student knows where to go next</li></ul>
+<p>Do not let technical support become hidden product ownership.</p>
+<h2 id="process-phase-index">Process Phase Index</h2>
+<div class="table-wrap"><table><thead><tr><th>Phase</th><th>Common failure</th><th>First guide</th></tr></thead><tbody><tr><td>Intent capture</td><td>Support starts authoring product truth</td><td><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></td></tr><tr><td>Package source setup</td><td>Source and target folders are unclear</td><td><code>docs/PRECODE-GUIDED-SETUP.md</code></td></tr><tr><td>File copy</td><td>Excluded files copied or public files missed</td><td><code>docs/PRECODE-FILE-INVENTORY.md</code></td></tr><tr><td>Owner-file adaptation</td><td>Assumptions are written as settled facts</td><td><code>docs/PRECODE-USER-GUIDE.md</code></td></tr><tr><td>Validation</td><td>Active memory or inventory checks fail</td><td>this guide</td></tr><tr><td>First session</td><td>Current bead or next step is unclear</td><td>this guide</td></tr><tr><td>Local runtime</td><td>App will not start, reloads slowly, or auth blocks a demo</td><td>this guide</td></tr><tr><td>Repair</td><td>Files moved, renamed, overwritten, or generated reports edited</td><td><code>tasks/reference/RECOVERY-PROTOCOL.md</code></td></tr></tbody></table></div>
+<h2 id="script-and-check-index">Script And Check Index</h2>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Use it when</th><th>Remember</th></tr></thead><tbody><tr><td><code>bash scripts/validate-memory.sh</code></td><td>Active memory, bead pointer, or setup validity is uncertain.</td><td>A failure means source state needs attention before work continues.</td></tr><tr><td><code>python3 scripts/file-inventory.py --check</code></td><td>Public package files, new docs, copied files, or metadata are uncertain.</td><td>Inventory findings are advisory; they do not choose tasks.</td></tr><tr><td><code>bash scripts/session-start.sh</code></td><td>Beginning or resetting a session.</td><td>It prints context and generated router guidance.</td></tr><tr><td><code>python3 scripts/next-step.py</code></td><td>The user asks &quot;what now?&quot;</td><td>It is generated guidance, not approval.</td></tr><tr><td><code>python3 scripts/state-check.py</code></td><td>Active bead or task state looks broken.</td><td>Repair source files before generated reports.</td></tr><tr><td><code>python3 scripts/files-in-play-check.py</code></td><td>Scope may have widened or coding started too early.</td><td>It warns; it does not approve edits.</td></tr><tr><td><code>python3 scripts/workflow-check.py</code></td><td>The path from setup, idea, PRD, bead, or repair is unclear.</td><td>Workflow advice is not task activation.</td></tr><tr><td><code>python3 scripts/completion-check.py</code></td><td>Work sounds done but proof, review, or transition state is unclear.</td><td>Completion warnings do not accept work.</td></tr></tbody></table></div>
+<h2 id="escalate-or-stop">Escalate Or Stop</h2>
+<p>Stop and ask for explicit user approval before:</p>
+<ul><li>overwriting existing project files</li><li>editing app code during setup</li><li>installing Git hooks</li><li>adding or changing CI</li><li>deleting copied files</li><li>moving or renaming Precode files</li><li>approving a bead transition</li><li>touching secrets, credentials, billing, dashboard values, deployment settings, auth, payments, or private user data</li></ul>
+<p>If the next safe action is unclear, keep the state in troubleshooting or recovery. Do not continue from chat confidence alone.</p>
+    <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-USER-GUIDE.html"><span>Previous</span>How To Use PrecodeOS</a><a href="PRECODE-SUPPORT-RUNBOOK.html"><span>Next</span>PrecodeOS Support Runbook</a></nav>
+  </article>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#purpose">Purpose</a><a class="level-2" href="#first-move">First Move</a><a class="level-2" href="#symptom-lookup">Symptom Lookup</a><a class="level-3" href="#i-don-t-know-what-precode-wants-me-to-do-next">&quot;I Don&#x27;t Know What Precode Wants Me To Do Next&quot;</a><a class="level-3" href="#active-bead-or-tasks-todo-md-is-confusing">Active Bead Or tasks/todo.md Is Confusing</a><a class="level-3" href="#generated-reports-are-being-treated-as-authority">Generated Reports Are Being Treated As Authority</a><a class="level-3" href="#wrong-source-folder-or-target-folder">Wrong Source Folder Or Target Folder</a><a class="level-3" href="#copied-excluded-files-or-missed-public-files">Copied Excluded Files Or Missed Public Files</a><a class="level-3" href="#validate-memory-fails">validate memory Fails</a><a class="level-3" href="#file-inventory-check-fails-or-warns">file inventory check Fails Or Warns</a><a class="level-3" href="#existing-project-has-conflict-or-overwrite-risk">Existing Project Has Conflict Or Overwrite Risk</a><a class="level-3" href="#agent-starts-coding-before-setup-or-orientation-is-complete">Agent Starts Coding Before Setup Or Orientation Is Complete</a><a class="level-3" href="#local-app-will-not-start-or-loads-too-slowly">Local App Will Not Start Or Loads Too Slowly</a><a class="level-3" href="#auth-login-or-onboarding-blocks-a-demo">Auth, Login, Or Onboarding Blocks A Demo</a><a class="level-3" href="#support-is-unsure-who-owns-the-blocker">Support Is Unsure Who Owns The Blocker</a><a class="level-2" href="#process-phase-index">Process Phase Index</a><a class="level-2" href="#script-and-check-index">Script And Check Index</a><a class="level-2" href="#escalate-or-stop">Escalate Or Stop</a></aside>
+</section>
+
+      <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="PrecodeOS docs-html.py">
+  <meta name="generated-at" content="2026-05-24">
+  <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1c2520;
+  --muted: #637067;
+  --line: #d8dfda;
+  --paper: #fffdf8;
+  --wash: #f7f1e8;
+  --wash-2: #edf5f2;
+  --accent: #176c63;
+  --accent-2: #b65332;
+  --accent-3: #284f8f;
+  --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255,253,248,.94), rgba(247,241,232,.98)),
+    var(--wash);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+.shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+}
+.brand { display: grid; gap: 4px; margin-bottom: 22px; }
+.brand strong { font-size: 18px; }
+.brand span, .notice, .meta, .toc a, .doc-card p, .lane p { color: var(--muted); }
+.notice {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent-2);
+  background: #fffaf1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.nav-group { margin-top: 22px; }
+.nav-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+main { min-width: 0; }
+.hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
+.hero { display: grid; gap: 18px; padding-top: 58px; }
+.eyebrow {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: 0; }
+h1 { max-width: 850px; margin: 0; font-size: 48px; }
+h2 { margin-top: 42px; font-size: 28px; }
+h3 { margin-top: 30px; font-size: 21px; }
+h4 { margin-top: 24px; font-size: 17px; }
+.lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
+.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.lane, .doc-card, .page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.lane { padding: 18px; }
+.lane h2 { margin: 0 0 8px; font-size: 22px; }
+.lane ul, .toc ul { margin: 12px 0 0; padding-left: 20px; }
+.doc-list { display: grid; gap: 12px; margin-top: 18px; }
+.doc-card { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--ink); }
+.doc-card:hover { border-color: var(--accent); }
+.doc-card strong { font-size: 18px; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+.article > :first-child { margin-top: 0; }
+.article p, .article li { max-width: 78ch; }
+.toc {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, .88);
+  padding: 16px;
+}
+.toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
+.toc .level-3 { padding-left: 12px; }
+code {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: #f3f0e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .92em;
+}
+pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #1d2521;
+  color: #f8fbf7;
+}
+pre code { border: 0; padding: 0; background: transparent; color: inherit; }
+blockquote {
+  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 10px 18px;
+  background: var(--wash-2);
+  color: #314139;
+}
+.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
+.page-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.page-nav a { padding: 14px; color: var(--ink); text-decoration: none; }
+.page-nav span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(--muted); font-size: 13px; }
+@media (max-width: 920px) {
+  .shell { display: block; }
+  .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .layout { display: block; }
+  .toc { position: relative; top: auto; margin-top: 18px; }
+  h1 { font-size: 36px; }
+}
+@media (max-width: 620px) {
+  .hero, .content { padding: 30px 18px; }
+  .article { padding: 22px; }
+  .page-nav { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    
+<aside class="sidebar">
+  <div class="brand">
+    <strong>PrecodeOS Docs</strong>
+    <span>Generated public reading surface</span>
+  </div>
+  <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
+  <nav class="nav-group" aria-label="Docs">
+    <p class="nav-label">Compass</p>
+    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link active" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-FILE-INVENTORY.html">PrecodeOS File Inventory</a>
+  </nav>
+</aside>
+
+    <main>
+      
+<section class="hero">
+  <p class="eyebrow">PrecodeOS Doc</p>
+  <h1>PrecodeOS Guided Setup</h1>
+  <p class="lede">What This Guide Is For</p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.1</span><span>Updated 2026-05-21</span></p>
+</section>
+<section class="content layout">
+  <article class="article">
+    <h2 id="what-this-guide-is-for">What This Guide Is For</h2>
+<p>Use this guide when you want to put PrecodeOS into a project for the first time.</p>
+<p>PrecodeOS is not an app you launch. It is a small repo-native operating layer for AI coding work: Markdown authority files, task contracts, adapter notes, validation scripts, and generated evidence rules that live inside a project folder.</p>
+<p>If you are helping someone else through setup, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</p>
+<p>The safest setup path is manual and visible:</p>
+<ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Inspect the package before copying anything.</li><li>Choose whether you are setting up a new project or an existing project.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
+<p>If you need the exact technical dictionary, use <code>docs/PRECODE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the file inventory remains the canonical file map.</p>
+<h2 id="before-you-start">Before You Start</h2>
+<p>You need:</p>
+<ul><li>a local folder where you can clone or pull from GitHub</li><li>a target project folder</li><li>Git installed</li><li>Python 3 available for validation scripts</li><li>an AI coding agent that can read and edit local files</li></ul>
+<p>Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.</p>
+<p>Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.</p>
+<h2 id="step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</h2>
+<p>Start by getting a clean local copy of the public PrecodeOS package.</p>
+<p>If you do not have it yet:</p>
+<pre><code class="language-bash">git clone https://github.com/danieljsears-lab/PrecodeOS.git</code></pre>
+<p>If you already have it:</p>
+<pre><code class="language-bash">cd PrecodeOS
+git pull</code></pre>
+<p>Then inspect it:</p>
+<pre><code class="language-bash">git status
+find . -maxdepth 2 -type f | sort</code></pre>
+<p>You are using this checkout as the package source. Do not treat it as the target app you are building unless your goal is to maintain PrecodeOS itself.</p>
+<h2 id="step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</h2>
+<p>Before copying or editing, ask your agent to explain what it sees.</p>
+<pre><code class="language-text">I want to adopt PrecodeOS into a project.
+Treat PrecodeOS as a package source, not as an app to run.
+Do not copy, edit, install hooks, run setup scripts, or change my target project yet.
+First identify the PrecodeOS package checkout, the target project folder, the public file groups that may be copied, the files that must not be copied, and the validation commands we will run after setup.
+Explain the plan in plain English and stop for my approval.</code></pre>
+<p>Expect the agent to name:</p>
+<ul><li>the PrecodeOS package checkout</li><li>the target project folder</li><li>whether this is a new project or existing project</li><li>the public file groups to copy</li><li>the private, generated, local, and secret files to exclude</li><li>the first validation command</li></ul>
+<p>Stop if the agent tries to run a broad installer, invents a <code>precode</code> CLI command, installs hooks silently, or starts editing application code.</p>
+<h2 id="step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</h2>
+<p>Use the new-project path first if you are starting from an empty or nearly empty repository.</p>
+<p>Use the existing-project path if your target project already has application code, product docs, project conventions, or active work.</p>
+<h3 id="path-a-new-project">Path A: New Project</h3>
+<p>In a new project, the goal is to create the PrecodeOS operating layer before product work starts.</p>
+<p>Ask:</p>
+<pre><code class="language-text">Set up PrecodeOS for a new project.
+Use the public PrecodeOS checkout as the source package.
+Do not write application code.
+Create or adapt only the Precode operating files needed for a first safe session.
+Before changing anything, show me the copy checklist and the files that will be excluded.</code></pre>
+<p>After the user approves, copy the public package files by supervised file group. Do not use a bulk overwrite command.</p>
+<p>For a new project, the setup should include:</p>
+<div class="table-wrap"><table><thead><tr><th>File group</th><th>Include</th></tr></thead><tbody><tr><td>Active memory</td><td><code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code></td></tr><tr><td>Product and project owner files</td><td><code>PRODUCT.md</code>, <code>PROJECT-CONTEXT.md</code>, <code>FEATURES.md</code>, <code>ACCEPTANCE.md</code>, <code>ARCHITECTURE.md</code>, <code>API.md</code>, <code>DATA-MODELS.md</code>, <code>SECURITY.md</code>, <code>CODEBASE-GUIDE.md</code></td></tr><tr><td>Public orientation docs</td><td><code>README.md</code>, <code>docs/</code>, <code>CONTRIBUTING.md</code>, <code>GOVERNANCE.md</code>, <code>TRADEMARK.md</code>, <code>NOTICE</code>, <code>LICENSE</code></td></tr><tr><td>Agent shims and adapters</td><td><code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, <code>.github/copilot-instructions.md</code>, <code>adapters/</code></td></tr><tr><td>Work structure</td><td><code>tasks/beads/</code>, <code>tasks/prds/</code>, <code>tasks/reference/</code>, <code>tasks/templates/</code>, <code>modes/</code>, <code>memory/</code></td></tr><tr><td>Scripts and checks</td><td><code>scripts/</code>, <code>.githooks/</code>, <code>.github/workflows/</code> when the target repo wants GitHub validation</td></tr><tr><td>Public generated-log guide</td><td><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></td></tr></tbody></table></div>
+<p>Then adapt these files before starting product work:</p>
+<ul><li><code>PRODUCT.md</code>: product promise, users, strategy, bets, success signals, and voice</li><li><code>PROJECT-CONTEXT.md</code>: app directory, stack, conventions, checks, integrations, and sensitive boundaries</li><li><code>DECISIONS.md</code>: hard decisions already known for this project</li><li><code>tasks/todo.md</code>: the first setup bead and current state</li></ul>
+<h3 id="path-b-existing-project">Path B: Existing Project</h3>
+<p>In an existing project, the goal is to add Precode without flattening the project history, conventions, or current work.</p>
+<p>Ask:</p>
+<pre><code class="language-text">Set up PrecodeOS for an existing project.
+Use the public PrecodeOS checkout as the source package.
+Do not overwrite existing project files without naming each conflict first.
+Do not write application code.
+First inspect the target repo structure, existing docs, package files, app directory, test commands, secrets boundaries, and current git status.
+Then show me a setup plan with conflicts, proposed owner-file adaptations, and validation commands.</code></pre>
+<p>Safe inspection commands include:</p>
+<pre><code class="language-bash">git status
+find . -maxdepth 2 -type f | sort</code></pre>
+<p>The support person or agent should identify:</p>
+<ul><li>existing docs that may overlap with Precode owner files</li><li>the real app directory</li><li>existing test, lint, build, and typecheck commands</li><li>secrets or env-file patterns that must not be copied into Precode docs</li><li>any generated folders or build outputs that Precode should ignore</li><li>whether GitHub Actions should be added now or deferred</li></ul>
+<p>For existing projects, do not overwrite:</p>
+<ul><li>existing <code>README.md</code></li><li>existing product, architecture, API, security, or data-model docs</li><li>app source code</li><li>package manager files</li><li>CI files</li><li>environment files</li><li>generated output</li></ul>
+<p>Instead, ask the agent to propose how existing project facts should be reflected in Precode owner files, then stop for review.</p>
+<h2 id="step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</h2>
+<p>Do not copy these from the package checkout into a user&#x27;s project:</p>
+<div class="table-wrap"><table><thead><tr><th>Exclusion</th><th>Why</th></tr></thead><tbody><tr><td><code>_maintainer/</code></td><td>Private maintainer cockpit for Dan Sears / Recode, not public user workflow.</td></tr><tr><td><code>OS-HEALTH.md</code>, <code>PRECODE-HELP.md</code>, <code>PROGRESS.md</code></td><td>Generated reports, not source authority.</td></tr><tr><td><code>logs/*.json</code>, <code>logs/*.jsonl</code>, <code>logs/*.yaml</code>, generated <code>logs/*.md</code></td><td>Generated evidence from one repo, not setup source for another repo.</td></tr><tr><td><code>logs/check-output/</code>, <code>logs/scheduled-audit-output/</code></td><td>Local command output and audit snapshots.</td></tr><tr><td><code>.agent-state/</code>, <code>.claude/</code>, <code>.codex/</code>, <code>.cursor/</code>, <code>.vscode/</code>, <code>.idea/</code></td><td>Local agent, editor, and IDE state.</td></tr><tr><td><code>.env</code>, <code>.env.*</code>, <code>secrets/</code>, <code>credentials/</code>, key and certificate files</td><td>Secrets and environment material.</td></tr><tr><td><code>__pycache__/</code>, test caches, coverage output, local virtual environments</td><td>Regeneratable local cache or environment output.</td></tr></tbody></table></div>
+<p>Keep <code>logs/LOG-EVIDENCE-TAXONOMY.md</code> if the package includes it. That file explains generated log semantics and is public documentation.</p>
+<h2 id="step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</h2>
+<p>After the files are in place and owner files have been adapted, run the first validation command from the target project root:</p>
+<pre><code class="language-bash">bash scripts/validate-memory.sh</code></pre>
+<p>Then start the first session:</p>
+<pre><code class="language-bash">bash scripts/session-start.sh
+python3 scripts/next-step.py</code></pre>
+<p>The first session should explain:</p>
+<ul><li>active memory is only <code>AGENT.md</code>, <code>DECISIONS.md</code>, and <code>tasks/todo.md</code></li><li>the active bead</li><li>the primary authority file</li><li>files in play</li><li>checks to run</li><li>stop conditions</li><li>blockers or missing setup</li></ul>
+<p>Stop if active memory includes extra files, the active bead is unclear, the app directory is wrong, or the checks are vague.</p>
+<h2 id="step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</h2>
+<p>Use this after setup validation passes:</p>
+<pre><code class="language-text">Before editing, load only Precode active memory: AGENT.md, DECISIONS.md, and tasks/todo.md.
+Then tell me the active bead, primary authority, files in play, checks, stop conditions, and anything blocked.
+Do not start coding yet.</code></pre>
+<p>If the project is still only being set up, use:</p>
+<pre><code class="language-text">This is still PrecodeOS setup.
+Do not write product app code.
+Help me verify that PRODUCT.md, PROJECT-CONTEXT.md, DECISIONS.md, and tasks/todo.md match this target project.
+Name any missing information and stop for my review.</code></pre>
+<h2 id="support-engineer-runbook">Support Engineer Runbook</h2>
+<p>Use this section when you are helping someone else adopt PrecodeOS.</p>
+<p>For a short support slot, start with the fast support flow in <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code>, then use this guide for the setup mechanics.</p>
+<h3 id="preflight">Preflight</h3>
+<p>Confirm:</p>
+<ul><li>the user has a target project folder</li><li>the user understands that PrecodeOS is a package layer, not an app runtime</li><li>the public PrecodeOS repo has been cloned or pulled</li><li>the target repo has a clean or understood <code>git status</code></li><li>no secrets are being pasted into prompts or docs</li><li>the user can approve each file group before copy/adaptation</li></ul>
+<h3 id="target-project-inspection">Target-Project Inspection</h3>
+<p>Run safe inspection only:</p>
+<pre><code class="language-bash">git status
+find . -maxdepth 2 -type f | sort</code></pre>
+<p>For an existing project, also inspect the package-manager and framework files that already exist. Do not rewrite them as part of Precode setup.</p>
+<p>Prepare a short setup note for the user:</p>
+<pre><code class="language-text">I found the target project, the likely app directory, existing docs, existing checks, and files that could conflict with Precode owner files.
+I will not overwrite conflicts automatically.
+I will copy or adapt Precode by file group, then run memory validation.
+Here are the conflicts and choices that need your approval:</code></pre>
+<h3 id="validation-checklist">Validation Checklist</h3>
+<p>After setup:</p>
+<ul><li>run <code>bash scripts/validate-memory.sh</code></li><li>run <code>python3 scripts/file-inventory.py --check</code> if the full script set was copied</li><li>run <code>bash scripts/session-start.sh</code></li><li>confirm generated reports are evidence only</li><li>confirm the first active bead is setup or orientation, not product implementation</li><li>confirm project-specific checks in <code>PROJECT-CONTEXT.md</code></li></ul>
+<h3 id="escalation-and-stop-conditions">Escalation And Stop Conditions</h3>
+<p>Stop and ask the user before:</p>
+<ul><li>overwriting an existing project document</li><li>installing Git hooks</li><li>adding or changing GitHub Actions</li><li>changing package manager files</li><li>editing app code</li><li>moving or renaming Precode files</li><li>adding active-memory files</li><li>touching secrets, env files, dashboard values, deployment settings, billing, auth, payments, or personal data</li><li>approving a bead transition</li></ul>
+<p>If setup is blocked, record the blocker in plain English and propose a narrow setup or unblocker bead. Do not widen setup into product work.</p>
+<h2 id="where-to-go-next">Where To Go Next</h2>
+<p>After guided setup, use:</p>
+<ul><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> when assisting another user through adoption and first use</li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code> when setup, state, checks, or generated reports are confusing</li><li><code>docs/PRECODE-USER-GUIDE.md</code> for day-to-day operation</li><li><code>docs/PRECODE-OS-README.md</code> for the Builder OS mental model</li><li><code>docs/PRECODE-FILE-INVENTORY.md</code> for the canonical file dictionary</li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> if the product idea is still rough</li></ul>
+<p>Do not use maintainer-only files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.</p>
+    <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="PRECODE-USER-GUIDE.html"><span>Next</span>How To Use PrecodeOS</a></nav>
+  </article>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+</section>
+
+      <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
+    </main>
+  </div>
+</body>
+</html>

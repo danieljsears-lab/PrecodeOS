@@ -57,6 +57,8 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 
 If you are using PrecodeOS in a project, start with [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). It is the day-to-day operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
 
+If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html). It is generated from the Markdown docs for easier navigation; the Markdown files remain canonical.
+
 Begin in the project repo that contains your app and PrecodeOS files. Open the user guide, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
@@ -246,5 +248,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.31
-Last updated: 2026-05-23
+Document version: v0.1.32
+Last updated: 2026-05-24

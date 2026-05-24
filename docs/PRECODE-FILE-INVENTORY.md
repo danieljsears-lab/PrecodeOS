@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.39
-Last updated: 2026-05-22
+Document version: v0.1.40
+Last updated: 2026-05-24
 
 ## Purpose
 
@@ -44,6 +44,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 |---|---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | Always-loaded operating state. |
 | Reader-facing docs | `docs/*.md` | Long-form human guides for philosophy, guided setup, support assistance, troubleshooting, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
+| Public generated docs site | `docs-html/*.html` | Committed HTML reading surface generated from `docs/*.md`; easier to navigate, but not authority. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing. |
 | Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, completion evidence, and public-safe cohort snapshots, not authority. |
@@ -52,7 +53,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
-| Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/roadmap-maintenance.py` | Private maintainer index, history, alpha/beta evidence planning, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
+| Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/*.py` | Private maintainer index, history, alpha/beta evidence planning, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
 | Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
@@ -75,6 +76,8 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md` is the maintainer-only master list of files and patterns excluded from the public PrecodeOS package.
 
 `_maintainer/scripts/roadmap-maintenance.py` is maintainer-only automation for roadmap cleanup after candidates are marked implemented.
+
+`_maintainer/scripts/docs-html.py` is maintainer-only automation for regenerating the committed public `docs-html/` reading surface from canonical Markdown in `docs/*.md`.
 
 Maintainer cockpit files may guide direct edits to public package files when Dan asks for Precode maintenance, but they must not be loaded as active memory, used as normal user workflow authority, or treated as bead activation, transition approval, public package authority, or generated evidence.
 
@@ -177,6 +180,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not maintainer-only material. |
 | `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
 | `docs/PRECODE-FILE-INVENTORY.md` | reference | Canonical technical file dictionary and relationship map. | Supported by `logs/file-inventory.json`. |
+| `docs-html/*.html` | generated public docs | Static HTML reading surface generated from `docs/*.md`, including a curated compass and per-page navigation. | Commit-eligible package artifact for easier reading; does not replace Markdown authority, approve work, or become active memory. |
 | `PRODUCT.md` | reference | Builder-facing product constitution: product promise, users and jobs, strategy and non-goals, current bets, success signals, design or voice pointers, and optional product-level Goal Frame. | Loaded for product planning, PRD shaping, PRD approval review, product drift checks, durable-intent orientation, and builder onboarding; not active memory or task selection. |
 | `PROJECT-CONTEXT.md` | reference | Technical project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |
 | `OPERATING-CONSTRAINTS.md` | reference | Shared edit discipline, scope control, generated-output demotion, and reference-loading rules. | Always-loaded by `AGENT.md` as shared constraints. |

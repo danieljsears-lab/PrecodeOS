@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="PrecodeOS docs-html.py">
+  <meta name="generated-at" content="2026-05-24">
+  <title>How To Build Software Using PrecodeOS + AI Coding Agents · PrecodeOS Docs</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1c2520;
+  --muted: #637067;
+  --line: #d8dfda;
+  --paper: #fffdf8;
+  --wash: #f7f1e8;
+  --wash-2: #edf5f2;
+  --accent: #176c63;
+  --accent-2: #b65332;
+  --accent-3: #284f8f;
+  --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255,253,248,.94), rgba(247,241,232,.98)),
+    var(--wash);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+.shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+}
+.brand { display: grid; gap: 4px; margin-bottom: 22px; }
+.brand strong { font-size: 18px; }
+.brand span, .notice, .meta, .toc a, .doc-card p, .lane p { color: var(--muted); }
+.notice {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent-2);
+  background: #fffaf1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.nav-group { margin-top: 22px; }
+.nav-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+main { min-width: 0; }
+.hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
+.hero { display: grid; gap: 18px; padding-top: 58px; }
+.eyebrow {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: 0; }
+h1 { max-width: 850px; margin: 0; font-size: 48px; }
+h2 { margin-top: 42px; font-size: 28px; }
+h3 { margin-top: 30px; font-size: 21px; }
+h4 { margin-top: 24px; font-size: 17px; }
+.lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
+.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.lane, .doc-card, .page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.lane { padding: 18px; }
+.lane h2 { margin: 0 0 8px; font-size: 22px; }
+.lane ul, .toc ul { margin: 12px 0 0; padding-left: 20px; }
+.doc-list { display: grid; gap: 12px; margin-top: 18px; }
+.doc-card { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--ink); }
+.doc-card:hover { border-color: var(--accent); }
+.doc-card strong { font-size: 18px; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+.article > :first-child { margin-top: 0; }
+.article p, .article li { max-width: 78ch; }
+.toc {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, .88);
+  padding: 16px;
+}
+.toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
+.toc .level-3 { padding-left: 12px; }
+code {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: #f3f0e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .92em;
+}
+pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #1d2521;
+  color: #f8fbf7;
+}
+pre code { border: 0; padding: 0; background: transparent; color: inherit; }
+blockquote {
+  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 10px 18px;
+  background: var(--wash-2);
+  color: #314139;
+}
+.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
+.page-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.page-nav a { padding: 14px; color: var(--ink); text-decoration: none; }
+.page-nav span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(--muted); font-size: 13px; }
+@media (max-width: 920px) {
+  .shell { display: block; }
+  .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .layout { display: block; }
+  .toc { position: relative; top: auto; margin-top: 18px; }
+  h1 { font-size: 36px; }
+}
+@media (max-width: 620px) {
+  .hero, .content { padding: 30px 18px; }
+  .article { padding: 22px; }
+  .page-nav { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    
+<aside class="sidebar">
+  <div class="brand">
+    <strong>PrecodeOS Docs</strong>
+    <span>Generated public reading surface</span>
+  </div>
+  <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
+  <nav class="nav-group" aria-label="Docs">
+    <p class="nav-label">Compass</p>
+    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link active" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-FILE-INVENTORY.html">PrecodeOS File Inventory</a>
+  </nav>
+</aside>
+
+    <main>
+      
+<section class="hero">
+  <p class="eyebrow">PrecodeOS Doc</p>
+  <h1>How To Build Software Using PrecodeOS + AI Coding Agents</h1>
+  <p class="lede">Start Here: You Are Not Just Prompting</p>
+  <p class="meta"><a href="../docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md">Source Markdown</a><span>v0.1.19</span><span>Updated 2026-05-18</span></p>
+</section>
+<section class="content layout">
+  <article class="article">
+    <h2 id="start-here-you-are-not-just-prompting">Start Here: You Are Not Just Prompting</h2>
+<p>When you use an AI coding agent, it can feel like software is built by typing an idea in plain english and waiting for code to be generated. This is called vibe-coding and is tempting because it is so easy to do. It is also the version that gets beginners into trouble.</p>
+<p>Real software still needs clear intent, scope, design choices, code, checks, deployment, and learning. The AI agent can help with many of those jobs, but it should not quietly decide what product you want, what risks you accept, whether a change is done, or whether the next task should start.</p>
+<p>Your new job is not to become a product manager or a software engineer overnight. Your job is to become a good orchestrator of building with an AI assistant:</p>
+<ul><li>explain what you want in plain English</li><li>answer product questions</li><li>approve direction and risk</li><li>keep the agent focused</li><li>ask for evidence before accepting work</li><li>learn from what happened</li></ul>
+<p>PrecodeOS helps by giving the repo a small memory, clear owner files, one active task, recorded checks, generated learning reports, and human approval gates.</p>
+<p>PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. It keeps the project human-owned by making intent, scope, approval, proof, and recovery visible inside the repo.</p>
+<p>PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift.</p>
+<p>In plain English: Precode lives inside your project folder, keeps important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.</p>
+<p>For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.</p>
+<p>PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See <code>NOTICE</code> and <code>TRADEMARK.md</code> for license, attribution, and brand-use guidance.</p>
+<p>For the philosophical anchor behind those choices, read <code>docs/PRECODE-MANIFESTO.md</code>.</p>
+<blockquote><p>Plain-English term: A repo is the project folder that holds your app code and the Precode files that guide the agent.</p></blockquote>
+<blockquote><p>Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.</p></blockquote>
+<h3 id="if-you-only-have-an-idea-start-with-the-workbook">If You Only Have An Idea, Start With The Workbook</h3>
+<p>If you are a non-technical builder starting with a net-new rough idea, use <code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> before asking Precode to update <code>PRODUCT.md</code>, write a PRD, create beads, or code.</p>
+<p>The workbook is a thinking space. You can use Claude or Codex as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Precode Ingestion Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.</p>
+<p>After at most three high-level product or business questions, ask for a Product Brief. That gives you visible progress before the agent moves into deeper discovery or PRD shaping.</p>
+<p>Use this path when you are still asking, &quot;What am I really trying to build?&quot;</p>
+<pre><code class="language-text">Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question. Do not update PRODUCT.md, write a PRD, create beads, or start coding.</code></pre>
+<p>Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.</p>
+<h2 id="the-software-building-journey-in-plain-english">The Software-Building Journey In Plain English</h2>
+<p>Software is usually built through a set of repeatable stages. Teams may use different names, but the work is similar.</p>
+<div class="table-wrap"><table><thead><tr><th>Stage</th><th>What it means</th><th>Who traditionally helped</th><th>What can go wrong if skipped</th><th>How Precode helps</th></tr></thead><tbody><tr><td>Idea</td><td>A rough thought about something useful to build.</td><td>Founder, customer, product manager.</td><td>The agent codes a vague idea before the problem is clearly understood and well articulated.</td><td>Local Source Intake turns rough notes into facts, questions, and candidate requirements.</td></tr><tr><td>Discovery validation</td><td>Checking whether the problem, current workaround, evidence, and riskiest assumption are real enough to justify PRD work.</td><td>Founder, product manager, researcher.</td><td>A polished PRD describes the wrong thing beautifully.</td><td>Product Discovery Validation produces a short Discovery Summary and advisory <code>proceed</code>, <code>pause</code>, <code>narrow</code>, or <code>kill</code> recommendation.</td></tr><tr><td>Product shaping</td><td>Deciding who it is for, what problem it solves, and what not to build yet.</td><td>Product manager, founder, designer.</td><td>Scope grows, the first version gets too big, or the wrong user moment is built.</td><td><code>PRODUCT.md</code>, Idea-to-PRD, and PRD protocols force product fit, problem, non-goals, risks, and smallest useful version.</td></tr><tr><td>Alignment</td><td>Reaching a shared design concept before writing a plan.</td><td>Founder, product manager, domain expert, engineer.</td><td>The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions.</td><td>Alignment starts with plain product questions, summarizes a Product Brief, and lets the agent translate technical implications later.</td></tr><tr><td>Requirements</td><td>Writing what the software should do in a way that can be checked.</td><td>Product manager, engineer, QA.</td><td>&quot;Done&quot; becomes a feeling instead of a testable outcome.</td><td>PRDs and beads connect requirements to checks and closeout evidence.</td></tr><tr><td>UX/design</td><td>Deciding what the user sees and how the user moves through the experience.</td><td>Designer, product manager, frontend engineer.</td><td>The feature may technically work but feel confusing or incomplete.</td><td>Manual verification, screenshots, browser checks, and review inputs capture what the user actually experiences.</td></tr><tr><td>Architecture</td><td>Choosing the shape of the code, data, integrations, and boundaries.</td><td>Architect, senior engineer, security reviewer.</td><td>Code becomes tangled, risky, hard to change, or unsafe around data and external services.</td><td>Project context, architecture docs, deep-module/interface guidance, and pattern guidance help the agent propose a simple shape before coding.</td></tr><tr><td>Implementation</td><td>Writing or changing the code.</td><td>Engineer.</td><td>The agent changes too many files, hides product choices in code, or starts related work without approval.</td><td>One active bead names files in play, checks, stop conditions, and primary authority.</td></tr><tr><td>Testing</td><td>Proving the change behaves correctly.</td><td>Engineer, QA, product owner.</td><td>The agent says &quot;done&quot; without proof, or only tests the easy part.</td><td><code>record-check.sh</code>, verification protocols, and manual verification record evidence.</td></tr><tr><td>Deployment</td><td>Putting the software where users can use it.</td><td>DevOps, engineer, platform owner.</td><td>Production breaks, secrets leak, data changes are unsafe, or a dashboard setting is missed.</td><td>Sensitive-surface gates require explicit approval before production, external, or dashboard actions.</td></tr><tr><td>Monitoring and iteration</td><td>Watching what happens after release and deciding what to improve.</td><td>Product, support, engineering, operations.</td><td>Bugs, costs, or user confusion go unnoticed, and future work gets lost.</td><td>Diary, memory cards, OS Health, long-horizon maps, and follow-up beads preserve learning.</td></tr></tbody></table></div>
+<p>You do not need to memorize these roles. You need to recognize that each stage answers a different question. Precode helps you ask those questions in the right order.</p>
+<h2 id="how-the-journey-changes-with-precode-and-ai-agents">How The Journey Changes With Precode And AI Agents</h2>
+<p>Before AI coding agents, a non-technical builder usually needed a team or contractor to translate an idea into product plans, design, architecture, code, tests, and deployment.</p>
+<p>With AI agents, much of that translation can happen inside the repo. The agent can:</p>
+<ul><li>summarize notes</li><li>ask clarifying questions</li><li>draft a PRD</li><li>propose implementation slices</li><li>write code</li><li>run checks</li><li>explain tradeoffs</li><li>prepare handoff notes</li></ul>
+<p>But the agent should not become the final authority for intent, risk, or acceptance. Precode separates what the agent can propose from what the user must approve.</p>
+<div class="table-wrap"><table><thead><tr><th>The agent can...</th><th>You still approve...</th></tr></thead><tbody><tr><td>Draft a product plan.</td><td>Whether that plan matches your intent.</td></tr><tr><td>Recommend the smallest first version.</td><td>Whether that version is valuable enough.</td></tr><tr><td>Propose architecture or design patterns.</td><td>Whether the tradeoff is acceptable for your project.</td></tr><tr><td>Implement the active bead.</td><td>Whether the work should be accepted after evidence.</td></tr><tr><td>Suggest the next bead.</td><td>Whether the next bead becomes active.</td></tr><tr><td>Prepare deployment steps.</td><td>Whether production, dashboard, secrets, or external actions are allowed.</td></tr></tbody></table></div>
+<blockquote><p>Plain-English term: Authority means &quot;the place where a fact is allowed to be treated as true.&quot; In Precode, facts belong in owner files, not random chat messages.</p></blockquote>
+<h2 id="choose-your-path-different-kinds-of-software-work">Choose Your Path: Different Kinds Of Software Work</h2>
+<p>Not every software idea needs the same process. Precode is safest when you choose the right path before asking the agent to code.</p>
+<div class="table-wrap"><table><thead><tr><th>Project type</th><th>What usually matters most</th><th>Early risks</th><th>Start with</th></tr></thead><tbody><tr><td>Rough idea with no product shape yet</td><td>Learning, narrowing, research, and confidence.</td><td>The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear.</td><td>Product Ideation Workbook, Product Brief after at most three high-level questions, Product Discovery Validation when worth-building is uncertain, then Precode Ingestion Packet.</td></tr><tr><td>Durable intent, but no workflow chosen yet</td><td>Keeping direction visible without turning it into a task list.</td><td>A broad goal silently becomes backlog, roadmap, or implementation plan.</td><td>Goal Frame proposal or reaffirmation, then workflow selection.</td></tr><tr><td>Personal tool</td><td>Speed, usefulness, simple data, low ceremony.</td><td>The tool grows into a product before privacy, data, or deployment choices are understood.</td><td>Local Source Intake or a small implementation bead.</td></tr><tr><td>Small SaaS app</td><td>Accounts, permissions, database, reliability, support, deployment.</td><td>Auth, personal data, billing, emails, and production setup appear quickly.</td><td>Idea-to-PRD, then decomposition into small beads.</td></tr><tr><td>Website or landing page</td><td>Clear message, visual polish, mobile behavior, forms, analytics.</td><td>The agent builds a generic page, misses the audience, or ships unverified forms.</td><td>Local Source Intake, design review, browser verification.</td></tr><tr><td>Automation or workflow</td><td>Inputs, outputs, retries, failure handling, permissions.</td><td>It works once but fails quietly later or touches the wrong data.</td><td>PRD-lite plus tool execution and verification guidance.</td></tr><tr><td>Data or dashboard project</td><td>Data source, definitions, freshness, privacy, charts, decisions.</td><td>Wrong metrics, stale data, or unclear ownership of numbers.</td><td>Local Source Intake, data-model notes, verification plan.</td></tr><tr><td>AI-powered feature</td><td>Prompt behavior, costs, safety, evaluation, user trust.</td><td>Unbounded spend, hallucinated answers, private data exposure, weak evaluation.</td><td>PRD, risk review, verification guardrails, spend visibility.</td></tr></tbody></table></div>
+<p>If you are unsure, ask for workflow selection before coding.</p>
+<pre><code class="language-text">I have a software idea but I am not sure what path it needs. Use Precode workflow selection and tell me whether this should start as local source intake, a PRD, a bead proposal, a challenge planning bead, or a small active task. Do not code yet.</code></pre>
+<h2 id="your-new-role-as-a-non-technical-builder">Your New Role As A Non-Technical Builder</h2>
+<p>You do not need to know every technical detail. You do need to stay responsible for the project direction.</p>
+<div class="table-wrap"><table><thead><tr><th>You do not need to know...</th><th>You do need to decide...</th></tr></thead><tbody><tr><td>The exact programming language syntax.</td><td>What problem the software solves.</td></tr><tr><td>The best database library.</td><td>What information the app needs to remember.</td></tr><tr><td>Every architecture pattern name.</td><td>Whether the app should be simple, safe, public, private, paid, or experimental.</td></tr><tr><td>How to write every test.</td><td>What behavior would convince you the feature works.</td></tr><tr><td>How deployment tools work internally.</td><td>Whether you approve a production, dashboard, secret, or billing action.</td></tr><tr><td>Every file in the repo.</td><td>Whether the agent stayed inside the approved task.</td></tr></tbody></table></div>
+<p>Good non-technical builders ask plain questions:</p>
+<ul><li>Who is this for?</li><li>What should happen first?</li><li>What should not happen?</li><li>What is the smallest useful version?</li><li>What could go wrong?</li><li>How will we prove it works?</li><li>What do I need to approve?</li></ul>
+<h2 id="traditional-roles-now-translated">Traditional Roles, Now Translated</h2>
+<p>Traditional software teams split work across roles. With Precode and AI agents, those roles become questions and checkpoints.</p>
+<div class="table-wrap"><table><thead><tr><th>Traditional role</th><th>What that role protects</th><th>How it appears in Precode</th></tr></thead><tbody><tr><td>Product manager</td><td>The team builds the right thing for the right user.</td><td>PRDs, non-goals, before/after user moments, acceptance criteria.</td></tr><tr><td>Designer</td><td>The experience makes sense to a real person.</td><td>Screenshots, user flows, manual verification, design review notes.</td></tr><tr><td>Engineer</td><td>The code is correct, maintainable, and scoped.</td><td>Active bead, files in play, implementation checks, closeout evidence.</td></tr><tr><td>Architect</td><td>The system shape can handle risk and future change.</td><td>Architecture docs, system design pattern guidance, project context.</td></tr><tr><td>QA</td><td>Done means proven, not guessed.</td><td>Recorded checks, browser checks, manual verification, review decision.</td></tr><tr><td>DevOps</td><td>Releases, secrets, dashboards, and production are safe.</td><td>Deployment approval, external setup notes, scheduled audits, rollback thinking.</td></tr></tbody></table></div>
+<p>Precode does not make you personally expert in all of these roles. It gives you a safe way to ask the agent to cover the role and show its reasoning.</p>
+<pre><code class="language-text">Before coding, explain which traditional software role this task is touching: product, design, engineering, architecture, QA, deployment, or security. Tell me what I need to approve and what evidence will prove the work.</code></pre>
+<h2 id="from-idea-to-working-software-with-precode">From Idea To Working Software With Precode</h2>
+<p>Precode turns rough intent into verified work through a file-based path.</p>
+<pre><code class="language-text">idea or notes
+  -&gt; Product Ideation Workbook for net-new rough product ideas
+  -&gt; Product Brief after at most three high-level questions
+  -&gt; Precode Ingestion Packet
+  -&gt; Candidate Goal Frame when durable intent needs orientation
+  -&gt; Product Discovery Validation when worth-building is uncertain
+  -&gt; Local Source Intake and reaffirmation
+  -&gt; product constitution fit check
+  -&gt; local source intake
+  -&gt; alignment / Product Brief
+  -&gt; shared language
+  -&gt; destination PRD
+  -&gt; journey bead proposal
+  -&gt; active bead
+  -&gt; implementation
+  -&gt; recorded checks
+  -&gt; review decision
+  -&gt; deployment or next bead
+  -&gt; diary and reviewed memory</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Plain-English meaning</th><th>What to ask</th></tr></thead><tbody><tr><td>Idea or notes</td><td>You have something fuzzy, incomplete, or scattered.</td><td>&quot;Summarize what is known, unknown, and risky.&quot;</td></tr><tr><td>Product Ideation Workbook</td><td>You think through one product idea before Precode turns it into project material.</td><td>&quot;Ask only high-level product or business questions at first.&quot;</td></tr><tr><td>Product Brief</td><td>The agent shows early progress before deeper discovery or PRD shaping.</td><td>&quot;After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question.&quot;</td></tr><tr><td>Precode Ingestion Packet</td><td>A concise packet from the workbook that Local Source Intake can review.</td><td>&quot;Treat this as evidence, not authority.&quot;</td></tr><tr><td>Candidate Goal Frame</td><td>A reviewed-in-waiting direction extracted from the workbook.</td><td>&quot;Tell me whether this is stable enough to reaffirm before updating PRODUCT.md.&quot;</td></tr><tr><td>Product Discovery Validation</td><td>The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping.</td><td>&quot;Recommend proceed, pause, narrow, or kill, but do not approve work.&quot;</td></tr><tr><td>Goal Frame</td><td>Reviewed orientation for a durable goal before workflow selection.</td><td>&quot;Use this only as advisory workflow context. Do not create tasks or approve work.&quot;</td></tr><tr><td>Product constitution fit check</td><td>The agent checks whether the idea fits the product promise, users, non-goals, current bets, success signals, and design or voice.</td><td>&quot;Use <code>PRODUCT.md</code> for planning context, not active work.&quot;</td></tr><tr><td>Local source intake</td><td>The agent turns notes, docs, screenshots, or issues into evidence.</td><td>&quot;Do not treat source material as authority.&quot;</td></tr><tr><td>Alignment / Product Brief</td><td>The agent asks plain product questions until the design concept is shared.</td><td>&quot;Ask high-level questions first and summarize a Product Brief after at most three questions.&quot;</td></tr><tr><td>Shared language</td><td>The agent names important terms, aliases, words to avoid, and examples before they become UI, tests, or code.</td><td>&quot;Use my words where they are correct, and tell me where a term is confusing.&quot;</td></tr><tr><td>Destination PRD</td><td>The product intent becomes clear enough to build from.</td><td>&quot;Define the user, problem, non-goals, risks, acceptance checks, agent-facing technical translation, and smallest first version.&quot;</td></tr><tr><td>Journey bead proposal</td><td>The work is sliced into small verifiable pieces.</td><td>&quot;Make each bead one outcome, one authority, one verification strategy, one delegation mode, and one review context.&quot;</td></tr><tr><td>Active bead</td><td>One task is approved for execution.</td><td>&quot;Confirm files in play, checks, stop conditions, and primary authority.&quot;</td></tr><tr><td>Implementation</td><td>The agent edits code or docs inside the approved scope.</td><td>&quot;Narrate edits before making them and stay inside the bead.&quot;</td></tr><tr><td>Recorded checks</td><td>The repo captures proof of what ran.</td><td>&quot;Run checks through <code>record-check.sh</code>.&quot;</td></tr><tr><td>Review decision</td><td>You decide accepted, revise, split, blocked, or stop.</td><td>&quot;Tie the recommendation to evidence, not confidence.&quot;</td></tr><tr><td>Deployment or next bead</td><td>Work continues only after explicit approval.</td><td>&quot;Tell me what requires approval before continuing.&quot;</td></tr><tr><td>Diary and memory</td><td>The repo preserves learning for future sessions.</td><td>&quot;Propose memory cards only after my approval.&quot;</td></tr></tbody></table></div>
+<blockquote><p>Plain-English term: A PRD is a product requirements document. It says what should be built, for whom, why it matters, what is out of scope, and how success will be checked.</p></blockquote>
+<blockquote><p>Plain-English term: A bead is one small approved unit of work. It is smaller than a project and more concrete than an idea.</p></blockquote>
+<h2 id="what-to-ask-the-agent-at-each-stage">What To Ask The Agent At Each Stage</h2>
+<p>Use these prompts when you do not know what to say next.</p>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Ask the agent</th></tr></thead><tbody><tr><td>I only have a rough idea.</td><td><code>Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not update PRODUCT.md, write a PRD, create beads, or code.</code></td></tr><tr><td>I need to know if this is worth defining.</td><td><code>Use Product Discovery Validation. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.</code></td></tr><tr><td>I have notes or an ingestion packet.</td><td><code>Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.</code></td></tr><tr><td>My workbook includes a Candidate Goal Frame.</td><td><code>Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.</code></td></tr><tr><td>My intent is durable, but I do not know the workflow yet.</td><td><code>This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.</code></td></tr><tr><td>I have an old Goal Frame.</td><td><code>Check whether this Goal Frame still matches the active PRD, active bead, and current evidence. Ask me to reaffirm it before using it for workflow guidance.</code></td></tr><tr><td>I need alignment before planning.</td><td><code>Align this idea one high-level product or business question at a time. Include your recommended answer. After at most three questions, summarize a Product Brief. Do not write a PRD or plan until the design concept is shared.</code></td></tr><tr><td>I keep explaining the same terms.</td><td><code>Use the Ubiquitous Language Protocol. Capture my terms, meanings, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.</code></td></tr><tr><td>I need to know if this is worth building.</td><td><code>Challenge this idea. Tell me the user problem, strongest reason to build it, biggest risk, and smallest useful test.</code></td></tr><tr><td>I do not know what to do next.</td><td><code>Run python3 scripts/next-step.py and explain the generated recommendation without treating it as approval.</code></td></tr><tr><td>Help me find the smallest useful version.</td><td><code>Find the smallest first version that teaches us something real without adding avoidable complexity.</code></td></tr><tr><td>Turn this into a PRD.</td><td><code>Use the PRD protocol. Draft a beginner-readable destination PRD with problem, non-goals, before/after user moment, risks, verification evidence, agent-facing technical translation, and smallest first bead.</code></td></tr><tr><td>Break this into beads.</td><td><code>Use the Decomposition Protocol. Propose vertical journey beads that each have one outcome, one primary authority, bounded files, checks, dependencies, delegation mode, test strategy, review context, complexity, required planning depth, autonomy level, and stop conditions.</code></td></tr><tr><td>Implement the active bead.</td><td><code>Before editing, confirm the active bead, primary authority, files in play, checks, stop conditions, and what is out of scope.</code></td></tr><tr><td>Check for scope drift.</td><td><code>Run python3 scripts/files-in-play-check.py and explain whether changed files are inside this bead or should become follow-up work.</code></td></tr><tr><td>Local files or logs look messy.</td><td><code>Use Local Hygiene. Run the advisory check or dry-run preview and explain what is protected, generated evidence, cache, or cleanup candidate. Do not delete, archive, move, compact, or rewrite anything.</code></td></tr><tr><td>Prove this works.</td><td><code>Run the relevant checks through record-check.sh and explain the evidence in plain English.</code></td></tr><tr><td>Help me decide if it is done.</td><td><code>Run a completion check. Recommend accepted, revise, split, blocked, or stop based on recorded evidence and manual verification.</code></td></tr><tr><td>Prepare this for deployment.</td><td><code>List the deployment, secret, dashboard, database, rollback, and approval steps. Do not deploy until I explicitly approve.</code></td></tr><tr><td>Record what we learned.</td><td><code>Summarize learning diary candidates and propose memory cards for my approval. Do not make memory authority.</code></td></tr></tbody></table></div>
+<p>For more prompts, use <code>tasks/reference/PROMPT-PATTERNS.md</code>.</p>
+<h2 id="the-mental-models-you-need">The Mental Models You Need</h2>
+<h3 id="scope-one-thing-at-a-time">Scope: One Thing At A Time</h3>
+<p>Scope is the boundary around the current work. In Precode, the active bead protects scope. If the agent starts doing adjacent work, checkpoint and split.</p>
+<pre><code class="language-text">Stop and checkpoint. Is this still one bead, or should we split the new work into a separate proposal?</code></pre>
+<p><code>files_in_play</code> is the practical scope list. <code>python3 scripts/files-in-play-check.py</code> compares current Git changes to that list when Git status is available. Warnings are advisory, but they are a good reason to pause before accepting a bead.</p>
+<h3 id="adaptive-depth-tiny-fixes-stay-light-risky-work-gets-stronger">Adaptive Depth: Tiny Fixes Stay Light, Risky Work Gets Stronger</h3>
+<p>Not every task needs the same ceremony. Precode can mark a bead with:</p>
+<ul><li><code>complexity</code> for size and risk;</li><li><code>required_planning_depth</code> for how much planning must exist before implementation;</li><li><code>autonomy_level</code> for whether an agent can work with supervision, bounded AFK, or human-only action.</li></ul>
+<pre><code class="language-text">Classify this bead&#x27;s complexity, required_planning_depth, and autonomy_level. Then run bead-depth-check and explain any warnings.</code></pre>
+<p>This keeps a typo fix from needing a full PRD while still making auth, payments, data, deployment, security, and multi-system work earn stronger planning and evidence.</p>
+<h3 id="authority-facts-live-in-the-right-file">Authority: Facts Live In The Right File</h3>
+<p>Precode uses owner files so important facts are not scattered across chat. Product intent belongs in PRDs. Hard decisions belong in <code>DECISIONS.md</code>. Current execution belongs in <code>tasks/todo.md</code> and the active bead.</p>
+<pre><code class="language-text">Which file owns this fact, and should we promote it there before acting on it?</code></pre>
+<h3 id="destination-and-journey-prds-are-not-the-work">Destination And Journey: PRDs Are Not The Work</h3>
+<p>A PRD is the destination document. It describes where the feature is trying to arrive. A bead is a journey unit. It describes one safe step toward that destination.</p>
+<pre><code class="language-text">Show me the destination PRD and the next journey bead. Confirm the bead is a vertical slice and does not activate anything without my approval.</code></pre>
+<h3 id="goal-frames-direction-is-not-a-task-list">Goal Frames: Direction Is Not A Task List</h3>
+<p>A Goal Frame preserves durable intent inside an existing owner file before workflow selection. It can say what you are aiming at, why now, what success would look like, what is out of scope, what approval gates matter, and when the goal needs reaffirmation.</p>
+<p>When the direction starts in the Product Ideation Workbook, the workbook should produce a Candidate Goal Frame first. Precode should run Local Source Intake, ask whether the candidate is stable enough to reaffirm, and only then update <code>PRODUCT.md</code> if you approve.</p>
+<p>It is not active memory, a backlog, a roadmap, a PRD approval, a bead transition, or permission to code.</p>
+<pre><code class="language-text">Use the Goal Frame only to explain workflow guidance. Do not activate or approve work.</code></pre>
+<pre><code class="language-text">If I reaffirm this Goal Frame, update PRODUCT.md only with the reviewed Goal Frame section and do not create tasks or code.</code></pre>
+<h3 id="code-shape-own-interfaces-delegate-internals">Code Shape: Own Interfaces, Delegate Internals</h3>
+<p>For meaningful code changes, ask the agent to name the module boundary, public interface, behavior contract, and test boundary before implementing internals.</p>
+<pre><code class="language-text">Before coding, identify the deep module or interface boundary. Tell me what callers should know, what internals can be delegated, and how the behavior will be tested.</code></pre>
+<h3 id="shared-language-name-the-thing-before-building-it">Shared Language: Name The Thing Before Building It</h3>
+<p>Non-technical builders often know the business words before they know the software words. Precode should preserve that advantage. Ask the agent to turn your terms into a small shared vocabulary before a PRD, UI, test, or module name hardens.</p>
+<pre><code class="language-text">Use the Ubiquitous Language Protocol. Tell me the terms I introduced, what each means, aliases people may use, words to avoid, examples in UI/code/tests, and whether any term should become a reviewed project_glossary memory card.</code></pre>
+<h3 id="evidence-done-means-checked">Evidence: Done Means Checked</h3>
+<p>An agent saying &quot;this should work&quot; is not enough. Evidence is a recorded check, manual verification, screenshot, review decision, or closeout note tied to the bead.</p>
+<pre><code class="language-text">Show me the evidence that proves this bead is complete. If evidence is missing, tell me the next check to run.</code></pre>
+<h3 id="risk-stronger-changes-need-stronger-approval">Risk: Stronger Changes Need Stronger Approval</h3>
+<p>Changing text is low risk. Touching auth, payments, data, uploads, deployment, secrets, or external systems is higher risk. Higher risk needs clearer approval and stronger proof.</p>
+<pre><code class="language-text">Classify the risk of this task and tell me what approval gates or rollback notes are required before work continues.</code></pre>
+<h3 id="state-the-repo-remembers-what-chat-forgets">State: The Repo Remembers What Chat Forgets</h3>
+<p>Chat history is useful, but it is not durable project state. Precode stores durable state in files and generated evidence, so future sessions can recover what happened.</p>
+<h3 id="generated-help-orientation-is-not-approval">Generated Help: Orientation Is Not Approval</h3>
+<p><code>PRECODE-HELP.md</code>, <code>bash scripts/session-start.sh</code>, and <code>python3 scripts/next-step.py</code> now point at the same generated router decision. They can help you see whether the next human decision is continue, ask for missing info, ask for proof, review, approve transition, repair state, approval needed, or stop.</p>
+<p><code>next-step.py</code> is the decisive generated &quot;what now?&quot; surface. It may also name one next protocol or mode to load and a rough context footprint so the agent does not read the whole Precode system when one owner file is enough.</p>
+<p>They are not active memory, task selection, or approval. Before acting, return to active memory, the active bead, the primary authority file, and the user&#x27;s explicit approval.</p>
+<pre><code class="language-text">Run python3 scripts/next-step.py and explain the recommendation. Treat it as generated guidance only, not permission to start or approve work.</code></pre>
+<h3 id="recovery-stop-first-then-find-the-owner-file">Recovery: Stop First, Then Find The Owner File</h3>
+<p>When you think something is broken, use <code>tasks/reference/RECOVERY-PROTOCOL.md</code>. Recovery starts with a clean stop, not with guessing, cleanup, or rewriting reports.</p>
+<pre><code class="language-text">I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.</code></pre>
+<p>Use recovery when a file was moved or renamed, a generated report was edited or stale, active state is unclear, proof is missing, the session is confused, scope expanded, or approval happened too quickly.</p>
+<h3 id="local-hygiene-truth-is-not-cleanup">Local Hygiene: Truth Is Not Cleanup</h3>
+<p>When logs, caches, build output, generated files, or local clutter look confusing, use Local Hygiene instead of manually cleaning files.</p>
+<p>Local Hygiene v1 is advisory and dry-run only. It may classify files, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.</p>
+<pre><code class="language-text">Use the Local Hygiene Protocol. Run python3 scripts/local-hygiene-check.py or python3 scripts/local-hygiene-dry-run.py and explain the result. Do not mutate files.</code></pre>
+<h3 id="handoff-future-agents-need-durable-context">Handoff: Future Agents Need Durable Context</h3>
+<p>A handoff is not a new task approval. It is a safe orientation packet for the next session or agent.</p>
+<blockquote><p>Plain-English term: A check is a command or manual review that proves something about the work. A check should be recorded so the repo remembers it.</p></blockquote>
+<blockquote><p>Plain-English term: Deployment means putting software somewhere real users can access it. Deployment is riskier than local coding because it can affect users, data, costs, domains, and production settings.</p></blockquote>
+<blockquote><p>Plain-English term: Rollback means the plan for undoing or safely recovering from a bad change.</p></blockquote>
+<h2 id="worked-example-personal-tool-vs-simple-saas">Worked Example: Personal Tool vs Simple SaaS</h2>
+<p>Imagine this idea:</p>
+<pre><code class="language-text">I want an app that helps me track client follow-ups.</code></pre>
+<p>That could be a small personal tool, or it could become a SaaS product. The difference matters.</p>
+<div class="table-wrap"><table><thead><tr><th>Choice</th><th>Personal tool</th><th>Simple SaaS app</th></tr></thead><tbody><tr><td>Users</td><td>Just you.</td><td>You and other users or customers.</td></tr><tr><td>Data</td><td>Your own client notes.</td><td>Other people&#x27;s accounts and possibly private data.</td></tr><tr><td>Login</td><td>Maybe none at first.</td><td>Usually required.</td></tr><tr><td>Storage</td><td>Local file or simple database may be enough.</td><td>Production database, permissions, backups, privacy expectations.</td></tr><tr><td>Deployment</td><td>Optional or simple.</td><td>Required if others need access.</td></tr><tr><td>Risk</td><td>Lower if private and local.</td><td>Higher because users, auth, email, billing, and support may appear.</td></tr><tr><td>First good bead</td><td>Create a local follow-up list with add/edit/done states.</td><td>Define PRD and auth/data boundaries before implementation.</td></tr></tbody></table></div>
+<h3 id="raw-idea">Raw Idea</h3>
+<p>Start by asking for intake:</p>
+<pre><code class="language-text">Use Local Source Intake for this idea: &quot;I want an app that helps me track client follow-ups.&quot; Summarize facts, assumptions, open questions, candidate requirements, and whether this should start as a personal tool or SaaS. Do not code.</code></pre>
+<p>Good intake might reveal:</p>
+<ul><li>The user wants to remember who to contact next.</li><li>The first version may only need name, next follow-up date, status, and notes.</li><li>Unknown: is this private for one person or shared by a team?</li><li>Risk: client notes may contain private information.</li><li>Candidate first bead: build a local list view and add/edit form.</li></ul>
+<h3 id="prd-question">PRD Question</h3>
+<p>If it is a personal tool, the PRD can be light:</p>
+<pre><code class="language-text">Draft a lightweight PRD for a private personal follow-up tracker. Keep the first version local and simple. Name what is out of scope, especially accounts, billing, team sharing, and production deployment.</code></pre>
+<p>If it is SaaS-like, slow down:</p>
+<pre><code class="language-text">Draft a PRD for a simple SaaS follow-up tracker. Include auth, personal data, permissions, deployment, email, and privacy risks. Do not propose implementation beads until those risks are clear.</code></pre>
+<h3 id="smallest-first-bead">Smallest First Bead</h3>
+<p>For the personal tool:</p>
+<pre><code class="language-text">Propose the smallest first bead: a local follow-up list where I can add, edit, mark done, and see next follow-up date. Include files in play, checks, and stop conditions.</code></pre>
+<p>For the SaaS version:</p>
+<pre><code class="language-text">Before coding, propose planning beads for auth boundary, data model, and deployment assumptions. Keep implementation separate until I approve the product and security direction.</code></pre>
+<h3 id="implementation-request">Implementation Request</h3>
+<p>Once a bead is active:</p>
+<pre><code class="language-text">Implement only the active bead. Confirm the primary authority, files in play, checks, and stop conditions before editing. Stop if this turns into auth, deployment, billing, or team-sharing work.</code></pre>
+<h3 id="verification-request">Verification Request</h3>
+<pre><code class="language-text">Run the checks through record-check.sh. Then tell me what manual behavior I should verify: add a client, edit it, mark it done, and confirm the follow-up date displays correctly.</code></pre>
+<h3 id="review-decision">Review Decision</h3>
+<pre><code class="language-text">Based on recorded checks and manual verification, recommend accepted, revise, split, blocked, or stop. Do not activate the next bead.</code></pre>
+<h3 id="next-safe-step">Next Safe Step</h3>
+<p>If the personal tool works, the next step might be search, filtering, import/export, or persistence. If the SaaS path is chosen, the next step may be auth and data privacy planning before more code.</p>
+<p>The lesson: the same idea can be low-risk or high-risk depending on who uses it, where data lives, and whether it goes into production.</p>
+<h2 id="when-to-slow-down">When To Slow Down</h2>
+<p>Some work should trigger extra care. Slow down when the task touches:</p>
+<ul><li>login or permissions</li><li>payments or billing</li><li>personal data</li><li>file uploads</li><li>AI usage, credits, limits, or cost</li><li>database migrations</li><li>production deployment</li><li>external dashboards</li><li>GitHub, CI, deployment, or monitoring mutations</li><li>deleting, overwriting, or migrating data</li></ul>
+<p>These are not &quot;just another coding task&quot; because mistakes can affect users, money, privacy, data, or production systems.</p>
+<p>Use these prompts:</p>
+<pre><code class="language-text">This seems sensitive. Stop and classify the approval gates, risks, checks, rollback path, and what I need to approve before any mutation happens.</code></pre>
+<pre><code class="language-text">Do not deploy, migrate, push, merge, change secrets, or update dashboards. First explain the exact action, expected effect, rollback path, and evidence we will record afterward.</code></pre>
+<h2 id="how-to-know-if-work-is-actually-done">How To Know If Work Is Actually Done</h2>
+<p>There are levels of &quot;done.&quot;</p>
+<div class="table-wrap"><table><thead><tr><th>Signal</th><th>What it means</th><th>Is it enough?</th></tr></thead><tbody><tr><td>Agent confidence</td><td>The agent believes the work is correct.</td><td>No. Useful, but not proof.</td></tr><tr><td>Working demo</td><td>Something appears to work once.</td><td>Sometimes, but it may miss edge cases.</td></tr><tr><td>Recorded check</td><td>A command ran and the repo saved the result.</td><td>Stronger evidence.</td></tr><tr><td>Manual verification</td><td>A human checked the behavior that matters.</td><td>Required for user-facing or sensitive work.</td></tr><tr><td>Accepted review</td><td>The bead was reviewed and accepted, revised, split, or blocked.</td><td>This is the Precode completion gate.</td></tr></tbody></table></div>
+<p>Ask:</p>
+<pre><code class="language-text">Before I accept this, show me recorded checks, manual verification, closeout evidence, review decision, and any remaining uncertainty.</code></pre>
+<h2 id="how-you-learn-over-time">How You Learn Over Time</h2>
+<p>Precode is not only a task system. It is also a learning system.</p>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>What it helps you remember</th><th>Rule</th></tr></thead><tbody><tr><td>Learning diary</td><td>What happened in sessions and what you learned.</td><td>Generated learning history, not authority.</td></tr><tr><td>Reviewed memory cards</td><td>Durable lessons, preferences, glossary terms, recurring risks, source pointers.</td><td>Evidence only; consult explicitly.</td></tr><tr><td><code>PRODUCT.md</code></td><td>Product promise, users, strategy, current bets, success signals, and design or voice.</td><td>Planning context, not active memory or task selection.</td></tr><tr><td><code>DECISIONS.md</code></td><td>Hard decisions and important choices.</td><td>Active memory.</td></tr><tr><td>PRDs</td><td>Product intent and requirements.</td><td>Product authority after approval.</td></tr><tr><td>File inventory</td><td>What each Precode file is for.</td><td>Technical map, not task selection.</td></tr></tbody></table></div>
+<p>Use memory carefully:</p>
+<pre><code class="language-text">Search reviewed memory for what we have learned about this topic. Do not treat memory as authority. Tell me whether anything should be promoted to DECISIONS.md, a PRD, or another owner file.</code></pre>
+<h2 id="common-beginner-failure-modes">Common Beginner Failure Modes</h2>
+<div class="table-wrap"><table><thead><tr><th>Mistake</th><th>Why it hurts</th><th>Safer move</th></tr></thead><tbody><tr><td>&quot;Just code it.&quot;</td><td>The agent may build the wrong thing quickly.</td><td>Ask for intake, PRD, or workflow selection first.</td></tr><tr><td>Skipping discovery for a broad, paid, or weakly evidenced idea.</td><td>The agent may write a convincing PRD for a problem that has no real pull.</td><td>Use Product Discovery Validation and ask for current workaround, evidence strength, riskiest assumption, and smallest non-code learning step.</td></tr><tr><td>Treating workbook output as project truth.</td><td>Workbook notes may include guesses, research fragments, or unresolved choices.</td><td>Turn the workbook into a Precode Ingestion Packet and run Local Source Intake.</td></tr><tr><td>Treating a Candidate Goal Frame as already approved.</td><td>Early direction can feel settled before Precode has checked stability, conflicts, and scope.</td><td>Run Local Source Intake and reaffirm before updating <code>PRODUCT.md</code>.</td></tr><tr><td>Treating a Goal Frame as a task list.</td><td>Durable intent becomes hidden authority and can push the agent into stale work.</td><td>Reaffirm it, then use it only for workflow guidance.</td></tr><tr><td>Vague feature request.</td><td>No one can prove whether it is done.</td><td>Ask for user problem, non-goals, and acceptance evidence.</td></tr><tr><td>Accepting broad rewrites.</td><td>Scope and risk hide inside a large change.</td><td>Keep one bead, bounded files, and clear checks.</td></tr><tr><td>Skipping alignment or PRD for fuzzy ideas.</td><td>Product decisions move into code by accident.</td><td>Use Product Brief alignment, Idea-to-PRD, or challenge planning first.</td></tr><tr><td>Approving the next task too quickly.</td><td>Work moves forward before review.</td><td>Accept, revise, split, block, or stop first.</td></tr><tr><td>Treating generated next-step help as approval.</td><td>A generated hint can orient you, but it cannot choose or activate work.</td><td>Return to active memory, the active bead, and user approval.</td></tr><tr><td>Treating reports as instructions.</td><td>Generated summaries can be stale or incomplete.</td><td>Return to active memory, active bead, and primary authority.</td></tr><tr><td>Trying to fix confusion by guessing.</td><td>A rushed repair can damage authority files or evidence.</td><td>Use the Recovery Protocol and stop before editing, deleting, moving, overwriting, or regenerating files.</td></tr><tr><td>Manually cleaning logs, caches, or generated files.</td><td>You may delete evidence or damage state while trying to tidy the workspace.</td><td>Use Local Hygiene advisory checks and dry-run previews first.</td></tr><tr><td>Editing or moving Precode files.</td><td>Scripts and agents may lose the expected structure.</td><td>Follow <code>docs/PRECODE-USER-GUIDE.md</code> hard rules.</td></tr><tr><td>Storing secrets in files.</td><td>Secrets may be committed, exported, or exposed.</td><td>Use proper secret managers or dashboards.</td></tr><tr><td>Deploying before understanding risk.</td><td>Production can affect real users, data, cost, or reputation.</td><td>Ask for deployment approval gates and rollback.</td></tr></tbody></table></div>
+<p>For the hard operating rules, use <code>docs/PRECODE-USER-GUIDE.md</code>.</p>
+<h2 id="where-to-go-next">Where To Go Next</h2>
+<p>For the canonical document compass, use <code>README.md</code>. If you are ready to operate a PrecodeOS repo, use <code>docs/PRECODE-USER-GUIDE.md</code>.</p>
+<p>Maintainer-local document history for this beginner software-building bridge lives in <code>_maintainer/CHANGELOG.md</code>; it is not public package authority.</p>
+    <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-SUPPORT-RUNBOOK.html"><span>Previous</span>PrecodeOS Support Runbook</a><a href="CLAUDE-CODE-FIELD-GUIDE.html"><span>Next</span>Claude Code Field Guide For Students</a></nav>
+  </article>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#start-here-you-are-not-just-prompting">Start Here: You Are Not Just Prompting</a><a class="level-3" href="#if-you-only-have-an-idea-start-with-the-workbook">If You Only Have An Idea, Start With The Workbook</a><a class="level-2" href="#the-software-building-journey-in-plain-english">The Software Building Journey In Plain English</a><a class="level-2" href="#how-the-journey-changes-with-precode-and-ai-agents">How The Journey Changes With Precode And AI Agents</a><a class="level-2" href="#choose-your-path-different-kinds-of-software-work">Choose Your Path: Different Kinds Of Software Work</a><a class="level-2" href="#your-new-role-as-a-non-technical-builder">Your New Role As A Non Technical Builder</a><a class="level-2" href="#traditional-roles-now-translated">Traditional Roles, Now Translated</a><a class="level-2" href="#from-idea-to-working-software-with-precode">From Idea To Working Software With Precode</a><a class="level-2" href="#what-to-ask-the-agent-at-each-stage">What To Ask The Agent At Each Stage</a><a class="level-2" href="#the-mental-models-you-need">The Mental Models You Need</a><a class="level-3" href="#scope-one-thing-at-a-time">Scope: One Thing At A Time</a><a class="level-3" href="#adaptive-depth-tiny-fixes-stay-light-risky-work-gets-stronger">Adaptive Depth: Tiny Fixes Stay Light, Risky Work Gets Stronger</a><a class="level-3" href="#authority-facts-live-in-the-right-file">Authority: Facts Live In The Right File</a><a class="level-3" href="#destination-and-journey-prds-are-not-the-work">Destination And Journey: PRDs Are Not The Work</a><a class="level-3" href="#goal-frames-direction-is-not-a-task-list">Goal Frames: Direction Is Not A Task List</a><a class="level-3" href="#code-shape-own-interfaces-delegate-internals">Code Shape: Own Interfaces, Delegate Internals</a><a class="level-3" href="#shared-language-name-the-thing-before-building-it">Shared Language: Name The Thing Before Building It</a><a class="level-3" href="#evidence-done-means-checked">Evidence: Done Means Checked</a><a class="level-3" href="#risk-stronger-changes-need-stronger-approval">Risk: Stronger Changes Need Stronger Approval</a><a class="level-3" href="#state-the-repo-remembers-what-chat-forgets">State: The Repo Remembers What Chat Forgets</a><a class="level-3" href="#generated-help-orientation-is-not-approval">Generated Help: Orientation Is Not Approval</a><a class="level-3" href="#recovery-stop-first-then-find-the-owner-file">Recovery: Stop First, Then Find The Owner File</a><a class="level-3" href="#local-hygiene-truth-is-not-cleanup">Local Hygiene: Truth Is Not Cleanup</a><a class="level-3" href="#handoff-future-agents-need-durable-context">Handoff: Future Agents Need Durable Context</a><a class="level-2" href="#worked-example-personal-tool-vs-simple-saas">Worked Example: Personal Tool vs Simple SaaS</a><a class="level-3" href="#raw-idea">Raw Idea</a><a class="level-3" href="#prd-question">PRD Question</a><a class="level-3" href="#smallest-first-bead">Smallest First Bead</a><a class="level-3" href="#implementation-request">Implementation Request</a><a class="level-3" href="#verification-request">Verification Request</a><a class="level-3" href="#review-decision">Review Decision</a><a class="level-3" href="#next-safe-step">Next Safe Step</a><a class="level-2" href="#when-to-slow-down">When To Slow Down</a><a class="level-2" href="#how-to-know-if-work-is-actually-done">How To Know If Work Is Actually Done</a><a class="level-2" href="#how-you-learn-over-time">How You Learn Over Time</a><a class="level-2" href="#common-beginner-failure-modes">Common Beginner Failure Modes</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+</section>
+
+      <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
+    </main>
+  </div>
+</body>
+</html>
