@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-19
+Document version: v0.1.8
+Last updated: 2026-05-25
 
 ## Purpose
 
 This workflow helps a solo builder move from a rough product idea to an approved PRD shard without asking the builder to become a product manager first.
 
 The workflow is intentionally light. It borrows the useful parts of progressive context, Working Backwards PRFAQ thinking, Shape Up-style bounded appetite, and small-iteration discipline, but routes every output through Precode authority ownership.
+
+Optimize for mediocre-agent-resilient next-step clarity. The founder should be able to see the current stage, next safe action, stop condition, and forbidden next action even when the agent has only average product judgment. Expert-agent guidance can improve the experience, but it is an enhancement, not the safety model.
 
 Use `PRODUCT.md` as the builder-facing product constitution when the idea may affect product promise, users and jobs, strategy and non-goals, current bets, success signals, or design and voice direction. `PRODUCT.md` orients product planning; it does not approve PRDs, compile features, activate beads, or replace feature PRD shards.
 
@@ -43,6 +45,30 @@ None of these artifacts are active memory. The active-memory set remains:
 - `AGENT.md`
 - `DECISIONS.md`
 - `tasks/todo.md`
+
+## Next-Step Clarity Contract
+
+At every major transition, state the next safe founder decision in plain language. Keep it compact enough that a non-technical builder can approve, reject, pause, or ask for repair without learning the whole operating model.
+
+Use this contract:
+
+- Current stage: `idea | brief | exploration | discovery | intake | alignment | PRD draft | PRD approval | feature compile | bead proposal | execution handoff`
+- Next safe action: the one action the founder can approve or reject now.
+- Do not do yet: name the premature action, such as drafting a PRD, creating beads, writing code, updating an authority file, or activating a transition.
+- Good-enough-to-move-on signal: the minimum evidence, agreement, or approval needed before the next stage.
+- Stop or pause trigger: the condition that should block or redirect the workflow.
+
+Default founder-facing handoffs:
+
+| Handoff | Next safe action | Do not do yet | Good-enough signal | Stop or pause trigger |
+|---|---|---|---|---|
+| Workbook -> Product Brief | Summarize the brief and ask one next best question. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code. | User, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, and smallest useful version are named. | The idea is still only a solution with no user problem or current alternative. |
+| Product Brief -> Exploration or Discovery | Choose targeted exploration when more context exists, or Product Discovery Validation when worth-building is uncertain. | Do not turn capability candidates into requirements. | The next uncertainty is clear: missing context, weak evidence, broad audience, demand, risk, or first slice. | Evidence is weak, audience is too broad, or too many candidates need narrowing. |
+| Discovery -> Local Source Intake or pause/narrow/kill | Use the Discovery Summary to proceed, pause, narrow, or kill. | Do not treat `proceed` as PRD approval or task activation. | Target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommendation are named. | Recommendation is `pause`, `narrow`, or `kill`, or a sensitive surface needs human judgment. |
+| PRD draft -> Product Definition Gate | Review readiness against the gate. | Do not compile features or derive beads. | Requirements have stable IDs, acceptance oracles, non-goals, risk gates, and known authority impacts. | Implementation-changing questions remain blocking or requirements cannot be verified. |
+| Approved PRD -> `FEATURES.md` compile | Compile only stable feature inventory. | Do not copy the whole PRD or activate work. | Approved PRD has stable requirements that can be summarized in `FEATURES.md`. | PRD approval is missing or product-constitution impact is unresolved. |
+| `FEATURES.md` -> bead proposals | Derive candidate beads from approved requirement IDs. | Do not activate a bead. | Each candidate has one logical unit, one primary authority file, checks, manual verification, and stop conditions. | A candidate mixes planning and implementation, spans multiple owners, or lacks verification. |
+| Bead proposals -> user-approved activation only | Ask for explicit bead activation through the normal transition gate. | Do not update `tasks/todo.md` or begin implementation without approval. | The user approves exactly one next bead. | More than one bead is active, scope is unclear, or the transition would bypass review. |
 
 ## Workflow Lenses
 
@@ -345,6 +371,8 @@ Before implementation begins:
 - use `bash scripts/session-start.sh` before Builder work
 
 The workflow may propose the next bead. It must not activate it without the normal bead-transition gate.
+
+Before ending the planning chat, restate the Next-Step Clarity Contract for the handoff: current stage, next safe action, do-not-do-yet action, good-enough signal, and stop or pause trigger. This keeps the workflow safe even when the next agent is less skilled than the planning agent.
 
 ## Builder Prompts
 
