@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-21
+Document version: v0.1.2
+Last updated: 2026-05-27
 
 ## What This Guide Is For
 
@@ -45,6 +45,30 @@ You need:
 Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.
 
 Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.
+
+## Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?
+
+Use this fit check if you are in an Ember bootcamp and are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.
+
+Use PrecodeOS now when:
+
+- you are building a real product you may show to customers, users, coworkers, or collaborators
+- the app has multiple steps, screens, integrations, data flows, or future sessions
+- an engineer, instructor, or teammate may need to understand or continue the work
+- you need scope control, evidence, checkpoints, recovery, or a clear handoff
+- you are moving from rough design or workbook material into serious product build work
+
+Stay in plain VS Code and Claude Code for now when:
+
+- you are making a throwaway prototype, quick sketch, or learning-only demo
+- you are still learning how to open the project, use VS Code, run commands, or talk to Claude Code
+- you are doing early UI or design exploration before choosing what belongs in the real app
+- setup basics are blocking you and practicing the tool first would reduce confusion
+- the work is not intended to survive beyond the exercise
+
+This is a two-way door. It is okay to practice basics first and add PrecodeOS later. Before you begin serious multi-session product development, especially work you want engineers or instructors to support, add PrecodeOS so the repo has a clear task, scope, and proof trail.
+
+Once real development starts in VS Code, keep development there. You may use design or prototype tools to explore ideas, but do not keep bouncing the product between Ember, Claude Design, Claude Code web, and local VS Code. Bring the chosen design or handoff material into the project, then develop locally from the project folder.
 
 ## Step 1: Pull PrecodeOS From GitHub
 

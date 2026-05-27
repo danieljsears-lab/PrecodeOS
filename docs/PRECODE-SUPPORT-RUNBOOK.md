@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-22
+Document version: v0.1.7
+Last updated: 2026-05-27
 
 ## Purpose
 
@@ -33,15 +33,26 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 1. Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
-4. If Precode setup is the issue, use `docs/PRECODE-GUIDED-SETUP.md`. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
-5. Run only the narrow checks that match the symptom, then explain the result in plain language.
-6. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
+4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
+5. If Precode setup is the issue, use `docs/PRECODE-GUIDED-SETUP.md`. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+6. Run only the narrow checks that match the symptom, then explain the result in plain language.
+7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
 
 Support can say:
 
 ```text
 I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.
 ```
+
+## Ember Bootcamp Precode Fit Check
+
+Use this short check when a student is unsure whether to use PrecodeOS or stay in plain VS Code with Claude Code.
+
+Route the student to PrecodeOS now when the work is a real product build, customer-facing or collaborator-supported, multi-step, likely to continue across sessions, or in need of scope control, evidence, recovery, or handoff.
+
+Let the student stay in plain VS Code and Claude Code for now when the work is a throwaway prototype, a first-time coding practice session, a learning-only demo, early design exploration, or when setup basics are still blocking confidence.
+
+Name the decision as reversible: the student can practice basics first and add PrecodeOS later, but should add PrecodeOS before serious multi-session product development. Once real development starts in VS Code, coach the student to keep development there instead of switching the product back and forth between design, prototype, web chat, and local coding surfaces.
 
 ## Case Priority
 

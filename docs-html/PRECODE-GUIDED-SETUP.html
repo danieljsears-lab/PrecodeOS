@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-24">
+  <meta name="generated-at" content="2026-05-27">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.1</span><span>Updated 2026-05-21</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.2</span><span>Updated 2026-05-27</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -206,6 +206,14 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <ul><li>a local folder where you can clone or pull from GitHub</li><li>a target project folder</li><li>Git installed</li><li>Python 3 available for validation scripts</li><li>an AI coding agent that can read and edit local files</li></ul>
 <p>Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.</p>
 <p>Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.</p>
+<h2 id="ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</h2>
+<p>Use this fit check if you are in an Ember bootcamp and are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.</p>
+<p>Use PrecodeOS now when:</p>
+<ul><li>you are building a real product you may show to customers, users, coworkers, or collaborators</li><li>the app has multiple steps, screens, integrations, data flows, or future sessions</li><li>an engineer, instructor, or teammate may need to understand or continue the work</li><li>you need scope control, evidence, checkpoints, recovery, or a clear handoff</li><li>you are moving from rough design or workbook material into serious product build work</li></ul>
+<p>Stay in plain VS Code and Claude Code for now when:</p>
+<ul><li>you are making a throwaway prototype, quick sketch, or learning-only demo</li><li>you are still learning how to open the project, use VS Code, run commands, or talk to Claude Code</li><li>you are doing early UI or design exploration before choosing what belongs in the real app</li><li>setup basics are blocking you and practicing the tool first would reduce confusion</li><li>the work is not intended to survive beyond the exercise</li></ul>
+<p>This is a two-way door. It is okay to practice basics first and add PrecodeOS later. Before you begin serious multi-session product development, especially work you want engineers or instructors to support, add PrecodeOS so the repo has a clear task, scope, and proof trail.</p>
+<p>Once real development starts in VS Code, keep development there. You may use design or prototype tools to explore ideas, but do not keep bouncing the product between Ember, Claude Design, Claude Code web, and local VS Code. Bring the chosen design or handoff material into the project, then develop locally from the project folder.</p>
 <h2 id="step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</h2>
 <p>Start by getting a clean local copy of the public PrecodeOS package.</p>
 <p>If you do not have it yet:</p>
@@ -312,7 +320,7 @@ Here are the conflicts and choices that need your approval:</code></pre>
 <p>Do not use maintainer-only files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="PRECODE-USER-GUIDE.html"><span>Next</span>How To Use PrecodeOS</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
