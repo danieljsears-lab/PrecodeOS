@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.2</span><span>Updated 2026-05-27</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.3</span><span>Updated 2026-05-27</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -309,7 +309,7 @@ I will copy or adapt Precode by file group, then run memory validation.
 Here are the conflicts and choices that need your approval:</code></pre>
 <h3 id="validation-checklist">Validation Checklist</h3>
 <p>After setup:</p>
-<ul><li>run <code>bash scripts/validate-memory.sh</code></li><li>run <code>python3 scripts/file-inventory.py --check</code> if the full script set was copied</li><li>run <code>bash scripts/session-start.sh</code></li><li>confirm generated reports are evidence only</li><li>confirm the first active bead is setup or orientation, not product implementation</li><li>confirm project-specific checks in <code>PROJECT-CONTEXT.md</code></li></ul>
+<ul><li>run <code>bash scripts/validate-memory.sh</code></li><li>run <code>python3 scripts/file-inventory.py --check</code> if the full script set was copied</li><li>run <code>bash scripts/session-start.sh</code></li><li>confirm generated reports are evidence only</li><li>confirm the first active bead is setup or orientation, not product implementation</li><li>confirm project-specific checks in <code>PROJECT-CONTEXT.md</code></li><li>confirm any packet, design, PRD, or handoff input was ingested through the support runbook path or named as the next blocker</li></ul>
 <h3 id="escalation-and-stop-conditions">Escalation And Stop Conditions</h3>
 <p>Stop and ask the user before:</p>
 <ul><li>overwriting an existing project document</li><li>installing Git hooks</li><li>adding or changing GitHub Actions</li><li>changing package manager files</li><li>editing app code</li><li>moving or renaming Precode files</li><li>adding active-memory files</li><li>touching secrets, env files, dashboard values, deployment settings, billing, auth, payments, or personal data</li><li>approving a bead transition</li></ul>

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.3
 Last updated: 2026-05-27
 
 ## What This Guide Is For
@@ -312,6 +312,7 @@ After setup:
 - confirm generated reports are evidence only
 - confirm the first active bead is setup or orientation, not product implementation
 - confirm project-specific checks in `PROJECT-CONTEXT.md`
+- confirm any packet, design, PRD, or handoff input was ingested through the support runbook path or named as the next blocker
 
 ### Escalation And Stop Conditions
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
+Document version: v0.1.8
 Last updated: 2026-05-27
 
 ## Purpose
@@ -272,6 +272,21 @@ Start by classifying the project state:
 | Existing non-Precode project | Inspect the repo, existing docs, existing PRD/design, app directory, checks, and conflicts before adapting Precode. | Do not overwrite project conventions or treat the external PRD as already approved Precode authority. |
 | Existing Precode project | Load active memory, identify the active bead, then intake the new packet, design, or PRD as local source evidence. | Do not widen the active bead, amend a PRD, or start coding without the normal approval path. |
 
+### Precode Ingestion Close Gate
+
+An engineer setup session is not complete until the Precode ingestion state is explicit.
+
+Before closing, confirm:
+
+- the entry state was classified
+- setup validation ran, or the exact validation blocker is named
+- source inputs were treated as evidence, not authority
+- Local Source Intake or Client Engagement Intake was completed when packets, design files, Ember handoffs, backend plans, sprint plans, or existing PRDs are present
+- affected owner files or the next safe action are named
+- no PRD, bead, implementation, repo topology, or product decision was approved by implication
+
+If any item is missing, close on the blocker and next safe prompt instead of calling setup done.
+
 Copyable engineer prompt:
 
 ```text
@@ -425,6 +440,7 @@ Do not create a separate support artifact by default. End by orienting the user 
 
 - what was set up or adapted
 - which checks passed or remain blocked
+- whether source inputs were ingested, deferred, or named as the next blocker
 - the current bead
 - the next safe prompt
 - what not to approve yet
