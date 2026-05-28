@@ -2,14 +2,14 @@
 <!-- ANCHOR: precode-guided-setup -->
 
 > AUTHORITY: Beginner-safe guided setup for pulling PrecodeOS from GitHub and adopting it into a new or existing project.
-> NOT_AUTHORITY: Active memory, canonical file inventory, task selection, installer behavior, generated evidence truth, maintainer roadmap, or implementation acceptance.
+> NOT_AUTHORITY: Active memory, maintainer file inventory, task selection, installer behavior, generated evidence truth, maintainer roadmap, or implementation acceptance.
 > LOAD_WHEN: First adopting PrecodeOS, helping a user set it up, or checking what should and should not be copied.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
+Document version: v0.1.5
 Last updated: 2026-05-28
 
 ## What This Guide Is For
@@ -30,7 +30,7 @@ The safest setup path is manual and visible:
 6. Validate memory before letting an agent build.
 7. Stop for human review.
 
-If you need the exact technical dictionary, use `docs/PRECODE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the file inventory remains the canonical file map.
+If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
 ## Before You Start
 
@@ -373,7 +373,7 @@ After guided setup, use:
 - `docs/PRECODE-TROUBLESHOOTING.md` when setup, state, checks, or generated reports are confusing
 - `docs/PRECODE-USER-GUIDE.md` for day-to-day operation
 - `docs/PRECODE-OS-README.md` for the Builder OS mental model
-- `docs/PRECODE-FILE-INVENTORY.md` for the canonical file dictionary
+- `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` for the public package file dictionary
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` if the product idea is still rough
 
 Do not use maintainer-only files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.

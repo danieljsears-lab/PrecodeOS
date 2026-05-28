@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.3
 Last updated: 2026-05-28
 
 ## Purpose
@@ -162,7 +162,7 @@ bash scripts/validate-memory.sh
 
 Safe path:
 
-- compare against `docs/PRECODE-FILE-INVENTORY.md`
+- compare against `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`
 - remove or ignore excluded material only with user approval
 - copy missing public package files by supervised group
 - re-run validation before first use
@@ -211,7 +211,7 @@ python3 scripts/file-inventory.py --check
 Safe path:
 
 - decide whether the warning is source truth, generated evidence, or a package-boundary issue
-- update `docs/PRECODE-FILE-INVENTORY.md` when a new public file is intentional
+- update `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a new public file is intentional
 - keep `_maintainer/` and generated reports out of public setup instructions
 
 Do not treat an advisory inventory warning as task selection or transition approval.
@@ -352,7 +352,7 @@ Do not let technical support become hidden product ownership.
 |---|---|---|
 | Intent capture | Support starts authoring product truth | `docs/PRECODE-SUPPORT-RUNBOOK.md` |
 | Package source setup | Source and target folders are unclear | `docs/PRECODE-GUIDED-SETUP.md` |
-| File copy | Excluded files copied or public files missed | `docs/PRECODE-FILE-INVENTORY.md` |
+| File copy | Excluded files copied or public files missed | `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` |
 | Owner-file adaptation | Assumptions are written as settled facts | `docs/PRECODE-USER-GUIDE.md` |
 | Validation | Active memory or inventory checks fail | this guide |
 | First session | Current bead or next step is unclear | this guide |

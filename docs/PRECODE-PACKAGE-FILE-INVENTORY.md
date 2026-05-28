@@ -1,20 +1,20 @@
-# PrecodeOS File Inventory
-<!-- ANCHOR: file-inventory -->
+# PrecodeOS Package File Inventory
+<!-- ANCHOR: package-file-inventory -->
 
-> AUTHORITY: Canonical technical inventory of PrecodeOS-owned files, file families, purposes, relationships, and maintenance expectations.
-> NOT_AUTHORITY: Active memory, product decisions, task selection, feature requirements, implementation status, target-project architecture, generated evidence truth, or bead transition approval.
-> LOAD_WHEN: Orienting a technical user or coding agent before changing PrecodeOS files, auditing file ownership, or tracing relationships between PrecodeOS surfaces.
+> AUTHORITY: User-facing technical inventory of public PrecodeOS package files, file families, purposes, relationships, and maintenance expectations.
+> NOT_AUTHORITY: Maintainer-only file inventory, active memory, product decisions, task selection, feature requirements, implementation status, target-project architecture, generated evidence truth, or bead transition approval.
+> LOAD_WHEN: Orienting a technical user, support helper, or coding agent before changing public PrecodeOS package files, auditing package file ownership, or tracing relationships between user-facing PrecodeOS surfaces.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.41
+Document version: v0.2.0
 Last updated: 2026-05-28
 
 ## Purpose
 
-This inventory is the technical dictionary for PrecodeOS files.
+This inventory is the technical dictionary for public PrecodeOS package files.
 
 Use it to answer:
 
@@ -27,15 +27,18 @@ Use it to answer:
 
 This document is curated. Generated support lives in `logs/file-inventory.json` and is evidence only.
 
+Maintainer-only files under `_maintainer/` are intentionally outside this user-facing package inventory. The maintainer master inventory is `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md`.
+
 ## License And Provenance
 
 `LICENSE` holds the Apache-2.0 terms for open-source use. `NOTICE` preserves creator attribution, copyright ownership, the canonical site, and the PrecodeOS trademark notice. `TRADEMARK.md` owns brand-use guidance. Core source files use lightweight provenance and SPDX headers so adopters can reuse PrecodeOS while keeping license and origin visible.
 
 ## Reading Rules
 
-- Start here when you need a technical map of PrecodeOS.
+- Start here when you need a technical map of the public PrecodeOS package.
 - Use `README.md` when you need the public document compass.
 - Use `CODEBASE-GUIDE.md` for target-project layout guidance, not PrecodeOS internals.
+- Do not use this document for maintainer-only files under `_maintainer/`.
 - Do not treat generated outputs or inventory warnings as task selection.
 
 ## Quick Navigation
@@ -53,7 +56,6 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
-| Maintainer cockpit | `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/CHANGELOG.md`, `_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md`, `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `_maintainer/scripts/*.py` | Private maintainer index, history, alpha/beta evidence planning, roadmap, publishing-boundary policy, strategy, and automation for Dan/Recode-driven PrecodeOS maintenance; not active memory or public package authority. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
 | Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
@@ -63,21 +65,9 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 
 ## Maintainer-Only Files
 
-`_maintainer/` is Dan Sears / Recode's private local maintainer cockpit for deciding how to improve the PrecodeOS package. It is excluded from the public repository by `.gitignore`, with publishing-boundary policy listed in `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`.
+`_maintainer/` is Dan Sears / Recode's private local maintainer cockpit for deciding how to improve the PrecodeOS package. It is intentionally excluded from this public package inventory.
 
-`_maintainer/MAINTAINER-NOTES.md` is the maintainer index. When Dan asks to maintain, analyze, or plan changes to PrecodeOS itself, agents read this file first, then load only the relevant maintainer roadmap, strategy, or reference files for the request.
-
-`_maintainer/CHANGELOG.md` is maintainer-local human-readable project and document history for PrecodeOS. It is not public package authority or normal user-facing navigation.
-
-`_maintainer/PRECODE-ALPHA-BETA-EVIDENCE-PLAN.md` is the maintainer-owned alpha and beta operating plan for using early cohorts to drive PrecodeOS use, feedback, and evidence. It is not public package authority or normal user workflow guidance.
-
-`_maintainer/PRECODE-ROADMAP.md` is the canonical detailed maintainer roadmap for PrecodeOS ranking, source-derived roadmap themes, and prioritization.
-
-`_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md` is the maintainer-only master list of files and patterns excluded from the public PrecodeOS package.
-
-`_maintainer/scripts/roadmap-maintenance.py` is maintainer-only automation for roadmap cleanup after candidates are marked implemented.
-
-`_maintainer/scripts/docs-html.py` is maintainer-only automation for regenerating the committed public `docs-html/` reading surface from canonical Markdown in `docs/*.md`.
+Use `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md` when maintaining PrecodeOS itself and you need the master repo-wide inventory, including maintainer-only files, private strategy docs, generated maintainer HTML, and maintainer scripts.
 
 Maintainer cockpit files may guide direct edits to public package files when Dan asks for Precode maintenance, but they must not be loaded as active memory, used as normal user workflow authority, or treated as bead activation, transition approval, public package authority, or generated evidence.
 
@@ -173,7 +163,6 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `TRADEMARK.md` | reference | PrecodeOS trademark ownership, brand-use, allowed descriptive references, fork naming, and official-project identity guidance. | Clarifies that Apache-2.0 does not grant confusing brand use, trademark rights, or official-project identity. |
 | `docs/PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
 | `docs/PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Points users to the how-to guide, user guide, architecture overview, file inventory, and manifesto. |
-| `_maintainer/CHANGELOG.md` | private-reference | Maintainer-local project and document history, including moved public document-history sections. | Provides maintainer history only; does not approve work, select tasks, replace owner files, act as generated evidence, or belong to public package navigation. |
 | `docs/PRECODE-GUIDED-SETUP.md` | reference | Beginner-safe guided setup for pulling PrecodeOS from GitHub and adopting it into a new or existing project. | Explains manual package adoption, copy groups, exclusions, validation, and support-engineer setup flow while deferring canonical file ownership to this inventory. |
 | `docs/PRECODE-SUPPORT-RUNBOOK.md` | reference | Public-safe support-engineer field guide for guiding first-time PrecodeOS adoption, user-owned intent capture, setup, first safe session, and repair routing. | Companion to guided setup, user guide, troubleshooting, file inventory, and recovery protocol; does not create product truth, approve PRDs, accept work, or approve transitions. |
 | `docs/PRECODE-TROUBLESHOOTING.md` | reference | Symptom-first troubleshooting reference for setup, validation, active state, current bead, generated-report, copy, and first-session confusion. | Routes users, support engineers, and agents back to owner files, advisory checks, guided setup, and recovery protocol without becoming auto-repair policy. |
@@ -181,7 +170,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `docs/PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, and review prompts. |
 | `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not maintainer-only material. |
 | `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
-| `docs/PRECODE-FILE-INVENTORY.md` | reference | Canonical technical file dictionary and relationship map. | Supported by `logs/file-inventory.json`. |
+| `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` | reference | User-facing package file dictionary and relationship map for non-maintainer PrecodeOS files. | Supported by `logs/file-inventory.json`; maintainer-only files are inventoried in `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md`. |
 | `docs-html/*.html` | generated public docs | Static HTML reading surface generated from `docs/*.md`, including a curated compass and per-page navigation. | Commit-eligible package artifact for easier reading; does not replace Markdown authority, approve work, or become active memory. |
 | `PRODUCT.md` | reference | Builder-facing product constitution: product promise, users and jobs, strategy and non-goals, current bets, success signals, design or voice pointers, and optional product-level Goal Frame. | Loaded for product planning, PRD shaping, PRD approval review, product drift checks, durable-intent orientation, and builder onboarding; not active memory or task selection. |
 | `PROJECT-CONTEXT.md` | reference | Technical project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |

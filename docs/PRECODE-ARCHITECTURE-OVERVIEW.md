@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.16
-Last updated: 2026-05-17
+Document version: v0.3.17
+Last updated: 2026-05-28
 
 ## Executive Summary
 
@@ -228,7 +228,7 @@ Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/a
 
 Context-footprint fields are intentionally approximate. They show active memory, active bead, primary authority, conditional references, generated reports touched, and rough document lines so agents avoid loading every protocol when one owner file is enough.
 
-For a file-by-file technical dictionary and relationship map, use `docs/PRECODE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the inventory explains what each file owns and how the surfaces connect.
+For a public package file-by-file technical dictionary and relationship map, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the package inventory explains what each public package file owns and how the surfaces connect.
 
 ### Human Control Surface
 
@@ -276,7 +276,7 @@ Precode treats a clean stop as successful behavior when continuing would widen r
 
 | Failure | Expected recovery |
 |---|---|
-| Human moved or renamed a Precode Markdown file | Stop work, identify the expected path/name from `docs/PRECODE-FILE-INVENTORY.md` or validation output, restore the file, then validate. |
+| Human moved or renamed a Precode Markdown file | Stop work, identify the expected path/name from `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` or validation output, restore the file, then validate. |
 | Human directly edited generated output | Stop using that output, restore or regenerate it with the owning script, then return to source files. |
 | Human changed anchors, authority contracts, frontmatter, headings, bead state, or closeout structure | Restore the expected structure, run `bash scripts/validate-memory.sh`, then run relevant advisory checks. |
 | Human put facts in the wrong owner file | Move the fact to `DECISIONS.md`, a PRD, a bead, or the correct authority doc; do not duplicate it across files. |
@@ -299,7 +299,7 @@ The recovery posture is conservative: preserve state, identify the owner file, r
 If a Precode file was moved, renamed, or directly edited by mistake:
 
 1. Stop implementation.
-2. Identify the affected file and expected owner from `docs/PRECODE-FILE-INVENTORY.md`.
+2. Identify the affected file and expected owner from `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`.
 3. Restore the expected path, filename, anchor, authority contract, frontmatter, headings, and required sections.
 4. Regenerate generated reports instead of hand-editing them.
 5. Run `bash scripts/validate-memory.sh`, then `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, and any relevant advisory check.

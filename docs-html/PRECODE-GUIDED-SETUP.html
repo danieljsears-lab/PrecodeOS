@@ -180,7 +180,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
   <nav class="nav-group" aria-label="Docs">
     <p class="nav-label">Compass</p>
-    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link active" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-FILE-INVENTORY.html">PrecodeOS File Inventory</a>
+    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link active" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a>
   </nav>
 </aside>
 
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.4</span><span>Updated 2026-05-28</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.5</span><span>Updated 2026-05-28</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -200,7 +200,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>If you are helping someone else through setup, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</p>
 <p>The safest setup path is manual and visible:</p>
 <ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Run the read-only Bootstrap Confidence check before copying anything.</li><li>Choose whether you are setting up a new project or an existing project.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
-<p>If you need the exact technical dictionary, use <code>docs/PRECODE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the file inventory remains the canonical file map.</p>
+<p>If you need the exact public package technical dictionary, use <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the package inventory remains the public file map.</p>
 <h2 id="before-you-start">Before You Start</h2>
 <p>You need:</p>
 <ul><li>a local folder where you can clone or pull from GitHub</li><li>a target project folder</li><li>Git installed</li><li>Python 3 available for validation scripts</li><li>an AI coding agent that can read and edit local files</li></ul>
@@ -330,7 +330,7 @@ Here are the conflicts and choices that need your approval:</code></pre>
 <p>If setup is blocked, record the blocker in plain English and propose a narrow setup or unblocker bead. Do not widen setup into product work.</p>
 <h2 id="where-to-go-next">Where To Go Next</h2>
 <p>After guided setup, use:</p>
-<ul><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> when assisting another user through adoption and first use</li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code> when setup, state, checks, or generated reports are confusing</li><li><code>docs/PRECODE-USER-GUIDE.md</code> for day-to-day operation</li><li><code>docs/PRECODE-OS-README.md</code> for the Builder OS mental model</li><li><code>docs/PRECODE-FILE-INVENTORY.md</code> for the canonical file dictionary</li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> if the product idea is still rough</li></ul>
+<ul><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> when assisting another user through adoption and first use</li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code> when setup, state, checks, or generated reports are confusing</li><li><code>docs/PRECODE-USER-GUIDE.md</code> for day-to-day operation</li><li><code>docs/PRECODE-OS-README.md</code> for the Builder OS mental model</li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> for the public package file dictionary</li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> if the product idea is still rough</li></ul>
 <p>Do not use maintainer-only files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="PRECODE-USER-GUIDE.html"><span>Next</span>How To Use PrecodeOS</a></nav>
   </article>

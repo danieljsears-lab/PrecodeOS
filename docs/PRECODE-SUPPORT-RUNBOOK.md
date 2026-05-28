@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.10
 Last updated: 2026-05-28
 
 ## Purpose
@@ -140,7 +140,7 @@ Bootstrap Confidence is read-only by default. It names target kind, public file 
 
 ### 4. Set Up By Supervised File Group
 
-Use `docs/PRECODE-GUIDED-SETUP.md` as the setup guide and `docs/PRECODE-FILE-INVENTORY.md` as the file dictionary.
+Use `docs/PRECODE-GUIDED-SETUP.md` as the setup guide and `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` as the public package file dictionary.
 
 For a new project, copy public package files by supervised group, not by blind overwrite:
 
@@ -432,7 +432,7 @@ If files were copied incorrectly, overwritten, moved, renamed, or edited casuall
 1. Stop implementation.
 2. Identify the symptom in plain English.
 3. Re-read active memory if it exists.
-4. Compare expected files against `docs/PRECODE-FILE-INVENTORY.md`.
+4. Compare expected files against `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`.
 5. Use `docs/PRECODE-TROUBLESHOOTING.md` and `tasks/reference/RECOVERY-PROTOCOL.md`.
 6. Explain the repair path before editing anything.
 7. Validate before resuming.
@@ -462,6 +462,6 @@ Your durable project state is in the Precode files, not in my notes. Start next 
 - `docs/PRECODE-GUIDED-SETUP.md` for the public setup path
 - `docs/PRECODE-TROUBLESHOOTING.md` for symptom lookup
 - `docs/PRECODE-USER-GUIDE.md` for day-to-day use
-- `docs/PRECODE-FILE-INVENTORY.md` for the canonical file dictionary
+- `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` for the public package file dictionary
 - `tasks/reference/RECOVERY-PROTOCOL.md` for conservative repair
 - `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` for client PRDs, external designs, backend plans, sprint plans, and existing codebases

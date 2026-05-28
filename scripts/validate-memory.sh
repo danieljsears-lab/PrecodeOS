@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.5
-# Last updated: 2026-05-21
+# Version: v0.1.6
+# Last updated: 2026-05-28
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -114,7 +114,7 @@ expected_anchors = {
     "tasks/todo.md": "active-work",
     "README.md": "readme",
     "docs/PRECODE-OS-README.md": "os-readme",
-    "docs/PRECODE-FILE-INVENTORY.md": "file-inventory",
+    "docs/PRECODE-PACKAGE-FILE-INVENTORY.md": "package-file-inventory",
     "PROJECT-CONTEXT.md": "project-context",
     "OPERATING-CONSTRAINTS.md": "operating-constraints",
     "FEATURES.md": "features",

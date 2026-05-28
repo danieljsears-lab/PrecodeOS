@@ -181,7 +181,7 @@ python3 scripts/loop-health.py
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
 | Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
-| Find the exact owner file, script, protocol, or relationship | [`PRECODE-FILE-INVENTORY.md`](docs/PRECODE-FILE-INVENTORY.md) |
+| Find the exact public package owner file, script, protocol, or relationship | [`PRECODE-PACKAGE-FILE-INVENTORY.md`](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
 | Take a maintainer or contributor action | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`GOVERNANCE.md`](GOVERNANCE.md), or [`TRADEMARK.md`](TRADEMARK.md) |
 
 Do not start by browsing `tasks/reference/`. Protocols are loaded when the user guide, the README compass, active memory, or an agent prompt such as "use workflow selection" calls for one.
@@ -248,5 +248,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.32
-Last updated: 2026-05-24
+Document version: v0.1.33
+Last updated: 2026-05-28
