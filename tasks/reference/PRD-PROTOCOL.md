@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-21
+Document version: v0.1.7
+Last updated: 2026-05-28
 
 ## Purpose
 
@@ -65,6 +65,12 @@ The PRD does not need to be large. It needs to be clear enough that a solo non-t
 ## Adaptive Ceremony
 
 Use the smallest PRD that controls the risk.
+
+Adaptive ceremony includes a Fast Learning Lane for low or medium-risk work where the builder wants speed and the first build is a tiny reversible learning slice. The lane may skip the workbook, Exploration Loop, full discovery interview, PRFAQ-lite, shared-language pass, fresh chat, and deep architecture framing when they are not needed to control risk.
+
+A Fast Learning Lane PRD is still a PRD. It must include the problem, user moment, goals and non-goals, stable requirement IDs, acceptance oracle, risk gates, approval, and one bead proposal before coding begins.
+
+Discovery may be skipped only with an explicit reason, such as low risk, clear user problem, no sensitive surfaces, no product-promise drift, and a tiny reversible learning slice. If worth-building uncertainty becomes material, return to Product Discovery Validation instead of using the shortcut.
 
 ## Founder-Friendly Ramp
 

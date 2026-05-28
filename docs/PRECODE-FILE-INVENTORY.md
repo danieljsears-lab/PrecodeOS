@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.40
-Last updated: 2026-05-24
+Document version: v0.1.41
+Last updated: 2026-05-28
 
 ## Purpose
 
@@ -144,6 +144,8 @@ scripts/os_compiler.py
 
 Generated sidecars summarize current state but do not replace source files.
 
+Bootstrap Confidence is separate from compiled current-state sidecars because it compares a PrecodeOS package source with an adoption target before the target is necessarily a valid Precode repo.
+
 ### Adapters To Shared Commands
 
 ```text
@@ -204,6 +206,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` | reference | Intake of local notes, docs, screenshots, client handoff artifacts, existing codebases, and research as evidence. | Feeds PRD-ready summaries without creating authority. |
 | `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` | reference | Client-engagement intake for external PRDs, design files, backend handoff plans, sprint plans, repo topology choices, and existing codebases. | Normalizes client materials into Precode owner files, PRD shards, and candidate beads without making external artifacts authority. |
 | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` | reference | Advisory product-discovery validation before PRD shaping, including evidence ladder, assumption categories, current-workaround analysis, Core Four methods, Discovery Summary format, and `proceed | pause | narrow | kill` recommendations. | Used when worth-building uncertainty is higher than what-to-build uncertainty; feeds Local Source Intake or Idea-to-PRD as evidence only. |
+| `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md` | reference | Read-only first-run confidence workflow for inspecting a PrecodeOS package source and target project before setup mutation. | Used before guided setup or support-assisted adoption; governs `scripts/bootstrap-check.py`, source/target identity, public file groups, exclusions, conflicts, and first safe next action. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
@@ -240,6 +243,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/clarity-scenario-check.py` | Runs deterministic beginner-decision fixtures. | In-memory bead scenarios, adaptive-depth scenarios, and command-risk examples. | Advisory JSON pass/fail result; exits nonzero if expected decisions regress. |
 | `scripts/local-hygiene-check.py` | Prints advisory Local Hygiene findings. | Compiled local hygiene state. | JSON to stdout; no cleanup mutation. |
 | `scripts/local-hygiene-dry-run.py` | Previews future archive/delete actions without performing them. | Compiled local hygiene state. | `logs/local-hygiene-preview.json`, `logs/local-hygiene-preview.md`, and stdout. |
+| `scripts/bootstrap-check.py` | Prints read-only Bootstrap Confidence findings for a PrecodeOS package source and target project. | `--source`, `--target`, optional `--json`, optional `--write-evidence`. | Plain stdout or JSON by default; explicit `--write-evidence` writes `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the source workspace only. |
 | `scripts/public-repo-check.py` | Checks public repository hygiene against the private ignore manifest and git ignore rules. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md` when present, `.gitignore`, and git-tracked/untracked paths. | Advisory JSON for missing ignore rules, tracked ignored files, and untracked public candidates; no state mutation. |
 | `scripts/validate-memory.sh` | Validates core Precode document invariants. | Required docs, todo, beads. | Pass/fail validation output. |
 | `scripts/record-check.sh` | Runs a verification command and records evidence. | Command, active bead. | `logs/check-results.jsonl`, `logs/check-output/*`, closeout refresh. |
@@ -310,6 +314,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/learning-diary.md/jsonl` | generated report | Session learning digest and entries. | Not active memory. |
 | `logs/memory-index.md/json` | generated report | Reviewed memory card index. | Search aid only. |
 | `logs/file-inventory.json` | generated sidecar | Generated inventory metadata. | Maintenance aid only. |
+| `logs/bootstrap-check.json` and `logs/bootstrap-check.md` | generated sidecar/report | Optional Bootstrap Confidence evidence written only when `scripts/bootstrap-check.py --write-evidence` is used. | Evidence only; not setup approval, install permission, target-project authority, or active memory. |
 | `logs/pattern-guidance.json` | generated sidecar | System design pattern guidance. | Advisory only. |
 | `logs/scheduled-audit.md/json` | generated report | Scheduled audit summary. | Evidence only. |
 | `logs/scheduled-audit-output/*` | generated evidence family | Timestamped audit helper outputs. | Document as a family, not individual files. |

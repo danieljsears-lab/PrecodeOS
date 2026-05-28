@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.11
-Last updated: 2026-05-19
+Document version: v0.8.12
+Last updated: 2026-05-28
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -298,6 +298,14 @@ For the canonical document compass, use `README.md`. If you are already operatin
 ## Adapting Precode To Your Project
 
 For first-time setup, use `docs/PRECODE-GUIDED-SETUP.md`. It starts by pulling the public PrecodeOS repo from GitHub, then guides a manual, visible setup into a new or existing project without treating PrecodeOS as an app to run.
+
+Before copying anything, run Bootstrap Confidence from the PrecodeOS package checkout:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+```
+
+It is read-only by default. It names the source, target, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. Its output is evidence only, not permission to mutate the target project.
 
 Start small:
 

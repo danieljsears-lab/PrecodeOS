@@ -1,6 +1,6 @@
 ---
 prd_id: PRD-001
-status: draft
+status: approved
 owner: user
 risk_level: medium
 feature_link: Product Discovery Validation
@@ -17,16 +17,16 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-17
+Document version: v0.1.2
+Last updated: 2026-05-28
 
 ## State
 
 - ID: `PRD-001`
-- Status: `draft`
+- Status: `approved`
 - Owner: `user`
 - Risk level: `medium`
-- Last updated: `2026-05-12`
+- Last updated: `2026-05-28`
 
 ## Feature Link
 
@@ -267,7 +267,7 @@ Precode helps shape ideas into PRDs, but it does not yet fully help builders dec
 - Sensitive surfaces identified: yes
 - Authority files identified: yes
 - First bead can be one logical unit: yes
-- Generated text reviewed by user: pending PRD review
+- Generated text reviewed by user: approved through maintainer implementation request
 
 ## Bead Proposals
 
@@ -294,6 +294,6 @@ Only include blockers that can change implementation.
 
 ## Approval
 
-- Approved by:
-- Approved on:
-- Approval notes:
+- Approved by: Dan Sears / Recode
+- Approved on: 2026-05-28
+- Approval notes: User asked Codex to implement the P0 plan with Product Discovery Validation first, using the existing PRD and protocol surfaces as the v1 implementation baseline.

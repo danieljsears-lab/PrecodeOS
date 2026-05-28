@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-27">
+  <meta name="generated-at" content="2026-05-28">
   <title>PrecodeOS Explainer · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.11</span><span>Updated 2026-05-19</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.12</span><span>Updated 2026-05-28</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -312,6 +312,9 @@ python3 scripts/bead-transition.py --approve</code></pre>
 <p>For the canonical document compass, use <code>README.md</code>. If you are already operating a PrecodeOS repo, use <code>docs/PRECODE-USER-GUIDE.md</code> as the day-to-day home base.</p>
 <h2 id="adapting-precode-to-your-project">Adapting Precode To Your Project</h2>
 <p>For first-time setup, use <code>docs/PRECODE-GUIDED-SETUP.md</code>. It starts by pulling the public PrecodeOS repo from GitHub, then guides a manual, visible setup into a new or existing project without treating PrecodeOS as an app to run.</p>
+<p>Before copying anything, run Bootstrap Confidence from the PrecodeOS package checkout:</p>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
+<p>It is read-only by default. It names the source, target, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. Its output is evidence only, not permission to mutate the target project.</p>
 <p>Start small:</p>
 <ol><li>Keep the three active-memory files.</li><li>Fill in <code>PRODUCT.md</code> with your product promise, users, strategy, current bets, success signals, and design or voice pointers.</li><li>Fill in <code>PROJECT-CONTEXT.md</code> with your app directory, stack, conventions, checks, and integration boundaries.</li><li>Use one starter bead to install or verify the kernel.</li><li>Use the Exploration Loop when existing notes need sharper thinking before PRD commitment.</li><li>Use Product Discovery Validation only when the idea&#x27;s worth-building evidence is uncertain.</li><li>Align/grill the first real product feature before writing the destination PRD.</li><li>Clarify shared language when the feature has domain terms, labels, or naming risk.</li><li>Split the destination into one small vertical journey bead.</li><li>Record checks before accepting the bead.</li><li>Add validators, audits, adapters, and integrations only when they solve a real repeated problem.</li></ol>
 <p>Do not ask an agent to set up everything in one pass. Ask it to create or adapt the kernel first, explain the files in plain English, and stop for review.</p>

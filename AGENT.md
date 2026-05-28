@@ -79,6 +79,7 @@ Use only these files as active memory:
 - `python3 scripts/memory-check.py`
 - `python3 scripts/file-inventory.py`
 - `python3 scripts/file-inventory.py --check`
+- `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> [--json|--write-evidence]`
 - `python3 scripts/version-check.py`
 - `bash scripts/scheduled-audit.sh`
 

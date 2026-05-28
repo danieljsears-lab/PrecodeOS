@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-27">
+  <meta name="generated-at" content="2026-05-28">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.8</span><span>Updated 2026-05-27</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.9</span><span>Updated 2026-05-28</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -201,7 +201,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>PrecodeOS is not an app to launch. It is a repo-native operating layer: Markdown authority files, task contracts, adapters, scripts, and generated-evidence rules that live inside a project folder.</p>
 <h2 id="fast-support-slot-flow">Fast Support Slot Flow</h2>
 <p>Use this flow when a support engineer has a short onboarding, setup, or unblocker slot.</p>
-<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, use <code>docs/PRECODE-GUIDED-SETUP.md</code>. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
+<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, run <code>python3 scripts/bootstrap-check.py --source &amp;lt;precode-package-root&amp;gt; --target &amp;lt;target-project-root&amp;gt;</code> from the package checkout, then use <code>docs/PRECODE-GUIDED-SETUP.md</code>. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
 <p>Support can say:</p>
 <pre><code class="language-text">I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.</code></pre>
 <h2 id="ember-bootcamp-precode-fit-check">Ember Bootcamp Precode Fit Check</h2>
@@ -236,13 +236,16 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <ul><li>the clean PrecodeOS package checkout</li><li>the target project folder</li><li>whether the target is empty, nearly empty, or already has project material</li><li>the public file groups that may be copied</li><li>private, generated, local, and secret material that must not be copied</li><li>the validation commands to run after setup</li></ul>
 <p>Safe inspection commands:</p>
 <pre><code class="language-bash">git status
-find . -maxdepth 2 -type f | sort</code></pre>
+find . -maxdepth 2 -type f | sort
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Stop if the source package and target project are unclear. Mixing them up is the easiest first-time failure.</p>
+<p>Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.</p>
 <h3 id="4-set-up-by-supervised-file-group">4. Set Up By Supervised File Group</h3>
 <p>Use <code>docs/PRECODE-GUIDED-SETUP.md</code> as the setup guide and <code>docs/PRECODE-FILE-INVENTORY.md</code> as the file dictionary.</p>
 <p>For a new project, copy public package files by supervised group, not by blind overwrite:</p>
 <ul><li>active memory: <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code></li><li>product and project owner files</li><li>public orientation docs</li><li>agent shims and adapters</li><li>tasks, modes, memory templates, and reference protocols</li><li>scripts, hooks, and workflows only when approved for the target repo</li><li><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></li></ul>
 <p>Exclude <code>_maintainer/</code>, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.</p>
+<p>If Bootstrap Confidence reports blockers, stop setup until they are resolved. If it reports conflicts, name each conflict and get user approval before adapting or copying anything.</p>
 <h3 id="5-adapt-owner-files">5. Adapt Owner Files</h3>
 <p>Use the captured user-owned facts to propose minimal setup adaptations:</p>
 <ul><li><code>PRODUCT.md</code>: product promise, users, smallest useful version, success signals, and voice</li><li><code>PROJECT-CONTEXT.md</code>: app directory, stack if known, checks, conventions, integrations, and sensitive boundaries</li><li><code>DECISIONS.md</code>: hard decisions already known</li><li><code>tasks/todo.md</code>: first setup or orientation bead and current state</li></ul>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-05-25
+Document version: v0.1.9
+Last updated: 2026-05-28
 
 ## Purpose
 
@@ -69,6 +69,43 @@ Default founder-facing handoffs:
 | Approved PRD -> `FEATURES.md` compile | Compile only stable feature inventory. | Do not copy the whole PRD or activate work. | Approved PRD has stable requirements that can be summarized in `FEATURES.md`. | PRD approval is missing or product-constitution impact is unresolved. |
 | `FEATURES.md` -> bead proposals | Derive candidate beads from approved requirement IDs. | Do not activate a bead. | Each candidate has one logical unit, one primary authority file, checks, manual verification, and stop conditions. | A candidate mixes planning and implementation, spans multiple owners, or lacks verification. |
 | Bead proposals -> user-approved activation only | Ask for explicit bead activation through the normal transition gate. | Do not update `tasks/todo.md` or begin implementation without approval. | The user approves exactly one next bead. | More than one bead is active, scope is unclear, or the transition would bypass review. |
+
+## Fast Learning Lane
+
+Use the Fast Learning Lane when the builder wants speed and the smallest safe build can teach something useful. This lane trades down discovery ceremony; it does not bypass product definition, acceptance checks, or bead activation.
+
+Use this lane only when:
+
+- the builder explicitly wants a faster path
+- the idea is concrete enough to summarize in a minimal Product Brief or idea summary
+- the first build is a tiny reversible learning slice
+- the work is low or medium risk with no sensitive-surface flags
+- behavior can be verified in plain English
+
+Do not use this lane when the idea touches auth, payments, personal data, uploads, external services, destructive actions, product-promise drift, unclear user problem, unverifiable behavior, or a first slice too large to throw away. Escalate to Product Discovery Validation, Local Source Intake, product-constitution review, project-context review, or the normal PRD path when those flags appear.
+
+Critical path:
+
+1. Classify risk and shortcut eligibility.
+2. Capture a minimal Product Brief or idea summary.
+3. Name the user, problem, before/after moment, non-goals, and first useful learning slice.
+4. Run anti-shallow and sensitive-surface checks.
+5. Create a minimal PRD shard with stable requirement IDs, acceptance oracle, risk/permission check, and one candidate bead.
+6. Approve the PRD.
+7. Compile only stable requirements into `FEATURES.md`.
+8. Derive one narrow risk-first, walking-skeleton, or prototype bead.
+9. Activate only by explicit user approval.
+
+Optional in this lane: Product Ideation Workbook, Exploration Loop, PRFAQ-lite, full discovery interview, shared-language pass, fresh chat, and deep architecture framing.
+
+Conditional escalation:
+
+- Use Local Source Intake when source material is heavy, conflicting, sensitive, or more than a single plain-language idea.
+- Load `PRODUCT.md` when the idea may change product promise, users, strategy, non-goals, current bets, success signals, design, or voice.
+- Load `PROJECT-CONTEXT.md` when the learning slice may affect stack choices, architectural boundaries, integration patterns, dependencies, environment assumptions, or testing/deployment expectations.
+- Run Product Discovery Validation when worth-building uncertainty becomes material, especially for broad, paid, market-facing, evidence-poor, solution-first, or no-workaround ideas.
+
+The learning build must feed evidence back into the PRD, follow-up discovery, a PRD amendment, `PRODUCT.md`, `DECISIONS.md`, or a defer/kill note as appropriate. A working prototype proves only that the prototype works; it does not prove the idea is validated.
 
 ## Workflow Lenses
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-27
+Document version: v0.1.4
+Last updated: 2026-05-28
 
 ## What This Guide Is For
 
@@ -23,7 +23,7 @@ If you are helping someone else through setup, use `docs/PRECODE-SUPPORT-RUNBOOK
 The safest setup path is manual and visible:
 
 1. Pull PrecodeOS from its public GitHub repository.
-2. Inspect the package before copying anything.
+2. Run the read-only Bootstrap Confidence check before copying anything.
 3. Choose whether you are setting up a new project or an existing project.
 4. Copy only the public package files that belong in the target project.
 5. Adapt product and project owner files in plain English.
@@ -45,6 +45,30 @@ You need:
 Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.
 
 Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.
+
+## Bootstrap Confidence Check
+
+Before copying, editing, installing hooks, or changing the target project, run the read-only Bootstrap Confidence helper from the PrecodeOS package checkout:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+```
+
+The helper names the package source, target project, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. By default it writes nothing.
+
+Use JSON when an agent or support script needs structured output:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --json
+```
+
+Use generated evidence only when you explicitly want source-side setup evidence:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
+```
+
+`--write-evidence` writes only `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the PrecodeOS package source. It must not write into the target project. Bootstrap output is evidence only; it does not approve copying, overwriting, hook installation, CI changes, active-memory edits, or app-code changes.
 
 ## Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?
 
@@ -96,6 +120,12 @@ find . -maxdepth 2 -type f | sort
 
 You are using this checkout as the package source. Do not treat it as the target app you are building unless your goal is to maintain PrecodeOS itself.
 
+After you know the target project path, run Bootstrap Confidence before setup:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+```
+
 ## Step 2: Ask The Agent To Orient First
 
 Before copying or editing, ask your agent to explain what it sees.
@@ -105,6 +135,7 @@ I want to adopt PrecodeOS into a project.
 Treat PrecodeOS as a package source, not as an app to run.
 Do not copy, edit, install hooks, run setup scripts, or change my target project yet.
 First identify the PrecodeOS package checkout, the target project folder, the public file groups that may be copied, the files that must not be copied, and the validation commands we will run after setup.
+Use `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` if available.
 Explain the plan in plain English and stop for my approval.
 ```
 
@@ -115,6 +146,7 @@ Expect the agent to name:
 - whether this is a new project or existing project
 - the public file groups to copy
 - the private, generated, local, and secret files to exclude
+- conflicts, missing dependencies, and the first safe next action from Bootstrap Confidence
 - the first validation command
 
 Stop if the agent tries to run a broad installer, invents a `precode` CLI command, installs hooks silently, or starts editing application code.
@@ -180,6 +212,7 @@ Safe inspection commands include:
 ```bash
 git status
 find . -maxdepth 2 -type f | sort
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 ```
 
 The support person or agent should identify:
@@ -280,6 +313,7 @@ Confirm:
 - the public PrecodeOS repo has been cloned or pulled
 - the target repo has a clean or understood `git status`
 - no secrets are being pasted into prompts or docs
+- Bootstrap Confidence has named source, target, target kind, conflicts, exclusions, and first safe next action
 - the user can approve each file group before copy/adaptation
 
 ### Target-Project Inspection
@@ -289,6 +323,7 @@ Run safe inspection only:
 ```bash
 git status
 find . -maxdepth 2 -type f | sort
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 ```
 
 For an existing project, also inspect the package-manager and framework files that already exist. Do not rewrite them as part of Precode setup.

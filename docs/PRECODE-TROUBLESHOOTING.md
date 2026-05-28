@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-21
+Document version: v0.1.2
+Last updated: 2026-05-28
 
 ## Purpose
 
@@ -133,12 +133,14 @@ First checks:
 pwd
 git status
 find . -maxdepth 2 -type f | sort
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 ```
 
 Safe path:
 
 - name the package source and target project explicitly
 - stop setup until both folders are clear
+- use Bootstrap Confidence output to identify target kind, conflicts, missing dependencies, and the first safe next action
 - use `docs/PRECODE-GUIDED-SETUP.md` for copy groups and exclusions
 
 Do not copy files in either direction until source and target are unambiguous.
@@ -363,6 +365,7 @@ Do not let technical support become hidden product ownership.
 |---|---|---|
 | `bash scripts/validate-memory.sh` | Active memory, bead pointer, or setup validity is uncertain. | A failure means source state needs attention before work continues. |
 | `python3 scripts/file-inventory.py --check` | Public package files, new docs, copied files, or metadata are uncertain. | Inventory findings are advisory; they do not choose tasks. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` | First setup, source/target folder identity, copy groups, exclusions, conflicts, or first safe setup action are uncertain. | Read-only by default; output is evidence only and does not approve mutation. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" | It is generated guidance, not approval. |
 | `python3 scripts/state-check.py` | Active bead or task state looks broken. | Repair source files before generated reports. |
