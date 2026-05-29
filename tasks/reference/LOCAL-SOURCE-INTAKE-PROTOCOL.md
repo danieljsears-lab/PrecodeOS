@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-21
+Document version: v0.1.6
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -36,6 +36,8 @@ Active memory remains exactly:
 - `tasks/todo.md`
 
 ## Supported Local Sources
+
+When a project keeps raw source material in the repo, the default location is root-level `project-evidence/`. That folder is project-owned evidence storage, not a Precode authority folder. Agents may inspect explicitly named `project-evidence/` files read-only during intake, but must not auto-treat the folder as active memory, implementation instructions, task approval, or permission to code.
 
 Supported source types include:
 
@@ -67,6 +69,8 @@ Unsupported as durable source facts:
 Source inputs are evidence, not authority.
 
 Do not let local notes, screenshots, exports, or generated summaries drive active task selection directly. Promote only stable conclusions into the owning Precode file.
+
+If raw source material conflicts with `PRODUCT.md`, `DECISIONS.md`, an approved PRD, the active bead, or another owner file, current owner files win until the user reviews and approves an amendment.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether source material should become intake evidence, PRD shaping, a challenge-planning bead, or a narrow execution bead.
 

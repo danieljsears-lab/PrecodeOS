@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-05-28
+Document version: v0.1.11
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -25,6 +25,8 @@ The support posture is:
 - no separate support handoff artifact is required
 
 PrecodeOS is not an app to launch. It is a repo-native operating layer: Markdown authority files, task contracts, adapters, scripts, and generated-evidence rules that live inside a project folder.
+
+When users ask where to put reference files, notes, documents, screenshots, research, or design exports, route them to root-level `project-evidence/` in the target project. It is project-owned raw evidence, not active memory, not task approval, and not implementation instruction. Use Local Source Intake before promoting any conclusions into owner files.
 
 ## Fast Support Slot Flow
 
@@ -149,6 +151,7 @@ For a new project, copy public package files by supervised group, not by blind o
 - public orientation docs
 - agent shims and adapters
 - tasks, modes, memory templates, and reference protocols
+- `project-evidence/PROJECT-EVIDENCE-GUIDE.md` as the marker and user guidance for project-owned raw evidence
 - scripts, hooks, and workflows only when approved for the target repo
 - `logs/LOG-EVIDENCE-TAXONOMY.md`
 

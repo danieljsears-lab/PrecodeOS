@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.13
-Last updated: 2026-05-28
+Document version: v0.8.14
+Last updated: 2026-05-29
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -227,6 +227,7 @@ idea or source material
 That means:
 
 - notes, screenshots, GitHub issues, research, and chat summaries start as evidence, not instructions
+- raw project evidence belongs in root-level `project-evidence/`, not inside active memory or Precode authority folders
 - durable intent can become a reviewed Goal Frame, but it does not choose work or approve execution
 - PRDs propose work, but do not activate it
 - beads execute work, but only one bead may be `in_progress`

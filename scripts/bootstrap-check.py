@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-05-28
+# Version: v0.1.1
+# Last updated: 2026-05-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -42,6 +42,7 @@ PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
         "group": "work_structure",
         "paths": ["tasks/beads/", "tasks/prds/", "tasks/reference/", "tasks/templates/", "modes/", "memory/"],
     },
+    {"group": "project_evidence_guide", "paths": ["project-evidence/PROJECT-EVIDENCE-GUIDE.md"]},
     {"group": "scripts_and_checks", "paths": ["scripts/", ".githooks/", ".github/workflows/"]},
     {"group": "public_generated_log_guide", "paths": ["logs/LOG-EVIDENCE-TAXONOMY.md"]},
 ]

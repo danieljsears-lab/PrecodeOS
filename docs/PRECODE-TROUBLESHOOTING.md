@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-28
+Document version: v0.1.4
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -144,6 +144,24 @@ Safe path:
 - use `docs/PRECODE-GUIDED-SETUP.md` for copy groups and exclusions
 
 Do not copy files in either direction until source and target are unambiguous.
+
+### "Where Do My Notes, Docs, Or Screenshots Go?"
+
+Likely causes:
+
+- raw reference material is being mixed into active memory or owner files
+- users are unsure whether evidence belongs inside the PrecodeOS package source
+- screenshots, research, or documents may be private or too bulky to commit casually
+
+Safe path:
+
+- put project-owned raw material in root-level `project-evidence/`
+- read `project-evidence/PROJECT-EVIDENCE-GUIDE.md`
+- treat the folder as evidence only, not active memory, authority, task approval, or coding permission
+- decide per project whether to track or ignore the folder in Git
+- use Local Source Intake before promoting stable conclusions into owner files
+
+Do not put raw evidence inside `tasks/todo.md`, PRDs, beads, active memory, or PrecodeOS package-source folders unless a reviewed conclusion belongs there.
 
 ### Copied Excluded Files Or Missed Public Files
 

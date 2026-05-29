@@ -141,6 +141,8 @@ bash scripts/record-check.sh -- <command>
 
 Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
 
+Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
+
 For the immediate "what now?" question, use:
 
 ```bash
@@ -162,6 +164,7 @@ python3 scripts/loop-health.py
 | Project truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, root owner files |
 | Work units | `tasks/prds/`, `tasks/beads/`, `tasks/templates/` |
 | Protocols | `tasks/reference/` |
+| Raw project evidence | `project-evidence/` |
 | Agent surfaces | `modes/`, `adapters/`, shims |
 | Scripts | `scripts/` |
 | Evidence | `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md` |
@@ -248,5 +251,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.33
-Last updated: 2026-05-28
+Document version: v0.1.34
+Last updated: 2026-05-29

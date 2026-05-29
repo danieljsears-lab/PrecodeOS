@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.23
-Last updated: 2026-05-28
+Document version: v0.7.24
+Last updated: 2026-05-29
 
 
 
@@ -29,6 +29,8 @@ PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` a
 For the full document compass, go back to `README.md`. This guide is the operational home base: use it when you are about to work with an agent, decide whether to stop, approve risk, or check proof.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, copying the public package files into a new or existing project, excluding private and generated material, and validating before work starts.
+
+Put raw reference material for the project in root-level `project-evidence/`: notes, documents, screenshots, research, design exports, and link lists. Treat that folder as evidence only. It is not active memory, not product truth, not task approval, and not permission for the agent to code. Use Local Source Intake before promoting anything from it into owner files.
 
 If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBOOK.md`. If setup, active state, validation, or generated reports feel wrong, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.1
+Document version: v0.2.2
 Last updated: 2026-05-29
 
 ## Purpose
@@ -54,6 +54,7 @@ Maintainer-only files under `_maintainer/` are intentionally outside this user-f
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
 | Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
+| Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` | Marker and user guidance for target-project raw evidence such as notes, documents, screenshots, research, and links. |
 | Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
@@ -183,6 +184,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `DATA-MODELS.md` | reference | Schema fields, entities, data relationships, and semantic meaning. | Primary authority for schema-affecting beads. |
 | `SECURITY.md` | reference | Security, privacy, auth, and sensitive-surface rules. | Primary authority for security-affecting beads. |
 | `CODEBASE-GUIDE.md` | reference | Target-project repository layout and file placement conventions. | Not the PrecodeOS inventory; use this for app layout decisions. |
+| `project-evidence/PROJECT-EVIDENCE-GUIDE.md` | reference | User guidance for root-level raw project evidence storage. | Keeps notes, documents, screenshots, research, and links project-owned and evidence-only until reviewed conclusions are promoted through Local Source Intake. |
 | `PROGRESS.md` | generated | Short user-facing progress snapshot for current work, completion picture, proof status, and attention prompts. | Evidence only; not active memory, task authority, or roadmap authority. |
 | `OS-HEALTH.md` | generated | Generated OS health, warnings, loop metrics, and sidecar summary. | Evidence only; refreshed by `scripts/os-health.py`. |
 | `PRECODE-HELP.md` | generated | Generated next-step guidance, load plan, context footprint, adaptive-depth summary, and files-in-play warning snapshot. | Evidence only; refreshed by `scripts/os-health.py` and not active memory. |

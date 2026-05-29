@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-28
+Document version: v0.1.6
+Last updated: 2026-05-29
 
 ## What This Guide Is For
 
@@ -43,6 +43,8 @@ You need:
 - an AI coding agent that can read and edit local files
 
 Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.
+
+If you have notes, documents, screenshots, research, design exports, or links that belong with the project, put them in root-level `project-evidence/`. That folder is for project-owned raw evidence, not active memory, not task approval, and not implementation instructions. Each project decides whether to track or ignore it in Git; review contents before committing.
 
 Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.
 
@@ -182,6 +184,7 @@ For a new project, the setup should include:
 | Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
 | Work structure | `tasks/beads/`, `tasks/prds/`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
+| Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` |
 | Scripts and checks | `scripts/`, `.githooks/`, `.github/workflows/` when the target repo wants GitHub validation |
 | Public generated-log guide | `logs/LOG-EVIDENCE-TAXONOMY.md` |
 
@@ -251,6 +254,8 @@ Do not copy these from the package checkout into a user's project:
 | `__pycache__/`, test caches, coverage output, local virtual environments | Regeneratable local cache or environment output. |
 
 Keep `logs/LOG-EVIDENCE-TAXONOMY.md` if the package includes it. That file explains generated log semantics and is public documentation.
+
+Keep `project-evidence/PROJECT-EVIDENCE-GUIDE.md` if the package includes it. After setup, the folder belongs to the target project and may contain user-selected raw evidence. Do not copy private evidence from one project into another.
 
 ## Step 5: Validate Before Work Starts
 

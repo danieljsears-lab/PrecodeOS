@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.13</span><span>Updated 2026-05-28</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.14</span><span>Updated 2026-05-29</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -283,7 +283,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   -&gt; review decision
   -&gt; approved transition, handoff, or stop</code></pre>
 <p>That means:</p>
-<ul><li>notes, screenshots, GitHub issues, research, and chat summaries start as evidence, not instructions</li><li>durable intent can become a reviewed Goal Frame, but it does not choose work or approve execution</li><li>PRDs propose work, but do not activate it</li><li>beads execute work, but only one bead may be <code>in_progress</code></li><li>checks and manual verification prove what happened</li><li>generated reports summarize state, but owner files and human approval govern action</li></ul>
+<ul><li>notes, screenshots, GitHub issues, research, and chat summaries start as evidence, not instructions</li><li>raw project evidence belongs in root-level <code>project-evidence/</code>, not inside active memory or Precode authority folders</li><li>durable intent can become a reviewed Goal Frame, but it does not choose work or approve execution</li><li>PRDs propose work, but do not activate it</li><li>beads execute work, but only one bead may be <code>in_progress</code></li><li>checks and manual verification prove what happened</li><li>generated reports summarize state, but owner files and human approval govern action</li></ul>
 <h2 id="daily-loop">Daily Loop</h2>
 <p>Use this loop for normal work:</p>
 <ol><li>Start the session.</li><li>Confirm active memory, the current bead, primary authority, files in play, checks, and stop conditions.</li><li>Choose the right workflow before coding.</li><li>Let the agent work only inside the active bead.</li><li>Run guardrails when scope, files, commands, or risk widen.</li><li>Record checks as evidence.</li><li>Review Closeout Evidence and decide <code>accepted</code>, <code>revise</code>, <code>split</code>, or <code>blocked</code>.</li><li>Approve the next bead only when you are ready.</li></ol>
