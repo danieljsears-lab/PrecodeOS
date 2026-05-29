@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-12
+Document version: v0.1.5
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -41,7 +41,8 @@ Choose the workflow that matches the current situation:
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Rough idea, scattered notes, screenshots, research, chat summary, or issue export | Local Source Intake | reviewed source summary |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
-| Approved PRD with stable requirement IDs | Decomposition Protocol | candidate bead proposals |
+| Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
+| Approved PRD with auth, data, API, integration, dependency, migration, workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
 | High-risk, uncertain, or challenge-worthy idea | PRFAQ/challenge planning bead | questions, risk notes, or narrowed proposal |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
@@ -82,7 +83,9 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection 
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
 
-Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when workflow selection reveals a feature that needs an external boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or a plain-English implementation-shape choice before coding.
+Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before decomposition when workflow selection reveals auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that a non-technical builder should approve or redirect before an AI coding agent derives beads.
+
+Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when Architecture Shaping or workflow selection reveals a feature that needs an external boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or a plain-English implementation-shape choice before coding.
 
 Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when workflow selection needs durable direction but the direction should not become a backlog, roadmap, implementation plan, or active task.
 

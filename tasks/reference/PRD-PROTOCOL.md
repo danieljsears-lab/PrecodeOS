@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-28
+Document version: v0.1.8
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-workbook or local material -> Product Brief -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> execution beads -> recorded evidence
+workbook or local material -> Product Brief -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
 ```
 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
@@ -38,7 +38,9 @@ Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` before deriving candidate beads 
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when tracing source intent through PRD requirements, bead proposals, recorded evidence, and review decisions.
 
-Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when PRD requirements imply external services, multi-step states, interchangeable rules, audit trails, auth/access boundaries, or an implementation-shape choice that should be clear before bead derivation.
+Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before bead derivation when approved requirements imply auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that should be visible to a non-technical builder before an AI coding agent plans implementation.
+
+Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when Architecture Shaping or PRD requirements imply external services, multi-step states, interchangeable rules, audit trails, auth/access boundaries, or an implementation-shape choice that should be clear before bead derivation.
 
 Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when requirements, UI labels, module/interface names, tests, or source inputs depend on domain vocabulary.
 
@@ -60,6 +62,7 @@ The PRD does not need to be large. It needs to be clear enough that a solo non-t
 - which risks require human approval
 - which source inputs are evidence and which facts have been promoted
 - whether project context or architecture boundaries are affected, explained without making the builder choose implementation internals
+- whether architecture-sensitive approved work needs an evidence-only Architecture Brief before bead proposals
 - which beads should be created first
 
 ## Adaptive Ceremony
@@ -122,6 +125,8 @@ Include all sections plus:
 - stop conditions that block bead creation until resolved
 
 If the work is an experiment or rollout, also load `tasks/reference/PLANNING-PROTOCOL.md`.
+
+For high-risk PRDs, do not turn approval into architecture permission. Approval means the product destination is stable enough to compile and shape. Architecture-sensitive work may still need Architecture Shaping before decomposition.
 
 ## PRD Workflow
 
@@ -219,6 +224,7 @@ Set status to `approved` only when:
 - risk and permission gates are explicit
 - approval risks and sensitive surfaces are named
 - architecture/project-context impacts are known
+- Architecture Shaping need is identified or explicitly skipped when risk triggers are present
 - shallow-artifact checks have passed or have been resolved
 - the feature can be compiled into `FEATURES.md`
 - bead proposals are narrow enough to execute one logical unit at a time
@@ -236,7 +242,15 @@ After PRD approval, update `FEATURES.md` with:
 Do not copy the whole PRD into `FEATURES.md`.
 Compile only the stable feature summary and functional requirements, not the full narrative shard.
 
-### 8. Derive Beads
+### 8. Shape Architecture Risk When Needed
+
+After PRD approval and feature compilation, run `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before bead derivation when the approved PRD touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
+
+Architecture Shaping produces an evidence-only Architecture Brief. The brief may recommend a PRD amendment, owner-file update, planning bead, unblocker bead, run contract, or safer decomposition, but it does not approve implementation.
+
+If shaping reveals product-changing technical risk, return to PRD amendment or blocking open questions. If shaping reveals durable architecture facts, promote them into the correct owner file before treating them as authority.
+
+### 9. Derive Beads
 
 Create beads from the approved PRD.
 

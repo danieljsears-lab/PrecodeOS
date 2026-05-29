@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-21
+Document version: v0.1.6
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -24,7 +24,9 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when t
 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when candidate beads, dependencies, blocked work, or deferred slices need long-horizon review before activation.
 
-Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` before decomposition when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or direct-versus-pattern decision.
+Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before decomposition when an approved PRD needs `PRD+architecture` or `PRD+architecture+test-plan` planning depth, or when it touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
+
+Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` after or alongside Architecture Shaping when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, deep module boundary, or direct-versus-pattern decision.
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when decomposition affects model tier, subagent delegation, long-horizon execution, or context-budget decisions.
 
@@ -50,6 +52,7 @@ A candidate bead is ready to propose only when it has:
 - clear stop conditions
 - no mixed planning plus implementation
 - no hidden user approval gate
+- Architecture Brief evidence or an explicit low-risk skip reason when `required_planning_depth` is `PRD+architecture` or `PRD+architecture+test-plan`
 
 If the bead needs a second primary authority, a second outcome, or a second risk model, split it.
 
@@ -65,6 +68,7 @@ Use `not a bead yet` when the work has:
 - broad "make it better" scope
 - unclear dependency order
 - missing PRD approval for product feature work
+- missing Architecture Brief evidence for architecture-sensitive approved PRDs
 - implementation-changing open questions
 
 The next output should be source intake, PRD shaping, decision logging, architecture/security/API/schema clarification, or an unblocker bead.
@@ -136,7 +140,7 @@ Execution beads may produce:
 
 Execution beads should not reshape product definition. If new product scope appears, stop and promote it through PRD or decision ownership.
 
-When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
+When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
 
 External sprint plans, Ember `Backend-dev-plan.md` sprints, backend implementation lists, or client project plans are source inputs for decomposition, not beads by default. Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when those plans arrive from a client engagement. Precode may split, merge, reorder, defer, or reject external sprint items so each candidate bead still has one outcome, one primary authority, bounded files in play, checks, and stop conditions.
 
@@ -168,6 +172,8 @@ Split when:
 - verification requires a different strategy
 - manual setup blocks progress
 - the done-when statement contains "and then"
+
+For `PRD+architecture` and `PRD+architecture+test-plan` beads, do not propose implementation beads until Architecture Brief evidence exists or the PRD/bead notes explain why Architecture Shaping was safely skipped.
 
 ## Decomposition Review Checklist
 

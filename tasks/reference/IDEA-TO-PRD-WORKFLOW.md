@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-05-28
+Document version: v0.1.10
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -25,7 +25,7 @@ Use `PRODUCT.md` as the builder-facing product constitution when the idea may af
 For a net-new, rough product idea from a non-technical builder, the default path is:
 
 ```text
-Product Ideation Workbook -> Product Brief -> Exploration Loop when useful -> Local Source Intake -> gentle PRD ramp -> technical shaping only when needed -> PRD shard -> FEATURES.md compile -> bead proposals
+Product Ideation Workbook -> Product Brief -> Exploration Loop when useful -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> Architecture Shaping when risk-triggered -> bead proposals
 ```
 
 Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
@@ -39,6 +39,8 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when explaining which lif
 Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when the idea depends on domain vocabulary, aliases, UI labels, code/test naming, confusing terms, or stale vocabulary from older artifacts.
 
 Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the idea is broad, risky, market-facing, paid, evidence-poor, solution-first, or when the main uncertainty is whether the problem, user, current workaround, demand signal, or smallest learning step is real enough to justify a PRD.
+
+Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before bead proposals when the approved destination touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
 
 None of these artifacts are active memory. The active-memory set remains:
 
@@ -66,8 +68,9 @@ Default founder-facing handoffs:
 | Product Brief -> Exploration or Discovery | Choose targeted exploration when more context exists, or Product Discovery Validation when worth-building is uncertain. | Do not turn capability candidates into requirements. | The next uncertainty is clear: missing context, weak evidence, broad audience, demand, risk, or first slice. | Evidence is weak, audience is too broad, or too many candidates need narrowing. |
 | Discovery -> Local Source Intake or pause/narrow/kill | Use the Discovery Summary to proceed, pause, narrow, or kill. | Do not treat `proceed` as PRD approval or task activation. | Target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommendation are named. | Recommendation is `pause`, `narrow`, or `kill`, or a sensitive surface needs human judgment. |
 | PRD draft -> Product Definition Gate | Review readiness against the gate. | Do not compile features or derive beads. | Requirements have stable IDs, acceptance oracles, non-goals, risk gates, and known authority impacts. | Implementation-changing questions remain blocking or requirements cannot be verified. |
-| Approved PRD -> `FEATURES.md` compile | Compile only stable feature inventory. | Do not copy the whole PRD or activate work. | Approved PRD has stable requirements that can be summarized in `FEATURES.md`. | PRD approval is missing or product-constitution impact is unresolved. |
-| `FEATURES.md` -> bead proposals | Derive candidate beads from approved requirement IDs. | Do not activate a bead. | Each candidate has one logical unit, one primary authority file, checks, manual verification, and stop conditions. | A candidate mixes planning and implementation, spans multiple owners, or lacks verification. |
+| Approved PRD -> `FEATURES.md` compile | Compile only stable feature inventory. | Do not copy the whole PRD, treat Architecture Shaping as implementation permission, or activate work. | Approved PRD has stable requirements that can be summarized in `FEATURES.md`. | PRD approval is missing or product-constitution impact is unresolved. |
+| `FEATURES.md` -> Architecture Shaping when risk-triggered | Produce an evidence-only Architecture Brief before decomposition. | Do not create a full implementation plan or promote brief facts into owner files without review. | Hidden auth, data, API, integration, migration, dependency, workflow, or multi-system risks are surfaced or explicitly skipped. | Product-changing technical risk appears, owner-file facts need promotion, or an unknown needs a planning/unblocker bead. |
+| Architecture Shaping or low-risk skip -> bead proposals | Derive candidate beads from approved requirement IDs and Architecture Brief evidence when relevant. | Do not activate a bead. | Each candidate has one logical unit, one primary authority file, checks, manual verification, stop conditions, and risk-appropriate planning depth. | A candidate mixes planning and implementation, spans multiple owners, lacks verification, or hides an approval gate. |
 | Bead proposals -> user-approved activation only | Ask for explicit bead activation through the normal transition gate. | Do not update `tasks/todo.md` or begin implementation without approval. | The user approves exactly one next bead. | More than one bead is active, scope is unclear, or the transition would bypass review. |
 
 ## Fast Learning Lane
@@ -115,7 +118,7 @@ Use these as optional Navigator lenses, not first-class modes or named agents.
 |---|---|---|
 | Analyst lens | Find the real problem, evidence, assumptions, and alternatives | The idea is vague, market-shaped, or based on a hunch |
 | Product Manager lens | Turn the problem into goals, non-goals, requirements, and acceptance checks | The builder wants to know what should actually ship |
-| Architect lens | Check stack fit, project conventions, integration boundaries, and implementation risk | The idea touches architecture, data, auth, payments, dependencies, or external services |
+| Architect lens | Check stack fit, project conventions, integration boundaries, and implementation risk; route approved risky PRDs to Architecture Shaping before bead proposals | The idea touches architecture, data, auth, payments, dependencies, migrations, APIs, workflows, or external services |
 | Reviewer lens | Challenge shallow artifacts before code starts | The PRD sounds polished but still cannot guide beads |
 
 The lenses are prompts for thinking. They do not create new active-memory files, new agent hierarchy, or separate authority.

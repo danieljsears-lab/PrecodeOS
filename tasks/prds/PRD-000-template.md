@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-18
+Document version: v0.1.7
+Last updated: 2026-05-29
 
 ## State
 
@@ -250,6 +250,9 @@ Agent-facing technical translation. Load `PROJECT-CONTEXT.md` when this feature 
 
 - Project context impact: `none | minor | material`
 - `PROJECT-CONTEXT.md` loaded: `yes | no | not needed`
+- Architecture Shaping: `needed | completed | skipped`
+- Architecture Brief evidence:
+- Architecture Shaping skip reason:
 - Architecture authority updates needed:
 - Route/API authority updates needed:
 - Schema authority updates needed:

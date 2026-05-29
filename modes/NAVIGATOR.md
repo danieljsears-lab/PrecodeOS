@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-17
+Document version: v0.1.2
+Last updated: 2026-05-29
 
 ## Responsibilities
 
@@ -45,7 +45,7 @@ Use these lenses as prompts, not as new modes or agents:
 
 - Analyst lens: clarify the real problem, evidence, assumptions, and alternatives.
 - Product Manager lens: turn the problem into goals, non-goals, requirements, and acceptance oracles.
-- Architect lens: check project context, stack fit, integration boundaries, and implementation risk.
+- Architect lens: check project context, stack fit, integration boundaries, and implementation risk; use Architecture Shaping after PRD approval when risk should be surfaced before bead proposals.
 - Reviewer lens: challenge shallow artifacts before code starts.
 
 ## Tired-Builder Prompts

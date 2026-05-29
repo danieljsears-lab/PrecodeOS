@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-05-21
+Document version: v0.1.13
+Last updated: 2026-05-29
 
 ## Purpose
 
@@ -144,6 +144,12 @@ Use the Decomposition Protocol to propose journey beads from this destination PR
 
 ```text
 Before marking a bead afk_candidate, verify that it has bounded files in play, explicit checks, stop conditions, a test_strategy, review_context, and no hidden approval gate. Confirm this does not activate parallel execution or bypass human review.
+```
+
+## Architecture Shaping
+
+```text
+Use the Architecture Shaping Protocol for this approved PRD before deriving beads. Interview me one question at a time about the auth, data, API, integration, dependency, migration, workflow, or multi-system risks that matter. Produce an evidence-only Architecture Brief with owner-file impacts, approval gates, verification evidence, bead implications, and what the coding agent should inspect before choosing internals.
 ```
 
 ## System Design Shape

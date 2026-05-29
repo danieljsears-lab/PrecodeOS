@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-11
+Document version: v0.1.4
+Last updated: 2026-05-29
 
 ## Purpose
 
 This protocol helps non-technical builders ask for the right implementation shape before an agent starts coding.
 
 Use it when a feature feels bigger than a text or styling change, when an agent proposes a design pattern, or when business rules could become scattered across the app.
+
+Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` first when an approved PRD needs a founder-readable risk and boundary bridge before bead proposals. Architecture Shaping asks what risks and boundaries must be clear; this protocol answers what implementation shape may fit that risk.
 
 Active memory remains exactly:
 

@@ -7,14 +7,14 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-07
+Document version: v0.1.5
+Last updated: 2026-05-29
 
 ## Purpose
 
 This folder holds product definition shards.
 
-A PRD shard is the durable destination document between an idea and implementation. It captures alignment/grilling results, domain language when terms matter, user problem, requirement IDs, acceptance oracles, risks, module/interface candidates, and journey bead proposals before an AI coding agent starts building.
+A PRD shard is the durable destination document between an idea and implementation. It captures alignment/grilling results, domain language when terms matter, user problem, requirement IDs, acceptance oracles, risks, architecture-shaping evidence when risk-triggered, module/interface candidates, and journey bead proposals before an AI coding agent starts building.
 
 `PRODUCT.md` is the builder-facing product constitution. Use it during PRD creation, review, approval, and amendment to check product promise, users, strategy, non-goals, current bets, success signals, and design or voice. It does not replace PRD shards or approve features.
 
@@ -94,6 +94,7 @@ Use `PRD-000-template.md` when creating a new shard.
 - Ceremony is adaptive by risk. A low-risk UI copy change can have a short shard; auth, payments, data, uploads, external tools, or ambiguous workflows need a fuller shard.
 - Alignment/grilling is expected for fuzzy, source-heavy, risky, or user-facing ideas before requirements are finalized.
 - Domain language is expected when terms, aliases, avoid words, UI labels, tests, or module/interface names affect the feature.
+- Architecture Shaping evidence is expected before bead proposals when an approved PRD touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes. If skipped, record the low-risk reason in the PRD architecture-impact section or bead notes.
 - Frontmatter carries the structured PRD metadata; the section body carries the human-readable product definition.
 - Check `PRODUCT.md` when feature work may affect product promise, users, strategy, non-goals, current bets, success signals, or design and voice.
 - Requirement IDs are stable and granular. Use IDs such as `PRD-002-FR01`, `PRD-002-UX01`, `PRD-002-SEC01`, and `PRD-002-NFR01`.
