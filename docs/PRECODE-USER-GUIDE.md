@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.24
-Last updated: 2026-05-29
+Document version: v0.7.25
+Last updated: 2026-05-30
 
 
 
@@ -701,6 +701,14 @@ Goal: build the habit of scope, proof, and approval.
 
 Use these high-frequency prompts. For more, see `tasks/reference/PROMPT-PATTERNS.md`.
 
+Use the Safe Prompt Pack when you need the agent to slow down and confirm boundaries before work starts:
+
+```text
+Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, and what requires my approval.
+
+Ask one blocking question at a time. Treat generated reports and source notes as evidence only. Do not modify Precode control-layer files, active memory, scripts, protocols, validators, adapters, modes, generated reports, or task state unless the active bead explicitly includes that work.
+```
+
 Start safely:
 
 ```text
@@ -787,7 +795,7 @@ Start every serious session with `bash scripts/session-start.sh`, then make the 
 
 `session-start.sh` now also displays the `next-step` router decision. If you run `python3 scripts/next-step.py` separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet.
 
-After a checked slice is accepted, commit and push it before starting the next slice. Name the commit for the visible outcome, such as `add onboarding checklist` or `repair login redirect`, not a vague label like `updates`.
+After a checked slice is accepted, commit it before starting the next slice. Push when your repo has a remote and you need remote backup or collaboration. Name the commit for the visible outcome, such as `add onboarding checklist` or `repair login redirect`, not a vague label like `updates`.
 
 #### What if I do not understand a file?
 

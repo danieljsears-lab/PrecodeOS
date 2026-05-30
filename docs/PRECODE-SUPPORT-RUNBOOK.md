@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-05-29
+Document version: v0.1.12
+Last updated: 2026-05-30
 
 ## Purpose
 
@@ -55,6 +55,54 @@ Route the student to PrecodeOS now when the work is a real product build, custom
 Let the student stay in plain VS Code and Claude Code for now when the work is a throwaway prototype, a first-time coding practice session, a learning-only demo, early design exploration, or when setup basics are still blocking confidence.
 
 Name the decision as reversible: the student can practice basics first and add PrecodeOS later, but should add PrecodeOS before serious multi-session product development. Once real development starts in VS Code, coach the student to keep development there instead of switching the product back and forth between design, prototype, web chat, and local coding surfaces.
+
+## Bootcamp Safe Prompt Pack
+
+Use this pack when an Ember bootcamp student is working in the official bootcamp scaffold. This scaffold is a bootcamp support convention, not a universal PrecodeOS requirement.
+
+Official bootcamp scaffold:
+
+- `frontend/` exists at repo root and contains the Next.js app.
+- `precode/` exists at repo root and contains the Precode control layer only.
+- `backend/` is created at repo root only when the first approved backend bead activates; generated backend application code belongs there.
+
+### Scaffold Confirmation
+
+```text
+Before intake, planning, or implementation, confirm the bootcamp scaffold:
+
+1. frontend/ exists at repo root and contains the Next.js app.
+2. precode/ exists at repo root and contains the Precode control layer only.
+3. backend/ is absent until an approved backend bead activates, or exists because that bead has already activated.
+
+Do not start intake, create files, write code, or move project material until you confirm these boundaries. If the scaffold conflicts with active memory, PROJECT-CONTEXT.md, or the current bead, surface the conflict now.
+```
+
+### One Question At A Time
+
+```text
+Ask one blocking question at a time. Wait for the student's answer before asking the next one. Include a recommended answer when useful, but do not decide product direction, scope, acceptance, or repo topology for the student.
+```
+
+### Bead And Git Hygiene
+
+```text
+Before activating a new bead or starting a new support session, check git status and tell us whether current changes are clean, committed, generated evidence, or unfinished work from the current bead.
+
+Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the student's repo has a remote and the bootcamp support workflow expects remote backup or collaboration.
+
+Do not treat this chat instruction as durable state by itself. If the rule needs to persist, put it in the appropriate Precode owner or support document.
+```
+
+### Build-Stage Error And Control-Layer Protocol
+
+```text
+During build work, diagnose ordinary app errors only inside the active bead and its files in play.
+
+Stop and explain the issue before changing anything when the error appears to involve the Precode control layer, active memory, task state, validators, scripts, protocols, adapters, modes, generated reports, repo boundary confusion, secrets, CI, Git hooks, deployment, auth, payments, or personal data.
+
+Do not modify files inside precode/ except when the active bead explicitly allows that exact Precode control-layer change. If a Precode framework file appears to cause the error, surface the symptom and escalation path to the support lead or maintainer instead of patching it casually.
+```
 
 ## Case Priority
 

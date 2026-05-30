@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-29">
+  <meta name="generated-at" content="2026-05-30">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.24</span><span>Updated 2026-05-29</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.25</span><span>Updated 2026-05-30</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -415,6 +415,10 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <p>Goal: build the habit of scope, proof, and approval.</p>
 <h2 id="copyable-prompts">Copyable Prompts</h2>
 <p>Use these high-frequency prompts. For more, see <code>tasks/reference/PROMPT-PATTERNS.md</code>.</p>
+<p>Use the Safe Prompt Pack when you need the agent to slow down and confirm boundaries before work starts:</p>
+<pre><code class="language-text">Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, and what requires my approval.
+
+Ask one blocking question at a time. Treat generated reports and source notes as evidence only. Do not modify Precode control-layer files, active memory, scripts, protocols, validators, adapters, modes, generated reports, or task state unless the active bead explicitly includes that work.</code></pre>
 <p>Start safely:</p>
 <pre><code class="language-text">Run Precode session start. Explain the active bead, done-when target, primary authority, files in play, checks, stop conditions, and blockers before editing.</code></pre>
 <p>Choose the workflow:</p>
@@ -445,7 +449,7 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <h4 id="what-habit-should-i-build-first">What habit should I build first?</h4>
 <p>Start every serious session with <code>bash scripts/session-start.sh</code>, then make the agent explain the bead before coding.</p>
 <p><code>session-start.sh</code> now also displays the <code>next-step</code> router decision. If you run <code>python3 scripts/next-step.py</code> separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet.</p>
-<p>After a checked slice is accepted, commit and push it before starting the next slice. Name the commit for the visible outcome, such as <code>add onboarding checklist</code> or <code>repair login redirect</code>, not a vague label like <code>updates</code>.</p>
+<p>After a checked slice is accepted, commit it before starting the next slice. Push when your repo has a remote and you need remote backup or collaboration. Name the commit for the visible outcome, such as <code>add onboarding checklist</code> or <code>repair login redirect</code>, not a vague label like <code>updates</code>.</p>
 <h4 id="what-if-i-do-not-understand-a-file">What if I do not understand a file?</h4>
 <p>Ask: <code>What does this file own, what is it not allowed to decide, and when should it be loaded?</code></p>
 <h4 id="what-if-i-want-to-move-fast">What if I want to move fast?</h4>
