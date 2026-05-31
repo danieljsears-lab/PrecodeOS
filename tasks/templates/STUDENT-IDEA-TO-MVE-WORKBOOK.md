@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-29
+Document version: v0.1.1
+Last updated: 2026-05-30
 
 ## Purpose
 
@@ -40,6 +40,8 @@ Idea
   -> Core Workflow Spine
   -> Minimum Valuable Experience
   -> Precode Ingestion Packet
+  -> Experience design canvas when a visual core spine is needed
+  -> Student Experience Ingestion Packet before Claude Code implementation
 ```
 
 Each stage has a one-page canvas:
@@ -795,3 +797,11 @@ Use Local Source Intake on this Student Idea To MVE Workbook packet.
 
 Treat the packet as source evidence only. Summarize stable conclusions, assumptions, open questions, risks, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
 ```
+
+## Experience Design Handoff
+
+In a bootcamp flow, this workbook or the approved bootcamp PRD input usually feeds an Experience design step before Claude Code implementation.
+
+Use Claude Design, Ember UI Builder, or another AI-assisted UI/UX canvas to make the core spine visible: the primary workflow that delivers the minimum value moment to the target user.
+
+Use `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` after the Experience artifact exists. That packet combines the approved PRD input and Experience artifacts so Claude Code can create one bounded Precode bead before coding begins.

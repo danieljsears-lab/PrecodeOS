@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.2
-Last updated: 2026-05-29
+Document version: v0.2.3
+Last updated: 2026-05-30
 
 ## Purpose
 
@@ -210,6 +210,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/GOAL-FRAME-PROTOCOL.md` | reference | Reviewed durable-intent orientation, allowed owner-file locations, required fields, lifecycle, reaffirmation, and forbidden uses. | Governs Goal Frame sections in `PRODUCT.md`, PRDs, beads, or `DECISIONS.md`, plus `logs/goal-frame.json` and `scripts/goal-frame-check.py`. |
 | `tasks/reference/PROMPT-PATTERNS.md` | reference | Copyable prompts for alignment, shared language, PRDs, decomposition, implementation, review, stale artifacts, and common Precode work. | Teaching aid; not authority over active memory or beads. |
 | `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` | reference template | Student-facing product ideation workbook for Claude/Codex-assisted research, ideation, challenge, refinement, and Precode ingestion packet creation. | Source evidence only; ingest through Local Source Intake before promoting anything into `PRODUCT.md`, PRDs, decisions, or beads. |
+| `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` | reference template | Student-facing Experience handoff packet combining an approved bootcamp PRD input, visual core-spine artifacts, target-user feedback, and Claude Code bead-creation prompts. | Context for creating a bounded Precode bead; not product approval, bead activation, implementation authority, or permission to code. |
 | `tasks/templates/*.md` | reference template family | Reusable worksheets and guided artifacts outside active memory. | Templates may help create source evidence or proposals, but they do not approve work or become authority. |
 | `tasks/beads/BEAD-SCHEMA.md` | reference | Bead schema, delegation mode, test strategy, review context, adaptive-depth fields, templates, closeout guidance, and review rules. | Defines shape for `tasks/beads/*.md`. |
 | `tasks/beads/*.md` | execution contract | One durable journey unit of work, files in play, checks, stop conditions, delegation/test/review/adaptive-depth posture, and closeout. | One bead may be `in_progress`; active bead is pointed to by `tasks/todo.md`. |

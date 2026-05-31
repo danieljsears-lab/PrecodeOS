@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-29
+Document version: v0.1.7
+Last updated: 2026-05-30
 
 ## Purpose
 
@@ -207,4 +207,11 @@ Use Local Source Intake on this user packet, frontend design, and optional exist
 Treat every input as evidence, not authority.
 Classify stable facts, conflicts, stale inputs, open questions, design implications, candidate requirements, candidate non-goals, candidate acceptance signals, affected owner files, and the next safe Precode action.
 Do not update authority files, approve or amend a PRD, create or activate beads, or write code until I review the intake summary.
+```
+
+```text
+Use Local Source Intake on this approved bootcamp PRD input and Student Experience Ingestion Packet.
+Treat the packet as context for bead creation, not permission to code.
+Summarize the target user, minimum value moment, core workflow spine, screens and states, reference artifacts, feedback gathered, open questions, candidate acceptance checks, affected owner files, and the next safe Precode action.
+If this is ready for implementation, propose one narrow core-spine bead and stop before activation or coding.
 ```

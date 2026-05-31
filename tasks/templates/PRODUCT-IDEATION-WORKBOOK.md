@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.6
-Last updated: 2026-05-19
+Document version: v0.1.7
+Last updated: 2026-05-30
 
 ## Purpose
 
@@ -264,10 +264,19 @@ Summarize the product promise, intended user, user job, painful before moment, b
 
 ### Precode Ingestion Packet Prompt
 
+Before creating the packet, check the idea against PRD-Ready Context. This prepares evidence for a future PRD; it is not a PRD, approval, bead, or implementation plan.
+
+- Product context: what this is and where it fits.
+- User and problem: who is struggling, when, and why it matters.
+- Before/after experience: what changes for the user.
+- Constraints: platform, timeline, budget, integrations, sensitive surfaces, or technical limits.
+- Success signals: how the first version might prove useful.
+- Risks and unknowns: assumptions, edge cases, accessibility, privacy, compliance, or open questions.
+
 ```text
 Create a concise Precode Ingestion Packet from this workbook.
 
-Treat the workbook as evidence, not authority. Do not draft PRODUCT.md. Do not create a PRD. Do not propose active work. Summarize only the stable and decision-relevant material.
+Treat the workbook as evidence, not authority. Do not draft PRODUCT.md. Do not create a PRD. Do not propose active work. Summarize only the stable and decision-relevant material, using PRD-Ready Context to find gaps without expanding the packet.
 
 Use this format:
 - Product idea summary:
@@ -309,7 +318,7 @@ Use this format:
   - Approval gates:
   - Reaffirmation trigger:
   - Suggested owner file:
-- PRD bridge notes:
+- PRD-ready context notes:
 - Likely owner files:
 - Recommended Precode next step:
 
@@ -1478,7 +1487,7 @@ Candidate Goal Frame For Precode Review:
 - Reaffirmation trigger:
 - Suggested owner file:
 
-PRD bridge notes:
+PRD-ready context notes:
 
 Likely owner files:
 
@@ -1498,7 +1507,7 @@ Before bringing the packet into Precode, confirm:
 - The strongest evidence and weakest assumption are named.
 - The smallest useful version and not-yet list are included.
 - The Candidate Goal Frame is clearly marked as evidence only and does not read like a task list.
-- PRD bridge notes explain what a future PRD may need, without drafting the PRD.
+- PRD-ready context notes explain what a future PRD may need, without drafting the PRD.
 - Sensitive information has been removed.
 - You are ready for Precode to treat the packet as local source evidence, not authority.
 
@@ -1508,4 +1517,21 @@ When ready, ask Precode:
 Use Local Source Intake on this Precode Ingestion Packet.
 
 Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, Candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
+```
+
+## Advanced: PRD Input Gap Check
+
+Skip this if the packet already explains the user, problem, before/after moment, constraints, success signal, risks, and smallest useful slice. Use it only when the packet still feels thin or the idea is complex.
+
+```text
+Use this as a PRD input gap check only.
+Review my Precode Ingestion Packet for missing PRD-ready context across: user journey, edge cases, accessibility, compliance or privacy, technical constraints, comparable products, success metrics, and stakeholder concerns.
+
+Rules: produce gap notes only; do not draft or rewrite a PRD; do not rewrite the packet unless I ask; do not create beads, update PRODUCT.md, approve work, suggest coding, or treat the notes as authority.
+
+Output:
+- Must clarify before PRD:
+- Useful but not blocking:
+- Defer / Not yet:
+- One recommended next Precode step:
 ```

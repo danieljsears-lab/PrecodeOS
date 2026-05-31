@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
-Last updated: 2026-05-18
+Document version: v0.1.20
+Last updated: 2026-05-30
 
 ## Start Here: You Are Not Just Prompting
 
@@ -181,6 +181,8 @@ idea or notes
   -> Product Ideation Workbook for net-new rough product ideas
   -> Product Brief after at most three high-level questions
   -> Precode Ingestion Packet
+  -> Experience design canvas for bootcamp visual core-spine work
+  -> Student Experience Ingestion Packet for Claude Code handoff
   -> Candidate Goal Frame when durable intent needs orientation
   -> Product Discovery Validation when worth-building is uncertain
   -> Local Source Intake and reaffirmation
@@ -204,6 +206,7 @@ idea or notes
 | Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
 | Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question." |
 | Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review. | "Treat this as evidence, not authority." |
+| Student Experience Ingestion Packet | A bootcamp handoff packet combining the approved PRD input and Experience artifacts before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
 | Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |

@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-23
+Document version: v0.1.8
+Last updated: 2026-05-30
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -89,6 +89,8 @@ Field rule: one bead, one feature slice, one chat. When you finish and accept a 
 - [ ] I am not expecting Claude to figure out what to build — I have a specific task
 - [ ] I have not asked Claude to work on two things at once
 - [ ] I am in the project root folder, and I have not renamed it
+
+If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Do not ask Claude to start building directly from a design canvas.
 
 **Fill in before every session:**
 

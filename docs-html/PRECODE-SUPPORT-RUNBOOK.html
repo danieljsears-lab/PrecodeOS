@@ -306,15 +306,15 @@ python3 scripts/next-step.py</code></pre>
 <ul><li>active memory is only <code>AGENT.md</code>, <code>DECISIONS.md</code>, and <code>tasks/todo.md</code></li><li>one bead is active at a time</li><li>generated reports are evidence only</li><li>recorded checks are stronger than agent confidence</li><li>the user approves risk and task transitions</li><li>unclear state is a reason to stop, not push through</li></ul>
 <p>If the user feels lost, use <code>docs/PRECODE-TROUBLESHOOTING.md</code> before editing files.</p>
 <h2 id="engineer-initiation-from-user-packet">Engineer Initiation From User Packet</h2>
-<p>Use this section when an engineer receives a user&#x27;s Precode Ingestion Packet, frontend design files, and optional existing PRD.</p>
-<p>Treat the packet, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence. They are not automatic Precode authority, implementation instructions, PRD approval, bead activation, or permission to code.</p>
+<p>Use this section when an engineer receives a user&#x27;s Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.</p>
+<p>Treat the packet, Experience artifacts, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence unless the bootcamp explicitly marks a PRD-like input as student-approved product direction. Even then, the combined packet does not automatically activate a bead or authorize coding.</p>
 <p>The initiation path is:</p>
-<pre><code class="language-text">ingestion packet + design files + optional PRD
+<pre><code class="language-text">ingestion packet + Experience artifacts + optional PRD
   -&gt; Local Source Intake
   -&gt; owner-file map
   -&gt; PRD readiness or amendment
-  -&gt; design/architecture impact check
-  -&gt; candidate beads
+  -&gt; Experience/core-spine impact check
+  -&gt; candidate bead for the core spine
   -&gt; user-approved active bead
   -&gt; implementation</code></pre>
 <p>Start by classifying the project state:</p>
@@ -322,28 +322,41 @@ python3 scripts/next-step.py</code></pre>
 <h3 id="precode-ingestion-close-gate">Precode Ingestion Close Gate</h3>
 <p>An engineer setup session is not complete until the Precode ingestion state is explicit.</p>
 <p>Before closing, confirm:</p>
-<ul><li>the entry state was classified</li><li>setup validation ran, or the exact validation blocker is named</li><li>source inputs were treated as evidence, not authority</li><li>Local Source Intake or Client Engagement Intake was completed when packets, design files, Ember handoffs, backend plans, sprint plans, or existing PRDs are present</li><li>affected owner files or the next safe action are named</li><li>no PRD, bead, implementation, repo topology, or product decision was approved by implication</li></ul>
+<ul><li>the entry state was classified</li><li>setup validation ran, or the exact validation blocker is named</li><li>source inputs were treated as evidence, not authority</li><li>Local Source Intake or Client Engagement Intake was completed when packets, design files, Ember handoffs, backend plans, sprint plans, or existing PRDs are present</li><li>affected owner files or the next safe action are named</li><li>no PRD, bead, implementation, repo topology, or product decision was approved by implication</li><li>in bootcamp Experience handoffs, Claude Code creates or proposes a bounded bead before coding starts</li></ul>
 <p>If any item is missing, close on the blocker and next safe prompt instead of calling setup done.</p>
 <p>Copyable engineer prompt:</p>
 <pre><code class="language-text">I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
 - Precode Ingestion Packet: [path or pasted reviewed summary]
-- Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
+- Student Experience Ingestion Packet, if present: [path or pasted reviewed summary]
+- Experience artifacts, frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
 
-Treat these inputs as evidence, not authority. Do not write code yet.
+Treat these inputs as evidence, not automatic implementation authority. Do not write code yet.
 
 First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
 
-Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, design implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, and affected owner files.
+Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, Experience/core-spine implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, feedback gathered, and affected owner files.
 
-Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, design/architecture impact review, decomposition into candidate beads, or a narrow unblocker.
+Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, Experience/core-spine review, decomposition into one candidate core-spine bead, or a narrow unblocker.
 
 Stop before updating authority files, approving a PRD, activating a bead, or coding.</code></pre>
 <p>For design-heavy inputs, the engineer should explicitly identify:</p>
-<ul><li>visual intent</li><li>screens, states, and user flows</li><li>interactions, empty states, loading states, and error states</li><li>responsive expectations</li><li>design-system constraints or missing design-system decisions</li><li>accessibility concerns</li><li>unresolved design decisions that could change implementation</li></ul>
+<ul><li>visual intent</li><li>target user and minimum value moment</li><li>core workflow spine</li><li>screens, states, and user flows</li><li>interactions, empty states, loading states, and error states</li><li>responsive expectations</li><li>feedback gathered before coding and feedback still needed after prototype</li><li>design-system constraints or missing design-system decisions</li><li>accessibility concerns</li><li>unresolved design decisions that could change implementation</li></ul>
 <p>Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, <code>PRODUCT.md</code>, <code>PROJECT-CONTEXT.md</code>, or another owner file, current authority wins until the user approves an amendment.</p>
+<h3 id="bootcamp-experience-design-to-claude-code">Bootcamp Experience Design To Claude Code</h3>
+<p>Use this path when a student has an approved bootcamp PRD input and Experience artifacts from Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas.</p>
+<p>The student-facing output is <code>tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md</code>. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.</p>
+<p>Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.</p>
+<p>Copyable student handoff prompt:</p>
+<pre><code class="language-text">Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
+
+Summarize the core scope, minimum value moment, files likely in play, acceptance checks, key screen states, responsive behavior to verify, manual verification steps, stop conditions, and what is explicitly not included.
+
+Preserve the approved PRD intent and Experience core spine.
+
+Do not code until I approve the bead.</code></pre>
 <h2 id="client-engagement-intake">Client Engagement Intake</h2>
 <p>Use <code>tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md</code> when a client arrives with an existing project, external PRD, frontend design files, Ember Handover Agent artifacts, <code>Backend-dev-plan.md</code>, backend sprint plans, or an existing codebase.</p>
 <p>Support and engineers should answer immediate engagement questions this way:</p>
@@ -397,7 +410,7 @@ Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, 
 <ul><li><code>docs/PRECODE-GUIDED-SETUP.md</code> for the public setup path</li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code> for symptom lookup</li><li><code>docs/PRECODE-USER-GUIDE.md</code> for day-to-day use</li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> for the public package file dictionary</li><li><code>tasks/reference/RECOVERY-PROTOCOL.md</code> for conservative repair</li><li><code>tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md</code> for client PRDs, external designs, backend plans, sprint plans, and existing codebases</li></ul>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-TROUBLESHOOTING.html"><span>Previous</span>PrecodeOS Troubleshooting</a><a href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html"><span>Next</span>How To Build Software Using PrecodeOS + AI Coding Agents</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#purpose">Purpose</a><a class="level-2" href="#fast-support-slot-flow">Fast Support Slot Flow</a><a class="level-2" href="#ember-bootcamp-precode-fit-check">Ember Bootcamp Precode Fit Check</a><a class="level-2" href="#bootcamp-safe-prompt-pack">Bootcamp Safe Prompt Pack</a><a class="level-3" href="#scaffold-confirmation">Scaffold Confirmation</a><a class="level-3" href="#one-question-at-a-time">One Question At A Time</a><a class="level-3" href="#bead-and-git-hygiene">Bead And Git Hygiene</a><a class="level-3" href="#build-stage-error-and-control-layer-protocol">Build Stage Error And Control Layer Protocol</a><a class="level-2" href="#case-priority">Case Priority</a><a class="level-2" href="#non-negotiables">Non Negotiables</a><a class="level-2" href="#mainline-walkthrough-new-project">Mainline Walkthrough: New Project</a><a class="level-3" href="#1-frame-the-session">1. Frame The Session</a><a class="level-3" href="#2-capture-user-owned-intent">2. Capture User Owned Intent</a><a class="level-3" href="#3-confirm-source-and-target">3. Confirm Source And Target</a><a class="level-3" href="#4-set-up-by-supervised-file-group">4. Set Up By Supervised File Group</a><a class="level-3" href="#5-adapt-owner-files">5. Adapt Owner Files</a><a class="level-3" href="#6-validate-before-first-use">6. Validate Before First Use</a><a class="level-3" href="#7-guide-the-first-safe-session">7. Guide The First Safe Session</a><a class="level-2" href="#existing-project-variant">Existing Project Variant</a><a class="level-2" href="#first-use-coaching">First Use Coaching</a><a class="level-2" href="#engineer-initiation-from-user-packet">Engineer Initiation From User Packet</a><a class="level-3" href="#precode-ingestion-close-gate">Precode Ingestion Close Gate</a><a class="level-2" href="#client-engagement-intake">Client Engagement Intake</a><a class="level-2" href="#demo-and-engineering-readiness">Demo And Engineering Readiness</a><a class="level-2" href="#bootcamp-role-boundaries">Bootcamp Role Boundaries</a><a class="level-2" href="#repair-path-for-incorrect-setup">Repair Path For Incorrect Setup</a><a class="level-2" href="#close-the-support-session">Close The Support Session</a><a class="level-2" href="#related-guides">Related Guides</a></aside>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#purpose">Purpose</a><a class="level-2" href="#fast-support-slot-flow">Fast Support Slot Flow</a><a class="level-2" href="#ember-bootcamp-precode-fit-check">Ember Bootcamp Precode Fit Check</a><a class="level-2" href="#bootcamp-safe-prompt-pack">Bootcamp Safe Prompt Pack</a><a class="level-3" href="#scaffold-confirmation">Scaffold Confirmation</a><a class="level-3" href="#one-question-at-a-time">One Question At A Time</a><a class="level-3" href="#bead-and-git-hygiene">Bead And Git Hygiene</a><a class="level-3" href="#build-stage-error-and-control-layer-protocol">Build Stage Error And Control Layer Protocol</a><a class="level-2" href="#case-priority">Case Priority</a><a class="level-2" href="#non-negotiables">Non Negotiables</a><a class="level-2" href="#mainline-walkthrough-new-project">Mainline Walkthrough: New Project</a><a class="level-3" href="#1-frame-the-session">1. Frame The Session</a><a class="level-3" href="#2-capture-user-owned-intent">2. Capture User Owned Intent</a><a class="level-3" href="#3-confirm-source-and-target">3. Confirm Source And Target</a><a class="level-3" href="#4-set-up-by-supervised-file-group">4. Set Up By Supervised File Group</a><a class="level-3" href="#5-adapt-owner-files">5. Adapt Owner Files</a><a class="level-3" href="#6-validate-before-first-use">6. Validate Before First Use</a><a class="level-3" href="#7-guide-the-first-safe-session">7. Guide The First Safe Session</a><a class="level-2" href="#existing-project-variant">Existing Project Variant</a><a class="level-2" href="#first-use-coaching">First Use Coaching</a><a class="level-2" href="#engineer-initiation-from-user-packet">Engineer Initiation From User Packet</a><a class="level-3" href="#precode-ingestion-close-gate">Precode Ingestion Close Gate</a><a class="level-3" href="#bootcamp-experience-design-to-claude-code">Bootcamp Experience Design To Claude Code</a><a class="level-2" href="#client-engagement-intake">Client Engagement Intake</a><a class="level-2" href="#demo-and-engineering-readiness">Demo And Engineering Readiness</a><a class="level-2" href="#bootcamp-role-boundaries">Bootcamp Role Boundaries</a><a class="level-2" href="#repair-path-for-incorrect-setup">Repair Path For Incorrect Setup</a><a class="level-2" href="#close-the-support-session">Close The Support Session</a><a class="level-2" href="#related-guides">Related Guides</a></aside>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>

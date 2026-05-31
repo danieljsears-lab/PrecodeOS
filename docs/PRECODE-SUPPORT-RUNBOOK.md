@@ -303,19 +303,19 @@ If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing fil
 
 ## Engineer Initiation From User Packet
 
-Use this section when an engineer receives a user's Precode Ingestion Packet, frontend design files, and optional existing PRD.
+Use this section when an engineer receives a user's Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.
 
-Treat the packet, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence. They are not automatic Precode authority, implementation instructions, PRD approval, bead activation, or permission to code.
+Treat the packet, Experience artifacts, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence unless the bootcamp explicitly marks a PRD-like input as student-approved product direction. Even then, the combined packet does not automatically activate a bead or authorize coding.
 
 The initiation path is:
 
 ```text
-ingestion packet + design files + optional PRD
+ingestion packet + Experience artifacts + optional PRD
   -> Local Source Intake
   -> owner-file map
   -> PRD readiness or amendment
-  -> design/architecture impact check
-  -> candidate beads
+  -> Experience/core-spine impact check
+  -> candidate bead for the core spine
   -> user-approved active bead
   -> implementation
 ```
@@ -340,6 +340,7 @@ Before closing, confirm:
 - Local Source Intake or Client Engagement Intake was completed when packets, design files, Ember handoffs, backend plans, sprint plans, or existing PRDs are present
 - affected owner files or the next safe action are named
 - no PRD, bead, implementation, repo topology, or product decision was approved by implication
+- in bootcamp Experience handoffs, Claude Code creates or proposes a bounded bead before coding starts
 
 If any item is missing, close on the blocker and next safe prompt instead of calling setup done.
 
@@ -350,16 +351,17 @@ I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
 - Precode Ingestion Packet: [path or pasted reviewed summary]
-- Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
+- Student Experience Ingestion Packet, if present: [path or pasted reviewed summary]
+- Experience artifacts, frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
 
-Treat these inputs as evidence, not authority. Do not write code yet.
+Treat these inputs as evidence, not automatic implementation authority. Do not write code yet.
 
 First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
 
-Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, design implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, and affected owner files.
+Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, Experience/core-spine implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, feedback gathered, and affected owner files.
 
-Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, design/architecture impact review, decomposition into candidate beads, or a narrow unblocker.
+Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, Experience/core-spine review, decomposition into one candidate core-spine bead, or a narrow unblocker.
 
 Stop before updating authority files, approving a PRD, activating a bead, or coding.
 ```
@@ -367,14 +369,37 @@ Stop before updating authority files, approving a PRD, activating a bead, or cod
 For design-heavy inputs, the engineer should explicitly identify:
 
 - visual intent
+- target user and minimum value moment
+- core workflow spine
 - screens, states, and user flows
 - interactions, empty states, loading states, and error states
 - responsive expectations
+- feedback gathered before coding and feedback still needed after prototype
 - design-system constraints or missing design-system decisions
 - accessibility concerns
 - unresolved design decisions that could change implementation
 
 Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, `PRODUCT.md`, `PROJECT-CONTEXT.md`, or another owner file, current authority wins until the user approves an amendment.
+
+### Bootcamp Experience Design To Claude Code
+
+Use this path when a student has an approved bootcamp PRD input and Experience artifacts from Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas.
+
+The student-facing output is `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.
+
+Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.
+
+Copyable student handoff prompt:
+
+```text
+Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
+
+Summarize the core scope, minimum value moment, files likely in play, acceptance checks, key screen states, responsive behavior to verify, manual verification steps, stop conditions, and what is explicitly not included.
+
+Preserve the approved PRD intent and Experience core spine.
+
+Do not code until I approve the bead.
+```
 
 ## Client Engagement Intake
 
