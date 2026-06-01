@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-29
+Document version: v0.1.5
+Last updated: 2026-05-31
 
 ## Purpose
 
@@ -286,6 +286,33 @@ Safe path:
 
 Do not let early coding become implicit approval.
 
+### Claude Checkpoint Claims The Bead Is Approved
+
+Likely causes:
+
+- Claude treated a checkpoint or completion summary as acceptance
+- manual verification was claimed without a human or reproducible check actually verifying it
+- the distinction between bead acceptance and next-bead transition was blurred
+- chat confidence was treated as recorded evidence
+
+First checks:
+
+```bash
+python3 scripts/bead-transition.py --json
+python3 scripts/completion-check.py
+git status --short
+```
+
+Safe path:
+
+- ask for the exact transcript around the checkpoint and claimed approval
+- compare the claim with Closeout Evidence and `logs/check-results.jsonl`
+- treat invented or overstated manual verification as untrusted evidence
+- repair Closeout Evidence with what was actually checked, who checked it, the environment, result, and remaining uncertainty
+- use `revise`, `blocked`, or `manual_testing` when proof is missing
+
+Do not activate a next bead, rewrite history, or accept the bead just because Claude says the checkpoint passed. `bash scripts/checkpoint.sh` reports state; only explicit approval of `python3 scripts/bead-transition.py --approve` may promote the next bead.
+
 ### Local App Will Not Start Or Loads Too Slowly
 
 Likely causes:
@@ -390,6 +417,7 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/files-in-play-check.py` | Scope may have widened or coding started too early. | It warns; it does not approve edits. |
 | `python3 scripts/workflow-check.py` | The path from setup, idea, PRD, bead, or repair is unclear. | Workflow advice is not task activation. |
 | `python3 scripts/completion-check.py` | Work sounds done but proof, review, or transition state is unclear. | Completion warnings do not accept work. |
+| `python3 scripts/bead-transition.py --json` | A bead sounds accepted or ready to advance, but approval or next-bead state is unclear. | JSON readiness is diagnostic; only explicit `--approve` mutates state. |
 
 ## Escalate Or Stop
 

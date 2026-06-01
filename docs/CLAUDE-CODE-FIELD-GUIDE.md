@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-05-30
+Document version: v0.1.9
+Last updated: 2026-05-31
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -73,6 +73,8 @@ Checkpoint before this context gets crowded. Tell me the active bead, primary au
 ```
 
 If Claude needs to compact, restart, or hand off, ask for a Context Pack first. After that, make it reload active memory, the active bead, and the primary authority before continuing.
+
+A checkpoint is a status report, not approval. Claude should not mark the bead accepted, claim you manually verified something, or start the next bead just because checkpoint output looks good.
 
 ---
 
@@ -626,6 +628,16 @@ recorded check results. Walk me through exactly how I can verify this
 works myself, step by step.
 ```
 
+If Claude says a checkpoint approved the bead or claims manual verification you did not perform, use this stronger recovery:
+
+```
+STOP. A checkpoint is not approval. Do not activate the next bead.
+Show me the recorded checks, Closeout Evidence, manual verification
+details, and the output of python3 scripts/bead-transition.py --json.
+If manual verification was claimed without me checking it, mark the
+bead as revise, blocked, or manual_testing instead of accepted.
+```
+
 ---
 
 ### 3. Context Lost
@@ -783,6 +795,7 @@ Reviewed + accepted    ← Strongest. You signed off.
 - Starts coding before you confirmed the task
 - References files you didn't expect
 - Says "done" without running a check
+- Treats checkpoint output as approval
 - Keeps going after you said stop
 
 ---

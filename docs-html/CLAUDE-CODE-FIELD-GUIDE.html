@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-30">
+  <meta name="generated-at" content="2026-05-31">
   <title>Claude Code Field Guide For Students · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>Claude Code Field Guide For Students</h1>
   <p class="lede">A Bootcamp Companion For Claude Code + PrecodeOS</p>
-  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.8</span><span>Updated 2026-05-30</span></p>
+  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.9</span><span>Updated 2026-05-31</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -221,6 +221,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>When the session feels long or busy, ask for a checkpoint:</p>
 <pre><code class="language-text">Checkpoint before this context gets crowded. Tell me the active bead, primary authority, files in play, what changed, what evidence exists, what is still uncertain, and the next exact check.</code></pre>
 <p>If Claude needs to compact, restart, or hand off, ask for a Context Pack first. After that, make it reload active memory, the active bead, and the primary authority before continuing.</p>
+<p>A checkpoint is a status report, not approval. Claude should not mark the bead accepted, claim you manually verified something, or start the next bead just because checkpoint output looks good.</p>
 <hr>
 <h2 id="before-you-open-claude-code">Before You Open Claude Code</h2>
 <p>Do this every single session, before you type anything to Claude.</p>
@@ -501,6 +502,12 @@ Tell me what happened and what needs repair before we continue.</code></pre>
 <pre><code>You said this is done. I need evidence, not confidence. Show me the
 recorded check results. Walk me through exactly how I can verify this
 works myself, step by step.</code></pre>
+<p>If Claude says a checkpoint approved the bead or claims manual verification you did not perform, use this stronger recovery:</p>
+<pre><code>STOP. A checkpoint is not approval. Do not activate the next bead.
+Show me the recorded checks, Closeout Evidence, manual verification
+details, and the output of python3 scripts/bead-transition.py --json.
+If manual verification was claimed without me checking it, mark the
+bead as revise, blocked, or manual_testing instead of accepted.</code></pre>
 <hr>
 <h3 id="3-context-lost">3. Context Lost</h3>
 <p><strong>What happened:</strong> Mid-session, Claude seems confused — it&#x27;s asking questions it already answered, referencing the wrong task, or giving generic responses.</p>
@@ -573,7 +580,7 @@ Reviewed + accepted    ← Strongest. You signed off.</code></pre>
 <h3 id="green-flags-claude-is-working-well">Green Flags — Claude is working well</h3>
 <ul><li>Names the active bead without being asked</li><li>Lists specific files in play</li><li>Asks for your approval before big changes</li><li>Offers recorded evidence, not just claims</li><li>Tells you when something is out of scope</li></ul>
 <h3 id="red-flags-time-to-intervene">Red Flags — Time to intervene</h3>
-<ul><li>Can&#x27;t name the active bead</li><li>Starts coding before you confirmed the task</li><li>References files you didn&#x27;t expect</li><li>Says &quot;done&quot; without running a check</li><li>Keeps going after you said stop</li></ul>
+<ul><li>Can&#x27;t name the active bead</li><li>Starts coding before you confirmed the task</li><li>References files you didn&#x27;t expect</li><li>Says &quot;done&quot; without running a check</li><li>Treats checkpoint output as approval</li><li>Keeps going after you said stop</li></ul>
 <hr>
 <blockquote><p><strong>When in doubt: checkpoint.</strong> <code>bash scripts/checkpoint.sh</code> Read the output. Then decide.</p></blockquote>
 <hr>

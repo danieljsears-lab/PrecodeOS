@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-05-30
+Document version: v0.1.13
+Last updated: 2026-05-31
 
 ## Purpose
 
@@ -300,6 +300,32 @@ Key ideas to reinforce:
 - unclear state is a reason to stop, not push through
 
 If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
+
+### Claude Checkpoint False Approval
+
+Use this procedure when a student reports that Claude ran a checkpoint, claimed a bead was complete, invented manual verification, or seemed to approve its own work.
+
+First separate the three actions:
+
+- `bash scripts/checkpoint.sh` reports current state; it does not accept a bead.
+- `python3 scripts/bead-transition.py` proposes whether a next bead is eligible.
+- `python3 scripts/bead-transition.py --approve` mutates bead state and must require explicit human approval.
+
+Ask the student for the exact Claude transcript around the checkpoint, especially lines where Claude claimed checks passed, manual verification happened, or the bead was approved. Then run only read-only diagnostics from the project root:
+
+```bash
+python3 scripts/bead-transition.py --json
+python3 scripts/completion-check.py
+git status --short
+```
+
+Compare Claude's claims with the active bead Closeout Evidence and `logs/check-results.jsonl`. If Claude claimed manual verification it did not actually perform, treat that closeout as untrusted. Repair the Closeout Evidence to say what was actually checked, record remaining uncertainty plainly, and use `revise`, `blocked`, or `manual_testing` instead of `accepted`.
+
+Support can say:
+
+```text
+A checkpoint is a status report, not approval. We are going to compare Claude's claims with recorded checks and manual verification. If the evidence was invented or overstated, we will mark the bead honestly and stop before activating anything new.
+```
 
 ## Engineer Initiation From User Packet
 
