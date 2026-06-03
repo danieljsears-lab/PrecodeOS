@@ -39,8 +39,8 @@ verification_type:
 > CLASS: active-task
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-17
+Document version: v0.1.3
+Last updated: 2026-06-03
 
 ## State
 
@@ -115,10 +115,10 @@ Install and review PrecodeOS as an install-ready package baseline, including the
 
 ## Closeout Evidence
 
-- Checks run: `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-06-01T00:03:28.096928+00:00; log `logs/check-output/20260601T000328Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/version-check.py` -> pass (exit 0) at 2026-06-01T00:03:28.173725+00:00; log `logs/check-output/20260601T000328Z-python3-scripts-version-check.py.log` | `python3 scripts/file-inventory.py --check` -> pass (exit 0) at 2026-06-01T00:03:28.199228+00:00; log `logs/check-output/20260601T000328Z-python3-scripts-file-inventory.py-check.log` | `python3 _maintainer/scripts/docs-html.py --check` -> pass (exit 0) at 2026-06-01T00:03:39.145683+00:00; log `logs/check-output/20260601T000339Z-python3-_maintainer-scripts-docs-html.py-check.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-06-01T00:03:39.260839+00:00; log `logs/check-output/20260601T000339Z-python3-scripts-completion-check.py.log` | `python3 scripts/public-repo-check.py` -> pass (exit 0) at 2026-06-01T00:03:40.077441+00:00; log `logs/check-output/20260601T000339Z-python3-scripts-public-repo-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-06-01T00:04:19.217019+00:00; log `logs/check-output/20260601T000419Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-06-01T00:04:19.361838+00:00; log `logs/check-output/20260601T000419Z-python3-scripts-completion-check.py.log`
+- Checks run: `python3 scripts/version-check.py` -> pass (exit 0) at 2026-06-02T19:29:24.313525+00:00; log `logs/check-output/20260602T192924Z-python3-scripts-version-check.py.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-06-02T19:29:24.419876+00:00; log `logs/check-output/20260602T192924Z-python3-scripts-completion-check.py.log` | `python3 scripts/files-in-play-check.py` -> pass (exit 0) at 2026-06-02T19:29:24.422754+00:00; log `logs/check-output/20260602T192924Z-python3-scripts-files-in-play-check.py.log` | `python3 scripts/public-repo-check.py` -> pass (exit 0) at 2026-06-02T19:29:25.341189+00:00; log `logs/check-output/20260602T192924Z-python3-scripts-public-repo-check.py.log` | `bash scripts/validate-memory.sh` -> pass (exit 0) at 2026-06-03T17:12:22.600314+00:00; log `logs/check-output/20260603T171222Z-bash-scripts-validate-memory.sh.log` | `python3 scripts/version-check.py` -> pass (exit 0) at 2026-06-03T17:12:26.173021+00:00; log `logs/check-output/20260603T171226Z-python3-scripts-version-check.py.log` | `python3 scripts/file-inventory.py --check` -> pass (exit 0) at 2026-06-03T17:12:30.252756+00:00; log `logs/check-output/20260603T171230Z-python3-scripts-file-inventory.py-check.log` | `python3 scripts/completion-check.py` -> pass (exit 0) at 2026-06-03T17:12:34.974212+00:00; log `logs/check-output/20260603T171234Z-python3-scripts-completion-check.py.log`
 - Result: latest recorded command status is pass (exit 0)
 - Manual verification: Who checked: Codex. What was checked: reviewed the support-engineer false-approval procedure in `docs/PRECODE-SUPPORT-RUNBOOK.md`, the matching symptom path in `docs/PRECODE-TROUBLESHOOTING.md`, the student-facing Claude Code recovery prompt in `docs/CLAUDE-CODE-FIELD-GUIDE.md`, and regenerated `docs-html/` output for those Markdown changes. Environment: local repository root `/Users/danielsears/Projects/precode-os` on 2026-05-31. Result: pass for the documented Claude checkpoint false-approval support guidance after fresh recorded checks. Remaining uncertainty: `completion-check.py` still warns that active-bead evidence is newer than the latest session close; next bead selection remains intentionally unactivated.
-- Files changed: 15 changed path(s) at last evidence update
+- Files changed: 9 changed path(s) at last evidence update
 - Next bead: none
 - Review decision: accepted for B000 package-baseline scope; broad package-readiness changes are approved current-bead work, not drift, and no next bead is activated by this acceptance.
 - Drift observed: none recorded
@@ -130,4 +130,5 @@ Install and review PrecodeOS as an install-ready package baseline, including the
 ## Handback
 
 - Package-baseline scope is accepted.
-- Do not activate a next bead until Dan approves a separate transition proposal with `python3 scripts/bead-transition.py --approve`.
+- Do not activate a next bead until the project owner/user approves a separate transition proposal with `python3 scripts/bead-transition.py --approve`.
+- In an adopted project, approval authority belongs to that project's owner; PrecodeOS creator attribution does not make Dan Sears the install's approval gate.

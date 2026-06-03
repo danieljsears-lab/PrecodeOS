@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staircase Scout</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="intro">
+        <p class="eyebrow">Staircase Scout</p>
+        <h1>Find a good staircase climb nearby.</h1>
+        <p>Browse a small seeded list of city staircases by neighborhood and difficulty.</p>
+      </section>
+
+      <section class="grid" aria-label="Staircases to climb">
+        <article class="stair-card" data-difficulty="moderate">
+          <div>
+            <p class="neighborhood">Queen Anne</p>
+            <h2>Wilcox Wall Steps</h2>
+          </div>
+          <p>Long, steady climb with skyline views and generous landings.</p>
+          <span class="badge">Moderate</span>
+        </article>
+
+        <article class="stair-card" data-difficulty="hard">
+          <div>
+            <p class="neighborhood">Capitol Hill</p>
+            <h2>Howe Street Stairs</h2>
+          </div>
+          <p>A steep classic with enough elevation to feel like a real workout.</p>
+          <span class="badge">Hard</span>
+        </article>
+
+        <article class="stair-card" data-difficulty="easy">
+          <div>
+            <p class="neighborhood">Fremont</p>
+            <h2>Blaine Street Steps</h2>
+          </div>
+          <p>Shorter neighborhood stairs for a gentle warmup or recovery walk.</p>
+          <span class="badge">Easy</span>
+        </article>
+
+        <article class="stair-card" data-difficulty="moderate">
+          <div>
+            <p class="neighborhood">Madison Valley</p>
+            <h2>Lakeview Place Steps</h2>
+          </div>
+          <p>Quiet residential steps with a satisfying climb and tree cover.</p>
+          <span class="badge">Moderate</span>
+        </article>
+      </section>
+    </main>
+    <script src="src/app.js"></script>
+  </body>
+</html>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-11
+Document version: v0.1.2
+Last updated: 2026-06-02
 
 ## Purpose
 
@@ -48,6 +48,36 @@ Precode GitHub tooling must not:
 - deploy, promote, rollback, or mutate environments
 - store tokens, credentials, secrets, or dashboard values
 - change Precode active memory, bead state, PRDs, decisions, or implementation plans from GitHub findings alone
+
+## Maintainer Workflow
+
+For PrecodeOS itself, GitHub is primarily a public trust and release-evidence layer, then a distribution layer. It is not the source of project authority.
+
+Use the hybrid maintainer workflow while Dan Sears / Recode remains the only maintainer:
+
+- use branches and pull requests for package-facing or trust-affecting changes
+- allow direct-to-main commits only for tiny corrections that do not change public meaning
+- keep public GitHub Issues closed unless the maintainer explicitly changes the issue-tracker policy
+- use GitHub Releases for public package checkpoints
+- keep broader contributor collaboration workflow design in the maintainer roadmap until it is promoted into approved work
+
+Create a branch and pull request for changes touching active memory, package authority, public docs, setup, bootstrap, install, update, generated-output policy, validation, release, public positioning, GitHub Actions, scripts, hooks, workflow semantics, beginner-facing safety language, or package boundaries.
+
+Recommended branch pattern:
+
+```text
+codex/<short-change-name>
+```
+
+Direct-to-main is acceptable only when all are true:
+
+- the change is tiny
+- the change does not alter public meaning
+- the change does not affect install, setup, release, or validation behavior
+- the change does not touch active memory or core workflow semantics
+- the change would not confuse a future adopter if shipped immediately
+
+Examples include typo fixes, broken internal link fixes, formatting cleanup, maintainer-local note updates, and non-semantic metadata corrections.
 
 ## Audit Path
 
@@ -94,6 +124,22 @@ Recommended first workflow:
 - run `bash scripts/validate-memory.sh` on pushes and pull requests
 - optionally run dry-run helpers that do not mutate Precode state
 - avoid commands that update bead closeout, approve transitions, write comments, create issues, rerun CI, deploy, or push commits
+
+## Release Checkpoint Path
+
+Use GitHub Releases for public checkpoints after a package baseline or release candidate is ready.
+
+Each release should include:
+
+- a version tag, such as `v0.1.1`
+- concise release notes
+- validation evidence
+- known risks or remaining uncertainty
+- install or update cautions
+
+Release notes should answer what changed, who should care, what checks passed, what remains experimental, and whether the release is install-ready, preview-only, or maintainer-only.
+
+Do not imply package-manager, CLI installer, auto-update, deployment, or release-channel semantics unless those capabilities exist in approved PrecodeOS package work.
 
 ## Setup Checklist
 

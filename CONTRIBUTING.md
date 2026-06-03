@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-10
+Document version: v0.1.2
+Last updated: 2026-06-02
 
 ## Contribution Policy
 
@@ -47,6 +47,33 @@ Meaningful changes should include the relevant validation evidence, such as:
 - targeted script checks for changed behavior
 
 Maintainer review is required for changes touching governance, trademark, licensing, public positioning, active memory, or core workflow semantics.
+
+## GitHub Workflow
+
+PrecodeOS currently uses a solo-maintainer hybrid GitHub workflow.
+
+Use a branch and pull request for any package-facing or trust-affecting change, including changes to public docs, active memory, workflow protocols, scripts, validation, setup, bootstrap, install/update behavior, GitHub Actions, generated-output policy, release guidance, public positioning, or package boundaries.
+
+Use this branch pattern:
+
+```text
+codex/<short-change-name>
+```
+
+Pull requests should explain:
+
+- what changed
+- why it matters for package trust
+- which files or surfaces are affected
+- which checks were run
+- remaining risk or uncertainty
+- whether the change is release-candidate relevant
+
+Direct-to-main is acceptable only for tiny corrections that do not change public meaning, do not affect install/setup/release behavior, do not touch active memory or core workflow semantics, and would not confuse a future adopter if shipped immediately.
+
+Public GitHub Issues are not the primary collaboration path yet. Until the maintainer explicitly changes that policy, issues are closed or treated as unavailable; roadmap, contributor-intake, label, template, and project-board design remains future maintainer-roadmap work.
+
+GitHub Releases are the public checkpoint surface for package baselines and release candidates. Release notes should include what changed, validation evidence, known risks, install/update cautions, and whether the release is install-ready, preview-only, or maintainer-only.
 
 ## Not Legal Advice
 

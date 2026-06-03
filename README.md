@@ -236,7 +236,7 @@ Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). For setup, use [`PREC
 
 ## Beta
 
-PrecodeOS is early. Expect sharp edges, review source before execution, and open issues when something feels clumsy or underpowered. Help us improve it.
+PrecodeOS is early. Expect sharp edges, review source before execution, and use the maintainer's currently enabled feedback channel when something feels clumsy or underpowered. Public GitHub Issues may be closed until the collaboration workflow is intentionally opened.
 
 ## License, Trademark, And Provenance
 
@@ -251,5 +251,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.34
-Last updated: 2026-05-29
+Document version: v0.1.35
+Last updated: 2026-06-02
