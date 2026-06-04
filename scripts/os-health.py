@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.9
-# Last updated: 2026-05-28
+# Version: v0.1.10
+# Last updated: 2026-06-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -397,10 +397,8 @@ Generated at: `{payload['generated_at']}`
 
 - Status: {file_inventory.get('status', 'missing')}
 - Package inventory: `{file_inventory.get('package_inventory', file_inventory.get('canonical_inventory', 'missing'))}`
-- Maintainer inventory: `{file_inventory.get('maintainer_inventory', 'missing')}`
 - Documented docs: {file_inventory_counts.get('docs', 0)}
 - Scripts: {file_inventory_counts.get('scripts', 0)}
-- Maintainer docs: {file_inventory_counts.get('maintainer_docs', 0)}
 - Docs HTML files: {file_inventory_counts.get('docs_html', 0)}
 - Workflows: {file_inventory_counts.get('workflows', 0)}
 - Generated outputs tracked: {file_inventory_counts.get('generated_outputs', 0)}

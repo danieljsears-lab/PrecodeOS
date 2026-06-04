@@ -4,7 +4,7 @@
 ## A Bootcamp Companion For Claude Code + PrecodeOS
 
 > AUTHORITY: Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently.
-> NOT_AUTHORITY: Active memory, product decisions, task selection, PRD approval, bead activation, generated evidence truth, or maintainer-only roadmap planning.
+> NOT_AUTHORITY: Active memory, product decisions, task selection, PRD approval, bead activation, generated evidence truth, or private roadmap planning.
 > LOAD_WHEN: A beginner wants a readable companion for Claude Code sessions, prompts, review habits, and PrecodeOS operating confidence.
 > CLASS: reference
 

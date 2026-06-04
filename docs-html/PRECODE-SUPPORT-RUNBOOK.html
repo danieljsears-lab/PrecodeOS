@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-31">
+  <meta name="generated-at" content="2026-06-02">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -271,7 +271,7 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>Use <code>docs/PRECODE-GUIDED-SETUP.md</code> as the setup guide and <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> as the public package file dictionary.</p>
 <p>For a new project, copy public package files by supervised group, not by blind overwrite:</p>
 <ul><li>active memory: <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code></li><li>product and project owner files</li><li>public orientation docs</li><li>agent shims and adapters</li><li>tasks, modes, memory templates, and reference protocols</li><li><code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code> as the marker and user guidance for project-owned raw evidence</li><li>scripts, hooks, and workflows only when approved for the target repo</li><li><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></li></ul>
-<p>Exclude <code>_maintainer/</code>, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.</p>
+<p>Exclude private local planning material, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.</p>
 <p>If Bootstrap Confidence reports blockers, stop setup until they are resolved. If it reports conflicts, name each conflict and get user approval before adapting or copying anything.</p>
 <h3 id="5-adapt-owner-files">5. Adapt Owner Files</h3>
 <p>Use the captured user-owned facts to propose minimal setup adaptations:</p>

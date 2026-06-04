@@ -1,7 +1,7 @@
 # PrecodeOS Explainer
 <!-- ANCHOR: os-readme -->
 
-> AUTHORITY: Beginner-first canonical explainer for what PrecodeOS is, why it exists, how a non-technical builder should use it, and where to find deeper architecture or maintainer detail.
+> AUTHORITY: Beginner-first canonical explainer for what PrecodeOS is, why it exists, how a non-technical builder should use it, and where to find deeper architecture or maintenance detail.
 > NOT_AUTHORITY: Product requirements, active task selection, route structure, schema definitions, pricing decisions, generated progress state, changelog history, or deep architecture ownership.
 > LOAD_WHEN: Onboarding a non-technical builder, explaining the PrecodeOS workflow, or choosing which deeper Precode reference to read next.
 > CLASS: reference
@@ -347,5 +347,3 @@ Use `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` when you need:
 - limitations and adoption path
 
 This explainer is the conceptual Builder OS map. `README.md` is the public document compass, and the architecture overview is the maintainer and reviewer companion.
-
-Maintainer-local document history for this explainer lives in `_maintainer/CHANGELOG.md`; it is not part of normal public package navigation.

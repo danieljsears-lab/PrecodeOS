@@ -2,7 +2,7 @@
 <!-- ANCHOR: package-file-inventory -->
 
 > AUTHORITY: User-facing technical inventory of public PrecodeOS package files, file families, purposes, relationships, and maintenance expectations.
-> NOT_AUTHORITY: Maintainer-only file inventory, active memory, product decisions, task selection, feature requirements, implementation status, target-project architecture, generated evidence truth, or bead transition approval.
+> NOT_AUTHORITY: Private local file inventory, active memory, product decisions, task selection, feature requirements, implementation status, target-project architecture, generated evidence truth, or bead transition approval.
 > LOAD_WHEN: Orienting a technical user, support helper, or coding agent before changing public PrecodeOS package files, auditing package file ownership, or tracing relationships between user-facing PrecodeOS surfaces.
 > CLASS: reference
 
@@ -25,9 +25,7 @@ Use it to answer:
 - what reads it, writes it, or generates it
 - how it relates to nearby files
 
-This document is curated. Generated support lives in `logs/file-inventory.json` and is evidence only.
-
-Maintainer-only files under `_maintainer/` are intentionally outside this user-facing package inventory. The maintainer master inventory is `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md`.
+This document is curated. Generated support lives in `logs/file-inventory.json` and is evidence only. Private local material is outside this user-facing package inventory and must not be inspected or required by public package tooling.
 
 ## License And Provenance
 
@@ -38,7 +36,7 @@ Maintainer-only files under `_maintainer/` are intentionally outside this user-f
 - Start here when you need a technical map of the public PrecodeOS package.
 - Use `README.md` when you need the public document compass.
 - Use `CODEBASE-GUIDE.md` for target-project layout guidance, not PrecodeOS internals.
-- Do not use this document for maintainer-only files under `_maintainer/`.
+- Do not use this document to inventory private local material.
 - Do not treat generated outputs or inventory warnings as task selection.
 
 ## Quick Navigation
@@ -64,13 +62,9 @@ Maintainer-only files under `_maintainer/` are intentionally outside this user-f
 
 ## Core Relationship Map
 
-## Maintainer-Only Files
+## Private Local Material
 
-`_maintainer/` is Dan Sears / Recode's private local maintainer cockpit for deciding how to improve the PrecodeOS package. It is intentionally excluded from this public package inventory.
-
-Use `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md` when maintaining PrecodeOS itself and you need the master repo-wide inventory, including maintainer-only files, private strategy docs, generated maintainer HTML, and maintainer scripts.
-
-Maintainer cockpit files may guide direct edits to public package files when Dan asks for Precode maintenance, but they must not be loaded as active memory, used as normal user workflow authority, or treated as bead activation, transition approval, public package authority, or generated evidence.
+Private local planning, strategy, and review material is intentionally outside the public package inventory. Public package docs and scripts must remain complete and functional when that material is absent.
 
 ### Active Memory To Execution
 
@@ -170,9 +164,9 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `docs/PRECODE-TROUBLESHOOTING.md` | reference | Symptom-first troubleshooting reference for setup, validation, active state, current bead, generated-report, copy, and first-session confusion. | Routes users, support engineers, and agents back to owner files, advisory checks, guided setup, and recovery protocol without becoming auto-repair policy. |
 | `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
 | `docs/PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, and review prompts. |
-| `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not maintainer-only material. |
+| `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; commit-eligible public documentation, not private local material. |
 | `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
-| `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` | reference | User-facing package file dictionary and relationship map for non-maintainer PrecodeOS files. | Supported by `logs/file-inventory.json`; maintainer-only files are inventoried in `_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md`. |
+| `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` | reference | User-facing package file dictionary and relationship map for public PrecodeOS files. | Supported by `logs/file-inventory.json`; private local material remains outside public inventory. |
 | `docs-html/*.html` | generated public docs | Static HTML reading surface generated from `docs/*.md`, including a curated compass and per-page navigation. | Commit-eligible package artifact for easier reading; does not replace Markdown authority, approve work, or become active memory. |
 | `PRODUCT.md` | reference | Builder-facing product constitution: product promise, users and jobs, strategy and non-goals, current bets, success signals, design or voice pointers, and optional product-level Goal Frame. | Loaded for product planning, PRD shaping, PRD approval review, product drift checks, durable-intent orientation, and builder onboarding; not active memory or task selection. |
 | `PROJECT-CONTEXT.md` | reference | Technical project constitution and integration boundaries. | Loaded when project context, integrations, or environment assumptions matter. |
@@ -238,7 +232,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/local-hygiene-check.py` | Prints advisory Local Hygiene findings. | Compiled local hygiene state. | JSON to stdout; no cleanup mutation. |
 | `scripts/local-hygiene-dry-run.py` | Previews future archive/delete actions without performing them. | Compiled local hygiene state. | `logs/local-hygiene-preview.json`, `logs/local-hygiene-preview.md`, and stdout. |
 | `scripts/bootstrap-check.py` | Prints read-only Bootstrap Confidence findings for a PrecodeOS package source and target project. | `--source`, `--target`, optional `--json`, optional `--write-evidence`. | Plain stdout or JSON by default; explicit `--write-evidence` writes `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the source workspace only. |
-| `scripts/public-repo-check.py` | Checks public repository hygiene against the private ignore manifest and git ignore rules. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md` when present, `.gitignore`, and git-tracked/untracked paths. | Advisory JSON for missing ignore rules, tracked ignored files, and untracked public candidates; no state mutation. |
+| `scripts/public-repo-check.py` | Checks public repository hygiene against git ignore rules. | `.gitignore` and git-tracked/untracked paths. | Advisory JSON for tracked ignored files and untracked public candidates; no state mutation. |
 | `scripts/validate-memory.sh` | Validates core Precode document invariants. | Required docs, todo, beads. | Pass/fail validation output. |
 | `scripts/record-check.sh` | Runs a verification command and records evidence. | Command, active bead. | `logs/check-results.jsonl`, `logs/check-output/*`, closeout refresh. |
 | `scripts/session-start.sh` | Starts a session and prints active context plus the canonical next-step router decision. | Active memory, bead state, and `scripts/next-step.py`. | Loop event, human-readable Context Pack, generated Router Decision display, and OS health refresh. |

@@ -167,7 +167,7 @@ Do not put raw evidence inside `tasks/todo.md`, PRDs, beads, active memory, or P
 
 Likely causes:
 
-- copied `_maintainer/`, generated reports, generated logs, local editor state, caches, or secrets
+- copied private local planning material, generated reports, generated logs, local editor state, caches, or secrets
 - missed active memory, scripts, task structure, adapters, or owner files
 - used a bulk copy without file-group review
 
@@ -230,7 +230,7 @@ Safe path:
 
 - decide whether the warning is source truth, generated evidence, or a package-boundary issue
 - update `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a new public file is intentional
-- keep `_maintainer/` and generated reports out of public setup instructions
+- keep private local planning material and generated reports out of public setup instructions
 
 Do not treat an advisory inventory warning as task selection or transition approval.
 

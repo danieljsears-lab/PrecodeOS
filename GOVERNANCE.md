@@ -18,7 +18,7 @@ PrecodeOS uses a benevolent founder-maintainer model.
 
 Dan Sears / Recode sets project direction, accepts or rejects contributions, resolves roadmap disputes, and protects PrecodeOS's purpose: helping non-technical solo builders use AI coding agents with guided workflow, scope control, evidence, and human approval.
 
-Maintainer roadmap planning may exist in local maintainer-only files outside the public repo; official authority remains Dan Sears / Recode.
+Private roadmap planning may exist in local files outside the public repo; official authority remains Dan Sears / Recode.
 
 ## Contribution Authority
 

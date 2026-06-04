@@ -100,7 +100,7 @@ Public file groups:
 
 Excluded paths:
 
-- `_maintainer/`
+- private local planning material
 - `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`
 - generated `logs/*.json`, `logs/*.jsonl`, `logs/*.yaml`, and generated `logs/*.md`
 - `logs/check-output/`, `logs/scheduled-audit-output/`

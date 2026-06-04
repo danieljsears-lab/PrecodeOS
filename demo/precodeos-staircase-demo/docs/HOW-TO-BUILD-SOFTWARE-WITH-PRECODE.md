@@ -572,5 +572,3 @@ For the hard operating rules, use `docs/PRECODE-USER-GUIDE.md`.
 ## Where To Go Next
 
 For the canonical document compass, use `README.md`. If you are ready to operate a PrecodeOS repo, use `docs/PRECODE-USER-GUIDE.md`.
-
-Maintainer-local document history for this beginner software-building bridge lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

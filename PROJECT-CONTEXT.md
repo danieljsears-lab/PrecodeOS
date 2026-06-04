@@ -88,7 +88,7 @@ Current project integrations:
 - External APIs: optional read-only GitHub access through `gh` for audit/import scripts when configured.
 - Repository host: GitHub.
 - CI provider: GitHub Actions via `.github/workflows/precode-validate.yml`.
-- Issue tracker: public GitHub Issues are closed or unavailable for now; contributor collaboration workflow remains maintainer-roadmap work.
+- Issue tracker: public GitHub Issues are closed or unavailable for now; contributor collaboration workflow remains future roadmap work.
 - Deployment provider: none for an app runtime.
 - Monitoring or error tracking: none configured.
 - Safe health URLs for read-only uptime checks: none.

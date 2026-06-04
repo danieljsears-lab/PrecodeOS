@@ -36,9 +36,8 @@ Last updated: 2026-05-28
 
 ## Source Inputs
 
-- Source type: `maintainer roadmap | research | alignment interview`
+- Source type: `roadmap evidence | research | alignment interview`
 - Source references:
-  - `_maintainer/PRECODE-ROADMAP.md`
   - `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`
   - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md`
   - Product Talk discovery references, Strategyzer value proposition testing, and NN/g research-method framing
@@ -108,7 +107,7 @@ Precode helps shape ideas into PRDs, but it does not yet fully help builders dec
 
 - Before: A builder asks an agent to turn an exciting idea into a PRD or implementation plan without enough evidence.
 - After: The builder can see the strongest evidence, weakest assumption, current workaround, smallest learning step, and advisory recommendation before PRD work.
-- Why now: The maintainer roadmap ranks Product Discovery Validation as the next P0 core improvement.
+- Why now: Roadmap prioritization ranks Product Discovery Validation as the next P0 core improvement.
 
 ## Destination
 

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-12
+Document version: v0.1.3
+Last updated: 2026-06-04
 
 Read and follow:
 
@@ -16,7 +16,5 @@ Read and follow:
 - `DECISIONS.md`
 - `tasks/todo.md`
 - `adapters/GEMINI.md`
-
-If the user explicitly asks about maintaining, analyzing, or planning changes to PrecodeOS itself, first read `_maintainer/MAINTAINER-NOTES.md`.
 
 If this file conflicts with `AGENT.md`, `AGENT.md` wins.

@@ -2,7 +2,7 @@
 <!-- ANCHOR: precode-guided-setup -->
 
 > AUTHORITY: Beginner-safe guided setup for pulling PrecodeOS from GitHub and adopting it into a new or existing project.
-> NOT_AUTHORITY: Active memory, maintainer file inventory, task selection, installer behavior, generated evidence truth, maintainer roadmap, or implementation acceptance.
+> NOT_AUTHORITY: Active memory, private local file inventory, task selection, installer behavior, generated evidence truth, private roadmap, or implementation acceptance.
 > LOAD_WHEN: First adopting PrecodeOS, helping a user set it up, or checking what should and should not be copied.
 > CLASS: reference
 
@@ -245,7 +245,7 @@ Do not copy these from the package checkout into a user's project:
 
 | Exclusion | Why |
 |---|---|
-| `_maintainer/` | Private maintainer cockpit for Dan Sears / Recode, not public user workflow. |
+| Private local planning material | Local context that is not part of the reusable public package. |
 | `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md` | Generated reports, not source authority. |
 | `logs/*.json`, `logs/*.jsonl`, `logs/*.yaml`, generated `logs/*.md` | Generated evidence from one repo, not setup source for another repo. |
 | `logs/check-output/`, `logs/scheduled-audit-output/` | Local command output and audit snapshots. |
@@ -381,4 +381,4 @@ After guided setup, use:
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` for the public package file dictionary
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` if the product idea is still rough
 
-Do not use maintainer-only files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.
+Do not use private local files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-05-31">
+  <meta name="generated-at" content="2026-06-02">
   <title>PrecodeOS Troubleshooting · PrecodeOS Docs</title>
   <style>
 :root {
@@ -251,7 +251,7 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>Do not put raw evidence inside <code>tasks/todo.md</code>, PRDs, beads, active memory, or PrecodeOS package-source folders unless a reviewed conclusion belongs there.</p>
 <h3 id="copied-excluded-files-or-missed-public-files">Copied Excluded Files Or Missed Public Files</h3>
 <p>Likely causes:</p>
-<ul><li>copied <code>_maintainer/</code>, generated reports, generated logs, local editor state, caches, or secrets</li><li>missed active memory, scripts, task structure, adapters, or owner files</li><li>used a bulk copy without file-group review</li></ul>
+<ul><li>copied private local planning material, generated reports, generated logs, local editor state, caches, or secrets</li><li>missed active memory, scripts, task structure, adapters, or owner files</li><li>used a bulk copy without file-group review</li></ul>
 <p>First checks:</p>
 <pre><code class="language-bash">python3 scripts/file-inventory.py --check
 bash scripts/validate-memory.sh</code></pre>
@@ -272,7 +272,7 @@ bash scripts/validate-memory.sh</code></pre>
 <p>First check:</p>
 <pre><code class="language-bash">python3 scripts/file-inventory.py --check</code></pre>
 <p>Safe path:</p>
-<ul><li>decide whether the warning is source truth, generated evidence, or a package-boundary issue</li><li>update <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> when a new public file is intentional</li><li>keep <code>_maintainer/</code> and generated reports out of public setup instructions</li></ul>
+<ul><li>decide whether the warning is source truth, generated evidence, or a package-boundary issue</li><li>update <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> when a new public file is intentional</li><li>keep private local planning material and generated reports out of public setup instructions</li></ul>
 <p>Do not treat an advisory inventory warning as task selection or transition approval.</p>
 <h3 id="existing-project-has-conflict-or-overwrite-risk">Existing Project Has Conflict Or Overwrite Risk</h3>
 <p>Likely conflicts:</p>

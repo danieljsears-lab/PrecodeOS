@@ -71,7 +71,7 @@ Pull requests should explain:
 
 Direct-to-main is acceptable only for tiny corrections that do not change public meaning, do not affect install/setup/release behavior, do not touch active memory or core workflow semantics, and would not confuse a future adopter if shipped immediately.
 
-Public GitHub Issues are not the primary collaboration path yet. Until the maintainer explicitly changes that policy, issues are closed or treated as unavailable; roadmap, contributor-intake, label, template, and project-board design remains future maintainer-roadmap work.
+Public GitHub Issues are not the primary collaboration path yet. Until the maintainer explicitly changes that policy, issues are closed or treated as unavailable; roadmap, contributor-intake, label, template, and project-board design remains future roadmap work.
 
 GitHub Releases are the public checkpoint surface for package baselines and release candidates. Release notes should include what changed, validation evidence, known risks, install/update cautions, and whether the release is install-ready, preview-only, or maintainer-only.
 

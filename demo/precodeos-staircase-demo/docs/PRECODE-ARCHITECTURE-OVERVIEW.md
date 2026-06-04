@@ -57,7 +57,7 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Tool lock-in | Each AI coding tool develops its own project memory, model-routing habits, and command style. | Tool-neutral core with thin adapters, shared scripts, and Agent Routing discipline for model tier, context budget, delegation, and tool choice. |
 | Lost handoff state | A new session or tool cannot reconstruct current scope, blockers, or evidence. | Context Packs, handoff scripts, active bead pointer, and generated handoff reports. |
 | Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
-| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, maintainer-only material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
+| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, private-local material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
 
 Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
 
@@ -103,7 +103,7 @@ The OS does not accept "it should work" as completion. Checks should be run thro
 
 `OS-HEALTH.md`, `PROGRESS.md`, log summaries, imported sources, and generated handoff packets can inform humans. They must not choose tasks, approve transitions, or override active memory.
 
-Maintainer-local changelog history can explain how surfaces changed, but it does not select work, approve decisions, or replace the current owner file.
+Private local changelog history can explain how surfaces changed, but it does not select work, approve decisions, or replace the current owner file.
 
 ### Human Approval At Transitions
 
@@ -161,7 +161,7 @@ The application can use any framework. Precode's architecture is not an app arch
 | Next-step layer | Give humans the canonical generated "what now?" decision without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, `user_decision`, `single_next_protocol`, `load_plan`, and `context_footprint`. |
 | Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
 | Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
-| Public-package hygiene layer | Keep maintainer-only files and local/private material out of the reusable public package. | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `.gitignore`, `scripts/public-repo-check.py`. |
+| Public-package hygiene layer | Keep private local material out of the reusable public package. | `.gitignore`, `scripts/public-repo-check.py`. |
 | Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`. |
 | Handoff layer | Orient the next session or agent safely. | Handoff script, Context Pack, handoff packet. |
 
@@ -258,8 +258,8 @@ Precode assumes that AI coding sessions can be confused by untrusted or stale ma
 | Discovery Summaries | Advisory pre-PRD evidence only; proceed means ready for the next planning workflow, not approved to build. |
 | Generated reports | Evidence only; never task instructions. |
 | Imported issues, PRs, notes, screenshots | Source material only until promoted. |
-| Maintainer-local changelog | Human-readable history only; not public package authority, current authority, generated evidence, or transition approval. |
-| Maintainer files | Maintainer-only planning and package-boundary context; not active memory, public package authority, or normal user workflow instructions. |
+| Private local changelog | Human-readable history only; not public package authority, current authority, generated evidence, or transition approval. |
+| Private local files | Private planning and package-boundary context; not active memory, public package authority, or normal user workflow instructions. |
 | Public-repo checks | Advisory public/private boundary findings only; not cleanup approval or a publishing action. |
 | Completed PRDs, archived beads, closed issue imports, old transcripts | Historical evidence only; current authority wins on conflict. |
 | Tool shims and adapters | Compatibility surfaces; not separate operating systems. |
@@ -344,7 +344,7 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 | Adapter shims | Lets different AI tools enter the same operating model. |
 | Agent routing | Keeps model depth, context, delegation, and tool use proportional to risk. |
 | Advisory validators | Surfaces drift without letting automation choose work. |
-| Public-repo hygiene checks | Keeps maintainer-only and private-local material from leaking into the reusable package. |
+| Public-repo hygiene checks | Keeps private-local material from leaking into the reusable package. |
 | Blocked-bead escape paths | Prevents stuck work from pretending to be active progress. |
 
 ### Evidence Model
@@ -356,7 +356,7 @@ Precode evidence has a hierarchy:
 3. Closeout evidence that summarizes checks, changed files, review decision, drift, lessons, and follow-up.
 4. Generated sidecars and reports that summarize state for humans.
 5. Review inputs such as Discovery Summaries, Goal Frame fit notes, screenshots, external QA notes, AI critiques, or generated tests.
-6. Human-readable maintainer-local history.
+6. Human-readable private local history.
 
 Only the first three should drive acceptance. Generated reports, review inputs, and history help review, but they do not prove completion by themselves.
 
@@ -432,7 +432,7 @@ The strongest evidence for Precode is not a single impressive demo. It is repeat
 | [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) | Spec -> plan -> tasks -> agent loop -> review -> merge workflow. | Teams that want spec-driven work packages, lanes, review, and merge flow. | Precode emphasizes tiny active memory, evidence demotion, and conservative task activation. |
 | [KubeRocketAI SDLC Framework](https://krci-ai.kuberocketci.io/architecture) | AI-as-code SDLC framework with agents, rules, templates, and CLI. | Teams standardizing AI agent management across a full SDLC. | Precode is smaller, repo-native, and optimized for solo or small-team control before broad orchestration. |
 
-The deeper BMAD and gStack research comparison is maintainer-local, not part of public package navigation. This architecture overview keeps only the reviewer-facing landscape summary.
+The deeper BMAD and gStack research comparison is private local material, not part of public package navigation. This architecture overview keeps only the reviewer-facing landscape summary.
 
 ### Why Code-Editing Agents Are Not Direct Alternatives
 
@@ -469,7 +469,7 @@ The recommended adoption strategy is not to copy every file at once. Start with 
 
 ### Planned Roadmap Improvements
 
-The canonical detailed roadmap, candidate scoring, and maintainer priority order live in `_maintainer/PRECODE-ROADMAP.md`. This public architecture overview only previews direction:
+This public architecture overview previews direction without depending on private roadmap or prioritization material:
 
 - improve onboarding and bootstrap so builders can adopt the smallest useful Precode tier first
 - keep sharpening next-step clarity around continue, ask, prove, approve, repair, and stop
@@ -514,7 +514,7 @@ The layer model is intentionally explicit because each layer prevents a differen
 | Script layer | Turn repeated operating habits into commands with stable output and logs. |
 | Validator layer | Enforce structural invariants and expose drift before continuing implementation. |
 | Evidence layer | Preserve check results, loop events, spend, handoff state, generated maps, and health snapshots without making them authority. |
-| Public-package hygiene layer | Check maintainer-only, private-local, ignored, and public-package candidate files without publishing, deleting, or mutating the package. |
+| Public-package hygiene layer | Check private-local, ignored, and public-package candidate files without publishing, deleting, or mutating the package. |
 | Handoff layer | Let a future session or different agent reconstruct scope, blockers, checks, and next safe action. |
 
 ### Script And Generated Sidecar Taxonomy
@@ -567,7 +567,7 @@ Common maintenance moves:
 | Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |
 | Change generated report behavior | Compiler/report script plus generated-output demotion check. |
 | Change version policy | `tasks/reference/VERSIONING-PROTOCOL.md` and `scripts/version-check.py`. |
-| Change public package boundary | `_maintainer/PUBLIC-REPO-IGNORE-MANIFEST.md`, `.gitignore`, and `scripts/public-repo-check.py`. |
+| Change public package boundary | `.gitignore` and `scripts/public-repo-check.py`. |
 
 ### Public Forking Guidance
 
@@ -627,5 +627,3 @@ If the full scaffold is too much, keep the smallest useful pattern:
 11. A validator for the core invariants.
 
 Everything else can be added after the user sees a real failure mode that the extra layer would prevent.
-
-Maintainer-local document history for this architecture overview lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

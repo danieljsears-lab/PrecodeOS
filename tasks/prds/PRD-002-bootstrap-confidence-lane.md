@@ -38,9 +38,8 @@ Last updated: 2026-05-28
 
 ## Source Inputs
 
-- Source type: `maintainer roadmap | guided setup evidence | support runbook evidence | implementation plan`
+- Source type: `roadmap evidence | guided setup evidence | support runbook evidence | implementation plan`
 - Source references:
-  - `_maintainer/PRECODE-ROADMAP.md`
   - `docs/PRECODE-GUIDED-SETUP.md`
   - `docs/PRECODE-SUPPORT-RUNBOOK.md`
   - `docs/PRECODE-TROUBLESHOOTING.md`
@@ -94,7 +93,7 @@ First install or first session can feel unsafe even when the file tree is techni
 
 - Before: A builder asks an agent to adopt PrecodeOS and cannot tell which folder is source, which folder is target, what will be copied, what must be excluded, or whether setup is safe to continue.
 - After: The builder receives read-only bootstrap confidence output naming source, target, target kind, public file groups, exclusions, conflicts, missing dependencies, stop conditions, and the first safe next action.
-- Why now: The maintainer roadmap ranks First-Run Confidence and Installer / Bootstrap as P0 core improvements after Product Discovery Validation.
+- Why now: Roadmap prioritization ranks First-Run Confidence and Installer / Bootstrap as P0 core improvements after Product Discovery Validation.
 
 ## Destination
 

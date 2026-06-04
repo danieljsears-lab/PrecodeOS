@@ -904,5 +904,3 @@ Only when reliable telemetry exists. Missing spend is unknown, not zero.
 No. It makes state, scope, evidence, and approvals visible so your judgment is easier to apply.
 
 ---
-
-Maintainer-local document history for this user guide lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

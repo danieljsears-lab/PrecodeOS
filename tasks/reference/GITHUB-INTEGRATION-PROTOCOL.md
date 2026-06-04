@@ -59,7 +59,7 @@ Use the hybrid maintainer workflow while Dan Sears / Recode remains the only mai
 - allow direct-to-main commits only for tiny corrections that do not change public meaning
 - keep public GitHub Issues closed unless the maintainer explicitly changes the issue-tracker policy
 - use GitHub Releases for public package checkpoints
-- keep broader contributor collaboration workflow design in the maintainer roadmap until it is promoted into approved work
+- keep broader contributor collaboration workflow design in future roadmap planning until it is promoted into approved work
 
 Create a branch and pull request for changes touching active memory, package authority, public docs, setup, bootstrap, install, update, generated-output policy, validation, release, public positioning, GitHub Actions, scripts, hooks, workflow semantics, beginner-facing safety language, or package boundaries.
 
@@ -77,7 +77,7 @@ Direct-to-main is acceptable only when all are true:
 - the change does not touch active memory or core workflow semantics
 - the change would not confuse a future adopter if shipped immediately
 
-Examples include typo fixes, broken internal link fixes, formatting cleanup, maintainer-local note updates, and non-semantic metadata corrections.
+Examples include typo fixes, broken internal link fixes, formatting cleanup, private-local note updates, and non-semantic metadata corrections.
 
 ## Audit Path
 

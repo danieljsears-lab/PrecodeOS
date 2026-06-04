@@ -111,5 +111,3 @@ Resume only when the agent can say:
 - the next bounded action
 
 If that explanation is not possible, stop and keep recovery in progress.
-
-Maintainer-local document history for this recovery protocol lives in `_maintainer/CHANGELOG.md`; it is not public package authority.

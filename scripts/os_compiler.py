@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.20
-# Last updated: 2026-05-28
+# Version: v0.1.21
+# Last updated: 2026-06-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -2632,36 +2632,8 @@ def maintained_markdown_docs(root: Path) -> list[Path]:
         path
         for path in gather_markdown_docs(root)
         if rel_path(path, root) not in {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
-        and not rel_path(path, root).startswith("_maintainer/")
         and (not rel_path(path, root).startswith("logs/") or rel_path(path, root) == "logs/LOG-EVIDENCE-TAXONOMY.md")
     ]
-
-
-def maintainer_markdown_docs(root: Path) -> list[Path]:
-    return sorted(path for path in (root / "_maintainer").glob("*.md") if path.is_file())
-
-
-def maintainer_script_paths(root: Path) -> list[Path]:
-    scripts_dir = root / "_maintainer" / "scripts"
-    if not scripts_dir.is_dir():
-        return []
-    return sorted([*scripts_dir.glob("*.py"), *scripts_dir.glob("*.sh")])
-
-
-def maintainer_asset_paths(root: Path) -> list[Path]:
-    base = root / "_maintainer"
-    if not base.is_dir():
-        return []
-    assets: list[Path] = []
-    for path in base.iterdir():
-        if not path.is_file():
-            continue
-        if path.suffix.lower() in {".md", ".py", ".sh"}:
-            continue
-        if path.name.startswith("."):
-            continue
-        assets.append(path)
-    return sorted(assets)
 
 
 def workflow_paths(root: Path) -> list[Path]:
@@ -3017,8 +2989,6 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
         ("modes/", "`modes/*.md`"),
         ("memory/cards/", "`memory/cards/*.md`"),
         (".github/workflows/", "`.github/workflows/*.yml`"),
-        ("_maintainer/scripts/", "`_maintainer/scripts/"),
-        ("_maintainer/", "`_maintainer/"),
     ]
     return any(rel.startswith(prefix) and token in inventory_text for prefix, token in family_tokens)
 
@@ -3026,9 +2996,7 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
 def compile_file_inventory(root: Path) -> dict[str, Any]:
     warnings: list[str] = []
     package_inventory_rel = "docs/PRECODE-PACKAGE-FILE-INVENTORY.md"
-    maintainer_inventory_rel = "_maintainer/PRECODE-MAINTAINER-FILE-INVENTORY.md"
     package_inventory_text = read_text(root / package_inventory_rel)
-    maintainer_inventory_text = read_text(root / maintainer_inventory_rel)
 
     docs: list[dict[str, Any]] = []
     for path in maintained_markdown_docs(root):
@@ -3042,8 +3010,6 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
             warnings.append(f"{rel} is missing version metadata")
         if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
         docs.append(
             {
                 "path": rel,
@@ -3066,52 +3032,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
             warnings.append(f"{rel} is missing script version header metadata")
         if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
         scripts.append({"path": rel, "family": "script", **header})
-
-    maintainer_docs: list[dict[str, Any]] = []
-    for path in maintainer_markdown_docs(root):
-        rel = rel_path(path, root)
-        text = read_text(path)
-        contract = extract_contract_values(text)
-        metadata = document_version_metadata(text)
-        if not contract:
-            warnings.append(f"{rel} is missing an authority contract")
-        if not metadata.get("version") or not metadata.get("last_updated"):
-            warnings.append(f"{rel} is missing version metadata")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
-        maintainer_docs.append(
-            {
-                "path": rel,
-                "family": "maintainer-doc",
-                "title": heading_title(text),
-                "anchor": extract_anchor(text),
-                "class": contract.get("class"),
-                "authority": contract.get("authority"),
-                "load_when": contract.get("load_when"),
-                "version": metadata.get("version"),
-                "last_updated": metadata.get("last_updated"),
-            }
-        )
-
-    maintainer_scripts: list[dict[str, Any]] = []
-    for path in maintainer_script_paths(root):
-        rel = rel_path(path, root)
-        header = script_header(path)
-        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
-            warnings.append(f"{rel} is missing script version header metadata")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
-        maintainer_scripts.append({"path": rel, "family": "maintainer-script", **header})
-
-    maintainer_assets: list[dict[str, Any]] = []
-    for path in maintainer_asset_paths(root):
-        rel = rel_path(path, root)
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
-        maintainer_assets.append({"path": rel, "family": "maintainer-asset", "bytes": file_size(path)})
 
     workflows: list[dict[str, Any]] = []
     for path in workflow_paths(root):
@@ -3121,8 +3042,6 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
             warnings.append(f"{rel} is missing workflow version header metadata")
         if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
         workflows.append({"path": rel, "family": "workflow", **header})
 
     docs_html: list[dict[str, Any]] = []
@@ -3130,8 +3049,6 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         rel = rel_path(path, root)
         if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        if maintainer_inventory_text and not inventory_family_covered(rel, maintainer_inventory_text):
-            warnings.append(f"{rel} is not referenced in {maintainer_inventory_rel}")
         docs_html.append({"path": rel, "family": "generated-docs-html", "bytes": file_size(path)})
 
     generated: list[dict[str, Any]] = []
@@ -3155,7 +3072,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
 
     family_counts = Counter(
         item.get("family", "unknown")
-        for item in [*docs, *scripts, *maintainer_docs, *maintainer_scripts, *maintainer_assets, *workflows, *docs_html, *generated]
+        for item in [*docs, *scripts, *workflows, *docs_html, *generated]
         if isinstance(item, dict)
     )
 
@@ -3165,15 +3082,11 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         "warnings": warnings,
         "active_memory": ACTIVE_MEMORY,
         "package_inventory": package_inventory_rel,
-        "maintainer_inventory": maintainer_inventory_rel,
         "canonical_inventory": package_inventory_rel,
         "generated_is_not_authority": True,
         "counts": {
             "docs": len(docs),
             "scripts": len(scripts),
-            "maintainer_docs": len(maintainer_docs),
-            "maintainer_scripts": len(maintainer_scripts),
-            "maintainer_assets": len(maintainer_assets),
             "workflows": len(workflows),
             "docs_html": len(docs_html),
             "generated_outputs": len(generated),
@@ -3181,9 +3094,6 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
         },
         "docs": docs,
         "scripts": scripts,
-        "maintainer_docs": maintainer_docs,
-        "maintainer_scripts": maintainer_scripts,
-        "maintainer_assets": maintainer_assets,
         "workflows": workflows,
         "docs_html": docs_html,
         "generated_outputs": generated,

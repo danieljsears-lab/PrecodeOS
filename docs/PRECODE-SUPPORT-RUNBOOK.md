@@ -2,7 +2,7 @@
 <!-- ANCHOR: precode-support-runbook -->
 
 > AUTHORITY: Public-safe support-engineer field guide for helping a new user capture initial intent, adopt PrecodeOS into a new or existing project, reach a valid first session, and learn the safe operating loop.
-> NOT_AUTHORITY: Active memory, product truth, PRD approval, task selection, implementation acceptance, bead transition approval, private support operations, customer records, credentials, dashboard operations, or maintainer roadmap tactics.
+> NOT_AUTHORITY: Active memory, product truth, PRD approval, task selection, implementation acceptance, bead transition approval, private support operations, customer records, credentials, dashboard operations, or private roadmap tactics.
 > LOAD_WHEN: Supporting a first-time PrecodeOS adoption, guiding a user from idea capture into setup, helping a user run their first safe session, or coaching an agent that is assisting support.
 > CLASS: reference
 
@@ -203,7 +203,7 @@ For a new project, copy public package files by supervised group, not by blind o
 - scripts, hooks, and workflows only when approved for the target repo
 - `logs/LOG-EVIDENCE-TAXONOMY.md`
 
-Exclude `_maintainer/`, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.
+Exclude private local planning material, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.
 
 If Bootstrap Confidence reports blockers, stop setup until they are resolved. If it reports conflicts, name each conflict and get user approval before adapting or copying anything.
 

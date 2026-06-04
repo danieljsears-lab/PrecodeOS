@@ -30,7 +30,7 @@ Last updated: 2026-05-03
 - PrecodeOS is reviewed as an install-ready package baseline.
 - Active memory remains exactly `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 - PrecodeOS itself uses the repository root as the app/workspace directory.
-- Package docs, shims, adapters, reference protocols, scripts, generated-output policy, maintainer boundary, and package hygiene are in B000 scope.
+- Package docs, shims, adapters, reference protocols, scripts, generated-output policy, public/private package boundary, and package hygiene are in B000 scope.
 - Project-specific package checks for B000 are defined and recorded.
 - B000 has exact manual verification and review evidence requirements.
 
@@ -43,9 +43,8 @@ Last updated: 2026-05-03
 - `*.md`
 - `.github`
 - `.gitignore`
-- `_maintainer`
 - `adapters`
-- `maintainer`
+- `docs-html`
 - `NOTICE`
 - `scripts`
 - `tasks`
@@ -81,4 +80,4 @@ Last updated: 2026-05-03
 - No product feature work is active during B000.
 - The broad package file set is intentional current-bead scope for B000 package-readiness review, not drift.
 - Generated root reports and `logs/` remain generated evidence only, not active memory or package authority.
-- Maintainer-only planning now lives under `_maintainer/`; old `maintainer/` paths are intentionally outside public package scope.
+- Private local planning material remains outside public package scope.

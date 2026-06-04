@@ -11,9 +11,8 @@ files_in_play:
   - "*.md"
   - .github
   - .gitignore
-  - _maintainer
   - adapters
-  - maintainer
+  - docs-html
   - NOTICE
   - scripts
   - tasks
@@ -67,7 +66,7 @@ Last updated: 2026-06-03
 
 ## Objective
 
-Install and review PrecodeOS as an install-ready package baseline, including the active-memory kernel, package docs, agent shims, adapters, reference protocols, support scripts, generated-output policy, and public/private maintainer boundary.
+Install and review PrecodeOS as an install-ready package baseline, including the active-memory kernel, package docs, agent shims, adapters, reference protocols, support scripts, generated-output policy, and public/private package boundary.
 
 ## Done When
 
@@ -75,7 +74,7 @@ Install and review PrecodeOS as an install-ready package baseline, including the
 - PrecodeOS is documented as an install-ready package, with the repository root as the workspace.
 - Package-owned root docs, agent shims, adapters, reference protocols, support scripts, and package hygiene checks are in scope for B000.
 - Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are treated as generated evidence, not package source or active memory.
-- Maintainer-only files live under `_maintainer/`; old `maintainer/` paths are intentionally removed from public package scope.
+- Private local planning material remains outside public package scope.
 - Project-specific package checks are listed in the active bead and recorded before acceptance.
 - Manual verification and review evidence explicitly cover the broad package baseline so it is accepted as current-bead work, not drift.
 
@@ -84,9 +83,7 @@ Install and review PrecodeOS as an install-ready package baseline, including the
 - `*.md`
 - `.github`
 - `.gitignore`
-- `_maintainer`
 - `adapters`
-- `maintainer`
 - `NOTICE`
 - `scripts`
 - `tasks`
