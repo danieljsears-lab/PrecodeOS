@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-11
+Document version: v0.1.4
+Last updated: 2026-06-04
 
 ## Purpose
 
@@ -101,5 +101,7 @@ Use these outcomes at completion time:
 ## Advisory Check
 
 `scripts/completion-check.py` is advisory. It may warn about missing recorded checks, vague manual verification, invalid review decisions, unsafe next-bead references, follow-up work without a destination, vague handback, stale session close evidence, missing handoff Context Pack fields, transition eligibility that still needs user approval, or blocked work without a clear escape path.
+
+Session freshness is phase-aware. Evidence newer than the latest session close is reported as `open` detail while a bead is `in_progress`; it becomes a `stale` warning when the bead is in a close-oriented state such as `needs_info`, `manual_testing`, `review`, or `done`. A session close at or after the latest recorded check is `current`; a bead without recorded checks is `no-recorded-checks`.
 
 Warnings are generated evidence only. They do not accept work, approve transitions, activate beads, change bead state, or rewrite active memory.

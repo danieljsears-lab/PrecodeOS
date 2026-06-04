@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-05-19
+# Version: v0.1.5
+# Last updated: 2026-06-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 from dataclasses import replace
+from datetime import datetime, timezone
 import importlib.util
 import json
 from pathlib import Path
@@ -16,6 +17,7 @@ from os_compiler import (
     BeadRecord,
     bead_depth_quality,
     command_classification,
+    completion_session_freshness,
     next_step_guidance,
     run_contract_quality,
 )
@@ -362,6 +364,20 @@ def main() -> int:
     for name, actual, expected in command_scenarios:
         assert_decision(f"command: {name}", str(actual), expected, failures)
 
+    check_time = datetime(2026, 6, 4, 12, 0, tzinfo=timezone.utc)
+    older_close = datetime(2026, 6, 4, 11, 0, tzinfo=timezone.utc)
+    newer_close = datetime(2026, 6, 4, 13, 0, tzinfo=timezone.utc)
+    freshness_scenarios = [
+        ("open in progress", completion_session_freshness("in_progress", check_time, older_close), "open"),
+        ("stale review", completion_session_freshness("review", check_time, older_close), "stale"),
+        ("stale needs info", completion_session_freshness("needs_info", check_time, None), "stale"),
+        ("current done", completion_session_freshness("done", check_time, newer_close), "current"),
+        ("no checks", completion_session_freshness("in_progress", None, newer_close), "no-recorded-checks"),
+    ]
+    for name, actual, expected in freshness_scenarios:
+        if actual != expected:
+            failures.append({"scenario": f"completion freshness: {name}", "expected": expected, "actual": actual})
+
     loop_scenarios = [
         ("clear builder", loop_context(), loop_state(), "Clear"),
         ("vague done when", loop_context(done_when="- Improve the thing as needed."), loop_state(), "Watch"),
@@ -404,6 +420,7 @@ def main() -> int:
         + len(depth_scenarios)
         + len(run_contract_scenarios)
         + len(command_scenarios)
+        + len(freshness_scenarios)
         + len(loop_scenarios),
         "stable_decisions": sorted(STABLE_DECISIONS),
         "failures": failures,

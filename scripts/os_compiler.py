@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.21
+# Version: v0.1.22
 # Last updated: 2026-06-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -1881,6 +1881,20 @@ def latest_check_time_for_bead(check_results: list[dict[str, Any]], bead: BeadRe
     return latest
 
 
+def completion_session_freshness(
+    bead_status: str,
+    latest_check: datetime | None,
+    latest_close: datetime | None,
+) -> str:
+    if latest_check is None:
+        return "no-recorded-checks"
+    if latest_close is not None and latest_close >= latest_check:
+        return "current"
+    if bead_status == "in_progress":
+        return "open"
+    return "stale"
+
+
 def completion_handoff_quality(
     root: Path,
     todo: dict[str, Any],
@@ -1933,7 +1947,8 @@ def completion_handoff_quality(
 
     latest_check = latest_check_time_for_bead(check_results, bead)
     latest_close = latest_event_time(events, "session-close", bead.rel_path)
-    if latest_check and (latest_close is None or latest_close < latest_check):
+    session_freshness = completion_session_freshness(bead.status, latest_check, latest_close)
+    if session_freshness == "stale":
         warnings.append("active bead has recorded evidence newer than the latest session close")
 
     required_context = {
@@ -1991,6 +2006,7 @@ def completion_handoff_quality(
         "review_decision": closeout.get("review_decision", "not recorded"),
         "latest_check_timestamp": latest_check.isoformat() if latest_check else None,
         "latest_session_close_timestamp": latest_close.isoformat() if latest_close else None,
+        "session_freshness": session_freshness,
         "next_bead": next_rel or next_value or "not recorded",
         "next_bead_start_readiness": next_start,
         "handoff_context_missing": missing_context,

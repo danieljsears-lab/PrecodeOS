@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-11
+Document version: v0.1.2
+Last updated: 2026-06-04
 
 ## Purpose
 
@@ -59,7 +59,7 @@ Run these by default:
 - Tool Execution Audit: flag approval gaps, destructive tool calls, missing failure categories, stale command evidence, or tool-use logs that should not be treated as verification.
 - Workflow Planning Audit: flag wrong workflow fit, PRD approval gaps, missing bead proposals, mixed planning and implementation, blocked work without an unblocker path, backlog-like active fields, or generated reports driving workflow selection.
 - Long-Horizon Planning Audit: flag future work leaking into active memory, approved PRDs without bead proposals, blocked or deferred work without revisit paths, dependency gaps, or follow-up candidates without destinations.
-- Completion And Handoff Audit: flag incomplete closeout evidence, vague manual verification, missing review decisions, unsafe next-bead references, stale session close evidence, or incomplete handoff Context Packs.
+- Completion And Handoff Audit: flag incomplete closeout evidence, vague manual verification, missing review decisions, unsafe next-bead references, stale session close evidence for close-oriented bead states, or incomplete handoff Context Packs; report an open `in_progress` session as detail rather than a warning.
 
 ## Built-In External Audits
 

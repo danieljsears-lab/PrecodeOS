@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
-# Last updated: 2026-05-07
+# Version: v0.1.4
+# Last updated: 2026-06-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import re
+import subprocess
 from typing import Any
 
 from os_compiler import repo_root
@@ -38,23 +39,59 @@ def add(issues: list[dict[str, Any]], path: str, message: str) -> None:
     issues.append({"path": path, "severity": "warning", "message": message})
 
 
+def public_git_candidates(root: Path) -> list[Path] | None:
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+            cwd=root,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    return sorted(root / name for name in result.stdout.split("\0") if name and (root / name).is_file())
+
+
 def markdown_files(root: Path) -> list[Path]:
-    candidates: list[Path] = []
-    for path in root.rglob("*.md"):
+    git_candidates = public_git_candidates(root)
+    if git_candidates is not None:
+        candidates = [path for path in git_candidates if path.suffix == ".md"]
+    else:
+        candidates = list(root.rglob("*.md"))
+
+    included: list[Path] = []
+    for path in candidates:
         name = rel(path, root)
         if ".git/" in name or name in MARKDOWN_EXCLUDES:
             continue
         if name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md":
             continue
-        candidates.append(path)
-    return sorted(candidates)
+        included.append(path)
+    return sorted(included)
 
 
 def script_files(root: Path) -> list[Path]:
+    git_candidates = public_git_candidates(root)
+    if git_candidates is not None:
+        return sorted(
+            path
+            for path in git_candidates
+            if rel(path, root).startswith("scripts/") and path.suffix in {".py", ".sh"}
+        )
     return sorted((root / "scripts").glob("*.py")) + sorted((root / "scripts").glob("*.sh"))
 
 
 def workflow_files(root: Path) -> list[Path]:
+    git_candidates = public_git_candidates(root)
+    if git_candidates is not None:
+        return sorted(
+            path
+            for path in git_candidates
+            if rel(path, root).startswith(".github/workflows/") and path.suffix in {".yml", ".yaml"}
+        )
     base = root / ".github" / "workflows"
     if not base.is_dir():
         return []
@@ -86,21 +123,24 @@ def check_script(path: Path, root: Path, issues: list[dict[str, Any]]) -> None:
 def main() -> int:
     root = repo_root()
     issues: list[dict[str, Any]] = []
+    markdown = markdown_files(root)
+    scripts = script_files(root)
+    workflows = workflow_files(root)
 
-    for path in markdown_files(root):
+    for path in markdown:
         check_doc(path, root, issues)
-    for path in script_files(root):
+    for path in scripts:
         check_script(path, root, issues)
-    for path in workflow_files(root):
+    for path in workflows:
         check_script(path, root, issues)
 
     payload = {
         "tool": "version-check",
         "status": "pass" if not issues else "warning",
         "checked": {
-            "markdown": len(markdown_files(root)),
-            "scripts": len(script_files(root)),
-            "workflows": len(workflow_files(root)),
+            "markdown": len(markdown),
+            "scripts": len(scripts),
+            "workflows": len(workflows),
         },
         "issues": issues,
     }
