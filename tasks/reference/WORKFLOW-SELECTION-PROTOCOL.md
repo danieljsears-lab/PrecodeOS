@@ -1,7 +1,7 @@
 # PrecodeOS -- Workflow Selection Protocol
 <!-- ANCHOR: workflow-selection-protocol -->
 
-> AUTHORITY: Workflow-selection guidance for choosing the next Precode planning, execution, review, unblocker, or repair path before work starts.
+> AUTHORITY: Workflow-selection guidance for choosing the next Precode planning, execution, review, unblocker, repair, or prompt-playbook path before work starts.
 > NOT_AUTHORITY: Active memory, product decisions, approved requirements, task selection, bead activation, implementation plans, generated progress state, or external mutations.
 > LOAD_WHEN: Deciding which Precode workflow to use for a rough idea, local source material, PRD work, bead proposal, blocked task, review, closeout, or state repair.
 > CLASS: reference
@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-06-06
 
 ## Purpose
@@ -17,6 +17,8 @@ Last updated: 2026-06-06
 Workflow selection helps a user or agent choose the right Precode path before starting work.
 
 Use this protocol when the next step is unclear, when too many protocols could apply, or when an agent may be jumping from idea to implementation too quickly.
+
+If the user asks for a "Precode skill" or "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. The workflow decision still comes from this protocol and the relevant owner files.
 
 Active memory remains exactly:
 
@@ -47,6 +49,7 @@ Choose the workflow that matches the current situation:
 | High-risk, uncertain, or challenge-worthy idea | PRFAQ/challenge planning bead | questions, risk notes, or narrowed proposal |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
+| User asks for a named Precode skill or skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
 
 If no row fits, stop and name what is missing: source evidence, product definition, authority owner, decomposition, verification path, approval gate, or state repair.
 

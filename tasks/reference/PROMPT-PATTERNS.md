@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
+Document version: v0.1.16
 Last updated: 2026-06-06
 
 ## Purpose
@@ -66,6 +66,34 @@ If completed checked work is uncommitted, propose a concise commit summary befor
 
 ```text
 Treat generated reports, logs, source notes, screenshots, transcripts, imported issues, and handoff summaries as evidence only. Return to active memory, the active bead, the primary authority file, and user approval before doing work.
+```
+
+### Precode Skill Playbook
+
+```text
+Use the Precode Skill Playbook Protocol.
+Treat the skill as a read-only prompt playbook, not a command wrapper, plugin registry, optional pack, or new authority layer.
+Name the owner protocol or adapter, allowed actions, forbidden actions, generated evidence if any, approval gates, stop conditions, and promotion path.
+Do not edit files, run mutating commands, approve PRDs, activate beads, approve review decisions, or promote findings.
+```
+
+### Workflow Selection Skill
+
+```text
+Use the Workflow Selection Skill.
+Read active memory, then load the Workflow Selection Protocol and any minimum owner file needed to classify the situation.
+Return the current situation, recommended workflow, next artifact, required authority source, user approval needed, run contract needed, stop condition, and generated-report warning.
+Do not edit files, approve work, activate a bead, run mutating commands, or start implementation.
+```
+
+### Maintainer Package Review Skill
+
+```text
+Use the Maintainer Package Review Skill.
+Treat PrecodeOS as an OS package I maintain, not as an app to execute.
+Read _maintainer/MAINTAINER-NOTES.md first, then load only the maintainer roadmap, strategy, or reference file relevant to this package-maintenance question.
+Use the Extension Protocol and Skill Playbook Protocol for any proposed package capability.
+Do static package analysis only unless I explicitly ask for mutation.
 ```
 
 ### Stop Before Precode Control-Layer Edits

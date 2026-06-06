@@ -1,22 +1,24 @@
 # PrecodeOS -- Extension Protocol
 <!-- ANCHOR: extension-protocol -->
 
-> AUTHORITY: Extension rules, extension types, authority boundaries, active-memory limits, generated-output boundaries, mutation boundaries, and extension review checklist for adding PrecodeOS capabilities.
+> AUTHORITY: Extension rules, extension types, skill-playbook boundaries, authority boundaries, active-memory limits, generated-output boundaries, mutation boundaries, and extension review checklist for adding PrecodeOS capabilities.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, external mutation approval, generated progress state, or plugin registry.
-> LOAD_WHEN: Adding or reviewing a Precode adapter, protocol, importer, audit, generated report, bead template, or external integration.
+> LOAD_WHEN: Adding or reviewing a Precode adapter, protocol, skill playbook, importer, audit, generated report, bead template, or external integration.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-17
+Document version: v0.1.5
+Last updated: 2026-06-06
 
 ## Purpose
 
 Extensions let PrecodeOS grow without turning into a giant prompt or a hidden automation system.
 
-An extension may add a tool surface, workflow protocol, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
+An extension may add a tool surface, workflow protocol, skill playbook, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
+
+Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, or needs tool-call approval boundaries.
 
@@ -34,6 +36,7 @@ Active memory remains exactly:
 |---|---|---|
 | Adapter | Tool-specific guidance for a coding agent | `adapters/*.md` or a tool shim |
 | Protocol | Workflow rules for a repeatable Precode process | `tasks/reference/*.md` |
+| Skill playbook | Read-only host-agent invocation guidance for an existing Precode workflow or extension review | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` plus the owner protocol or adapter |
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
@@ -51,6 +54,7 @@ Every extension must preserve these boundaries:
 - Do not let external systems choose task selection, bead transitions, product decisions, or implementation plans.
 - Do not mutate external systems unless the active bead explicitly allows it and the user approves the manual gate.
 - Keep extension rules in one owning protocol or adapter.
+- Keep skill playbooks read-only unless a later approved extension explicitly defines command-wrapper boundaries.
 - Keep extension findings as evidence until promoted into a PRD, `DECISIONS.md`, an owning authority file, or an approved bead.
 
 ## Authority Contract Rules

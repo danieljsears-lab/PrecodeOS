@@ -163,9 +163,9 @@ python3 scripts/loop-health.py
 | User docs | `docs/*.md` |
 | Project truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, root owner files |
 | Work units | `tasks/prds/`, `tasks/beads/`, `tasks/templates/` |
-| Protocols | `tasks/reference/` |
+| Protocols | `tasks/reference/`, including skill playbooks |
 | Raw project evidence | `project-evidence/` |
-| Agent surfaces | `modes/`, `adapters/`, shims |
+| Agent surfaces | `modes/`, `adapters/`, shims, skill playbooks |
 | Scripts | `scripts/` |
 | Evidence | `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md` |
 
@@ -184,7 +184,7 @@ python3 scripts/loop-health.py
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
 | Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
-| Find the exact public package owner file, script, protocol, or relationship | [`PRECODE-PACKAGE-FILE-INVENTORY.md`](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
+| Find the exact public package owner file, script, protocol, skill playbook, or relationship | [`PRECODE-PACKAGE-FILE-INVENTORY.md`](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
 | Take a maintainer or contributor action | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`GOVERNANCE.md`](GOVERNANCE.md), or [`TRADEMARK.md`](TRADEMARK.md) |
 
 Do not start by browsing `tasks/reference/`. Protocols are loaded when the user guide, the README compass, active memory, or an agent prompt such as "use workflow selection" calls for one.
@@ -251,5 +251,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.35
-Last updated: 2026-06-02
+Document version: v0.1.36
+Last updated: 2026-06-06
