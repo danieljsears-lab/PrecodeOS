@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-17
+Document version: v0.1.4
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -100,7 +100,7 @@ Use this default order when it fits the task:
 4. Browser or screenshot-heavy tools for dynamic pages, authenticated flows, visual QA, or interactions that text tools cannot inspect.
 5. External mutation tools only when the active bead allows them and the user approves the manual gate.
 
-If a repeated tool pattern becomes durable and useful, propose a reusable command, script, skill, or adapter improvement through the Extension Protocol. Do not create hidden automation from a one-off workaround.
+If a repeated tool pattern becomes durable and useful, propose a reusable command, script, skill playbook, or adapter improvement through the Extension Protocol and Skill Playbook Protocol. Do not create hidden automation from a one-off workaround.
 
 `python3 scripts/next-step.py` owns generated routing output. It may expose `single_next_protocol`, `load_plan`, and `context_footprint` so the agent can choose the smallest useful context before reaching for heavier tools.
 

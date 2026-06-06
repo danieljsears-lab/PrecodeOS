@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.6
+Document version: v0.2.7
 Last updated: 2026-06-06
 
 ## Purpose
@@ -196,7 +196,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md` | reference | Read-only first-run confidence workflow for inspecting a PrecodeOS package source and target project before setup mutation. | Used before guided setup or support-assisted adoption; governs `scripts/bootstrap-check.py`, source/target identity, public file groups, exclusions, conflicts, and first safe next action. |
 | `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` | reference | Read-only existing-repository intake workflow for the existing-app branch at the first PrecodeOS adoption fork. | Used after Bootstrap Confidence when the target already has app code, docs, CI, product history, or active work; governs `scripts/existing-repo-intake.py`, repo-shape evidence, likely checks as future hints, owner-file gaps, conflicts, and mutation stop conditions. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
-| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Used when designing, reviewing, invoking, or comparing Precode skill-style prompt playbooks; keeps skills read-only and subordinate to owner protocols. |
+| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Workflow Selection Skill and future skill-style prompt playbook review; keeps skills read-only and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
 | `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules and promotion path. | Governs `memory/cards/` and generated memory indexes. |

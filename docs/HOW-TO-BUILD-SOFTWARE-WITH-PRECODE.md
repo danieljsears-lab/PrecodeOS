@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-05-30
+Document version: v0.1.21
+Last updated: 2026-06-06
 
 ## Start Here: You Are Not Just Prompting
 
@@ -127,7 +127,7 @@ Not every software idea needs the same process. Precode is safest when you choos
 If you are unsure, ask for workflow selection before coding.
 
 ```text
-I have a software idea but I am not sure what path it needs. Use Precode workflow selection and tell me whether this should start as local source intake, a PRD, a bead proposal, a challenge planning bead, or a small active task. Do not code yet.
+I have a software idea but I am not sure what path it needs. Use the Workflow Selection Skill and tell me whether this should start as local source intake, a PRD, a bead proposal, a challenge planning bead, review, repair, or a small active task. Make no edits and do not code yet.
 ```
 
 ## Your New Role As A Non-Technical Builder

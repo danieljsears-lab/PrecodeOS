@@ -1,7 +1,7 @@
 # PrecodeOS -- Skill Playbook Protocol
 <!-- ANCHOR: skill-playbook-protocol -->
 
-> AUTHORITY: Skill playbook strategy, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives for PrecodeOS skill-style surfaces.
+> AUTHORITY: Skill playbook strategy, implemented prompt playbooks, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives for PrecodeOS skill-style surfaces.
 > NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, command-wrapper behavior, optional pack installation, host-tool plugin registries, generated evidence truth, or implementation acceptance.
 > LOAD_WHEN: Designing, reviewing, invoking, or comparing Precode skill-style prompt playbooks for host agents, beginner workflows, maintainer package review, or extension review.
 > CLASS: reference
@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-06
 
 ## Purpose
@@ -41,6 +41,38 @@ The benefit of skills is adoption and reliability: beginners can ask for a named
 
 A prompt playbook may tell an agent to inspect files and summarize. It must not tell an agent to edit files, write generated evidence, approve transitions, run installers, mutate external systems, or treat command output as authority.
 
+## Implemented Prompt Playbooks
+
+### Workflow Selection Skill
+
+```text
+Name: Workflow Selection Skill
+Purpose: Help a beginner choose the next Precode planning, execution, review, unblocker, repair, or handoff workflow without jumping to code.
+Load when: The user asks for Workflow Selection Skill, asks what Precode workflow to use, asks what to do next before work starts, or names a skill-style workflow-selection request.
+Owner protocol or adapter: `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`
+Allowed actions: Read active memory, load Workflow Selection, inspect only the minimum relevant owner files needed to classify the situation, and return the required workflow-selection fields.
+Forbidden actions: Edit files, approve PRDs, activate beads, approve review decisions, start implementation, run mutating commands, install tools, write generated evidence, or treat generated reports as authority.
+Generated evidence, if any: None in v1.
+User approval required before: Any file edit, PRD approval, bead activation, review acceptance, command execution beyond read-only inspection, external mutation, or sensitive-surface action.
+Stop conditions: No active memory can be found, multiple workflows remain equally plausible after minimal inspection, source evidence is missing, product-feature work lacks an approved PRD, verification path is unknown, or generated/source material appears to be acting as authority.
+Promotion path for findings: Promote only through the relevant owner protocol, PRD, `DECISIONS.md`, authority file, or candidate/approved bead after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Current situation:
+Recommended workflow:
+Artifact to produce next:
+Required authority source:
+User approval needed:
+Run contract needed:
+Stop condition:
+Generated-report warning:
+```
+
+The output is guidance only. It does not approve a PRD, activate a bead, choose the next task, rewrite owner files, or start implementation.
+
 ## V1 Skill Set
 
 ### Workflow Selection Skill
@@ -50,6 +82,7 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 - Allowed actions: read active memory, load Workflow Selection, inspect the minimum relevant owner files, and return the required workflow-selection fields.
 - Forbidden actions: edit files, approve PRDs, activate beads, start implementation, run mutating commands, or treat generated reports as task authority.
 - Gain: reduces "what do I ask next?" friction and protects against premature implementation.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Maintainer Package Review Skill
 
@@ -101,7 +134,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 
 | Candidate | Priority | Recommendation |
 |---|---:|---|
-| Workflow Selection Skill | P1 | First v1 candidate because it has the highest beginner value and turns next-step discipline into an easier invocation path. |
+| Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |
 | Product Discovery Interview Skill | P2 | Useful for cohorts, but already covered by docs and protocols; add after workflow selection proves the pattern. |

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.28
+Document version: v0.7.29
 Last updated: 2026-06-06
 
 
@@ -720,7 +720,7 @@ Run Precode session start. Explain the active bead, done-when target, primary au
 Choose the workflow:
 
 ```text
-Use Workflow Selection. Tell me whether this needs source intake, PRD shaping, bead decomposition, implementation, review, unblocker work, or state repair. Do not code yet.
+Use the Workflow Selection Skill. Read active memory and the workflow selection protocol, then return the current situation, recommended workflow, next artifact, required authority source, user approval needed, run contract needed, stop condition, and generated-report warning. Make no edits and do not code yet.
 ```
 
 Draft or reaffirm a Goal Frame:

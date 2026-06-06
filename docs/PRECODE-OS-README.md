@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.15
+Document version: v0.8.16
 Last updated: 2026-06-06
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -131,6 +131,7 @@ Decide answers: "Is this idea ready to become planned work?"
 Main surfaces:
 
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
+- Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
 Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
