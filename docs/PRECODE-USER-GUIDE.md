@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.29
+Document version: v0.7.30
 Last updated: 2026-06-06
 
 
@@ -36,13 +36,35 @@ If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBO
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
+## Before Your Repo Exists
+
+If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, the agent is a thinking coach. It can interview you, guide research, challenge weak assumptions, and help produce a Conviction Packet.
+
+The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path.
+
+Say this:
+
+```text
+Use the Product Conviction Packet path as my pre-repo idea coach.
+
+I am a first-time non-technical builder with a rough product idea. Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively, but do not decide for me.
+
+Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
+
+When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
+
+Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
+
 ## Use The Product Ideation Workbook Before Precode
 
 If you are a non-technical builder with a net-new, rough product idea, start with `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 
-Use the workbook with Claude or Codex as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, or create a PRD from the workbook by itself.
+Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, or create a PRD from the workbook by itself.
 
 To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.
 
@@ -56,7 +78,7 @@ Use the Product Ideation Workbook path first. Ask only high-level product or bus
 Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.
 ```
 
-The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake.
+The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake. The later Conviction Packet is also evidence only; it packages MVP-ready clarity for intake, not implementation permission.
 
 Follow the workbook steps:
 
@@ -69,16 +91,16 @@ Follow the workbook steps:
 7. Challenge the idea before turning it into features.
 8. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
 9. Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.
-10. Ask for the Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
+10. Ask for the Conviction Packet / Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
 11. Bring only that packet into Precode Local Source Intake.
 12. In a bootcamp Experience Design flow, use the approved PRD input and Experience artifacts to complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates the first implementation bead.
 
 When you are ready, say this inside Precode:
 
 ```text
-Use Local Source Intake on this Precode Ingestion Packet.
+Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
 ```
 
 Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.

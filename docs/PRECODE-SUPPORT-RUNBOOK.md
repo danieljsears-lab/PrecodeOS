@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.14
+Document version: v0.1.15
 Last updated: 2026-06-06
 
 ## Purpose
@@ -121,7 +121,7 @@ Do not paste or store secrets, credentials, billing details, customer records, p
 
 Do not run broad overwrite commands, install Git hooks, change CI, edit app code, approve a bead transition, or mutate external systems during first setup unless the user explicitly approves a narrow action and the active setup work allows it.
 
-Do not create product truth for the user. If the product is fuzzy, help the user capture a Precode Ingestion Packet or PRD-ready source summary. That packet is evidence only until it is reviewed and placed in the right Precode owner file after setup.
+Do not create product truth for the user. If the product is fuzzy, help the user capture a Conviction Packet / Precode Ingestion Packet or PRD-ready source summary. That packet is evidence only until it is reviewed and placed in the right Precode owner file after setup.
 
 Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only.
 
@@ -163,7 +163,7 @@ Support can say:
 I am not going to decide the product for you. I am going to reflect what you said, name assumptions, and ask which parts feel true enough to carry into setup.
 ```
 
-The output at this point is a Precode Ingestion Packet or PRD-ready source summary in the conversation. It is not a durable PRD yet and does not approve implementation.
+The output at this point is a Conviction Packet / Precode Ingestion Packet or PRD-ready source summary in the conversation. It is not a durable PRD yet and does not approve implementation.
 
 ### 3. Confirm Source And Target
 
@@ -350,7 +350,7 @@ A checkpoint is a status report, not approval. We are going to compare Claude's 
 
 ## Engineer Initiation From User Packet
 
-Use this section when an engineer receives a user's Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.
+Use this section when an engineer receives a user's Conviction Packet / Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.
 
 Treat the packet, Experience artifacts, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence unless the bootcamp explicitly marks a PRD-like input as student-approved product direction. Even then, the combined packet does not automatically activate a bead or authorize coding.
 
@@ -397,7 +397,7 @@ Copyable engineer prompt:
 I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
-- Precode Ingestion Packet: [path or pasted reviewed summary]
+- Conviction Packet / Precode Ingestion Packet: [path or pasted reviewed summary]
 - Student Experience Ingestion Packet, if present: [path or pasted reviewed summary]
 - Experience artifacts, frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
@@ -500,6 +500,19 @@ For student-by-student completion evidence, use `tasks/templates/STUDENT-COMPLET
 
 Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.
 
+### Beginner Discovery Routing
+
+Use this routing when a student arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.
+
+| Student state | Support response | Do not do yet |
+|---|---|---|
+| Messy idea or scattered notes | Route to the Product Ideation Workbook or Product Conviction Packet prompt. Ask for a Product Brief after at most three high-level questions. | Do not create a PRD, bead, or code. |
+| Product Brief exists but evidence is weak | Ask the student/instructor to name current workaround, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
+| Conviction Packet exists | Bring the reviewed packet into Local Source Intake as evidence. | Do not route directly to PRD drafting or Claude Code implementation. |
+| Approved PRD-like input plus Experience artifacts exist | Use `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates one bounded bead. | Do not let raw discovery notes substitute for approved PRD-like input. |
+
+Conviction means MVP-ready clarity, not validated demand. A good packet names intended user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and sensitive surfaces.
+
 Instructors own the learning and product-thinking layer:
 
 - help students move from rough ideas to prototype progress
@@ -508,12 +521,14 @@ Instructors own the learning and product-thinking layer:
 - explain PrecodeOS concepts in plain language
 - protect student ownership of product decisions, approvals, and acceptance
 - preserve the distinction between "prototype works" and "idea is validated"
+- help students turn messy notes into a Product Brief or Conviction Packet before PRD shaping
 
 The Student owns the product direction, decisions, approvals, and acceptance for their prototype.
 
 The Student should:
 
 - explain the intended user, painful before moment, better after moment, and first useful slice in plain language
+- distinguish MVP-ready conviction from validated demand
 - make and approve product decisions, scope tradeoffs, non-goals, and acceptance calls
 - use PrecodeOS prompts and evidence gates to stay oriented, bounded, and able to verify progress
 - summarize what evidence supports continuing, narrowing, pausing, or changing direction

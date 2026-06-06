@@ -47,7 +47,7 @@ Supported source types include:
 - chat transcript summaries
 - GitHub, Linear, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
-- Product Ideation Workbook Precode Ingestion Packets, including Candidate Goal Frames
+- Product Ideation Workbook Conviction Packets / Precode Ingestion Packets, including Candidate Goal Frames
 - user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
 - existing PRDs or product specs that need Precode review, amendment, or adaptation
 - existing codebases, repository snapshots, route trees, package manifests, tests, CI configs, and README conventions inspected read-only

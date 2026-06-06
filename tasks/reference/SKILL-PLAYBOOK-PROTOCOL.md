@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-06-06
 
 ## Purpose
@@ -100,6 +100,38 @@ The output is guidance only. It does not approve a PRD, activate a bead, choose 
 - Forbidden actions: install the skill, add a registry, create optional packs, approve the extension, or edit Precode files without an approved implementation path.
 - Gain: prevents skill sprawl and hidden authority before skills become an ecosystem.
 
+### Product Conviction Packet Skill
+
+```text
+Name: Product Conviction Packet Skill
+Purpose: Help a first-time non-technical builder research, explore, challenge, and package a rough idea before Precode Local Source Intake.
+Load when: The user asks for an idea coach, Product Conviction Packet, pre-repo discovery, first-time founder discovery, SnapCamp/bootcamp idea shaping, or a skill-style product-discovery request before PRD creation.
+Owner protocol or adapter: `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`, `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, and `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md`
+Allowed actions: Interview one question at a time, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, challenge broad audience/missing workaround/risky scope/weak evidence supportively, and produce a Conviction Packet plus Local Source Intake handoff prompt.
+Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
+Generated evidence, if any: None in Precode v1; the conversational output is source evidence that the user may later paste or store as local source material.
+User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, or sensitive-surface action.
+Stop conditions: The idea has no named user problem, no current workaround or evidence, sensitive information is being pasted, the first slice is too large to reason about, evidence is weak enough to require Product Discovery Validation, or the user is asking to jump directly from raw discovery to coding.
+Promotion path for findings: Bring the reviewed Conviction Packet into Local Source Intake; promote only through the PRD, `PRODUCT.md`, `DECISIONS.md`, another owner file, or a candidate/approved bead after user review.
+```
+
+When invoked, return a compact `Product Brief` first, then a `Conviction Packet` when the idea is ready. The Conviction Packet should include:
+
+- idea in plain English
+- intended user and situation
+- painful before moment
+- better after moment
+- current workaround or evidence
+- strongest evidence
+- weakest assumption
+- guided research notes with source links, dates or recency when available, confidence, and uncertainty
+- MVP-ready first slice
+- not-yet list
+- smallest learning step
+- sensitive surfaces
+- recommended next Precode path
+- Local Source Intake handoff prompt
+
 ## Manifest Contract
 
 Every proposed Precode skill playbook should declare:
@@ -137,7 +169,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |
-| Product Discovery Interview Skill | P2 | Useful for cohorts, but already covered by docs and protocols; add after workflow selection proves the pattern. |
+| Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Validation, and Local Source Intake. |
 | Review / Acceptance Skill | P2/P3 | Valuable, but risky if it becomes a fake QA persona instead of evidence-tied review guidance. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 

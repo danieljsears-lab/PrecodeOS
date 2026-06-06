@@ -49,7 +49,7 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Scope widening | The agent adds adjacent features or refactors while implementing one request. | One active bead, files in play, one primary authority, explicit stop conditions, and advisory files-in-play guardrails. |
 | Stale context | Old notes, chat summaries, generated reports, completed PRDs, closed issues, or previous journey notes override the current task. | Tiny active memory and a context loading order that demotes generated, source, and stale historical material. |
 | False done | The agent says work is complete without evidence strong enough for the risk. | Recorded checks, closeout evidence, manual verification, and review decisions. |
-| Vague product intent | A rough idea becomes code before worth-building evidence, product fit, shared design concept, non-goals, and acceptance oracles are stable. | Optional Product Discovery Validation, `PRODUCT.md`, alignment/grilling, Goal Frames when durable intent needs review, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
+| Vague product intent | A rough idea becomes code before the user, painful before moment, current workaround, strongest evidence, weakest assumption, product fit, non-goals, and acceptance oracles are stable. | Product Ideation Workbook, Product Brief, Conviction Packet, optional Product Discovery Validation, `PRODUCT.md`, alignment/grilling, Goal Frames when durable intent needs review, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
 | Language drift | Product docs, UI labels, tests, module names, and old artifacts use different words for the same concept. | Ubiquitous language protocol, PRD domain-language sections, reviewed glossary memory, and stale-vocabulary demotion. |
 | Authority confusion | Product, architecture, schema, security, and acceptance facts are duplicated across docs. | Authority contracts and one owner per fact. |
 | Generated summaries become instructions | Status reports or imported evidence start choosing next work. | Generated-output demotion and promotion paths into owned docs. |
@@ -172,6 +172,8 @@ Precode's intended flow is:
 ```text
 idea or source material
   -> optional product ideation workbook
+  -> Product Brief
+  -> Conviction Packet when a first-time rough idea needs MVP-ready clarity
   -> optional Product Discovery Validation when worth-building risk is high
   -> source intake
   -> product constitution fit check

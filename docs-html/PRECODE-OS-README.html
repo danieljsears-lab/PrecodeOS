@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.16</span><span>Updated 2026-06-06</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.17</span><span>Updated 2026-06-06</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -212,7 +212,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h2 id="the-line-precode-holds">The Line Precode Holds</h2>
 <p>Vibe coding is tempting because it makes software development feel like a conversation. The risk is that the conversation moves faster than understanding.</p>
 <p>Precode does not try to make the agent autonomous. It makes the project legible:</p>
-<div class="table-wrap"><table><thead><tr><th>Risk</th><th>Precode response</th></tr></thead><tbody><tr><td>The agent follows stale chat or old notes.</td><td>Active memory stays tiny and current authority wins.</td></tr><tr><td>A rough idea becomes code too quickly.</td><td>Discovery, source intake, alignment, shared language, and PRDs clarify intent first.</td></tr><tr><td>Scope quietly grows.</td><td>One active bead, files in play, stop conditions, and files-in-play checks bound execution.</td></tr><tr><td>The agent says &quot;done&quot; without proof.</td><td>Checks are recorded and review decisions tie acceptance to evidence.</td></tr><tr><td>Generated summaries start driving work.</td><td>Generated reports are useful evidence, never authority.</td></tr><tr><td>The builder feels lost.</td><td>The <code>next-step</code> router, session start, recovery, user guide, and handoff surfaces explain what to do next.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Risk</th><th>Precode response</th></tr></thead><tbody><tr><td>The agent follows stale chat or old notes.</td><td>Active memory stays tiny and current authority wins.</td></tr><tr><td>A rough idea becomes code too quickly.</td><td>Product Briefs, Conviction Packets, discovery, source intake, alignment, shared language, and PRDs clarify intent first.</td></tr><tr><td>Scope quietly grows.</td><td>One active bead, files in play, stop conditions, and files-in-play checks bound execution.</td></tr><tr><td>The agent says &quot;done&quot; without proof.</td><td>Checks are recorded and review decisions tie acceptance to evidence.</td></tr><tr><td>Generated summaries start driving work.</td><td>Generated reports are useful evidence, never authority.</td></tr><tr><td>The builder feels lost.</td><td>The <code>next-step</code> router, session start, recovery, user guide, and handoff surfaces explain what to do next.</td></tr></tbody></table></div>
 <p>Precode is for builders who want speed without giving up direction, evidence, or the ability to stop.</p>
 <h2 id="two-core-rules">Two Core Rules</h2>
 <h3 id="1-active-memory-stays-tiny">1. Active Memory Stays Tiny</h3>
@@ -237,7 +237,8 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="2-decide">2. Decide</h3>
 <p>Decide answers: &quot;Is this idea ready to become planned work?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> for rough early thinking</li><li>Workflow Selection Skill when the builder is unsure which Precode workflow should come next</li><li>discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them</li></ul>
+<ul><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> for rough early thinking</li><li>Product Conviction Packet guidance for first-time builders researching and exploring an idea before repo setup</li><li>Workflow Selection Skill when the builder is unsure which Precode workflow should come next</li><li>discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them</li></ul>
+<p>Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.</p>
 <p>Use the workbook&#x27;s Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.</p>
 <p>Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: <code>proceed</code>, <code>pause</code>, <code>narrow</code>, or <code>kill</code>.</p>
 <p>Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.</p>
@@ -268,6 +269,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Precode turns rough ideas into verified work through a repeatable path:</p>
 <pre><code class="language-text">idea or source material
   -&gt; optional product ideation workbook
+  -&gt; Product Brief
+  -&gt; guided research/challenge
+  -&gt; Conviction Packet for first-time rough ideas
   -&gt; optional Exploration Loop
   -&gt; optional Product Discovery Validation
   -&gt; Local Source Intake

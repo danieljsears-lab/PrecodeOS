@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-12
+Document version: v0.1.1
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -27,6 +27,8 @@ rough idea or source evidence
 ```
 
 The protocol does not validate an idea in the strong sense. It produces evidence and an advisory recommendation. The user still owns judgment, product direction, PRD approval, and task activation.
+
+For first-time non-technical builders and bootcamp students, discovery often aims for MVP-ready conviction rather than validated demand. MVP-ready conviction means the builder can define a small, safe first version while naming the weak evidence, riskiest assumption, current workaround, not-yet scope, and smallest learning step. It does not prove that users will adopt, pay, return, switch, or change behavior.
 
 ## When To Use
 
@@ -77,13 +79,15 @@ Use plain evidence-strength language. Do not treat all signals as equal.
 | Evidence | Strength | How to treat it |
 |---|---|---|
 | Founder hunch or agent suggestion | very weak | Useful starting point only. |
-| Online research or category notes | weak | Context, not user proof. |
+| Online research, guided research, or category notes | weak | Context, not user proof. |
 | User quote about a real past moment | medium | Evidence of pain or language. |
 | Repeated pattern across users or sources | stronger | Candidate problem evidence. |
 | Existing workaround, spend, or switching effort | strong | Behavioral evidence that the problem costs something. |
 | User tries a prototype, signs up, pays, returns, or changes behavior | strongest | Demand or value evidence, depending on the action. |
 
 Name the strongest evidence and the weakest assumption in every Discovery Summary.
+
+Treat source-cited guided research as helpful context unless it is paired with behavior. Research can show market language, categories, competitors, rough demand signals, or risks, but it is not validation by itself. Evidence becomes stronger when it shows a real current workaround, repeated user behavior, spend, switching effort, signup intent, prototype use, payment, return visits, or another costly action.
 
 ## Assumption Categories
 

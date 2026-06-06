@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>Claude Code Field Guide For Students</h1>
   <p class="lede">A Bootcamp Companion For Claude Code + PrecodeOS</p>
-  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.9</span><span>Updated 2026-05-31</span></p>
+  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.10</span><span>Updated 2026-06-06</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -200,6 +200,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>This guide is for first-time students and non-technical builders using Claude Code inside a project that already has PrecodeOS installed. You do not need to understand the codebase before you begin. You do need to know how to slow the agent down, confirm the task, and ask for proof.</p>
 <p>Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The <strong>Prompt Cookbook</strong> and <strong>Quick Reference Card</strong> are the sections you&#x27;ll reach for most.</p>
 <p>This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another school-provided surface. If you cannot find Claude Code or open your project folder, ask your instructor or engineer before starting.</p>
+<p>If you are still exploring an idea before the project exists, use Claude Cowork, Claude, or the Product Ideation Workbook as a thinking coach first. The pre-repo goal is a Conviction Packet: user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only.</p>
 <hr>
 <h2 id="the-mental-model">The Mental Model</h2>
 <h3 id="you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor">You are the boss. Precode is your project manager. Claude Code is your contractor.</h3>
@@ -229,6 +230,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="the-pre-session-checklist">The Pre-Session Checklist</h3>
 <ul><li>[ ] I know which bead (task card) we&#x27;re working on today</li><li>[ ] I can say in one sentence what &quot;done&quot; looks like for this bead</li><li>[ ] I am not expecting Claude to figure out what to build — I have a specific task</li><li>[ ] I have not asked Claude to work on two things at once</li><li>[ ] I am in the project root folder, and I have not renamed it</li></ul>
 <p>If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Do not ask Claude to start building directly from a design canvas.</p>
+<p>If this is your first Claude Code session after idea discovery, you may have a Conviction Packet but no PRD or bead yet. Bring the packet into Local Source Intake first. Do not ask Claude Code to turn the packet directly into code, and do not let it skip from discovery evidence to implementation.</p>
+<p>Use this handoff prompt:</p>
+<pre><code class="language-text">Use Local Source Intake on this Conviction Packet.
+
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate PRD inputs, likely owner files, and recommended next safe Precode workflow.
+
+Do not write a PRD, create beads, update PRODUCT.md, or code until I review the intake summary and approve the next step.</code></pre>
 <p><strong>Fill in before every session:</strong></p>
 <blockquote><p>Today&#x27;s bead (task card name): <code>_________________________________</code></p>
 <p>Done looks like: <code>_________________________________</code></p>

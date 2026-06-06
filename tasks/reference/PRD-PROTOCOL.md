@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-05-29
+Document version: v0.1.9
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-workbook or local material -> Product Brief -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
+workbook or local material -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
 ```
 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
@@ -77,9 +77,11 @@ Discovery may be skipped only with an explicit reason, such as low risk, clear u
 
 ## Founder-Friendly Ramp
 
-For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions.
+For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions. If the builder is still before repo setup or still building product confidence, produce a Conviction Packet before Local Source Intake instead of drafting a PRD.
 
 The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+The Conviction Packet should name the strongest evidence, weakest assumption, guided research notes, MVP-ready first slice, smallest learning step, and not-yet list. It is evidence only and must go through Local Source Intake before PRD shaping.
 
 The agent owns the technical translation after the builder confirms the product story. Requirement IDs, acceptance-check matrices, architecture/project context impact, module/interface candidates, agent context contracts, and bead proposals are internal control surfaces unless the builder must approve a specific risk or tradeoff.
 

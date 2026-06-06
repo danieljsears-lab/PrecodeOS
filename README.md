@@ -178,7 +178,7 @@ python3 scripts/loop-health.py
 | Start using PrecodeOS in a project | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook when prompted |
+| Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook or Conviction Packet path when prompted |
 | Work with an agent right now | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |

@@ -9,12 +9,12 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-30
+Document version: v0.1.1
+Last updated: 2026-06-06
 
 ## Purpose
 
-Use this packet after idea shaping and Experience design, before Claude Code starts implementation.
+Use this packet after idea shaping, approved PRD-like input, and Experience design, before Claude Code starts implementation. A raw Product Brief or Conviction Packet is not enough for this step until it has gone through Local Source Intake and the bootcamp has approved the PRD-like input for Experience work.
 
 The packet combines:
 

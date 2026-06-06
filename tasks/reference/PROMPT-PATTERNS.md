@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
+Document version: v0.1.17
 Last updated: 2026-06-06
 
 ## Purpose
@@ -96,6 +96,38 @@ Use the Extension Protocol and Skill Playbook Protocol for any proposed package 
 Do static package analysis only unless I explicitly ask for mutation.
 ```
 
+### Precode Idea Coach
+
+```text
+Use the Product Conviction Packet Skill as my pre-repo idea coach.
+
+I am a first-time non-technical builder with a rough product idea. Help me research, explore, challenge, and narrow the idea before I create a PRD or ask anyone to code.
+
+Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+Guide source-cited research when useful. For each source, include the link, date or recency if available, the claim it supports, confidence, uncertainty, and what question it helps answer. Treat research as weak evidence unless it shows user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
+
+Challenge me supportively but firmly when the audience is too broad, the painful moment is vague, the current workaround is missing, evidence is weak, scope is too large, or sensitive surfaces appear.
+
+When ready, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
+
+Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+### Precode Conviction Handoff
+
+```text
+Use the Product Conviction Packet Skill handoff path.
+
+I am bringing a reviewed Conviction Packet into a Precode project. Treat the packet as evidence, not authority.
+
+First classify whether the packet is ready for Local Source Intake or should pause for Product Discovery Validation because the user, painful before moment, current workaround, strongest evidence, weakest assumption, MVP-ready first slice, or sensitive surfaces are unclear.
+
+If ready, use Local Source Intake on the packet. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, candidate PRD inputs, likely owner files, and recommended next safe workflow.
+
+Do not update PRODUCT.md, draft or approve a PRD, create or activate beads, or code until I review the intake summary and approve the next Precode step.
+```
+
 ### Stop Before Precode Control-Layer Edits
 
 ```text
@@ -128,7 +160,7 @@ Use the Local Source Intake Protocol on these local materials. Treat them as evi
 I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
-- Precode Ingestion Packet: [path or pasted reviewed summary]
+- Conviction Packet / Precode Ingestion Packet: [path or pasted reviewed summary]
 - Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
 

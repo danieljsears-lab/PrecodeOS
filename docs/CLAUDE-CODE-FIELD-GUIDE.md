@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-05-31
+Document version: v0.1.10
+Last updated: 2026-06-06
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -22,6 +22,8 @@ This guide is for first-time students and non-technical builders using Claude Co
 Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The **Prompt Cookbook** and **Quick Reference Card** are the sections you'll reach for most.
 
 This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another school-provided surface. If you cannot find Claude Code or open your project folder, ask your instructor or engineer before starting.
+
+If you are still exploring an idea before the project exists, use Claude Cowork, Claude, or the Product Ideation Workbook as a thinking coach first. The pre-repo goal is a Conviction Packet: user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only.
 
 ---
 
@@ -93,6 +95,18 @@ Field rule: one bead, one feature slice, one chat. When you finish and accept a 
 - [ ] I am in the project root folder, and I have not renamed it
 
 If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Do not ask Claude to start building directly from a design canvas.
+
+If this is your first Claude Code session after idea discovery, you may have a Conviction Packet but no PRD or bead yet. Bring the packet into Local Source Intake first. Do not ask Claude Code to turn the packet directly into code, and do not let it skip from discovery evidence to implementation.
+
+Use this handoff prompt:
+
+```text
+Use Local Source Intake on this Conviction Packet.
+
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate PRD inputs, likely owner files, and recommended next safe Precode workflow.
+
+Do not write a PRD, create beads, update PRODUCT.md, or code until I review the intake summary and approve the next step.
+```
 
 **Fill in before every session:**
 

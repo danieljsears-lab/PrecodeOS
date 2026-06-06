@@ -73,7 +73,7 @@ Keep the fields plain-English and short. If a Goal Frame needs many steps, it is
 Agents and generated helpers may suggest a Goal Frame when:
 
 - broad user intent sounds durable
-- a Product Ideation Workbook becomes a Precode Ingestion Packet
+- a Product Ideation Workbook becomes a Conviction Packet / Precode Ingestion Packet
 - Local Source Intake finds stable intent
 - a PRD draft lacks a clear outcome
 - a bead proposal needs an execution-level orientation
@@ -83,7 +83,7 @@ Auto-suggestion means "draft a Goal Frame for review." It never means silently c
 
 ## Workbook Candidate Flow
 
-The Product Ideation Workbook may produce a `Candidate Goal Frame For Precode Review` inside its Precode Ingestion Packet.
+The Product Ideation Workbook may produce a `Candidate Goal Frame For Precode Review` inside its Conviction Packet / Precode Ingestion Packet.
 
 That candidate is local source evidence only. It is not a persisted Goal Frame until Local Source Intake summarizes it, the user reviews it, and the user reaffirms whether it should be promoted into the `## Goal Frame` section of `PRODUCT.md` or another allowed owner file.
 

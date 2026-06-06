@@ -39,7 +39,7 @@ Idea
   -> Visible Iteration
   -> Core Workflow Spine
   -> Minimum Valuable Experience
-  -> Precode Ingestion Packet
+  -> Conviction Packet / Precode Ingestion Packet
   -> Experience design canvas when a visual core spine is needed
   -> Student Experience Ingestion Packet before Claude Code implementation
 ```
@@ -689,11 +689,11 @@ Do not continue if the MVE is only a feature list or if it requires the full ima
 - Success signal:
 - Risk or sensitive surface:
 
-## Stage 9: Precode Ingestion Packet
+## Stage 9: Conviction Packet / Precode Ingestion Packet
 
 Purpose: package the stable, decision-relevant material for Precode Local Source Intake.
 
-This packet is not a PRD, feature list, roadmap, backlog, or implementation plan. It helps Precode understand the product intent before shaping requirements.
+This packet is not a PRD, feature list, roadmap, backlog, or implementation plan. It helps Precode understand the product intent before shaping requirements. In beginner and bootcamp contexts, it should show MVP-ready conviction: intended user, current workaround or evidence, strongest evidence, weakest assumption, smallest first slice, not-yet scope, and smallest learning step.
 
 ### Final Packet
 
@@ -785,7 +785,7 @@ Recommended next Precode path:
 Guardrail reminder:
 
 ```text
-This packet is evidence only. It is not a PRD, not a task list, not approval to update PRODUCT.md, and not permission to code. Use Local Source Intake before PRD shaping or implementation.
+This Conviction Packet is evidence only. It is not a PRD, not a task list, not approval to update PRODUCT.md, and not permission to code. Use Local Source Intake before PRD shaping or implementation.
 ```
 
 ## Handoff Prompt

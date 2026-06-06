@@ -9,14 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.7
-Last updated: 2026-05-30
+Document version: v0.1.8
+Last updated: 2026-06-06
 
 ## Purpose
 
 Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, or create implementation work for a net-new, rough product idea.
 
-This workbook helps you gather your thoughts offline with Claude or Codex as a thinking coach. It helps you research, explain, challenge, and narrow your idea so Precode can later ingest a clean summary through Local Source Intake.
+This workbook helps you gather your thoughts offline with Claude, Claude Cowork, Claude Code, Codex, or another agent as a thinking coach. It helps you research, explain, challenge, and narrow your idea so Precode can later ingest a clean Conviction Packet through Local Source Intake.
 
 Important rule: this workbook is evidence, not authority. Nothing in this file becomes true for the project until you review it and Precode promotes stable conclusions into the right owner file.
 
@@ -37,7 +37,7 @@ You do not need product-management vocabulary to use this workbook. You only nee
 
 The workbook includes optional tool cards. Use them when a section feels fuzzy or too broad. Skip them when your answer is already clear.
 
-The tool cards are not extra homework. They are small thinking moves that help you turn a rough idea into a cleaner packet for Precode Local Source Intake.
+The tool cards are not extra homework. They are small thinking moves that help you turn a rough idea into a cleaner Conviction Packet for Precode Local Source Intake.
 
 ## Three Questions, Then A Product Brief
 
@@ -56,6 +56,14 @@ Product Brief:
 - Not-yet list:
 - Smallest useful version:
 - Next best question:
+
+## Conviction Packet
+
+The final student or bootcamp artifact is the Conviction Packet. It is the concise package of evidence and judgment that helps Precode decide whether to run Local Source Intake, Product Discovery Validation, or PRD shaping next.
+
+Conviction means MVP-ready clarity, not proof that the idea is validated. You are ready for the next Precode step when you can explain the user, painful before moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step.
+
+The Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code.
 
 ## Stop Before You Paste Sensitive Information
 
@@ -127,11 +135,11 @@ Step 10. Fill out feature-level candidates.
 
 Only after product framing and research are clear, list candidate features, before/after user moments, acceptance signals, risks, sensitive surfaces, dependencies, and first useful slices.
 
-Step 11. Ask Claude/Codex to create the Precode Ingestion Packet.
+Step 11. Ask Claude/Codex to create the Conviction Packet / Precode Ingestion Packet.
 
 Use the ingestion prompt near the end of this workbook. Keep the packet concise. Include a Candidate Goal Frame only when the durable direction is stable enough to review.
 
-Step 12. Bring only the ingestion packet into Precode Local Source Intake.
+Step 12. Bring only the Conviction Packet into Precode Local Source Intake.
 
 When you are ready, ask Precode to ingest the packet as local source evidence. Do not ask Precode to edit `PRODUCT.md`, create a PRD, or activate work until you have reviewed the intake summary.
 
@@ -196,7 +204,7 @@ Start by asking me to describe the product idea in plain English.
 ```text
 Help me research this idea.
 
-Give me source-cited summaries. For each source, include the link, date or recency if available, the claim it supports, confidence, uncertainty, and what question it helps answer. Do not treat research as proof that the idea is good. Help me identify what is evidence, what is assumption, and what still needs user validation.
+Give me source-cited summaries. For each source, include the link, date or recency if available, the claim it supports, confidence, uncertainty, and what question it helps answer. Do not treat research as proof that the idea is good. Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action. Help me identify what is evidence, what is assumption, and what still needs user validation.
 ```
 
 ### Challenge Prompt
@@ -262,7 +270,7 @@ Help me refine this into product and feature candidates.
 Summarize the product promise, intended user, user job, painful before moment, better after moment, non-goals, success signals, design or voice notes, and first feature candidates. Keep product-level ideas separate from feature-level ideas.
 ```
 
-### Precode Ingestion Packet Prompt
+### Conviction Packet / Precode Ingestion Packet Prompt
 
 Before creating the packet, check the idea against PRD-Ready Context. This prepares evidence for a future PRD; it is not a PRD, approval, bead, or implementation plan.
 
@@ -274,13 +282,15 @@ Before creating the packet, check the idea against PRD-Ready Context. This prepa
 - Risks and unknowns: assumptions, edge cases, accessibility, privacy, compliance, or open questions.
 
 ```text
-Create a concise Precode Ingestion Packet from this workbook.
+Create a concise Conviction Packet / Precode Ingestion Packet from this workbook.
 
 Treat the workbook as evidence, not authority. Do not draft PRODUCT.md. Do not create a PRD. Do not propose active work. Summarize only the stable and decision-relevant material, using PRD-Ready Context to find gaps without expanding the packet.
 
 Use this format:
 - Product idea summary:
 - Intended user and job:
+- Painful before moment:
+- Better after moment:
 - Problem or pain evidence:
 - Source-cited research summary:
 - Strongest evidence:
@@ -288,6 +298,7 @@ Use this format:
 - Current alternatives or workarounds:
 - Evidence strength:
 - Demand or pricing signal:
+- MVP-ready first slice:
 - Smallest non-code learning step:
 - What would change my mind:
 - Exploration Loop summary:
@@ -321,8 +332,9 @@ Use this format:
 - PRD-ready context notes:
 - Likely owner files:
 - Recommended Precode next step:
+- Local Source Intake handoff prompt:
 
-End with: "The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
+End with: "This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
 ```
 
 ## Product-Level Thinking
@@ -1409,7 +1421,7 @@ Reality check: gently challenge the scope. What would make this first version to
 
 Continue only when the first useful slice is narrow enough to explain in plain English.
 
-## Precode Ingestion Packet
+## Conviction Packet / Precode Ingestion Packet
 
 Ask Claude or Codex to produce the final packet with the prompt above, then paste the result here.
 
@@ -1419,6 +1431,10 @@ Ask Claude or Codex to produce the final packet with the prompt above, then past
 Product idea summary:
 
 Intended user and job:
+
+Painful before moment:
+
+Better after moment:
 
 Problem or pain evidence:
 
@@ -1433,6 +1449,8 @@ Current alternatives or workarounds:
 Evidence strength:
 
 Demand or pricing signal:
+
+MVP-ready first slice:
 
 Smallest non-code learning step:
 
@@ -1493,7 +1511,9 @@ Likely owner files:
 
 Recommended Precode next step:
 
-The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary.
+Local Source Intake handoff prompt:
+
+This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary.
 ```
 
 ## Stop Before Continuing: Precode Ingestion Check
@@ -1502,10 +1522,10 @@ Before bringing the packet into Precode, confirm:
 
 - The packet is shorter than the full workbook.
 - The packet separates facts, assumptions, and open questions.
-- Research claims include source links when available.
+- Research claims include source links when available and are not treated as validation by themselves.
 - Product-level candidates and feature-level candidates are separated.
 - The strongest evidence and weakest assumption are named.
-- The smallest useful version and not-yet list are included.
+- The current workaround or evidence, MVP-ready first slice, smallest learning step, and not-yet list are included.
 - The Candidate Goal Frame is clearly marked as evidence only and does not read like a task list.
 - PRD-ready context notes explain what a future PRD may need, without drafting the PRD.
 - Sensitive information has been removed.
@@ -1514,9 +1534,9 @@ Before bringing the packet into Precode, confirm:
 When ready, ask Precode:
 
 ```text
-Use Local Source Intake on this Precode Ingestion Packet.
+Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, Candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate product constitution updates, Candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
 ```
 
 ## Advanced: PRD Input Gap Check
@@ -1525,7 +1545,7 @@ Skip this if the packet already explains the user, problem, before/after moment,
 
 ```text
 Use this as a PRD input gap check only.
-Review my Precode Ingestion Packet for missing PRD-ready context across: user journey, edge cases, accessibility, compliance or privacy, technical constraints, comparable products, success metrics, and stakeholder concerns.
+Review my Conviction Packet / Precode Ingestion Packet for missing PRD-ready context across: user journey, edge cases, accessibility, compliance or privacy, technical constraints, comparable products, success metrics, and stakeholder concerns.
 
 Rules: produce gap notes only; do not draft or rewrite a PRD; do not rewrite the packet unless I ask; do not create beads, update PRODUCT.md, approve work, suggest coding, or treat the notes as authority.
 

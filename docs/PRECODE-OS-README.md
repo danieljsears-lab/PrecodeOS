@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.16
+Document version: v0.8.17
 Last updated: 2026-06-06
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -64,7 +64,7 @@ Precode does not try to make the agent autonomous. It makes the project legible:
 | Risk | Precode response |
 |---|---|
 | The agent follows stale chat or old notes. | Active memory stays tiny and current authority wins. |
-| A rough idea becomes code too quickly. | Discovery, source intake, alignment, shared language, and PRDs clarify intent first. |
+| A rough idea becomes code too quickly. | Product Briefs, Conviction Packets, discovery, source intake, alignment, shared language, and PRDs clarify intent first. |
 | Scope quietly grows. | One active bead, files in play, stop conditions, and files-in-play checks bound execution. |
 | The agent says "done" without proof. | Checks are recorded and review decisions tie acceptance to evidence. |
 | Generated summaries start driving work. | Generated reports are useful evidence, never authority. |
@@ -131,8 +131,11 @@ Decide answers: "Is this idea ready to become planned work?"
 Main surfaces:
 
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
+- Product Conviction Packet guidance for first-time builders researching and exploring an idea before repo setup
 - Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
+
+Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
 
 Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
 
@@ -209,6 +212,9 @@ Precode turns rough ideas into verified work through a repeatable path:
 ```text
 idea or source material
   -> optional product ideation workbook
+  -> Product Brief
+  -> guided research/challenge
+  -> Conviction Packet for first-time rough ideas
   -> optional Exploration Loop
   -> optional Product Discovery Validation
   -> Local Source Intake

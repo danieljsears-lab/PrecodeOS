@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.21
+Document version: v0.1.22
 Last updated: 2026-06-06
 
 ## Start Here: You Are Not Just Prompting
@@ -45,18 +45,20 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 > Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.
 
-### If You Only Have An Idea, Start With The Workbook
+### If You Only Have An Idea, Start With Research And Exploration
 
 If you are a non-technical builder starting with a net-new rough idea, use `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
 
-The workbook is a thinking space. You can use Claude or Codex as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Precode Ingestion Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.
+The workbook is a thinking space. You can use Claude Cowork, Claude, Claude Code, Codex, or another agent as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Conviction Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.
+
+This first step is about product thinking. Before a PRD exists, the builder is trying to build confidence in the idea space: who the product is for, what hurts today, what users do instead, what evidence exists, what is still an assumption, and what the smallest useful MVP slice might be.
 
 After at most three high-level product or business questions, ask for a Product Brief. That gives you visible progress before the agent moves into deeper discovery or PRD shaping.
 
 Use this path when you are still asking, "What am I really trying to build?"
 
 ```text
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question. Then help me produce a Conviction Packet before Precode Local Source Intake. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
 ```
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
@@ -67,7 +69,7 @@ Software is usually built through a set of repeatable stages. Teams may use diff
 
 | Stage | What it means | Who traditionally helped | What can go wrong if skipped | How Precode helps |
 |---|---|---|---|---|
-| Idea | A rough thought about something useful to build. | Founder, customer, product manager. | The agent codes a vague idea before the problem is clearly understood and well articulated. | Local Source Intake turns rough notes into facts, questions, and candidate requirements. |
+| Idea exploration | Researching and narrowing a rough thought into a user, painful before moment, current workaround, evidence, assumptions, and smallest useful slice. | Founder, customer, product manager, researcher. | The agent codes excitement, online research, or a feature pile before the builder has conviction. | Product Ideation Workbook, Product Brief, guided research/challenge, and Conviction Packet keep the idea as evidence before Local Source Intake. |
 | Discovery validation | Checking whether the problem, current workaround, evidence, and riskiest assumption are real enough to justify PRD work. | Founder, product manager, researcher. | A polished PRD describes the wrong thing beautifully. | Product Discovery Validation produces a short Discovery Summary and advisory `proceed`, `pause`, `narrow`, or `kill` recommendation. |
 | Product shaping | Deciding who it is for, what problem it solves, and what not to build yet. | Product manager, founder, designer. | Scope grows, the first version gets too big, or the wrong user moment is built. | `PRODUCT.md`, Idea-to-PRD, and PRD protocols force product fit, problem, non-goals, risks, and smallest useful version. |
 | Alignment | Reaching a shared design concept before writing a plan. | Founder, product manager, domain expert, engineer. | The PRD sounds polished but hides unanswered product, architecture, test, or approval decisions. | Alignment starts with plain product questions, summarizes a Product Brief, and lets the agent translate technical implications later. |
@@ -115,7 +117,7 @@ Not every software idea needs the same process. Precode is safest when you choos
 
 | Project type | What usually matters most | Early risks | Start with |
 |---|---|---|---|
-| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Brief after at most three high-level questions, Product Discovery Validation when worth-building is uncertain, then Precode Ingestion Packet. |
+| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Brief after at most three high-level questions, guided research/challenge, Conviction Packet, then Local Source Intake. |
 | Durable intent, but no workflow chosen yet | Keeping direction visible without turning it into a task list. | A broad goal silently becomes backlog, roadmap, or implementation plan. | Goal Frame proposal or reaffirmation, then workflow selection. |
 | Personal tool | Speed, usefulness, simple data, low ceremony. | The tool grows into a product before privacy, data, or deployment choices are understood. | Local Source Intake or a small implementation bead. |
 | Small SaaS app | Accounts, permissions, database, reliability, support, deployment. | Auth, personal data, billing, emails, and production setup appear quickly. | Idea-to-PRD, then decomposition into small beads. |
@@ -180,7 +182,8 @@ Precode turns rough intent into verified work through a file-based path.
 idea or notes
   -> Product Ideation Workbook for net-new rough product ideas
   -> Product Brief after at most three high-level questions
-  -> Precode Ingestion Packet
+  -> guided research/challenge
+  -> Conviction Packet / Precode Ingestion Packet
   -> Experience design canvas for bootcamp visual core-spine work
   -> Student Experience Ingestion Packet for Claude Code handoff
   -> Candidate Goal Frame when durable intent needs orientation
@@ -205,7 +208,7 @@ idea or notes
 | Idea or notes | You have something fuzzy, incomplete, or scattered. | "Summarize what is known, unknown, and risky." |
 | Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
 | Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question." |
-| Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review. | "Treat this as evidence, not authority." |
+| Conviction Packet / Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review, including strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. | "Treat this as evidence, not authority." |
 | Student Experience Ingestion Packet | A bootcamp handoff packet combining the approved PRD input and Experience artifacts before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
@@ -552,7 +555,7 @@ Search reviewed memory for what we have learned about this topic. Do not treat m
 |---|---|---|
 | "Just code it." | The agent may build the wrong thing quickly. | Ask for intake, PRD, or workflow selection first. |
 | Skipping discovery for a broad, paid, or weakly evidenced idea. | The agent may write a convincing PRD for a problem that has no real pull. | Use Product Discovery Validation and ask for current workaround, evidence strength, riskiest assumption, and smallest non-code learning step. |
-| Treating workbook output as project truth. | Workbook notes may include guesses, research fragments, or unresolved choices. | Turn the workbook into a Precode Ingestion Packet and run Local Source Intake. |
+| Treating workbook output as project truth. | Workbook notes may include guesses, research fragments, or unresolved choices. | Turn the workbook into a Conviction Packet / Precode Ingestion Packet and run Local Source Intake. |
 | Treating a Candidate Goal Frame as already approved. | Early direction can feel settled before Precode has checked stability, conflicts, and scope. | Run Local Source Intake and reaffirm before updating `PRODUCT.md`. |
 | Treating a Goal Frame as a task list. | Durable intent becomes hidden authority and can push the agent into stale work. | Reaffirm it, then use it only for workflow guidance. |
 | Vague feature request. | No one can prove whether it is done. | Ask for user problem, non-goals, and acceptance evidence. |
