@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.7
+Document version: v0.2.8
 Last updated: 2026-06-06
 
 ## Purpose
@@ -267,7 +267,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | File or family | Class | What it owns | How it relates |
 |---|---|---|---|
 | `adapters/ADAPTER-INDEX.md` | reference | Shared adapter command surface, routing-protocol pointer, and tool-neutral expectations. | Source of truth for adapter command parity and shared routing discipline. |
-| `adapters/*.md` | reference | Tool-specific notes for Codex, Claude, Cursor, Gemini, Antigravity, and related agents. | Thin wrappers around `AGENT.md` that translate shared routing tiers into provider-native controls when available. |
+| `adapters/*.md` | reference | Tool-specific notes for Codex, Claude, GitHub Copilot, Cursor, Gemini, Antigravity, and related agents. | Thin wrappers around `AGENT.md` that translate shared routing tiers into provider-native controls when available. |
 | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | reference shims | Auto-discovery compatibility for specific tools. | Must point back to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | reference | Pull request evidence template for package-facing changes. | Prompts the maintainer to record changed surfaces, checks, risk, and release-candidate relevance; it does not approve work. |
 | `modes/NAVIGATOR.md` | reference | Planning/navigation role guidance. | Used when choosing work or shaping tasks. |

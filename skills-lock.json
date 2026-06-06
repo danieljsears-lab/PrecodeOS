@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "skills": {
+    "company-deep-dive": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/business-research/company-deep-dive/SKILL.md",
+      "computedHash": "203efd43994520c98b49ca1fcf513dc12d44222322338795c3caaab277eb08e5"
+    },
+    "competitor-intel": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/business-research/competitor-intel/SKILL.md",
+      "computedHash": "3efc7322a3dee55f6a5a06e0f7da1548844a5063a95b845cb02ca3eb0f072e20"
+    },
+    "competitor-positioning": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing/competitor-positioning/SKILL.md",
+      "computedHash": "fc7883bce3e068e8fde0c6e3ee2211c117abf404503c53e209c11881f72915ed"
+    },
+    "healthcare-providers-enrich": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/healthcare/healthcare-providers-enrich/SKILL.md",
+      "computedHash": "27634f0705a7f99dcec3c9769ed36f07c99896d10b12478707a80025a8ab0289"
+    },
+    "healthcare-providers-extract": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/healthcare/healthcare-providers-extract/SKILL.md",
+      "computedHash": "efdd3c761e51ccfedbf30c980475968c7b9c005d273fdc02661439b285502674"
+    },
+    "healthcare-providers-verify": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/healthcare/healthcare-providers-verify/SKILL.md",
+      "computedHash": "b327ad54e68f14493da6fcb587e12a543cab0b9b87410d36c067b4eda8e93dfb"
+    },
+    "local-places": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/local-places/SKILL.md",
+      "computedHash": "295b3d030e689aa009f14496405bde1248fb0f7ad0db2bcf96afd47d88ca58e2"
+    },
+    "market-finder": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/business-research/market-finder/SKILL.md",
+      "computedHash": "ce5912316317e5930d21d4b04429c0fe7fa48468dd33f5c895c2bbb49912fa6a"
+    },
+    "meeting-prep": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/meeting-prep/SKILL.md",
+      "computedHash": "942d012fd417b8906afbc250cc704608fede8e966e4855a528acef4608e7472b"
+    },
+    "nimble-agent-builder": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-search-tools/nimble-agent-builder/SKILL.md",
+      "computedHash": "5a2e89ca1da8c2ca8ab27ce921eefecfbd0def5a5f8395cd07b0990c7506f827"
+    },
+    "nimble-web-expert": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-search-tools/nimble-web-expert/SKILL.md",
+      "computedHash": "f868b0780b86544af7f26e625b629fb47eaa41ca93f96c5dc17ad6cbb04c26fc"
+    },
+    "seo-intel": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/seo/seo-intel/SKILL.md",
+      "computedHash": "e0d39b9c7b8abdd37f3039a8b60f722bca41944a6f397df75997d5aa84ba6781"
+    },
+    "talent-sourcing": {
+      "source": "Nimbleway/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/human-resources/talent-sourcing/SKILL.md",
+      "computedHash": "6662a76b1dcba90569dddedf68a5a1016b015fe607ca5cd8f99f307a0139c24e"
+    }
+  }
+}

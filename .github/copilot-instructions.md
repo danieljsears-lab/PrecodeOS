@@ -7,14 +7,14 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-04-26
+Document version: v0.1.1
+Last updated: 2026-06-06
 
 Read and follow:
 
 - `AGENT.md`
 - `DECISIONS.md`
 - `tasks/todo.md`
-- `adapters/README.md`
+- `adapters/COPILOT.md`
 
 If this file conflicts with `AGENT.md`, `AGENT.md` wins.

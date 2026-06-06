@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-10
+Document version: v0.1.3
+Last updated: 2026-06-06
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -23,6 +23,7 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 - `bash scripts/record-check.sh -- <command>`
 - `bash scripts/log-tool-run.sh --tool <tool> --class <class> --status <pass|fail|blocked> --command "<summary>"`
 - `python3 scripts/bead-transition.py`
+- `python3 scripts/next-step.py [--json]`
 - `python3 scripts/os-health.py`
 - `python3 scripts/import-agent-spend.py`
 - `python3 scripts/github-audit.py`
@@ -34,6 +35,7 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 - `python3 scripts/context-check.py`
 - `python3 scripts/orchestration-check.py`
 - `python3 scripts/tool-execution-check.py`
+- `python3 scripts/run-contract-check.py`
 - `python3 scripts/workflow-check.py`
 - `python3 scripts/goal-frame-check.py`
 - `python3 scripts/long-horizon-check.py`

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.22
-# Last updated: 2026-06-04
+# Version: v0.1.23
+# Last updated: 2026-06-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -37,6 +37,7 @@ ADAPTER_DOCS = [
     "adapters/ADAPTER-INDEX.md",
     "adapters/CLAUDE.md",
     "adapters/CODEX.md",
+    "adapters/COPILOT.md",
     "adapters/GEMINI.md",
     "adapters/ANTIGRAVITY.md",
     "adapters/CURSOR.md",

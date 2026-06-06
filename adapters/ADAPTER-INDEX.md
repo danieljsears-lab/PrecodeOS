@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-17
+Document version: v0.1.6
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -20,9 +20,35 @@ Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared model tier, context-b
 
 - `adapters/CLAUDE.md` — Claude Code-specific notes
 - `adapters/CODEX.md` — Codex-specific notes
+- `adapters/COPILOT.md` — GitHub Copilot-specific notes
 - `adapters/GEMINI.md` — Gemini-specific notes
 - `adapters/ANTIGRAVITY.md` — Antigravity-specific notes
 - `adapters/CURSOR.md` — Cursor-specific notes
+
+## Capability Matrix
+
+Official tool documentation and in-product model selectors remain authoritative for exact model availability, pricing, quotas, preview flags, and file-discovery behavior. This matrix is a maintainer-facing compatibility summary, not a promise that every surface behaves identically.
+
+Status values:
+- `supported` — Precode ships an adapter or shim and expects normal repo use.
+- `shim-supported` — Precode's root shims should be enough unless a repeated tool-specific gap appears.
+- `candidate` — Watch for official instruction behavior plus credible adoption evidence.
+- `roadmap` — Keep in `_maintainer/PRECODE-ROADMAP.md` until there is a stronger need.
+
+| Environment | Status | Auto-load instructions | Scoped rules | CLI | IDE/editor | Cloud PR agent | Model selector | Delegation | Telemetry | Checkpoints | MCP/tools | Review behavior |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Claude Code | supported | `CLAUDE.md` | Tool-native hooks/settings, if configured | yes | optional integrations | no | yes | subagents when available | advisory | Precode checkpoint/compact/handoff | tool-dependent | manual review plus `/review`-style surfaces when available |
+| Codex | supported | `AGENTS.md` | no Precode-native scoped shim | yes | available when tool exposes it | background/cloud when available | yes | bounded workers when available | advisory | Precode checkpoint/handoff | tool-dependent | human-gated review |
+| GitHub Copilot | supported | `.github/copilot-instructions.md`, `AGENTS.md` when supported | `.github/instructions/*.instructions.md` when needed | yes | yes | yes | yes | coding agent / partner agents when enabled | advisory | Precode checkpoint/handoff | tool-dependent | Copilot code review and PR review are evidence, not acceptance |
+| Gemini | supported | `GEMINI.md` | no Precode-native scoped shim | Gemini CLI when available | Code Assist when available | no | yes | agent mode when available | advisory | Precode checkpoint/handoff | MCP/tools when available | human-gated review |
+| Cursor | supported | `AGENTS.md` or Cursor rules | `.cursor/rules` when needed | no | yes | no | yes | agent controls when available | advisory | Precode checkpoint/handoff | MCP/tools when available | human-gated review |
+| Antigravity | supported | tool-dependent | tool-dependent | tool-dependent | yes | tool-dependent | tool-dependent | tool-dependent | advisory | Precode checkpoint/handoff | tool-dependent | human-gated review |
+| Windsurf/Cascade | shim-supported | `AGENTS.md` | `.windsurf/rules` if future evidence warrants | no | yes | no | yes | Cascade planning/features | advisory | tool checkpoints plus Precode checkpoint/handoff | MCP/tools when available | human-gated review |
+| JetBrains/Junie | candidate | tool-dependent | steering/instructions depend on surface | tool-dependent | yes | tool-dependent | yes | tool-dependent | advisory | Precode checkpoint/handoff | tool-dependent | human-gated review |
+| Kiro | candidate | steering files | `.kiro/steering` | yes | yes | web/agent surfaces | yes | autonomous/session modes | advisory | Precode checkpoint/handoff | tool-dependent | human-gated review |
+| Zed | candidate | `.rules` / supported instruction files | rules library/settings | no | yes | no | yes | agent panel | advisory | Precode checkpoint/handoff | tool-dependent | human-gated review |
+| Cline/Roo and similar VS Code agents | roadmap | extension-dependent | extension-dependent | no | yes | no | yes | extension-dependent | advisory | Precode checkpoint/handoff | MCP/tools often available | human-gated review |
+| Replit/Devin and similar hosted agents | roadmap | platform-dependent | platform-dependent | platform-dependent | hosted editor | yes | yes | platform agent | advisory | Precode checkpoint/handoff | platform-dependent | human-gated review |
 
 ## Shared Command Surface
 
