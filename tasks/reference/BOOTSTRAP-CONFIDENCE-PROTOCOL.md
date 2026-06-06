@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-28
+Document version: v0.1.1
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -22,7 +22,7 @@ Is it clear enough to proceed with a supervised PrecodeOS setup plan?
 
 The protocol is intentionally read-only for v1. It inspects the package source and target project, names public file groups and exclusions, reports conflicts and missing dependencies, and gives the first safe next action. It does not copy files, install hooks, edit active memory, mutate CI, change package files, or write app code.
 
-Use this protocol before guided setup, support-assisted setup, or first-use troubleshooting when the source package, target project, or setup state is uncertain.
+Use this protocol before guided setup, support-assisted setup, existing repo intake, or first-use troubleshooting when the source package, target project, or setup state is uncertain.
 
 ## V1 Command
 
@@ -120,7 +120,7 @@ Use plain recommendations:
 | Source and target are identical | Stop; do not treat the package checkout as the target app. |
 | Source is not a plausible PrecodeOS package | Stop and use a clean PrecodeOS checkout. |
 | Target is empty or nearly empty | Proceed to guided setup for a new project after user approval. |
-| Target has existing project material | Review conflicts and owner-file adaptations before copying anything. |
+| Target has existing project material | Run Existing Repo Intake, then review conflicts and owner-file adaptations before copying anything. |
 | Target already has Precode active memory | Validate memory before deciding whether this is setup, repair, or update work. |
 
 ## Guardrails

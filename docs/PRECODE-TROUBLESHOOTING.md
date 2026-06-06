@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-31
+Document version: v0.1.6
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -250,16 +250,19 @@ First checks:
 ```bash
 git status
 find . -maxdepth 2 -type f | sort
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
 ```
 
 Safe path:
 
 - name each conflict before editing
 - preserve existing project files
+- use Existing Repo Intake to summarize repo topology, app directories, stack, likely checks, sensitive surfaces, owner-file gaps, and conflicts
 - propose how existing facts map into Precode owner files
 - stop for approval before changing docs, CI, hooks, package files, or app code
 
-Do not flatten an existing project into the Precode package shape.
+Do not flatten an existing project into the Precode package shape. Existing Repo Intake output is evidence only; it does not approve copying, owner-file adaptation, check execution, PRD approval, bead activation, or app-code edits.
 
 ### Agent Starts Coding Before Setup Or Orientation Is Complete
 
@@ -411,6 +414,7 @@ Do not let technical support become hidden product ownership.
 | `bash scripts/validate-memory.sh` | Active memory, bead pointer, or setup validity is uncertain. | A failure means source state needs attention before work continues. |
 | `python3 scripts/file-inventory.py --check` | Public package files, new docs, copied files, or metadata are uncertain. | Inventory findings are advisory; they do not choose tasks. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` | First setup, source/target folder identity, copy groups, exclusions, conflicts, or first safe setup action are uncertain. | Read-only by default; output is evidence only and does not approve mutation. |
+| `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" | It is generated guidance, not approval. |
 | `python3 scripts/state-check.py` | Active bead or task state looks broken. | Repair source files before generated reports. |

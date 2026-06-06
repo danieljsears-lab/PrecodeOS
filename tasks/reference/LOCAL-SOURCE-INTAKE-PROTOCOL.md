@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-30
+Document version: v0.1.8
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -73,6 +73,8 @@ Do not let local notes, screenshots, exports, or generated summaries drive activ
 If raw source material conflicts with `PRODUCT.md`, `DECISIONS.md`, an approved PRD, the active bead, or another owner file, current owner files win until the user reviews and approves an amendment.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether source material should become intake evidence, PRD shaping, a challenge-planning bead, or a narrow execution bead.
+
+Use `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` before Local Source Intake when the source material is an app repository that already has code, docs, CI, product history, or active work and PrecodeOS has not yet been safely adapted into it.
 
 Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when source material comes from a client engagement, existing repo, external PRD, Ember/backend handoff, sprint plan, or repo-topology decision.
 

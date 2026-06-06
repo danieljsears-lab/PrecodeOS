@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.14
-Last updated: 2026-05-29
+Document version: v0.8.15
+Last updated: 2026-06-06
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -307,6 +307,14 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 It is read-only by default. It names the source, target, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. Its output is evidence only, not permission to mutate the target project.
+
+After Bootstrap Confidence, choose the first adoption fork. Use the fresh install path for an empty or nearly empty target. Use Existing Repo Intake when the target already has app code, docs, CI, product history, or active work:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+```
+
+Existing Repo Intake is read-only by default. It summarizes repo shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, and stop conditions before setup mutation.
 
 Start small:
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-29
+Document version: v0.1.7
+Last updated: 2026-06-06
 
 ## What This Guide Is For
 
@@ -24,7 +24,7 @@ The safest setup path is manual and visible:
 
 1. Pull PrecodeOS from its public GitHub repository.
 2. Run the read-only Bootstrap Confidence check before copying anything.
-3. Choose whether you are setting up a new project or an existing project.
+3. Choose the first adoption fork: fresh install or existing repo intake.
 4. Copy only the public package files that belong in the target project.
 5. Adapt product and project owner files in plain English.
 6. Validate memory before letting an agent build.
@@ -71,6 +71,19 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 `--write-evidence` writes only `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the PrecodeOS package source. It must not write into the target project. Bootstrap output is evidence only; it does not approve copying, overwriting, hook installation, CI changes, active-memory edits, or app-code changes.
+
+After Bootstrap Confidence confirms the source and target, choose the first adoption fork:
+
+- Use the fresh install path when the target is empty or nearly empty.
+- Use Existing Repo Intake when the target already has app code, docs, CI, product history, or active work.
+
+For an existing app, run:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+```
+
+Existing Repo Intake is also read-only by default. It summarizes the app shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, stop conditions, and first safe next action. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, adapt owner files, approve a PRD, activate a bead, or write app code.
 
 ## Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?
 
@@ -153,7 +166,7 @@ Expect the agent to name:
 
 Stop if the agent tries to run a broad installer, invents a `precode` CLI command, installs hooks silently, or starts editing application code.
 
-## Step 3: Choose Your Setup Path
+## Step 3: Choose The First Adoption Fork
 
 Use the new-project path first if you are starting from an empty or nearly empty repository.
 
@@ -199,6 +212,12 @@ Then adapt these files before starting product work:
 
 In an existing project, the goal is to add Precode without flattening the project history, conventions, or current work.
 
+Run Existing Repo Intake before copying or adapting Precode files:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+```
+
 Ask:
 
 ```text
@@ -216,6 +235,7 @@ Safe inspection commands include:
 git status
 find . -maxdepth 2 -type f | sort
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
 ```
 
 The support person or agent should identify:
@@ -226,6 +246,8 @@ The support person or agent should identify:
 - secrets or env-file patterns that must not be copied into Precode docs
 - any generated folders or build outputs that Precode should ignore
 - whether GitHub Actions should be added now or deferred
+- owner-file gaps and proposed adaptation points
+- stop conditions before setup mutation
 
 For existing projects, do not overwrite:
 

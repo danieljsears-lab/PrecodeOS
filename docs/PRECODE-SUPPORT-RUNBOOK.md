@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-05-31
+Document version: v0.1.14
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -36,7 +36,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
 4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
-5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout, then use `docs/PRECODE-GUIDED-SETUP.md`. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout, then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
 
@@ -188,6 +188,19 @@ Stop if the source package and target project are unclear. Mixing them up is the
 
 Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.
 
+After Bootstrap Confidence, choose the first adoption fork:
+
+- Fresh install for empty or nearly empty targets.
+- Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
+
+For existing apps, run:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+```
+
+Existing Repo Intake is read-only by default. It names repo topology, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, first safe next action, and stop conditions. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, approve product facts, activate beads, or write app code.
+
 ### 4. Set Up By Supervised File Group
 
 Use `docs/PRECODE-GUIDED-SETUP.md` as the setup guide and `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` as the public package file dictionary.
@@ -259,7 +272,13 @@ Setup is not complete until the user can explain what the active bead is and whe
 
 ## Existing Project Variant
 
-For an existing project, preserve the project before adapting Precode.
+For an existing project, preserve the project before adapting Precode. Treat this as the existing-app branch at the first adoption fork, not as a fresh install with extra conflicts.
+
+Run Existing Repo Intake after Bootstrap Confidence and before copying or adapting Precode files:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+```
 
 Inspect first:
 
@@ -271,13 +290,15 @@ Inspect first:
 - CI and GitHub Actions
 - generated folders and ignored paths
 - secrets and environment boundaries
+- owner-file gaps and proposed adaptation points
+- stop conditions before setup mutation
 
 Do not overwrite existing project docs or app files. Instead, propose how existing facts should be reflected in Precode owner files.
 
 Support can say:
 
 ```text
-I found existing project material. I will not overwrite it automatically. I will name each conflict, propose where the fact belongs in Precode, and stop for your approval before changing anything.
+I found existing project material. I will not overwrite it automatically. I will run Existing Repo Intake, name each conflict, propose where the fact belongs in Precode, and stop for your approval before changing anything.
 ```
 
 If the project already has active work, make the first Precode bead setup or orientation. Do not turn setup into product implementation.

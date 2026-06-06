@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-21
+Document version: v0.1.1
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -29,7 +29,7 @@ Active memory remains exactly:
 | Entry state | First action | Output |
 |---|---|---|
 | Fresh Precode setup | Use `docs/PRECODE-GUIDED-SETUP.md`, validate Precode, then intake client materials. | Valid Precode kernel plus source summary. |
-| Existing non-Precode repo | Inspect the repo read-only, identify app layout and conflicts, then adapt Precode around current conventions. | Owner-file map and setup/adaptation plan. |
+| Existing non-Precode repo | Run Bootstrap Confidence, then Existing Repo Intake before copying or adapting Precode files. | Read-only repo intake evidence plus owner-file map and setup/adaptation plan. |
 | Existing Precode repo | Load active memory, active bead, and primary authority before ingesting new client material. | Intake summary plus PRD amendment or bead path. |
 | External PRD/design handoff | Run Local Source Intake on the external PRD and design materials. | Normalized PRD-ready source summary. |
 | Ember/backend handoff | Treat `Backend-dev-plan.md`, sprint plans, and backend architecture notes as external source evidence. | Backend source summary plus candidate PRD/decomposition inputs. |
@@ -77,6 +77,8 @@ If external material conflicts with current authority, current authority wins un
 
 An existing codebase is valid source material, but intake should start read-only.
 
+When PrecodeOS is not yet safely adapted into the target repo, use `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` first. That branch preserves existing app code, docs, package files, CI, env files, and app structure while producing evidence for owner-file adaptation. Then use Local Source Intake for external PRDs, design files, backend handoff plans, sprint plans, and product requirements.
+
 Inspect only enough to answer:
 
 - repo topology and app directories
@@ -95,6 +97,7 @@ Use safe read-only commands first, such as:
 pwd
 git status
 find . -maxdepth 2 -type f | sort
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
 ```
 
 Do not run installers, formatters, migrations, destructive commands, dependency updates, app-code edits, or external mutations during intake unless a separate approved setup or unblocker bead allows them.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-02">
+  <meta name="generated-at" content="2026-06-06">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.6</span><span>Updated 2026-05-29</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.7</span><span>Updated 2026-06-06</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -199,7 +199,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>PrecodeOS is not an app you launch. It is a small repo-native operating layer for AI coding work: Markdown authority files, task contracts, adapter notes, validation scripts, and generated evidence rules that live inside a project folder.</p>
 <p>If you are helping someone else through setup, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</p>
 <p>The safest setup path is manual and visible:</p>
-<ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Run the read-only Bootstrap Confidence check before copying anything.</li><li>Choose whether you are setting up a new project or an existing project.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
+<ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Run the read-only Bootstrap Confidence check before copying anything.</li><li>Choose the first adoption fork: fresh install or existing repo intake.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
 <p>If you need the exact public package technical dictionary, use <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the package inventory remains the public file map.</p>
 <h2 id="before-you-start">Before You Start</h2>
 <p>You need:</p>
@@ -216,6 +216,11 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Use generated evidence only when you explicitly want source-side setup evidence:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --write-evidence</code></pre>
 <p><code>--write-evidence</code> writes only <code>logs/bootstrap-check.json</code> and <code>logs/bootstrap-check.md</code> in the PrecodeOS package source. It must not write into the target project. Bootstrap output is evidence only; it does not approve copying, overwriting, hook installation, CI changes, active-memory edits, or app-code changes.</p>
+<p>After Bootstrap Confidence confirms the source and target, choose the first adoption fork:</p>
+<ul><li>Use the fresh install path when the target is empty or nearly empty.</li><li>Use Existing Repo Intake when the target already has app code, docs, CI, product history, or active work.</li></ul>
+<p>For an existing app, run:</p>
+<pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
+<p>Existing Repo Intake is also read-only by default. It summarizes the app shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, stop conditions, and first safe next action. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, adapt owner files, approve a PRD, activate a bead, or write app code.</p>
 <h2 id="ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</h2>
 <p>Use this fit check if you are in an Ember bootcamp and are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.</p>
 <p>Use PrecodeOS now when:</p>
@@ -248,7 +253,7 @@ Explain the plan in plain English and stop for my approval.</code></pre>
 <p>Expect the agent to name:</p>
 <ul><li>the PrecodeOS package checkout</li><li>the target project folder</li><li>whether this is a new project or existing project</li><li>the public file groups to copy</li><li>the private, generated, local, and secret files to exclude</li><li>conflicts, missing dependencies, and the first safe next action from Bootstrap Confidence</li><li>the first validation command</li></ul>
 <p>Stop if the agent tries to run a broad installer, invents a <code>precode</code> CLI command, installs hooks silently, or starts editing application code.</p>
-<h2 id="step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</h2>
+<h2 id="step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</h2>
 <p>Use the new-project path first if you are starting from an empty or nearly empty repository.</p>
 <p>Use the existing-project path if your target project already has application code, product docs, project conventions, or active work.</p>
 <h3 id="path-a-new-project">Path A: New Project</h3>
@@ -266,6 +271,8 @@ Before changing anything, show me the copy checklist and the files that will be 
 <ul><li><code>PRODUCT.md</code>: product promise, users, strategy, bets, success signals, and voice</li><li><code>PROJECT-CONTEXT.md</code>: app directory, stack, conventions, checks, integrations, and sensitive boundaries</li><li><code>DECISIONS.md</code>: hard decisions already known for this project</li><li><code>tasks/todo.md</code>: the first setup bead and current state</li></ul>
 <h3 id="path-b-existing-project">Path B: Existing Project</h3>
 <p>In an existing project, the goal is to add Precode without flattening the project history, conventions, or current work.</p>
+<p>Run Existing Repo Intake before copying or adapting Precode files:</p>
+<pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Ask:</p>
 <pre><code class="language-text">Set up PrecodeOS for an existing project.
 Use the public PrecodeOS checkout as the source package.
@@ -276,9 +283,10 @@ Then show me a setup plan with conflicts, proposed owner-file adaptations, and v
 <p>Safe inspection commands include:</p>
 <pre><code class="language-bash">git status
 find . -maxdepth 2 -type f | sort
-python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;
+python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>The support person or agent should identify:</p>
-<ul><li>existing docs that may overlap with Precode owner files</li><li>the real app directory</li><li>existing test, lint, build, and typecheck commands</li><li>secrets or env-file patterns that must not be copied into Precode docs</li><li>any generated folders or build outputs that Precode should ignore</li><li>whether GitHub Actions should be added now or deferred</li></ul>
+<ul><li>existing docs that may overlap with Precode owner files</li><li>the real app directory</li><li>existing test, lint, build, and typecheck commands</li><li>secrets or env-file patterns that must not be copied into Precode docs</li><li>any generated folders or build outputs that Precode should ignore</li><li>whether GitHub Actions should be added now or deferred</li><li>owner-file gaps and proposed adaptation points</li><li>stop conditions before setup mutation</li></ul>
 <p>For existing projects, do not overwrite:</p>
 <ul><li>existing <code>README.md</code></li><li>existing product, architecture, API, security, or data-model docs</li><li>app source code</li><li>package manager files</li><li>CI files</li><li>environment files</li><li>generated output</li></ul>
 <p>Instead, ask the agent to propose how existing project facts should be reflected in Precode owner files, then stop for review.</p>
@@ -336,7 +344,7 @@ Here are the conflicts and choices that need your approval:</code></pre>
 <p>Do not use private local files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="PRECODE-USER-GUIDE.html"><span>Next</span>How To Use PrecodeOS</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-your-setup-path">Step 3: Choose Your Setup Path</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>

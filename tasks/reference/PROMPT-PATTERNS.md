@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-05-30
+Document version: v0.1.15
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -30,6 +30,16 @@ Before setup or intake, confirm the PrecodeOS package source, the target project
 Do not copy files, create files, write code, install hooks, change CI, or update authority files until you explain the setup state and I approve the next narrow step.
 
 If repo facts conflict with active memory, PROJECT-CONTEXT.md, or the setup guide, surface the conflict before continuing.
+```
+
+### Existing Repo Intake
+
+```text
+Run Existing Repo Intake after Bootstrap Confidence.
+Use the PrecodeOS checkout as the package source and my existing app repo as the target.
+Do not copy, edit, install hooks, change CI, run app commands, adapt owner files, approve a PRD, activate a bead, or write code.
+Tell me the repo topology, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, first safe next action, and stop conditions.
+Treat the output as evidence only, not permission to mutate.
 ```
 
 ### One Question At A Time

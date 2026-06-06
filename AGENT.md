@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.13
-Last updated: 2026-05-21
+Document version: v0.1.14
+Last updated: 2026-06-06
 
 ## Project
 
@@ -80,6 +80,7 @@ Use only these files as active memory:
 - `python3 scripts/file-inventory.py`
 - `python3 scripts/file-inventory.py --check`
 - `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> [--json|--write-evidence]`
+- `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root> [--json|--write-evidence]`
 - `python3 scripts/version-check.py`
 - `bash scripts/scheduled-audit.sh`
 

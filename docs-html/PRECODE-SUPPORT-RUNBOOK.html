@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-02">
+  <meta name="generated-at" content="2026-06-06">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.13</span><span>Updated 2026-05-31</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.14</span><span>Updated 2026-06-06</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -202,7 +202,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>When users ask where to put reference files, notes, documents, screenshots, research, or design exports, route them to root-level <code>project-evidence/</code> in the target project. It is project-owned raw evidence, not active memory, not task approval, and not implementation instruction. Use Local Source Intake before promoting any conclusions into owner files.</p>
 <h2 id="fast-support-slot-flow">Fast Support Slot Flow</h2>
 <p>Use this flow when a support engineer has a short onboarding, setup, or unblocker slot.</p>
-<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, run <code>python3 scripts/bootstrap-check.py --source &amp;lt;precode-package-root&amp;gt; --target &amp;lt;target-project-root&amp;gt;</code> from the package checkout, then use <code>docs/PRECODE-GUIDED-SETUP.md</code>. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
+<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, run <code>python3 scripts/bootstrap-check.py --source &amp;lt;precode-package-root&amp;gt; --target &amp;lt;target-project-root&amp;gt;</code> from the package checkout, then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
 <p>Support can say:</p>
 <pre><code class="language-text">I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.</code></pre>
 <h2 id="ember-bootcamp-precode-fit-check">Ember Bootcamp Precode Fit Check</h2>
@@ -267,6 +267,11 @@ find . -maxdepth 2 -type f | sort
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Stop if the source package and target project are unclear. Mixing them up is the easiest first-time failure.</p>
 <p>Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.</p>
+<p>After Bootstrap Confidence, choose the first adoption fork:</p>
+<ul><li>Fresh install for empty or nearly empty targets.</li><li>Existing Repo Intake for repos with app code, docs, CI, product history, or active work.</li></ul>
+<p>For existing apps, run:</p>
+<pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
+<p>Existing Repo Intake is read-only by default. It names repo topology, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, first safe next action, and stop conditions. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, approve product facts, activate beads, or write app code.</p>
 <h3 id="4-set-up-by-supervised-file-group">4. Set Up By Supervised File Group</h3>
 <p>Use <code>docs/PRECODE-GUIDED-SETUP.md</code> as the setup guide and <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> as the public package file dictionary.</p>
 <p>For a new project, copy public package files by supervised group, not by blind overwrite:</p>
@@ -292,12 +297,14 @@ python3 scripts/next-step.py</code></pre>
 <pre><code class="language-text">Before editing, load only Precode active memory: AGENT.md, DECISIONS.md, and tasks/todo.md. Then tell me the active bead, primary authority, files in play, checks, stop conditions, and anything blocked. Do not start coding yet.</code></pre>
 <p>Setup is not complete until the user can explain what the active bead is and when they should stop.</p>
 <h2 id="existing-project-variant">Existing Project Variant</h2>
-<p>For an existing project, preserve the project before adapting Precode.</p>
+<p>For an existing project, preserve the project before adapting Precode. Treat this as the existing-app branch at the first adoption fork, not as a fresh install with extra conflicts.</p>
+<p>Run Existing Repo Intake after Bootstrap Confidence and before copying or adapting Precode files:</p>
+<pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Inspect first:</p>
-<ul><li>current <code>git status</code></li><li>existing README and docs</li><li>package manager and framework files</li><li>real app directory</li><li>test, lint, build, and typecheck commands</li><li>CI and GitHub Actions</li><li>generated folders and ignored paths</li><li>secrets and environment boundaries</li></ul>
+<ul><li>current <code>git status</code></li><li>existing README and docs</li><li>package manager and framework files</li><li>real app directory</li><li>test, lint, build, and typecheck commands</li><li>CI and GitHub Actions</li><li>generated folders and ignored paths</li><li>secrets and environment boundaries</li><li>owner-file gaps and proposed adaptation points</li><li>stop conditions before setup mutation</li></ul>
 <p>Do not overwrite existing project docs or app files. Instead, propose how existing facts should be reflected in Precode owner files.</p>
 <p>Support can say:</p>
-<pre><code class="language-text">I found existing project material. I will not overwrite it automatically. I will name each conflict, propose where the fact belongs in Precode, and stop for your approval before changing anything.</code></pre>
+<pre><code class="language-text">I found existing project material. I will not overwrite it automatically. I will run Existing Repo Intake, name each conflict, propose where the fact belongs in Precode, and stop for your approval before changing anything.</code></pre>
 <p>If the project already has active work, make the first Precode bead setup or orientation. Do not turn setup into product implementation.</p>
 <h2 id="first-use-coaching">First-Use Coaching</h2>
 <p>Teach the user this loop:</p>

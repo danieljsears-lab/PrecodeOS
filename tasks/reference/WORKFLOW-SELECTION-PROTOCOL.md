@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-29
+Document version: v0.1.6
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -38,6 +38,7 @@ Choose the workflow that matches the current situation:
 
 | Current situation | Recommended workflow | Next artifact |
 |---|---|---|
+| PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Rough idea, scattered notes, screenshots, research, chat summary, or issue export | Local Source Intake | reviewed source summary |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
@@ -52,6 +53,8 @@ If no row fits, stop and name what is missing: source evidence, product definiti
 If the workflow involves sensitive, external, destructive, or `bounded-afk` execution, the next bead proposal should include a Run Contract or explicitly explain why one is not needed. Use plain output language: Allowed actions, Proof needed, Approval required before, and Stop if.
 
 Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the main uncertainty is whether the user problem, current workaround, demand signal, alternative, or smallest learning step is real enough to justify product definition. Its Discovery Summary is evidence only; it may recommend `proceed`, `pause`, `narrow`, or `kill`, but it does not approve a PRD, activate beads, choose work, or rewrite owner files.
+
+Use `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` after Bootstrap Confidence and before setup mutation when adopting PrecodeOS into an existing app. Its report is evidence only; it does not approve copying, owner-file adaptation, check execution, PRD approval, bead activation, or app-code edits.
 
 ## Workflow Selection Output
 
