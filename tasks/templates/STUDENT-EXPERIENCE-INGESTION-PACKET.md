@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-06-06
 
 ## Purpose
@@ -25,6 +25,8 @@ The packet combines:
 
 The packet helps Claude Code create one bounded Precode bead for the core spine. It does not authorize coding by itself.
 
+Claude Code should not infer missing scope from an incomplete packet. If the handoff checklist below is incomplete, Claude should ask for the missing information and stop before creating a bead.
+
 ## Flow
 
 ```text
@@ -39,6 +41,21 @@ Student Idea-to-MVE or bootcamp PRD input
 ```
 
 Support engineers may help set up the local environment and scaffold in parallel. They do not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.
+
+## Complete Before Claude Code Handoff
+
+Before pasting this packet into Claude Code, make sure these items are filled in. If one is unknown, write `unknown` and explain what decision or evidence is missing.
+
+- [ ] Approved bootcamp PRD or PRD-like input is named or linked.
+- [ ] Experience design tool and artifact links, paths, screenshots, or pasted summaries are included.
+- [ ] Target user, problem, promise, and minimum value moment are written in plain language.
+- [ ] Core spine trigger, first action, key steps, and completion moment are named.
+- [ ] Included screens and states are named, including any loading, error, success, and mobile states that matter for the first coded version.
+- [ ] First coded core-spine scope is separated from explicit not-yet scope.
+- [ ] Open questions, risks, or sensitive surfaces are named, or marked `none known`.
+- [ ] Feedback status is recorded, even if feedback is not available yet.
+
+Claude Code handoff rule: incomplete required fields block bead creation. Claude may ask for missing information, but it must not create a bead, update `tasks/todo.md`, activate work, or code from an incomplete packet.
 
 ## Design Canvas Input Prompt
 
@@ -251,7 +268,15 @@ Paste this into Claude Code with the completed packet.
 ```text
 Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
 
-Summarize:
+First inspect the "Complete Before Claude Code Handoff" checklist and the packet fields.
+
+If any required field is missing, ambiguous, or marked unknown in a way that changes implementation scope, ask me for the missing information and stop. Do not create a bead yet.
+
+If this packet has a formal Precode PRD shard in tasks/prds/, you may draft one ready candidate bead file for the core spine. Do not update tasks/todo.md, activate the bead, or code.
+
+If this packet only has a bootcamp-approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
+
+In the candidate bead or proposal, summarize:
 - the core scope
 - the minimum value moment
 - files likely in play
@@ -264,7 +289,7 @@ Summarize:
 
 Preserve the approved PRD intent and Experience core spine.
 
-Do not code until I approve the bead.
+Do not code until I approve the bead through the normal Precode workflow.
 ```
 
 ## Support Engineer Readiness Prompt

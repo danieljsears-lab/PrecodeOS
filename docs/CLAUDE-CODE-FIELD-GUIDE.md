@@ -9,7 +9,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.10
+Document version: v0.1.11
 Last updated: 2026-06-06
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
@@ -94,7 +94,19 @@ Field rule: one bead, one feature slice, one chat. When you finish and accept a 
 - [ ] I have not asked Claude to work on two things at once
 - [ ] I am in the project root folder, and I have not renamed it
 
-If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Do not ask Claude to start building directly from a design canvas.
+If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Before you paste it in, complete the packet's "Complete Before Claude Code Handoff" checklist. If required fields are missing, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.
+
+The safe path is:
+
+```text
+completed Experience packet
+  -> Claude Code checks required fields
+  -> one candidate core-spine bead
+  -> you approve the bead through Precode
+  -> coding begins
+```
+
+If your packet has a bootcamp-approved PRD-like input but no formal Precode PRD shard yet, Claude should produce a candidate bead proposal only and stop. It should not activate work or code until the normal Precode intake or PRD promotion path has happened.
 
 If this is your first Claude Code session after idea discovery, you may have a Conviction Packet but no PRD or bead yet. Bring the packet into Local Source Intake first. Do not ask Claude Code to turn the packet directly into code, and do not let it skip from discovery evidence to implementation.
 
