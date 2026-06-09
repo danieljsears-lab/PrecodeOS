@@ -70,6 +70,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
   font-size: 14px;
 }
 .nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+.nav-divider { height: 1px; margin: 16px 0 14px; border: 0; background: var(--line); }
 main { min-width: 0; }
 .hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
 .hero { display: grid; gap: 18px; padding-top: 58px; }
@@ -179,8 +180,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   </div>
   <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
   <nav class="nav-group" aria-label="Docs">
-    <p class="nav-label">Compass</p>
-    <a class="nav-link" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a>
+    <p class="nav-label">Setup And Daily Work</p><a class="nav-link active" href="index.html">Docs Home</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><hr class="nav-divider"><p class="nav-label">Advanced Topics</p><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a>
   </nav>
 </aside>
 
@@ -195,51 +195,16 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <div class="compass-grid">
 <section class="lane">
   <p class="eyebrow">Learning Path</p>
-  <h2>Start Here</h2>
-  <p>Understand the Builder OS model before choosing a practical path.</p>
-  <ul><li><a href="PRECODE-OS-README.html">PrecodeOS Explainer</a></li><li><a href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a></li></ul>
+  <h2>Setup And Daily Work</h2>
+  <p>Start here for orientation, daily operation, student guidance, setup, and the plain-English software-building path.</p>
+  <ul><li><a href="index.html">Docs Home</a></li><li><a href="PRECODE-OS-README.html">PrecodeOS Explainer</a></li><li><a href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a></li><li><a href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a></li><li><a href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a></li><li><a href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a></li></ul>
 </section>
 
 <section class="lane">
   <p class="eyebrow">Learning Path</p>
-  <h2>Set Up PrecodeOS</h2>
-  <p>Adopt Precode into a new or existing project with visible copy boundaries.</p>
-  <ul><li><a href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a></li></ul>
-</section>
-
-<section class="lane">
-  <p class="eyebrow">Learning Path</p>
-  <h2>Use Precode Day To Day</h2>
-  <p>Run a safer agent session, decide what to approve, and ask for proof.</p>
-  <ul><li><a href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a></li><li><a href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a></li></ul>
-</section>
-
-<section class="lane">
-  <p class="eyebrow">Learning Path</p>
-  <h2>Troubleshoot</h2>
-  <p>Stop, identify the symptom, repair source files, and validate before resuming.</p>
-  <ul><li><a href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a></li></ul>
-</section>
-
-<section class="lane">
-  <p class="eyebrow">Learning Path</p>
-  <h2>Support Someone Else</h2>
-  <p>Guide first-time setup and first-use confidence without taking over product truth.</p>
-  <ul><li><a href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a></li></ul>
-</section>
-
-<section class="lane">
-  <p class="eyebrow">Learning Path</p>
-  <h2>Understand The System</h2>
-  <p>Review the philosophy, architecture, trust boundaries, and limitations.</p>
-  <ul><li><a href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a></li><li><a href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a></li></ul>
-</section>
-
-<section class="lane">
-  <p class="eyebrow">Learning Path</p>
-  <h2>Technical Inventory</h2>
-  <p>Find the file dictionary, ownership boundaries, generated outputs, and scripts.</p>
-  <ul><li><a href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a></li></ul>
+  <h2>Advanced Topics</h2>
+  <p>Use these when something breaks, someone else needs support, or you need architecture, package inventory, or philosophy context.</p>
+  <ul><li><a href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a></li><li><a href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a></li><li><a href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a></li><li><a href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a></li><li><a href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a></li></ul>
 </section>
 </div>
   <h2>All Docs</h2>
@@ -250,16 +215,28 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <span class="meta"><span>PRECODE-OS-README.md</span><span>reference</span></span>
 </a>
 
+<a class="doc-card" href="PRECODE-USER-GUIDE.html">
+  <strong>How To Use PrecodeOS</strong>
+  <p>What This Guide Helps You Do</p>
+  <span class="meta"><span>PRECODE-USER-GUIDE.md</span><span>reference</span></span>
+</a>
+
+<a class="doc-card" href="CLAUDE-CODE-FIELD-GUIDE.html">
+  <strong>Claude Code Field Guide For Students</strong>
+  <p>A Bootcamp Companion For Claude Code + PrecodeOS</p>
+  <span class="meta"><span>CLAUDE-CODE-FIELD-GUIDE.md</span><span>reference</span></span>
+</a>
+
 <a class="doc-card" href="PRECODE-GUIDED-SETUP.html">
   <strong>PrecodeOS Guided Setup</strong>
   <p>What This Guide Is For</p>
   <span class="meta"><span>PRECODE-GUIDED-SETUP.md</span><span>reference</span></span>
 </a>
 
-<a class="doc-card" href="PRECODE-USER-GUIDE.html">
-  <strong>How To Use PrecodeOS</strong>
-  <p>What This Guide Helps You Do</p>
-  <span class="meta"><span>PRECODE-USER-GUIDE.md</span><span>reference</span></span>
+<a class="doc-card" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">
+  <strong>How To Build Software Using PrecodeOS + AI Coding Agents</strong>
+  <p>Start Here: You Are Not Just Prompting</p>
+  <span class="meta"><span>HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</span><span>reference</span></span>
 </a>
 
 <a class="doc-card" href="PRECODE-TROUBLESHOOTING.html">
@@ -274,24 +251,6 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <span class="meta"><span>PRECODE-SUPPORT-RUNBOOK.md</span><span>reference</span></span>
 </a>
 
-<a class="doc-card" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">
-  <strong>How To Build Software Using PrecodeOS + AI Coding Agents</strong>
-  <p>Start Here: You Are Not Just Prompting</p>
-  <span class="meta"><span>HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</span><span>reference</span></span>
-</a>
-
-<a class="doc-card" href="CLAUDE-CODE-FIELD-GUIDE.html">
-  <strong>Claude Code Field Guide For Students</strong>
-  <p>A Bootcamp Companion For Claude Code + PrecodeOS</p>
-  <span class="meta"><span>CLAUDE-CODE-FIELD-GUIDE.md</span><span>reference</span></span>
-</a>
-
-<a class="doc-card" href="PRECODE-MANIFESTO.html">
-  <strong>PrecodeOS Manifesto</strong>
-  <p>The Precode Answer</p>
-  <span class="meta"><span>PRECODE-MANIFESTO.md</span><span>reference</span></span>
-</a>
-
 <a class="doc-card" href="PRECODE-ARCHITECTURE-OVERVIEW.html">
   <strong>PrecodeOS Architecture Overview</strong>
   <p>Executive Summary</p>
@@ -302,6 +261,12 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <strong>PrecodeOS Package File Inventory</strong>
   <p>Purpose</p>
   <span class="meta"><span>PRECODE-PACKAGE-FILE-INVENTORY.md</span><span>reference</span></span>
+</a>
+
+<a class="doc-card" href="PRECODE-MANIFESTO.html">
+  <strong>PrecodeOS Manifesto</strong>
+  <p>The Precode Answer</p>
+  <span class="meta"><span>PRECODE-MANIFESTO.md</span><span>reference</span></span>
 </a>
 </div>
 </section>
