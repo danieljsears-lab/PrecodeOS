@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="PrecodeOS docs-html.py">
+  <meta name="generated-at" content="2026-06-09">
+  <title>PrecodeOS Daily Cockpit · PrecodeOS Docs</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1c2520;
+  --muted: #637067;
+  --line: #d8dfda;
+  --paper: #fffdf8;
+  --wash: #f7f1e8;
+  --wash-2: #edf5f2;
+  --accent: #176c63;
+  --accent-2: #b65332;
+  --accent-3: #284f8f;
+  --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255,253,248,.94), rgba(247,241,232,.98)),
+    var(--wash);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+.shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+}
+.brand { display: grid; gap: 4px; margin-bottom: 22px; }
+.brand strong { font-size: 18px; }
+.brand span, .notice, .meta, .toc a, .doc-card p, .lane p { color: var(--muted); }
+.notice {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent-2);
+  background: #fffaf1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.nav-group { margin-top: 22px; }
+.nav-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover, .nav-link.active { background: var(--wash-2); color: var(--accent); }
+.nav-divider { height: 1px; margin: 16px 0 14px; border: 0; background: var(--line); }
+main { min-width: 0; }
+.hero, .content { max-width: 1040px; margin: 0 auto; padding: 42px 32px; }
+.hero { display: grid; gap: 18px; padding-top: 58px; }
+.eyebrow {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: 0; }
+h1 { max-width: 850px; margin: 0; font-size: 48px; }
+h2 { margin-top: 42px; font-size: 28px; }
+h3 { margin-top: 30px; font-size: 21px; }
+h4 { margin-top: 24px; font-size: 17px; }
+.lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
+.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.lane, .doc-card, .page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.lane { padding: 18px; }
+.lane h2 { margin: 0 0 8px; font-size: 22px; }
+.lane ul, .toc ul { margin: 12px 0 0; padding-left: 20px; }
+.doc-list { display: grid; gap: 12px; margin-top: 18px; }
+.doc-card { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--ink); }
+.doc-card:hover { border-color: var(--accent); }
+.doc-card strong { font-size: 18px; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+.article > :first-child { margin-top: 0; }
+.article p, .article li { max-width: 78ch; }
+.toc {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, .88);
+  padding: 16px;
+}
+.toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
+.toc .level-3 { padding-left: 12px; }
+code {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: #f3f0e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .92em;
+}
+pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #1d2521;
+  color: #f8fbf7;
+}
+pre code { border: 0; padding: 0; background: transparent; color: inherit; }
+blockquote {
+  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 10px 18px;
+  background: var(--wash-2);
+  color: #314139;
+}
+.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
+.page-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.page-nav a { padding: 14px; color: var(--ink); text-decoration: none; }
+.page-nav span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(--muted); font-size: 13px; }
+@media (max-width: 920px) {
+  .shell { display: block; }
+  .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .layout { display: block; }
+  .toc { position: relative; top: auto; margin-top: 18px; }
+  h1 { font-size: 36px; }
+}
+@media (max-width: 620px) {
+  .hero, .content { padding: 30px 18px; }
+  .article { padding: 22px; }
+  .page-nav { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    
+<aside class="sidebar">
+  <div class="brand">
+    <strong>PrecodeOS Docs</strong>
+    <span>Generated public reading surface</span>
+  </div>
+  <div class="notice">Generated from canonical Markdown in <code>docs/*.md</code>. Use the Markdown source for authority.</div>
+  <nav class="nav-group" aria-label="Docs">
+    <p class="nav-label">Setup And Daily Work</p><a class="nav-link" href="index.html">Docs Home</a><a class="nav-link active" href="PRECODE-DAILY-COCKPIT.html">PrecodeOS Daily Cockpit</a><a class="nav-link" href="PRECODE-OS-README.html">PrecodeOS Explainer</a><a class="nav-link" href="PRECODE-USER-GUIDE.html">How To Use PrecodeOS</a><a class="nav-link" href="CLAUDE-CODE-FIELD-GUIDE.html">Claude Code Field Guide For Students</a><a class="nav-link" href="PRECODE-GUIDED-SETUP.html">PrecodeOS Guided Setup</a><a class="nav-link" href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html">How To Build Software Using PrecodeOS + AI Coding Agents</a><hr class="nav-divider"><p class="nav-label">Advanced Topics</p><a class="nav-link" href="PRECODE-TROUBLESHOOTING.html">PrecodeOS Troubleshooting</a><a class="nav-link" href="PRECODE-SUPPORT-RUNBOOK.html">PrecodeOS Support Runbook</a><a class="nav-link" href="PRECODE-ARCHITECTURE-OVERVIEW.html">PrecodeOS Architecture Overview</a><a class="nav-link" href="PRECODE-PACKAGE-FILE-INVENTORY.html">PrecodeOS Package File Inventory</a><a class="nav-link" href="PRECODE-MANIFESTO.html">PrecodeOS Manifesto</a>
+  </nav>
+</aside>
+
+    <main>
+      
+<section class="hero">
+  <p class="eyebrow">PrecodeOS Doc</p>
+  <h1>PrecodeOS Daily Cockpit</h1>
+  <p class="lede">Use this cockpit while you work with an AI coding agent.</p>
+  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.0</span><span>Updated 2026-06-09</span></p>
+</section>
+<section class="content layout">
+  <article class="article">
+    <p>Use this cockpit while you work with an AI coding agent.</p>
+<p>PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.</p>
+<p>This page is prompt-first. When a command exists, the command is shown too, but the safest daily habit is to ask the agent to explain what it is doing before it changes anything.</p>
+<p>Generated reports are evidence only. Before work resumes, return to <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code>, the active bead, the primary authority file, and your explicit approval.</p>
+<p>For the deeper operating manual, see <code>PRECODE-USER-GUIDE.md</code>. For Claude Code classroom habits, see <code>CLAUDE-CODE-FIELD-GUIDE.md</code>. For symptom lookup, see <code>PRECODE-TROUBLESHOOTING.md</code>. For the full prompt source, see <code>../tasks/reference/PROMPT-PATTERNS.md</code>. For recovery details, see <code>../tasks/reference/RECOVERY-PROTOCOL.md</code>.</p>
+<h2 id="quick-daily-loop">Quick Daily Loop</h2>
+<div class="table-wrap"><table><thead><tr><th>Moment</th><th>Paste this first</th><th>What it should produce</th></tr></thead><tbody><tr><td>Start</td><td><code>Run the Precode session start. Explain the Context Pack in plain English before editing.</code></td><td>Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning.</td></tr><tr><td>Confirm</td><td><code>Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.</code></td><td>A bounded task explanation before implementation begins.</td></tr><tr><td>Choose path</td><td><code>Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.</code></td><td>A workflow recommendation without coding or task activation.</td></tr><tr><td>Build</td><td><code>Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.</code></td><td>Scoped implementation inside the approved files and task boundary.</td></tr><tr><td>Prove</td><td><code>You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.</code></td><td>Recorded proof, failures or blockers, and any manual verification needed.</td></tr><tr><td>Learn</td><td><code>Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory or a task plan.</code></td><td>A lesson summary that stays evidence-only.</td></tr><tr><td>Close</td><td><code>Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.</code></td><td>Closeout readiness, health, validation, transition blockers, learning diary update.</td></tr><tr><td>Recover</td><td><code>I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.</code></td><td>A conservative recovery plan before repair.</td></tr></tbody></table></div>
+<h2 id="core-prompts">Core Prompts</h2>
+<h3 id="start-the-session">Start The Session</h3>
+<p>Use when you begin or need to reset the working context.</p>
+<pre><code class="language-text">Run the Precode session start. Explain the Context Pack in plain English: current bead, done-when target, primary authority, files in play, out of scope, checks, stop conditions, open questions, and anything generated that must not be treated as instructions.</code></pre>
+<p>Command:</p>
+<pre><code class="language-bash">bash scripts/session-start.sh</code></pre>
+<p>Expected output: the active memory reminder, current bead, done-when target, files in play, checks, stop conditions, Goal Frame status if present, router guidance, and generated-report warning.</p>
+<h3 id="confirm-the-task-before-editing">Confirm The Task Before Editing</h3>
+<p>Use when the agent looks ready to code but has not explained the boundary.</p>
+<pre><code class="language-text">Before editing, confirm the active bead, the primary authority file, the files in play, the first check you expect to run, and what would make you stop or ask me.</code></pre>
+<p>Expected output: a plain-English boundary for the current task. If the agent cannot name the bead, owner file, files in play, and checks, do not let implementation continue.</p>
+<h3 id="choose-the-right-workflow">Choose The Right Workflow</h3>
+<p>Use when you are not sure whether the next move is intake, PRD work, bead work, review, recovery, or handoff.</p>
+<pre><code class="language-text">Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, artifact to produce next, required authority source, user approval needed, stop condition, and generated-report warning before doing work.</code></pre>
+<p>Command:</p>
+<pre><code class="language-bash">python3 scripts/workflow-check.py</code></pre>
+<p>Expected output: advisory workflow warnings or confirmation. Workflow guidance does not approve work, activate a bead, or replace the active bead.</p>
+<h3 id="keep-implementation-bounded">Keep Implementation Bounded</h3>
+<p>Use when the task is ready to build.</p>
+<pre><code class="language-text">Work only on the active bead. Load active memory, the active bead, the primary authority, and only the reference docs whose LOAD_WHEN applies. Do not use generated reports, source notes, or diary entries as instructions.</code></pre>
+<p>Expected output: implementation that stays inside the active bead&#x27;s files in play and stop conditions.</p>
+<h3 id="ask-for-evidence">Ask For Evidence</h3>
+<p>Use when the agent says the work is done.</p>
+<pre><code class="language-text">You said this is done. Show me the evidence. Run the recorded check and tell me what passed, what failed, and what I should verify myself.</code></pre>
+<p>Command pattern:</p>
+<pre><code class="language-bash">bash scripts/record-check.sh -- &lt;check command&gt;</code></pre>
+<p>Expected output: a recorded check result in <code>logs/check-results.jsonl</code>, check output under <code>logs/check-output/</code>, and updated closeout evidence for the active bead.</p>
+<h3 id="checkpoint-mid-session">Checkpoint Mid-Session</h3>
+<p>Use when context feels crowded, the task got fuzzy, or you may need to pause.</p>
+<pre><code class="language-text">Checkpoint the session. Tell me whether we should continue, repair, split, pause for manual testing, or close. Include what changed, what evidence exists, and what is still uncertain.</code></pre>
+<p>Command:</p>
+<pre><code class="language-bash">bash scripts/checkpoint.sh</code></pre>
+<p>Expected output: current bead state, done-when target, files in play, blockers, Build Loop Health, and a handback-style summary.</p>
+<h3 id="close-the-session">Close The Session</h3>
+<p>Use when work is done for now or you need a clean stop.</p>
+<pre><code class="language-text">Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.</code></pre>
+<p>Command:</p>
+<pre><code class="language-bash">bash scripts/session-close.sh</code></pre>
+<p>Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, and learning diary update.</p>
+<h2 id="runnable-reports">Runnable Reports</h2>
+<p>Only use these as evidence. They help you understand the project; they do not choose tasks or approve work.</p>
+<div class="table-wrap"><table><thead><tr><th>Report or command</th><th>Run it when</th><th>What the output means</th></tr></thead><tbody><tr><td><code>bash scripts/session-start.sh</code></td><td>Starting or resetting daily work.</td><td>Shows the context pack and router guidance. Treat it as orientation before work.</td></tr><tr><td><code>python3 scripts/next-step.py</code></td><td>You ask &quot;what now?&quot;</td><td>Shows generated next-step guidance. It is not transition approval.</td></tr><tr><td><code>python3 scripts/os-health.py</code></td><td>You need a refreshed health report.</td><td>Writes <code>OS-HEALTH.md</code> and <code>logs/os-health.json</code>; warnings mean inspect source state and evidence.</td></tr><tr><td><code>bash scripts/checkpoint.sh</code></td><td>Context is long, fuzzy, or ready to hand back.</td><td>Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity.</td></tr><tr><td><code>bash scripts/session-close.sh</code></td><td>Ending work or preparing review.</td><td>Refreshes closeout, validation, health, transition readiness, and learning diary.</td></tr><tr><td><code>bash scripts/handoff.sh [next-agent]</code></td><td>Switching tools or handing work to another agent.</td><td>Produces a context pack for the next agent. It does not activate the next bead.</td></tr><tr><td><code>python3 scripts/loop-health.py</code></td><td>You want a compact loop-health signal.</td><td>Shows whether the current build loop is focused, stoppable, closeable, and evidenced.</td></tr><tr><td><code>python3 scripts/loop-health.py --verbose</code></td><td>The compact signal is unclear.</td><td>Shows dimension-level warnings for deeper diagnosis.</td></tr><tr><td><code>python3 scripts/update-learning-diary.py --append</code></td><td>You need to append a learning entry after closeout evidence.</td><td>Updates <code>logs/learning-diary.md</code>; the diary is evidence, not active memory.</td></tr><tr><td><code>python3 scripts/update-memory-index.py</code></td><td>Reviewed memory cards changed.</td><td>Refreshes the searchable memory index. Memory remains evidence only.</td></tr></tbody></table></div>
+<h2 id="checks-by-student-question">Checks By Student Question</h2>
+<h3 id="is-my-state-okay">Is My State Okay?</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">bash scripts/validate-memory.sh
+python3 scripts/state-check.py</code></pre>
+<p>Green means active memory and current bead state look coherent. Warnings or failures mean repair source files before coding. Do not trust generated reports more than active memory.</p>
+<h3 id="is-scope-widening">Is Scope Widening?</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">python3 scripts/files-in-play-check.py
+python3 scripts/files-in-play-check.py --command &quot;&lt;command summary&gt;&quot;
+python3 scripts/files-in-play-check.py --edit-lock</code></pre>
+<p>Green means changed paths fit the current bead or generated evidence. Warnings mean stop and classify each path as current-bead work, generated evidence, or follow-up work. A command classification of <code>approval needed</code> or <code>stop</code> means do not run the command yet.</p>
+<h3 id="is-this-done">Is This Done?</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">python3 scripts/completion-check.py
+bash scripts/record-check.sh -- &lt;declared bead check&gt;</code></pre>
+<p>Green means recorded evidence and closeout are closer to review-ready. Missing or failing checks mean the bead is not accepted yet. Completion output does not accept work by itself.</p>
+<h3 id="is-the-workflow-right">Is The Workflow Right?</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">python3 scripts/workflow-check.py
+python3 scripts/orchestration-check.py
+python3 scripts/decomposition-check.py</code></pre>
+<p>Green means the current path appears aligned with the active workflow. Warnings may mean the work needs intake, PRD shaping, decomposition, review, repair, or a narrower bead before implementation.</p>
+<h3 id="can-i-transition">Can I Transition?</h3>
+<p>Command:</p>
+<pre><code class="language-bash">python3 scripts/bead-transition.py</code></pre>
+<p>Green readiness may show a next bead proposal. Transition still requires explicit approval:</p>
+<pre><code class="language-bash">python3 scripts/bead-transition.py --approve</code></pre>
+<p>Do not approve transition until review is accepted, manual verification is clear, and latest recorded checks pass.</p>
+<h3 id="what-does-this-warning-mean">What Does This Warning Mean?</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">python3 scripts/context-check.py
+python3 scripts/run-contract-check.py
+python3 scripts/tool-execution-check.py
+python3 scripts/memory-check.py
+python3 scripts/pattern-check.py
+python3 scripts/long-horizon-check.py</code></pre>
+<p>Warnings are advisory evidence. They tell you what to inspect, split, repair, approve, or defer. They do not give the agent permission to widen scope.</p>
+<h2 id="recovery-methods">Recovery Methods</h2>
+<p>Use recovery when something feels wrong. The first move is always to stop implementation and make the state visible.</p>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Prompt</th><th>First check</th></tr></thead><tbody><tr><td>Active state is confusing</td><td><code>Stop implementation. Compare tasks/todo.md with the active bead and tell me which canonical file needs repair before work continues.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Generated report looks wrong</td><td><code>This generated report looks wrong. Tell me which source files and scripts own it, what evidence it summarizes, and how to refresh it without treating the report as authority.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Proof is missing</td><td><code>Run a completion check and show which declared checks are missing, failing, or stale. Do not recommend acceptance from confidence.</code></td><td><code>python3 scripts/completion-check.py</code></td></tr><tr><td>Scope expanded</td><td><code>Run the files-in-play guardrail. If any changed path is outside this bead, stop and explain whether it is generated evidence, current-bead work, or a separate follow-up.</code></td><td><code>python3 scripts/files-in-play-check.py</code></td></tr><tr><td>Context is lost</td><td><code>Prepare a compact Context Pack before continuing. Reload active memory, the active bead, and the primary authority before recommending action.</code></td><td><code>python3 scripts/context-check.py</code></td></tr><tr><td>Approval happened too quickly</td><td><code>Before proposing or activating the next bead, explain what evidence proves this bead is complete and what still requires my approval.</code></td><td><code>python3 scripts/bead-transition.py</code></td></tr></tbody></table></div>
+<p>Do not repair by deleting files, overwriting user edits, hand-editing generated reports, force-resetting git, or approving transitions unless the user explicitly approves that exact action.</p>
+<h2 id="daily-learning-loop">Daily Learning Loop</h2>
+<p>Learning matters because Precode should make you more capable over time, not just move the repo forward.</p>
+<div class="table-wrap"><table><thead><tr><th>Learning action</th><th>Prompt</th><th>Output</th></tr></thead><tbody><tr><td>Read the lesson</td><td><code>Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.</code></td><td>A plain-English session lesson from <code>logs/learning-diary.md</code>.</td></tr><tr><td>Search reviewed memory</td><td><code>Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.</code></td><td>Relevant reviewed memory cards with source pointers.</td></tr><tr><td>Propose memory</td><td><code>Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.</code></td><td>A proposed memory card or promotion recommendation.</td></tr><tr><td>Check memory quality</td><td><code>Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.</code></td><td>Memory warnings or confirmation.</td></tr></tbody></table></div>
+<p>Commands:</p>
+<pre><code class="language-bash">python3 scripts/update-learning-diary.py --append
+python3 scripts/update-memory-index.py
+python3 scripts/memory-check.py</code></pre>
+<p>Memory is reviewed evidence. It can help future agents understand lessons, preferences, glossary terms, risks, and source pointers. It does not replace <code>DECISIONS.md</code>, PRDs, beads, active memory, or current code.</p>
+<h2 id="appendix-stop-signals">Appendix: Stop Signals</h2>
+<p>Stop the agent when:</p>
+<ul><li>it cannot name the active bead, files in play, checks, or stop conditions</li><li>it starts coding from a generated report, diary entry, source note, or old chat</li><li>it touches files outside the active bead without explaining why</li><li>it says work is done without recorded evidence or manual verification</li><li>it wants to approve the next bead without explicit user approval</li><li>it proposes deleting, overwriting, force-resetting, migrating, deploying, exposing secrets, or changing external services without exact approval</li><li>it keeps asking implementation questions when the product problem, user, scope, or authority file is still unclear</li></ul>
+<p>Use this prompt:</p>
+<pre><code class="language-text">STOP. Do not make any more changes. Tell me exactly where we are: active bead, primary authority, files changed, evidence recorded, blockers, and the safest next action.</code></pre>
+<h2 id="appendix-approval-gates">Appendix: Approval Gates</h2>
+<p>You must explicitly approve:</p>
+<ul><li>starting a new bead or transition with <code>python3 scripts/bead-transition.py --approve</code></li><li>destructive commands, broad overwrites, deletes, moves, force resets, migrations, deploys, dashboard changes, secrets, billing, auth, payments, or private data actions</li><li>edits to Precode control-layer files when the active bead does not include them</li><li>PRD approval, review acceptance, manual verification claims, and changes that widen task scope</li><li>memory-card writes or promotion of a lesson into <code>DECISIONS.md</code>, a PRD, or another authority file</li></ul>
+<p>When in doubt, ask:</p>
+<pre><code class="language-text">Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, and rollback or blocked escape path. Then run python3 scripts/run-contract-check.py.</code></pre>
+    <nav class="page-nav" aria-label="Previous and next docs"><span></span><a href="PRECODE-OS-README.html"><span>Next</span>PrecodeOS Explainer</a></nav>
+  </article>
+  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#quick-daily-loop">Quick Daily Loop</a><a class="level-2" href="#core-prompts">Core Prompts</a><a class="level-3" href="#start-the-session">Start The Session</a><a class="level-3" href="#confirm-the-task-before-editing">Confirm The Task Before Editing</a><a class="level-3" href="#choose-the-right-workflow">Choose The Right Workflow</a><a class="level-3" href="#keep-implementation-bounded">Keep Implementation Bounded</a><a class="level-3" href="#ask-for-evidence">Ask For Evidence</a><a class="level-3" href="#checkpoint-mid-session">Checkpoint Mid Session</a><a class="level-3" href="#close-the-session">Close The Session</a><a class="level-2" href="#runnable-reports">Runnable Reports</a><a class="level-2" href="#checks-by-student-question">Checks By Student Question</a><a class="level-3" href="#is-my-state-okay">Is My State Okay?</a><a class="level-3" href="#is-scope-widening">Is Scope Widening?</a><a class="level-3" href="#is-this-done">Is This Done?</a><a class="level-3" href="#is-the-workflow-right">Is The Workflow Right?</a><a class="level-3" href="#can-i-transition">Can I Transition?</a><a class="level-3" href="#what-does-this-warning-mean">What Does This Warning Mean?</a><a class="level-2" href="#recovery-methods">Recovery Methods</a><a class="level-2" href="#daily-learning-loop">Daily Learning Loop</a><a class="level-2" href="#appendix-stop-signals">Appendix: Stop Signals</a><a class="level-2" href="#appendix-approval-gates">Appendix: Approval Gates</a></aside>
+</section>
+
+      <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
+    </main>
+  </div>
+</body>
+</html>

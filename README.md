@@ -55,11 +55,13 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 
 ## Start Here
 
-If you are using PrecodeOS in a project, start with [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). It is the day-to-day operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
+If you are using PrecodeOS in a project, start with [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md). It is the daily command, prompt, report, recovery, check, and learning surface for students.
+
+Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
 
 If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html). It is generated from the Markdown docs for easier navigation; the Markdown files remain canonical.
 
-Begin in the project repo that contains your app and PrecodeOS files. Open the user guide, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
+Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
 
@@ -175,11 +177,12 @@ python3 scripts/loop-health.py
 |---|---|
 | Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
 | Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
-| Start using PrecodeOS in a project | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Start daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
+| Learn the deeper operating model | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
 | Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook or Conviction Packet path when prompted |
-| Work with an agent right now | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Work with an agent right now | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
 | Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
@@ -232,7 +235,7 @@ No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and `logs/` are evidence o
 
 ### Where should I start?
 
-Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md). For setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
+Use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) for daily work and [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) for deeper operating guidance. For setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
 
 ## Beta
 

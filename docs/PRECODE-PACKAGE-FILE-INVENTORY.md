@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.9
-Last updated: 2026-06-06
+Document version: v0.2.10
+Last updated: 2026-06-09
 
 ## Purpose
 
@@ -44,7 +44,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Area | Files or families | Purpose |
 |---|---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | Always-loaded operating state. |
-| Reader-facing docs | `docs/*.md` | Long-form human guides for philosophy, guided setup, support assistance, troubleshooting, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
+| Reader-facing docs | `docs/*.md` | Human guides for the Daily Cockpit, philosophy, guided setup, support assistance, troubleshooting, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
 | Public generated docs site | `docs-html/*.html` | Committed HTML reading surface generated from `docs/*.md`; easier to navigate, but not authority. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing and skill playbooks. |
@@ -159,6 +159,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `CONTRIBUTING.md` | reference | Contribution rules and inbound = Apache-2.0 policy. | Guides proposed changes while preserving provenance, active-memory limits, and beginner-safe behavior. |
 | `TRADEMARK.md` | reference | PrecodeOS trademark ownership, brand-use, allowed descriptive references, fork naming, and official-project identity guidance. | Clarifies that Apache-2.0 does not grant confusing brand use, trademark rights, or official-project identity. |
 | `docs/PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
+| `docs/PRECODE-DAILY-COCKPIT.md` | reference | Student-first daily command, prompt, report, recovery, check, and learning reference for normal PrecodeOS work. | First public HTML docs entry; summarizes daily action and links to deeper guides and protocols without replacing them. |
 | `docs/PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Points users to the how-to guide, user guide, architecture overview, file inventory, and manifesto. |
 | `docs/PRECODE-GUIDED-SETUP.md` | reference | Beginner-safe guided setup for pulling PrecodeOS from GitHub and adopting it into a new or existing project. | Explains manual package adoption, copy groups, exclusions, validation, and support-engineer setup flow while deferring canonical file ownership to this inventory. |
 | `docs/PRECODE-SUPPORT-RUNBOOK.md` | reference | Public-safe support-engineer field guide for guiding first-time PrecodeOS adoption, user-owned intent capture, setup, first safe session, and repair routing. | Companion to guided setup, user guide, troubleshooting, file inventory, and recovery protocol; does not create product truth, approve PRDs, accept work, or approve transitions. |
