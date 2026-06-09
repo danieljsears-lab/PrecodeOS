@@ -9,14 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.17
-Last updated: 2026-05-28
+Document version: v0.3.18
+Last updated: 2026-06-09
 
 ## Executive Summary
 
 PrecodeOS is a repo-native control layer for AI coding agents: markdown-canonical, script-enforced, and built to prevent quiet drift. It is designed for builders using coding agents over many sessions, where the core risk is not whether an agent can produce code, but whether the repo can preserve intent, scope, authority, evidence, handoff state, and the next safe action as the work moves from idea to implementation.
 
-PrecodeOS is not a code generator, IDE agent, model router, autonomous software engineer, or full software development lifecycle framework. It can work with those tools, but it does not replace them. Its job is to make AI-assisted work bounded, inspectable, recoverable, and reviewable inside a real repository.
+PrecodeOS is not a code generator, IDE agent, model router, autonomous software engineer, application runtime, installer, or full software development lifecycle framework. It can work with those tools, but it does not replace them. Its job is to make AI-assisted work bounded, inspectable, recoverable, and reviewable inside a real repository.
 
 PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. Architecturally, it keeps the project human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces rather than hidden chat assumptions.
 
@@ -87,9 +87,11 @@ Everything else is conditional reference, generated evidence, or archive. This k
 
 ### One Owner Per Fact
 
-Every durable fact needs an owning file. Product constitution facts belong in `PRODUCT.md`. Product decisions belong in `DECISIONS.md`. Route structure belongs in `ARCHITECTURE.md`. Schema semantics belong in `DATA-MODELS.md`. Current execution state belongs in `tasks/todo.md` and the active bead.
+Every durable fact needs an owning file. Product constitution facts belong in `PRODUCT.md`. Product decisions belong in `DECISIONS.md`. Target-project route structure belongs in root `ARCHITECTURE.md`. Schema semantics belong in `DATA-MODELS.md`. Current execution state belongs in `tasks/todo.md` and the active bead.
 
 This prevents a common AI failure mode where the agent patches contradictions by duplicating more text.
+
+Root `ARCHITECTURE.md` is a target-project template shipped with the package. This document, `docs/PRECODE-ARCHITECTURE-OVERVIEW.md`, explains PrecodeOS itself as a public package and reviewer surface.
 
 ### One Bead At A Time
 
@@ -103,7 +105,7 @@ The OS does not accept "it should work" as completion. Checks should be run thro
 
 `OS-HEALTH.md`, `PROGRESS.md`, log summaries, imported sources, and generated handoff packets can inform humans. They must not choose tasks, approve transitions, or override active memory.
 
-Private local changelog history can explain how surfaces changed, but it does not select work, approve decisions, or replace the current owner file.
+Maintainer-local history can explain how surfaces changed, but it does not select work, approve decisions, or replace the current owner file.
 
 ### Human Approval At Transitions
 
@@ -111,57 +113,70 @@ Agents can propose next work. Humans approve task activation, PRD approval, sens
 
 ### Tool-Neutral Core, Thin Adapters
 
-Precode is designed to work across Codex, Claude, Cursor, Gemini, Antigravity, and other coding tools. Tool-specific files are compatibility shims or adapters. The shared command surface and operating model stay in the repo.
+Precode is designed to work across Codex, Claude, Cursor, Gemini, Antigravity, GitHub Copilot, and other coding tools. Tool-specific files are compatibility shims or adapters. The shared command surface and operating model stay in the repo.
 
 ## System Architecture
 
 ### System Shape
 
-PrecodeOS lives mostly at the repo root. It surrounds the application code with a governance layer:
+PrecodeOS lives mostly at the repo root. In an adopted project, it surrounds application code with a governance layer. In this repository, PrecodeOS is the maintained package itself, so package maintenance is source/document/script review and static validation rather than launching an app.
 
 ```text
 repo/
   AGENT.md                 active memory
   DECISIONS.md             active memory
   PRODUCT.md               product constitution, reference
+  project-evidence/        target-project source evidence guide
   tasks/todo.md            active memory, active bead pointer
   tasks/beads/*.md         execution contracts
   tasks/prds/*.md          product definition shards
   tasks/reference/*.md     protocols and playbooks
+  tasks/templates/*.md     reusable evidence and student/workflow templates
   modes/*.md               navigator, explorer, builder, review roles
   adapters/*.md            tool-specific shims
+  AGENTS.md, CLAUDE.md,
+  GEMINI.md, .github/*     compatibility shims and GitHub surfaces
   scripts/*                validators, recorders, compilers, audits
+  docs/*.md                public reader and reviewer docs
+  docs-html/*.html         generated public reading surface
   logs/*                   generated evidence and sidecars
   app/ or project code     target application
 ```
 
-The application can use any framework. Precode's architecture is not an app architecture. It is an operating layer around the app.
+The application can use any framework. Precode's architecture overview is not the target app architecture and should not be used as a route map or module-placement guide for product code.
 
 ### Layer Model
 
 | Layer | Purpose | Main surfaces |
 |---|---|---|
-| Repo boundary | Separate operating model from app code. | Repo root, app directory. |
+| Repo boundary | Separate operating model from app code and distinguish package maintenance from app execution. | Repo root, target app directory, public package boundary. |
 | Active-memory kernel | Define the minimal always-loaded context. | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`. |
 | Authority contracts | Declare what each file owns and must not own. | `AUTHORITY`, `NOT_AUTHORITY`, `LOAD_WHEN`, `CLASS`. |
 | Reference layer | Hold product constitution, architecture, schema, API, security, and workflow rules. | `PRODUCT.md`, root reference docs, `tasks/reference/`. |
+| Source-evidence layer | Keep raw notes, documents, screenshots, research, and links evidence-only until reviewed conclusions are promoted. | `project-evidence/PROJECT-EVIDENCE-GUIDE.md`, Local Source Intake. |
 | Discovery validation layer | Test worth-building uncertainty before product definition hardens into tasks. | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, Discovery Summary, proceed/pause/narrow/kill recommendation. |
 | Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |
 | Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`. |
+| Workflow-selection layer | Route rough ideas, source intake, PRDs, architecture shaping, review, repair, and closeout to the right protocol before work starts. | `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`, `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md`, `tasks/reference/PLANNING-PROTOCOL.md`. |
+| Setup-intake layer | Keep first-run confidence and existing-repo intake read-only until a user explicitly chooses a setup path. | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md`, `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md`, `scripts/bootstrap-check.py`, `scripts/existing-repo-intake.py`. |
+| Architecture-shaping layer | Make auth, data, API, integration, dependency, migration, workflow, or multi-system risk visible before beads are derived. | `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md`, `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md`. |
 | Execution bead layer | Bound one journey unit of work. | `tasks/beads/*.md`, bead frontmatter and sections, delegation mode, test strategy, review context. |
 | Adaptive-depth layer | Scale planning and autonomy expectations to the bead's risk while giving beginners a plain continue/ask/stop decision. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`. |
 | Run-contract layer | Tighten high-risk execution policy without burdening ordinary beads. | bead `Run Contract` sections, `scripts/run-contract-check.py`, `logs/run-contract.json`, `logs/run-contract.yaml`. |
 | Mode layer | Separate planning, exploration, building, and review behavior with compact role contracts. | `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
-| Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/*.md`. |
+| Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/*.md`. |
 | Agent-routing layer | Keep model tier, context budget, delegation, and tool choice proportional to the bead. | `tasks/reference/AGENT-ROUTING-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, tool-specific adapters. |
+| Skill-playbook layer | Keep optional prompt-playbook and skill-style workflows subordinate to owner protocols. | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`, package skill playbooks when present. |
 | Safety layer | Add constraints for scope, sensitive surfaces, and verification. | `OPERATING-CONSTRAINTS.md`, security and verification protocols. |
 | Script layer | Turn conventions into repeatable commands. | Session, checkpoint, close, record-check, transition scripts. |
 | Validator layer | Catch structural drift and advisory guardrail gaps. | `validate-memory.sh`, advisory checks, files-in-play guardrail, command classification, advisory edit lock, write guard, pre-commit hook. |
 | Next-step layer | Give humans the canonical generated "what now?" decision without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, `user_decision`, `single_next_protocol`, `load_plan`, and `context_footprint`. |
+| Completion and handoff layer | Keep closeout, review posture, and next-session context explicit. | `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, `completion-check.py`, `session-close.sh`, `handoff.sh`. |
 | Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
+| Public docs layer | Provide committed reader-facing HTML without replacing canonical Markdown. | `docs/*.md`, `docs-html/*.html`, maintainer-only docs generation. |
 | Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
-| Public-package hygiene layer | Keep private local material out of the reusable public package. | `.gitignore`, `scripts/public-repo-check.py`. |
+| Public-package hygiene layer | Keep private local material out of the reusable public package. | `.gitignore`, `scripts/public-repo-check.py`, package inventory checks. |
 | Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`. |
 | Handoff layer | Orient the next session or agent safely. | Handoff script, Context Pack, handoff packet. |
 
@@ -220,9 +235,9 @@ Precode uses four enforcement levels:
 
 The core validator currently checks required docs, authority contracts, active-memory discipline, `tasks/todo.md` frontmatter, bead structure, closeout markers, and the one-in-progress-bead invariant.
 
-Advisory checks extend the model across context, decomposition, verification, state, orchestration, workflow selection, long-horizon planning, completion, and tool execution.
+Advisory checks extend the model across context, decomposition, verification, state, orchestration, workflow selection, long-horizon planning, completion, files in play, run contracts, goal frames, public-package hygiene, local hygiene, and tool execution.
 
-Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/handoff-packet.json`, and `logs/run-contract.json` make current state easier to inspect, but they remain evidence, not authority.
+Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/file-inventory.json`, `logs/handoff-packet.json`, `logs/run-contract.json`, and `logs/workflow-map.json` make current state easier to inspect, but they remain evidence, not authority.
 
 `next-step.py` is the canonical generated router for the next human decision. `session-start.sh` displays the same decision inside the session Context Pack so the first command and the standalone router do not compete.
 
@@ -230,7 +245,7 @@ Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/a
 
 Context-footprint fields are intentionally approximate. They show active memory, active bead, primary authority, conditional references, generated reports touched, and rough document lines so agents avoid loading every protocol when one owner file is enough.
 
-For a public package file-by-file technical dictionary and relationship map, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the package inventory explains what each public package file owns and how the surfaces connect.
+For a public package file-by-file technical dictionary and relationship map, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This architecture overview explains why the layers exist; the package inventory explains what each public package file owns and how the surfaces connect. Generated `docs-html/*.html` files are a committed reading surface generated from public Markdown; they do not replace the Markdown authorities.
 
 ### Human Control Surface
 
@@ -259,9 +274,10 @@ Precode assumes that AI coding sessions can be confused by untrusted or stale ma
 | Goal Frames | Reviewed durable orientation only; never backlog, roadmap, task selection, PRD approval, or bead activation. |
 | Discovery Summaries | Advisory pre-PRD evidence only; proceed means ready for the next planning workflow, not approved to build. |
 | Generated reports | Evidence only; never task instructions. |
+| Generated public HTML docs | Reader convenience only; Markdown in `docs/` remains canonical. |
 | Imported issues, PRs, notes, screenshots | Source material only until promoted. |
-| Private local changelog | Human-readable history only; not public package authority, current authority, generated evidence, or transition approval. |
-| Private local files | Private planning and package-boundary context; not active memory, public package authority, or normal user workflow instructions. |
+| Private maintainer-local history | Human-readable history only; not public package authority, current authority, generated evidence, or transition approval. |
+| Private maintainer-local files | Maintainer planning and package-boundary context; not active memory, public package authority, or normal user workflow instructions. Public package docs, scripts, shims, tasks, demos, and generated reading surfaces must remain complete when maintainer-local files are absent. |
 | Public-repo checks | Advisory public/private boundary findings only; not cleanup approval or a publishing action. |
 | Completed PRDs, archived beads, closed issue imports, old transcripts | Historical evidence only; current authority wins on conflict. |
 | Tool shims and adapters | Compatibility surfaces; not separate operating systems. |
@@ -346,7 +362,7 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 | Adapter shims | Lets different AI tools enter the same operating model. |
 | Agent routing | Keeps model depth, context, delegation, and tool use proportional to risk. |
 | Advisory validators | Surfaces drift without letting automation choose work. |
-| Public-repo hygiene checks | Keeps private-local material from leaking into the reusable package. |
+| Public-repo hygiene checks | Keeps private or maintainer-local material from leaking into the reusable package. |
 | Blocked-bead escape paths | Prevents stuck work from pretending to be active progress. |
 
 ### Evidence Model
@@ -358,13 +374,13 @@ Precode evidence has a hierarchy:
 3. Closeout evidence that summarizes checks, changed files, review decision, drift, lessons, and follow-up.
 4. Generated sidecars and reports that summarize state for humans.
 5. Review inputs such as Discovery Summaries, Goal Frame fit notes, screenshots, external QA notes, AI critiques, or generated tests.
-6. Human-readable private local history.
+6. Human-readable maintainer-local history.
 
 Only the first three should drive acceptance. Generated reports, review inputs, and history help review, but they do not prove completion by themselves.
 
 ### Handoff And Interoperability Model
 
-Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools.
+Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools. Compatibility shims and adapters should point back to the shared operating model instead of becoming separate tool-specific memories.
 
 ### Router-First Modularity
 
@@ -373,7 +389,8 @@ Precode's current architecture direction is router-first externally and modular 
 - Externally, `next-step.py` owns the generated "what now?" decision; `session-start.sh` presents it; future diagnostic wrappers may explain warnings after the router is trusted.
 - Internally, compiler domains should move out of `scripts/os_compiler.py` into small service modules when they become distinct, while preserving existing command paths and generated JSON shapes.
 - Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
-- A broad `precode doctor` command and installable `precode` CLI are deferred until router behavior and bootstrap/install needs are stable.
+- Bootstrap and existing-repo intake remain read-only confidence workflows until a user explicitly chooses a setup path.
+- A broad `precode doctor` command, mutating installer/update flow, and installable `precode` CLI are deferred until router behavior and bootstrap/install needs are stable.
 
 Handoff should include:
 
@@ -434,7 +451,7 @@ The strongest evidence for Precode is not a single impressive demo. It is repeat
 | [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) | Spec -> plan -> tasks -> agent loop -> review -> merge workflow. | Teams that want spec-driven work packages, lanes, review, and merge flow. | Precode emphasizes tiny active memory, evidence demotion, and conservative task activation. |
 | [KubeRocketAI SDLC Framework](https://krci-ai.kuberocketci.io/architecture) | AI-as-code SDLC framework with agents, rules, templates, and CLI. | Teams standardizing AI agent management across a full SDLC. | Precode is smaller, repo-native, and optimized for solo or small-team control before broad orchestration. |
 
-The deeper BMAD and gStack research comparison is private local material, not part of public package navigation. This architecture overview keeps only the reviewer-facing landscape summary.
+The deeper BMAD and gStack research comparison is maintainer-local material, not part of public package navigation. This architecture overview keeps only the reviewer-facing landscape summary.
 
 ### Why Code-Editing Agents Are Not Direct Alternatives
 
@@ -479,10 +496,11 @@ This public architecture overview previews direction without depending on privat
 - add risk-triggered run contracts for allowed actions, proof needed, approval gates, and stop conditions only where they prove value
 - strengthen evidence, release readiness, and review lanes without turning Precode into a specialist-team simulator
 - add import bridges and optional packs later, after the kernel remains quiet and trusted
+- keep public package docs independent from maintainer-local planning surfaces while package adoption and update paths mature
 
 ## Reviewer Takeaway
 
-PrecodeOS is strongest when evaluated as a control layer for AI-assisted repo work, not as a coding agent or a broad SDLC suite. Its distinctive contribution is the combination of tiny active memory, authority contracts, one active bead, recorded evidence, generated-output demotion, and human-approved transitions.
+PrecodeOS is strongest when evaluated as a control layer for AI-assisted repo work, not as a coding agent, app runtime, installer, or broad SDLC suite. Its distinctive contribution is the combination of tiny active memory, authority contracts, one active bead, recorded evidence, generated-output demotion, and human-approved transitions.
 
 Compared with spec-driven and AI-SDLC systems, Precode is narrower but more pessimistic about drift. It assumes that momentum is dangerous unless bounded by repo-owned state and evidence. That makes it especially relevant for vibe coding, where speed is abundant but durable project truth is scarce.
 
@@ -501,36 +519,41 @@ The layer model is intentionally explicit because each layer prevents a differen
 
 | Layer | Deep responsibility |
 |---|---|
-| Repo boundary | Separate the operating layer from application code so app churn does not rewrite the OS. |
+| Repo boundary | Separate the operating layer from application code so app churn does not rewrite the OS, and so package maintenance does not become app execution. |
 | Active-memory kernel | Keep startup context to `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. |
 | Authority contracts | Make every AI-facing doc declare what it owns, what it must not decide, when to load it, and its class. |
-| Reference layer | Hold product, architecture, API, schema, security, context, workflow, and protocol detail outside active memory. |
+| Reference layer | Hold product, architecture, API, schema, security, context, workflow, setup-intake, skill-playbook, and protocol detail outside active memory. |
+| Source-evidence layer | Keep user-provided project evidence raw and evidence-only until Local Source Intake promotes reviewed conclusions. |
 | Discovery validation layer | Keep broad, risky, market-facing, paid, evidence-poor, or solution-first ideas as evidence until the builder chooses the next workflow. |
 | Goal-frame layer | Store durable orientation only inside existing owner files after review and reaffirmation, while preventing it from becoming backlog, roadmap, or task authority. |
 | Product Definition Gate | Route rough ideas and source material through intake, PRD shards, requirements, and candidate beads before implementation. |
 | Execution bead layer | Make one logical unit executable, reviewable, closable, and handoff-safe. |
 | Mode layer | Separate navigator, explorer, builder, and review behavior so planning, inspection, implementation, and critique do not blur together. |
-| Adapter layer | Keep tool-specific entrypoints thin while preserving one shared command surface. |
+| Adapter layer | Keep tool-specific entrypoints thin while preserving one shared command surface across Codex, Claude, Cursor, Gemini, Antigravity, Copilot, and future tools. |
 | Agent-routing layer | Choose model depth, context budget, delegation, and tool route without overriding active bead scope, files in play, approvals, or review. |
+| Skill-playbook layer | Keep optional skill-style workflows subordinate to public protocols, not hidden authority. |
 | Safety layer | Add stop conditions for scope, sensitive surfaces, destructive operations, generated-output demotion, and approval gates. |
 | Script layer | Turn repeated operating habits into commands with stable output and logs. |
 | Validator layer | Enforce structural invariants and expose drift before continuing implementation. |
+| Public docs layer | Keep public Markdown canonical while committed generated HTML improves readability and navigation. |
 | Evidence layer | Preserve check results, loop events, spend, handoff state, generated maps, and health snapshots without making them authority. |
-| Public-package hygiene layer | Check private-local, ignored, and public-package candidate files without publishing, deleting, or mutating the package. |
+| Public-package hygiene layer | Check private, maintainer-local, ignored, and public-package candidate files without publishing, deleting, or mutating the package. |
 | Handoff layer | Let a future session or different agent reconstruct scope, blockers, checks, and next safe action. |
 
 ### Script And Generated Sidecar Taxonomy
 
-The script layer has four families:
+The script layer has these families:
 
 | Family | Examples | Purpose |
 |---|---|---|
 | Session loop | `session-start.sh`, `checkpoint.sh`, `session-close.sh`, `handoff.sh` | Orient, pause, close, and transfer work safely. |
-| Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `log-loop-event.sh`, `log-tool-run.sh` | Record what happened without relying on chat memory. |
-| Compilation and reports | `os_compiler.py`, `precode_routing.py`, `os-health.py`, `update-learning-diary.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence and route the next human decision. |
-| Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `public-repo-check.py`, and related checkers | Surface likely drift without mutating active memory. |
+| Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `execution-state.py`, `log-loop-event.sh`, `log-tool-run.sh`, `log-agent-spend.sh`, `import-agent-spend.py` | Record what happened without relying on chat memory. |
+| Compilation and reports | `os_compiler.py`, `precode_routing.py`, `os-health.py`, `progress.py`, `next-step.py`, `update-learning-diary.py`, `update-memory-index.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence and route the next human decision. |
+| Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `files-in-play-check.py`, `run-contract-check.py`, `public-repo-check.py`, `local-hygiene-check.py`, and related checkers | Surface likely drift without mutating active memory. |
+| Setup and intake checks | `bootstrap-check.py`, `existing-repo-intake.py`, `github-audit.py`, `import-github-sources.py` | Inspect adoption targets or external source material while keeping mutation explicit and gated. |
+| Maintenance helpers | `validate-memory.sh`, `version-check.py`, `file-inventory.py`, `pre-commit-validate.sh`, `install-git-hooks.sh`, `write-guard.sh` | Protect package structure, provenance, inventory, and scoped writes. |
 
-Generated sidecars should stay under `logs/` unless an existing generated report owns the surface. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, and health outputs. They are evidence only.
+Generated sidecars should stay under `logs/` unless an existing generated report or committed docs-reading surface owns the output. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, file-inventory, local-hygiene, bootstrap, existing-repo intake, scheduled-audit, progress, next-step, and health outputs. They are evidence only.
 
 ### Validator And Hook Detail
 
@@ -556,8 +579,9 @@ When changing the OS itself:
 3. Update version metadata on touched OS-owned files.
 4. Keep generated outputs demoted.
 5. Add or update advisory checks only when they can report clear, actionable warnings.
-6. Run `bash scripts/validate-memory.sh` and `python3 scripts/version-check.py`.
-7. Regenerate health/audit outputs when reporting surfaces changed.
+6. Use static validation and docs generation for package review; do not treat this repository as an app to launch unless a task explicitly says so.
+7. Run `bash scripts/validate-memory.sh` and `python3 scripts/version-check.py`.
+8. Regenerate public `docs-html/` when public docs change, and regenerate health/audit outputs when reporting surfaces changed.
 
 Common maintenance moves:
 
@@ -567,7 +591,9 @@ Common maintenance moves:
 | Add a checker | The checker script, command surfaces, README pointer, and generated report only if useful. |
 | Add a bead template | `tasks/beads/BEAD-SCHEMA.md`. |
 | Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |
+| Add or change setup intake | Bootstrap or existing-repo intake protocol plus read-only checker behavior and public setup docs. |
 | Change generated report behavior | Compiler/report script plus generated-output demotion check. |
+| Change public docs rendering | Public Markdown docs plus regenerated `docs-html/` using the maintainer-only docs generator. |
 | Change version policy | `tasks/reference/VERSIONING-PROTOCOL.md` and `scripts/version-check.py`. |
 | Change public package boundary | `.gitignore` and `scripts/public-repo-check.py`. |
 
