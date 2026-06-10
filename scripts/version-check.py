@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-06-04
+# Version: v0.1.5
+# Last updated: 2026-06-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -19,6 +19,7 @@ MARKDOWN_EXCLUDES = {
     "OS-HEALTH.md",
     "PRECODE-HELP.md",
     "PROGRESS.md",
+    "logs/bead-build-journal.md",
     "logs/handoff-packet.md",
     "logs/learning-diary.md",
     "logs/scheduled-audit.md",

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.2
 Last updated: 2026-06-09
 
 Use this cockpit while you work with an AI coding agent.
@@ -31,8 +31,8 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.` | Recorded proof, failures or blockers, and any manual verification needed. |
-| Learn | `Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory or a task plan.` | A lesson summary that stays evidence-only. |
-| Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.` | Closeout readiness, health, validation, transition blockers, learning diary update. |
+| Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
+| Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
 | Recover | `I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.` | A conservative recovery plan before repair. |
 
 ## Core Prompts
@@ -135,7 +135,7 @@ Command:
 bash scripts/session-close.sh
 ```
 
-Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, and learning diary update.
+Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, learning diary update, and bead build journal update when that generated report is available.
 
 ## Runnable Reports
 
@@ -147,11 +147,13 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `python3 scripts/next-step.py` | You ask "what now?" | Shows generated next-step guidance. It is not transition approval. |
 | `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md` and `logs/os-health.json`; warnings mean inspect source state and evidence. |
 | `bash scripts/checkpoint.sh` | Context is long, fuzzy, or ready to hand back. | Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity. |
-| `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, and learning diary. |
+| `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |
 | `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, and evidenced. |
 | `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings for deeper diagnosis. |
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
+| `python3 scripts/update-bead-build-journal.py --append` | You need to append a build-change entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory or acceptance. |
+| `logs/bead-build-journal.md` | You need to understand what implementation-relevant work changed for a bead. | Generated build-change journal; evidence only. |
 | `python3 scripts/update-memory-index.py` | Reviewed memory cards changed. | Refreshes the searchable memory index. Memory remains evidence only. |
 
 ## Checks By Student Question
@@ -255,6 +257,7 @@ Learning matters because Precode should make you more capable over time, not jus
 | Learning action | Prompt | Output |
 |---|---|---|
 | Read the lesson | `Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.` | A plain-English session lesson from `logs/learning-diary.md`. |
+| Understand build changes | `Read the generated bead build journal if it exists. Tell me what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory or acceptance.` | A plain-English build-change summary from `logs/bead-build-journal.md` when available. |
 | Search reviewed memory | `Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.` | Relevant reviewed memory cards with source pointers. |
 | Propose memory | `Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.` | A proposed memory card or promotion recommendation. |
 | Check memory quality | `Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.` | Memory warnings or confirmation. |

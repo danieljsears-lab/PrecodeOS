@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.2
-# Last updated: 2026-05-21
+# Version: v0.1.3
+# Last updated: 2026-06-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -74,5 +74,6 @@ PrecodeOS Session Close
 EOF
 
 bash scripts/log-loop-event.sh --log loop-runs --event session-close --bead "$current_bead" --branch "$branch" --status pass
+python3 scripts/update-bead-build-journal.py --append
 python3 scripts/update-learning-diary.py --append
 python3 scripts/os-health.py

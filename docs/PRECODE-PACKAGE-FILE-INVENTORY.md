@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.10
+Document version: v0.2.12
 Last updated: 2026-06-09
 
 ## Purpose
@@ -201,6 +201,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Workflow Selection Skill and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
+| `tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md` | reference | Generated bead build journal rules, evidence sources, Daily Cockpit surfacing, and conservative uncertainty handling. | Governs `logs/bead-build-journal.md/jsonl` behavior. |
 | `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules and promotion path. | Governs `memory/cards/` and generated memory indexes. |
 | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` | reference | Shared domain-language workflow, project-glossary card expectations, terminology freshness, and PRD/bead naming guidance. | Used during alignment, PRD shaping, module/interface naming, review, and glossary memory creation. |
 | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` | reference | Advisory local cleanup boundaries for truth, evidence, generated reports, bulky logs, caches, dry-run previews, and protected files. | Governs `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and generated preview manifests. |
@@ -258,6 +259,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/import-agent-spend.py` | Imports agent spend telemetry. | Supported usage exports or local sources. | Normalized spend rows or dry-run output. |
 | `scripts/log-agent-spend.sh` | Manual spend logging fallback. | Tool/task/tokens/cost. | `logs/agent-spend.jsonl`. |
 | `scripts/log-tool-run.sh` | Logs important non-check tool calls. | Tool command metadata. | `logs/tool-runs.jsonl`. |
+| `scripts/update-bead-build-journal.py` | Renders generated bead build journal. | Active bead, closeout, checks, tool runs, loop events, and Git metadata. | `logs/bead-build-journal.md/jsonl`. |
 | `scripts/update-learning-diary.py` | Renders generated learning diary. | Bead closeout, checks, spend, loop events. | `logs/learning-diary.md/jsonl`. |
 | `scripts/update-memory-index.py` | Renders reviewed memory index. | `memory/cards/*.md`. | `logs/memory-index.md/json`. |
 | `scripts/file-inventory.py` | Renders/checks file inventory metadata. | Repo files and authority contracts. | `logs/file-inventory.json` or advisory JSON. |
@@ -292,6 +294,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/handoffs.jsonl` | generated evidence | Handoff events. | Evidence only. |
 | `logs/agent-spend.jsonl` | generated evidence | Normalized agent spend rows. | Missing spend is unknown, not zero. |
 | `logs/tool-runs.jsonl` | generated evidence | Non-check tool-run ledger. | Not verification unless also recorded as a check. |
+| `logs/bead-build-journal.md/jsonl` | generated report | Bead-level build-change journal and evidence-backed implementation snapshot. | Not active memory, task authority, acceptance, or transition approval. |
 | `logs/os-events.jsonl` | generated evidence | Compiled event stream. | Generated from logs. |
 | `logs/os-health.json` | generated sidecar | Machine-readable OS Health payload. | Evidence only. |
 | `logs/next-step.json` | generated sidecar | Machine-readable next-step guidance, load plan, single next protocol, and context footprint. | Evidence only; not task selection, transition approval, command approval, or active memory. |

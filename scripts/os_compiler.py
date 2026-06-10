@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.23
-# Last updated: 2026-06-06
+# Version: v0.1.24
+# Last updated: 2026-06-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -110,8 +110,8 @@ HORIZONTAL_SLICE_TERMS = {
     "test later",
 }
 USER_FACING_TERMS = {"user-facing", "dashboard", "screen", "page", "route", "frontend", "ui", "browser", "user can", "visible"}
-GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
-LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
+GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
+LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
 GENERATED_JSON_FAMILIES = {
     "logs/*.json",
     "logs/*.jsonl",
@@ -125,6 +125,8 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/adapter-index.json",
     "logs/agent-spend.jsonl",
     "logs/authority-map.json",
+    "logs/bead-build-journal.jsonl",
+    "logs/bead-build-journal.md",
     "logs/bead-transitions.jsonl",
     "logs/check-results.jsonl",
     "logs/file-inventory.json",

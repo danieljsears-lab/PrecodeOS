@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-08
+Document version: v0.1.7
+Last updated: 2026-06-09
 
 Generated logs live here.
 
@@ -20,6 +20,8 @@ Generated logs live here.
 - `bead-transitions.jsonl`
 - `os-health.json`
 - `agent-spend.jsonl`
+- `bead-build-journal.jsonl`
+- `bead-build-journal.md`
 - `learning-diary.jsonl`
 - `learning-diary.md`
 - `memory-index.json`

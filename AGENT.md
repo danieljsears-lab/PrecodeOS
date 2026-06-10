@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.14
-Last updated: 2026-06-06
+Document version: v0.1.15
+Last updated: 2026-06-09
 
 ## Project
 
@@ -75,6 +75,7 @@ Use only these files as active memory:
 - `python3 scripts/long-horizon-check.py`
 - `python3 scripts/completion-check.py`
 - `python3 scripts/pattern-check.py`
+- `python3 scripts/update-bead-build-journal.py [--append]`
 - `python3 scripts/update-memory-index.py`
 - `python3 scripts/memory-check.py`
 - `python3 scripts/file-inventory.py`
