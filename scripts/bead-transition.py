@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-05-06
+# Version: v0.1.2
+# Last updated: 2026-06-10
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 import subprocess
@@ -44,6 +45,13 @@ TODO_FRONTMATTER_ORDER = [
     "active_feature_window",
     "primary_authority",
 ]
+
+
+@dataclass
+class FileSnapshot:
+    path: Path
+    existed: bool
+    content: str
 
 
 def transition_assessment(root: Path) -> dict[str, object]:
@@ -247,13 +255,67 @@ def append_transition_log(root: Path, current_rel: str, next_rel: str) -> None:
         handle.write(json.dumps(entry, separators=(",", ":")) + "\n")
 
 
-def approve_transition(root: Path, assessment: dict[str, object]) -> int:
+def preflight_approval(root: Path, assessment: dict[str, object]) -> tuple[str, str] | None:
     if not assessment.get("eligible"):
         print_proposal(assessment)
+        return None
+
+    current = assessment.get("current")
+    next_bead = assessment.get("next")
+    blockers: list[str] = []
+
+    if not isinstance(current, str) or not current.strip():
+        blockers.append("current bead is missing")
+    elif not (root / current).is_file():
+        blockers.append(f"current bead file is missing: {current}")
+
+    if not isinstance(next_bead, str) or not next_bead.strip():
+        blockers.append("next bead is missing")
+    elif not (root / next_bead).is_file():
+        blockers.append(f"next bead file is missing: {next_bead}")
+
+    if blockers:
+        blocked_assessment = dict(assessment)
+        blocked_assessment["blockers"] = blockers
+        print_proposal(blocked_assessment)
+        return None
+
+    return current, next_bead
+
+
+def snapshot_files(paths: list[Path]) -> list[FileSnapshot]:
+    snapshots: list[FileSnapshot] = []
+    for path in paths:
+        if path.is_file():
+            snapshots.append(FileSnapshot(path=path, existed=True, content=path.read_text(encoding="utf-8")))
+        else:
+            snapshots.append(FileSnapshot(path=path, existed=False, content=""))
+    return snapshots
+
+
+def restore_files(snapshots: list[FileSnapshot]) -> None:
+    for snapshot in snapshots:
+        if snapshot.existed:
+            snapshot.path.parent.mkdir(parents=True, exist_ok=True)
+            snapshot.path.write_text(snapshot.content, encoding="utf-8")
+        elif snapshot.path.exists():
+            snapshot.path.unlink()
+
+
+def approve_transition(root: Path, assessment: dict[str, object]) -> int:
+    preflight = preflight_approval(root, assessment)
+    if preflight is None:
         return 1
 
-    current_rel = str(assessment["current"])
-    next_rel = str(assessment["next"])
+    current_rel, next_rel = preflight
+    snapshots = snapshot_files(
+        [
+            root / current_rel,
+            root / next_rel,
+            root / "tasks" / "todo.md",
+            root / "logs" / "bead-transitions.jsonl",
+        ]
+    )
     update_bead_status(root / current_rel, "done", root)
     update_bead_status(root / next_rel, "in_progress", root)
     rewrite_todo(root, current_rel, next_rel)
@@ -261,7 +323,11 @@ def approve_transition(root: Path, assessment: dict[str, object]) -> int:
 
     result = subprocess.run(["bash", "scripts/validate-memory.sh"], cwd=root, check=False)
     if result.returncode != 0:
-        print("bead-transition: promotion wrote files but validation failed; repair the red state before continuing", file=sys.stderr)
+        restore_files(snapshots)
+        print(
+            "bead-transition: promotion failed validation and was rolled back; inspect validation output before retrying",
+            file=sys.stderr,
+        )
         return result.returncode
 
     print(f"bead-transition: promoted {current_rel} -> {next_rel}")
