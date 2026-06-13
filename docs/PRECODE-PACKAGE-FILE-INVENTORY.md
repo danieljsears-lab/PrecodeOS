@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.13
+Document version: v0.2.14
 Last updated: 2026-06-13
 
 ## Purpose
@@ -53,7 +53,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` | Marker and user guidance for target-project raw evidence such as notes, documents, screenshots, research, and links. |
-| Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, auditing, local hygiene checks, and generated reports. |
+| Scripts | `scripts/*.py`, `scripts/*.sh` | Validation, state compilation, evidence recording, bounded Ralph attempts, auditing, local hygiene checks, and generated reports. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
@@ -202,6 +202,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
 | `tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md` | reference | Generated bead build journal rules, evidence sources, Daily Cockpit surfacing, and conservative uncertainty handling. | Governs `logs/bead-build-journal.md/jsonl` behavior. |
+| `tasks/reference/RALPH-LOOP-PROTOCOL.md` | reference | Bounded Ralph attempt lifecycle, retry budget, validator-set expectations, generated attempt evidence, stop decisions, and hidden-authority guardrails. | Governs optional Ralph frontmatter in beads, `scripts/ralph-loop.py`, and `logs/ralph-attempts.jsonl` / `logs/ralph-summary.md`. |
 | `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules and promotion path. | Governs `memory/cards/` and generated memory indexes. |
 | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` | reference | Shared domain-language workflow, project-glossary card expectations, terminology freshness, and PRD/bead naming guidance. | Used during alignment, PRD shaping, module/interface naming, review, and glossary memory creation. |
 | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` | reference | Advisory local cleanup boundaries for truth, evidence, generated reports, bulky logs, caches, dry-run previews, and protected files. | Governs `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and generated preview manifests. |
@@ -229,6 +230,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/progress.py` | Renders the generated user-facing progress snapshot. | Compiled state. | `PROGRESS.md`, `logs/progress.json`. |
 | `scripts/next-step.py` | Prints canonical generated next-step routing guidance with a plain user decision. | Compiled state. | Human-readable stdout or advisory JSON including `single_next_protocol`, `load_plan`, and `context_footprint`; no state mutation. |
 | `scripts/loop-health.py` | Prints advisory Build Loop Health for the current work loop. | Compiled state plus the active bead contract. | Compact stdout, verbose dimensions, or advisory JSON; no state mutation, scoring, task selection, or approval. |
+| `scripts/ralph-loop.py` | Runs a bounded Ralph attempt for one active bead. | Active bead, optional Ralph frontmatter, one explicit attempt command, validator set, prior Ralph attempts. | `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` unless `--dry-run`; generated evidence only, not task selection, command approval, acceptance, or transition approval. |
 | `scripts/bead-depth-check.py` | Prints adaptive bead-depth advisory findings. | Active bead metadata, risk hints, checks, stop conditions. | JSON warnings; no state mutation. |
 | `scripts/files-in-play-check.py` | Prints active-bead file mutation guardrail findings and optional command/edit-lock guidance. | Git changed paths, active bead `files_in_play`, optional `--command`, optional `--edit-lock`. | JSON warnings and plain continue/approval/stop guidance; no state mutation or command approval. |
 | `scripts/run-contract-check.py` | Prints advisory run-contract findings. | Active bead Run Contract, files in play, verification tiers, recorded checks, and closeout. | JSON warnings about allowed actions, proof needed, approvals, and recovery; no state mutation or command approval. |
@@ -295,6 +297,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/agent-spend.jsonl` | generated evidence | Normalized agent spend rows. | Missing spend is unknown, not zero. |
 | `logs/tool-runs.jsonl` | generated evidence | Non-check tool-run ledger. | Not verification unless also recorded as a check. |
 | `logs/bead-build-journal.md/jsonl` | generated report | Bead-level build-change journal and evidence-backed implementation snapshot. | Not active memory, task authority, acceptance, or transition approval. |
+| `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` | generated evidence/report | Bounded Ralph attempt history, validator outcomes, failure category, retry allowance, and next recommended move. | Evidence only; not active memory, task selection, command approval, review acceptance, or transition approval. |
 | `logs/os-events.jsonl` | generated evidence | Compiled event stream. | Generated from logs. |
 | `logs/os-health.json` | generated sidecar | Machine-readable OS Health payload. | Evidence only. |
 | `logs/next-step.json` | generated sidecar | Machine-readable next-step guidance, load plan, single next protocol, and context footprint. | Evidence only; not task selection, transition approval, command approval, or active memory. |

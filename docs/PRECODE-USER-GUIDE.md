@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.31
+Document version: v0.7.32
 Last updated: 2026-06-13
 
 
@@ -224,6 +224,26 @@ Run python3 scripts/loop-health.py and explain the top risk in plain English. If
 
 Why this matters: Precode should protect you from accidental sprawl without making creative exploration feel wrong.
 
+## Use Ralph For Bounded Retry
+
+Ralph is an opt-in bead-attempt loop for testable work. It can run one explicit attempt command, run validators, classify the result, and record generated attempt evidence.
+
+Use Ralph when the active bead has clear files in play, checks, stop conditions, and a retry budget. Do not use Ralph for fuzzy product decisions, broad architecture guessing, sensitive setup, external mutation, or anything that needs approval before the next action is safe.
+
+Command:
+
+```bash
+python3 scripts/ralph-loop.py --dry-run
+```
+
+Say this:
+
+```text
+Run python3 scripts/ralph-loop.py --dry-run and explain the decision, failure category, validator results, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.
+```
+
+Why this matters: failed attempts should become evidence instead of disappearing into chat. Ralph is useful only while it stays inside one active bead and human review remains the acceptance surface.
+
 ## Use Goal Frames For Durable Intent
 
 Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.
@@ -375,6 +395,7 @@ Follow these steps in order.
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
 | Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. | The agent treats generated help as approval or active memory. |
 | Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, and next move. | The agent treats loop health as a grade or hard approval. |
+| Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
 | Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |

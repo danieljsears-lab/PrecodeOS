@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-09
+Document version: v0.1.8
+Last updated: 2026-06-13
 
 Generated logs live here.
 
@@ -22,6 +22,8 @@ Generated logs live here.
 - `agent-spend.jsonl`
 - `bead-build-journal.jsonl`
 - `bead-build-journal.md`
+- `ralph-attempts.jsonl`
+- `ralph-summary.md`
 - `learning-diary.jsonl`
 - `learning-diary.md`
 - `memory-index.json`
@@ -53,6 +55,7 @@ Local Hygiene v1 is advisory only:
 - `logs/check-output/*` and `logs/scheduled-audit-output/*` may be future archive candidates when old and unprotected.
 - `logs/*.jsonl` ledgers are append-only evidence and are never compacted or deleted by v1.
 - generated reports and sidecars may be regenerated, but they are not active memory.
+- Ralph attempt logs are generated evidence for bounded retry review; they are not acceptance, command approval, or transition approval.
 - dry-run manifests are generated evidence and do not authorize cleanup.
 
 ## Extension Output Rules

@@ -20,6 +20,8 @@ PrecodeOS cares about:
 - preserving cross-session continuity
 - making AI development repeatable enough that a non-technical solo builder can trust it
 
+PrecodeOS uses build loops, bead contracts, recorded checks, advisory loop health, closeout evidence, and human-gated transitions to make coding agent iteration grounded, recoverable, and inspectable.
+
 PrecodeOS lives inside a repository (folder) as Markdown owner files, execution contracts, validation scripts, compilers, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents; it gives those agents a shared operating model. <u>It does not run the agent; you run the agent</u>.
 
 Technically, PrecodeOS is a repo-native, markdown-canonical and script-enforced trusted control layer and governance kernel under fast AI workflows. It keeps agentic software work bounded by intent, scope, approval, proof, and recovery. 
@@ -28,11 +30,13 @@ Architecturally, PrecodeOS keeps the project human-owned by making intent, scope
 
 ## Who It's For
 
-PrecodeOS is for solo software builders who want to leverage the speed and capability of AI coding agents without handing the project over to the agent. Where the hard problem is not generating code, it is preserving project truth and intent: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the agent or human loses the thread.
+PrecodeOS is for solo software builders who want to leverage the speed and capability of AI coding agents without handing the project over to the agent. 
+
+Where the hard problem is not generating code, it is preserving project truth and intent: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the agent or human loses the thread.
 
 PrecodeOS helps non-technical people learn how to build software with AI coding agents and build their first production-grade software projects, tools and products. While designed for non-technical builders, it works equally well for semi-technical builders.
 
-Its strongest differentiator is tiny active memory, explicit authority ownership, one current execution unit, recorded evidence, advisory next-step guidance, file-scope guardrails, and human-gated transitions, all shaped for a builder who may not yet know the concepts and best practices, patterns or vocabulary of product, software engineering, QA, architecture, or release engineering.
+Its strongest differentiator is tiny active memory, explicit authority ownership, one current execution unit, recorded evidence, advisory next-step guidance, file-scope guardrails, and human-gated transitions, all shaped for a builder who may not yet know the concepts and best practices, patterns or vocabulary of product, software engineering, QA, architecture, or release.
 
 ## The Problem(s) It Addresses
 
@@ -40,7 +44,7 @@ AI coding agents are fast, powerful and easy to use, but their failure modes are
 
 - scope quietly widens, quiet drift occurs
 - stale context overrides current intent
-- generated summaries become instructions
+- generated summaries or reports become instructions
 - the agent claims work is done without enough proof
 - the next task starts before the user approves it
 - handoff state gets lost between sessions or tools
@@ -66,7 +70,7 @@ That is the line PrecodeOS holds: a lightweight governance kernel for agentic de
 
 ## How It Works In Practice
 
-PrecodeOS uses repeated working "build loops" to keep the agent pointed at one bounded "bead" contract at a time (smallest logical unit of work to prevent scope creep). It uses tiny active memory to prevent stale context, forces authority into named repo files, records durable evidence as proof (instead of trusting agent claims), and requires the human to approve transitions. It uses generated reports to help the builder see what is going on and inspect health.
+PrecodeOS uses repeated working "build loops" to keep the agent pointed at one bounded "bead" contract at a time (smallest logical unit of work to prevent scope creep). It uses tiny active memory to prevent stale context, forces authority into named repo files, records durable evidence as proof (instead of trusting agent claims), and requires the human to approve transitions. It uses generated reports to help the builder see what is going on and to inspect health.
 
 It gives AI-assisted work a shared operating model:
 
@@ -79,13 +83,17 @@ It gives AI-assisted work a shared operating model:
 - human approval before task transitions
 - recovery paths when state, scope, or proof feels wrong
 
+Ralph-style iteration is opt-in and bounded by the active bead. `ralph-loop.py` may run one explicit attempt command, run validators, classify the result, and record generated attempt evidence, but it does not choose tasks, accept work, approve transitions, or bypass human gates.
 
+## What You Can Build
 
-
+- MVPs with clearer product intent before code.
+- Existing projects with safer agent boundaries.
+- Multi-session agent work with durable handoff.
+- Founder or student projects that need structure without heavyweight process.
+- Product discovery, PRDs, small execution beads, and recorded proof.
 
 ## Why It Exists
-
-
 
 
 
@@ -129,14 +137,6 @@ Treat generated reports as evidence, not instructions. Ask before sensitive, des
 Reach for PrecodeOS when the repo needs a shared operating model, not another hidden chat plan.
 
 It helps you find current authority, keep scope bounded, prove what changed, hand off cleanly, and avoid treating stale notes or generated summaries as instructions. It is especially useful when work spans multiple sessions, agents, files, or approval gates.
-
-## What You Can Build
-
-- MVPs with clearer product intent before code.
-- Existing projects with safer agent boundaries.
-- Multi-session agent work with durable handoff.
-- Founder or student projects that need structure without heavyweight process.
-- Product discovery, PRDs, small execution beads, and recorded proof.
 
 ## When To Use PrecodeOS
 
@@ -206,11 +206,14 @@ For the immediate "what now?" question, use:
 bash scripts/session-start.sh
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
+python3 scripts/ralph-loop.py --dry-run
 ```
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, and easy to steer. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
+
+`ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
 
 ## Project Map
 

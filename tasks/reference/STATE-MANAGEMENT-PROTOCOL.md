@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-05-11
+Document version: v0.1.4
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -50,6 +50,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 - JSON/JSONL logs are historical evidence.
 - Generated files are compiled snapshots only.
 - `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles, not authority.
+- `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` are generated Ralph attempt evidence, not review acceptance, command approval, task selection, or transition approval.
 - Goal Frames inside owner files are advisory orientation. If stale or conflicting, they require reaffirmation before they guide workflow selection.
 - If generated output conflicts with active memory or a bead, inspect the source file and regenerate the output.
 

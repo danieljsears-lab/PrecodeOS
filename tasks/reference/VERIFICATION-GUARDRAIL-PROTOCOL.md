@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-05-11
+Document version: v0.1.6
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -77,6 +77,8 @@ Review input becomes evidence only after it is recorded, accepted, or promoted.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding whether evidence is complete enough for review, closeout, handoff, or transition proposal.
 
+Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when the active bead is testable enough for bounded retry against a validator set. Ralph attempt results are evidence inputs; they do not replace recorded checks, closeout evidence, review, or acceptance.
+
 ## Minimum Expectations
 
 Use the smallest proof that controls the risk.
@@ -91,6 +93,8 @@ Use the smallest proof that controls the risk.
 | Deployment, migration, payments, security, or destructive work | user-approved sensitive-surface gate, `external` or manual verification, and rollback or escape path |
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
+
+Ralph can reduce false-done risk by rerunning validators and recording failures, but a passing Ralph summary is still not acceptance. The closeout and review decision must name the evidence that proves the bead's done-when target.
 
 Adaptive-depth metadata should raise verification expectations when risk rises. `high-risk` and `multi-system` beads should usually include manual, integration, browser, or external evidence; `human-only` beads should name the human approval or manual action; `bounded-afk` beads need bounded files in play, explicit checks, and stop conditions.
 

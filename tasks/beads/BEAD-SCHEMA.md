@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-18
+Document version: v0.1.8
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -42,6 +42,11 @@ These keys are optional for backward compatibility but recommended for new or am
 - `required_planning_depth` — `none | brief | PRD | PRD+architecture | PRD+architecture+test-plan`
 - `autonomy_level` — `supervised | bounded-afk | human-only`
 - `run_contract` — optional future structured form for risk-triggered allowed actions and proof needed
+- `ralph_enabled` — `true | false`, opt-in marker for bounded Ralph attempt loops
+- `ralph_max_attempts` — positive integer retry budget for Ralph, default `3`
+- `ralph_retry_policy` — `bounded | ask_after_failure | stop_on_first_failure`
+- `ralph_validator_set` — optional list of validator names or commands for Ralph
+- `ralph_failure_budget` — short plain-English stop threshold
 
 `delegation_mode` describes whether a scoped bead is safe to hand to an agent after context is loaded. It does not activate parallel work, bypass human review, or override the one-active-bead rule.
 
@@ -52,6 +57,8 @@ These keys are optional for backward compatibility but recommended for new or am
 `complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; `python3 scripts/bead-depth-check.py` reports advisory warnings when the declared depth looks inconsistent with the bead's risk, files in play, checks, or stop conditions.
 
 `run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter.
+
+Ralph fields are optional and should appear only when a bead is testable enough for bounded retry. Ralph opt-in does not run automatically, approve attempts, widen files in play, accept review, or activate the next bead.
 
 Frontmatter is the canonical machine-readable metadata surface.
 The mirrored sections below stay readable for humans and for transition-safe validation, but runtime scripts should prefer frontmatter and compiled sidecars over ad hoc prose parsing.
@@ -69,6 +76,8 @@ Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when a bead needs execution-level o
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when closing a session, reviewing closeout, preparing handoff, or checking transition readiness.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
+
+Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when enabling, running, or reviewing bounded Ralph attempts for one active bead.
 
 Use `python3 scripts/run-contract-check.py` when a bead has or should have a risk-triggered run contract.
 
@@ -157,10 +166,12 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - High-risk or sensitive beads must name approval gates and rollback, blocked escape, or unblocker guidance before acceptance.
 - Learning promotion is part of closeout: product or technical decisions move to `DECISIONS.md`, repeated agent mistakes move to the shared lessons/rules layer, validator misses become validator follow-up work, and authority mismatches move to the owning authority file.
 - If a bead is blocked by manual setup or missing information, set it to `needs_info` or `manual_testing`, record a blocked escape path, and create or name a narrower unblocker bead instead of widening the current bead.
+- Ralph-enabled beads must remain bounded to one active bead, one retry budget, declared validators, files in play, stop conditions, and human review. Ralph attempt evidence is not acceptance.
 - `python3 scripts/os-health.py` compiles bead metadata into generated sidecars, including `logs/readiness.json`, `logs/next-step.json`, `logs/progress.json`, `logs/authority-map.json`, `logs/adapter-index.json`, `logs/shim-index.json`, and `logs/os-events.jsonl`.
 - `python3 scripts/files-in-play-check.py` compares current Git changes to the active bead `files_in_play` and warns about out-of-scope paths without approving or blocking the work.
 - `python3 scripts/files-in-play-check.py --command "<command summary>"` classifies command risk as a plain `continue`, `approval needed`, or `stop` decision before the command runs.
 - `python3 scripts/files-in-play-check.py --edit-lock` shows an optional advisory lock view for high-risk beads; it is evidence only, not a real filesystem lock or approval.
+- `python3 scripts/ralph-loop.py` may run one explicit attempt command and a validator set for a Ralph-enabled bead, then write generated attempt evidence under `logs/`; it does not choose tasks, approve commands, accept review, or transition beads.
 - `python3 scripts/bead-transition.py` may propose the next bead automatically, but `python3 scripts/bead-transition.py --approve` is required before the next bead becomes `in_progress`.
 
 ## Bead Template Library

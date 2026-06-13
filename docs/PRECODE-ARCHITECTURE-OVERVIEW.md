@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.18
-Last updated: 2026-06-09
+Document version: v0.3.19
+Last updated: 2026-06-13
 
 ## Executive Summary
 
@@ -164,6 +164,7 @@ The application can use any framework. Precode's architecture overview is not th
 | Execution bead layer | Bound one journey unit of work. | `tasks/beads/*.md`, bead frontmatter and sections, delegation mode, test strategy, review context. |
 | Adaptive-depth layer | Scale planning and autonomy expectations to the bead's risk while giving beginners a plain continue/ask/stop decision. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`. |
 | Run-contract layer | Tighten high-risk execution policy without burdening ordinary beads. | bead `Run Contract` sections, `scripts/run-contract-check.py`, `logs/run-contract.json`, `logs/run-contract.yaml`. |
+| Ralph attempt layer | Run opt-in bounded retry attempts for one active bead and record validator-backed attempt evidence. | `tasks/reference/RALPH-LOOP-PROTOCOL.md`, optional bead Ralph frontmatter, `scripts/ralph-loop.py`, `logs/ralph-attempts.jsonl`, `logs/ralph-summary.md`. |
 | Mode layer | Separate planning, exploration, building, and review behavior with compact role contracts. | `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
 | Adapter layer | Normalize tool-specific entrypoints. | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/*.md`. |
 | Agent-routing layer | Keep model tier, context budget, delegation, and tool choice proportional to the bead. | `tasks/reference/AGENT-ROUTING-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, tool-specific adapters. |
@@ -215,10 +216,11 @@ The normal loop is:
 2. Load active memory, active bead, and primary authority.
 3. Work inside the active bead.
 4. Run checks through `bash scripts/record-check.sh -- <command>`.
-5. Checkpoint when scope, context, or evidence becomes unclear.
-6. Close with `bash scripts/session-close.sh`.
-7. Review closeout evidence and decide `accepted`, `revise`, `split`, or `blocked`.
-8. Approve transition with `python3 scripts/bead-transition.py --approve` only when safe.
+5. For Ralph-enabled, testable beads, optionally run `python3 scripts/ralph-loop.py` against one explicit attempt command and validator set.
+6. Checkpoint when scope, context, or evidence becomes unclear.
+7. Close with `bash scripts/session-close.sh`.
+8. Review closeout evidence and decide `accepted`, `revise`, `split`, or `blocked`.
+9. Approve transition with `python3 scripts/bead-transition.py --approve` only when safe.
 
 ## Control And Safety Model
 
@@ -238,6 +240,8 @@ The core validator currently checks required docs, authority contracts, active-m
 Advisory checks extend the model across context, decomposition, verification, state, orchestration, workflow selection, long-horizon planning, completion, files in play, run contracts, goal frames, public-package hygiene, local hygiene, and tool execution.
 
 Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/authority-map.json`, `logs/file-inventory.json`, `logs/handoff-packet.json`, `logs/run-contract.json`, and `logs/workflow-map.json` make current state easier to inspect, but they remain evidence, not authority.
+
+Ralph attempt outputs such as `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` are generated evidence in the same trust boundary. They can show what was tried, what validators said, and whether another attempt is allowed, but they cannot accept work, approve commands, choose the next bead, or replace human review.
 
 `next-step.py` is the canonical generated router for the next human decision. `session-start.sh` displays the same decision inside the session Context Pack so the first command and the standalone router do not compete.
 
@@ -336,6 +340,7 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 - Prefer vertical journey beads for user-facing work.
 - Use `afk_candidate` only as advisory delegation metadata; it does not activate parallel work or bypass review.
 - For code-changing beads, declare test strategy and prefer failing-first when practical.
+- Use Ralph only when a bead is testable, bounded, and opted in or explicitly requested for a one-off run.
 - For medium/high-risk code-changing beads, prefer or require fresh-context review.
 - Own deep-module interfaces, behavior contracts, and test boundaries before delegating internals.
 - Use stop conditions as guardrails, not as failure labels.
@@ -359,6 +364,7 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 | Stop-if gates | Makes risky expansion visible before implementation. |
 | Review inputs vs evidence | Separates helpful observations from proof of completion. |
 | Generated health reports | Gives humans status without expanding active memory. |
+| Ralph attempt logs | Preserve bounded retry history so failed attempts do not disappear into chat. |
 | Adapter shims | Lets different AI tools enter the same operating model. |
 | Agent routing | Keeps model depth, context, delegation, and tool use proportional to risk. |
 | Advisory validators | Surfaces drift without letting automation choose work. |
@@ -372,11 +378,12 @@ Precode evidence has a hierarchy:
 1. Recorded verification checks with command, exit code, and output log.
 2. Manual verification with who checked, what was checked, environment, result, and remaining uncertainty.
 3. Closeout evidence that summarizes checks, changed files, review decision, drift, lessons, and follow-up.
-4. Generated sidecars and reports that summarize state for humans.
-5. Review inputs such as Discovery Summaries, Goal Frame fit notes, screenshots, external QA notes, AI critiques, or generated tests.
-6. Human-readable maintainer-local history.
+4. Ralph attempt evidence that summarizes explicit attempts, validators, failure category, and next recommended move.
+5. Generated sidecars and reports that summarize state for humans.
+6. Review inputs such as Discovery Summaries, Goal Frame fit notes, screenshots, external QA notes, AI critiques, or generated tests.
+7. Human-readable maintainer-local history.
 
-Only the first three should drive acceptance. Generated reports, review inputs, and history help review, but they do not prove completion by themselves.
+Only the first three should drive acceptance. Ralph attempt evidence, generated reports, review inputs, and history help review, but they do not prove completion by themselves.
 
 ### Handoff And Interoperability Model
 
@@ -389,6 +396,7 @@ Precode's current architecture direction is router-first externally and modular 
 - Externally, `next-step.py` owns the generated "what now?" decision; `session-start.sh` presents it; future diagnostic wrappers may explain warnings after the router is trusted.
 - Internally, compiler domains should move out of `scripts/os_compiler.py` into small service modules when they become distinct, while preserving existing command paths and generated JSON shapes.
 - Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
+- Ralph stays a bounded attempt engine for one active bead, not a multi-bead scheduler or autonomous agent platform.
 - Bootstrap and existing-repo intake remain read-only confidence workflows until a user explicitly chooses a setup path.
 - A broad `precode doctor` command, mutating installer/update flow, and installable `precode` CLI are deferred until router behavior and bootstrap/install needs are stable.
 

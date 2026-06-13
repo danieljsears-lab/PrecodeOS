@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.18</span><span>Updated 2026-06-13</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.19</span><span>Updated 2026-06-13</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -251,12 +251,12 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="4-build">4. Build</h3>
 <p>Build answers: &quot;What may the agent change right now?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, and easy to steer</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
+<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, and easy to steer</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
 <p>Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.</p>
 <h3 id="5-prove">5. Prove</h3>
 <p>Prove answers: &quot;What evidence says this is done?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>bash scripts/record-check.sh -- &amp;lt;command&amp;gt;</code> to record checks as evidence</li><li>verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval</li><li><code>scripts/*-check.py</code> advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more</li><li>Closeout Evidence in the active bead</li></ul>
+<ul><li><code>bash scripts/record-check.sh -- &amp;lt;command&amp;gt;</code> to record checks as evidence</li><li><code>logs/ralph-attempts.jsonl</code> and <code>logs/ralph-summary.md</code> when a Ralph-enabled bead records bounded attempt history</li><li>verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval</li><li><code>scripts/*-check.py</code> advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more</li><li>Closeout Evidence in the active bead</li></ul>
 <p>The review decision is one of:</p>
 <ul><li><code>accepted</code></li><li><code>revise</code></li><li><code>split</code></li><li><code>blocked</code></li></ul>
 <p>&quot;The agent sounds confident&quot; is not a review decision. Evidence is the review surface.</p>
@@ -299,6 +299,7 @@ bash scripts/session-close.sh
 bash scripts/handoff.sh next-agent
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
+python3 scripts/ralph-loop.py --dry-run
 python3 scripts/bead-depth-check.py
 python3 scripts/files-in-play-check.py
 python3 scripts/files-in-play-check.py --command &quot;&lt;command summary&gt;&quot;

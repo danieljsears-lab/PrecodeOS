@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-06-13
 
 ## Purpose
@@ -42,6 +42,7 @@ Active memory remains exactly:
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
+| Bounded attempt engine | Opt-in local loop that runs one explicit attempt command, validators, and generated attempt evidence for one active bead | `tasks/reference/RALPH-LOOP-PROTOCOL.md` plus `scripts/ralph-loop.py` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
 | Role contract | Compact mode card for bounded agent behavior | `modes/*.md` |
 
@@ -57,6 +58,7 @@ Every extension must preserve these boundaries:
 - Keep skill playbooks read-only unless a later approved extension explicitly defines command-wrapper boundaries.
 - Keep docs-help playbooks limited to stable documentation questions; they must cite canonical docs/protocols and stop before current-state diagnosis.
 - Keep extension findings as evidence until promoted into a PRD, `DECISIONS.md`, an owning authority file, or an approved bead.
+- Keep bounded engines subordinate to one active bead, explicit user approval gates, and generated-evidence demotion.
 
 ## Authority Contract Rules
 
@@ -97,6 +99,8 @@ Mutation requires all of these:
 - the user performs or explicitly approves the manual gate
 
 Scheduled audits, importers, generated reports, and source-intake helpers must remain read-only unless a separate approved execution bead explicitly says otherwise.
+
+Bounded local engines such as Ralph may run explicit local attempt commands only inside the active bead boundary. They must stop before approval-required, destructive, secret-bearing, or external mutation actions unless the active bead and user approval gate allow the exact action.
 
 ## Promotion Path
 

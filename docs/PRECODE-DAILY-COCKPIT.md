@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
+Document version: v0.1.4
 Last updated: 2026-06-13
 
 Use this cockpit while you work with an AI coding agent.
@@ -32,6 +32,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.` | Recorded proof, failures or blockers, and any manual verification needed. |
+| Ralph | `Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.` | Retry evidence for one active bead without accepting work or activating anything. |
 | Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
 | Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
 | Recover | `I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.` | A conservative recovery plan before repair. |
@@ -122,6 +123,22 @@ bash scripts/record-check.sh -- <check command>
 
 Expected output: a recorded check result in `logs/check-results.jsonl`, check output under `logs/check-output/`, and updated closeout evidence for the active bead.
 
+### Run A Bounded Ralph Attempt
+
+Use when the active bead is testable, has clear checks, and you want bounded retry evidence instead of a disappearing chat attempt.
+
+```text
+Run a bounded Ralph dry run for this bead. Show the attempt budget, validator set, decision, failure category, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.
+```
+
+Command:
+
+```bash
+python3 scripts/ralph-loop.py --dry-run
+```
+
+Expected output: a Ralph decision such as `retry`, `ask`, `review`, or `stop`. Without `--dry-run`, Ralph writes `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` as generated evidence only.
+
 ### Checkpoint Mid-Session
 
 Use when context feels crowded, the task got fuzzy, or you may need to pause.
@@ -168,6 +185,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |
 | `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, and evidenced. |
 | `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings for deeper diagnosis. |
+| `python3 scripts/ralph-loop.py --dry-run` | A Ralph-enabled bead needs bounded retry evidence. | Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work. |
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
 | `python3 scripts/update-bead-build-journal.py --append` | You need to append a build-change entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory or acceptance. |
 | `logs/bead-build-journal.md` | You need to understand what implementation-relevant work changed for a bead. | Generated build-change journal; evidence only. |
@@ -208,6 +226,16 @@ bash scripts/record-check.sh -- <declared bead check>
 ```
 
 Green means recorded evidence and closeout are closer to review-ready. Missing or failing checks mean the bead is not accepted yet. Completion output does not accept work by itself.
+
+### Should Ralph Retry?
+
+Command:
+
+```bash
+python3 scripts/ralph-loop.py --dry-run
+```
+
+Use Ralph only for one active bead with clear checks and retry boundaries. A `review` decision means evidence may be ready for human review; it does not mean accepted.
 
 ### Is The Workflow Right?
 

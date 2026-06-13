@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-17
+Document version: v0.1.7
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -23,6 +23,8 @@ A command can be useful without proving the work is done. Precode separates:
 - user approval: a human approved a risky action
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token read-only tools, browser or screenshot-heavy tools, delegated agents, and external mutation tools.
+
+Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when a host or user wants a bounded retry loop around one active bead. Ralph can record attempts and validators, but it is still subject to this protocol's command classes and approval rules.
 
 Active memory remains exactly:
 
@@ -86,6 +88,8 @@ Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scri
 
 `next-step` is the canonical generated router for the next human decision. Its `load_plan`, `single_next_protocol`, and `context_footprint` fields are context-routing evidence only; they do not approve tool calls or widen allowed tool classes.
 
+`python3 scripts/ralph-loop.py` is a bounded bead-attempt engine. It may run one explicit attempt command and a validator set, then write `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md`. Ralph does not invent commands, approve risky commands, accept work, or approve transitions.
+
 `python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command.
 
 `python3 scripts/files-in-play-check.py --edit-lock` is also advisory. It compares current changed paths with the active bead's `files_in_play` and generated-output exceptions. It does not create a filesystem lock, approve edits, or replace human review.
@@ -138,6 +142,8 @@ When a host supports subagents, map them to Precode's compact role contracts ins
 Never store secrets, tokens, credentials, dashboard values, private keys, raw private transcripts, or sensitive raw command output in `logs/tool-runs.jsonl`.
 
 If a tool touches secrets, log only that the action was `secret_bearing`, whether it was approved, and where safe redacted evidence lives.
+
+Do not store long raw command output, secrets, credentials, or dashboard values in Ralph attempt logs. Store short summaries and safe output references only.
 
 ## Logging Tool Runs
 

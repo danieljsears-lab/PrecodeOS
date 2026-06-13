@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-04
+Document version: v0.1.5
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -41,6 +41,7 @@ Active memory remains exactly:
 Closeout Evidence should include:
 
 - recorded checks
+- Ralph attempt summary when the bead used Ralph
 - result
 - manual verification
 - files changed
@@ -78,6 +79,7 @@ A handoff should be able to explain:
 - stop conditions
 - open questions
 - latest evidence
+- latest Ralph attempt decision when Ralph was used
 - blockers
 - next safe action
 - generated-report warning
@@ -101,6 +103,8 @@ Use these outcomes at completion time:
 ## Advisory Check
 
 `scripts/completion-check.py` is advisory. It may warn about missing recorded checks, vague manual verification, invalid review decisions, unsafe next-bead references, follow-up work without a destination, vague handback, stale session close evidence, missing handoff Context Pack fields, transition eligibility that still needs user approval, or blocked work without a clear escape path.
+
+Ralph attempt evidence may support closeout and handoff, especially after repeated validator failures. It does not replace review acceptance, transition approval, or manual verification when those are required.
 
 Session freshness is phase-aware. Evidence newer than the latest session close is reported as `open` detail while a bead is `in_progress`; it becomes a `stale` warning when the bead is in a close-oriented state such as `needs_info`, `manual_testing`, `review`, or `done`. A session close at or after the latest recorded check is `current`; a bead without recorded checks is `no-recorded-checks`.
 
