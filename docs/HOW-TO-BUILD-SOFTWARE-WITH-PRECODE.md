@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-06
+Document version: v0.1.23
+Last updated: 2026-06-13
 
 ## Start Here: You Are Not Just Prompting
 
@@ -127,6 +127,12 @@ Not every software idea needs the same process. Precode is safest when you choos
 | AI-powered feature | Prompt behavior, costs, safety, evaluation, user trust. | Unbounded spend, hallucinated answers, private data exposure, weak evaluation. | PRD, risk review, verification guardrails, spend visibility. |
 
 If you are unsure, ask for workflow selection before coding.
+
+For a stable question about how PrecodeOS works or where a guide lives, ask docs help first:
+
+```text
+Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files. If my question depends on current project state or what to do next, route me to the right Precode workflow instead.
+```
 
 ```text
 I have a software idea but I am not sure what path it needs. Use the Workflow Selection Skill and tell me whether this should start as local source intake, a PRD, a bead proposal, a challenge planning bead, review, repair, or a small active task. Make no edits and do not code yet.

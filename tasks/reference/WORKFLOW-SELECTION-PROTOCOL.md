@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-06
+Document version: v0.1.10
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Workflow selection helps a user or agent choose the right Precode path before st
 
 Use this protocol when the next step is unclear, when too many protocols could apply, or when an agent may be jumping from idea to implementation too quickly.
 
-If the user asks for the Workflow Selection Skill, a "Precode skill", or a "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. The workflow decision still comes from this protocol and the relevant owner files.
+If the user asks for the Workflow Selection Skill, a "Precode skill", or a "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. Stable documentation questions should route to Ask Precode. Current-state or next-work questions should route through Workflow Selection, Session Start, Troubleshooting, or the relevant owner workflow.
 
 Active memory remains exactly:
 
@@ -40,6 +40,7 @@ Choose the workflow that matches the current situation:
 
 | Current situation | Recommended workflow | Next artifact |
 |---|---|---|
+| User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
 | First-time non-technical builder has a rough idea before repo setup | Product Ideation Workbook or Product Conviction Packet Skill | Product Brief, then Conviction Packet evidence |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
@@ -51,7 +52,7 @@ Choose the workflow that matches the current situation:
 | High-risk, uncertain, or challenge-worthy idea | PRFAQ/challenge planning bead | questions, risk notes, or narrowed proposal |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
-| User asks for Workflow Selection Skill or another named Precode skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
+| User asks for Workflow Selection Skill or another current-state skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
 
 If no row fits, stop and name what is missing: source evidence, product definition, authority owner, decomposition, verification path, approval gate, or state repair.
 

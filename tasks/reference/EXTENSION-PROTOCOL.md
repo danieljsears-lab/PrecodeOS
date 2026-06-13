@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-06
+Document version: v0.1.6
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Extensions let PrecodeOS grow without turning into a giant prompt or a hidden au
 
 An extension may add a tool surface, workflow protocol, skill playbook, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
 
-Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols.
+Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, docs-help invocation, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols or canonical docs.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, or needs tool-call approval boundaries.
 
@@ -36,7 +36,7 @@ Active memory remains exactly:
 |---|---|---|
 | Adapter | Tool-specific guidance for a coding agent | `adapters/*.md` or a tool shim |
 | Protocol | Workflow rules for a repeatable Precode process | `tasks/reference/*.md` |
-| Skill playbook | Read-only host-agent invocation guidance for an existing Precode workflow or extension review | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` plus the owner protocol or adapter |
+| Skill playbook | Read-only host-agent invocation guidance for stable docs help, an existing Precode workflow, or extension review | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` plus the owner protocol, canonical docs, or adapter |
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
@@ -55,6 +55,7 @@ Every extension must preserve these boundaries:
 - Do not mutate external systems unless the active bead explicitly allows it and the user approves the manual gate.
 - Keep extension rules in one owning protocol or adapter.
 - Keep skill playbooks read-only unless a later approved extension explicitly defines command-wrapper boundaries.
+- Keep docs-help playbooks limited to stable documentation questions; they must cite canonical docs/protocols and stop before current-state diagnosis.
 - Keep extension findings as evidence until promoted into a PRD, `DECISIONS.md`, an owning authority file, or an approved bead.
 
 ## Authority Contract Rules

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.17
-Last updated: 2026-06-06
+Document version: v0.8.18
+Last updated: 2026-06-13
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -131,6 +131,7 @@ Decide answers: "Is this idea ready to become planned work?"
 Main surfaces:
 
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
+- Ask Precode when the builder has a stable documentation question or needs to find the right guide
 - Product Conviction Packet guidance for first-time builders researching and exploring an idea before repo setup
 - Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them

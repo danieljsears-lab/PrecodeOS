@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.30
-Last updated: 2026-06-06
+Document version: v0.7.31
+Last updated: 2026-06-13
 
 
 
@@ -737,6 +737,12 @@ Start safely:
 
 ```text
 Run Precode session start. Explain the active bead, done-when target, primary authority, files in play, checks, stop conditions, and blockers before editing.
+```
+
+Ask a stable docs question:
+
+```text
+Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files. If my question depends on current project state, active memory, generated reports, local errors, private maintainer context, or what to do next, stop and route me to the right Precode workflow instead.
 ```
 
 Choose the workflow:
