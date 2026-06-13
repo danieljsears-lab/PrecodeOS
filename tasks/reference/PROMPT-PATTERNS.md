@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-06-06
+Document version: v0.1.18
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -75,6 +75,18 @@ Use the Precode Skill Playbook Protocol.
 Treat the skill as a read-only prompt playbook, not a command wrapper, plugin registry, optional pack, or new authority layer.
 Name the owner protocol or adapter, allowed actions, forbidden actions, generated evidence if any, approval gates, stop conditions, and promotion path.
 Do not edit files, run mutating commands, approve PRDs, activate beads, approve review decisions, or promote findings.
+```
+
+### Ask Precode
+
+```text
+Use Ask Precode.
+
+Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.
+
+If my question depends on current project state, active memory, generated reports, local errors, private maintainer context, or what to do next, stop and route me to the right Precode workflow instead.
+
+Return: Short answer, Sources, What this does not decide, and Next safe prompt.
 ```
 
 ### Workflow Selection Skill

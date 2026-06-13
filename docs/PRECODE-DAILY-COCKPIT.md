@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-09
+Document version: v0.1.3
+Last updated: 2026-06-13
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -27,6 +27,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Moment | Paste this first | What it should produce |
 |---|---|---|
 | Start | `Run the Precode session start. Explain the Context Pack in plain English before editing.` | Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning. |
+| Ask docs | `Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
 | Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
@@ -36,6 +37,22 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Recover | `I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.` | A conservative recovery plan before repair. |
 
 ## Core Prompts
+
+### Ask A Stable Docs Question
+
+Use when you need to understand a PrecodeOS concept, find the right guide, or ask a stable documentation question.
+
+```text
+Use Ask Precode.
+
+Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.
+
+If my question depends on current project state, active memory, generated reports, local errors, private maintainer context, or what to do next, stop and route me to the right Precode workflow instead.
+
+Return: Short answer, Sources, What this does not decide, and Next safe prompt.
+```
+
+Expected output: a cited docs/protocol answer, plus a clear warning when the question should move to Session Start, Workflow Selection, Troubleshooting, or another current-state workflow.
 
 ### Start The Session
 

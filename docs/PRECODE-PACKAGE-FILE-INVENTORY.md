@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.12
-Last updated: 2026-06-09
+Document version: v0.2.13
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -47,7 +47,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Reader-facing docs | `docs/*.md` | Human guides for the Daily Cockpit, philosophy, guided setup, support assistance, troubleshooting, beginner orientation, day-to-day use, Claude Code students, architecture review, and file-level navigation. |
 | Public generated docs site | `docs-html/*.html` | Committed HTML reading surface generated from `docs/*.md`; easier to navigate, but not authority. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. |
-| Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing and skill playbooks. |
+| Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing, skill playbooks, and copyable prompt patterns. |
 | Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, completion evidence, and public-safe cohort snapshots, not authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
 | Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
@@ -198,7 +198,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md` | reference | Read-only first-run confidence workflow for inspecting a PrecodeOS package source and target project before setup mutation. | Used before guided setup or support-assisted adoption; governs `scripts/bootstrap-check.py`, source/target identity, public file groups, exclusions, conflicts, and first safe next action. |
 | `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` | reference | Read-only existing-repository intake workflow for the existing-app branch at the first PrecodeOS adoption fork. | Used after Bootstrap Confidence when the target already has app code, docs, CI, product history, or active work; governs `scripts/existing-repo-intake.py`, repo-shape evidence, likely checks as future hints, owner-file gaps, conflicts, and mutation stop conditions. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
-| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Workflow Selection Skill and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
+| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Ask Precode Docs Skill guidance, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Ask Precode Docs Skill, Workflow Selection Skill, and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
 | `tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md` | reference | Generated bead build journal rules, evidence sources, Daily Cockpit surfacing, and conservative uncertainty handling. | Governs `logs/bead-build-journal.md/jsonl` behavior. |

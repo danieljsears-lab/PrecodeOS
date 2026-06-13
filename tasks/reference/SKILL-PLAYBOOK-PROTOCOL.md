@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-06
+Document version: v0.1.3
+Last updated: 2026-06-13
 
 ## Purpose
 
@@ -43,6 +43,34 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 
 ## Implemented Prompt Playbooks
 
+### Ask Precode Docs Skill
+
+```text
+Name: Ask Precode Docs Skill
+Purpose: Help a user ask stable PrecodeOS documentation questions without needing to identify source files.
+Load when: The user asks for Ask Precode, asks a stable question about PrecodeOS docs, asks where to find guidance, or asks what a Precode concept means.
+Owner protocol or adapter: `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`
+Allowed actions: Search `README.md`, `docs/*.md`, and relevant `tasks/reference/*.md`; answer in plain language; cite source files; suggest the next safe prompt or document.
+Forbidden actions: Edit files, run commands, inspect current active memory, diagnose current project state, cite `_maintainer/` files, approve PRDs, activate beads, approve transitions, accept review decisions, or treat generated reports as authority.
+Generated evidence, if any: None in v1.
+User approval required before: Any file edit, command execution, active-state diagnosis, PRD approval, bead activation, transition approval, review acceptance, external mutation, or sensitive-surface action.
+Stop conditions: The question depends on current repo state, active memory, active bead status, generated reports, local errors, private maintainer context, missing docs, conflicting docs, or what work should happen next.
+Promotion path for findings: Promote documentation gaps only through a reviewed doc/protocol update, `DECISIONS.md`, an authority file, or a candidate/approved bead after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Short answer:
+Sources:
+What this does not decide:
+Next safe prompt:
+```
+
+The user-facing invocation name is `Ask Precode`. The precise contract name is `Ask Precode Docs Skill`.
+
+The output is documentation help only. It does not choose the next task, inspect current state, approve work, rewrite owner files, or start implementation.
+
 ### Workflow Selection Skill
 
 ```text
@@ -74,6 +102,15 @@ Generated-report warning:
 The output is guidance only. It does not approve a PRD, activate a bead, choose the next task, rewrite owner files, or start implementation.
 
 ## V1 Skill Set
+
+### Ask Precode Docs Skill
+
+- Purpose: help a user ask stable PrecodeOS documentation questions without knowing which files to search.
+- Owner source: `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`.
+- Allowed actions: search `README.md`, `docs/*.md`, and relevant `tasks/reference/*.md`; answer in plain language; cite source files; and suggest the next safe prompt or document.
+- Forbidden actions: edit files, run commands, inspect active memory, diagnose current repo state, cite `_maintainer/`, approve work, activate beads, approve transitions, or treat generated reports as authority.
+- Gain: gives beginners a simple docs-help affordance while keeping Markdown docs and protocols canonical.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Workflow Selection Skill
 
@@ -166,6 +203,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 
 | Candidate | Priority | Recommendation |
 |---|---:|---|
+| Ask Precode Docs Skill | Implemented | User-facing docs-help prompt; keep it stable-documentation-only and cite canonical docs/protocols. |
 | Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |

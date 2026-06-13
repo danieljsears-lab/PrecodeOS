@@ -4,9 +4,11 @@
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
-PrecodeOS is a repo-native Builder OS for AI coding agents that keeps intent, scope, approval, proof, and recovery visible inside the project.
+PrecodeOS is not an app runtime. It is a repo-native Builder OS: a Markdown-canonical, script-enforced control layer and governance kernel that keeps agentic software work bounded by intent, scope, approval, proof, and recovery.
 
-It is for builders who want the speed of AI coding without handing the project over to the agent. PrecodeOS helps you know where you are, what happens next, what needs approval, what has been proven, and when to stop.
+It is for software builders who want the speed of AI coding with agents without handing the project over to the agent. Where the hard problem is not only generating code, it is preserving project truth: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the agent or human loses the thread.
+
+PrecodeOS lives inside a repository as Markdown owner files, execution contracts, validation scripts, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents. It gives those agents a shared operating model.
 
 > AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 > NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.
@@ -58,6 +60,8 @@ That is the line PrecodeOS holds: the agent can inspect, draft, implement, expla
 If you are using PrecodeOS in a project, start with [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md). It is the daily command, prompt, report, recovery, check, and learning surface for students.
 
 Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect.
+
+For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
 If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html). It is generated from the Markdown docs for easier navigation; the Markdown files remain canonical.
 
@@ -254,5 +258,5 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.36
-Last updated: 2026-06-06
+Document version: v0.1.37
+Last updated: 2026-06-13
