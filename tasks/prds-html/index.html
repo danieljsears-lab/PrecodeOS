@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Precode PRD Review Index</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>Precode PRD Review Index</h1>
+  <p class="muted">Static HTML generated from canonical Markdown PRD shards in <code>tasks/prds/</code>.</p>
+  <div class="source-links">
+    <a href="../prds/">Markdown PRD folder</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid">
+    <div class="metric"><span>Rendered PRDs</span><strong>7</strong></div>
+    <div class="metric"><span>Source</span><strong>tasks/prds/*.md</strong></div>
+    <div class="metric"><span>Generated output</span><strong>tasks/prds-html/*.html</strong></div>
+  </section>
+  <div class="table-wrap"><table><thead><tr><th>PRD</th><th>Status</th><th>Risk</th><th>Feature</th><th>Markdown source</th><th>Next safe review decision</th></tr></thead><tbody><tr><td><a href="PRD-001-product-discovery-validation.html">PRD-001 -- Product Discovery Validation</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Product Discovery Validation</td><td><a href="../prds/PRD-001-product-discovery-validation.md#prd-001-product-discovery-validation">PRD-001-product-discovery-validation.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-002-bootstrap-confidence-lane.html">PRD-002 -- Bootstrap Confidence Lane</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>First-Run Confidence + Bootstrap v1</td><td><a href="../prds/PRD-002-bootstrap-confidence-lane.md#prd-002-bootstrap-confidence-lane">PRD-002-bootstrap-confidence-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-003-existing-repo-intake.html">PRD-003 -- Existing Repo Intake</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Existing Repo Intake</td><td><a href="../prds/PRD-003-existing-repo-intake.md#prd-003-existing-repo-intake">PRD-003-existing-repo-intake.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-004-install-update-manifest-preview.html">PRD-004 -- Install/Update Manifest And Dry-Run Preview</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Install/Update Manifest And Dry-Run Preview</td><td><a href="../prds/PRD-004-install-update-manifest-preview.md#prd-004-install-update-manifest-preview">PRD-004-install-update-manifest-preview.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-005-release-readiness-lane.html">PRD-005 -- Release Readiness / Shipping Lane</a></td><td><span class="status approved">approved</span></td><td>high</td><td>Release Readiness / Shipping Lane</td><td><a href="../prds/PRD-005-release-readiness-lane.md#prd-005-release-readiness-lane">PRD-005-release-readiness-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-006-supervised-setup-plan.html">PRD-006 -- Supervised Setup Plan</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Installer / Bootstrap Experience</td><td><a href="../prds/PRD-006-supervised-setup-plan.md#prd-006-supervised-setup-plan">PRD-006-supervised-setup-plan.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-007-hybrid-spec-html-review-surface.html">PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Hybrid Spec Format v1 / HTML Review Surface</td><td><a href="../prds/PRD-007-hybrid-spec-html-review-surface.md#prd-007-hybrid-spec-html-review-surface">PRD-007-hybrid-spec-html-review-surface.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr></tbody></table></div>
+</main>
+
+</body>
+</html>

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.21
+Document version: v0.2.23
 Last updated: 2026-06-14
 
 ## Purpose
@@ -50,6 +50,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing, skill playbooks, and copyable prompt patterns. |
 | Reusable templates | `tasks/templates/*.md` | Copyable student and workflow templates that produce source evidence, completion evidence, and public-safe cohort snapshots, not authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
+| Generated PRD review surface | `tasks/prds-html/*.html` | Committed static HTML review pages generated from non-template PRD shards; easier to inspect, but not authority. |
 | Modes | `modes/*.md` | Navigator, explorer, builder, and review role contracts. |
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools. |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` | Marker and user guidance for target-project raw evidence such as notes, documents, screenshots, research, and links. |
@@ -201,7 +202,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md` | reference | Non-mutating install/update manifest and dry-run preview workflow for explaining candidate setup actions before target-project mutation. | Used after Bootstrap Confidence and before any supervised setup mutation; governs `bootstrap-check.py --preview-manifest`, preview action categories, generated-evidence boundaries, and deferred installer/update semantics. |
 | `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md` | reference | Non-mutating supervised setup-plan workflow for turning Bootstrap Confidence and manifest preview evidence into a visible setup checklist before target-project mutation. | Used after manifest preview and before any manual setup action; governs `bootstrap-check.py --supervised-setup-plan`, action IDs, approval gates, exclusions, blockers, validation steps, and evidence-only boundaries. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
-| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Ask Precode Docs Skill guidance, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Ask Precode Docs Skill, Workflow Selection Skill, and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
+| `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Ask Precode Docs Skill guidance, Product Discovery Interview Skill guidance, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Ask Precode Docs Skill, Workflow Selection Skill, Product Discovery Interview Skill, and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
 | `tasks/reference/OS-INTEGRITY-PROTOCOL.md` | reference | PrecodeOS-owned surface classes, protected-source checkpoint expectations, OS-integrity check behavior, scoped restore limits, and generated-evidence boundaries. | Governs `scripts/os-integrity-check.py`, `scripts/os-checkpoint.py`, and strict pre-commit protection for OS-owned source surfaces. |
@@ -222,6 +223,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/beads/*.md` | execution contract | One durable journey unit of work, files in play, checks, stop conditions, delegation/test/review/adaptive-depth posture, and closeout. | One bead may be `in_progress`; active bead is pointed to by `tasks/todo.md`. |
 | `tasks/prds/PRD-SHARD-SCHEMA.md` | reference | PRD directory rules, destination-shard guidance, and expected domain-language sections. | Supports `tasks/prds/*.md`. |
 | `tasks/prds/*.md` | reference | Product destination shards, including domain language when terms matter. | Feed `FEATURES.md` and candidate journey beads. |
+| `tasks/prds-html/*.html` | generated public PRD review | Static HTML review surface generated from non-template PRD shards, including an index and per-PRD review cues. | Commit-eligible package artifact for easier PRD review; does not replace Markdown PRD authority, approve PRDs, activate beads, choose tasks, accept implementation, or edit source Markdown. |
 
 ## Script Dictionary
 
@@ -273,6 +275,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/update-learning-diary.py` | Renders generated learning diary. | Bead closeout, checks, spend, loop events. | `logs/learning-diary.md/jsonl`. |
 | `scripts/update-memory-index.py` | Renders reviewed memory index. | `memory/cards/*.md`. | `logs/memory-index.md/json`. |
 | `scripts/memory-check.py` | Searches or audits reviewed memory cards. | `memory/cards/*.md`, optional query/category/freshness/status/promotion filters. | Advisory JSON only; no card creation, owner-file promotion, task selection, or state mutation. |
+| `scripts/prd-html.py` | Generates or checks the committed PRD HTML review surface. | Non-template Markdown PRD shards in `tasks/prds/*.md`; optional `--check`; optional `--output`. | `tasks/prds-html/*.html`; generated review convenience only, not PRD authority, approval, bead activation, task selection, implementation acceptance, or Markdown editing. |
 | `scripts/file-inventory.py` | Renders/checks file inventory metadata. | Repo files and authority contracts. | `logs/file-inventory.json` or advisory JSON. |
 | `scripts/*-check.py` | Advisory quality checks. | Compiled state and logs. | JSON warnings; no state mutation. |
 | `scripts/version-check.py` | Checks version metadata coverage. | Docs, scripts, workflows. | Advisory JSON. |

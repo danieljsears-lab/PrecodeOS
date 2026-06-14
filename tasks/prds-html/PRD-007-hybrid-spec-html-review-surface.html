@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</h1>
+  <p class="muted">Static HTML generated from <code>PRD-007-hybrid-spec-html-review-surface.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-007-hybrid-spec-html-review-surface.md#prd-007-hybrid-spec-html-review-surface">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Hybrid Spec Format v1 / HTML Review Surface</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the static HTML PRD review surface in PrecodeOS.</p>
+    <p><strong>Not authority:</strong> Active memory, PRD approval, task selection, bead activation, generated evidence truth, implementation acceptance, round-trip editing, or source-of-truth replacement.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future v2 cockpit support browser edits with explicit promotion back to Markdown?</td><td>Follow-up roadmap scope</td><td>no</td></tr><tr><td>Should future review lanes integrate PRD HTML with acceptance review prompts?</td><td>Follow-up roadmap scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-007-FR01</code></td><td>Add a PRD HTML generator script.</td><td>P0</td><td>Default output is <code>tasks/prds-html/</code>.</td></tr><tr><td><code>PRD-007-FR02</code></td><td>Render all non-template PRD shards into committed HTML.</td><td>P0</td><td>Excludes <code>PRD-000-template.md</code> and <code>PRD-SHARD-SCHEMA.md</code>.</td></tr><tr><td><code>PRD-007-FR03</code></td><td>Add an index page summarizing PRD status, risk, feature link, and source file.</td><td>P0</td><td>Index links to generated pages and Markdown sources.</td></tr><tr><td><code>PRD-007-FR04</code></td><td>Each PRD page foregrounds review cues before the full rendered PRD body.</td><td>P0</td><td>Include status, approval, blockers, requirements, risks, context, bead proposals, and next safe decision.</td></tr><tr><td><code>PRD-007-FR05</code></td><td>Add <code>--check</code> mode that compares generated output to committed files.</td><td>P0</td><td>Check must fail when output is stale, missing, or extra.</td></tr><tr><td><code>PRD-007-FR06</code></td><td>Update public PRD protocol, PRD shard schema, package inventory, and README discoverability.</td><td>P0</td><td>Markdown remains canonical.</td></tr><tr><td><code>PRD-007-FR07</code></td><td>Complete maintainer changelog and roadmap history follow-through.</td><td>P0</td><td>Includes roadmap implemented-candidate entry, journal card, maintenance cleanup, and generated roadmap HTML.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before treating any rendered PRD as approved, activating a bead, starting implementation, changing source Markdown, or promoting generated review notes into authority.</li><li>Stop if a reviewer asks to edit PRD content through HTML, approve from HTML, start a bead from HTML alone, or treat generated output as proof.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/prd-html.py</code></li><li><code>tasks/prds-html/</code></li><li><code>tasks/prds/*.md</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>external systems</li><li>generated evidence except generated PRD/docs/roadmap HTML</li><li>Required checks:</li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Open or inspect <code>tasks/prds-html/index.html</code> and one generated PRD page to confirm source links, status, blockers, forbidden actions, requirements, risks, and next safe review decision are visible without implying authority.</li><li>Forbidden assumptions:</li><li>HTML review output approves PRDs.</li><li>HTML review output activates beads.</li><li>HTML review output replaces Markdown PRDs.</li><li>HTML review output can edit or promote PRD changes.</li><li>Static PRD HTML is the v2 interactive cockpit.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B007-hybrid-spec-html-review-surface</code></td><td><code>PRD-007-FR01</code> through <code>PRD-007-FR07</code>, <code>PRD-007-UX01</code> through <code>PRD-007-UX03</code></td><td>Generator, generated PRD HTML, public docs, inventory, changelog, roadmap history, generated docs HTML, and generated roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></td><td><code>scripts/prd-html.py --check</code> plus package validation and manual HTML review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-007-hybrid-spec-format-v1-html-review-surface">PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-007</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Hybrid Spec Format v1 / HTML Review Surface</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | existing PRD protocol</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Hybrid Spec Format v1 / HTML Review Surface</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Stable facts:</li><li>PRD Markdown shards in <code>tasks/prds/*.md</code> are canonical product destination documents.</li><li>Generated HTML may improve review, scanability, source navigation, and stakeholder inspection.</li><li>Generated HTML must remain subordinate to Markdown PRDs and cannot approve PRDs or activate beads.</li><li>Assumptions:</li><li>V1 should render all non-template PRD shards, not only the latest PRD.</li><li>V1 output should live under <code>tasks/prds-html/</code> so it stays adjacent to PRD shards without mixing into <code>docs-html/</code>.</li><li>Conflicts or stale inputs:</li><li>Interactive spec cockpit behavior belongs to the deferred v2 roadmap item, not this static v1 review surface.</li><li>Privacy or secrets redactions:</li><li>PRD review pages must not expose secrets beyond what is already present in source Markdown. PRDs should not contain secrets.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Long PRD shards are readable as Markdown, but they are hard for non-technical builders and reviewers to scan quickly when checking status, requirements, blockers, risks, context, bead proposals, and approval state.</p>
+<p>Without a generated review surface, a reviewer may miss the next safe decision or confuse dense product-definition text with permission to start implementation.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: The builder or reviewer opens a PRD Markdown file and must manually find stage, approval, requirements, blockers, risk gates, and bead proposals.</li><li>After: The builder or reviewer opens a generated PRD HTML index or page that foregrounds those review cues while linking back to canonical Markdown.</li><li>Why now: The roadmap has promoted static hybrid spec review as a P1 operating-loop improvement after PRD and generated-doc patterns are stable enough to reuse.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS provides a committed static HTML review surface for all non-template PRD shards while preserving Markdown PRDs as the only authority.</li><li>Definition of done:</li><li><code>scripts/prd-html.py</code> generates <code>tasks/prds-html/index.html</code> and one page per non-template PRD shard.</li><li><code>scripts/prd-html.py --check</code> fails when committed PRD HTML is stale.</li><li>Generated pages visibly label HTML as review convenience and generated evidence only.</li><li>Generated pages link back to the source Markdown PRD.</li><li>Review pages foreground PRD state, approval status, unresolved blockers, forbidden premature actions, requirements, risk and permission model, agent context, bead proposals, and next safe review decision.</li><li>PRD protocol, PRD shard schema, package inventory, README, maintainer changelog, and roadmap history reflect the new surface.</li><li>Generated public docs HTML and maintainer roadmap HTML are refreshed when their Markdown sources change.</li><li>First useful vertical slice: static generated HTML and documentation/reference integration only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder or reviewer inspecting a PRD before approving, decomposing, or reviewing product scope.</li><li>Secondary user: AI coding agent or support helper orienting to PRD status and constraints without loading unrelated context.</li><li>Excluded user: Anyone expecting browser editing, round-trip promotion to Markdown, approval automation, bead activation, task selection, or cockpit behavior.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make PRD review state and next safe decision easier to inspect.</li><li>Goal 2: Preserve Markdown PRD authority and existing approval gates.</li><li>Goal 3: Add a stale-output check so generated PRD HTML cannot quietly drift from source Markdown.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: interactive editing, round-trip Markdown updates, approval buttons, task selection, bead activation, implementation acceptance, cockpit UI, external publishing, package-manager behavior, CLI wrapper installation, or new dependency adoption.</li><li>Deferred: Hybrid Spec Format v2 / Interactive Spec Cockpit, rich visual editors, review lane integration, and spec-to-implementation matching.</li><li>Explicitly out of scope: Any workflow that treats generated PRD HTML as authority, proof, approval, or source truth.</li></ul>
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Why rejected or deferred</th><th>Decision owner</th></tr></thead><tbody><tr><td>Generate one requested PRD only</td><td>Less useful for package review and stale-surface validation.</td><td>user</td></tr><tr><td>Put PRD HTML under <code>docs-html/</code></td><td>Mixes user docs and product-definition shards; <code>tasks/prds-html/</code> keeps the generated surface adjacent to PRDs.</td><td>user</td></tr><tr><td>Keep the surface maintainer-only</td><td>Weakens the user-facing PRD review value and conflicts with the selected public generated surface.</td><td>user</td></tr><tr><td>Add browser editing in v1</td><td>Belongs to the deferred v2 cockpit candidate because promotion and authority boundaries need separate design.</td><td>user</td></tr></tbody></table></div>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-007-FR01</code></td><td>Add a PRD HTML generator script.</td><td>P0</td><td>Default output is <code>tasks/prds-html/</code>.</td></tr><tr><td><code>PRD-007-FR02</code></td><td>Render all non-template PRD shards into committed HTML.</td><td>P0</td><td>Excludes <code>PRD-000-template.md</code> and <code>PRD-SHARD-SCHEMA.md</code>.</td></tr><tr><td><code>PRD-007-FR03</code></td><td>Add an index page summarizing PRD status, risk, feature link, and source file.</td><td>P0</td><td>Index links to generated pages and Markdown sources.</td></tr><tr><td><code>PRD-007-FR04</code></td><td>Each PRD page foregrounds review cues before the full rendered PRD body.</td><td>P0</td><td>Include status, approval, blockers, requirements, risks, context, bead proposals, and next safe decision.</td></tr><tr><td><code>PRD-007-FR05</code></td><td>Add <code>--check</code> mode that compares generated output to committed files.</td><td>P0</td><td>Check must fail when output is stale, missing, or extra.</td></tr><tr><td><code>PRD-007-FR06</code></td><td>Update public PRD protocol, PRD shard schema, package inventory, and README discoverability.</td><td>P0</td><td>Markdown remains canonical.</td></tr><tr><td><code>PRD-007-FR07</code></td><td>Complete maintainer changelog and roadmap history follow-through.</td><td>P0</td><td>Includes roadmap implemented-candidate entry, journal card, maintenance cleanup, and generated roadmap HTML.</td></tr></tbody></table></div>
+<h3 id="ux-requirements">UX Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-007-UX01</code></td><td>Generated pages make non-authority status visible without requiring scrolling.</td><td>P0</td><td>Use a prominent notice near the top.</td></tr><tr><td><code>PRD-007-UX02</code></td><td>Generated pages provide source pointers to canonical Markdown.</td><td>P0</td><td>Source links should be visible on the index and page header.</td></tr><tr><td><code>PRD-007-UX03</code></td><td>Generated pages are static and readable without JavaScript.</td><td>P0</td><td>No runtime app surface.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before treating any rendered PRD as approved, activating a bead, starting implementation, changing source Markdown, or promoting generated review notes into authority.</li><li>Stop if a reviewer asks to edit PRD content through HTML, approve from HTML, start a bead from HTML alone, or treat generated output as proof.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>Project context impact: <code>minor</code></li><li><code>PROJECT-CONTEXT.md</code> loaded: <code>not needed</code></li><li>Architecture Shaping: <code>skipped</code></li><li>Architecture Brief evidence: <code>none</code></li><li>Architecture Shaping skip reason: Static generator and documentation surface only; no app architecture, external service, schema, auth, or runtime behavior.</li><li>Architecture authority updates needed: <code>none</code></li><li>Route/API authority updates needed: <code>none</code></li><li>Schema authority updates needed: <code>none</code></li><li>Security authority updates needed: <code>none</code></li><li>Decision log updates needed: <code>none</code></li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>scripts/prd-html.py</code></td><td><code>python3 scripts/prd-html.py</code> and <code>python3 scripts/prd-html.py --check</code></td><td>Generate/check static PRD HTML from Markdown; no state authority or approval behavior.</td><td>Stale-output check and validation commands.</td><td><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></td></tr><tr><td><code>tasks/prds-html/*.html</code></td><td>Static generated review pages.</td><td>Review convenience only; Markdown PRDs remain canonical.</td><td>Regenerated by <code>scripts/prd-html.py</code>.</td><td><code>tasks/prds/*.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/prd-html.py</code></li><li><code>tasks/prds-html/</code></li><li><code>tasks/prds/*.md</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>external systems</li><li>generated evidence except generated PRD/docs/roadmap HTML</li><li>Required checks:</li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Open or inspect <code>tasks/prds-html/index.html</code> and one generated PRD page to confirm source links, status, blockers, forbidden actions, requirements, risks, and next safe review decision are visible without implying authority.</li><li>Forbidden assumptions:</li><li>HTML review output approves PRDs.</li><li>HTML review output activates beads.</li><li>HTML review output replaces Markdown PRDs.</li><li>HTML review output can edit or promote PRD changes.</li><li>Static PRD HTML is the v2 interactive cockpit.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>User problem named: <code>yes</code></li><li>Non-goals named: <code>yes</code></li><li>Before/after user moment clear: <code>yes</code></li><li>Requirements observable: <code>yes</code></li><li>Sensitive surfaces identified: <code>yes</code></li><li>Authority files identified: <code>yes</code></li><li>First bead can be one logical unit: <code>yes</code></li><li>Generated text reviewed by user: <code>yes</code></li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B007-hybrid-spec-html-review-surface</code></td><td><code>PRD-007-FR01</code> through <code>PRD-007-FR07</code>, <code>PRD-007-UX01</code> through <code>PRD-007-UX03</code></td><td>Generator, generated PRD HTML, public docs, inventory, changelog, roadmap history, generated docs HTML, and generated roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></td><td><code>scripts/prd-html.py --check</code> plus package validation and manual HTML review</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: <code>Hybrid Spec Format v1 / HTML Review Surface</code></li><li>Functional requirements to add or amend: not compiled in this slice</li><li>MVP slice notes: static PRD HTML review only</li><li>Acceptance updates needed: none</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<p>Only include blockers that can change implementation.</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future v2 cockpit support browser edits with explicit promotion back to Markdown?</td><td>Follow-up roadmap scope</td><td>no</td></tr><tr><td>Should future review lanes integrate PRD HTML with acceptance review prompts?</td><td>Follow-up roadmap scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of the decision-complete Hybrid Spec Format v1 plan, explicitly selecting all non-template PRDs under <code>tasks/prds-html/</code> and excluding editing, round-trip promotion, approval, bead activation, task selection, cockpit behavior, external mutation, CLI wrapper behavior, package-manager semantics, and active-memory changes.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#alternatives-considered">Alternatives Considered</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#ux-requirements">UX Requirements</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>

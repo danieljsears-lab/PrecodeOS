@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-002 -- Bootstrap Confidence Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-002 -- Bootstrap Confidence Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-002-bootstrap-confidence-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-002-bootstrap-confidence-lane.md#prd-002-bootstrap-confidence-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>First-Run Confidence + Bootstrap v1</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-05-28</strong></div><div class="metric"><span>Last updated</span><strong>2026-05-28</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the read-only First-Run Confidence and Bootstrap v1 lane for adopting PrecodeOS into new or existing repositories.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, mutating installer behavior, package-manager release channels, generated evidence truth, external publishing, or implementation acceptance.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should v2 introduce a mutating copy flow after preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the thin manifest grow into install/update channel semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-FR01</code></td><td>Add a Bootstrap Confidence reference protocol with v1 scope, inputs, output fields, stop conditions, evidence rules, and deferred installer boundaries.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-002-FR02</code></td><td>Add <code>scripts/bootstrap-check.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, and <code>--write-evidence</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-002-FR03</code></td><td>The checker identifies source validity, target validity, target kind, public file groups, excluded paths, conflicts, missing dependencies, recommended next step, and stop conditions.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-002-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/bootstrap-check.json</code> and <code>logs/bootstrap-check.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-002-FR05</code></td><td>Update guided setup, support runbook, troubleshooting, OS README, and file inventory to route first-time setup through the helper.</td><td>P0</td><td>Beginner-facing docs.</td></tr><tr><td><code>PRD-002-FR06</code></td><td>Add fixture-style checks for the v1 inspection cases and no-write/default behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none</li><li>Payments: none</li><li>User data: target projects may contain private files; checker must inspect paths only</li><li>Uploads: none</li><li>External services: none</li><li>Secrets: path patterns are named as exclusions; contents are not read</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>copying any file group</li><li>overwriting existing project docs</li><li>installing Git hooks</li><li>adding or changing CI</li><li>editing active memory</li><li>writing generated evidence with <code>--write-evidence</code></li><li>touching secrets, env files, dashboards, deployment settings, billing, auth, payments, or app code</li><li>Stop if:</li><li>source and target are identical</li><li>source or target is missing</li><li>source is not a plausible PrecodeOS package checkout</li><li>target conflicts are present and unnamed</li><li>generated bootstrap output is treated as permission to mutate</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local file reads, path inspection, git availability check, stdout JSON/plain output, explicit source-log evidence writing.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>Dashboard/manual steps: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>docs/PRECODE-OS-README.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/public-repo-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/bootstrap-check.py --self-test</code></li><li>Manual verification:</li><li>Confirm default bootstrap-check output is read-only and does not imply install permission.</li><li>Forbidden assumptions:</li><li>A bootstrap confidence <code>pass</code> means files may be copied automatically.</li><li>A thin manifest means update channels or package-manager install semantics exist.</li><li>Generated bootstrap evidence is authority.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B002-bootstrap-confidence-v1</code></td><td><code>PRD-002-FR01</code> through <code>PRD-002-FR06</code></td><td>Protocol, checker, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></td><td>validation commands plus self-test and manual docs review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-002-bootstrap-confidence-lane">PRD-002 -- Bootstrap Confidence Lane</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-002</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-05-28</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>First-Run Confidence + Bootstrap v1</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>roadmap evidence | guided setup evidence | support runbook evidence | implementation plan</code></li><li>Source references:</li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li>Stable facts:</li><li>PrecodeOS is a package source, not an app runtime.</li><li>First setup must distinguish the package checkout from the target project.</li><li>Beginner-safe setup starts read-only and names copy groups, exclusions, conflicts, validation, and stop conditions before mutation.</li><li>Full install/update manifest, release channels, package-manager installation, CLI wrapper, and mutating copy flows are deferred.</li><li>Assumptions:</li><li>A read-only script plus protocol and docs hooks is enough for v1.</li><li>Bootstrap confidence and first-run setup trust should be one lane because users experience them as one moment.</li><li>Conflicts or stale inputs:</li><li>none identified</li><li>Privacy or secrets redactions:</li><li>none</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: <code>guided maintainer discovery interview</code></li><li>Shared design concept: Bootstrap Confidence v1 is a read-only preflight lane that tells a beginner whether the package source, target project, public file groups, exclusions, conflicts, dependencies, and first safe next action are clear before any setup mutation.</li><li>Key decisions reached:</li><li>Pair First-Run Confidence with Installer / Bootstrap v1.</li><li>Optimize for both new and existing repositories.</li><li>Ship a script plus docs, not docs only.</li><li>Default to stdout only.</li><li>Write generated evidence only with an explicit flag.</li><li>Include only a thin public package manifest slice.</li><li>Remaining implementation-changing questions:</li><li>none for v1.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Package source</td><td>The local PrecodeOS checkout used as the source for setup inspection and public file groups.</td></tr><tr><td>Target project</td><td>The repository where a builder may adopt PrecodeOS.</td></tr><tr><td>Bootstrap confidence</td><td>Read-only evidence that source, target, expected file groups, exclusions, conflicts, dependencies, and first safe action are visible.</td></tr><tr><td>Thin manifest</td><td>The public file-group and exclusion dictionary needed for bootstrap preview; not release-channel or update metadata.</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Customer promise: Before copying Precode into a project, a beginner can ask one read-only command what it sees and what must stay untouched.</li><li>Non-obvious constraint: The helper must not install, copy, overwrite, create active memory, edit hooks, change CI, or mutate app code.</li><li>Success signal: The user can name source, target, target kind, conflicts, exclusions, missing dependencies, and first safe next action before setup proceeds.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>First install or first session can feel unsafe even when the file tree is technically correct. A beginner can confuse the PrecodeOS package checkout with the target project, miss excluded files, overwrite existing docs, or let an agent begin implementation before setup confidence is established.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder asks an agent to adopt PrecodeOS and cannot tell which folder is source, which folder is target, what will be copied, what must be excluded, or whether setup is safe to continue.</li><li>After: The builder receives read-only bootstrap confidence output naming source, target, target kind, public file groups, exclusions, conflicts, missing dependencies, stop conditions, and the first safe next action.</li><li>Why now: Roadmap prioritization ranks First-Run Confidence and Installer / Bootstrap as P0 core improvements after Product Discovery Validation.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS has a beginner-safe, read-only Bootstrap Confidence v1 lane that guides new and existing repository adoption without hiding filesystem changes.</li><li>Definition of done:</li><li>Bootstrap Confidence protocol exists.</li><li><code>scripts/bootstrap-check.py</code> inspects source and target without mutation by default.</li><li>The helper supports human output, <code>--json</code>, and explicit <code>--write-evidence</code> to source <code>logs/</code>.</li><li>Guided setup, support runbook, troubleshooting, OS README, and file inventory route first-time setup through the helper.</li><li>Fixture-style checks cover empty target, existing target with conflicts, missing source, missing target, identical source/target, default no-write behavior, JSON output, and explicit evidence writing.</li><li>First useful vertical slice: read-only inspection and docs integration only.</li></ul>
+<h2 id="product-constitution-fit">Product Constitution Fit</h2>
+<ul><li><code>PRODUCT.md</code> loaded: <code>not required for this package-maintenance PRD</code></li><li>Product promise fit: Fits PrecodeOS as a repo-native control layer that keeps setup bounded, inspectable, and human-approved.</li><li>User and job fit: Supports solo non-technical builders and support engineers adopting PrecodeOS into a real project folder.</li><li>Strategy and non-goal fit: Avoids autonomous install behavior, hidden mutation, CLI churn, and generated authority.</li><li>Product constitution update needed: <code>no</code></li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Solo beginner or non-technical builder adopting PrecodeOS.</li><li>Secondary user: Support engineer or AI coding agent helping a builder through setup.</li><li>Excluded user: Maintainers expecting a full package manager, mutating installer, update channel, or CLI distribution flow in v1.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make the source package, target project, target kind, public file groups, exclusions, conflicts, and first safe next action visible before setup mutation.</li><li>Goal 2: Keep v1 read-only by default.</li><li>Goal 3: Preserve Precode authority boundaries and generated-output demotion.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: mutating installer, package manager integration, installable <code>precode</code> CLI, Git hook installation, CI mutation, app-code changes, update channels, pinned releases, rollback automation, or full install/update manifest.</li><li>Deferred: mutating setup flow after preview, richer package manifest and dry-run update semantics, future CLI wrapper.</li><li>Explicitly out of scope: Any change that lets bootstrap output approve mutation, create active memory, activate beads, or overwrite target files.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-FR01</code></td><td>Add a Bootstrap Confidence reference protocol with v1 scope, inputs, output fields, stop conditions, evidence rules, and deferred installer boundaries.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-002-FR02</code></td><td>Add <code>scripts/bootstrap-check.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, and <code>--write-evidence</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-002-FR03</code></td><td>The checker identifies source validity, target validity, target kind, public file groups, excluded paths, conflicts, missing dependencies, recommended next step, and stop conditions.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-002-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/bootstrap-check.json</code> and <code>logs/bootstrap-check.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-002-FR05</code></td><td>Update guided setup, support runbook, troubleshooting, OS README, and file inventory to route first-time setup through the helper.</td><td>P0</td><td>Beginner-facing docs.</td></tr><tr><td><code>PRD-002-FR06</code></td><td>Add fixture-style checks for the v1 inspection cases and no-write/default behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
+<h3 id="ux-requirements">UX Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-UX01</code></td><td>Human output uses plain language and names the first safe next action.</td><td>P0</td><td>Avoid installer jargon.</td></tr><tr><td><code>PRD-002-UX02</code></td><td>Output clearly says the helper is read-only by default.</td><td>P0</td><td>Prevents false confidence.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-SEC01</code></td><td>The checker must not read or print secret file contents.</td><td>P0</td><td>Path-level inspection only.</td></tr><tr><td><code>PRD-002-SEC02</code></td><td>Exclusion guidance must name secret and local-state patterns as do-not-copy material.</td><td>P0</td><td>Matches guided setup.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-NFR01</code></td><td>No active-memory changes are required for v1.</td><td>P0</td><td>Preserves kernel.</td></tr><tr><td><code>PRD-002-NFR02</code></td><td>No target-project mutation occurs in any default or JSON mode.</td><td>P0</td><td><code>--write-evidence</code> still writes only to source logs.</td></tr><tr><td><code>PRD-002-NFR03</code></td><td>The thin manifest must not imply update-channel, release, or package-manager semantics.</td><td>P0</td><td>Keep P1 manifest work deferred.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-002-FR01</code></td><td>Protocol file exists with v1 scope, guardrails, and deferred work.</td><td><code>validate-memory.sh</code></td><td>Read protocol.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-002-FR02</code></td><td>Checker accepts <code>--source</code>, <code>--target</code>, <code>--json</code>, and <code>--write-evidence</code>.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Inspect help output if needed.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-002-FR03</code></td><td>Checker reports required output fields.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Review sample output.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-002-FR04</code></td><td>Default writes nothing; explicit evidence writes source logs only.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Inspect source logs if run manually.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-002-FR05</code></td><td>Public docs and inventory reference bootstrap confidence.</td><td><code>version-check.py</code>, <code>file-inventory.py --check</code></td><td>Read updated docs.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-002-FR06</code></td><td>Fixture scenarios pass.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>none</td><td>temp fixtures</td><td>check output</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none</li><li>Payments: none</li><li>User data: target projects may contain private files; checker must inspect paths only</li><li>Uploads: none</li><li>External services: none</li><li>Secrets: path patterns are named as exclusions; contents are not read</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>copying any file group</li><li>overwriting existing project docs</li><li>installing Git hooks</li><li>adding or changing CI</li><li>editing active memory</li><li>writing generated evidence with <code>--write-evidence</code></li><li>touching secrets, env files, dashboards, deployment settings, billing, auth, payments, or app code</li><li>Stop if:</li><li>source and target are identical</li><li>source or target is missing</li><li>source is not a plausible PrecodeOS package checkout</li><li>target conflicts are present and unnamed</li><li>generated bootstrap output is treated as permission to mutate</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local file reads, path inspection, git availability check, stdout JSON/plain output, explicit source-log evidence writing.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>Dashboard/manual steps: none.</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>Project context impact: <code>minor</code></li><li><code>PROJECT-CONTEXT.md</code> loaded: <code>not required</code></li><li>Architecture authority updates needed: <code>no</code></li><li>Route/API authority updates needed: <code>no</code></li><li>Schema authority updates needed: <code>no</code></li><li>Security authority updates needed: <code>no</code></li><li>Decision log updates needed: <code>no</code></li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<ul><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code> owns the v1 setup-confidence contract.</li><li><code>scripts/bootstrap-check.py</code> owns the read-only inspection command and fixture self-tests.</li><li>Public docs route users to the helper before copy or setup mutation.</li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>docs/PRECODE-OS-README.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/public-repo-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/bootstrap-check.py --self-test</code></li><li>Manual verification:</li><li>Confirm default bootstrap-check output is read-only and does not imply install permission.</li><li>Forbidden assumptions:</li><li>A bootstrap confidence <code>pass</code> means files may be copied automatically.</li><li>A thin manifest means update channels or package-manager install semantics exist.</li><li>Generated bootstrap evidence is authority.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>User problem named: yes</li><li>Non-goals named: yes</li><li>Before/after user moment clear: yes</li><li>Requirements observable: yes</li><li>Sensitive surfaces identified: yes</li><li>Authority files identified: yes</li><li>First bead can be one logical unit: yes</li><li>Generated text reviewed by user: approved through maintainer implementation request</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B002-bootstrap-confidence-v1</code></td><td><code>PRD-002-FR01</code> through <code>PRD-002-FR06</code></td><td>Protocol, checker, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></td><td>validation commands plus self-test and manual docs review</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: First-Run Confidence + Bootstrap v1.</li><li>Functional requirements to add or amend: <code>PRD-002-FR01</code> through <code>PRD-002-FR06</code> after feature compilation.</li><li>MVP slice notes: v1 is read-only setup confidence and docs integration only.</li><li>Acceptance updates needed: none.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<p>Only include blockers that can change implementation.</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should v2 introduce a mutating copy flow after preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the thin manifest grow into install/update channel semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-05-28</li><li>Approval notes: User asked Codex to implement the P0 plan with B000 assumed accepted, Product Discovery first, and Bootstrap Confidence as read-only script plus docs.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#product-constitution-fit">Product Constitution Fit</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#ux-requirements">UX Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-3" href="#tool-and-environment-boundaries">Tool And Environment Boundaries</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>

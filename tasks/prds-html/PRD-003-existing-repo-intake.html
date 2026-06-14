@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-003 -- Existing Repo Intake</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-003 -- Existing Repo Intake</h1>
+  <p class="muted">Static HTML generated from <code>PRD-003-existing-repo-intake.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-003-existing-repo-intake.md#prd-003-existing-repo-intake">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Existing Repo Intake</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-06</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-06</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the read-only Existing Repo Intake branch at the first PrecodeOS adoption fork.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, mutating installer behavior, target-project truth, product decisions, implementation acceptance, generated evidence truth, or release status.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future setup support allow a mutating owner-file adaptation preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the helper integrate with future install/update manifest semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-FR01</code></td><td>Add an Existing Repo Intake reference protocol with first-fork scope, command contract, output fields, promotion path, stop conditions, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-003-FR02</code></td><td>Add <code>scripts/existing-repo-intake.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, <code>--write-evidence</code>, and <code>--self-test</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-003-FR03</code></td><td>The helper identifies repo topology, likely app directories, package managers, frameworks, runtimes, build tools, docs, CI/deploy hints, generated/ignored surfaces, sensitive path patterns, owner-file gaps, likely checks, conflicts, stop conditions, and recommended next step.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-003-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/existing-repo-intake.json</code> and <code>logs/existing-repo-intake.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-003-FR05</code></td><td>Update setup, support, intake, workflow, prompt, troubleshooting, user, and inventory docs to route existing apps through the first adoption fork.</td><td>P0</td><td>Beginner and support-facing.</td></tr><tr><td><code>PRD-003-FR06</code></td><td>Add fixture-style self-tests for v1 inspection, redaction, JSON shape, and no-write behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: may be detected by path/config hints only</li><li>Payments: may be detected by path/config hints only</li><li>User data: target repos may contain private files; helper must inspect paths and selected non-secret metadata only</li><li>Uploads: path/config hints only</li><li>External services: CI/deploy/config hints only</li><li>Secrets: path patterns are named as sensitive; contents are not read</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>copying any Precode file group</li><li>overwriting or adapting existing project docs</li><li>installing Git hooks</li><li>adding or changing CI</li><li>editing active memory</li><li>writing generated evidence with <code>--write-evidence</code></li><li>running inferred lint, test, build, typecheck, install, migration, or deployment commands</li><li>touching secrets, env files, dashboards, deployment settings, billing, auth, payments, or app code</li><li>Stop if:</li><li>source and target are identical</li><li>source or target is missing</li><li>target is empty and should use fresh install path</li><li>existing project conflicts are unresolved</li><li>generated intake output is treated as permission to mutate</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local path inspection, selected manifest/config metadata reads, stdout JSON/plain output, explicit source-log evidence writing.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>Dashboard/manual steps: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/existing-repo-intake.py</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/public-repo-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/existing-repo-intake.py --self-test</code></li><li>Manual verification:</li><li>Confirm existing-repo docs present the first fork and do not imply install permission.</li><li>Confirm likely checks are future hints, not executed proof.</li><li>Forbidden assumptions:</li><li>Existing Repo Intake approves file copying.</li><li>Likely checks have passed.</li><li>Generated intake evidence is authority.</li><li>Support can decide product direction, topology, PRD approval, acceptance, or bead activation.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B003-existing-repo-intake-v1</code></td><td><code>PRD-003-FR01</code> through <code>PRD-003-FR06</code></td><td>Protocol, helper, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></td><td>validation commands plus self-test and manual docs review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-003-existing-repo-intake">PRD-003 -- Existing Repo Intake</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-003</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-06</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Existing Repo Intake</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-002</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>roadmap evidence | guided discovery interview | setup/support evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> candidate 4</li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li>Stable facts:</li><li>Many builders will bring an existing app rather than start from an empty scaffold.</li><li>Bootstrap Confidence should remain the universal source/target preflight.</li><li>Existing repo adoption needs a first fork before file copying, owner-file adaptation, PRD shaping, bead creation, or app work.</li><li>V1 should report likely checks as future hints but not run them.</li><li>Explicit evidence writing should go only to the PrecodeOS source workspace.</li><li>Assumptions:</li><li>A protocol plus read-only helper is enough for v1.</li><li>Existing Repo Intake should preserve project conventions rather than impose a Precode layout.</li><li>Conflicts or stale inputs:</li><li>Existing setup docs treat existing projects as a setup variant; this PRD promotes it to a first adoption branch.</li><li>Privacy or secrets redactions:</li><li>Helper must inspect sensitive paths only and must not read or print secret file contents.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: <code>guided maintainer discovery interview</code></li><li>Shared design concept: Existing Repo Intake is the existing-app branch immediately after Bootstrap Confidence confirms source and target.</li><li>Key decisions reached:</li><li>Create a dedicated reference protocol.</li><li>Keep Bootstrap Confidence as the universal preflight.</li><li>Add a read-only helper script.</li><li>Report likely checks as future hints without running them.</li><li>Write generated evidence only to source-side logs when explicitly requested.</li><li>Remaining implementation-changing questions:</li><li>none for v1.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Existing repo intake</td><td>Read-only app-understanding branch for a target repository that already has project material.</td></tr><tr><td>First adoption fork</td><td>The early choice between fresh install and existing repo intake after Bootstrap Confidence confirms source and target.</td></tr><tr><td>Likely checks</td><td>Commands inferred from manifests or config files as future verification hints; not executed during intake and not proof.</td></tr><tr><td>Owner-file adaptation</td><td>User-reviewed promotion of stable repo facts into Precode owner files without overwriting existing project material.</td></tr></tbody></table></div>
+<h2 id="problem">Problem</h2>
+<p>Existing app repositories are where beginners and agents are most likely to damage project history, conventions, docs, CI, package files, or active work. The current setup path names existing projects but does not provide a first-class intake branch or helper evidence before Precode files are copied and adapted.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder asks to add PrecodeOS to an existing app, and the agent may treat setup like a fresh install or start coding from incomplete repo understanding.</li><li>After: The builder sees a read-only intake report naming current repo shape, app directories, stack, docs, likely checks, sensitive surfaces, conflicts, owner-file gaps, and the first safe next action.</li><li>Why now: Roadmap candidate 4 ranks Existing Repo Intake as a P1 operating-loop improvement after Bootstrap Confidence makes source/target setup safer.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS has a first-class existing-repo adoption branch that preserves existing app conventions and produces read-only setup/adaptation evidence before mutation or implementation.</li><li>Definition of done:</li><li>Existing Repo Intake protocol exists.</li><li><code>scripts/existing-repo-intake.py</code> inspects source and target without target mutation by default.</li><li>The helper supports human output, <code>--json</code>, <code>--write-evidence</code>, and <code>--self-test</code>.</li><li>Guided setup and support docs present the first adoption fork.</li><li>Local Source Intake, Client Engagement Intake, Workflow Selection, Prompt Patterns, Troubleshooting, User Guide, and Package File Inventory reference the branch where appropriate.</li><li>Fixture checks cover missing source, missing target, same source/target, empty target, Node app, Python app, monorepo-like app, docs, CI hints, secret/env redaction, default no-write behavior, JSON shape, and explicit evidence writing.</li><li>First useful vertical slice: read-only existing-repo intake and docs integration only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Solo beginner or non-technical builder adopting PrecodeOS into an existing app.</li><li>Secondary user: Support engineer or AI coding agent helping a builder preserve current repo conventions.</li><li>Excluded user: Maintainers expecting app diagnostics, package-manager migration, mutating install, CI setup automation, or a project doctor command in v1.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make the existing repo shape, app boundaries, conventions, likely checks, conflicts, and first safe next action visible before mutation.</li><li>Goal 2: Keep v1 read-only and evidence-only.</li><li>Goal 3: Preserve user ownership over product direction, topology decisions, owner-file facts, PRD approval, acceptance, and bead activation.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: mutating installer, app-code edits, dependency installation, test/lint/build execution, CI mutation, Git hook installation, deployment, project doctor dashboard, package-manager migration, PRD approval, bead activation, or automatic owner-file adaptation.</li><li>Deferred: richer install/update manifest integration, optional mutating setup after preview, and future CLI wrapper.</li><li>Explicitly out of scope: Any change that treats generated intake as authority or permission to mutate.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-FR01</code></td><td>Add an Existing Repo Intake reference protocol with first-fork scope, command contract, output fields, promotion path, stop conditions, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-003-FR02</code></td><td>Add <code>scripts/existing-repo-intake.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, <code>--write-evidence</code>, and <code>--self-test</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-003-FR03</code></td><td>The helper identifies repo topology, likely app directories, package managers, frameworks, runtimes, build tools, docs, CI/deploy hints, generated/ignored surfaces, sensitive path patterns, owner-file gaps, likely checks, conflicts, stop conditions, and recommended next step.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-003-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/existing-repo-intake.json</code> and <code>logs/existing-repo-intake.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-003-FR05</code></td><td>Update setup, support, intake, workflow, prompt, troubleshooting, user, and inventory docs to route existing apps through the first adoption fork.</td><td>P0</td><td>Beginner and support-facing.</td></tr><tr><td><code>PRD-003-FR06</code></td><td>Add fixture-style self-tests for v1 inspection, redaction, JSON shape, and no-write behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
+<h3 id="ux-requirements">UX Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-UX01</code></td><td>User-facing docs present a simple early choice: fresh install or existing app.</td><td>P0</td><td>Avoid making users understand internals first.</td></tr><tr><td><code>PRD-003-UX02</code></td><td>Human output clearly says existing project files are preserved unless the user approves a narrow adaptation.</td><td>P0</td><td>Reassurance is part of safety.</td></tr><tr><td><code>PRD-003-UX03</code></td><td>Output names likely checks as future hints, not completed verification.</td><td>P0</td><td>Prevent false proof.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-SEC01</code></td><td>The helper must not read or print secret file contents.</td><td>P0</td><td>Path-level redaction only.</td></tr><tr><td><code>PRD-003-SEC02</code></td><td>Stop before setup mutation when secrets, auth, payments, deployment settings, private dashboards, CI mutation, or unclear ownership appear.</td><td>P0</td><td>Support-safe.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-NFR01</code></td><td>No active-memory changes are required for v1.</td><td>P0</td><td>Preserves kernel.</td></tr><tr><td><code>PRD-003-NFR02</code></td><td>No target-project mutation occurs in any default, JSON, self-test, or source evidence mode.</td><td>P0</td><td>Evidence writes source logs only.</td></tr><tr><td><code>PRD-003-NFR03</code></td><td>The helper must not execute app commands.</td><td>P0</td><td>Intake is inspection only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-003-FR01</code></td><td>Protocol file exists with v1 scope, guardrails, adoption fork, and promotion path.</td><td><code>validate-memory.sh</code></td><td>Read protocol.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-003-FR02</code></td><td>Helper accepts required flags.</td><td><code>python3 scripts/existing-repo-intake.py --self-test</code></td><td>Inspect help output if needed.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-003-FR03</code></td><td>Helper reports required output fields and future-only likely checks.</td><td><code>python3 scripts/existing-repo-intake.py --self-test</code></td><td>Review sample output.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-003-FR04</code></td><td>Default writes nothing; explicit evidence writes source logs only.</td><td><code>python3 scripts/existing-repo-intake.py --self-test</code></td><td>Inspect source logs if run manually.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-003-FR05</code></td><td>Public docs and inventory reference existing-repo intake.</td><td><code>version-check.py</code>, <code>file-inventory.py --check</code></td><td>Read updated docs.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-003-FR06</code></td><td>Fixture scenarios pass.</td><td><code>python3 scripts/existing-repo-intake.py --self-test</code></td><td>none</td><td>temp fixtures</td><td>check output</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: may be detected by path/config hints only</li><li>Payments: may be detected by path/config hints only</li><li>User data: target repos may contain private files; helper must inspect paths and selected non-secret metadata only</li><li>Uploads: path/config hints only</li><li>External services: CI/deploy/config hints only</li><li>Secrets: path patterns are named as sensitive; contents are not read</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>copying any Precode file group</li><li>overwriting or adapting existing project docs</li><li>installing Git hooks</li><li>adding or changing CI</li><li>editing active memory</li><li>writing generated evidence with <code>--write-evidence</code></li><li>running inferred lint, test, build, typecheck, install, migration, or deployment commands</li><li>touching secrets, env files, dashboards, deployment settings, billing, auth, payments, or app code</li><li>Stop if:</li><li>source and target are identical</li><li>source or target is missing</li><li>target is empty and should use fresh install path</li><li>existing project conflicts are unresolved</li><li>generated intake output is treated as permission to mutate</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local path inspection, selected manifest/config metadata reads, stdout JSON/plain output, explicit source-log evidence writing.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>Dashboard/manual steps: none.</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>Project context impact: <code>minor</code></li><li><code>PROJECT-CONTEXT.md</code> loaded: <code>not required</code></li><li>Architecture authority updates needed: <code>no</code></li><li>Route/API authority updates needed: <code>no</code></li><li>Schema authority updates needed: <code>no</code></li><li>Security authority updates needed: <code>no</code></li><li>Decision log updates needed: <code>no</code></li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<ul><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code> owns the v1 existing-repo intake contract.</li><li><code>scripts/existing-repo-intake.py</code> owns the read-only inspection command and fixture self-tests.</li><li>Setup and support docs own the visible first adoption fork.</li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/existing-repo-intake.py</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/public-repo-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/existing-repo-intake.py --self-test</code></li><li>Manual verification:</li><li>Confirm existing-repo docs present the first fork and do not imply install permission.</li><li>Confirm likely checks are future hints, not executed proof.</li><li>Forbidden assumptions:</li><li>Existing Repo Intake approves file copying.</li><li>Likely checks have passed.</li><li>Generated intake evidence is authority.</li><li>Support can decide product direction, topology, PRD approval, acceptance, or bead activation.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>User problem named: yes</li><li>Non-goals named: yes</li><li>Before/after user moment clear: yes</li><li>Requirements observable: yes</li><li>Sensitive surfaces identified: yes</li><li>Authority files identified: yes</li><li>First bead can be one logical unit: yes</li><li>Generated text reviewed by user: approved through maintainer implementation request</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B003-existing-repo-intake-v1</code></td><td><code>PRD-003-FR01</code> through <code>PRD-003-FR06</code></td><td>Protocol, helper, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></td><td>validation commands plus self-test and manual docs review</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: Existing Repo Intake.</li><li>Functional requirements to add or amend: <code>PRD-003-FR01</code> through <code>PRD-003-FR06</code> after feature compilation.</li><li>MVP slice notes: v1 is read-only existing-repo intake and docs integration only.</li><li>Acceptance updates needed: none.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<p>Only include blockers that can change implementation.</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future setup support allow a mutating owner-file adaptation preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the helper integrate with future install/update manifest semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-06</li><li>Approval notes: User asked Codex to implement Existing Repo Intake as the first adoption fork after Bootstrap Confidence, with a dedicated protocol, read-only helper, source-side evidence, and support/user guidance.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#ux-requirements">UX Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-3" href="#tool-and-environment-boundaries">Tool And Environment Boundaries</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>

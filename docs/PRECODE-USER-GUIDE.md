@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.36
+Document version: v0.7.37
 Last updated: 2026-06-14
 
 
@@ -149,11 +149,11 @@ Use this compact matrix:
 |---|---|---|---|---|---|---|
 |  |  |  |  |  |  |  |
 
-Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak evidence, use Product Discovery Validation next.
+Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak worth-building evidence, use the Product Discovery Interview Skill / Product Discovery Validation next.
 
 ## Validate Product Discovery Before PRD Shaping
 
-Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
+Use the Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
 
 This is not a proof machine. It helps you see:
 
@@ -167,7 +167,7 @@ This is not a proof machine. It helps you see:
 Say this:
 
 ```text
-Use Product Discovery Validation on this idea.
+Use the Product Discovery Interview Skill on this idea.
 Interview me one question at a time. Challenge assumptions supportively.
 Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
 Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
@@ -487,7 +487,7 @@ Use this table when you are unsure what kind of request to make.
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
-| Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Validation | `Use Product Discovery Validation. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
+| Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Interview Skill / Product Discovery Validation | `Use the Product Discovery Interview Skill. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | I want the smallest safe build to teach me something | Fast Learning Lane | `Use the Fast Learning Lane. Skip discovery ceremony only if this is low or medium risk with no sensitive surfaces, no product-promise drift, and a tiny reversible learning slice. Create a minimal PRD with requirement IDs, acceptance checks, risk flags, and one candidate bead. Do not code or activate the bead until I approve.` |
 | Rough idea, notes, screenshot, GitHub issue, research | Local source intake | `Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.` |
 | Feature idea is fuzzy | Alignment / Product Brief | `Use the Idea To PRD Workflow. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief. Do not plan or code yet.` |
@@ -523,7 +523,7 @@ Red flags:
 |---|---|
 | Agent starts coding too soon | `Stop. Explain the active bead, primary authority, files in play, and checks first.` |
 | Agent plans before alignment is done | `Stop. Ask the next alignment question one at a time and include your recommended answer.` |
-| Agent turns a weakly evidenced idea into a PRD | `Stop. Use Product Discovery Validation first. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill.` |
+| Agent turns a weakly evidenced idea into a PRD | `Stop. Use the Product Discovery Interview Skill first. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill.` |
 | Agent treats the shortcut as permission to code | `Stop. Fast Learning Lane means less ceremony, not no PRD. Show the minimal PRD, acceptance checks, risk flags, and one candidate bead before coding.` |
 | Agent uses the wrong term or confusing label | `Stop. Use the Ubiquitous Language Protocol and tell me which term should appear in the PRD, UI, tests, and code names.` |
 | Scope grows | `Checkpoint. Is this still one bead, or should we split?` |

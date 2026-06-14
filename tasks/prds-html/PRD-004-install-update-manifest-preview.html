@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-004 -- Install/Update Manifest And Dry-Run Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-004 -- Install/Update Manifest And Dry-Run Preview</h1>
+  <p class="muted">Static HTML generated from <code>PRD-004-install-update-manifest-preview.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-004-install-update-manifest-preview.md#prd-004-install-update-manifest-preview">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Install/Update Manifest And Dry-Run Preview</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the non-mutating install/update manifest and dry-run preview slice of the PrecodeOS Installer / Bootstrap Experience.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, mutating installer behavior, package-manager release channels, update permission, target-project truth, implementation acceptance, or generated evidence truth.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future supervised setup flow copy files itself or only produce copy commands?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should future package-state metadata include version/channel language?</td><td>Follow-up manifest scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-004-FR01</code></td><td>Add an Install/Update Manifest Protocol with scope, command contract, action categories, branch rules, stop conditions, and guardrails.</td><td>P0</td><td>Protocol owns the preview contract.</td></tr><tr><td><code>PRD-004-FR02</code></td><td>Add <code>--preview-manifest</code> to <code>scripts/bootstrap-check.py</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-004-FR03</code></td><td>Preview output includes action categories, actions, generated-evidence fields, non-authority fields, and next setup gate.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-004-FR04</code></td><td>Existing project preview defers copying and routes to Existing Repo Intake before adaptation.</td><td>P0</td><td>Protects existing project truth.</td></tr><tr><td><code>PRD-004-FR05</code></td><td><code>--write-evidence</code> remains source-only and writes no target files.</td><td>P0</td><td>No target mutation.</td></tr><tr><td><code>PRD-004-FR06</code></td><td>Update setup, support, troubleshooting, and inventory docs to describe preview boundaries.</td><td>P0</td><td>Public docs stay aligned.</td></tr><tr><td><code>PRD-004-FR07</code></td><td>Add fixture-style self-tests for preview target states, JSON shape, default no-write behavior, and source-only evidence.</td><td>P0</td><td>Implemented in script self-test fixtures.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before copying files, adapting owner files, overwriting existing docs, installing hooks, changing CI, editing active memory, running app commands, touching secrets, or writing app code.</li><li>Stop if source and target are unclear, source equals target, target is missing, existing project conflicts are unresolved, Existing Repo Intake has not run for an existing project, or generated preview output is treated as install permission.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/existing-repo-intake.py --self-test</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li>Manual verification:</li><li>Confirm preview output says it is evidence only and does not approve copying, overwriting, hooks, CI, active-memory edits, app commands, or app-code edits.</li><li>Forbidden assumptions:</li><li>Manifest preview approves setup mutation.</li><li>Manifest preview is a release channel, update manifest, package-manager contract, rollback plan, or CLI command.</li><li>Existing Repo Intake can be skipped for existing projects.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B004-install-update-manifest-preview</code></td><td><code>PRD-004-FR01</code> through <code>PRD-004-FR07</code></td><td>Protocol, preview command, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></td><td>validation commands plus manual preview review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-004-install-update-manifest-and-dry-run-preview">PRD-004 -- Install/Update Manifest And Dry-Run Preview</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-004</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Install/Update Manifest And Dry-Run Preview</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-002</code>, <code>PRD-003</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped bootstrap evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item 2, <code>Installer / Bootstrap Experience</code></li><li><code>tasks/prds/PRD-002-bootstrap-confidence-lane.md</code></li><li><code>tasks/prds/PRD-003-existing-repo-intake.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li>Stable facts:</li><li>Bootstrap Confidence is already read-only and source/target oriented.</li><li>Existing Repo Intake is already the first branch for targets with app code, docs, CI, product history, or active work.</li><li>Any setup trust layer must not hide filesystem changes or imply install permission.</li><li>Hooks, CI, app code, active memory edits, package-manager semantics, release channels, and CLI installation remain outside this slice.</li><li>Assumptions:</li><li>A dry-run manifest preview inside <code>scripts/bootstrap-check.py</code> is enough for this slice.</li><li>Future mutating setup should depend on this preview contract rather than inventing a separate operating model.</li><li>Conflicts or stale inputs:</li><li>Earlier docs use &quot;install/update manifest&quot; as deferred roadmap language; this PRD narrows the first shipped slice to dry-run preview only.</li><li>Privacy or secrets redactions:</li><li>Preview must remain path-level and must not read or print secret contents.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Bootstrap Confidence tells a builder whether source, target, conflicts, exclusions, dependencies, and next action are visible. It does not yet show the concrete setup-action categories that would make a later supervised setup trustworthy. Without a dry-run manifest, users can still confuse &quot;safe to inspect&quot; with &quot;safe to copy.&quot;</p>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS has a non-mutating install/update manifest preview that shows candidate setup actions before any target mutation.</li><li>Definition of done:</li><li>Install/Update Manifest Protocol exists.</li><li><code>scripts/bootstrap-check.py --preview-manifest</code> adds a preview payload and plain output.</li><li>Preview output uses explicit action categories: <code>copy_candidate</code>, <code>adapt_candidate</code>, <code>preserve_existing</code>, <code>exclude</code>, <code>blocked</code>, and <code>deferred</code>.</li><li>Existing projects are routed through Existing Repo Intake before copy or adaptation becomes actionable.</li><li>Public setup, support, troubleshooting, and package inventory docs describe the preview without implying installer, CLI, release-channel, package-manager, rollback, hook, CI, active-memory, or app-code mutation behavior.</li><li>Fixture-style checks cover target kinds, JSON shape, default no-write behavior, and source-only evidence writing.</li><li>First useful vertical slice: dry-run manifest preview and docs/protocol integration only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Solo beginner or non-technical builder adopting PrecodeOS into a project.</li><li>Secondary user: Support engineer or AI coding agent explaining setup choices before file mutation.</li><li>Excluded user: Maintainers expecting a package manager, updater, installable CLI, mutating copy flow, hook installer, CI setup automation, release channel, or rollback command.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make candidate setup actions visible before mutation.</li><li>Goal 2: Preserve Bootstrap Confidence and Existing Repo Intake as read-only evidence workflows.</li><li>Goal 3: Prevent manifest language from implying release, update, package-manager, CLI, or copy approval semantics.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: mutating installer, package manager integration, installable <code>precode</code> CLI, release channels, pinned versions, rollback automation, Git hook installation, CI mutation, app-code changes, automatic owner-file adaptation, PRD approval, bead activation, or target writes.</li><li>Deferred: supervised setup mutation after preview, richer package-state semantics, version/channel trust language, rollback notes, and CLI wrapper design.</li><li>Explicitly out of scope: Any change that treats preview output as authority or permission to mutate.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-004-FR01</code></td><td>Add an Install/Update Manifest Protocol with scope, command contract, action categories, branch rules, stop conditions, and guardrails.</td><td>P0</td><td>Protocol owns the preview contract.</td></tr><tr><td><code>PRD-004-FR02</code></td><td>Add <code>--preview-manifest</code> to <code>scripts/bootstrap-check.py</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-004-FR03</code></td><td>Preview output includes action categories, actions, generated-evidence fields, non-authority fields, and next setup gate.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-004-FR04</code></td><td>Existing project preview defers copying and routes to Existing Repo Intake before adaptation.</td><td>P0</td><td>Protects existing project truth.</td></tr><tr><td><code>PRD-004-FR05</code></td><td><code>--write-evidence</code> remains source-only and writes no target files.</td><td>P0</td><td>No target mutation.</td></tr><tr><td><code>PRD-004-FR06</code></td><td>Update setup, support, troubleshooting, and inventory docs to describe preview boundaries.</td><td>P0</td><td>Public docs stay aligned.</td></tr><tr><td><code>PRD-004-FR07</code></td><td>Add fixture-style self-tests for preview target states, JSON shape, default no-write behavior, and source-only evidence.</td><td>P0</td><td>Implemented in script self-test fixtures.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before copying files, adapting owner files, overwriting existing docs, installing hooks, changing CI, editing active memory, running app commands, touching secrets, or writing app code.</li><li>Stop if source and target are unclear, source equals target, target is missing, existing project conflicts are unresolved, Existing Repo Intake has not run for an existing project, or generated preview output is treated as install permission.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<ul><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code> owns the dry-run manifest contract.</li><li><code>scripts/bootstrap-check.py</code> owns the <code>--preview-manifest</code> command interface and fixture self-tests.</li><li>Setup and support docs own the user-facing explanation of when to run the preview.</li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>CI mutation</li><li>hooks installation</li><li>generated reports except explicit source-log evidence during tests</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/existing-repo-intake.py --self-test</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li>Manual verification:</li><li>Confirm preview output says it is evidence only and does not approve copying, overwriting, hooks, CI, active-memory edits, app commands, or app-code edits.</li><li>Forbidden assumptions:</li><li>Manifest preview approves setup mutation.</li><li>Manifest preview is a release channel, update manifest, package-manager contract, rollback plan, or CLI command.</li><li>Existing Repo Intake can be skipped for existing projects.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B004-install-update-manifest-preview</code></td><td><code>PRD-004-FR01</code> through <code>PRD-004-FR07</code></td><td>Protocol, preview command, docs hooks, inventory entry, and fixture self-tests are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></td><td>validation commands plus manual preview review</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future supervised setup flow copy files itself or only produce copy commands?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should future package-state metadata include version/channel language?</td><td>Follow-up manifest scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of the roadmap rank #2 Installer / Bootstrap Experience slice as manifest + dry-run preview, explicitly excluding target mutation, CLI/package-manager semantics, release channels, hooks, CI, rollback automation, and app-code edits.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
+Document version: v0.1.27
 Last updated: 2026-06-14
 
 ## Start Here: You Are Not Just Prompting
@@ -248,7 +248,7 @@ Use these prompts when you do not know what to say next.
 | Situation | Ask the agent |
 |---|---|
 | I only have a rough idea. | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
-| I need to know if this is worth defining. | `Use Product Discovery Validation. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.` |
+| I need to know if this is worth defining. | `Use the Product Discovery Interview Skill. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | I have notes or an ingestion packet. | `Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.` |
 | My workbook includes a Candidate Goal Frame. | `Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.` |
 | My intent is durable, but I do not know the workflow yet. | `This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.` |

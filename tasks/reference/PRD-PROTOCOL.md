@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-06
+Document version: v0.1.10
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -25,6 +25,8 @@ workbook or local material -> Product Brief -> Conviction Packet when useful -> 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
 
 Execution beads are journey units derived from that destination. `tasks/todo.md` points to the active journey unit; the PRD may propose beads but must not activate them.
+
+Generated PRD HTML under `tasks/prds-html/` is a committed review convenience generated from `tasks/prds/*.md`. It can make PRD status, requirements, risks, blockers, bead proposals, and approval state easier to inspect, but Markdown PRD shards remain canonical. Generated PRD HTML cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace PRD shards.
 
 Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD amendment, or product drift checks. `PRODUCT.md` orients the product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. It does not approve features, activate beads, or replace PRD shards.
 

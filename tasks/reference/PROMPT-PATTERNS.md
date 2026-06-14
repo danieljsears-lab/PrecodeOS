@@ -108,6 +108,20 @@ Return the current situation, recommended workflow, next artifact, required auth
 Do not edit files, approve work, activate a bead, run mutating commands, or start implementation.
 ```
 
+### Product Discovery Interview Skill
+
+```text
+Use the Product Discovery Interview Skill.
+
+I need to know whether this idea is worth defining before PRD shaping.
+
+Load the Product Discovery Validation Protocol. Interview me one question at a time. Challenge assumptions supportively, especially if the audience is broad, the user problem is vague, the current workaround is missing, evidence is weak, demand is only imagined, or the first slice is too large.
+
+Return the Discovery Summary with the target user and situation, user problem, current alternatives or workarounds, strongest evidence, weakest assumption, evidence strength, assumption categories, demand or pricing signal, smallest non-code learning step, what would change our mind, sensitive surfaces, recommendation of proceed, pause, narrow, or kill, reason, recommended next Precode workflow, likely authority files, and the guardrail reminder.
+
+Treat the output as evidence only. Do not write a PRD, update PRODUCT.md, create or activate beads, choose tasks, run mutating commands, or code.
+```
+
 ### Maintainer Package Review Skill
 
 ```text
@@ -130,6 +144,8 @@ Interview me one question at a time. After at most three high-level product or b
 Guide source-cited research when useful. For each source, include the link, date or recency if available, the claim it supports, confidence, uncertainty, and what question it helps answer. Treat research as weak evidence unless it shows user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
 Challenge me supportively but firmly when the audience is too broad, the painful moment is vague, the current workaround is missing, evidence is weak, scope is too large, or sensitive surfaces appear.
+
+If worth-building uncertainty becomes the main question, route me to the Product Discovery Interview Skill / Product Discovery Validation instead of trying to turn weak evidence into a Conviction Packet.
 
 When ready, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
 

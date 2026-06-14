@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-13
+Document version: v0.1.11
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -44,7 +44,7 @@ Choose the workflow that matches the current situation:
 | First-time non-technical builder has a rough idea before repo setup | Product Ideation Workbook or Product Conviction Packet Skill | Product Brief, then Conviction Packet evidence |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
-| Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
+| Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Interview Skill / Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Rough idea, scattered notes, screenshots, research, chat summary, or issue export | Local Source Intake | reviewed source summary |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
 | Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
@@ -58,7 +58,7 @@ If no row fits, stop and name what is missing: source evidence, product definiti
 
 If the workflow involves sensitive, external, destructive, or `bounded-afk` execution, the next bead proposal should include a Run Contract or explicitly explain why one is not needed. Use plain output language: Allowed actions, Proof needed, Approval required before, and Stop if.
 
-Use `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the main uncertainty is whether the user problem, current workaround, demand signal, alternative, or smallest learning step is real enough to justify product definition. Its Discovery Summary is evidence only; it may recommend `proceed`, `pause`, `narrow`, or `kill`, but it does not approve a PRD, activate beads, choose work, or rewrite owner files.
+Use Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the main uncertainty is whether the user problem, current workaround, demand signal, alternative, or smallest learning step is real enough to justify product definition. Its Discovery Summary is evidence only; it may recommend `proceed`, `pause`, `narrow`, or `kill`, but it does not approve a PRD, activate beads, choose work, or rewrite owner files.
 
 Do not route a Conviction Packet directly to PRD drafting unless Local Source Intake has summarized the packet and the builder has reviewed the intake. The packet is pre-PRD evidence, not approval to define requirements or code.
 

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-005 -- Release Readiness / Shipping Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-005 -- Release Readiness / Shipping Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-005-release-readiness-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-005-release-readiness-lane.md#prd-005-release-readiness-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Release Readiness / Shipping Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for user-project release readiness guidance in PrecodeOS.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, deployment approval, release approval, provider configuration, external mutation, rollback execution, implementation acceptance, or generated evidence truth.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future release-candidate evidence helper compile release-readiness notes from closeout?</td><td>Follow-up roadmap scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after V1?</td><td>Follow-up automation scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-005-FR01</code></td><td>Add a Release Readiness Protocol for user-project shipping decisions.</td><td>P0</td><td>Protocol owns scope, evidence, approvals, and forbidden actions.</td></tr><tr><td><code>PRD-005-FR02</code></td><td>Define when a bead is release-relevant.</td><td>P0</td><td>Includes deployment, production config, user-visible behavior, data/security/auth/payment risk, browser-facing flows, docs required for use, or external-service impact.</td></tr><tr><td><code>PRD-005-FR03</code></td><td>Define required release-readiness notes.</td><td>P0</td><td>Changed behavior, affected users, checks, smoke test, browser/manual evidence, rollback or blocked escape, known uncertainty, docs freshness, post-release follow-up.</td></tr><tr><td><code>PRD-005-FR04</code></td><td>Add release-relevant bead guidance to the bead schema.</td><td>P0</td><td>Keep one primary authority and existing closeout/review rules.</td></tr><tr><td><code>PRD-005-FR05</code></td><td>Point verification and completion protocols to release readiness without weakening sensitive-surface gates.</td><td>P0</td><td>Deployment still requires explicit approval.</td></tr><tr><td><code>PRD-005-FR06</code></td><td>Clarify GitHub Releases are PrecodeOS package checkpoints, not user-project release authority.</td><td>P0</td><td>Avoids accidental GitHub mutation or package-release confusion.</td></tr><tr><td><code>PRD-005-FR07</code></td><td>Add user-facing prompts in beginner docs.</td><td>P0</td><td>Prompts prepare evidence and approval questions only.</td></tr><tr><td><code>PRD-005-FR08</code></td><td>Update package inventory and generated public docs.</td><td>P0</td><td>Markdown remains canonical; HTML is generated reading surface.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, external-service mutation, or production configuration change.</li><li>Stop if release target, affected users, smoke path, manual/browser verification, rollback or blocked escape, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none for V1 docs/protocol work.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence except generated docs HTML</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm release-readiness language prepares evidence and approvals only, and does not authorize deployment, rollback, dashboard mutation, secret changes, GitHub mutation, or release-channel behavior.</li><li>Forbidden assumptions:</li><li>Release readiness is release approval.</li><li>A smoke test replaces manual approval.</li><li>Browser notes, screenshots, GitHub status, or generated reports are proof unless recorded through existing evidence paths.</li><li>PrecodeOS package GitHub Releases define user-project release behavior.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B005-release-readiness-lane</code></td><td><code>PRD-005-FR01</code> through <code>PRD-005-FR08</code></td><td>Release-readiness PRD/protocol, bead guidance, user prompts, inventory, changelog, roadmap cleanup, and generated docs are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></td><td>static validation plus manual boundary review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-005-release-readiness-shipping-lane">PRD-005 -- Release Readiness / Shipping Lane</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-005</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>high</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Release Readiness / Shipping Lane</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | existing verification protocols</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item 5, <code>Release Readiness / Shipping Lane</code></li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li>Stable facts:</li><li>Precode already requires recorded checks, manual verification when needed, explicit approval gates, and rollback or blocked escape notes for sensitive work.</li><li>Deployment, promotion, rollback, secret changes, migrations, dashboards, billing, auth, payments, and private data are sensitive surfaces.</li><li>GitHub status, browser notes, screenshots, and generated reports are review input until recorded, accepted, or promoted through the existing evidence path.</li><li>GitHub Releases remain a PrecodeOS package checkpoint path, not user-project release authority.</li><li>Assumptions:</li><li>V1 should serve user projects first, not PrecodeOS package release management.</li><li>Protocol and template guidance are enough for V1.</li><li>Conflicts or stale inputs:</li><li>Generic &quot;ship&quot; language can imply deployment automation; this PRD narrows the first lane to release-readiness evidence and approval gates only.</li><li>Privacy or secrets redactions:</li><li>Release notes and evidence must not include secrets, tokens, private dashboard values, personal data samples, or production credentials.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Precode is strong at planning, scoped implementation, checks, and review, but users still need a clearer stop-and-check lane before local confidence turns into user-facing risk. Without release-readiness guidance, an agent can treat &quot;works locally&quot; as &quot;safe to ship&quot; before deployment steps, rollback, smoke evidence, browser/manual checks, docs freshness, and post-release follow-up are visible.</p>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS gives users a release-readiness lane that names the evidence, approvals, rollback or blocked escape, and follow-up needed before shipping user-project work.</li><li>Definition of done:</li><li>Release Readiness Protocol exists.</li><li>Bead schema guidance names release-relevant beads and closeout expectations.</li><li>Verification and completion protocols point deployment and release-relevant work to the release-readiness lane.</li><li>GitHub protocol distinguishes PrecodeOS package release checkpoints from user-project release readiness.</li><li>User-facing docs provide copyable prompts for release readiness without authorizing deployment.</li><li>Package inventory lists the new protocol.</li><li>Generated public docs HTML is refreshed.</li><li>First useful vertical slice: docs, protocol, PRD, and bead guidance only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder deciding whether a completed project slice is safe enough to ship.</li><li>Secondary user: AI coding agent or support helper preparing release evidence without mutating external systems.</li><li>Excluded user: Maintainer or deploy bot expecting provider-specific deployment automation, release channels, rollback automation, dashboard mutation, or package-manager semantics.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make shipping risk explicit before deployment or external mutation.</li><li>Goal 2: Require smoke evidence, manual/browser verification, known uncertainty, and rollback or blocked escape before release approval.</li><li>Goal 3: Preserve the user&#x27;s authority over deployment, release, rollback, dashboards, secrets, and post-release decisions.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: provider-specific deployment automation, release execution, rollback execution, dashboard updates, CI release gates, CLI commands, package-manager or release-channel semantics, GitHub mutation, new skill playbooks, or generated approval.</li><li>Deferred: Release Readiness Skill, release-candidate evidence automation, provider-specific checklists, richer release evidence reports, and verification-evidence tooling.</li><li>Explicitly out of scope: Any workflow that treats release-readiness output as permission to deploy, promote, roll back, merge, change secrets, migrate data, or mutate external systems.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-005-FR01</code></td><td>Add a Release Readiness Protocol for user-project shipping decisions.</td><td>P0</td><td>Protocol owns scope, evidence, approvals, and forbidden actions.</td></tr><tr><td><code>PRD-005-FR02</code></td><td>Define when a bead is release-relevant.</td><td>P0</td><td>Includes deployment, production config, user-visible behavior, data/security/auth/payment risk, browser-facing flows, docs required for use, or external-service impact.</td></tr><tr><td><code>PRD-005-FR03</code></td><td>Define required release-readiness notes.</td><td>P0</td><td>Changed behavior, affected users, checks, smoke test, browser/manual evidence, rollback or blocked escape, known uncertainty, docs freshness, post-release follow-up.</td></tr><tr><td><code>PRD-005-FR04</code></td><td>Add release-relevant bead guidance to the bead schema.</td><td>P0</td><td>Keep one primary authority and existing closeout/review rules.</td></tr><tr><td><code>PRD-005-FR05</code></td><td>Point verification and completion protocols to release readiness without weakening sensitive-surface gates.</td><td>P0</td><td>Deployment still requires explicit approval.</td></tr><tr><td><code>PRD-005-FR06</code></td><td>Clarify GitHub Releases are PrecodeOS package checkpoints, not user-project release authority.</td><td>P0</td><td>Avoids accidental GitHub mutation or package-release confusion.</td></tr><tr><td><code>PRD-005-FR07</code></td><td>Add user-facing prompts in beginner docs.</td><td>P0</td><td>Prompts prepare evidence and approval questions only.</td></tr><tr><td><code>PRD-005-FR08</code></td><td>Update package inventory and generated public docs.</td><td>P0</td><td>Markdown remains canonical; HTML is generated reading surface.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, external-service mutation, or production configuration change.</li><li>Stop if release target, affected users, smoke path, manual/browser verification, rollback or blocked escape, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none for V1 docs/protocol work.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<ul><li><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code> owns the release-readiness lane.</li><li><code>tasks/beads/BEAD-SCHEMA.md</code> owns release-relevant bead guidance.</li><li>User docs own copyable prompts for asking an agent to prepare release readiness.</li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence except generated docs HTML</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm release-readiness language prepares evidence and approvals only, and does not authorize deployment, rollback, dashboard mutation, secret changes, GitHub mutation, or release-channel behavior.</li><li>Forbidden assumptions:</li><li>Release readiness is release approval.</li><li>A smoke test replaces manual approval.</li><li>Browser notes, screenshots, GitHub status, or generated reports are proof unless recorded through existing evidence paths.</li><li>PrecodeOS package GitHub Releases define user-project release behavior.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B005-release-readiness-lane</code></td><td><code>PRD-005-FR01</code> through <code>PRD-005-FR08</code></td><td>Release-readiness PRD/protocol, bead guidance, user prompts, inventory, changelog, roadmap cleanup, and generated docs are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></td><td>static validation plus manual boundary review</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future release-candidate evidence helper compile release-readiness notes from closeout?</td><td>Follow-up roadmap scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after V1?</td><td>Follow-up automation scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of roadmap rank #5 as a user-project shipping-readiness lane, explicitly excluding provider-specific automation, deployment, promotion, rollback, dashboard mutation, CI release gates, CLI commands, package-manager semantics, release-channel semantics, and Release Readiness Skill behavior.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>

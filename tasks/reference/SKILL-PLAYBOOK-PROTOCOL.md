@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-13
+Document version: v0.1.4
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -101,6 +101,46 @@ Generated-report warning:
 
 The output is guidance only. It does not approve a PRD, activate a bead, choose the next task, rewrite owner files, or start implementation.
 
+### Product Discovery Interview Skill
+
+```text
+Name: Product Discovery Interview Skill
+Purpose: Help a user run a worth-building discovery interview before PRD shaping when the user problem, current workaround, evidence, demand signal, or smallest learning step is uncertain.
+Load when: The user asks for Product Discovery Interview Skill, asks whether an idea is worth defining, asks for a skill-style product-discovery interview, or has a broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty is the main question.
+Owner protocol or adapter: `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`
+Allowed actions: Interview one question at a time, inspect user-provided idea and evidence, apply the discovery evidence ladder, identify the current workaround, strongest evidence, weakest assumption, demand or pricing signal, sensitive surfaces, smallest non-code learning step, and return the Product Discovery Validation Discovery Summary.
+Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, choose tasks, start implementation, run mutating commands, treat research as validation, treat discovery output as proof that the idea is worth building, promote findings into authority, or decide the product for the builder.
+Generated evidence, if any: None in Precode v1; the conversational Discovery Summary is source evidence that the user may later paste or store as local source material.
+User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, command execution, or sensitive-surface action.
+Stop conditions: The user asks to code, asks for a PRD before discovery uncertainty is resolved, needs to paste secrets or sensitive personal data, lacks a named user or current workaround, has evidence too weak for PRD shaping, or needs a broader pre-repo idea-coaching loop instead of a narrow worth-building interview.
+Promotion path for findings: Bring the reviewed Discovery Summary into Local Source Intake, Idea-to-PRD, a PRD Discovery Evidence section, `PRODUCT.md`, `DECISIONS.md`, another owner file, or a candidate/approved bead only after user review.
+```
+
+When invoked, return exactly the Product Discovery Validation `Discovery Summary` fields:
+
+```text
+Discovery Summary:
+- Idea:
+- Target user and situation:
+- User problem:
+- Current alternatives or workarounds:
+- Strongest evidence:
+- Weakest assumption:
+- Evidence strength: very weak | weak | medium | strong | strongest
+- Assumption categories in play: desirability | viability | feasibility | usability | ethical
+- Demand or pricing signal:
+- Smallest non-code learning step:
+- What would change our mind:
+- Sensitive surfaces:
+- Recommendation: proceed | pause | narrow | kill
+- Reason:
+- Recommended next Precode workflow:
+- Authority files likely affected:
+- Guardrail reminder: discovery is evidence only, not PRD approval, task activation, or permission to code.
+```
+
+The output is evidence only. It does not validate demand, approve PRDs, activate beads, choose the next task, rewrite owner files, or start implementation.
+
 ## V1 Skill Set
 
 ### Ask Precode Docs Skill
@@ -119,6 +159,15 @@ The output is guidance only. It does not approve a PRD, activate a bead, choose 
 - Allowed actions: read active memory, load Workflow Selection, inspect the minimum relevant owner files, and return the required workflow-selection fields.
 - Forbidden actions: edit files, approve PRDs, activate beads, start implementation, run mutating commands, or treat generated reports as task authority.
 - Gain: reduces "what do I ask next?" friction and protects against premature implementation.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
+
+### Product Discovery Interview Skill
+
+- Purpose: help a user run a narrow worth-building interview before PRD shaping when evidence, current workaround, demand signal, or smallest learning step is uncertain.
+- Owner source: `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`.
+- Allowed actions: interview one question at a time, apply Product Discovery Validation, and return the Discovery Summary with evidence strength and `proceed | pause | narrow | kill`.
+- Forbidden actions: edit files, approve PRDs, create or activate beads, choose tasks, start implementation, or treat discovery output as validation/proof.
+- Gain: makes the Product Discovery Validation protocol easier to invoke without duplicating the broader Product Conviction Packet idea-coaching path.
 - Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Maintainer Package Review Skill
@@ -148,7 +197,7 @@ Allowed actions: Interview one question at a time, produce a Product Brief after
 Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
 Generated evidence, if any: None in Precode v1; the conversational output is source evidence that the user may later paste or store as local source material.
 User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, or sensitive-surface action.
-Stop conditions: The idea has no named user problem, no current workaround or evidence, sensitive information is being pasted, the first slice is too large to reason about, evidence is weak enough to require Product Discovery Validation, or the user is asking to jump directly from raw discovery to coding.
+Stop conditions: The idea has no named user problem, no current workaround or evidence, sensitive information is being pasted, the first slice is too large to reason about, evidence is weak enough to require Product Discovery Interview Skill / Product Discovery Validation, or the user is asking to jump directly from raw discovery to coding.
 Promotion path for findings: Bring the reviewed Conviction Packet into Local Source Intake; promote only through the PRD, `PRODUCT.md`, `DECISIONS.md`, another owner file, or a candidate/approved bead after user review.
 ```
 
@@ -205,9 +254,10 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 |---|---:|---|
 | Ask Precode Docs Skill | Implemented | User-facing docs-help prompt; keep it stable-documentation-only and cite canonical docs/protocols. |
 | Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
+| Product Discovery Interview Skill | Implemented | Worth-building interview prompt; keep it evidence-only and subordinate to Product Discovery Validation. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |
-| Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Validation, and Local Source Intake. |
+| Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
 | Review / Acceptance Skill | P2/P3 | Valuable, but risky if it becomes a fake QA persona instead of evidence-tied review guidance. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 

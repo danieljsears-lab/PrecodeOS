@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-001 -- Product Discovery Validation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-001 -- Product Discovery Validation</h1>
+  <p class="muted">Static HTML generated from <code>PRD-001-product-discovery-validation.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-001-product-discovery-validation.md#prd-001-product-discovery-validation">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Product Discovery Validation</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-05-28</strong></div><div class="metric"><span>Last updated</span><strong>2026-05-28</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Draft destination shard for adding Product Discovery Validation to PrecodeOS before PRD shaping.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, route structure, schema definitions, generated progress, or proof that any product idea is worth building.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future checker detect risky PRDs without discovery evidence?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-FR01</code></td><td>Add a Product Discovery Validation reference protocol with triggers, non-triggers, methods, evidence ladder, assumptions, interview guidance, Discovery Summary format, recommendations, promotion path, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-001-FR02</code></td><td>Update Workflow Selection and Idea-to-PRD so worth-building uncertainty routes to Product Discovery Validation before PRD shaping.</td><td>P0</td><td>Keep advisory.</td></tr><tr><td><code>PRD-001-FR03</code></td><td>Add a minimal Discovery Evidence bridge to the PRD template.</td><td>P0</td><td>Not a full report requirement.</td></tr><tr><td><code>PRD-001-FR04</code></td><td>Update the workbook and beginner guides to teach discovery validation prompts and boundaries.</td><td>P0</td><td>Beginner-facing.</td></tr><tr><td><code>PRD-001-FR05</code></td><td>Update the file inventory to include the new protocol.</td><td>P0</td><td>Maintains discoverability.</td></tr></tbody></table></div>
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none</li><li>Payments: none</li><li>User data: discovery guidance may mention user interviews and sensitive inputs</li><li>Uploads: none</li><li>External services: research links only</li><li>Secrets: explicit warning required</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>PRD approval</li><li>bead activation</li><li>promoting discovery findings into <code>PRODUCT.md</code>, <code>DECISIONS.md</code>, or another authority file</li><li>Stop if:</li><li>discovery output is treated as approval or task selection</li><li>a tiny task starts requiring heavy discovery ceremony</li><li>Escalate when:</li><li>discovery touches regulated, financial, medical, legal, safety, personal-data, or sensitive trust surfaces</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local file edits and validation commands</li><li>Network needs: none during implementation</li><li>Dependency changes: none</li><li>Dashboard/manual steps: none</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/IDEA-TO-PRD-WORKFLOW.md</code></li><li><code>tasks/prds/PRD-000-template.md</code></li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li>Files or folders out of scope:</li><li>scripts, generated reports, app code</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/workflow-check.py</code></li><li>Manual verification:</li><li>Confirm discovery artifacts remain evidence only.</li><li>Forbidden assumptions:</li><li><code>proceed</code> means PRD approval.</li><li>discovery is mandatory for every PRD.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B001-product-discovery-validation-docs</code></td><td><code>PRD-001-FR01</code> through <code>PRD-001-FR05</code></td><td>Protocol and docs hooks are added, versioned, validated, and manually reviewed.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>fresh_context_recommended</code></td><td><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></td><td>validation commands plus manual docs review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-001-product-discovery-validation">PRD-001 -- Product Discovery Validation</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-001</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-05-28</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Product Discovery Validation</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>roadmap evidence | research | alignment interview</code></li><li>Source references:</li><li><code>tasks/reference/IDEA-TO-PRD-WORKFLOW.md</code></li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code></li><li>Product Talk discovery references, Strategyzer value proposition testing, and NN/g research-method framing</li><li>Stable facts:</li><li>Precode already has Local Source Intake, Idea-to-PRD, Product Definition Gate, PRD shards, and bead decomposition.</li><li>Roadmap rank 1 names Product Discovery Validation as P0.</li><li>Discovery must remain advisory and beginner-safe.</li><li>Assumptions:</li><li>A reference protocol plus docs hooks is enough for v1.</li><li>No checker script is needed in the first implementation.</li><li>Conflicts or stale inputs:</li><li>none identified</li><li>Privacy or secrets redactions:</li><li>none</li><li>Candidate requirements:</li><li>Add a first-class discovery protocol before PRD shaping.</li><li>Add lightweight bridge fields and prompts to existing docs.</li><li>Candidate non-goals:</li><li>Do not make discovery mandatory for tiny tasks.</li><li>Do not let discovery approve PRDs or activate beads.</li><li>Authority files likely affected:</li><li><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/IDEA-TO-PRD-WORKFLOW.md</code></li><li><code>tasks/prds/PRD-000-template.md</code></li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>Discarded or stale inputs:</li><li>Mandatory scorecard or full product-management framework</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: <code>one-question-at-a-time grilling</code></li><li>Shared design concept: Product Discovery Validation is an advisory upstream protocol that helps beginners decide whether an idea has enough evidence to enter PRD shaping.</li><li>Key decisions reached:</li><li>Place the protocol before PRD work.</li><li>Use advisory <code>proceed | pause | narrow | kill</code> language.</li><li>Use a compact evidence ladder plus assumption categories.</li><li>Use a short Discovery Summary as the main artifact.</li><li>Prefer learning before building when evidence is weak.</li><li>Recommended answers accepted:</li><li>Advisory default, solo beginner audience, Core Four methods, supportive skeptic tone.</li><li>Recommended answers rejected or changed:</li><li>Mandatory discovery for every PRD.</li><li>Workbook-only implementation.</li><li>Validation scorecard as the main output.</li><li>Remaining implementation-changing questions:</li><li>none for v1 docs/protocol implementation</li><li>Stale or discarded assumptions:</li><li>That &quot;validation&quot; should mean proof rather than evidence-informed judgment.</li></ul>
+<h2 id="discovery-evidence">Discovery Evidence</h2>
+<ul><li>Discovery completed: <code>yes</code></li><li>Reason skipped: <code>not skipped</code></li><li>Evidence strength: <code>medium</code></li><li>Riskiest assumption: Beginners and agents will use an advisory discovery protocol when it is referenced from the right workflow surfaces.</li><li>Discovery recommendation: <code>proceed</code></li></ul>
+<h2 id="problem">Problem</h2>
+<p>Precode helps shape ideas into PRDs, but it does not yet fully help builders decide whether an idea is worth defining before feature planning starts. Without a discovery layer, a beginner can produce a plausible PRD for an unproven, too-broad, or solution-first idea.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder asks an agent to turn an exciting idea into a PRD or implementation plan without enough evidence.</li><li>After: The builder can see the strongest evidence, weakest assumption, current workaround, smallest learning step, and advisory recommendation before PRD work.</li><li>Why now: Roadmap prioritization ranks Product Discovery Validation as the next P0 core improvement.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Precode has a beginner-safe Product Discovery Validation protocol and workflow hooks that route broad, risky, market-facing, paid, evidence-poor, or solution-first ideas through advisory discovery before PRD shaping.</li><li>Definition of done:</li><li>New protocol exists with authority boundaries and guardrails.</li><li>Workflow docs route appropriate ideas to discovery.</li><li>PRD template includes a minimal Discovery Evidence bridge.</li><li>Workbook and user guides teach the path without making it mandatory ceremony.</li><li>File inventory knows the new protocol.</li><li>First useful vertical slice: Docs/protocol implementation only; no checker script in v1.</li></ul>
+<h2 id="product-constitution-fit">Product Constitution Fit</h2>
+<ul><li><code>PRODUCT.md</code> loaded: <code>yes</code></li><li>Product promise fit: Fits PrecodeOS as a repo-native control layer that keeps AI coding work bounded, inspectable, and human-approved.</li><li>User and job fit: Supports solo non-technical builders and agents working as planning collaborators.</li><li>Strategy and non-goal fit: Preserves tiny active memory and avoids becoming a full product-management framework.</li><li>Current bet or success signal affected: Adds a stronger upstream product-shaping guardrail.</li><li>Design or voice affected: Beginner-facing, plain-language, supportive skeptic tone.</li><li>Product constitution update needed: <code>no</code></li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Solo beginner or non-technical builder using Precode with an AI coding agent.</li><li>Secondary user: AI agent shaping a rough idea before PRD drafting.</li><li>Excluded user: Teams needing a full research operations or product-management suite.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Help builders judge whether an idea has enough evidence for PRD shaping.</li><li>Goal 2: Keep discovery advisory, short, and beginner-safe.</li><li>Goal 3: Preserve existing Precode authority and approval boundaries.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: Checker script, scorecard thresholds, research database, mandatory discovery for every PRD.</li><li>Deferred: Advisory detection of risky PRDs missing discovery.</li><li>Explicitly out of scope: Any change that lets generated discovery approve work, activate beads, or update active memory.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-FR01</code></td><td>Add a Product Discovery Validation reference protocol with triggers, non-triggers, methods, evidence ladder, assumptions, interview guidance, Discovery Summary format, recommendations, promotion path, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-001-FR02</code></td><td>Update Workflow Selection and Idea-to-PRD so worth-building uncertainty routes to Product Discovery Validation before PRD shaping.</td><td>P0</td><td>Keep advisory.</td></tr><tr><td><code>PRD-001-FR03</code></td><td>Add a minimal Discovery Evidence bridge to the PRD template.</td><td>P0</td><td>Not a full report requirement.</td></tr><tr><td><code>PRD-001-FR04</code></td><td>Update the workbook and beginner guides to teach discovery validation prompts and boundaries.</td><td>P0</td><td>Beginner-facing.</td></tr><tr><td><code>PRD-001-FR05</code></td><td>Update the file inventory to include the new protocol.</td><td>P0</td><td>Maintains discoverability.</td></tr></tbody></table></div>
+<h3 id="ux-requirements">UX Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-UX01</code></td><td>Use plain language for evidence strength and `proceed</td><td>pause</td><td>narrow</td><td>kill`.</td><td>P0</td><td>Avoid PM jargon where possible.</td></tr><tr><td><code>PRD-001-UX02</code></td><td>Keep prompts supportive but skeptical.</td><td>P0</td><td>Challenge assumptions without taking product control.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-SEC01</code></td><td>Warn users not to paste secrets, credentials, private transcripts, billing values, or sensitive personal data into discovery artifacts.</td><td>P0</td><td>Matches workbook boundaries.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-NFR01</code></td><td>Do not add active-memory files or generated authority surfaces.</td><td>P0</td><td>Preserves kernel.</td></tr><tr><td><code>PRD-001-NFR02</code></td><td>No new checker script in v1.</td><td>P1</td><td>Docs/protocol hooks only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-001-FR01</code></td><td>Protocol file exists with required sections and guardrails.</td><td><code>validate-memory.sh</code></td><td>Read protocol.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-001-FR02</code></td><td>Workflow docs reference discovery before PRD shaping for worth-building uncertainty.</td><td><code>workflow-check.py</code></td><td>Read workflow hooks.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-001-FR03</code></td><td>PRD template has lightweight Discovery Evidence fields.</td><td><code>validate-memory.sh</code></td><td>Inspect template.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-001-FR04</code></td><td>Beginner docs include discovery prompts and boundaries.</td><td><code>version-check.py</code></td><td>Inspect guide sections.</td><td>none</td><td>bead closeout</td></tr><tr><td><code>PRD-001-FR05</code></td><td>File inventory includes new protocol.</td><td><code>file-inventory.py --check</code></td><td>Inspect inventory.</td><td>none</td><td>bead closeout</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none</li><li>Payments: none</li><li>User data: discovery guidance may mention user interviews and sensitive inputs</li><li>Uploads: none</li><li>External services: research links only</li><li>Secrets: explicit warning required</li><li>Destructive actions: none</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before:</li><li>PRD approval</li><li>bead activation</li><li>promoting discovery findings into <code>PRODUCT.md</code>, <code>DECISIONS.md</code>, or another authority file</li><li>Stop if:</li><li>discovery output is treated as approval or task selection</li><li>a tiny task starts requiring heavy discovery ceremony</li><li>Escalate when:</li><li>discovery touches regulated, financial, medical, legal, safety, personal-data, or sensitive trust surfaces</li></ul>
+<h3 id="tool-and-environment-boundaries">Tool And Environment Boundaries</h3>
+<ul><li>Allowed tools: local file edits and validation commands</li><li>Network needs: none during implementation</li><li>Dependency changes: none</li><li>Dashboard/manual steps: none</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>Project context impact: <code>minor</code></li><li><code>PROJECT-CONTEXT.md</code> loaded: <code>yes</code></li><li>Architecture authority updates needed: <code>no</code></li><li>Route/API authority updates needed: <code>no</code></li><li>Schema authority updates needed: <code>no</code></li><li>Security authority updates needed: <code>no</code></li><li>Decision log updates needed: <code>no</code></li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/IDEA-TO-PRD-WORKFLOW.md</code></li><li><code>tasks/prds/PRD-000-template.md</code></li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li>Files or folders out of scope:</li><li>scripts, generated reports, app code</li><li>Required checks:</li><li><code>bash scripts/record-check.sh -- bash scripts/validate-memory.sh</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/version-check.py</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/file-inventory.py --check</code></li><li><code>bash scripts/record-check.sh -- python3 scripts/workflow-check.py</code></li><li>Manual verification:</li><li>Confirm discovery artifacts remain evidence only.</li><li>Forbidden assumptions:</li><li><code>proceed</code> means PRD approval.</li><li>discovery is mandatory for every PRD.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>User problem named: yes</li><li>Non-goals named: yes</li><li>Before/after user moment clear: yes</li><li>Requirements observable: yes</li><li>Sensitive surfaces identified: yes</li><li>Authority files identified: yes</li><li>First bead can be one logical unit: yes</li><li>Generated text reviewed by user: approved through maintainer implementation request</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B001-product-discovery-validation-docs</code></td><td><code>PRD-001-FR01</code> through <code>PRD-001-FR05</code></td><td>Protocol and docs hooks are added, versioned, validated, and manually reviewed.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>fresh_context_recommended</code></td><td><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></td><td>validation commands plus manual docs review</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: Product Discovery Validation.</li><li>Functional requirements to add or amend: <code>PRD-001-FR01</code> through <code>PRD-001-FR05</code> after approval.</li><li>MVP slice notes: v1 is protocol and docs only.</li><li>Acceptance updates needed: none.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<p>Only include blockers that can change implementation.</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future checker detect risky PRDs without discovery evidence?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-05-28</li><li>Approval notes: User asked Codex to implement the P0 plan with Product Discovery Validation first, using the existing PRD and protocol surfaces as the v1 implementation baseline.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#discovery-evidence">Discovery Evidence</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#product-constitution-fit">Product Constitution Fit</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#ux-requirements">UX Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-3" href="#tool-and-environment-boundaries">Tool And Environment Boundaries</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+</body>
+</html>
