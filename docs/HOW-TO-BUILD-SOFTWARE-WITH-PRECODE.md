@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
+Document version: v0.1.26
 Last updated: 2026-06-14
 
 ## Start Here: You Are Not Just Prompting
@@ -319,6 +319,8 @@ A Goal Frame preserves durable intent inside an existing owner file before workf
 When the direction starts in the Product Ideation Workbook, the workbook should produce a Candidate Goal Frame first. Precode should run Local Source Intake, ask whether the candidate is stable enough to reaffirm, and only then update `PRODUCT.md` if you approve.
 
 It is not active memory, a backlog, a roadmap, a PRD approval, a bead transition, or permission to code.
+
+If a Goal Frame is stale, missing key fields, task-like, or broader than the file that owns it, stop before using it. Reaffirm it, revise it, retire it, split it, or route the changed intent to the right owner file first.
 
 ```text
 Use the Goal Frame only to explain workflow guidance. Do not activate or approve work.

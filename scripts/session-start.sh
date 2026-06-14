@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.2
-# Last updated: 2026-05-17
+# Version: v0.1.3
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -69,6 +69,9 @@ if current_goal:
     print(f"- Horizon: {current_goal.get('horizon', 'not recorded')}")
     print(f"- Workflow guidance: {current_goal.get('workflow_guidance', 'not recorded')}")
     print(f"- Goal: {current_goal.get('goal', 'not recorded')}")
+    print(f"- Requires reaffirmation: {current_goal.get('requires_reaffirmation', False)}")
+    for blocker in (current_goal.get('fit_blockers') or [])[:3]:
+        print(f"- Fit blocker: {blocker}")
     print("- Warning: Goal Frames are advisory only; they do not approve work or replace active memory.")
 else:
     print("- No current Goal Frame.")

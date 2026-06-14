@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-06-04
+# Version: v0.1.6
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -32,6 +32,7 @@ STABLE_DECISIONS = {
     "repair state",
     "approval needed",
     "stop",
+    "ask for reaffirmation",
 }
 
 
@@ -87,6 +88,7 @@ def next_payload(
     guardrail: dict[str, Any] | None = None,
     depth: dict[str, Any] | None = None,
     run_contract: dict[str, Any] | None = None,
+    goal_frame: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
         Path("."),
@@ -98,7 +100,7 @@ def next_payload(
         depth or {"status": "pass", "warnings": [], "details": {}},
         guardrail or {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
         run_contract or {"status": "pass", "warnings": [], "details": {}},
-        {"status": "pass", "warnings": [], "details": {}},
+        goal_frame or {"status": "pass", "warnings": [], "details": {}},
     )
 
 
@@ -233,6 +235,96 @@ def main() -> int:
     ]
     for name, actual, expected in next_scenarios:
         assert_decision(f"next-step: {name}", str(actual), expected, failures)
+
+    active_goal = {
+        "path": "PRODUCT.md",
+        "status": "active",
+        "horizon": "product",
+        "workflow_guidance": "PRD",
+        "goal": "Keep the product direction legible before PRD shaping.",
+        "requires_reaffirmation": False,
+    }
+    goal_frame_scenarios = [
+        (
+            "active current frame",
+            next_payload(bead(), goal_frame={"status": "pass", "warnings": [], "details": {"current": active_goal}}),
+            "continue",
+            "",
+        ),
+        (
+            "reaffirm needed",
+            next_payload(
+                bead(),
+                goal_frame={
+                    "status": "warning",
+                    "warnings": ["PRODUCT.md Goal Frame requires user reaffirmation before guiding workflow"],
+                    "details": {"current": {**active_goal, "status": "reaffirm_needed", "requires_reaffirmation": True}},
+                },
+            ),
+            "ask for reaffirmation",
+            "current Goal Frame requires reaffirmation before guiding workflow",
+        ),
+        (
+            "missing fit field",
+            next_payload(
+                bead(),
+                goal_frame={
+                    "status": "warning",
+                    "warnings": ["PRODUCT.md Goal Frame is missing required fields: success_signal"],
+                    "details": {
+                        "current": {
+                            **active_goal,
+                            "status": "reaffirm_needed",
+                            "requires_reaffirmation": True,
+                            "fit_blockers": ["PRODUCT.md Goal Frame is missing required fields: success_signal"],
+                        }
+                    },
+                },
+            ),
+            "ask for reaffirmation",
+            "PRODUCT.md Goal Frame is missing required fields: success_signal",
+        ),
+        (
+            "task-like frame",
+            next_payload(
+                bead(),
+                goal_frame={
+                    "status": "warning",
+                    "warnings": ["PRODUCT.md Goal Frame may be acting like a task list or roadmap (next task)"],
+                    "details": {
+                        "current": {
+                            **active_goal,
+                            "status": "reaffirm_needed",
+                            "requires_reaffirmation": True,
+                            "fit_blockers": [
+                                "PRODUCT.md Goal Frame may be acting like a task list or roadmap (next task)"
+                            ],
+                        }
+                    },
+                },
+            ),
+            "ask for reaffirmation",
+            "PRODUCT.md Goal Frame may be acting like a task list or roadmap",
+        ),
+        (
+            "warnings without current frame",
+            next_payload(
+                bead(),
+                goal_frame={
+                    "status": "warning",
+                    "warnings": ["PRODUCT.md Goal Frame requires user reaffirmation before guiding workflow"],
+                    "details": {"current": {}},
+                },
+            ),
+            "continue",
+            "Goal Frame warnings exist, but no current active Goal Frame was selected",
+        ),
+    ]
+    for name, payload, expected_decision, expected_warning in goal_frame_scenarios:
+        details = payload.get("details") or {}
+        assert_decision(f"goal-frame: {name}", str(details.get("user_decision")), expected_decision, failures)
+        if expected_warning and not any(expected_warning in str(warning) for warning in payload.get("warnings") or []):
+            failures.append({"scenario": f"goal-frame warning: {name}", "expected": expected_warning, "actual": str(payload.get("warnings") or [])})
 
     recovery_scenarios = [
         ("missing bead", next_payload(None), "active-state-repair"),
@@ -416,6 +508,7 @@ def main() -> int:
         "tool": "clarity-scenario-check",
         "status": "pass" if not failures else "fail",
         "scenario_count": len(next_scenarios)
+        + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(depth_scenarios)
         + len(run_contract_scenarios)

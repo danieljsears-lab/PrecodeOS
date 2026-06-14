@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.24
-# Last updated: 2026-06-09
+# Version: v0.1.25
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -385,6 +385,9 @@ GOAL_FRAME_TASKLIKE_TERMS = {
     "implement ",
     "build ",
     "ship ",
+    "milestone",
+    "sprint",
+    "todo",
 }
 
 
@@ -735,6 +738,11 @@ def goal_frame_tasklike_warnings(frame: dict[str, Any]) -> list[str]:
     return [f"{frame.get('path')} Goal Frame may be acting like a task list or roadmap ({', '.join(found[:4])})"]
 
 
+def goal_frame_reaffirmation_blockers(frame: dict[str, Any], warnings: list[str]) -> list[str]:
+    path = str(frame.get("path") or "")
+    return [warning for warning in warnings if warning.startswith(f"{path} Goal Frame ")]
+
+
 def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str, Any]:
     frames = [frame for path in goal_frame_candidate_paths(root) if (frame := parse_goal_frame(path, root))]
     warnings: list[str] = []
@@ -755,8 +763,16 @@ def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str,
                 warnings.append(f"{frame.get('path')} Goal Frame is missing required fields: {', '.join(missing)}")
         if status == "active" and not frame.get("last_reaffirmed"):
             warnings.append(f"{frame.get('path')} Goal Frame is active but has no last reaffirmed date")
+        if status == "active" and frame.get("last_reaffirmed") and not re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}", str(frame.get("last_reaffirmed"))
+        ):
+            warnings.append(f"{frame.get('path')} Goal Frame has malformed last reaffirmed date")
         if status == "active" and not frame.get("reaffirmation_trigger"):
             warnings.append(f"{frame.get('path')} Goal Frame is active but has no reaffirmation trigger")
+        if status in {"active", "reaffirm_needed"} and frame.get("owner_file") != frame.get("path"):
+            warnings.append(
+                f"{frame.get('path')} Goal Frame owner file `{frame.get('owner_file')}` does not match its location"
+            )
         if status == "reaffirm_needed":
             warnings.append(f"{frame.get('path')} Goal Frame requires user reaffirmation before guiding workflow")
         if current_bead and status == "active" and frame.get("path") == current_bead.rel_path and current_bead.status in {
@@ -769,6 +785,9 @@ def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str,
                 f"{frame.get('path')} Goal Frame should be reaffirmed because the active bead is `{current_bead.status}`"
             )
         warnings.extend(goal_frame_tasklike_warnings(frame))
+        blockers = goal_frame_reaffirmation_blockers(frame, warnings)
+        frame["requires_reaffirmation"] = bool(status == "reaffirm_needed" or (status == "active" and blockers))
+        frame["fit_blockers"] = blockers
 
     current: dict[str, Any] | None = None
     active_frames = [frame for frame in frames if frame.get("status") == "active"]
@@ -786,7 +805,12 @@ def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str,
     if current and current.get("status") == "active" and any(
         warning.startswith(str(current.get("path"))) for warning in warnings
     ):
-        current = {**current, "status": "reaffirm_needed"}
+        current = {
+            **current,
+            "status": "reaffirm_needed",
+            "requires_reaffirmation": True,
+            "fit_blockers": goal_frame_reaffirmation_blockers(current, warnings),
+        }
 
     return {
         "status": "warning" if warnings else "pass",

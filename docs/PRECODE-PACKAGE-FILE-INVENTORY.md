@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.19
+Document version: v0.2.20
 Last updated: 2026-06-14
 
 ## Purpose
@@ -211,7 +211,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` | reference | Shared domain-language workflow, project-glossary card expectations, terminology freshness, and PRD/bead naming guidance. | Used during alignment, PRD shaping, module/interface naming, review, and glossary memory creation. |
 | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` | reference | Advisory local cleanup boundaries for truth, evidence, generated reports, bulky logs, caches, dry-run previews, and protected files. | Governs `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and generated preview manifests. |
 | `tasks/reference/RECOVERY-PROTOCOL.md` | reference | Beginner-safe recovery workflow for file damage, generated-report confusion, stale reports, active-state drift, missing proof, context loss, scope expansion, and approval confusion. | Canonical "I think I broke something" guide; informs user docs and next-step recovery prompts without authorizing destructive repair. |
-| `tasks/reference/GOAL-FRAME-PROTOCOL.md` | reference | Reviewed durable-intent orientation, allowed owner-file locations, required fields, lifecycle, reaffirmation, and forbidden uses. | Governs Goal Frame sections in `PRODUCT.md`, PRDs, beads, or `DECISIONS.md`, plus `logs/goal-frame.json` and `scripts/goal-frame-check.py`. |
+| `tasks/reference/GOAL-FRAME-PROTOCOL.md` | reference | Reviewed durable-intent orientation, allowed owner-file locations, required fields, lifecycle, fit checks, reaffirmation, and forbidden uses. | Governs Goal Frame sections in `PRODUCT.md`, PRDs, beads, or `DECISIONS.md`, plus `logs/goal-frame.json` and `scripts/goal-frame-check.py`. |
 | `tasks/reference/PROMPT-PATTERNS.md` | reference | Copyable prompts for pre-repo idea coaching, Conviction Packet handoff, alignment, shared language, PRDs, decomposition, implementation, review, stale artifacts, and common Precode work. | Teaching aid; not authority over active memory or beads. |
 | `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` | reference template | Student-facing product ideation workbook for Claude/Cowork/Codex-assisted research, ideation, challenge, refinement, and Conviction Packet / Precode ingestion packet creation. | Source evidence only; ingest through Local Source Intake before promoting anything into `PRODUCT.md`, PRDs, decisions, or beads. |
 | `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` | reference template | Student-facing Experience handoff packet combining an approved bootcamp PRD input, design-tool brief, visual core-spine artifacts, Core Spine Gate status, target-user feedback, demo-evidence reminders, and Claude Code bead-creation prompts. | Context for creating a bounded Precode bead; not product approval, bead activation, implementation authority, prototype acceptance, or permission to code. |
@@ -241,7 +241,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/os-integrity-check.py` | Prints PrecodeOS-owned surface integrity findings and strict staged checkpoint warnings for protected source edits. | Changed or staged paths, checkpoint manifests under `logs/os-checkpoints/`, git `HEAD`. | Human-readable or JSON warnings; strict mode exits nonzero when high-risk OS source edits lack a valid checkpoint; no mutation or approval. |
 | `scripts/os-checkpoint.py` | Creates, lists, and explicitly restores scoped PrecodeOS source checkpoints. | Clean selected source paths or known scopes such as `validation`, `protocols`, `adapters`, `package-surface`, and `boundary`. | `logs/os-checkpoints/<id>/manifest.json` and copied source files; restore writes only with `--apply` and skips generated or append-only evidence. |
 | `scripts/run-contract-check.py` | Prints advisory run-contract findings. | Active bead Run Contract, files in play, verification tiers, recorded checks, and closeout. | JSON warnings about allowed actions, proof needed, approvals, and recovery; no state mutation or command approval. |
-| `scripts/goal-frame-check.py` | Prints advisory Goal Frame findings. | Goal Frame sections in allowed owner files and compiled state. | JSON warnings; no state mutation, task selection, or approval. |
+| `scripts/goal-frame-check.py` | Prints advisory Goal Frame findings. | Goal Frame sections in allowed owner files and compiled state. | JSON warnings, reaffirmation requirements, and fit blockers; no state mutation, task selection, or approval. |
 | `scripts/clarity-scenario-check.py` | Runs deterministic beginner-decision fixtures. | In-memory bead scenarios, adaptive-depth scenarios, and command-risk examples. | Advisory JSON pass/fail result; exits nonzero if expected decisions regress. |
 | `scripts/local-hygiene-check.py` | Prints advisory Local Hygiene findings. | Compiled local hygiene state. | JSON to stdout; no cleanup mutation. |
 | `scripts/local-hygiene-dry-run.py` | Previews future archive/delete actions without performing them. | Compiled local hygiene state. | `logs/local-hygiene-preview.json`, `logs/local-hygiene-preview.md`, and stdout. |
@@ -315,7 +315,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/readiness.json` | generated sidecar | Bead readiness and promotion state. | Evidence only. |
 | `logs/orchestration-map.json` | generated sidecar | Intent orchestration summary. | Evidence only. |
 | `logs/workflow-map.json` | generated sidecar | Workflow selection summary. | Evidence only. |
-| `logs/goal-frame.json` | generated sidecar | Goal Frame status, freshness, required-field, and boundary warnings. | Advisory orientation only; not task selection, PRD approval, or bead activation. |
+| `logs/goal-frame.json` | generated sidecar | Goal Frame status, freshness, required-field, fit-blocker, and boundary warnings. | Advisory orientation only; not task selection, PRD approval, or bead activation. |
 | `logs/long-horizon-map.json` | generated sidecar | Future/blocked/deferred work summary. | Evidence only. |
 | `logs/handoff-packet.md/json` | generated report | Handoff context pack. | Orientation only; not transition approval. |
 | `logs/learning-diary.md/jsonl` | generated report | Session learning digest and entries. | Not active memory. |

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-06-14
 
 ## Purpose
@@ -358,6 +358,10 @@ Before using this Goal Frame, ask me to reaffirm it.
 
 ```text
 Check whether this Goal Frame still matches the active PRD, active bead, and current evidence.
+```
+
+```text
+If the Goal Frame is stale, incomplete, task-like, or broader than its owner file, ask me whether to reaffirm, revise, retire, split it, or route changed intent to the right owner file before using it for workflow guidance.
 ```
 
 ## Goal Frame Boundaries

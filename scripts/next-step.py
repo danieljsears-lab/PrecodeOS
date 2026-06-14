@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-05-17
+# Version: v0.1.6
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -42,9 +42,13 @@ def render(payload: dict[str, object]) -> str:
                 f"  - Horizon: `{goal_frame.get('horizon', 'not recorded')}`",
                 f"  - Workflow guidance: `{goal_frame.get('workflow_guidance', 'not recorded')}`",
                 f"  - Goal: {goal_frame.get('goal', 'not recorded')}",
+                f"  - Requires reaffirmation: `{goal_frame.get('requires_reaffirmation', False)}`",
                 f"  - Advisory: {details.get('goal_frame_advisory', 'Goal Frames are advisory only.')}",
             ]
         )
+        fit_blockers = goal_frame.get("fit_blockers") or []
+        if fit_blockers:
+            lines.extend(f"  - Fit blocker: {blocker}" for blocker in fit_blockers[:3])
     approval_prompt = details.get("approval_prompt")
     load_plan = details.get("load_plan") or {}
     footprint = details.get("context_footprint") or {}

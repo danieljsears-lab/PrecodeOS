@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-05-17
+# Version: v0.1.1
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -209,9 +209,12 @@ def next_step_guidance(
     current_goal = goal_details.get("current") or {}
     if current_goal:
         goal_status = str(current_goal.get("status") or "draft")
-        if goal_status == "reaffirm_needed":
+        requires_goal_reaffirmation = goal_status == "reaffirm_needed" or bool(current_goal.get("requires_reaffirmation"))
+        if requires_goal_reaffirmation:
             warnings.append("current Goal Frame requires reaffirmation before guiding workflow")
-            if category == "execute":
+            for blocker in (current_goal.get("fit_blockers") or [])[:3]:
+                warnings.append(str(blocker))
+            if category in {"execute", "depth-review"}:
                 category = "goal-reaffirmation"
                 user_decision = "ask for reaffirmation"
                 summary = "Reaffirm the current Goal Frame before using it to guide workflow."

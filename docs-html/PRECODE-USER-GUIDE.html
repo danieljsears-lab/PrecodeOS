@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.34</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.35</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -295,7 +295,7 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <p>If you started in the Product Ideation Workbook, the safe sequence is:</p>
 <pre><code class="language-text">Initial Direction -&gt; workbook refinement -&gt; Candidate Goal Frame -&gt; Local Source Intake -&gt; reaffirmation -&gt; PRODUCT.md Goal Frame</code></pre>
 <p>Do this:</p>
-<ul><li>Ask the agent to draft a Goal Frame for review.</li><li>Store it only inside an existing owner file: <code>PRODUCT.md</code>, a PRD, a bead, or <code>DECISIONS.md</code> when it is tied to a hard decision.</li><li>Reaffirm it before the agent uses it to guide workflow selection.</li><li>Treat stale or conflicting Goal Frames as a reason to pause and ask questions.</li></ul>
+<ul><li>Ask the agent to draft a Goal Frame for review.</li><li>Store it only inside an existing owner file: <code>PRODUCT.md</code>, a PRD, a bead, or <code>DECISIONS.md</code> when it is tied to a hard decision.</li><li>Reaffirm it before the agent uses it to guide workflow selection.</li><li>Treat stale or conflicting Goal Frames as a reason to pause and ask questions.</li><li>If a Goal Frame is incomplete, task-like, or broader than its owner file, ask whether to reaffirm, revise, retire, split, or route the changed intent before using it.</li></ul>
 <p>Do not use a Goal Frame to approve a PRD, activate a bead, choose the next task, create a backlog, or start coding.</p>
 <p>Say this:</p>
 <pre><code class="language-text">This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.</code></pre>
@@ -305,6 +305,8 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <pre><code class="language-text">If I reaffirm this Goal Frame, update PRODUCT.md only with the reviewed Goal Frame section and do not create tasks or code.</code></pre>
 <p>Say this before using one:</p>
 <pre><code class="language-text">Before using this Goal Frame, ask me to reaffirm it. Use it only to explain workflow guidance. Do not activate or approve work.</code></pre>
+<p>Say this when a Goal Frame warning appears:</p>
+<pre><code class="language-text">This Goal Frame has a fit warning. Ask me whether to reaffirm, revise, retire, split it, or route changed intent to the right owner file before using it for workflow guidance.</code></pre>
 <p>Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent&#x27;s next move.</p>
 <h2 id="do-not-move-rename-or-directly-edit-precode-files">Do Not Move, Rename, Or Directly Edit Precode Files</h2>
 <p>Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.</p>

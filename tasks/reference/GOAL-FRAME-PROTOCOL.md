@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-11
+Document version: v0.1.3
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -108,6 +108,20 @@ Reaffirmation is required before a Goal Frame guides future workflow when:
 
 If the frame is stale, ask the user to reaffirm, revise, retire, or split it before using it.
 
+## Fit Check
+
+Before a Goal Frame guides workflow selection, check whether it still fits the current state.
+
+Ask for reaffirmation when:
+
+- required fields are missing or malformed
+- `Owner file` does not match the file that contains the Goal Frame
+- the frame reads like a backlog, roadmap, task list, sprint, milestone, or implementation plan
+- the frame implies a next task, approval, transition, or shipping action
+- the active PRD, bead, evidence, or user direction has moved beyond the frame
+
+The safe responses are reaffirm, revise, retire, split, or route the changed intent to the correct owner file. Do not use a questionable Goal Frame as workflow guidance while the fit check is unresolved.
+
 ## Boundaries
 
 Goal Frames may:
@@ -130,6 +144,6 @@ Goal Frames must not:
 
 ## Script Support
 
-`scripts/goal-frame-check.py` is advisory. It may warn about missing reaffirmation, task-list-like Goal Frames, missing fields, conflicts with active state, or generated output treating a Goal Frame as authority.
+`scripts/goal-frame-check.py` is advisory. It may warn about missing reaffirmation, malformed dates, owner-file mismatches, task-list-like Goal Frames, missing fields, conflicts with active state, or generated output treating a Goal Frame as authority. An active Goal Frame with fit blockers should be treated as `reaffirm_needed` until the user reaffirms, revises, retires, or splits it.
 
-`scripts/next-step.py` may read Goal Frames as advisory context. It may recommend reaffirmation before workflow guidance. It must not treat Goal Frames as task authority.
+`scripts/next-step.py` may read Goal Frames as advisory context. It may recommend reaffirmation before workflow guidance and may route the next decision to this protocol when the current Goal Frame is stale or overreaching. It must not treat Goal Frames as task authority.

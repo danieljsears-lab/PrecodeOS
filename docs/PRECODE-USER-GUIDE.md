@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.34
+Document version: v0.7.35
 Last updated: 2026-06-14
 
 
@@ -262,6 +262,7 @@ Do this:
 - Store it only inside an existing owner file: `PRODUCT.md`, a PRD, a bead, or `DECISIONS.md` when it is tied to a hard decision.
 - Reaffirm it before the agent uses it to guide workflow selection.
 - Treat stale or conflicting Goal Frames as a reason to pause and ask questions.
+- If a Goal Frame is incomplete, task-like, or broader than its owner file, ask whether to reaffirm, revise, retire, split, or route the changed intent before using it.
 
 Do not use a Goal Frame to approve a PRD, activate a bead, choose the next task, create a backlog, or start coding.
 
@@ -287,6 +288,12 @@ Say this before using one:
 
 ```text
 Before using this Goal Frame, ask me to reaffirm it. Use it only to explain workflow guidance. Do not activate or approve work.
+```
+
+Say this when a Goal Frame warning appears:
+
+```text
+This Goal Frame has a fit warning. Ask me whether to reaffirm, revise, retire, split it, or route changed intent to the right owner file before using it for workflow guidance.
 ```
 
 Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent's next move.
