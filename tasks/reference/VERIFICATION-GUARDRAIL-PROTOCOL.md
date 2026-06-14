@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
+Document version: v0.1.8
 Last updated: 2026-06-14
 
 ## Purpose
@@ -104,6 +104,8 @@ Adaptive-depth metadata should raise verification expectations when risk rises. 
 `python3 scripts/files-in-play-check.py` is an advisory guardrail that compares current Git changes to the active bead `files_in_play`. Out-of-scope warnings should be resolved by narrowing the work, splitting a follow-up bead, or explaining generated evidence before acceptance.
 
 The guardrail can also classify a proposed command with `--command "<command summary>"` and can show an optional advisory edit lock with `--edit-lock`. These checks should reduce beginner confusion by saying `continue`, `approval needed`, or `stop`; they do not grant command approval, enforce filesystem permissions, or replace sensitive-surface gates.
+
+Use `tasks/reference/OS-INTEGRITY-PROTOCOL.md` when the risky surface is PrecodeOS itself: active memory, protocols, maintained scripts, hooks, adapters, package docs, or public/private boundary files. `scripts/os-integrity-check.py` and `scripts/os-checkpoint.py` protect OS-owned source surfaces with explicit scoped checkpoints; they do not replace `files_in_play` checks for normal app work.
 
 ## Test Strategy
 

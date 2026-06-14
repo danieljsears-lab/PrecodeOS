@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-13
+Document version: v0.1.9
+Last updated: 2026-06-14
 
 Generated logs live here.
 
@@ -41,6 +41,7 @@ Generated logs live here.
 - `file-inventory.json`
 - `local-hygiene-preview.json`
 - `local-hygiene-preview.md`
+- `os-checkpoints/`
 - `github-source-intake.jsonl`
 - `github-source-intake.md`
 
@@ -57,6 +58,7 @@ Local Hygiene v1 is advisory only:
 - generated reports and sidecars may be regenerated, but they are not active memory.
 - Ralph attempt logs are generated evidence for bounded retry review; they are not acceptance, command approval, or transition approval.
 - dry-run manifests are generated evidence and do not authorize cleanup.
+- OS checkpoints are explicit scoped source snapshots for PrecodeOS-owned integrity recovery. They live under ignored `logs/os-checkpoints/`, do not make generated evidence authoritative, and must not roll back append-only proof ledgers.
 
 ## Extension Output Rules
 

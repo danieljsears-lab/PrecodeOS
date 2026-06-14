@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -52,6 +52,13 @@ case "$mode" in
     echo "write-guard: pre-check ok"
     ;;
   post)
+    if [[ "${OS_INTEGRITY_CHECKED:-0}" != "1" ]]; then
+      if [[ ${#raw_paths[@]} -gt 0 ]]; then
+        python3 scripts/os-integrity-check.py --staged --strict "${raw_paths[@]}"
+      else
+        python3 scripts/os-integrity-check.py --staged --strict
+      fi
+    fi
     if [[ ${#raw_paths[@]} -gt 0 ]]; then
       bash scripts/validate-memory.sh "${raw_paths[@]}"
     else

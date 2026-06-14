@@ -9,6 +9,7 @@ OS-HEALTH.md
 PRECODE-HELP.md
 PROGRESS.md
 logs/check-output/
+logs/os-checkpoints/
 logs/scheduled-audit-output/
 logs/*.jsonl
 logs/*.json

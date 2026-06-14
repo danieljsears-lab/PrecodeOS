@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.19
-Last updated: 2026-06-13
+Document version: v0.3.20
+Last updated: 2026-06-14
 
 ## Executive Summary
 
@@ -58,6 +58,7 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Lost handoff state | A new session or tool cannot reconstruct current scope, blockers, or evidence. | Context Packs, handoff scripts, active bead pointer, and generated handoff reports. |
 | Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
 | Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, private-local material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
+| OS-owned file damage | Active memory, protocols, scripts, hooks, adapters, or public/private package boundaries are edited without a pre-mutation recovery point. | OS Integrity protocol, protected-source surface classes, strict staged checkpoint checks, and explicit scoped checkpoint restore. |
 
 Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
 
@@ -559,7 +560,7 @@ The script layer has these families:
 | Compilation and reports | `os_compiler.py`, `precode_routing.py`, `os-health.py`, `progress.py`, `next-step.py`, `update-learning-diary.py`, `update-memory-index.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence and route the next human decision. |
 | Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `files-in-play-check.py`, `run-contract-check.py`, `public-repo-check.py`, `local-hygiene-check.py`, and related checkers | Surface likely drift without mutating active memory. |
 | Setup and intake checks | `bootstrap-check.py`, `existing-repo-intake.py`, `github-audit.py`, `import-github-sources.py` | Inspect adoption targets or external source material while keeping mutation explicit and gated. |
-| Maintenance helpers | `validate-memory.sh`, `version-check.py`, `file-inventory.py`, `pre-commit-validate.sh`, `install-git-hooks.sh`, `write-guard.sh` | Protect package structure, provenance, inventory, and scoped writes. |
+| Maintenance helpers | `validate-memory.sh`, `version-check.py`, `file-inventory.py`, `pre-commit-validate.sh`, `install-git-hooks.sh`, `write-guard.sh`, `os-integrity-check.py`, `os-checkpoint.py` | Protect package structure, provenance, inventory, scoped writes, protected OS-owned source surfaces, and explicit restore points. |
 
 Generated sidecars should stay under `logs/` unless an existing generated report or committed docs-reading surface owns the output. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, file-inventory, local-hygiene, bootstrap, existing-repo intake, scheduled-audit, progress, next-step, and health outputs. They are evidence only.
 

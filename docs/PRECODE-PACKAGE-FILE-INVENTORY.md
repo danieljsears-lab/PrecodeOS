@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.18
+Document version: v0.2.19
 Last updated: 2026-06-14
 
 ## Purpose
@@ -57,7 +57,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
-| Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Timestamped command output and audit snapshots; local hygiene may report old unprotected entries as future archive candidates. |
+| Generated output families | `logs/check-output/*`, `logs/scheduled-audit-output/*`, `logs/os-checkpoints/*` | Timestamped command output, audit snapshots, and explicit scoped OS checkpoints; local hygiene may report old unprotected entries as future archive candidates. |
 | GitHub support surfaces | `.github/workflows/*.yml`, `.github/PULL_REQUEST_TEMPLATE.md` | Repository validation automation and pull-request evidence prompts. |
 
 ## Core Relationship Map
@@ -203,6 +203,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Ask Precode Docs Skill guidance, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Ask Precode Docs Skill, Workflow Selection Skill, and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
 | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` | reference | Evidence tiers, test strategy, sensitive gates, and false-done warnings. | Informs checks, closeout, and OS Health warnings. |
+| `tasks/reference/OS-INTEGRITY-PROTOCOL.md` | reference | PrecodeOS-owned surface classes, protected-source checkpoint expectations, OS-integrity check behavior, scoped restore limits, and generated-evidence boundaries. | Governs `scripts/os-integrity-check.py`, `scripts/os-checkpoint.py`, and strict pre-commit protection for OS-owned source surfaces. |
 | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` | reference | User-project release-readiness lane, shipping evidence expectations, approval gates, rollback or blocked escape notes, and post-release review prompts. | Used before user-facing shipping risk; prepares evidence and approval questions without deploying, approving release, mutating external systems, accepting review, or activating the next bead. |
 | `tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md` | reference | Generated bead build journal rules, evidence sources, Daily Cockpit surfacing, and conservative uncertainty handling. | Governs `logs/bead-build-journal.md/jsonl` behavior. |
 | `tasks/reference/RALPH-LOOP-PROTOCOL.md` | reference | Bounded Ralph attempt lifecycle, retry budget, validator-set expectations, generated attempt evidence, stop decisions, and hidden-authority guardrails. | Governs optional Ralph frontmatter in beads, `scripts/ralph-loop.py`, and `logs/ralph-attempts.jsonl` / `logs/ralph-summary.md`. |
@@ -237,6 +238,8 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/ralph-loop.py` | Runs a bounded Ralph attempt for one active bead. | Active bead, optional Ralph frontmatter, one explicit attempt command, validator set, prior Ralph attempts. | `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` unless `--dry-run`; generated evidence only, not task selection, command approval, acceptance, or transition approval. |
 | `scripts/bead-depth-check.py` | Prints adaptive bead-depth advisory findings. | Active bead metadata, risk hints, checks, stop conditions. | JSON warnings; no state mutation. |
 | `scripts/files-in-play-check.py` | Prints active-bead file mutation guardrail findings and optional command/edit-lock guidance. | Git changed paths, active bead `files_in_play`, optional `--command`, optional `--edit-lock`. | JSON warnings and plain continue/approval/stop guidance; no state mutation or command approval. |
+| `scripts/os-integrity-check.py` | Prints PrecodeOS-owned surface integrity findings and strict staged checkpoint warnings for protected source edits. | Changed or staged paths, checkpoint manifests under `logs/os-checkpoints/`, git `HEAD`. | Human-readable or JSON warnings; strict mode exits nonzero when high-risk OS source edits lack a valid checkpoint; no mutation or approval. |
+| `scripts/os-checkpoint.py` | Creates, lists, and explicitly restores scoped PrecodeOS source checkpoints. | Clean selected source paths or known scopes such as `validation`, `protocols`, `adapters`, `package-surface`, and `boundary`. | `logs/os-checkpoints/<id>/manifest.json` and copied source files; restore writes only with `--apply` and skips generated or append-only evidence. |
 | `scripts/run-contract-check.py` | Prints advisory run-contract findings. | Active bead Run Contract, files in play, verification tiers, recorded checks, and closeout. | JSON warnings about allowed actions, proof needed, approvals, and recovery; no state mutation or command approval. |
 | `scripts/goal-frame-check.py` | Prints advisory Goal Frame findings. | Goal Frame sections in allowed owner files and compiled state. | JSON warnings; no state mutation, task selection, or approval. |
 | `scripts/clarity-scenario-check.py` | Runs deterministic beginner-decision fixtures. | In-memory bead scenarios, adaptive-depth scenarios, and command-risk examples. | Advisory JSON pass/fail result; exits nonzero if expected decisions regress. |
@@ -255,7 +258,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/update-bead-closeout.py` | Refreshes closeout evidence markers. | Check logs and active bead. | Updates active bead closeout fields. |
 | `scripts/log-loop-event.sh` | Appends loop events. | Event type and bead context. | `logs/loop-runs.jsonl`. |
 | `scripts/execution-state.py` | Prints execution state. | Active memory and bead state. | Human-readable or machine-readable state. |
-| `scripts/write-guard.sh` | Guards writes against scope rules. | Paths and active bead context. | Pass/fail write-scope signal. |
+| `scripts/write-guard.sh` | Guards writes against scope rules and runs strict OS-integrity checkpoint checks for protected staged source edits. | Paths, staged changes, active bead context, and OS checkpoint manifests. | Pass/fail write-scope signal; no mutation or command approval. |
 | `scripts/install-git-hooks.sh` | Installs local git hooks when available. | Repo checkout. | Local hook files. |
 | `scripts/pre-commit-validate.sh` | Runs validation before commit. | Working tree. | Pass/fail hook output. |
 | `scripts/scheduled-audit.sh` | Shell wrapper for opt-in scheduled audits. | Local repo and optional external tools. | Audit output files and generated audit report. |

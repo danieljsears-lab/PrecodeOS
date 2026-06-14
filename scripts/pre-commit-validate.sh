@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -20,7 +20,8 @@ if [[ ${#staged_paths[@]} -eq 0 ]]; then
 fi
 
 echo "pre-commit: running shared write guard"
-bash scripts/write-guard.sh --staged "${staged_paths[@]}"
+python3 scripts/os-integrity-check.py --staged --strict "${staged_paths[@]}"
+OS_INTEGRITY_CHECKED=1 bash scripts/write-guard.sh --staged "${staged_paths[@]}"
 
 declare -a staged_shell=()
 declare -a staged_python=()
