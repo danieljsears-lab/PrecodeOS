@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-04
+# Version: v0.2.0
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -103,6 +103,18 @@ STOP_CONDITIONS = [
     "the user has not approved any copying, hook installation, CI change, or owner-file adaptation",
     "generated bootstrap output is treated as permission to mutate",
 ]
+ACTION_CATEGORIES = [
+    "copy_candidate",
+    "adapt_candidate",
+    "preserve_existing",
+    "exclude",
+    "blocked",
+    "deferred",
+]
+DEFERRED_SETUP_PATHS = {
+    ".githooks/",
+    ".github/workflows/",
+}
 
 
 def resolve_candidate(raw: str) -> Path:
@@ -178,6 +190,168 @@ def recommended_next_step(kind: str, source_missing: list[str], conflicts: list[
     return "Proceed to existing-project guided setup review before copying anything."
 
 
+def preview_action(category: str, path: str, reason: str, group: str | None = None) -> dict[str, str]:
+    action = {"category": category, "path": path, "reason": reason}
+    if group:
+        action["group"] = group
+    return action
+
+
+def path_has_conflict(path: str, conflicts: list[dict[str, str]]) -> bool:
+    normalized = path.rstrip("/")
+    for conflict in conflicts:
+        conflict_path = conflict["path"].rstrip("/")
+        if normalized == conflict_path or normalized.startswith(f"{conflict_path}/"):
+            return True
+    return False
+
+
+def build_manifest_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    kind = str(payload["target_kind"])
+    blockers = list(payload["blockers"])
+    conflicts = list(payload["conflicts"])
+    source_missing = list(payload["source_missing_paths"])
+    actions: list[dict[str, str]] = []
+
+    if source_missing:
+        actions.append(
+            preview_action(
+                "blocked",
+                "<precode-package-root>",
+                "source is not a plausible PrecodeOS checkout; use a clean package source before setup preview",
+            )
+        )
+    if kind == "missing":
+        actions.append(
+            preview_action(
+                "blocked",
+                "<target-project-root>",
+                "target path is missing; identify or create the target folder before setup preview",
+            )
+        )
+    if kind == "same_as_source":
+        actions.append(
+            preview_action(
+                "blocked",
+                "<target-project-root>",
+                "source and target are identical; never treat the package checkout as the target app",
+            )
+        )
+
+    for excluded in payload["excluded_paths"]:
+        actions.append(preview_action("exclude", str(excluded), "excluded from setup preview and copy plans"))
+
+    for group in payload["public_file_groups"]:
+        group_name = str(group["group"])
+        for path in group["paths"]:
+            path = str(path)
+            if path in DEFERRED_SETUP_PATHS:
+                actions.append(
+                    preview_action(
+                        "deferred",
+                        path,
+                        "hooks and CI require separate explicit approval and are not part of manifest preview setup",
+                        group_name,
+                    )
+                )
+                continue
+            if kind == "existing_project":
+                if path_has_conflict(path, conflicts):
+                    actions.append(
+                        preview_action(
+                            "adapt_candidate",
+                            path,
+                            "target already has related material; preserve existing project truth and review adaptation after Existing Repo Intake",
+                            group_name,
+                        )
+                    )
+                else:
+                    actions.append(
+                        preview_action(
+                            "deferred",
+                            path,
+                            "existing projects must run Existing Repo Intake before copy candidates become actionable",
+                            group_name,
+                        )
+                    )
+                continue
+            if kind == "existing_precode":
+                actions.append(
+                    preview_action(
+                        "preserve_existing",
+                        path,
+                        "target already appears to contain Precode active memory; validate before setup, repair, or update decisions",
+                        group_name,
+                    )
+                )
+                continue
+            if kind in {"missing", "same_as_source"} or blockers:
+                actions.append(preview_action("blocked", path, "blocked until source and target are valid", group_name))
+                continue
+            if path_has_conflict(path, conflicts):
+                actions.append(
+                    preview_action(
+                        "adapt_candidate",
+                        path,
+                        "target already has this path; review before adapting or preserving",
+                        group_name,
+                    )
+                )
+            elif group_name == "product_and_project_owner_files":
+                actions.append(
+                    preview_action(
+                        "adapt_candidate",
+                        path,
+                        "owner files need project-specific adaptation before first use",
+                        group_name,
+                    )
+                )
+            else:
+                actions.append(
+                    preview_action(
+                        "copy_candidate",
+                        path,
+                        "candidate for supervised file-group copy after user approval",
+                        group_name,
+                    )
+                )
+
+    if kind == "existing_project":
+        actions.append(
+            preview_action(
+                "deferred",
+                "scripts/existing-repo-intake.py",
+                "run Existing Repo Intake before copying, adapting owner files, changing CI, installing hooks, or editing app code",
+            )
+        )
+
+    return {
+        "manifest_kind": "install_update_dry_run_preview",
+        "status": payload["status"],
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "action_categories": ACTION_CATEGORIES,
+        "actions": actions,
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "copying files",
+            "overwriting target material",
+            "installing hooks",
+            "changing CI",
+            "editing active memory",
+            "running app commands",
+            "writing app code",
+            "release channels",
+            "package-manager updates",
+            "rollback automation",
+        ],
+        "next_setup_gate": "User must approve a separate supervised setup plan before any target mutation.",
+    }
+
+
 def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     source = resolve_candidate(source_raw)
     target = resolve_candidate(target_raw)
@@ -205,7 +379,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         warnings.append("recommended local dependencies are missing")
 
     status = "blocked" if blockers else "warning" if warnings else "pass"
-    return {
+    payload = {
         "tool": "bootstrap-check",
         "status": status,
         "warnings": warnings,
@@ -233,6 +407,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
             "app-code edits",
         ],
     }
+    return payload
 
 
 def render_plain(payload: dict[str, Any]) -> str:
@@ -271,12 +446,34 @@ def render_plain(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_preview_plain(payload: dict[str, Any]) -> str:
+    preview = payload["install_update_preview"]
+    lines = [
+        render_plain(payload),
+        "\nInstall/Update Manifest Dry-Run Preview:",
+        f"- Preview kind: `{preview['manifest_kind']}`",
+        "- Target mutation allowed: no",
+        "- Writes by default: no",
+        "- This preview is not a release channel, package-manager update, rollback plan, CLI contract, or install permission.",
+        f"- Next setup gate: {preview['next_setup_gate']}",
+        "\nPreview actions:",
+    ]
+    for action in preview["actions"]:
+        group = f" ({action['group']})" if "group" in action else ""
+        lines.append(f"- {action['category']}: `{action['path']}`{group} -- {action['reason']}")
+    lines.append(
+        "\nPreview warning: dry-run actions are evidence only; they do not approve copying, overwriting, hooks, CI, active-memory edits, app commands, or app-code edits."
+    )
+    return "\n".join(lines)
+
+
 def write_evidence(payload: dict[str, Any]) -> None:
     source = Path(str(payload["source_root"]))
     logs = source / "logs"
     logs.mkdir(parents=True, exist_ok=True)
     (logs / "bootstrap-check.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (logs / "bootstrap-check.md").write_text(render_plain(payload) + "\n", encoding="utf-8")
+    renderer = render_preview_plain if "install_update_preview" in payload else render_plain
+    (logs / "bootstrap-check.md").write_text(renderer(payload) + "\n", encoding="utf-8")
 
 
 def make_source(root: Path) -> None:
@@ -309,22 +506,63 @@ def self_test() -> int:
         assert existing_payload["status"] == "warning"
         assert any(item["path"] == "README.md" for item in existing_payload["conflicts"])
 
+        nearly_empty_target = base / "nearly-empty-target"
+        nearly_empty_target.mkdir()
+        (nearly_empty_target / "README.md").write_text("Existing README\n", encoding="utf-8")
+        nearly_empty_payload = build_payload(source.as_posix(), nearly_empty_target.as_posix())
+        nearly_empty_payload["install_update_preview"] = build_manifest_preview(nearly_empty_payload)
+        assert nearly_empty_payload["target_kind"] == "nearly_empty"
+        assert any(
+            action["category"] == "adapt_candidate" and action["path"] == "README.md"
+            for action in nearly_empty_payload["install_update_preview"]["actions"]
+        )
+
+        existing_payload["install_update_preview"] = build_manifest_preview(existing_payload)
+        assert any(
+            action["category"] == "deferred" and action["path"] == "scripts/existing-repo-intake.py"
+            for action in existing_payload["install_update_preview"]["actions"]
+        )
+
         missing_source_payload = build_payload((base / "missing-source").as_posix(), empty_target.as_posix())
         assert missing_source_payload["status"] == "blocked"
         assert "source path does not exist or is not a directory" in missing_source_payload["blockers"]
+        missing_source_payload["install_update_preview"] = build_manifest_preview(missing_source_payload)
+        assert any(action["category"] == "blocked" for action in missing_source_payload["install_update_preview"]["actions"])
 
         missing_target_payload = build_payload(source.as_posix(), (base / "missing-target").as_posix())
         assert missing_target_payload["target_kind"] == "missing"
         assert missing_target_payload["status"] == "blocked"
+        missing_target_payload["install_update_preview"] = build_manifest_preview(missing_target_payload)
+        assert any(action["path"] == "<target-project-root>" for action in missing_target_payload["install_update_preview"]["actions"])
 
         same_payload = build_payload(source.as_posix(), source.as_posix())
         assert same_payload["target_kind"] == "same_as_source"
         assert same_payload["status"] == "blocked"
+        same_payload["install_update_preview"] = build_manifest_preview(same_payload)
+        assert any(action["category"] == "blocked" for action in same_payload["install_update_preview"]["actions"])
 
+        existing_precode_target = base / "existing-precode-target"
+        make_source(existing_precode_target)
+        existing_precode_payload = build_payload(source.as_posix(), existing_precode_target.as_posix())
+        existing_precode_payload["install_update_preview"] = build_manifest_preview(existing_precode_payload)
+        assert existing_precode_payload["target_kind"] == "existing_precode"
+        assert any(
+            action["category"] == "preserve_existing"
+            for action in existing_precode_payload["install_update_preview"]["actions"]
+        )
+
+        empty_payload["install_update_preview"] = build_manifest_preview(empty_payload)
+        assert any(
+            action["category"] == "copy_candidate" for action in empty_payload["install_update_preview"]["actions"]
+        )
         json.dumps(empty_payload, sort_keys=True)
+
         write_evidence(empty_payload)
         assert (source / "logs" / "bootstrap-check.json").is_file()
         assert (source / "logs" / "bootstrap-check.md").is_file()
+        assert "Install/Update Manifest Dry-Run Preview" in (source / "logs" / "bootstrap-check.md").read_text(
+            encoding="utf-8"
+        )
         assert not (empty_target / "logs").exists()
 
     print(json.dumps({"tool": "bootstrap-check-self-test", "status": "pass"}, indent=2, sort_keys=True))
@@ -336,6 +574,11 @@ def main() -> int:
     parser.add_argument("--source", help="PrecodeOS package source checkout")
     parser.add_argument("--target", help="target project folder")
     parser.add_argument("--json", action="store_true", help="print machine-readable bootstrap confidence output")
+    parser.add_argument(
+        "--preview-manifest",
+        action="store_true",
+        help="include non-mutating install/update manifest dry-run preview output",
+    )
     parser.add_argument("--write-evidence", action="store_true", help="write generated evidence under the source logs directory")
     parser.add_argument("--self-test", action="store_true", help="run fixture-style bootstrap confidence checks")
     args = parser.parse_args()
@@ -347,6 +590,8 @@ def main() -> int:
         parser.error("--source and --target are required unless --self-test is used")
 
     payload = build_payload(args.source, args.target)
+    if args.preview_manifest:
+        payload["install_update_preview"] = build_manifest_preview(payload)
     if args.write_evidence:
         if payload["source_root"] == payload["target_root"]:
             raise SystemExit("bootstrap-check: refusing to write evidence when source and target are the same")
@@ -356,7 +601,7 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
-        print(render_plain(payload))
+        print(render_preview_plain(payload) if args.preview_manifest else render_plain(payload))
         if args.write_evidence:
             print("bootstrap-check: wrote logs/bootstrap-check.json and logs/bootstrap-check.md in the source workspace")
     return 0

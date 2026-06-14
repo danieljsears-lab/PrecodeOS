@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-13">
+  <meta name="generated-at" content="2026-06-14">
   <title>Claude Code Field Guide For Students · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>Claude Code Field Guide For Students</h1>
   <p class="lede">A Bootcamp Companion For Claude Code + PrecodeOS</p>
-  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.11</span><span>Updated 2026-06-06</span></p>
+  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.14</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -229,16 +229,19 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Field rule: one bead, one feature slice, one chat. When you finish and accept a slice, commit it, push it, then start a fresh chat for the next slice.</p>
 <h3 id="the-pre-session-checklist">The Pre-Session Checklist</h3>
 <ul><li>[ ] I know which bead (task card) we&#x27;re working on today</li><li>[ ] I can say in one sentence what &quot;done&quot; looks like for this bead</li><li>[ ] I am not expecting Claude to figure out what to build — I have a specific task</li><li>[ ] I have not asked Claude to work on two things at once</li><li>[ ] I am in the project root folder, and I have not renamed it</li></ul>
-<p>If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. Before you paste it in, complete the packet&#x27;s &quot;Complete Before Claude Code Handoff&quot; checklist. If required fields are missing, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.</p>
+<p>If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. The packet should include the design-tool brief used to create the rough Experience artifact, plus the artifact itself. Before you paste it in, complete the packet&#x27;s &quot;Complete Before Claude Code Handoff&quot; checklist and Core Spine Gate. If required fields are missing or the Core Spine Gate is blocked, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.</p>
 <p>The safe path is:</p>
 <pre><code class="language-text">completed Experience packet
   -&gt; Claude Code checks required fields
+  -&gt; Core Spine Gate is met
   -&gt; one candidate core-spine bead
   -&gt; you approve the bead through Precode
-  -&gt; coding begins</code></pre>
+  -&gt; coding begins
+  -&gt; demo evidence and feedback go into completion evidence</code></pre>
+<p>Target-user feedback, screenshots, and demo notes are evidence. They can shape the next safe question or follow-up bead, but they do not approve a PRD, accept implementation, or let Claude skip the normal Precode review decision.</p>
 <p>If your packet has a bootcamp-approved PRD-like input but no formal Precode PRD shard yet, Claude should produce a candidate bead proposal only and stop. It should not activate work or code until the normal Precode intake or PRD promotion path has happened.</p>
 <p>If this is your first Claude Code session after idea discovery, you may have a Conviction Packet but no PRD or bead yet. Bring the packet into Local Source Intake first. Do not ask Claude Code to turn the packet directly into code, and do not let it skip from discovery evidence to implementation.</p>
-<p>Use this handoff prompt:</p>
+<p>Use this Local Source Intake prompt:</p>
 <pre><code class="language-text">Use Local Source Intake on this Conviction Packet.
 
 Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate PRD inputs, likely owner files, and recommended next safe Precode workflow.

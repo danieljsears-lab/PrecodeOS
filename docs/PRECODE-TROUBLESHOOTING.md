@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-06
+Document version: v0.1.7
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -134,6 +134,7 @@ pwd
 git status
 find . -maxdepth 2 -type f | sort
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 ```
 
 Safe path:
@@ -141,6 +142,7 @@ Safe path:
 - name the package source and target project explicitly
 - stop setup until both folders are clear
 - use Bootstrap Confidence output to identify target kind, conflicts, missing dependencies, and the first safe next action
+- use the manifest dry-run preview to identify candidate copy, adaptation, preserve, exclusion, blocked, and deferred actions without mutating the target
 - use `docs/PRECODE-GUIDED-SETUP.md` for copy groups and exclusions
 
 Do not copy files in either direction until source and target are unambiguous.
@@ -414,6 +416,7 @@ Do not let technical support become hidden product ownership.
 | `bash scripts/validate-memory.sh` | Active memory, bead pointer, or setup validity is uncertain. | A failure means source state needs attention before work continues. |
 | `python3 scripts/file-inventory.py --check` | Public package files, new docs, copied files, or metadata are uncertain. | Inventory findings are advisory; they do not choose tasks. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` | First setup, source/target folder identity, copy groups, exclusions, conflicts, or first safe setup action are uncertain. | Read-only by default; output is evidence only and does not approve mutation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest` | Source and target are clear enough to preview candidate setup actions before mutation. | Dry-run evidence only; not copy permission, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" | It is generated guidance, not approval. |

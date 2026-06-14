@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-06
+Document version: v0.1.4
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -31,13 +31,15 @@ Claude Code should not infer missing scope from an incomplete packet. If the han
 
 ```text
 Student Idea-to-MVE or bootcamp PRD input
+  -> design-tool brief from this packet
   -> Experience design canvas
-  -> core spine review
+  -> Core Spine Gate
   -> target-user feedback when feasible
   -> Student Experience Ingestion Packet
   -> Claude Code creates one Precode bead
   -> student approves the bead
   -> coding begins
+  -> prototype demo and Experience review evidence
 ```
 
 Support engineers may help set up the local environment and scaffold in parallel. They do not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.
@@ -47,6 +49,7 @@ Support engineers may help set up the local environment and scaffold in parallel
 Before pasting this packet into Claude Code, make sure these items are filled in. If one is unknown, write `unknown` and explain what decision or evidence is missing.
 
 - [ ] Approved bootcamp PRD or PRD-like input is named or linked.
+- [ ] Design-tool brief or source notes used for the Experience artifact are included or summarized.
 - [ ] Experience design tool and artifact links, paths, screenshots, or pasted summaries are included.
 - [ ] Target user, problem, promise, and minimum value moment are written in plain language.
 - [ ] Core spine trigger, first action, key steps, and completion moment are named.
@@ -54,12 +57,13 @@ Before pasting this packet into Claude Code, make sure these items are filled in
 - [ ] First coded core-spine scope is separated from explicit not-yet scope.
 - [ ] Open questions, risks, or sensitive surfaces are named, or marked `none known`.
 - [ ] Feedback status is recorded, even if feedback is not available yet.
+- [ ] Core Spine Gate status is recorded as `met`, `needs work`, or `blocked`.
 
 Claude Code handoff rule: incomplete required fields block bead creation. Claude may ask for missing information, but it must not create a bead, update `tasks/todo.md`, activate work, or code from an incomplete packet.
 
 ## Design Canvas Input Prompt
 
-Use this before opening Claude Design, Ember UI Builder, or another AI-assisted design canvas.
+Use this after the bootcamp PRD input is approved and before opening Claude Design, Ember UI Builder, or another AI-assisted design canvas. The goal is a rough core-spine artifact, not polished screens or extra features.
 
 ```text
 Turn these idea-shaping notes and reference images into a design-tool brief.
@@ -100,6 +104,21 @@ Tell me:
 Judge usefulness and clarity first, not polish.
 ```
 
+## Core Spine Gate
+
+Complete this gate before Claude Code creates or proposes a core-spine bead. This is a lightweight readiness check, not professional UX review and not product approval.
+
+- Target user can be named in one sentence: `met | needs work | blocked`
+- Trigger and first action are visible: `met | needs work | blocked`
+- Key steps lead to the minimum value moment: `met | needs work | blocked`
+- Feedback or confidence cues are visible enough for a first coded version: `met | needs work | blocked`
+- Completion moment and return path are named: `met | needs work | blocked`
+- Not-yet scope is explicit: `met | needs work | blocked`
+
+Gate status: `met | needs work | blocked`
+
+If the Core Spine Gate is `needs work` or `blocked`, revise the Experience artifact or packet before asking Claude Code to create a bead.
+
 ## Target-User Feedback Prompt
 
 Use this before coding when a target user, customer, peer user, instructor, or domain-informed reviewer is available.
@@ -117,6 +136,8 @@ Focus on whether they understand:
 Keep the questions short enough for a 10-minute conversation.
 ```
 
+Feedback is evidence, not automatic authority. If feedback changes scope, route the change through Local Source Intake, PRD amendment, a candidate bead, or completion evidence before implementation changes.
+
 ## Packet
 
 ### Source Inputs
@@ -132,6 +153,10 @@ Idea-shaping or workbook source:
 Experience design tool used:
 
 - `Claude Design | Ember UI Builder | other:`
+
+Design-tool brief used:
+
+- 
 
 Experience artifacts:
 
@@ -257,9 +282,45 @@ What changed because of feedback:
 
 - 
 
+Feedback not used yet and why:
+
+- 
+
 Feedback still needed after coded prototype:
 
 - 
+
+### Experience Review And Demo Evidence
+
+Use this after the first coded prototype exists. Demo notes, screenshots, and feedback help decide the next safe step, but they do not accept the bead, approve a PRD, or prove validation by themselves.
+
+Prototype or demo link, recording, screenshots, or notes:
+
+- 
+
+Minimum value moment demoed:
+
+- 
+
+What worked:
+
+- 
+
+What did not work or remains uncertain:
+
+- 
+
+What changed because of prototype feedback:
+
+- 
+
+Recommended next direction:
+
+- `continue | narrow | pause | change direction`
+
+Completion evidence packet needed:
+
+- `yes | no | unknown`
 
 ## Claude Code Handoff Prompt
 
@@ -279,10 +340,12 @@ If this packet only has a bootcamp-approved PRD-like input and no formal Precode
 In the candidate bead or proposal, summarize:
 - the core scope
 - the minimum value moment
+- Core Spine Gate status
 - files likely in play
 - acceptance checks for the main workflow
 - key screen states
 - responsive behavior to verify
+- feedback gathered before coding
 - manual verification steps
 - stop conditions
 - what is explicitly not included
@@ -312,3 +375,5 @@ Report:
 ## Guardrail Reminder
 
 This packet is context for bead creation. It is not product approval, not a task list, not bead activation, and not permission to code.
+
+Target-user feedback, demo notes, and Experience review notes are evidence. They do not override approved PRDs, owner files, active beads, recorded checks, or human review decisions.

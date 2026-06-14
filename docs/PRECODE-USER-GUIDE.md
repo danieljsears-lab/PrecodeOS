@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.32
-Last updated: 2026-06-13
+Document version: v0.7.34
+Last updated: 2026-06-14
 
 
 
@@ -93,7 +93,9 @@ Follow the workbook steps:
 9. Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.
 10. Ask for the Conviction Packet / Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
 11. Bring only that packet into Precode Local Source Intake.
-12. In a bootcamp Experience Design flow, use the approved PRD input and Experience artifacts to complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates the first implementation bead.
+12. In a bootcamp Experience Design flow, use the packet's Design Canvas Input Prompt to create a focused design-tool brief from the approved PRD input, reference images, workflow examples, and not-yet boundaries.
+13. Use the approved PRD input and Experience artifacts to complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`, including the Core Spine Gate and feedback status, before Claude Code creates the first implementation bead.
+14. After the coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
 
 When you are ready, say this inside Precode:
 

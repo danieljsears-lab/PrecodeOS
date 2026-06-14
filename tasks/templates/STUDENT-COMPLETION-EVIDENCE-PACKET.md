@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-22
+Document version: v0.1.1
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -97,13 +97,28 @@ Was the prototype demoed or verified, and can the student explain what evidence 
 
 - What was demoed or verified:
 - How it was checked:
+- Minimum value moment observed:
+- Target-user or reviewer feedback:
 - What worked:
 - What did not work or remains uncertain:
+- What changed because of feedback:
 - Evidence supporting the next direction:
 
 Recommended next direction: `continue | narrow | pause | change direction`
 
 Gate status: `met | needs work | blocked`
+
+### Experience Review Notes
+
+Use this section when the project used a Student Experience Ingestion Packet or visual Experience artifacts.
+
+- Core Spine Gate status before coding: `met | needs work | blocked | not used`
+- Experience artifact or packet used:
+- Prototype demo evidence:
+- Did the demo show the minimum value moment? `yes | no | unclear`
+- Feedback still needed:
+
+These notes are evidence only. They do not accept implementation work, approve product changes, or replace the normal Precode review decision.
 
 ## Completion Snapshot
 
@@ -126,4 +141,3 @@ Student acceptance note:
 ```text
 I understand what this prototype does and does not prove. I own the product decisions, scope choices, acceptance call, and next direction described in this packet.
 ```
-

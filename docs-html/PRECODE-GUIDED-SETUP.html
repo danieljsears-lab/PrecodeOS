@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-13">
+  <meta name="generated-at" content="2026-06-14">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.7</span><span>Updated 2026-06-06</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.8</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -211,13 +211,18 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Before copying, editing, installing hooks, or changing the target project, run the read-only Bootstrap Confidence helper from the PrecodeOS package checkout:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>The helper names the package source, target project, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. By default it writes nothing.</p>
+<p>After the basic check, use the install/update manifest dry-run preview when you want the next level of setup clarity without changing the target project:</p>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --preview-manifest</code></pre>
+<p>The preview labels possible setup actions as <code>copy_candidate</code>, <code>adapt_candidate</code>, <code>preserve_existing</code>, <code>exclude</code>, <code>blocked</code>, or <code>deferred</code>. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a <code>precode</code> CLI.</p>
 <p>Use JSON when an agent or support script needs structured output:</p>
-<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --json</code></pre>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --json
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --preview-manifest --json</code></pre>
 <p>Use generated evidence only when you explicitly want source-side setup evidence:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --write-evidence</code></pre>
 <p><code>--write-evidence</code> writes only <code>logs/bootstrap-check.json</code> and <code>logs/bootstrap-check.md</code> in the PrecodeOS package source. It must not write into the target project. Bootstrap output is evidence only; it does not approve copying, overwriting, hook installation, CI changes, active-memory edits, or app-code changes.</p>
 <p>After Bootstrap Confidence confirms the source and target, choose the first adoption fork:</p>
 <ul><li>Use the fresh install path when the target is empty or nearly empty.</li><li>Use Existing Repo Intake when the target already has app code, docs, CI, product history, or active work.</li></ul>
+<p>For an existing app, treat manifest preview actions as provisional until Existing Repo Intake has run. Do not turn a preview into copy commands or owner-file edits.</p>
 <p>For an existing app, run:</p>
 <pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Existing Repo Intake is also read-only by default. It summarizes the app shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, stop conditions, and first safe next action. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, adapt owner files, approve a PRD, activate a bead, or write app code.</p>

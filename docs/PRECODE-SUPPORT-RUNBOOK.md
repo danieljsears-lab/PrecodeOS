@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-06
+Document version: v0.1.19
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -36,7 +36,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
 4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
-5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout, then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
 
@@ -406,7 +406,7 @@ Treat these inputs as evidence, not automatic implementation authority. Do not w
 
 First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
 
-Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, Experience/core-spine implications, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, feedback gathered, and affected owner files.
+Then use Local Source Intake to summarize stable facts, assumptions, conflicts or stale inputs, privacy redactions, Experience/core-spine implications, Core Spine Gate status, open questions, candidate requirements, candidate non-goals, candidate acceptance signals, feedback gathered, feedback still needed, and affected owner files.
 
 Tell me whether the next safe action is setup validation, owner-file adaptation, PRD drafting, PRD amendment, Experience/core-spine review, decomposition into one candidate core-spine bead, or a narrow unblocker.
 
@@ -418,6 +418,7 @@ For design-heavy inputs, the engineer should explicitly identify:
 - visual intent
 - target user and minimum value moment
 - core workflow spine
+- Core Spine Gate status
 - screens, states, and user flows
 - interactions, empty states, loading states, and error states
 - responsive expectations
@@ -432,21 +433,35 @@ Do not let frontend design files become implementation instructions until design
 
 Use this path when a student has an approved bootcamp PRD input and Experience artifacts from Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas.
 
+Before the student opens the design canvas, have them use the packet's Design Canvas Input Prompt to turn approved PRD input, idea-shaping notes, reference images, workflow examples, and not-yet boundaries into a short design-tool brief. The brief should focus the rough artifact on the minimum workflow that gives the target user value; it is not approval for extra screens, visual polish, or future platform scope.
+
 The student-facing output is `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.
 
 Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.
+
+Before Claude Code creates or proposes the bead, the packet should record the Core Spine Gate status and any target-user feedback gathered before coding. If the gate is blocked, stop on the missing workflow evidence instead of turning the design into implementation scope.
 
 Copyable student handoff prompt:
 
 ```text
 Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
 
-Summarize the core scope, minimum value moment, files likely in play, acceptance checks, key screen states, responsive behavior to verify, manual verification steps, stop conditions, and what is explicitly not included.
+First inspect the "Complete Before Claude Code Handoff" checklist and the packet fields.
+
+If any required field is missing, ambiguous, or marked unknown in a way that changes implementation scope, ask me for the missing information and stop. Do not create a bead yet.
+
+If this packet has a formal Precode PRD shard in tasks/prds/, you may draft one ready candidate bead file for the core spine. Do not update tasks/todo.md, activate the bead, or code.
+
+If this packet only has a bootcamp-approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
+
+Summarize the core scope, minimum value moment, Core Spine Gate status, files likely in play, acceptance checks, key screen states, responsive behavior to verify, feedback gathered before coding, manual verification steps, stop conditions, and what is explicitly not included.
 
 Preserve the approved PRD intent and Experience core spine.
 
-Do not code until I approve the bead.
+Do not code until I approve the bead through Precode.
 ```
+
+After the coded prototype exists, route demo notes, target-user feedback, and minimum-value observations into the Student Completion Evidence Packet or normal closeout evidence. Do not treat demo notes as implementation acceptance or product validation by themselves.
 
 ## Client Engagement Intake
 

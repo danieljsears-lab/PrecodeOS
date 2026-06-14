@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-06
+Document version: v0.1.9
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -214,6 +214,6 @@ Do not update authority files, approve or amend a PRD, create or activate beads,
 ```text
 Use Local Source Intake on this approved bootcamp PRD input and Student Experience Ingestion Packet.
 Treat the packet as context for bead creation, not permission to code.
-Summarize the target user, minimum value moment, core workflow spine, screens and states, reference artifacts, feedback gathered, open questions, candidate acceptance checks, affected owner files, and the next safe Precode action.
+Summarize the target user, minimum value moment, core workflow spine, Core Spine Gate status, screens and states, reference artifacts, feedback gathered, feedback still needed, open questions, candidate acceptance checks, affected owner files, and the next safe Precode action.
 If this is ready for implementation, propose one narrow core-spine bead and stop before activation or coding.
 ```

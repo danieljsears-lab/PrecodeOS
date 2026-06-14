@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-06-13
+Document version: v0.1.25
+Last updated: 2026-06-14
 
 ## Start Here: You Are Not Just Prompting
 
@@ -190,8 +190,10 @@ idea or notes
   -> Product Brief after at most three high-level questions
   -> guided research/challenge
   -> Conviction Packet / Precode Ingestion Packet
+  -> Design Canvas Input Prompt for a focused design-tool brief
   -> Experience design canvas for bootcamp visual core-spine work
   -> Student Experience Ingestion Packet for Claude Code handoff
+  -> Core Spine Gate and target-user feedback when feasible
   -> Candidate Goal Frame when durable intent needs orientation
   -> Product Discovery Validation when worth-building is uncertain
   -> Local Source Intake and reaffirmation
@@ -204,6 +206,7 @@ idea or notes
   -> active bead
   -> implementation
   -> recorded checks
+  -> Experience review / demo evidence when a prototype is shown
   -> review decision
   -> deployment or next bead
   -> diary and reviewed memory
@@ -215,7 +218,9 @@ idea or notes
 | Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
 | Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question." |
 | Conviction Packet / Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review, including strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. | "Treat this as evidence, not authority." |
-| Student Experience Ingestion Packet | A bootcamp handoff packet combining the approved PRD input and Experience artifacts before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
+| Design Canvas Input Prompt | A short prompt inside the Student Experience Ingestion Packet that turns approved product input, references, workflow examples, and not-yet boundaries into a design-tool brief. | "Focus the design canvas on the minimum workflow that gives the target user value." |
+| Student Experience Ingestion Packet | A bootcamp handoff packet combining the approved PRD input, Experience artifacts, Core Spine Gate, feedback status, and not-yet boundaries before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
+| Experience review / demo evidence | A lightweight post-prototype record of what was demoed, whether the minimum value moment worked, what feedback changed, and what remains uncertain. | "Treat this as evidence for the next decision, not automatic acceptance." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
 | Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |
