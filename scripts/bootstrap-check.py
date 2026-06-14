@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.2.0
+# Version: v0.3.0
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -106,6 +106,14 @@ STOP_CONDITIONS = [
 ACTION_CATEGORIES = [
     "copy_candidate",
     "adapt_candidate",
+    "preserve_existing",
+    "exclude",
+    "blocked",
+    "deferred",
+]
+SETUP_PLAN_CATEGORIES = [
+    "review_copy_candidate",
+    "review_adaptation_candidate",
     "preserve_existing",
     "exclude",
     "blocked",
@@ -352,6 +360,141 @@ def build_manifest_preview(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def setup_plan_action(
+    action_id: str,
+    category: str,
+    path: str,
+    reason: str,
+    requires_user_approval: bool = True,
+    group: str | None = None,
+) -> dict[str, Any]:
+    action: dict[str, Any] = {
+        "id": action_id,
+        "category": category,
+        "path": path,
+        "reason": reason,
+        "requires_user_approval": requires_user_approval,
+    }
+    if group:
+        action["group"] = group
+    return action
+
+
+def validation_steps_for_plan(kind: str) -> list[str]:
+    if kind in {"empty", "nearly_empty"}:
+        return [
+            "After approved manual setup, inspect target git status.",
+            "After Precode files exist in the target, run `bash scripts/validate-memory.sh` from the target.",
+            "When package files are present, run `python3 scripts/file-inventory.py --check` from the target.",
+            "Run target-specific project checks only after owner files name them.",
+        ]
+    if kind == "existing_project":
+        return [
+            "Run `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` before copying or adapting Precode files.",
+            "Review conflicts, owner-file gaps, likely checks, sensitive surfaces, and stop conditions before proposing setup mutation.",
+        ]
+    if kind == "existing_precode":
+        return [
+            "Run `bash scripts/validate-memory.sh` in the target before deciding whether this is setup, repair, or update work.",
+            "Use troubleshooting or recovery guidance if active memory is invalid.",
+        ]
+    return [
+        "Resolve blockers before setup planning continues.",
+    ]
+
+
+def build_supervised_setup_plan(payload: dict[str, Any]) -> dict[str, Any]:
+    kind = str(payload["target_kind"])
+    preview = payload.get("install_update_preview") or build_manifest_preview(payload)
+    blockers = list(payload["blockers"])
+    actions: list[dict[str, Any]] = []
+    action_index = 1
+
+    if kind == "existing_project":
+        blockers.append("existing projects must run Existing Repo Intake before setup actions become actionable")
+    if kind == "existing_precode":
+        blockers.append("target already appears to contain Precode active memory; validate before setup, repair, or update decisions")
+
+    for preview_item in preview["actions"]:
+        category = str(preview_item["category"])
+        path = str(preview_item["path"])
+        group = preview_item.get("group")
+        reason = str(preview_item["reason"])
+
+        plan_category = {
+            "copy_candidate": "review_copy_candidate",
+            "adapt_candidate": "review_adaptation_candidate",
+            "preserve_existing": "preserve_existing",
+            "exclude": "exclude",
+            "blocked": "blocked",
+            "deferred": "deferred",
+        }[category]
+
+        if kind == "existing_project" and plan_category in {"review_copy_candidate", "review_adaptation_candidate"}:
+            plan_category = "deferred"
+            reason = "existing projects must run Existing Repo Intake and conflict review before this setup action becomes actionable"
+
+        if kind == "existing_precode" and plan_category in {"review_copy_candidate", "review_adaptation_candidate"}:
+            plan_category = "preserve_existing"
+            reason = "existing Precode material should be preserved until memory validation determines setup, repair, or update scope"
+
+        action_id = f"SP-{action_index:03d}"
+        action_index += 1
+        actions.append(
+            setup_plan_action(
+                action_id=action_id,
+                category=plan_category,
+                path=path,
+                reason=reason,
+                requires_user_approval=plan_category not in {"exclude", "blocked", "deferred"},
+                group=str(group) if group else None,
+            )
+        )
+
+    approval_gates = [
+        "User confirms the PrecodeOS package source and target project folder.",
+        "User reviews excluded paths and secret boundaries.",
+        "User approves each file group before any manual copying.",
+        "User approves each owner-file adaptation before editing.",
+        "Git hooks and CI changes require separate explicit approval and remain deferred in this slice.",
+        "Active memory is validated before first implementation work.",
+    ]
+    if kind == "existing_project":
+        approval_gates.insert(2, "Existing Repo Intake runs and conflicts are reviewed before copy or adaptation is proposed.")
+    if kind == "existing_precode":
+        approval_gates.insert(2, "Target memory validation runs before setup, repair, or update is chosen.")
+
+    return {
+        "plan_kind": "supervised_setup_plan",
+        "status": "blocked" if blockers else payload["status"],
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "actions": actions,
+        "approval_gates": approval_gates,
+        "excluded_paths": payload["excluded_paths"],
+        "blockers": blockers,
+        "validation_steps": validation_steps_for_plan(kind),
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "copying files",
+            "overwriting target material",
+            "owner-file adaptation",
+            "installing hooks",
+            "changing CI",
+            "editing active memory",
+            "running app commands",
+            "writing app code",
+            "release channels",
+            "package-manager updates",
+            "rollback automation",
+            "installable precode CLI",
+        ],
+        "next_manual_gate": "User must approve a separate manual setup action before any target mutation.",
+    }
+
+
 def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     source = resolve_candidate(source_raw)
     target = resolve_candidate(target_raw)
@@ -467,12 +610,47 @@ def render_preview_plain(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_setup_plan_plain(payload: dict[str, Any]) -> str:
+    plan = payload["supervised_setup_plan"]
+    lines = [
+        render_preview_plain(payload),
+        "\nSupervised Setup Plan:",
+        f"- Plan kind: `{plan['plan_kind']}`",
+        f"- Plan status: `{plan['status']}`",
+        "- Target mutation allowed: no",
+        "- Generated evidence only: yes",
+        "- This plan is not an installer, update command, release channel, package-manager operation, rollback plan, CLI contract, copy approval, or edit approval.",
+        f"- Next manual gate: {plan['next_manual_gate']}",
+    ]
+    if plan["blockers"]:
+        lines.append("\nSetup-plan blockers:")
+        lines.extend(f"- {item}" for item in plan["blockers"])
+    lines.append("\nApproval gates:")
+    lines.extend(f"- {item}" for item in plan["approval_gates"])
+    lines.append("\nSetup-plan actions:")
+    for action in plan["actions"]:
+        group = f" ({action['group']})" if "group" in action else ""
+        approval = "approval required" if action["requires_user_approval"] else "not actionable"
+        lines.append(f"- {action['id']} {action['category']}: `{action['path']}`{group} -- {action['reason']} [{approval}]")
+    lines.append("\nValidation steps:")
+    lines.extend(f"- {item}" for item in plan["validation_steps"])
+    lines.append(
+        "\nSetup-plan warning: this checklist is evidence only; it does not approve copying, overwriting, owner-file edits, hooks, CI, active-memory edits, app commands, or app-code edits."
+    )
+    return "\n".join(lines)
+
+
 def write_evidence(payload: dict[str, Any]) -> None:
     source = Path(str(payload["source_root"]))
     logs = source / "logs"
     logs.mkdir(parents=True, exist_ok=True)
     (logs / "bootstrap-check.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    renderer = render_preview_plain if "install_update_preview" in payload else render_plain
+    if "supervised_setup_plan" in payload:
+        renderer = render_setup_plan_plain
+    elif "install_update_preview" in payload:
+        renderer = render_preview_plain
+    else:
+        renderer = render_plain
     (logs / "bootstrap-check.md").write_text(renderer(payload) + "\n", encoding="utf-8")
 
 
@@ -511,50 +689,84 @@ def self_test() -> int:
         (nearly_empty_target / "README.md").write_text("Existing README\n", encoding="utf-8")
         nearly_empty_payload = build_payload(source.as_posix(), nearly_empty_target.as_posix())
         nearly_empty_payload["install_update_preview"] = build_manifest_preview(nearly_empty_payload)
+        nearly_empty_payload["supervised_setup_plan"] = build_supervised_setup_plan(nearly_empty_payload)
         assert nearly_empty_payload["target_kind"] == "nearly_empty"
         assert any(
             action["category"] == "adapt_candidate" and action["path"] == "README.md"
             for action in nearly_empty_payload["install_update_preview"]["actions"]
         )
+        assert any(
+            action["category"] == "review_adaptation_candidate" and action["path"] == "README.md"
+            for action in nearly_empty_payload["supervised_setup_plan"]["actions"]
+        )
 
         existing_payload["install_update_preview"] = build_manifest_preview(existing_payload)
+        existing_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_payload)
         assert any(
             action["category"] == "deferred" and action["path"] == "scripts/existing-repo-intake.py"
             for action in existing_payload["install_update_preview"]["actions"]
+        )
+        assert existing_payload["supervised_setup_plan"]["status"] == "blocked"
+        assert any(
+            "Existing Repo Intake" in blocker for blocker in existing_payload["supervised_setup_plan"]["blockers"]
+        )
+        assert not any(
+            action["category"] in {"review_copy_candidate", "review_adaptation_candidate"}
+            for action in existing_payload["supervised_setup_plan"]["actions"]
         )
 
         missing_source_payload = build_payload((base / "missing-source").as_posix(), empty_target.as_posix())
         assert missing_source_payload["status"] == "blocked"
         assert "source path does not exist or is not a directory" in missing_source_payload["blockers"]
         missing_source_payload["install_update_preview"] = build_manifest_preview(missing_source_payload)
+        missing_source_payload["supervised_setup_plan"] = build_supervised_setup_plan(missing_source_payload)
         assert any(action["category"] == "blocked" for action in missing_source_payload["install_update_preview"]["actions"])
+        assert any(action["category"] == "blocked" for action in missing_source_payload["supervised_setup_plan"]["actions"])
 
         missing_target_payload = build_payload(source.as_posix(), (base / "missing-target").as_posix())
         assert missing_target_payload["target_kind"] == "missing"
         assert missing_target_payload["status"] == "blocked"
         missing_target_payload["install_update_preview"] = build_manifest_preview(missing_target_payload)
+        missing_target_payload["supervised_setup_plan"] = build_supervised_setup_plan(missing_target_payload)
         assert any(action["path"] == "<target-project-root>" for action in missing_target_payload["install_update_preview"]["actions"])
+        assert any(action["path"] == "<target-project-root>" for action in missing_target_payload["supervised_setup_plan"]["actions"])
 
         same_payload = build_payload(source.as_posix(), source.as_posix())
         assert same_payload["target_kind"] == "same_as_source"
         assert same_payload["status"] == "blocked"
         same_payload["install_update_preview"] = build_manifest_preview(same_payload)
+        same_payload["supervised_setup_plan"] = build_supervised_setup_plan(same_payload)
         assert any(action["category"] == "blocked" for action in same_payload["install_update_preview"]["actions"])
+        assert any(action["category"] == "blocked" for action in same_payload["supervised_setup_plan"]["actions"])
 
         existing_precode_target = base / "existing-precode-target"
         make_source(existing_precode_target)
         existing_precode_payload = build_payload(source.as_posix(), existing_precode_target.as_posix())
         existing_precode_payload["install_update_preview"] = build_manifest_preview(existing_precode_payload)
+        existing_precode_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_precode_payload)
         assert existing_precode_payload["target_kind"] == "existing_precode"
         assert any(
             action["category"] == "preserve_existing"
             for action in existing_precode_payload["install_update_preview"]["actions"]
         )
+        assert existing_precode_payload["supervised_setup_plan"]["status"] == "blocked"
+        assert any(
+            action["category"] == "preserve_existing"
+            for action in existing_precode_payload["supervised_setup_plan"]["actions"]
+        )
 
         empty_payload["install_update_preview"] = build_manifest_preview(empty_payload)
+        empty_payload["supervised_setup_plan"] = build_supervised_setup_plan(empty_payload)
         assert any(
             action["category"] == "copy_candidate" for action in empty_payload["install_update_preview"]["actions"]
         )
+        assert any(
+            action["category"] == "review_copy_candidate" for action in empty_payload["supervised_setup_plan"]["actions"]
+        )
+        assert empty_payload["supervised_setup_plan"]["target_mutation_allowed"] is False
+        rendered_setup_plan = render_setup_plan_plain(empty_payload)
+        assert "evidence only" in rendered_setup_plan
+        assert "does not approve copying" in rendered_setup_plan
         json.dumps(empty_payload, sort_keys=True)
 
         write_evidence(empty_payload)
@@ -563,6 +775,7 @@ def self_test() -> int:
         assert "Install/Update Manifest Dry-Run Preview" in (source / "logs" / "bootstrap-check.md").read_text(
             encoding="utf-8"
         )
+        assert "Supervised Setup Plan" in (source / "logs" / "bootstrap-check.md").read_text(encoding="utf-8")
         assert not (empty_target / "logs").exists()
 
     print(json.dumps({"tool": "bootstrap-check-self-test", "status": "pass"}, indent=2, sort_keys=True))
@@ -579,6 +792,11 @@ def main() -> int:
         action="store_true",
         help="include non-mutating install/update manifest dry-run preview output",
     )
+    parser.add_argument(
+        "--supervised-setup-plan",
+        action="store_true",
+        help="include non-mutating supervised setup-plan output; implies --preview-manifest",
+    )
     parser.add_argument("--write-evidence", action="store_true", help="write generated evidence under the source logs directory")
     parser.add_argument("--self-test", action="store_true", help="run fixture-style bootstrap confidence checks")
     args = parser.parse_args()
@@ -590,8 +808,10 @@ def main() -> int:
         parser.error("--source and --target are required unless --self-test is used")
 
     payload = build_payload(args.source, args.target)
-    if args.preview_manifest:
+    if args.preview_manifest or args.supervised_setup_plan:
         payload["install_update_preview"] = build_manifest_preview(payload)
+    if args.supervised_setup_plan:
+        payload["supervised_setup_plan"] = build_supervised_setup_plan(payload)
     if args.write_evidence:
         if payload["source_root"] == payload["target_root"]:
             raise SystemExit("bootstrap-check: refusing to write evidence when source and target are the same")
@@ -601,7 +821,12 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
-        print(render_preview_plain(payload) if args.preview_manifest else render_plain(payload))
+        if args.supervised_setup_plan:
+            print(render_setup_plan_plain(payload))
+        elif args.preview_manifest:
+            print(render_preview_plain(payload))
+        else:
+            print(render_plain(payload))
         if args.write_evidence:
             print("bootstrap-check: wrote logs/bootstrap-check.json and logs/bootstrap-check.md in the source workspace")
     return 0

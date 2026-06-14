@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.17
+Document version: v0.2.18
 Last updated: 2026-06-14
 
 ## Purpose
@@ -131,7 +131,7 @@ scripts/os_compiler.py
 
 Generated sidecars summarize current state but do not replace source files.
 
-Bootstrap Confidence is separate from compiled current-state sidecars because it compares a PrecodeOS package source with an adoption target before the target is necessarily a valid Precode repo. Existing Repo Intake is the next first-fork branch for targets that already have app code, docs, CI, product history, or active work.
+Bootstrap Confidence is separate from compiled current-state sidecars because it compares a PrecodeOS package source with an adoption target before the target is necessarily a valid Precode repo. Existing Repo Intake is the next first-fork branch for targets that already have app code, docs, CI, product history, or active work. The supervised setup plan is the final non-mutating checklist layer after manifest preview and before any user-approved manual setup action.
 
 ### Adapters To Shared Commands
 
@@ -198,6 +198,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md` | reference | Read-only first-run confidence workflow for inspecting a PrecodeOS package source and target project before setup mutation. | Used before guided setup or support-assisted adoption; governs `scripts/bootstrap-check.py`, source/target identity, public file groups, exclusions, conflicts, and first safe next action. |
 | `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` | reference | Read-only existing-repository intake workflow for the existing-app branch at the first PrecodeOS adoption fork. | Used after Bootstrap Confidence when the target already has app code, docs, CI, product history, or active work; governs `scripts/existing-repo-intake.py`, repo-shape evidence, likely checks as future hints, owner-file gaps, conflicts, and mutation stop conditions. |
 | `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md` | reference | Non-mutating install/update manifest and dry-run preview workflow for explaining candidate setup actions before target-project mutation. | Used after Bootstrap Confidence and before any supervised setup mutation; governs `bootstrap-check.py --preview-manifest`, preview action categories, generated-evidence boundaries, and deferred installer/update semantics. |
+| `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md` | reference | Non-mutating supervised setup-plan workflow for turning Bootstrap Confidence and manifest preview evidence into a visible setup checklist before target-project mutation. | Used after manifest preview and before any manual setup action; governs `bootstrap-check.py --supervised-setup-plan`, action IDs, approval gates, exclusions, blockers, validation steps, and evidence-only boundaries. |
 | `tasks/reference/AGENT-ROUTING-PROTOCOL.md` | reference | Cross-agent model tier selection, context-budget discipline, delegation boundaries, and tool-routing preferences. | Shared policy for adapters and context engineering; provider-specific controls stay in `adapters/*.md`. |
 | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` | reference | Skill playbook strategy, implemented prompt playbooks, Ask Precode Docs Skill guidance, Product Conviction Packet Skill guidance, v1 skill candidates, prompt-playbook boundaries, manifest contract, hidden-authority guardrails, candidate backlog, and alternatives. | Owns the implemented Ask Precode Docs Skill, Workflow Selection Skill, and future skill-style prompt playbook review; keeps skills read-only, evidence-only, and subordinate to owner protocols. |
 | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | reference | Journey bead slicing, vertical slice guidance, dependencies, AFK-candidate language, and not-a-bead-yet criteria. | Used before activating candidate beads. |
@@ -241,7 +242,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/clarity-scenario-check.py` | Runs deterministic beginner-decision fixtures. | In-memory bead scenarios, adaptive-depth scenarios, and command-risk examples. | Advisory JSON pass/fail result; exits nonzero if expected decisions regress. |
 | `scripts/local-hygiene-check.py` | Prints advisory Local Hygiene findings. | Compiled local hygiene state. | JSON to stdout; no cleanup mutation. |
 | `scripts/local-hygiene-dry-run.py` | Previews future archive/delete actions without performing them. | Compiled local hygiene state. | `logs/local-hygiene-preview.json`, `logs/local-hygiene-preview.md`, and stdout. |
-| `scripts/bootstrap-check.py` | Prints read-only Bootstrap Confidence findings and optional install/update manifest dry-run preview for a PrecodeOS package source and target project. | `--source`, `--target`, optional `--json`, optional `--preview-manifest`, optional `--write-evidence`. | Plain stdout or JSON by default; `--preview-manifest` adds non-mutating setup action categories; explicit `--write-evidence` writes `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the source workspace only. |
+| `scripts/bootstrap-check.py` | Prints read-only Bootstrap Confidence findings, optional install/update manifest dry-run preview, and optional supervised setup plan for a PrecodeOS package source and target project. | `--source`, `--target`, optional `--json`, optional `--preview-manifest`, optional `--supervised-setup-plan`, optional `--write-evidence`. | Plain stdout or JSON by default; `--preview-manifest` adds non-mutating setup action categories; `--supervised-setup-plan` adds action IDs, approval gates, blockers, and validation steps; explicit `--write-evidence` writes `logs/bootstrap-check.json` and `logs/bootstrap-check.md` in the source workspace only. |
 | `scripts/existing-repo-intake.py` | Prints read-only Existing Repo Intake findings for a PrecodeOS package source and an existing target repository. | `--source`, `--target`, optional `--json`, optional `--write-evidence`, optional `--self-test`. | Plain stdout or JSON by default; explicit `--write-evidence` writes `logs/existing-repo-intake.json` and `logs/existing-repo-intake.md` in the source workspace only. |
 | `scripts/public-repo-check.py` | Checks public repository hygiene against git ignore rules. | `.gitignore` and git-tracked/untracked paths. | Advisory JSON for tracked ignored files and untracked public candidates; no state mutation. |
 | `scripts/validate-memory.sh` | Validates core Precode document invariants. | Required docs, todo, beads. | Pass/fail validation output. |
@@ -317,7 +318,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/learning-diary.md/jsonl` | generated report | Session learning digest and entries. | Not active memory. |
 | `logs/memory-index.md/json` | generated report | Reviewed memory card index. | Search aid only. |
 | `logs/file-inventory.json` | generated sidecar | Generated inventory metadata. | Maintenance aid only. |
-| `logs/bootstrap-check.json` and `logs/bootstrap-check.md` | generated sidecar/report | Optional Bootstrap Confidence and manifest-preview evidence written only when `scripts/bootstrap-check.py --write-evidence` is used. | Evidence only; not setup approval, install permission, update permission, release-channel metadata, package-manager behavior, rollback automation, target-project authority, or active memory. |
+| `logs/bootstrap-check.json` and `logs/bootstrap-check.md` | generated sidecar/report | Optional Bootstrap Confidence, manifest-preview, and supervised setup-plan evidence written only when `scripts/bootstrap-check.py --write-evidence` is used. | Evidence only; not setup approval, install permission, update permission, owner-file adaptation approval, release-channel metadata, package-manager behavior, rollback automation, target-project authority, or active memory. |
 | `logs/existing-repo-intake.json` and `logs/existing-repo-intake.md` | generated sidecar/report | Optional Existing Repo Intake evidence written only when `scripts/existing-repo-intake.py --write-evidence` is used. | Evidence only; not owner-file adaptation, check execution, setup approval, PRD approval, bead activation, target-project authority, or active memory. |
 | `logs/pattern-guidance.json` | generated sidecar | System design pattern guidance. | Advisory only. |
 | `logs/scheduled-audit.md/json` | generated report | Scheduled audit summary. | Evidence only. |

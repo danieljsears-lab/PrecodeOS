@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.3
 Last updated: 2026-06-14
 
 ## Purpose
@@ -37,6 +37,7 @@ Optional modes:
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --json
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
 ```
 
@@ -45,6 +46,8 @@ Default mode prints a plain-English report and writes nothing.
 `--json` prints machine-readable output and writes nothing.
 
 `--preview-manifest` adds a non-mutating install/update dry-run preview with candidate setup action categories. It still writes nothing by default and does not approve setup mutation.
+
+`--supervised-setup-plan` adds the manifest preview plus a non-mutating setup checklist with action IDs, approval gates, exclusions, blockers, and validation steps. It still writes nothing by default and does not approve setup mutation.
 
 `--write-evidence` writes generated evidence only under the source Precode workspace:
 
@@ -73,6 +76,8 @@ Bootstrap Confidence output should include:
 Plain output should also remind the user that the result is generated evidence only and does not approve mutation.
 
 When `--preview-manifest` is used, output should also include an `install_update_preview` object with action categories and a next setup gate. The preview is governed by `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md`.
+
+When `--supervised-setup-plan` is used, output should also include a `supervised_setup_plan` object. The setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`.
 
 ## Target Kinds
 
@@ -141,6 +146,7 @@ Use plain recommendations:
 - It must not read or print secret file contents.
 - It must not treat a thin manifest as update, channel, package-manager, or release metadata.
 - It must not treat manifest preview output as copy, update, or install approval.
+- It must not treat supervised setup-plan output as copy, update, install, or owner-file adaptation approval.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
 
 ## Builder Prompt
@@ -159,4 +165,12 @@ To see the next non-mutating setup preview, ask:
 Add the install/update manifest dry-run preview.
 Show candidate copy, adaptation, preserve, exclusion, blocked, and deferred actions.
 Do not copy, edit, install hooks, change CI, create active memory, run app commands, or write app code.
+```
+
+To see the next non-mutating setup checklist, ask:
+
+```text
+Add the supervised setup plan.
+Show action IDs, approval gates, exclusions, blockers, and validation steps.
+Do not copy, edit, install hooks, change CI, create active memory, run app commands, adapt owner files, or write app code.
 ```

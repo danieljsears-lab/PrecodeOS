@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
+Document version: v0.1.9
 Last updated: 2026-06-14
 
 ## What This Guide Is For
@@ -66,11 +66,20 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a `precode` CLI.
 
+After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+```
+
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a `precode` CLI.
+
 Use JSON when an agent or support script needs structured output:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --json
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest --json
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --json
 ```
 
 Use generated evidence only when you explicitly want source-side setup evidence:
@@ -86,7 +95,7 @@ After Bootstrap Confidence confirms the source and target, choose the first adop
 - Use the fresh install path when the target is empty or nearly empty.
 - Use Existing Repo Intake when the target already has app code, docs, CI, product history, or active work.
 
-For an existing app, treat manifest preview actions as provisional until Existing Repo Intake has run. Do not turn a preview into copy commands or owner-file edits.
+For an existing app, treat manifest preview and supervised setup-plan actions as provisional until Existing Repo Intake has run. Do not turn generated setup evidence into copy commands or owner-file edits.
 
 For an existing app, run:
 

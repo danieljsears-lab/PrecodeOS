@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-06-14
 
 ## Purpose
@@ -36,7 +36,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
 4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
-5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Use `--supervised-setup-plan` when the user needs action IDs, approval gates, exclusions, blockers, and validation steps before manual setup work. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
 
@@ -187,6 +187,14 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 Stop if the source package and target project are unclear. Mixing them up is the easiest first-time failure.
 
 Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.
+
+When the user needs the next setup checklist before approving manual work, run:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+```
+
+The supervised setup plan includes the manifest preview, action IDs, approval gates, exclusions, blockers, and validation steps. It is generated evidence only, not permission to copy, adapt owner files, overwrite target material, install hooks, change CI, edit active memory, run app commands, or write app code.
 
 After Bootstrap Confidence, choose the first adoption fork:
 

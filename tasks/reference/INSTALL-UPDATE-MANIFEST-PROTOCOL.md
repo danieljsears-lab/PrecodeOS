@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-14
 
 ## Purpose
@@ -50,6 +50,14 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 - `logs/bootstrap-check.md`
 
 The helper must not write to the target project.
+
+After preview, use the supervised setup plan when the user needs a checklist before approving any manual setup work:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+```
+
+The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, or app-code edits.
 
 ## Required Preview Shape
 
@@ -110,6 +118,10 @@ Each action should include:
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
+
+## Next Setup Layer
+
+The next non-mutating layer is the supervised setup plan. It converts preview categories into action IDs, approval gates, exclusions, blockers, and validation steps without making any action executable or approved.
 
 ## Builder Prompt
 

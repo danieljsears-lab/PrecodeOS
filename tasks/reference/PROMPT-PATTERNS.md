@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-13
+Document version: v0.1.19
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -40,6 +40,16 @@ Use the PrecodeOS checkout as the package source and my existing app repo as the
 Do not copy, edit, install hooks, change CI, run app commands, adapt owner files, approve a PRD, activate a bead, or write code.
 Tell me the repo topology, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, first safe next action, and stop conditions.
 Treat the output as evidence only, not permission to mutate.
+```
+
+### Supervised Setup Plan
+
+```text
+Run the PrecodeOS supervised setup plan after Bootstrap Confidence and manifest preview.
+Use the PrecodeOS checkout as the package source and my project folder as the target.
+Do not copy, edit, install hooks, change CI, run app commands, create active memory, adapt owner files, approve a PRD, activate a bead, or write code.
+Show the setup checklist, approval gates, exclusions, blockers, and validation steps.
+Treat the setup plan as evidence only, not permission to mutate.
 ```
 
 ### One Question At A Time
