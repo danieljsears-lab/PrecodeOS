@@ -137,6 +137,8 @@ For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SE
 
 Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html).
 
+For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical.
+
 For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
 Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
@@ -195,7 +197,7 @@ python3 scripts/ralph-loop.py --dry-run
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
 | User docs | `docs/*.md` |
 | Project truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, root owner files |
-| Work units | `tasks/prds/`, `tasks/beads/`, `tasks/templates/` |
+| Work units | `tasks/prds/`, `tasks/prds-html/`, `tasks/beads/`, `tasks/templates/` |
 | Protocols | `tasks/reference/`, including skill playbooks |
 | Raw project evidence | `project-evidence/` |
 | Agent surfaces | `modes/`, `adapters/`, shims, skill playbooks |
@@ -295,8 +297,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.38
-Last updated: 2026-06-13
+Document version: v0.1.39
+Last updated: 2026-06-14
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.
