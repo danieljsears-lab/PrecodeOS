@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-008 -- Hybrid Spec Format v2 / Interactive Spec Cockpit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-008 -- Hybrid Spec Format v2 / Interactive Spec Cockpit</h1>
+  <p class="muted">Static HTML generated from <code>PRD-008-hybrid-spec-interactive-cockpit.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-008-hybrid-spec-interactive-cockpit.md#prd-008-hybrid-spec-interactive-cockpit">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Hybrid Spec Format v2 / Interactive Spec Cockpit</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the static PRD HTML cockpit enhancement that exports proposed Acceptance Oracle Matrix Markdown.</p>
+    <p><strong>Not authority:</strong> Active memory, PRD approval, task selection, bead activation, generated evidence truth, implementation acceptance, direct Markdown write-back, automatic source promotion, browser storage, external mutation, package-manager behavior, or CLI wrapper behavior.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future v2+ surface export a generated diff instead of a replacement block?</td><td>Follow-up cockpit scope</td><td>no</td></tr><tr><td>Should Requirements or Open Questions become separate export-only editors after this proves useful?</td><td>Follow-up cockpit scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-008-FR01</code></td><td>Add an export-only Acceptance Oracle Matrix cockpit to generated PRD pages.</td><td>P0</td><td>Only when the section has a parseable Markdown table.</td></tr><tr><td><code>PRD-008-FR02</code></td><td>Allow browser editing of Acceptance Oracle Matrix cell text.</td><td>P0</td><td>Local page state only; no persistence.</td></tr><tr><td><code>PRD-008-FR03</code></td><td>Export a copyable Markdown replacement block for <code>## Acceptance Oracle Matrix</code>.</td><td>P0</td><td>Manual application required.</td></tr><tr><td><code>PRD-008-FR04</code></td><td>Preserve existing <code>scripts/prd-html.py</code> generate and <code>--check</code> interfaces.</td><td>P0</td><td>No new required command.</td></tr><tr><td><code>PRD-008-FR05</code></td><td>Keep Requirements, Open Questions, approval state, PRD status, and bead proposals read-only.</td><td>P0</td><td>First v2 slice stays narrow.</td></tr><tr><td><code>PRD-008-FR06</code></td><td>Update public protocol, schema, inventory, README, changelog, roadmap, journal, and generated HTML surfaces.</td><td>P0</td><td>Markdown remains canonical.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-008-hybrid-spec-interactive-cockpit.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-008-hybrid-spec-interactive-cockpit.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-008-FR01`</textarea></td><td><textarea data-cockpit-cell>Generated PRD pages with an Acceptance Oracle Matrix show an export-only cockpit.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/prd-html.py --check` after regeneration</textarea></td><td><textarea data-cockpit-cell>Inspect one generated PRD page and confirm the cockpit appears near review cues.</textarea></td><td><textarea data-cockpit-cell>Existing PRD shard with an Acceptance Oracle Matrix</textarea></td><td><textarea data-cockpit-cell>generated PRD HTML</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-008-FR03`</textarea></td><td><textarea data-cockpit-cell>The cockpit exports a Markdown block headed `## Acceptance Oracle Matrix`.</textarea></td><td><textarea data-cockpit-cell>static generated output comparison</textarea></td><td><textarea data-cockpit-cell>Edit a cell locally, export, and confirm the block is copyable and labeled as a proposal.</textarea></td><td><textarea data-cockpit-cell>Browser with local generated HTML page</textarea></td><td><textarea data-cockpit-cell>manual boundary review</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-008-FR05`</textarea></td><td><textarea data-cockpit-cell>No other PRD state or planning surface becomes editable.</textarea></td><td><textarea data-cockpit-cell>source inspection</textarea></td><td><textarea data-cockpit-cell>Confirm Requirements, Open Questions, approval, status, and bead proposal surfaces remain read-only.</textarea></td><td><textarea data-cockpit-cell>Generated PRD page</textarea></td><td><textarea data-cockpit-cell>manual boundary review</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-008-hybrid-spec-interactive-cockpit">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-008-hybrid-spec-interactive-cockpit" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-008-FR01` | Generated PRD pages with an Acceptance Oracle Matrix show an export-only cockpit. | `python3 scripts/prd-html.py --check` after regeneration | Inspect one generated PRD page and confirm the cockpit appears near review cues. | Existing PRD shard with an Acceptance Oracle Matrix | generated PRD HTML |
+| `PRD-008-FR03` | The cockpit exports a Markdown block headed `## Acceptance Oracle Matrix`. | static generated output comparison | Edit a cell locally, export, and confirm the block is copyable and labeled as a proposal. | Browser with local generated HTML page | manual boundary review |
+| `PRD-008-FR05` | No other PRD state or planning surface becomes editable. | source inspection | Confirm Requirements, Open Questions, approval, status, and bead proposal surfaces remain read-only. | Generated PRD page | manual boundary review |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before editing canonical Markdown, approving a PRD, changing PRD status, compiling <code>FEATURES.md</code>, creating or activating beads, accepting implementation, or promoting exported text into authority.</li><li>Stop if generated HTML is treated as source truth, exported Markdown is treated as approval, a reviewer asks for direct write-back, or cockpit output is used to start implementation without canonical Markdown review.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Browser storage: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-008-hybrid-spec-interactive-cockpit.md</code></li><li>Secondary reference files:</li><li><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/prd-html.py</code></li><li><code>tasks/prds-html/</code></li><li><code>tasks/prds/*.md</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>external systems</li><li>generated evidence except generated PRD/docs/roadmap HTML</li><li>Required checks:</li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Open or inspect one generated PRD page with an Acceptance Oracle Matrix. Confirm the cockpit labels exported Markdown as a proposal, requires manual source editing, and never offers approval, write-back, task activation, or bead activation.</li><li>Forbidden assumptions:</li><li>Exported Markdown is source truth.</li><li>Generated PRD HTML approves PRD changes.</li><li>The cockpit writes source files.</li><li>V2 includes broad spec editing or implementation matching.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B008-hybrid-spec-interactive-cockpit</code></td><td><code>PRD-008-FR01</code> through <code>PRD-008-FR06</code>, <code>PRD-008-UX01</code> through <code>PRD-008-UX03</code></td><td>PRD shard, generator cockpit, generated PRD HTML, public docs, inventory, changelog, roadmap history, generated docs HTML, and generated roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-008-hybrid-spec-interactive-cockpit.md</code></td><td><code>scripts/prd-html.py --check</code> plus package validation and manual cockpit boundary review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-008-hybrid-spec-format-v2-interactive-spec-cockpit">PRD-008 -- Hybrid Spec Format v2 / Interactive Spec Cockpit</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-008</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Hybrid Spec Format v2 / Interactive Spec Cockpit</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-007</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped PRD HTML v1</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Hybrid Spec Format v2 / Interactive Spec Cockpit</code></li><li><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></li><li><code>scripts/prd-html.py</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li>Stable facts:</li><li>PRD Markdown shards in <code>tasks/prds/*.md</code> remain canonical.</li><li>Static generated PRD HTML already improves review scanability without becoming authority.</li><li>V2 must preserve manual promotion back into Markdown and avoid browser write-back.</li><li>Assumptions:</li><li>The first safe cockpit surface is the <code>Acceptance Oracle Matrix</code>.</li><li>Exporting a copyable Markdown replacement block is enough for the first v2 slice.</li><li>Inline JavaScript is acceptable for local browser interaction when the page remains readable without it.</li><li>Conflicts or stale inputs:</li><li>Earlier v2 language suggested broad micro-editors, visual design intent, and intent-matching hooks. This slice deliberately narrows v2 to one export-only matrix editor.</li><li>Privacy or secrets redactions:</li><li>PRDs should not contain secrets. The cockpit must not add network calls, browser storage, or external export behavior.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Acceptance oracles are one of the hardest PRD sections for non-technical builders to review because each requirement needs expected behavior, automated proof, manual proof, fixture needs, and evidence location.</p>
+<p>Static HTML makes the matrix easier to read, but a reviewer still has to edit Markdown tables by hand when an acceptance check is missing, confusing, or too technical.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A reviewer notices a weak acceptance oracle in the generated PRD HTML page, then must manually locate and edit the Markdown table.</li><li>After: The reviewer edits the Acceptance Oracle Matrix in the generated page and exports a proposed Markdown replacement block, then manually applies that block to the canonical PRD source.</li><li>Why now: PRD HTML v1 established a generated review surface; v2 can add bounded interaction without changing source authority.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Generated PRD pages provide an export-only Acceptance Oracle Matrix cockpit that helps reviewers propose Markdown changes without writing source files or bypassing approval gates.</li><li>Definition of done:</li><li><code>scripts/prd-html.py</code> renders an Acceptance Oracle Matrix cockpit on PRD pages when that section contains a Markdown table.</li><li>The cockpit lets a reviewer edit table cell text in-browser.</li><li>The cockpit exports a copyable Markdown replacement block headed <code>## Acceptance Oracle Matrix</code>.</li><li>The exported block is labeled as a proposal requiring manual application to <code>tasks/prds/*.md</code>.</li><li>Generated pages do not offer source write-back, approval buttons, task activation, bead activation, implementation acceptance, browser storage, or external export.</li><li>Existing <code>python3 scripts/prd-html.py</code> and <code>python3 scripts/prd-html.py --check</code> behavior is preserved.</li><li>PRD protocol, shard-schema guidance, package inventory, README, maintainer changelog, and roadmap history reflect the new surface.</li><li>Generated public docs HTML and maintainer roadmap HTML are refreshed when their Markdown sources change.</li><li>First useful vertical slice: export-only Acceptance Oracle Matrix cockpit.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Builder or reviewer checking whether PRD requirements have clear proof paths.</li><li>Secondary user: AI coding agent or support helper preparing a proposed PRD amendment for user review.</li><li>Excluded user: Anyone expecting direct Markdown editing, approval automation, bead activation, browser-persisted state, external publishing, CLI wrapper behavior, package-manager behavior, or broad spec-to-implementation matching.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make acceptance-oracle edits easier to propose.</li><li>Goal 2: Preserve Markdown PRD shards as the only source authority.</li><li>Goal 3: Keep v2 interaction narrow enough to validate before adding richer cockpit behavior.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: direct write-back, auto-applied patches, approval buttons, PRD status editing, requirement editing, Open Questions editing, bead activation, task selection, implementation acceptance, visual design editor, local server, external storage, package-manager behavior, CLI wrapper behavior, registry behavior, or new dependency adoption.</li><li>Deferred: Requirements editor, Open Questions editor, spec-to-implementation matching, visual mockup review, generated diff artifacts, review-lane integration, and direct Markdown promotion workflow.</li><li>Explicitly out of scope: Any workflow that treats generated HTML, exported Markdown, or browser state as authority.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-008-FR01</code></td><td>Add an export-only Acceptance Oracle Matrix cockpit to generated PRD pages.</td><td>P0</td><td>Only when the section has a parseable Markdown table.</td></tr><tr><td><code>PRD-008-FR02</code></td><td>Allow browser editing of Acceptance Oracle Matrix cell text.</td><td>P0</td><td>Local page state only; no persistence.</td></tr><tr><td><code>PRD-008-FR03</code></td><td>Export a copyable Markdown replacement block for <code>## Acceptance Oracle Matrix</code>.</td><td>P0</td><td>Manual application required.</td></tr><tr><td><code>PRD-008-FR04</code></td><td>Preserve existing <code>scripts/prd-html.py</code> generate and <code>--check</code> interfaces.</td><td>P0</td><td>No new required command.</td></tr><tr><td><code>PRD-008-FR05</code></td><td>Keep Requirements, Open Questions, approval state, PRD status, and bead proposals read-only.</td><td>P0</td><td>First v2 slice stays narrow.</td></tr><tr><td><code>PRD-008-FR06</code></td><td>Update public protocol, schema, inventory, README, changelog, roadmap, journal, and generated HTML surfaces.</td><td>P0</td><td>Markdown remains canonical.</td></tr></tbody></table></div>
+<h3 id="ux-requirements">UX Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-008-UX01</code></td><td>Cockpit copy clearly says exported Markdown is a proposal, not source truth.</td><td>P0</td><td>Visible before export.</td></tr><tr><td><code>PRD-008-UX02</code></td><td>The canonical Markdown source link remains visible near the cockpit.</td><td>P0</td><td>User must know where manual application happens.</td></tr><tr><td><code>PRD-008-UX03</code></td><td>Pages remain readable without JavaScript.</td><td>P0</td><td>Export controls require JavaScript, but source review does not.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-008-FR01</code></td><td>Generated PRD pages with an Acceptance Oracle Matrix show an export-only cockpit.</td><td><code>python3 scripts/prd-html.py --check</code> after regeneration</td><td>Inspect one generated PRD page and confirm the cockpit appears near review cues.</td><td>Existing PRD shard with an Acceptance Oracle Matrix</td><td>generated PRD HTML</td></tr><tr><td><code>PRD-008-FR03</code></td><td>The cockpit exports a Markdown block headed <code>## Acceptance Oracle Matrix</code>.</td><td>static generated output comparison</td><td>Edit a cell locally, export, and confirm the block is copyable and labeled as a proposal.</td><td>Browser with local generated HTML page</td><td>manual boundary review</td></tr><tr><td><code>PRD-008-FR05</code></td><td>No other PRD state or planning surface becomes editable.</td><td>source inspection</td><td>Confirm Requirements, Open Questions, approval, status, and bead proposal surfaces remain read-only.</td><td>Generated PRD page</td><td>manual boundary review</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before editing canonical Markdown, approving a PRD, changing PRD status, compiling <code>FEATURES.md</code>, creating or activating beads, accepting implementation, or promoting exported text into authority.</li><li>Stop if generated HTML is treated as source truth, exported Markdown is treated as approval, a reviewer asks for direct write-back, or cockpit output is used to start implementation without canonical Markdown review.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Browser storage: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>scripts/prd-html.py</code></td><td>Existing <code>python3 scripts/prd-html.py</code> and <code>python3 scripts/prd-html.py --check</code></td><td>Generate/check static PRD HTML with export-only Acceptance Oracle Matrix cockpit.</td><td>Stale-output check and manual cockpit review.</td><td><code>tasks/prds/PRD-008-hybrid-spec-interactive-cockpit.md</code></td></tr><tr><td><code>tasks/prds-html/*.html</code></td><td>Generated review pages with local export controls.</td><td>Review convenience and proposal export only; Markdown PRDs remain canonical.</td><td>Regenerated by <code>scripts/prd-html.py</code>.</td><td><code>tasks/prds/*.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-008-hybrid-spec-interactive-cockpit.md</code></li><li>Secondary reference files:</li><li><code>tasks/prds/PRD-007-hybrid-spec-html-review-surface.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/prds/PRD-SHARD-SCHEMA.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/prd-html.py</code></li><li><code>tasks/prds-html/</code></li><li><code>tasks/prds/*.md</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>external systems</li><li>generated evidence except generated PRD/docs/roadmap HTML</li><li>Required checks:</li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Open or inspect one generated PRD page with an Acceptance Oracle Matrix. Confirm the cockpit labels exported Markdown as a proposal, requires manual source editing, and never offers approval, write-back, task activation, or bead activation.</li><li>Forbidden assumptions:</li><li>Exported Markdown is source truth.</li><li>Generated PRD HTML approves PRD changes.</li><li>The cockpit writes source files.</li><li>V2 includes broad spec editing or implementation matching.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B008-hybrid-spec-interactive-cockpit</code></td><td><code>PRD-008-FR01</code> through <code>PRD-008-FR06</code>, <code>PRD-008-UX01</code> through <code>PRD-008-UX03</code></td><td>PRD shard, generator cockpit, generated PRD HTML, public docs, inventory, changelog, roadmap history, generated docs HTML, and generated roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-008-hybrid-spec-interactive-cockpit.md</code></td><td><code>scripts/prd-html.py --check</code> plus package validation and manual cockpit boundary review</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future v2+ surface export a generated diff instead of a replacement block?</td><td>Follow-up cockpit scope</td><td>no</td></tr><tr><td>Should Requirements or Open Questions become separate export-only editors after this proves useful?</td><td>Follow-up cockpit scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of Hybrid Spec Format v2 as an export-only Acceptance Oracle Matrix cockpit, explicitly excluding direct write-back, generated diff artifacts for this slice, approval behavior, bead activation, task selection, implementation acceptance, browser storage, external mutation, CLI wrapper behavior, package-manager semantics, and active-memory changes.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#ux-requirements">UX Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

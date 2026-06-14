@@ -72,11 +72,54 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
     @media (max-width: 860px) {
       header { padding: 24px 18px; }
       main { padding: 18px; }
       .layout { display: block; }
       .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
     }
     </style>
 </head>
@@ -92,15 +135,55 @@
 </header>
 <main>
   <section class="notice">
-    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
   <section class="summary-grid">
-    <div class="metric"><span>Rendered PRDs</span><strong>7</strong></div>
+    <div class="metric"><span>Rendered PRDs</span><strong>10</strong></div>
     <div class="metric"><span>Source</span><strong>tasks/prds/*.md</strong></div>
     <div class="metric"><span>Generated output</span><strong>tasks/prds-html/*.html</strong></div>
   </section>
-  <div class="table-wrap"><table><thead><tr><th>PRD</th><th>Status</th><th>Risk</th><th>Feature</th><th>Markdown source</th><th>Next safe review decision</th></tr></thead><tbody><tr><td><a href="PRD-001-product-discovery-validation.html">PRD-001 -- Product Discovery Validation</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Product Discovery Validation</td><td><a href="../prds/PRD-001-product-discovery-validation.md#prd-001-product-discovery-validation">PRD-001-product-discovery-validation.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-002-bootstrap-confidence-lane.html">PRD-002 -- Bootstrap Confidence Lane</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>First-Run Confidence + Bootstrap v1</td><td><a href="../prds/PRD-002-bootstrap-confidence-lane.md#prd-002-bootstrap-confidence-lane">PRD-002-bootstrap-confidence-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-003-existing-repo-intake.html">PRD-003 -- Existing Repo Intake</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Existing Repo Intake</td><td><a href="../prds/PRD-003-existing-repo-intake.md#prd-003-existing-repo-intake">PRD-003-existing-repo-intake.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-004-install-update-manifest-preview.html">PRD-004 -- Install/Update Manifest And Dry-Run Preview</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Install/Update Manifest And Dry-Run Preview</td><td><a href="../prds/PRD-004-install-update-manifest-preview.md#prd-004-install-update-manifest-preview">PRD-004-install-update-manifest-preview.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-005-release-readiness-lane.html">PRD-005 -- Release Readiness / Shipping Lane</a></td><td><span class="status approved">approved</span></td><td>high</td><td>Release Readiness / Shipping Lane</td><td><a href="../prds/PRD-005-release-readiness-lane.md#prd-005-release-readiness-lane">PRD-005-release-readiness-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-006-supervised-setup-plan.html">PRD-006 -- Supervised Setup Plan</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Installer / Bootstrap Experience</td><td><a href="../prds/PRD-006-supervised-setup-plan.md#prd-006-supervised-setup-plan">PRD-006-supervised-setup-plan.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-007-hybrid-spec-html-review-surface.html">PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Hybrid Spec Format v1 / HTML Review Surface</td><td><a href="../prds/PRD-007-hybrid-spec-html-review-surface.md#prd-007-hybrid-spec-html-review-surface">PRD-007-hybrid-spec-html-review-surface.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr></tbody></table></div>
+  <div class="table-wrap"><table><thead><tr><th>PRD</th><th>Status</th><th>Risk</th><th>Feature</th><th>Markdown source</th><th>Next safe review decision</th></tr></thead><tbody><tr><td><a href="PRD-001-product-discovery-validation.html">PRD-001 -- Product Discovery Validation</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Product Discovery Validation</td><td><a href="../prds/PRD-001-product-discovery-validation.md#prd-001-product-discovery-validation">PRD-001-product-discovery-validation.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-002-bootstrap-confidence-lane.html">PRD-002 -- Bootstrap Confidence Lane</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>First-Run Confidence + Bootstrap v1</td><td><a href="../prds/PRD-002-bootstrap-confidence-lane.md#prd-002-bootstrap-confidence-lane">PRD-002-bootstrap-confidence-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-003-existing-repo-intake.html">PRD-003 -- Existing Repo Intake</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Existing Repo Intake</td><td><a href="../prds/PRD-003-existing-repo-intake.md#prd-003-existing-repo-intake">PRD-003-existing-repo-intake.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-004-install-update-manifest-preview.html">PRD-004 -- Install/Update Manifest And Dry-Run Preview</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Install/Update Manifest And Dry-Run Preview</td><td><a href="../prds/PRD-004-install-update-manifest-preview.md#prd-004-install-update-manifest-preview">PRD-004-install-update-manifest-preview.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-005-release-readiness-lane.html">PRD-005 -- Release Readiness / Shipping Lane</a></td><td><span class="status approved">approved</span></td><td>high</td><td>Release Readiness / Shipping Lane</td><td><a href="../prds/PRD-005-release-readiness-lane.md#prd-005-release-readiness-lane">PRD-005-release-readiness-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-006-supervised-setup-plan.html">PRD-006 -- Supervised Setup Plan</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Installer / Bootstrap Experience</td><td><a href="../prds/PRD-006-supervised-setup-plan.md#prd-006-supervised-setup-plan">PRD-006-supervised-setup-plan.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-007-hybrid-spec-html-review-surface.html">PRD-007 -- Hybrid Spec Format v1 / HTML Review Surface</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Hybrid Spec Format v1 / HTML Review Surface</td><td><a href="../prds/PRD-007-hybrid-spec-html-review-surface.md#prd-007-hybrid-spec-html-review-surface">PRD-007-hybrid-spec-html-review-surface.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-008-hybrid-spec-interactive-cockpit.html">PRD-008 -- Hybrid Spec Format v2 / Interactive Spec Cockpit</a></td><td><span class="status approved">approved</span></td><td>medium</td><td>Hybrid Spec Format v2 / Interactive Spec Cockpit</td><td><a href="../prds/PRD-008-hybrid-spec-interactive-cockpit.md#prd-008-hybrid-spec-interactive-cockpit">PRD-008-hybrid-spec-interactive-cockpit.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-009-release-candidate-evidence-lane.html">PRD-009 -- Release Candidate Evidence Lane</a></td><td><span class="status approved">approved</span></td><td>high</td><td>Release Candidate Evidence Lane</td><td><a href="../prds/PRD-009-release-candidate-evidence-lane.md#prd-009-release-candidate-evidence-lane">PRD-009-release-candidate-evidence-lane.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr><tr><td><a href="PRD-010-supervised-setup-apply.html">PRD-010 -- Supervised Setup Apply v1</a></td><td><span class="status approved">approved</span></td><td>high</td><td>Installer / Bootstrap Experience</td><td><a href="../prds/PRD-010-supervised-setup-apply.md#prd-010-supervised-setup-apply">PRD-010-supervised-setup-apply.md</a></td><td>Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</td></tr></tbody></table></div>
 </main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
 
 </body>
 </html>

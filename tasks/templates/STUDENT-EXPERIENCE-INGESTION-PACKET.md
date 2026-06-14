@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
+Document version: v0.1.5
 Last updated: 2026-06-14
 
 ## Purpose
@@ -357,19 +357,23 @@ Do not code until I approve the bead through the normal Precode workflow.
 
 ## Support Engineer Readiness Prompt
 
-Use this when support is helping with environment or scaffold readiness.
+Use this when support is helping with environment or scaffold readiness in parallel with Experience handoff work.
 
 ```text
 Check that the student's local environment and scaffold are ready for Claude Code implementation.
 
-Do not change product scope, PRD direction, Experience artifacts, acceptance, or design direction.
+You may inspect setup, repo shape, scaffold boundaries, dependency/runtime blockers, auth or local-demo blockers, and validation state.
+
+Do not change product scope, PRD direction, Experience artifacts, acceptance, feedback interpretation, or design direction. Do not activate a bead or implement starter screens from product judgment.
 
 Report:
 - setup status
 - scaffold status
+- local runtime or auth blockers
 - blockers
 - exact next technical unblock
 - anything the student must decide before implementation
+- confirmation that support did not change product scope, design direction, acceptance, or feedback interpretation
 ```
 
 ## Guardrail Reminder

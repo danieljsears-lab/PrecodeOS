@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-009 -- Release Candidate Evidence Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-009 -- Release Candidate Evidence Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-009-release-candidate-evidence-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-009-release-candidate-evidence-lane.md#prd-009-release-candidate-evidence-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Release Candidate Evidence Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the user-project release-candidate evidence profile within the Release Readiness lane.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, deployment approval, release approval, provider configuration, external mutation, rollback execution, implementation acceptance, generated report truth, package release management, or release-channel behavior.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future helper compile a release-candidate profile from Closeout Evidence?</td><td>Follow-up automation scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after the profile proves useful?</td><td>Follow-up release evidence scope</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-009-FR01</code></td><td>Define a Release Candidate Evidence Profile inside the Release Readiness Protocol.</td><td>P0</td><td>Human-authored profile only.</td></tr><tr><td><code>PRD-009-FR02</code></td><td>Include fields for candidate label, release target, changed surfaces, affected users/workflows, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, remaining uncertainty, and approvals still required.</td><td>P0</td><td>Mirrors the approved plan.</td></tr><tr><td><code>PRD-009-FR03</code></td><td>Define decision states: <code>candidate</code>, <code>needs evidence</code>, <code>blocked</code>, and <code>ready for human release decision</code>.</td><td>P0</td><td>These are framing states, not release approval.</td></tr><tr><td><code>PRD-009-FR04</code></td><td>Add optional bead-schema guidance for release-candidate evidence on release-relevant beads.</td><td>P0</td><td>No new required field for ordinary beads.</td></tr><tr><td><code>PRD-009-FR05</code></td><td>Add copyable prepare/review prompts to prompt and user docs.</td><td>P0</td><td>Prompts must prepare/review evidence, not approve release.</td></tr><tr><td><code>PRD-009-FR06</code></td><td>Update package inventory and generated public docs/PRD review surfaces.</td><td>P0</td><td>Markdown remains canonical.</td></tr><tr><td><code>PRD-009-FR07</code></td><td>Record roadmap implemented history, roadmap journal card, and maintainer changelog follow-through.</td><td>P0</td><td>Private maintainer history only.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-009-release-candidate-evidence-lane.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-009-release-candidate-evidence-lane.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-009-FR01`</textarea></td><td><textarea data-cockpit-cell>Release Readiness Protocol includes a Release Candidate Evidence Profile section.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/version-check.py` and docs freshness checks</textarea></td><td><textarea data-cockpit-cell>Confirm profile fields are present and human-authored.</textarea></td><td><textarea data-cockpit-cell>Protocol Markdown</textarea></td><td><textarea data-cockpit-cell>protocol review</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-009-FR03`</textarea></td><td><textarea data-cockpit-cell>Decision states are framed as evidence status only.</textarea></td><td><textarea data-cockpit-cell>source inspection</textarea></td><td><textarea data-cockpit-cell>Confirm no state approves deployment, release, merge, migration, rollback, dashboard, secret, GitHub, or external mutation.</textarea></td><td><textarea data-cockpit-cell>Protocol and prompts</textarea></td><td><textarea data-cockpit-cell>manual boundary review</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-009-FR05`</textarea></td><td><textarea data-cockpit-cell>User-facing prompts prepare or review evidence without granting release authority.</textarea></td><td><textarea data-cockpit-cell>docs HTML freshness check</textarea></td><td><textarea data-cockpit-cell>Confirm prompts say prepare/review evidence and preserve explicit approval gates.</textarea></td><td><textarea data-cockpit-cell>User docs and Prompt Patterns</textarea></td><td><textarea data-cockpit-cell>manual boundary review</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-009-release-candidate-evidence-lane">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-009-release-candidate-evidence-lane" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-009-FR01` | Release Readiness Protocol includes a Release Candidate Evidence Profile section. | `python3 scripts/version-check.py` and docs freshness checks | Confirm profile fields are present and human-authored. | Protocol Markdown | protocol review |
+| `PRD-009-FR03` | Decision states are framed as evidence status only. | source inspection | Confirm no state approves deployment, release, merge, migration, rollback, dashboard, secret, GitHub, or external mutation. | Protocol and prompts | manual boundary review |
+| `PRD-009-FR05` | User-facing prompts prepare or review evidence without granting release authority. | docs HTML freshness check | Confirm prompts say prepare/review evidence and preserve explicit approval gates. | User docs and Prompt Patterns | manual boundary review |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, GitHub mutation, external-service mutation, production configuration change, or post-release owner action.</li><li>Stop if the release target, affected users, changed surfaces, recorded checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></li><li>Parent PRD: <code>tasks/prds/PRD-005-release-readiness-lane.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>tasks/prds/PRD-009-release-candidate-evidence-lane.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence reports</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li>Manual verification:</li><li>Confirm the profile prepares or reviews evidence only and does not authorize deployment, release, rollback, merge, migration, dashboard mutation, secret changes, GitHub mutation, provider automation, package release management, CLI wrapper behavior, package-manager behavior, release-channel behavior, or external mutation.</li><li>Forbidden assumptions:</li><li>A release-candidate profile is release approval.</li><li><code>ready for human release decision</code> means released, accepted, deployed, or merged.</li><li>A smoke path replaces manual approval.</li><li>Generated reports, screenshots, browser notes, GitHub status, or profile text are proof unless recorded or accepted through existing evidence paths.</li><li>PrecodeOS package releases define user-project release behavior.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B009-release-candidate-evidence-lane</code></td><td><code>PRD-009-FR01</code> through <code>PRD-009-FR07</code></td><td>PRD shard, protocol profile, bead guidance, user prompts, inventory, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></td><td>static validation plus manual boundary review</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-009-release-candidate-evidence-lane">PRD-009 -- Release Candidate Evidence Lane</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-009</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>high</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Release Candidate Evidence Lane</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-005</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped release-readiness lane</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Release Candidate Evidence Lane</code></li><li><code>tasks/prds/PRD-005-release-readiness-lane.md</code></li><li><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li>Stable facts:</li><li>Release Readiness / Shipping Lane v1 already prepares evidence and approval questions for user-project shipping decisions.</li><li>Release readiness does not deploy, approve release, mutate external systems, accept review, or activate the next bead.</li><li>Closeout Evidence, recorded checks, manual verification, smoke evidence, rollback or blocked escape, and explicit approval gates remain the proof and decision sources.</li><li>Generated reports, screenshots, browser notes, GitHub status, and profile text remain review input until recorded or accepted through existing evidence paths.</li><li>Assumptions:</li><li>V1 should be profile-and-prompts only.</li><li>The owner surface is user-project shipping readiness, not PrecodeOS package release management.</li><li>PRD-005 and the Release Readiness Protocol remain the parent authority surfaces.</li><li>Conflicts or stale inputs:</li><li>&quot;Release candidate&quot; can imply package release management or deployment automation. This PRD narrows the term to user-project evidence framing only.</li><li>Privacy or secrets redactions:</li><li>Release-candidate evidence must not include secrets, tokens, private dashboard values, personal data samples, production credentials, or sensitive provider configuration.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Release readiness names the shipping checklist, but nearly shippable work still lacks a compact candidate state that says what changed, what proof exists, what risk remains, and whether the work is ready for a human release decision.</p>
+<p>Without that profile, a builder or agent can treat a loose release-readiness note as approval to ship, or can bury missing evidence inside long closeout text.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A completed bead has some checks and closeout evidence, but the user has to infer whether it is a release candidate, still missing evidence, blocked, or ready for a release decision.</li><li>After: The agent prepares a release-candidate evidence profile that lists changed surfaces, proof, gaps, rollback or blocked escape, known risks, and approvals still required.</li><li>Why now: Release Readiness v1 exists and explicitly deferred release-candidate evidence automation until a recurring evidence pattern was visible enough to name.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS gives release-relevant user-project work a named release-candidate evidence profile that prepares a human release decision without granting release authority.</li><li>Definition of done:</li><li>PRD-009 exists and is linked to PRD-005.</li><li>Release Readiness Protocol defines the Release Candidate Evidence Profile fields and decision states.</li><li>Bead Schema includes optional release-candidate evidence guidance for release-relevant beads without adding required fields for ordinary beads.</li><li>Prompt Patterns and user-facing docs include copyable prepare/review prompts.</li><li>Package inventory lists PRD-009 and clarifies the profile is not generated proof or release approval.</li><li>Maintainer changelog, roadmap implemented history, roadmap journal, public docs HTML, PRD HTML, and roadmap HTML are refreshed as needed.</li><li>First useful vertical slice: human-authored evidence profile plus copyable prompts only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder deciding whether nearly completed user-project work is ready for a release decision.</li><li>Secondary user: AI coding agent or support helper preparing evidence without mutating external systems.</li><li>Excluded user: Maintainer, deploy bot, release manager, or provider automation expecting package release management, release channels, deployment execution, rollback automation, GitHub mutation, generated reports, CLI wrappers, or provider-specific checklists.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make release-candidate state explicit before shipping confidence outruns evidence.</li><li>Goal 2: Keep missing evidence, blocked state, and remaining approvals visible.</li><li>Goal 3: Preserve human authority over deployment, release, rollback, merge, migration, dashboard, secret, external, and post-release actions.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: new checker, generated report, compiler output, release command, provider-specific checklist, deployment automation, rollback automation, CI release gate, GitHub mutation, dashboard mutation, package release management, CLI wrapper, package-manager behavior, release-channel behavior, or Release Readiness Skill behavior.</li><li>Deferred: release-candidate evidence automation, richer release evidence reports, provider-specific release checklists, Verification And Release Evidence, and Release Readiness Skill.</li><li>Explicitly out of scope: Any workflow that treats profile text, generated reports, screenshots, browser notes, GitHub status, or release-readiness notes as release approval.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-009-FR01</code></td><td>Define a Release Candidate Evidence Profile inside the Release Readiness Protocol.</td><td>P0</td><td>Human-authored profile only.</td></tr><tr><td><code>PRD-009-FR02</code></td><td>Include fields for candidate label, release target, changed surfaces, affected users/workflows, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, remaining uncertainty, and approvals still required.</td><td>P0</td><td>Mirrors the approved plan.</td></tr><tr><td><code>PRD-009-FR03</code></td><td>Define decision states: <code>candidate</code>, <code>needs evidence</code>, <code>blocked</code>, and <code>ready for human release decision</code>.</td><td>P0</td><td>These are framing states, not release approval.</td></tr><tr><td><code>PRD-009-FR04</code></td><td>Add optional bead-schema guidance for release-candidate evidence on release-relevant beads.</td><td>P0</td><td>No new required field for ordinary beads.</td></tr><tr><td><code>PRD-009-FR05</code></td><td>Add copyable prepare/review prompts to prompt and user docs.</td><td>P0</td><td>Prompts must prepare/review evidence, not approve release.</td></tr><tr><td><code>PRD-009-FR06</code></td><td>Update package inventory and generated public docs/PRD review surfaces.</td><td>P0</td><td>Markdown remains canonical.</td></tr><tr><td><code>PRD-009-FR07</code></td><td>Record roadmap implemented history, roadmap journal card, and maintainer changelog follow-through.</td><td>P0</td><td>Private maintainer history only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-009-FR01</code></td><td>Release Readiness Protocol includes a Release Candidate Evidence Profile section.</td><td><code>python3 scripts/version-check.py</code> and docs freshness checks</td><td>Confirm profile fields are present and human-authored.</td><td>Protocol Markdown</td><td>protocol review</td></tr><tr><td><code>PRD-009-FR03</code></td><td>Decision states are framed as evidence status only.</td><td>source inspection</td><td>Confirm no state approves deployment, release, merge, migration, rollback, dashboard, secret, GitHub, or external mutation.</td><td>Protocol and prompts</td><td>manual boundary review</td></tr><tr><td><code>PRD-009-FR05</code></td><td>User-facing prompts prepare or review evidence without granting release authority.</td><td>docs HTML freshness check</td><td>Confirm prompts say prepare/review evidence and preserve explicit approval gates.</td><td>User docs and Prompt Patterns</td><td>manual boundary review</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, GitHub mutation, external-service mutation, production configuration change, or post-release owner action.</li><li>Stop if the release target, affected users, changed surfaces, recorded checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></td><td>Human-authored Release Candidate Evidence Profile.</td><td>Prepares evidence and approval questions only.</td><td>Source inspection and docs freshness checks.</td><td><code>tasks/prds/PRD-009-release-candidate-evidence-lane.md</code></td></tr><tr><td>User prompts</td><td>Copyable prepare/review profile prompts.</td><td>Ask agents for evidence framing without release action.</td><td>Manual boundary review.</td><td><code>tasks/reference/PROMPT-PATTERNS.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></li><li>Parent PRD: <code>tasks/prds/PRD-005-release-readiness-lane.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>tasks/prds/PRD-009-release-candidate-evidence-lane.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence reports</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li>Manual verification:</li><li>Confirm the profile prepares or reviews evidence only and does not authorize deployment, release, rollback, merge, migration, dashboard mutation, secret changes, GitHub mutation, provider automation, package release management, CLI wrapper behavior, package-manager behavior, release-channel behavior, or external mutation.</li><li>Forbidden assumptions:</li><li>A release-candidate profile is release approval.</li><li><code>ready for human release decision</code> means released, accepted, deployed, or merged.</li><li>A smoke path replaces manual approval.</li><li>Generated reports, screenshots, browser notes, GitHub status, or profile text are proof unless recorded or accepted through existing evidence paths.</li><li>PrecodeOS package releases define user-project release behavior.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B009-release-candidate-evidence-lane</code></td><td><code>PRD-009-FR01</code> through <code>PRD-009-FR07</code></td><td>PRD shard, protocol profile, bead guidance, user prompts, inventory, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code></td><td>static validation plus manual boundary review</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future helper compile a release-candidate profile from Closeout Evidence?</td><td>Follow-up automation scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after the profile proves useful?</td><td>Follow-up release evidence scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of Release Candidate Evidence Lane v1 as a conservative user-project release-candidate evidence profile and prompts only, explicitly excluding a new checker, generated report, deployment helper, provider checklist, CLI, package-manager behavior, release-channel behavior, GitHub mutation, package release management, external-system mutation, and active-memory changes.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

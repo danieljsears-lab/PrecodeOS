@@ -72,11 +72,54 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
     @media (max-width: 860px) {
       header { padding: 24px 18px; }
       main { padding: 18px; }
       .layout { display: block; }
       .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
     }
     </style>
 </head>
@@ -93,7 +136,7 @@
 </header>
 <main>
   <section class="notice">
-    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
   <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Installer / Bootstrap Experience</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
   <section class="summary">
@@ -105,6 +148,8 @@
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future setup flow copy files itself or only produce copy commands?</td><td>Follow-up mutating setup scope</td><td>no</td></tr><tr><td>What owner-file adaptation workflow should exist for existing projects after intake?</td><td>Follow-up setup/adaptation scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-006-FR01</code></td><td>Add a Supervised Setup Plan Protocol with scope, command contract, output fields, branch rules, approval gates, validation steps, and guardrails.</td><td>P0</td><td>Protocol owns the plan contract.</td></tr><tr><td><code>PRD-006-FR02</code></td><td>Add <code>--supervised-setup-plan</code> to <code>scripts/bootstrap-check.py</code>; it implies <code>--preview-manifest</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-006-FR03</code></td><td>Setup-plan JSON includes <code>plan_kind</code>, <code>status</code>, <code>target_mutation_allowed</code>, <code>generated_evidence_only</code>, <code>actions</code>, <code>approval_gates</code>, <code>excluded_paths</code>, <code>blockers</code>, <code>validation_steps</code>, and <code>not_authority_for</code>.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-006-FR04</code></td><td>Empty and nearly empty targets show candidate file-group setup actions, owner-file adaptation actions, exclusions, approval gates, and validation steps.</td><td>P0</td><td>Planning only.</td></tr><tr><td><code>PRD-006-FR05</code></td><td>Existing projects stop at Existing Repo Intake before copy or owner-file adaptation actions become actionable.</td><td>P0</td><td>Protects existing project truth.</td></tr><tr><td><code>PRD-006-FR06</code></td><td>Existing Precode targets route to memory validation, repair, or update decision rather than fresh setup.</td><td>P0</td><td>Avoids accidental reinstall semantics.</td></tr><tr><td><code>PRD-006-FR07</code></td><td><code>--write-evidence</code> remains source-only and writes no target files.</td><td>P0</td><td>No target mutation.</td></tr><tr><td><code>PRD-006-FR08</code></td><td>Update setup, support, troubleshooting, prompt, and inventory docs to describe setup-plan boundaries.</td><td>P0</td><td>Public docs stay aligned.</td></tr><tr><td><code>PRD-006-FR09</code></td><td>Add fixture-style self-tests for setup-plan target states, JSON shape, default no-write behavior, source-only evidence, and evidence-only wording.</td><td>P0</td><td>Implemented in script self-test fixtures.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before copying files, adapting owner files, overwriting existing docs, installing hooks, changing CI, editing active memory, running app commands, touching secrets, or writing app code.</li><li>Stop if source and target are unclear, source equals target, target is missing, existing project conflicts are unresolved, Existing Repo Intake has not run for an existing project, or generated setup-plan output is treated as install permission.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
     <h3>Agent context</h3>
@@ -153,6 +198,46 @@
     </nav>
   </div>
 </main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
 
 </body>
 </html>

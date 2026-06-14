@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
+Document version: v0.1.4
 Last updated: 2026-06-14
 
 ## Purpose
@@ -38,6 +38,7 @@ Optional modes:
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --json
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
 ```
 
@@ -48,6 +49,8 @@ Default mode prints a plain-English report and writes nothing.
 `--preview-manifest` adds a non-mutating install/update dry-run preview with candidate setup action categories. It still writes nothing by default and does not approve setup mutation.
 
 `--supervised-setup-plan` adds the manifest preview plus a non-mutating setup checklist with action IDs, approval gates, exclusions, blockers, and validation steps. It still writes nothing by default and does not approve setup mutation.
+
+`--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and CLI installation.
 
 `--write-evidence` writes generated evidence only under the source Precode workspace:
 
@@ -147,6 +150,7 @@ Use plain recommendations:
 - It must not treat a thin manifest as update, channel, package-manager, or release metadata.
 - It must not treat manifest preview output as copy, update, or install approval.
 - It must not treat supervised setup-plan output as copy, update, install, or owner-file adaptation approval.
+- It must not treat supervised setup apply as a broad installer, owner-file adaptation engine, update flow, rollback flow, hook installer, CI installer, package manager, release channel, or CLI.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
 
 ## Builder Prompt
@@ -173,4 +177,13 @@ To see the next non-mutating setup checklist, ask:
 Add the supervised setup plan.
 Show action IDs, approval gates, exclusions, blockers, and validation steps.
 Do not copy, edit, install hooks, change CI, create active memory, run app commands, adapt owner files, or write app code.
+```
+
+To apply a reviewed fresh-project copy action, ask:
+
+```text
+Apply only the supervised setup action IDs I explicitly approve.
+Use the PrecodeOS checkout as the source and my empty or nearly empty project folder as the target.
+Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+Show copied, skipped, blocked, and validation next steps.
 ```

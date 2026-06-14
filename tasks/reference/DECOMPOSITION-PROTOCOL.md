@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-05-29
+Document version: v0.1.7
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -163,6 +163,16 @@ Adaptive-depth fields make appetite machine-readable:
 | `autonomy_level` | `supervised`, `bounded-afk`, `human-only` | Describes whether an agent can work after context load or whether human action/judgment owns the step. |
 
 Use `python3 scripts/bead-depth-check.py` to surface advisory mismatches, such as a high-risk bead with brief planning or a bounded-AFK bead without checks and stop conditions.
+
+The checker is a routing aid, not a gate. If it warns, classify the mismatch before activation:
+
+- invalid or missing metadata: fix the field or accept the inferred default for legacy/tiny work
+- low-risk work with heavy planning ceremony: lower the declared depth or record the hidden risk
+- broad work declared `trivial`: narrow the files in play or split the bead
+- high-risk, sensitive, or multi-system work with weak planning: add PRD, Architecture Brief, test-plan, approval, rollback, or blocked-escape detail
+- high-risk work with weak proof: add manual, browser, integration, or external verification
+- `bounded-afk` work without checks or stop conditions: add them before delegation
+- `human-only` work without a manual gate: name the user approval, dashboard step, external action, or human-owned judgment
 
 Split when:
 

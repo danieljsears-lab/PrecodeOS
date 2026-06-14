@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.20
+Document version: v0.1.22
 Last updated: 2026-06-14
 
 ## Purpose
@@ -50,6 +50,16 @@ Use the PrecodeOS checkout as the package source and my project folder as the ta
 Do not copy, edit, install hooks, change CI, run app commands, create active memory, adapt owner files, approve a PRD, activate a bead, or write code.
 Show the setup checklist, approval gates, exclusions, blockers, and validation steps.
 Treat the setup plan as evidence only, not permission to mutate.
+```
+
+### Supervised Setup Apply
+
+```text
+Apply only the supervised setup action IDs I explicitly approve.
+Use the PrecodeOS checkout as the source and my empty or nearly empty project folder as the target.
+Run the supervised setup plan first, then apply only the approved review_copy_candidate action IDs I name.
+Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, approve a PRD, activate a bead, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+After copying, show copied, skipped, blocked, and validation next steps.
 ```
 
 ### One Question At A Time
@@ -311,13 +321,13 @@ Use the Architecture Shaping Protocol for this approved PRD before deriving bead
 ## System Design Shape
 
 ```text
-Use the System Design Pattern Protocol before coding. Tell me what implementation shape this feature needs, why it matters, the owner file, the simpler alternative, approval gates, verification evidence, and where business rules should live.
+Use the System Design Pattern Protocol before coding. Start with the simplest shape that can work. Tell me what implementation shape this feature needs, why it matters, the owner file, the simpler alternative, approval gates, verification evidence, and where business rules should live. Do not require a named pattern unless it reduces a real risk.
 ```
 
 ## Pattern Fit
 
 ```text
-Is this simple enough to build directly, or does it need an adapter, state flow, strategy boundary, auth/access boundary, or audit trail? Explain the choice like I am a non-technical founder.
+Is this simple enough to build directly, or does it need an adapter/facade, state flow, strategy boundary, auth/access boundary, audit trail, or deep module? Explain the choice like I am a non-technical founder, and treat broad words like AI, auth, step, policy, or rule as prompts for review rather than automatic pattern requirements.
 ```
 
 ## Workflow Selection
@@ -480,6 +490,23 @@ Checkpoint the session. Tell me whether we should continue, repair, split, pause
 
 ```text
 Review the completed bead against its done-when target, primary authority, files in play, checks, manual verification, and closeout evidence. Recommend accepted, revise, split, or blocked, and explain the smallest reason.
+```
+
+## Release Candidate Evidence Profile
+
+```text
+Prepare a Release Candidate Evidence Profile for this release-relevant bead.
+Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+```
+
+## Release Candidate Review
+
+```text
+Review this Release Candidate Evidence Profile against Closeout Evidence and recorded checks.
+Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
+Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
 ```
 
 ## Fresh-Context Review

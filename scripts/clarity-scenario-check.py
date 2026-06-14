@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.7
+# Version: v0.1.8
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -495,8 +495,33 @@ def main() -> int:
             )
 
     depth_scenarios = [
+        (
+            "proportional tiny bead",
+            bead_depth_quality(
+                bead(
+                    complexity="trivial",
+                    required_planning_depth="none",
+                    autonomy_level="supervised",
+                    files_in_play=["README.md"],
+                    verification_type=["static"],
+                )
+            )["details"].get("user_decision"),
+            "continue",
+        ),
         ("omitted fields", bead_depth_quality(bead())["details"].get("user_decision"), "continue"),
         ("invalid fields", bead_depth_quality(bead(complexity="huge"))["details"].get("user_decision"), "ask for proof"),
+        (
+            "tiny over ceremony",
+            bead_depth_quality(
+                bead(
+                    complexity="trivial",
+                    required_planning_depth="PRD+architecture",
+                    files_in_play=["README.md"],
+                    verification_type=["static"],
+                )
+            )["details"].get("user_decision"),
+            "ask for proof",
+        ),
         (
             "trivial broad scope",
             bead_depth_quality(bead(complexity="trivial", files_in_play=[f"file-{i}.md" for i in range(6)]))[
@@ -517,10 +542,29 @@ def main() -> int:
             "approval needed",
         ),
         (
+            "high risk weak planning",
+            bead_depth_quality(bead(complexity="high-risk", required_planning_depth="brief", verification_type=["manual"]))[
+                "details"
+            ].get("user_decision"),
+            "ask for proof",
+        ),
+        (
             "high risk weak verification",
             bead_depth_quality(bead(complexity="high-risk", required_planning_depth="PRD+architecture"))[
                 "details"
             ].get("user_decision"),
+            "ask for proof",
+        ),
+        (
+            "multi system weak verification",
+            bead_depth_quality(
+                bead(
+                    complexity="multi-system",
+                    required_planning_depth="PRD+architecture+test-plan",
+                    files_in_play=[f"file-{i}.md" for i in range(21)],
+                    verification_type=["static"],
+                )
+            )["details"].get("user_decision"),
             "ask for proof",
         ),
         (

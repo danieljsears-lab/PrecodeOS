@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
+# Version: v0.2.0
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -50,6 +50,12 @@ class Prd:
     sections: dict[str, str]
     content_html: str
     toc: list[TocItem]
+
+
+@dataclass(frozen=True)
+class MarkdownTable:
+    headers: list[str]
+    rows: list[list[str]]
 
 
 def read_text(path: Path) -> str:
@@ -173,6 +179,23 @@ def is_table_start(lines: list[str], index: int) -> bool:
 
 def table_cells(row: str) -> list[str]:
     return [cell.strip() for cell in row.strip().strip("|").split("|")]
+
+
+def first_markdown_table(markdown: str) -> MarkdownTable | None:
+    lines = [line for line in markdown.splitlines() if line.strip()]
+    for index in range(len(lines)):
+        if is_table_start(lines, index):
+            headers = table_cells(lines[index])
+            rows: list[list[str]] = []
+            cursor = index + 2
+            while cursor < len(lines) and lines[cursor].strip().startswith("|"):
+                row = table_cells(lines[cursor])
+                if len(row) < len(headers):
+                    row.extend([""] * (len(headers) - len(row)))
+                rows.append(row[: len(headers)])
+                cursor += 1
+            return MarkdownTable(headers=headers, rows=rows)
+    return None
 
 
 def render_table(lines: list[str]) -> str:
@@ -349,6 +372,64 @@ def table_preview(markdown: str, *, max_rows: int = 6) -> str:
     return '<p class="empty">None recorded.</p>'
 
 
+def markdown_table_cell(value: str) -> str:
+    return (
+        value.replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .replace("\n", "<br>")
+        .replace("|", "&#124;")
+        .strip()
+    )
+
+
+def markdown_table(table: MarkdownTable) -> str:
+    separator = ["---"] * len(table.headers)
+    lines = [
+        "| " + " | ".join(markdown_table_cell(cell) for cell in table.headers) + " |",
+        "| " + " | ".join(separator) + " |",
+    ]
+    for row in table.rows:
+        lines.append("| " + " | ".join(markdown_table_cell(cell) for cell in row) + " |")
+    return "\n".join(lines)
+
+
+def acceptance_cockpit(prd: Prd) -> str:
+    acceptance = section(prd, "Acceptance Oracle Matrix")
+    table = first_markdown_table(acceptance)
+    if table is None:
+        return '<p class="empty">No Acceptance Oracle Matrix table found for export.</p>'
+
+    header_html = "".join(f"<th>{h(header)}</th>" for header in table.headers)
+    rows_html = []
+    for row in table.rows:
+        cells = []
+        for cell in row:
+            cells.append(f'<td><textarea data-cockpit-cell>{h(cell)}</textarea></td>')
+        rows_html.append("<tr>" + "".join(cells) + "</tr>")
+
+    fallback_block = "## Acceptance Oracle Matrix\n\n" + markdown_table(table)
+    return f"""
+    <section class="cockpit" data-acceptance-cockpit data-source="{h(prd.filename)}">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>{h(prd.filename)}</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr>{header_html}</tr></thead>
+          <tbody>{"".join(rows_html)}</tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-{h(prd.anchor)}">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-{h(prd.anchor)}" class="cockpit-export" data-export-output readonly>{h(fallback_block)}</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    """
+
+
 def has_blocking_open_question(prd: Prd) -> bool:
     open_questions = section(prd, "Open Questions").lower()
     return "| yes |" in open_questions or open_questions.count("blocking") > 1
@@ -381,7 +462,7 @@ def next_safe_decision(prd: Prd) -> str:
 def guardrail_text() -> str:
     return (
         "This HTML is a generated review convenience. It cannot approve PRDs, activate beads, "
-        "choose tasks, accept implementation, edit source Markdown, promote generated text, or replace `tasks/prds/*.md`."
+        "choose tasks, accept implementation, write source Markdown, promote generated text, or replace `tasks/prds/*.md`."
     )
 
 
@@ -454,13 +535,99 @@ def style() -> str:
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
     @media (max-width: 860px) {
       header { padding: 24px 18px; }
       main { padding: 18px; }
       .layout { display: block; }
       .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
     }
     """
+
+
+def script() -> str:
+    return """
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\\r\\n/g, "\\n")
+    .replace(/\\r/g, "\\n")
+    .replace(/\\n/g, "<br>")
+    .replace(/\\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+"""
 
 
 def page_shell(title: str, body: str) -> str:
@@ -474,6 +641,7 @@ def page_shell(title: str, body: str) -> str:
 </head>
 <body>
 {body}
+{script()}
 </body>
 </html>
 """
@@ -562,6 +730,8 @@ def render_prd_page(prd: Prd) -> str:
     {table_preview(section(prd, "Open Questions"), max_rows=8)}
     <h3>Requirements</h3>
     {table_preview(section(prd, "Requirements"), max_rows=12)}
+    <h3>Acceptance oracle export</h3>
+    {acceptance_cockpit(prd)}
     <h3>Risk and permission model</h3>
     {render_markdown(section(prd, "Risk And Permission Model"))[0] if section(prd, "Risk And Permission Model") else '<p class="empty">None recorded.</p>'}
     <h3>Agent context</h3>

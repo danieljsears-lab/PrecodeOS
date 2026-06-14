@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.39
+Document version: v0.7.41
 Last updated: 2026-06-14
 
 
@@ -503,9 +503,11 @@ Use this table when you are unsure what kind of request to make.
 | Durable intent needs to guide the next workflow | Goal Frame proposal or reaffirmation | `Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.` |
 | Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.` |
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
+| Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
+| Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
 | Work may be done | Completion check or review | `Run a completion check and recommend accepted, revise, split, or blocked based on evidence.` |
 | Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
@@ -557,6 +559,7 @@ A bead is ready to accept only when the evidence fits the risk:
 - Closeout Evidence says what changed and what remains uncertain
 - review decision is `accepted`, `revise`, `split`, or `blocked`
 - release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action
+- nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, remaining risks, approvals, and decision state
 - next-bead transition is still separate and user-approved
 
 Say this:
@@ -584,6 +587,29 @@ Show changed behavior, affected users, release target, recorded checks, smoke te
 Stop if: the agent treats a release-readiness note, screenshot, browser note, generated report, GitHub status, or smoke check as release approval.
 
 Why this matters: shipping is a user-owned risk decision. Precode can prepare the evidence, but it cannot approve the release for you.
+
+## Prepare A Release Candidate Evidence Profile
+
+Use a Release Candidate Evidence Profile when release-relevant work is nearly ready and you need one compact evidence view before deciding what, if anything, to release.
+
+Say this:
+
+```text
+Prepare a Release Candidate Evidence Profile for this release-relevant bead.
+Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+```
+
+To review an existing profile, say this:
+
+```text
+Review this Release Candidate Evidence Profile against Closeout Evidence and recorded checks.
+Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
+Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
+```
+
+Stop if: the agent treats the profile or `ready for human release decision` as release approval.
 
 ## Approve The Right Things
 
@@ -655,6 +681,18 @@ Use this quick translation:
 | Risky task | `high-risk` / `PRD+architecture` | Stop until risks, approval gates, and rollback or escape path are clear. |
 | Many systems | `multi-system` / `PRD+architecture+test-plan` | Split or plan carefully; do not let the agent improvise across systems. |
 | Human-owned action | `human-only` | The agent may prepare instructions, but the user owns the action or approval. |
+
+Use warnings as routing help, not as automatic blockers. A good adaptive-depth warning should tell you which kind of mismatch it found:
+
+- missing or invalid fields: ask the agent to fix the bead metadata or explain the inferred default
+- tiny work with heavy ceremony: lower the planning depth or explain the hidden risk
+- broad `trivial` work: narrow the files in play or split the bead
+- sensitive, high-risk, or multi-system work with weak planning: add the missing PRD, Architecture Brief, test plan, approval gate, rollback, or escape path
+- high-risk work with weak proof: add manual, browser, integration, or external evidence before acceptance
+- `bounded-afk` work without checks or stop conditions: add explicit checks and a stop rule before delegation
+- `human-only` work without a manual gate: name the user approval, dashboard step, external action, or human-owned judgment
+
+If a warning is wrong, record the reason in the bead rather than ignoring it. If fixing the warning would change the work's owner file, risk level, or files in play, split or revise the bead before implementation continues.
 
 If `python3 scripts/files-in-play-check.py` warns about out-of-scope paths, pause and classify each changed path as generated evidence, current-bead work that needs explicit scope approval, follow-up bead work, or work the person should revert. The warning is not permission to keep widening the task.
 

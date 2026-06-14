@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-13
+Document version: v0.1.8
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -86,7 +86,7 @@ bash scripts/record-check.sh -- <command>
 
 A logged tool run does not count as a passing check unless it is also recorded through `record-check.sh` or accepted in Closeout Evidence with the required manual verification format.
 
-Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation.
+Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation. If adaptive depth warns before a command, the agent should explain the warning's shortest next action and either fix the bead metadata, strengthen proof, ask for approval, or split scope before treating the command path as clear.
 
 `next-step` is the canonical generated router for the next human decision. Its `load_plan`, `single_next_protocol`, and `context_footprint` fields are context-routing evidence only; they do not approve tool calls or widen allowed tool classes.
 

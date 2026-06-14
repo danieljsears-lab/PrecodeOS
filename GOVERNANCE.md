@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-02
+Document version: v0.1.5
+Last updated: 2026-06-14
 
 ## Governance Model
 
@@ -31,9 +31,13 @@ Maintainer review is required before any contribution changes:
 - governance, contribution, trademark, license, or provenance policy
 - public positioning or official project identity
 - active memory rules
+- authority ownership or promotion paths
 - core workflow semantics
 - generated-output demotion
+- package install, update, setup, release-channel, or package-manager boundaries
 - beginner-facing safety language
+
+Trust-affecting semantic changes should use `tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md` before implementation or merge. The proposal makes semantic risk visible for maintainer review; it does not delegate governance, approve implementation, publish releases, or create contributor decision rights.
 
 ## Forks And Succession
 

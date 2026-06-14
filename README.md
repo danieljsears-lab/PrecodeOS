@@ -121,6 +121,15 @@ cd PrecodeOS
 bash scripts/validate-memory.sh
 ```
 
+Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+```
+
+The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+
 To adapt PrecodeOS into a target project, start with these files:
 
 - `docs/PRECODE-GUIDED-SETUP.md` for the step-by-step setup path and copy boundaries.
@@ -137,7 +146,7 @@ For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SE
 
 Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html).
 
-For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical.
+For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually.
 
 For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
@@ -234,6 +243,7 @@ PrecodeOS is designed to be inspectable:
 - GitHub Actions runs read-only validation on pushes and pull requests.
 - Contribution policy is inbound = Apache-2.0.
 - Maintainer review is required for governance, trademark, licensing, public positioning, active memory, core workflow semantics, generated-output demotion, and beginner-facing safety language.
+- Trust-affecting semantic changes should use [`SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md`](tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md) before implementation or merge.
 
 Useful reviewer commands:
 
@@ -297,7 +307,7 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.40
+Document version: v0.1.41
 Last updated: 2026-06-14
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.

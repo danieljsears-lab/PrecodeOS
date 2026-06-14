@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-02
+Document version: v0.1.3
+Last updated: 2026-06-14
 
 ## Contribution Policy
 
@@ -46,7 +46,9 @@ Meaningful changes should include the relevant validation evidence, such as:
 - `python3 scripts/file-inventory.py --check`
 - targeted script checks for changed behavior
 
-Maintainer review is required for changes touching governance, trademark, licensing, public positioning, active memory, or core workflow semantics.
+Maintainer review is required for changes touching governance, trademark, licensing, public positioning, active memory, authority ownership, generated-output demotion, package install/update boundaries, core workflow semantics, or beginner-facing safety language.
+
+Use `tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md` before implementation or merge when a contribution may change those semantic boundaries. The proposal is review evidence only; it does not approve code, accept implementation, publish a release, or grant contributor governance rights.
 
 ## GitHub Workflow
 

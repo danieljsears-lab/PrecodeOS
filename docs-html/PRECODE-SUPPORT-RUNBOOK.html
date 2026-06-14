@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.20</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.22</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -202,7 +202,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>When users ask where to put reference files, notes, documents, screenshots, research, or design exports, route them to root-level <code>project-evidence/</code> in the target project. It is project-owned raw evidence, not active memory, not task approval, and not implementation instruction. Use Local Source Intake before promoting any conclusions into owner files.</p>
 <h2 id="fast-support-slot-flow">Fast Support Slot Flow</h2>
 <p>Use this flow when a support engineer has a short onboarding, setup, or unblocker slot.</p>
-<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, run <code>python3 scripts/bootstrap-check.py --source &amp;lt;precode-package-root&amp;gt; --target &amp;lt;target-project-root&amp;gt;</code> from the package checkout. Use <code>--preview-manifest</code> when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Use <code>--supervised-setup-plan</code> when the user needs action IDs, approval gates, exclusions, blockers, and validation steps before manual setup work. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
+<ol><li>Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.</li><li>Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.</li><li>Identify the package source, target project, current folder, and current <code>git status</code> before copying or editing.</li><li>In an Ember bootcamp setting, run the fit check from <code>docs/PRECODE-GUIDED-SETUP.md</code> before installing or deferring PrecodeOS.</li><li>If Precode setup is the issue, run <code>python3 scripts/bootstrap-check.py --source &amp;lt;precode-package-root&amp;gt; --target &amp;lt;target-project-root&amp;gt;</code> from the package checkout. Use <code>--preview-manifest</code> when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Use <code>--supervised-setup-plan</code> when the user needs action IDs, approval gates, exclusions, blockers, and validation steps before manual setup work. For empty or nearly empty targets only, use <code>--apply-supervised-setup --approve-action &amp;lt;SP-ID&amp;gt;</code> after the user approves specific copy action IDs. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</li><li>Run only the narrow checks that match the symptom, then explain the result in plain language.</li><li>Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.</li></ol>
 <p>Support can say:</p>
 <pre><code class="language-text">I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.</code></pre>
 <h2 id="ember-bootcamp-precode-fit-check">Ember Bootcamp Precode Fit Check</h2>
@@ -270,6 +270,9 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>When the user needs the next setup checklist before approving manual work, run:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan</code></pre>
 <p>The supervised setup plan includes the manifest preview, action IDs, approval gates, exclusions, blockers, and validation steps. It is generated evidence only, not permission to copy, adapt owner files, overwrite target material, install hooks, change CI, edit active memory, run app commands, or write app code.</p>
+<p>For an empty or nearly empty target, apply only the specific copy action IDs the user approves:</p>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan --apply-supervised-setup --approve-action &lt;SP-ID&gt;</code></pre>
+<p>This copies only approved <code>review_copy_candidate</code> actions and reports copied, skipped, blocked, and validation next steps. It is not an owner-file adaptation engine, existing-repo migration, overwrite command, hook installer, CI installer, app-command runner, app-code writer, release channel, package-manager flow, rollback tool, or <code>precode</code> CLI.</p>
 <p>After Bootstrap Confidence, choose the first adoption fork:</p>
 <ul><li>Fresh install for empty or nearly empty targets.</li><li>Existing Repo Intake for repos with app code, docs, CI, product history, or active work.</li></ul>
 <p>For existing apps, run:</p>
@@ -370,7 +373,28 @@ Stop before updating authority files, approving a PRD, activating a bead, or cod
 <p>Use this path when a student has an approved bootcamp PRD input and Experience artifacts from Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas.</p>
 <p>Before the student opens the design canvas, have them use the packet&#x27;s Design Canvas Input Prompt to turn approved PRD input, idea-shaping notes, reference images, workflow examples, and not-yet boundaries into a short design-tool brief. The brief should focus the rough artifact on the minimum workflow that gives the target user value; it is not approval for extra screens, visual polish, or future platform scope.</p>
 <p>The student-facing output is <code>tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md</code>. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.</p>
-<p>Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, or scope.</p>
+<p>Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, feedback interpretation, or scope.</p>
+<p>Copyable parallel-readiness support prompt:</p>
+<pre><code class="language-text">Check whether this student&#x27;s local environment and scaffold are ready for Claude Code implementation.
+
+You may inspect:
+- local environment setup
+- repo and scaffold shape
+- package source and target folder boundaries
+- dependency, runtime, local app, or auth blockers
+- setup validation state
+- the narrow technical unblock needed next
+
+Do not change PRD direction, Experience artifacts, product scope, acceptance, feedback interpretation, bead activation, or design direction. Do not implement starter screens from product judgment.
+
+Report:
+- environment status
+- scaffold status
+- runtime or auth blockers
+- setup validation status
+- exact next technical unblock
+- student-owned product or acceptance decisions still blocking implementation
+- confirmation that support did not change product scope, design direction, acceptance, or feedback interpretation</code></pre>
 <p>Before Claude Code creates or proposes the bead, the packet should record the Core Spine Gate status and any target-user feedback gathered before coding. If the gate is blocked, stop on the missing workflow evidence instead of turning the design into implementation scope.</p>
 <p>Copyable student handoff prompt:</p>
 <pre><code class="language-text">Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.

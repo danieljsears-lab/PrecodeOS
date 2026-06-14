@@ -72,11 +72,54 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
     @media (max-width: 860px) {
       header { padding: 24px 18px; }
       main { padding: 18px; }
       .layout { display: block; }
       .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
     }
     </style>
 </head>
@@ -93,7 +136,7 @@
 </header>
 <main>
   <section class="notice">
-    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
   <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Product Discovery Validation</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-05-28</strong></div><div class="metric"><span>Last updated</span><strong>2026-05-28</strong></div></section>
   <section class="summary">
@@ -105,6 +148,35 @@
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future checker detect risky PRDs without discovery evidence?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-001-FR01</code></td><td>Add a Product Discovery Validation reference protocol with triggers, non-triggers, methods, evidence ladder, assumptions, interview guidance, Discovery Summary format, recommendations, promotion path, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-001-FR02</code></td><td>Update Workflow Selection and Idea-to-PRD so worth-building uncertainty routes to Product Discovery Validation before PRD shaping.</td><td>P0</td><td>Keep advisory.</td></tr><tr><td><code>PRD-001-FR03</code></td><td>Add a minimal Discovery Evidence bridge to the PRD template.</td><td>P0</td><td>Not a full report requirement.</td></tr><tr><td><code>PRD-001-FR04</code></td><td>Update the workbook and beginner guides to teach discovery validation prompts and boundaries.</td><td>P0</td><td>Beginner-facing.</td></tr><tr><td><code>PRD-001-FR05</code></td><td>Update the file inventory to include the new protocol.</td><td>P0</td><td>Maintains discoverability.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-001-product-discovery-validation.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-001-product-discovery-validation.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-001-FR01`</textarea></td><td><textarea data-cockpit-cell>Protocol file exists with required sections and guardrails.</textarea></td><td><textarea data-cockpit-cell>`validate-memory.sh`</textarea></td><td><textarea data-cockpit-cell>Read protocol.</textarea></td><td><textarea data-cockpit-cell>none</textarea></td><td><textarea data-cockpit-cell>bead closeout</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-001-FR02`</textarea></td><td><textarea data-cockpit-cell>Workflow docs reference discovery before PRD shaping for worth-building uncertainty.</textarea></td><td><textarea data-cockpit-cell>`workflow-check.py`</textarea></td><td><textarea data-cockpit-cell>Read workflow hooks.</textarea></td><td><textarea data-cockpit-cell>none</textarea></td><td><textarea data-cockpit-cell>bead closeout</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-001-FR03`</textarea></td><td><textarea data-cockpit-cell>PRD template has lightweight Discovery Evidence fields.</textarea></td><td><textarea data-cockpit-cell>`validate-memory.sh`</textarea></td><td><textarea data-cockpit-cell>Inspect template.</textarea></td><td><textarea data-cockpit-cell>none</textarea></td><td><textarea data-cockpit-cell>bead closeout</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-001-FR04`</textarea></td><td><textarea data-cockpit-cell>Beginner docs include discovery prompts and boundaries.</textarea></td><td><textarea data-cockpit-cell>`version-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect guide sections.</textarea></td><td><textarea data-cockpit-cell>none</textarea></td><td><textarea data-cockpit-cell>bead closeout</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-001-FR05`</textarea></td><td><textarea data-cockpit-cell>File inventory includes new protocol.</textarea></td><td><textarea data-cockpit-cell>`file-inventory.py --check`</textarea></td><td><textarea data-cockpit-cell>Inspect inventory.</textarea></td><td><textarea data-cockpit-cell>none</textarea></td><td><textarea data-cockpit-cell>bead closeout</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-001-product-discovery-validation">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-001-product-discovery-validation" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-001-FR01` | Protocol file exists with required sections and guardrails. | `validate-memory.sh` | Read protocol. | none | bead closeout |
+| `PRD-001-FR02` | Workflow docs reference discovery before PRD shaping for worth-building uncertainty. | `workflow-check.py` | Read workflow hooks. | none | bead closeout |
+| `PRD-001-FR03` | PRD template has lightweight Discovery Evidence fields. | `validate-memory.sh` | Inspect template. | none | bead closeout |
+| `PRD-001-FR04` | Beginner docs include discovery prompts and boundaries. | `version-check.py` | Inspect guide sections. | none | bead closeout |
+| `PRD-001-FR05` | File inventory includes new protocol. | `file-inventory.py --check` | Inspect inventory. | none | bead closeout |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Auth: none</li><li>Payments: none</li><li>User data: discovery guidance may mention user interviews and sensitive inputs</li><li>Uploads: none</li><li>External services: research links only</li><li>Secrets: explicit warning required</li><li>Destructive actions: none</li></ul>
@@ -185,6 +257,46 @@
     </nav>
   </div>
 </main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
 
 </body>
 </html>

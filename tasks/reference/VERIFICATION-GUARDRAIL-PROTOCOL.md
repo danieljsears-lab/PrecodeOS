@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.10
 Last updated: 2026-06-14
 
 ## Purpose
@@ -101,7 +101,7 @@ Stable-fix eligibility requires recorded proof, not just a declared check. When 
 
 Ralph can reduce false-done risk by rerunning validators and recording failures, but a passing Ralph summary is still not acceptance. The closeout and review decision must name the evidence that proves the bead's done-when target.
 
-Adaptive-depth metadata should raise verification expectations when risk rises. `high-risk` and `multi-system` beads should usually include manual, integration, browser, or external evidence; `human-only` beads should name the human approval or manual action; `bounded-afk` beads need bounded files in play, explicit checks, and stop conditions.
+Adaptive-depth metadata should raise verification expectations when risk rises. `high-risk` and `multi-system` beads should usually include manual, integration, browser, or external evidence; `human-only` beads should name the human approval or manual action; `bounded-afk` beads need bounded files in play, explicit checks, and stop conditions. If `python3 scripts/bead-depth-check.py` warns about weak proof, do not accept the bead from static validation alone unless the bead records why static proof is enough for the actual risk.
 
 `python3 scripts/files-in-play-check.py` is an advisory guardrail that compares current Git changes to the active bead `files_in_play`. Out-of-scope warnings should be resolved by classifying each changed path as generated evidence, current-bead work that needs explicit scope approval, follow-up bead work, or user-owned revert work before acceptance.
 

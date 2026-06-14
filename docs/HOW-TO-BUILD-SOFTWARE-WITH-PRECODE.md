@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.27
+Document version: v0.1.28
 Last updated: 2026-06-14
 
 ## Start Here: You Are Not Just Prompting
@@ -170,7 +170,7 @@ Traditional software teams split work across roles. With Precode and AI agents, 
 | Product manager | The team builds the right thing for the right user. | PRDs, non-goals, before/after user moments, acceptance criteria. |
 | Designer | The experience makes sense to a real person. | Screenshots, user flows, manual verification, design review notes. |
 | Engineer | The code is correct, maintainable, and scoped. | Active bead, files in play, implementation checks, closeout evidence. |
-| Architect | The system shape can handle risk and future change. | Architecture docs, system design pattern guidance, project context. |
+| Architect | The system shape can handle risk and future change. | Architecture docs, system design pattern guidance, project context, and the simplest direct shape when no pattern is needed. |
 | QA | Done means proven, not guessed. | Recorded checks, browser checks, manual verification, review decision. |
 | DevOps | Releases, secrets, dashboards, and production are safe. | Deployment approval, external setup notes, scheduled audits, rollback thinking. |
 
@@ -527,6 +527,10 @@ Do not deploy, migrate, push, merge, change secrets, or update dashboards. First
 
 ```text
 Use Release Readiness before shipping. Show the smoke path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, and post-release follow-up. Do not treat this as approval to deploy.
+```
+
+```text
+Prepare a Release Candidate Evidence Profile before any release decision. Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state. Do not treat ready for human release decision as release approval.
 ```
 
 ## How To Know If Work Is Actually Done

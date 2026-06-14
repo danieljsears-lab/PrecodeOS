@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-29
+Document version: v0.1.5
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -41,6 +41,22 @@ Start with these defaults:
 | Feature needs meaningful internal logic, cross-layer behavior, or repeatable business rules | Deep module with interface-first design | The human keeps the codebase shape in mind while the agent can implement internals behind a stable boundary. | `ARCHITECTURE.md`, `PROJECT-CONTEXT.md`, or PRD | "Define the public interface, behavior contract, and test boundary before coding internals." | Tests exercise the module through its public interface; callers do not depend on scattered helper details. |
 
 If no row fits, stop and ask what shape the feature wants before implementation.
+
+## Beginner Situation Defaults
+
+Use the simpler shape unless the work has real repetition, risk, external dependency, sensitive data, or workflow state.
+
+| Beginner situation | Default shape | Example | Owner file |
+|---|---|---|---|
+| "Change this copy, spacing, color, or one local interaction." | Direct change | Rename a button, adjust a small layout, or fix one visible typo. | active bead |
+| "Connect this feature to a provider or outside system." | Adapter or facade | Send email, call Stripe, receive a webhook, or use an AI provider. | `API.md`, `ARCHITECTURE.md`, or `PROJECT-CONTEXT.md` |
+| "Users move through steps or something can be pending, approved, rejected, blocked, or complete." | State flow | Intake review, onboarding wizard, approval queue, or status change. | `ARCHITECTURE.md`, `USER-FLOWS.md`, or PRD |
+| "The app chooses between rules, modes, prices, routes, or providers." | Strategy-style boundary | Pricing rule, model/provider choice, routing policy, or feature mode. | `ARCHITECTURE.md` or `PROJECT-CONTEXT.md` |
+| "We may need to explain who did what later." | Audit trail | Billing action, permission change, approval decision, or irreversible change. | `DATA-MODELS.md`, `SECURITY.md`, or `ARCHITECTURE.md` |
+| "The work touches login, roles, private data, uploads, billing, or security settings." | Auth/access boundary | Admin-only screen, private file access, role permission, or billing gate. | `SECURITY.md` and `ARCHITECTURE.md` |
+| "There is meaningful internal logic that callers should not know about." | Deep module with interface-first design | Matching engine, scoring logic, import parser, or repeatable business rule. | `ARCHITECTURE.md`, `PROJECT-CONTEXT.md`, or PRD |
+
+Weak words like "AI", "auth", "step", "policy", or "rule" are not enough by themselves to force a pattern. Ask what risk the word represents, then choose the smallest shape that keeps that risk visible.
 
 ## Pattern Families In Plain English
 

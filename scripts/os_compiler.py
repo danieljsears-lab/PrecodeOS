@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.26
+# Version: v0.1.28
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 from collections import Counter
-from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from fnmatch import fnmatch
 import json
@@ -22,12 +21,40 @@ from os_parser import (
     colon_bullets,
     extract_anchor,
     extract_contract_values,
-    first_bullet,
     read_text,
-    split_frontmatter,
     strip_inline_code,
 )
+from precode_outputs import (
+    progress_payload,
+    render_memory_index_markdown,
+    render_progress_markdown,
+    write_compiled_sidecars,
+    write_json,
+)
 from precode_routing import next_step_guidance
+from precode_state import (
+    BeadRecord,
+    bead_paths,
+    goal_frame_candidate_paths,
+    heading_title,
+    latest_by_command,
+    load_jsonl,
+    int_or_none,
+    normalize_bool,
+    normalize_inline_status_value,
+    normalize_list,
+    normalize_optional,
+    normalize_status,
+    number_or_none,
+    parse_check_command,
+    parse_next_bead_reference,
+    read_bead,
+    read_todo_state,
+    rel_path,
+    repo_root,
+    run_git,
+    split_list_value,
+)
 
 
 APP_DIR = "app"
@@ -42,7 +69,6 @@ ADAPTER_DOCS = [
     "adapters/ANTIGRAVITY.md",
     "adapters/CURSOR.md",
 ]
-FRONTMATTER_EMPTY_MARKERS = {"", "none", "n/a", "na", "null", "not applicable"}
 PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "fail", "failed", "needs_info", "manual_testing"}
 APPROVED_MARKERS = ("accepted", "approve", "approved")
 VERIFICATION_TIERS = {"static", "unit", "integration", "browser", "manual", "external"}
@@ -385,6 +411,49 @@ PATTERN_TERM_GROUPS = {
         "spacing",
     },
 }
+PATTERN_WEAK_TERMS = {
+    "external_service": {"ai"},
+    "state_flow": {"step"},
+    "strategy": {"mode", "provider", "rule", "policy"},
+    "auth_access": {"auth", "access", "security"},
+}
+PATTERN_BEGINNER_DEFAULTS = [
+    {
+        "situation": "one-off copy, layout, styling, or small local behavior",
+        "default_shape": "direct change",
+        "owner_file": "active bead",
+    },
+    {
+        "situation": "external provider, API, webhook, email, payments, or AI service",
+        "default_shape": "adapter or facade",
+        "owner_file": "API.md, ARCHITECTURE.md, or PROJECT-CONTEXT.md",
+    },
+    {
+        "situation": "steps, approvals, statuses, blocked states, queues, or wizards",
+        "default_shape": "state flow",
+        "owner_file": "ARCHITECTURE.md, USER-FLOWS.md, or PRD",
+    },
+    {
+        "situation": "modes, pricing rules, routing rules, policies, or provider choices",
+        "default_shape": "strategy-style boundary",
+        "owner_file": "ARCHITECTURE.md or PROJECT-CONTEXT.md",
+    },
+    {
+        "situation": "important action history or irreversible decisions",
+        "default_shape": "audit trail",
+        "owner_file": "DATA-MODELS.md, SECURITY.md, or ARCHITECTURE.md",
+    },
+    {
+        "situation": "login, roles, permissions, private data, uploads, billing, or security config",
+        "default_shape": "auth/access boundary",
+        "owner_file": "SECURITY.md and ARCHITECTURE.md",
+    },
+    {
+        "situation": "meaningful internal logic, cross-layer behavior, or repeatable business rules",
+        "default_shape": "deep module with interface-first design",
+        "owner_file": "ARCHITECTURE.md, PROJECT-CONTEXT.md, or PRD",
+    },
+]
 PATTERN_NAME_TERMS = {
     "factory",
     "builder pattern",
@@ -446,305 +515,6 @@ GOAL_FRAME_TASKLIKE_TERMS = {
     "todo",
 }
 
-
-@dataclass
-class BeadRecord:
-    rel_path: str
-    title: str
-    bead_id: str
-    status: str
-    execution_mode: str
-    bead_kind: str
-    primary_authority: str
-    depends_on: list[str]
-    parent_prd: str
-    requirement_ids: list[str]
-    files_in_play: list[str]
-    checks: list[str]
-    verification_type: list[str]
-    delegation_mode: str
-    test_strategy: str
-    review_context: str
-    complexity: str
-    required_planning_depth: str
-    autonomy_level: str
-    run_contract: dict[str, Any]
-    closeout: dict[str, str]
-    handback: str
-    frontmatter: dict[str, Any]
-    sections: dict[str, str]
-
-
-def repo_root() -> Path:
-    return Path(__file__).resolve().parents[1]
-
-
-def rel_path(path: Path, root: Path) -> str:
-    return path.relative_to(root).as_posix()
-
-
-def normalize_status(value: str) -> str:
-    return value.lower().strip().replace("-", "_").replace(" ", "_")
-
-
-def normalize_optional(value: str | None) -> str:
-    cleaned = strip_inline_code(value or "")
-    return "" if cleaned.lower() in FRONTMATTER_EMPTY_MARKERS else cleaned
-
-
-def normalize_list(items: list[Any] | None) -> list[str]:
-    values: list[str] = []
-    for item in items or []:
-        value = strip_inline_code(str(item))
-        if not value or value.lower() in FRONTMATTER_EMPTY_MARKERS:
-            continue
-        values.append(value)
-    return values
-
-
-def split_list_value(value: Any) -> list[str]:
-    if isinstance(value, list):
-        return normalize_list(value)
-    text = strip_inline_code(str(value or ""))
-    if not text or text.lower() in FRONTMATTER_EMPTY_MARKERS:
-        return []
-    if "\n" in text:
-        return normalize_list([line.strip().removeprefix("-").strip() for line in text.splitlines()])
-    return normalize_list([item.strip() for item in re.split(r",|;", text)])
-
-
-def normalize_bool(value: Any) -> bool:
-    if isinstance(value, bool):
-        return value
-    return str(value or "").strip().lower() in {"true", "yes", "required", "enabled"}
-
-
-def number_or_none(value: Any) -> float | None:
-    if value is None or value == "":
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    try:
-        return float(str(value))
-    except ValueError:
-        return None
-
-
-def int_or_none(value: Any) -> int | None:
-    number = number_or_none(value)
-    return int(number) if number is not None else None
-
-
-def normalize_inline_status_value(value: str) -> str:
-    if value.startswith("not needed while status is `") and not value.endswith("`"):
-        return value + "`"
-    return value
-
-
-def heading_title(text: str) -> str:
-    _, body = split_frontmatter(text)
-    for line in body.splitlines():
-        if line.startswith("# "):
-            return line[2:].strip()
-    return ""
-
-
-def parse_next_bead_reference(value: str, root: Path) -> str | None:
-    if not value:
-        return None
-
-    path_match = re.search(r"`?(tasks/beads/[^`\s)]+\.md)`?", value)
-    if path_match:
-        candidate = path_match.group(1)
-        if (root / candidate).is_file():
-            return candidate
-
-    id_match = re.search(r"\b(B\d{3})\b", value)
-    if not id_match:
-        return None
-
-    bead_id = id_match.group(1).lower()
-    matches = [
-        path for path in (root / "tasks" / "beads").glob("*.md")
-        if path.name.lower().startswith(f"{bead_id}-")
-    ]
-    if not matches:
-        return None
-    return rel_path(sorted(matches)[0], root)
-
-
-def bead_paths(root: Path) -> list[Path]:
-    return sorted(path for path in (root / "tasks" / "beads").glob("*.md") if path.name != "BEAD-SCHEMA.md")
-
-
-def parse_closeout_values(section: str) -> dict[str, str]:
-    return colon_bullets(section)
-
-
-def normalize_run_contract(raw: Any, section: str, bead_defaults: dict[str, Any]) -> dict[str, Any]:
-    section_values = colon_bullets(section)
-    data = raw if isinstance(raw, dict) else {}
-
-    def field(name: str, *aliases: str) -> Any:
-        for key in (name, *aliases):
-            if key in data:
-                return data.get(key)
-            normalized = re.sub(r"[^a-z0-9]+", "_", key.strip().lower()).strip("_")
-            if normalized in section_values:
-                return section_values.get(normalized)
-        return None
-
-    allowed_paths = split_list_value(field("allowed_paths", "allowed files", "allowed actions")) or list(
-        bead_defaults.get("files_in_play") or []
-    )
-    proof_needed = split_list_value(field("proof_needed", "proof lanes", "proof required"))
-    allowed_tool_classes = split_list_value(field("allowed_tool_classes", "allowed tool classes"))
-    approval_required_before = split_list_value(field("approval_required_before", "approval gates"))
-    stop_if = split_list_value(field("stop_if", "stop conditions")) or split_list_value(bead_defaults.get("stop_if"))
-    forbidden_actions = split_list_value(field("forbidden_actions", "forbidden commands", "forbidden"))
-
-    required_raw = field("required")
-    required = normalize_bool(required_raw) if required_raw is not None else False
-
-    has_contract = bool(data or section.strip() or required or proof_needed or allowed_tool_classes or approval_required_before)
-    return {
-        "present": has_contract,
-        "required": required,
-        "required_reasons": [],
-        "allowed_paths": allowed_paths,
-        "allowed_tool_classes": allowed_tool_classes,
-        "forbidden_actions": forbidden_actions,
-        "approval_required_before": approval_required_before,
-        "proof_needed": [item.lower() for item in proof_needed],
-        "stop_if": stop_if,
-        "rollback_or_blocked_escape": normalize_optional(
-            str(field("rollback_or_blocked_escape", "rollback", "blocked escape") or "")
-        ),
-        "expires_when": normalize_optional(str(field("expires_when", "expiration", "lease expires when") or "")),
-        "advisory_only": True,
-    }
-
-
-def read_bead(path: Path, root: Path) -> BeadRecord:
-    text = read_text(path)
-    doc = MarkdownDocument.load(path)
-    state_values = colon_bullets(doc.sections.get("State", ""))
-
-    bead_id = normalize_optional(str(doc.frontmatter.get("bead_id") or state_values.get("id") or path.stem.split("-", 1)[0]))
-    status = normalize_status(
-        normalize_optional(str(doc.frontmatter.get("status") or state_values.get("status") or "missing"))
-    )
-    execution_mode = normalize_optional(str(doc.frontmatter.get("execution_mode") or state_values.get("execution_mode") or ""))
-    bead_kind = normalize_optional(str(doc.frontmatter.get("bead_kind") or "implementation")) or "implementation"
-    primary_authority = normalize_optional(
-        str(doc.frontmatter.get("primary_authority") or first_bullet(doc.sections.get("Primary Authority", "")) or "")
-    )
-    depends_on = normalize_list(doc.frontmatter.get("depends_on")) or normalize_list(bullet_items(doc.sections.get("Depends On", "")))
-    parent_prd = normalize_optional(
-        str(doc.frontmatter.get("parent_prd") or first_bullet(doc.sections.get("Parent PRD", "")) or "")
-    )
-    requirement_ids = normalize_list(doc.frontmatter.get("requirement_ids")) or normalize_list(
-        bullet_items(doc.sections.get("Requirement IDs", ""))
-    )
-    files_in_play = normalize_list(doc.frontmatter.get("files_in_play")) or normalize_list(
-        bullet_items(doc.sections.get("Files In Play", ""))
-    )
-    checks = normalize_list(doc.frontmatter.get("checks")) or normalize_list(bullet_items(doc.sections.get("Checks", "")))
-    verification_type = normalize_list(doc.frontmatter.get("verification_type")) or normalize_list(
-        bullet_items(doc.sections.get("Verification Type", ""))
-    )
-    delegation_mode = normalize_optional(
-        str(doc.frontmatter.get("delegation_mode") or first_bullet(doc.sections.get("Delegation Mode", "")) or "")
-    )
-    test_strategy = normalize_optional(
-        str(doc.frontmatter.get("test_strategy") or first_bullet(doc.sections.get("Test Strategy", "")) or "")
-    )
-    review_context = normalize_optional(
-        str(doc.frontmatter.get("review_context") or first_bullet(doc.sections.get("Review Context", "")) or "")
-    )
-    complexity = normalize_optional(
-        str(doc.frontmatter.get("complexity") or first_bullet(doc.sections.get("Complexity", "")) or "")
-    )
-    required_planning_depth = normalize_optional(
-        str(
-            doc.frontmatter.get("required_planning_depth")
-            or first_bullet(doc.sections.get("Required Planning Depth", ""))
-            or ""
-        )
-    )
-    autonomy_level = normalize_optional(
-        str(doc.frontmatter.get("autonomy_level") or first_bullet(doc.sections.get("Autonomy Level", "")) or "")
-    )
-    run_contract = normalize_run_contract(
-        doc.frontmatter.get("run_contract"),
-        doc.sections.get("Run Contract", ""),
-        {
-            "files_in_play": files_in_play,
-            "stop_if": doc.sections.get("Stop If", ""),
-        },
-    )
-
-    return BeadRecord(
-        rel_path=rel_path(path, root),
-        title=heading_title(text),
-        bead_id=bead_id,
-        status=status,
-        execution_mode=execution_mode,
-        bead_kind=bead_kind,
-        primary_authority=primary_authority,
-        depends_on=depends_on,
-        parent_prd=parent_prd,
-        requirement_ids=requirement_ids,
-        files_in_play=files_in_play,
-        checks=checks,
-        verification_type=verification_type,
-        delegation_mode=delegation_mode,
-        test_strategy=test_strategy,
-        review_context=review_context,
-        complexity=complexity,
-        required_planning_depth=required_planning_depth,
-        autonomy_level=autonomy_level,
-        run_contract=run_contract,
-        closeout=parse_closeout_values(doc.sections.get("Closeout Evidence", "")),
-        handback=doc.sections.get("Handback", ""),
-        frontmatter=doc.frontmatter,
-        sections=doc.sections,
-    )
-
-
-def read_todo_state(root: Path) -> dict[str, Any]:
-    todo_path = root / "tasks" / "todo.md"
-    doc = MarkdownDocument.load(todo_path)
-    current_bead = normalize_optional(
-        str(doc.frontmatter.get("current_bead") or first_bullet(doc.sections.get("Current Bead", "")) or "")
-    )
-    primary_authority = normalize_optional(
-        str(doc.frontmatter.get("primary_authority") or first_bullet(doc.sections.get("Primary Authority File", "")) or "")
-    )
-    state_values = colon_bullets(doc.sections.get("Current Bead", ""))
-    return {
-        "path": "tasks/todo.md",
-        "frontmatter": doc.frontmatter,
-        "sections": doc.sections,
-        "current_bead": current_bead,
-        "current_state": normalize_status(str(doc.frontmatter.get("current_state") or state_values.get("state") or "")),
-        "build_lane": normalize_optional(str(doc.frontmatter.get("build_lane") or state_values.get("build_lane") or "")),
-        "active_feature_window": normalize_optional(
-            str(doc.frontmatter.get("active_feature_window") or state_values.get("active_feature_window") or "")
-        ),
-        "primary_authority": primary_authority,
-    }
-
-
-def goal_frame_candidate_paths(root: Path) -> list[Path]:
-    paths: list[Path] = []
-    for rel in ("PRODUCT.md", "DECISIONS.md"):
-        path = root / rel
-        if path.is_file():
-            paths.append(path)
-    paths.extend(sorted((root / "tasks" / "prds").glob("*.md")))
-    paths.extend(bead_paths(root))
-    return paths
 
 
 def normalize_goal_frame_status(value: str) -> str:
@@ -880,56 +650,6 @@ def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str,
             "generated_report_warning": "Goal Frame summaries are generated evidence only; they must not choose tasks, approve PRDs, activate beads, or override active memory.",
         },
     }
-
-
-def load_jsonl(path: Path) -> list[dict[str, Any]]:
-    if not path.is_file():
-        return []
-    rows: list[dict[str, Any]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        try:
-            rows.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-    return rows
-
-
-def run_git(args: list[str], root: Path) -> str:
-    result = subprocess.run(
-        ["git", *args],
-        cwd=root,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    return result.stdout.strip()
-
-
-def parse_check_command(raw: str) -> dict[str, str]:
-    cwd = "."
-    cwd_match = re.search(r"--cwd\s+([^\s]+)", raw)
-    if cwd_match:
-        cwd = cwd_match.group(1)
-
-    command = raw
-    if " -- " in raw:
-        command = raw.split(" -- ", 1)[1]
-    return {"command": command.strip(), "cwd": cwd, "source": raw.strip()}
-
-
-def latest_by_command(rows: list[dict[str, Any]], bead: str | None) -> dict[tuple[str, str], dict[str, Any]]:
-    latest: dict[tuple[str, str], dict[str, Any]] = {}
-    for row in rows:
-        if bead and row.get("bead") != bead:
-            continue
-        command = str(row.get("command") or "")
-        cwd = str(row.get("cwd") or ".")
-        if command:
-            latest[(command, cwd)] = row
-            latest[(command, ".")] = row
-    return latest
 
 
 def check_rows_for_bead(bead: BeadRecord, latest: dict[tuple[str, str], dict[str, Any]]) -> list[dict[str, Any]]:
@@ -1696,6 +1416,26 @@ def pattern_matches(text: str) -> dict[str, list[str]]:
     return matches
 
 
+def actionable_pattern_matches(matches: dict[str, list[str]]) -> dict[str, list[str]]:
+    actionable: dict[str, list[str]] = {}
+    for group, terms in matches.items():
+        weak_terms = PATTERN_WEAK_TERMS.get(group, set())
+        strong_terms = [term for term in terms if term not in weak_terms]
+        if strong_terms:
+            actionable[group] = strong_terms
+    return actionable
+
+
+def weak_pattern_matches(matches: dict[str, list[str]]) -> dict[str, list[str]]:
+    weak: dict[str, list[str]] = {}
+    for group, terms in matches.items():
+        weak_terms = PATTERN_WEAK_TERMS.get(group, set())
+        found = [term for term in terms if term in weak_terms]
+        if found and group not in actionable_pattern_matches(matches):
+            weak[group] = found
+    return weak
+
+
 def recommended_pattern_shape(matches: dict[str, list[str]], current_bead: BeadRecord | None) -> tuple[str, str, list[str]]:
     owner_hints: list[str] = []
     if "auth_access" in matches:
@@ -1776,19 +1516,21 @@ def system_design_pattern_guidance(
     combined_text = "\n".join([active_text, bead_text])
     lowered = combined_text.lower()
     matches = pattern_matches(combined_text)
-    likely_shape, recommendation, owner_hints = recommended_pattern_shape(matches, current_bead)
+    actionable_matches = actionable_pattern_matches(matches)
+    weak_matches = weak_pattern_matches(matches)
+    likely_shape, recommendation, owner_hints = recommended_pattern_shape(actionable_matches, current_bead)
 
     if current_bead:
         authority = current_bead.primary_authority
         code_files = [item for item in current_bead.files_in_play if Path(item).suffix in CODE_EXTENSIONS]
         broad_architecture_terms = any(term in lowered for term in ("architecture", "system design", "state machine", "adapter", "facade", "strategy", "provider"))
-        if ("external_service" in matches or "auth_access" in matches) and not any(owner in authority for owner in ("API.md", "ARCHITECTURE.md", "SECURITY.md", "PROJECT-CONTEXT.md", "tasks/prds/")):
+        if ("external_service" in actionable_matches or "auth_access" in actionable_matches) and not any(owner in authority for owner in ("API.md", "ARCHITECTURE.md", "SECURITY.md", "PROJECT-CONTEXT.md", "tasks/prds/")):
             warnings.append(f"{current_bead.rel_path} mentions integration or access-boundary work without an obvious owner file for the boundary")
-        if "state_flow" in matches and not any(owner in authority for owner in ("ARCHITECTURE.md", "USER-FLOWS.md", "tasks/prds/")):
+        if "state_flow" in actionable_matches and not any(owner in authority for owner in ("ARCHITECTURE.md", "USER-FLOWS.md", "tasks/prds/")):
             warnings.append(f"{current_bead.rel_path} mentions statuses, steps, or approvals without a state-flow owner")
-        if "strategy" in matches and not any(owner in authority for owner in ("ARCHITECTURE.md", "PROJECT-CONTEXT.md", "tasks/prds/")):
+        if "strategy" in actionable_matches and not any(owner in authority for owner in ("ARCHITECTURE.md", "PROJECT-CONTEXT.md", "tasks/prds/")):
             warnings.append(f"{current_bead.rel_path} mentions modes, providers, or rules without a strategy/configuration owner")
-        if "audit_trail" in matches and not any(owner in authority for owner in ("DATA-MODELS.md", "SECURITY.md", "ARCHITECTURE.md", "tasks/prds/")):
+        if "audit_trail" in actionable_matches and not any(owner in authority for owner in ("DATA-MODELS.md", "SECURITY.md", "ARCHITECTURE.md", "tasks/prds/")):
             warnings.append(f"{current_bead.rel_path} mentions audit/history needs without a data or security owner")
         if broad_architecture_terms and current_bead.bead_kind.lower().strip() in IMPLEMENTATION_BEAD_KINDS and not any(owner in authority for owner in ("ARCHITECTURE.md", "PROJECT-CONTEXT.md", "tasks/prds/")):
             warnings.append(f"{current_bead.rel_path} may be doing architecture-shaping work inside an implementation bead")
@@ -1811,6 +1553,16 @@ def system_design_pattern_guidance(
         "simpler_alternative": "Build directly inside the existing project convention when the work is one-off, low-risk, and has no repeated variation.",
         "owner_file_hints": owner_hints,
         "detected_terms": matches,
+        "actionable_detected_terms": actionable_matches,
+        "weak_detected_terms": weak_matches,
+        "confidence_note": "Weak terms such as ai, auth, step, policy, and rule are review prompts only unless paired with a concrete provider, workflow state, access boundary, or interchangeable rule.",
+        "beginner_review_questions": [
+            "Can this stay a direct change using existing conventions?",
+            "What risk would a named pattern actually reduce?",
+            "Which owner file records the boundary if the choice affects more than this bead?",
+            "What evidence will show the shape worked without turning generated guidance into authority?",
+        ],
+        "beginner_situation_defaults": PATTERN_BEGINNER_DEFAULTS,
         "warning_count": len(warnings),
         "next_human_review_prompt": "Ask: Is this simple enough to build directly, or does it need an adapter, state flow, strategy boundary, access boundary, or audit trail?",
         "generated_report_warning": "Generated pattern guidance is evidence only; it must not choose tasks, approve transitions, or replace PRDs, beads, architecture docs, or decisions.",
@@ -2549,6 +2301,7 @@ def follow_up_suggestion(bead: BeadRecord, close_state: dict[str, Any]) -> str:
 
 def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
     warnings: list[str] = []
+    decision_reasons: list[str] = []
     if not bead:
         return {
             "status": "warning",
@@ -2559,6 +2312,8 @@ def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
                 "why_this_matters": "Precode needs one active bead before it can tell whether planning is too light or too heavy.",
                 "stop_if": "Stop if the agent cannot name the active bead.",
                 "approval_prompt": "Ask the agent to repair active state before continuing.",
+                "shortest_next_action": "Repair active state so one active bead is visible.",
+                "decision_reasons": ["no active bead is available for depth review"],
                 "advisory_only": True,
             },
         }
@@ -2610,47 +2365,81 @@ def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
         "required_planning_depth": {"value": inferred_depth, "used": not bool(bead.required_planning_depth)},
         "autonomy_level": {"value": inferred_autonomy, "used": not bool(bead.autonomy_level)},
     }
+    depth_order = ["none", "brief", "PRD", "PRD+architecture", "PRD+architecture+test-plan"]
+    depth_rank = {value: index for index, value in enumerate(depth_order)}
+    declared_depth_rank = depth_rank.get(required_depth, -1)
+    inferred_depth_rank = depth_rank.get(inferred_depth, -1)
+    explicit_depth = bool(bead.required_planning_depth)
+    explicit_complexity = bool(bead.complexity)
+    explicit_autonomy = bool(bead.autonomy_level)
 
     if bead.complexity and bead.complexity not in COMPLEXITY_LEVELS:
         warnings.append(f"unknown complexity `{bead.complexity}`")
+        decision_reasons.append("the declared complexity is not one of the schema values")
     if bead.required_planning_depth and bead.required_planning_depth not in REQUIRED_PLANNING_DEPTHS:
         warnings.append(f"unknown required_planning_depth `{bead.required_planning_depth}`")
+        decision_reasons.append("the declared planning depth is not one of the schema values")
     if bead.autonomy_level and bead.autonomy_level not in AUTONOMY_LEVELS:
         warnings.append(f"unknown autonomy_level `{bead.autonomy_level}`")
+        decision_reasons.append("the declared autonomy level is not one of the schema values")
 
     if bead.complexity == "trivial" and file_count > 5:
         warnings.append("trivial bead has more than 5 files in play; consider narrow or split scope")
+        decision_reasons.append("declared trivial scope is wider than the files-in-play count suggests")
+    if explicit_complexity and complexity in {"trivial", "narrow"} and explicit_depth and declared_depth_rank >= depth_rank["PRD+architecture"]:
+        warnings.append("tiny or narrow bead appears to carry heavy planning ceremony; lower the depth or explain the risk")
+        decision_reasons.append("low-risk work appears to require PRD+architecture ceremony without visible risk")
+    if explicit_complexity and complexity == "multi-system" and file_count <= 5 and not sensitive_surface:
+        warnings.append("multi-system complexity is declared but files in play look narrow; confirm this is not over-scoped")
+        decision_reasons.append("declared multi-system scope is not obvious from the active bead shape")
+    if explicit_depth and inferred_depth_rank >= 0 and declared_depth_rank >= 0 and declared_depth_rank < inferred_depth_rank:
+        warnings.append(
+            f"declared planning depth `{required_depth}` is lighter than inferred `{inferred_depth}`; add rationale or strengthen planning"
+        )
+        decision_reasons.append("declared planning depth is weaker than the inferred risk")
     if complexity in {"high-risk", "multi-system"}:
         if required_depth in {"", "none", "brief"}:
             warnings.append("high-risk or multi-system bead should require PRD+architecture planning depth or stronger")
+            decision_reasons.append("risky work has weak planning depth")
         if not any(tier in {"integration", "browser", "manual", "external"} for tier in bead.verification_type):
             warnings.append("high-risk or multi-system bead should include runtime, manual, or external verification")
+            decision_reasons.append("risky work lacks stronger verification evidence")
         if not stop_text:
             warnings.append("high-risk or multi-system bead should name stop conditions")
+            decision_reasons.append("risky work has no explicit stop condition")
     if sensitive_surface and required_depth in {"", "none", "brief"}:
         warnings.append("sensitive-surface bead should not use none/brief planning depth without explicit rationale")
+        decision_reasons.append("sensitive-surface work has weak planning depth")
     if autonomy == "bounded-afk":
         if not bead.checks:
             warnings.append("bounded-afk bead needs explicit checks")
+            decision_reasons.append("bounded-AFK work is missing explicit checks")
         if not stop_text:
             warnings.append("bounded-afk bead needs explicit stop conditions")
+            decision_reasons.append("bounded-AFK work is missing stop conditions")
         if file_count > 20:
             warnings.append("bounded-afk bead exceeds the 20-file operating limit")
+            decision_reasons.append("bounded-AFK work spans too many files")
     if autonomy == "human-only":
         gate_text = " ".join([stop_text, bead.handback, bead.closeout.get("blocked_escape", "")]).lower()
         if not any(term in gate_text for term in ("manual", "approval", "human", "user", "dashboard", "external")):
             warnings.append("human-only bead should name the manual gate, approval, or human-owned action")
+            decision_reasons.append("human-only work does not name the human-owned gate")
 
     if warnings:
-        user_decision = "approval needed" if sensitive_surface or autonomy == "human-only" else "ask for proof"
+        user_decision = "approval needed" if sensitive_surface or (autonomy == "human-only" and explicit_autonomy) else "ask for proof"
         summary = "This bead may need clearer planning, proof, or human approval before a beginner should trust it."
         stop_if = "Stop if the agent cannot explain the planning depth, checks, stop conditions, or approval gate in plain English."
         approval_prompt = "Ask the agent what planning or approval is missing before continuing."
+        shortest_next_action = "Explain or fix the first adaptive-depth warning before continuing."
     else:
         user_decision = "continue"
         summary = "The planning depth looks proportionate for this bead."
         stop_if = "Stop if the task grows beyond the named files, risk, or checks."
         approval_prompt = "No extra planning approval is suggested by adaptive depth."
+        shortest_next_action = "Continue inside the active bead and record its declared checks."
+        if any(item["used"] for item in inferred_defaults.values()):
+            decision_reasons.append("missing adaptive-depth fields were inferred for backward compatibility")
 
     return {
         "status": "warning" if warnings else "pass",
@@ -2665,11 +2454,19 @@ def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
             "verification_type": bead.verification_type,
             "sensitive_surface_detected": sensitive_surface,
             "inferred_defaults": inferred_defaults,
+            "inferred_defaults_used": any(item["used"] for item in inferred_defaults.values()),
+            "explicit_fields": {
+                "complexity": explicit_complexity,
+                "required_planning_depth": explicit_depth,
+                "autonomy_level": explicit_autonomy,
+            },
             "plain_english_summary": summary,
             "user_decision": user_decision,
             "why_this_matters": "Adaptive depth keeps tiny work light while asking for more planning and proof when risk rises.",
             "stop_if": stop_if,
             "approval_prompt": approval_prompt,
+            "shortest_next_action": shortest_next_action,
+            "decision_reasons": decision_reasons,
             "advisory_only": True,
         },
     }
@@ -4027,127 +3824,6 @@ def memory_summary(root: Path) -> dict[str, Any]:
     return {"status": "warning" if warnings else "pass", "generated_report_warning": MEMORY_GENERATED_WARNING, "warnings": warnings, "details": details}
 
 
-def render_memory_index_markdown(memory: dict[str, Any]) -> str:
-    details = memory.get("details") if isinstance(memory.get("details"), dict) else {}
-    cards = details.get("cards") if isinstance(details.get("cards"), list) else []
-    warnings = memory.get("warnings") if isinstance(memory.get("warnings"), list) else []
-
-    def cell(value: Any) -> str:
-        return str(value or "missing").replace("|", "\\|")
-
-    def card_table(selected: list[dict[str, Any]]) -> str:
-        rows: list[str] = []
-        for card in selected:
-            if not isinstance(card, dict):
-                continue
-            notes = "; ".join(card.get("warnings") or [])
-            rows.append(
-                "| "
-                + " | ".join(
-                    [
-                        f"`{cell(card.get('path'))}`",
-                        cell(card.get("title")),
-                        cell(card.get("category")),
-                        cell(card.get("freshness")),
-                        cell(card.get("status")),
-                        cell(card.get("authority_owner_if_promoted") or "none"),
-                        cell(notes or "none"),
-                        cell(card.get("summary")),
-                    ]
-                )
-                + " |"
-            )
-        return "\n".join(
-            [
-                "| Card | Title | Category | Freshness | Status | Promotion owner | Warnings | Summary |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- |",
-                *rows,
-            ]
-        ) if rows else "- No matching reviewed memory cards."
-
-    def citation_list(selected: list[dict[str, Any]]) -> str:
-        lines: list[str] = []
-        for card in selected:
-            citation = card.get("citation") if isinstance(card.get("citation"), dict) else {}
-            sources = citation.get("source_pointers") or []
-            source_text = ", ".join(str(source) for source in sources) if sources else "none"
-            lines.append(
-                "- "
-                + f"`{citation.get('path', 'missing')}`: {citation.get('title', 'missing')} "
-                + f"[{citation.get('category', 'missing')}, {citation.get('freshness', 'missing')}, {citation.get('status', 'missing')}] "
-                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}"
-            )
-        return "\n".join(lines) if lines else "- No citations available."
-
-    current_cards = details.get("current_cards") if isinstance(details.get("current_cards"), list) else []
-    promotion_needed_cards = details.get("promotion_needed_cards") if isinstance(details.get("promotion_needed_cards"), list) else []
-    stale_or_superseded_cards = details.get("stale_or_superseded_cards") if isinstance(details.get("stale_or_superseded_cards"), list) else []
-    low_confidence_cards = details.get("low_confidence_cards") if isinstance(details.get("low_confidence_cards"), list) else []
-    glossary_terms = details.get("glossary_terms") if isinstance(details.get("glossary_terms"), list) else []
-
-    return f"""# PrecodeOS -- Memory Index
-<!-- ANCHOR: memory-index -->
-
-> AUTHORITY: Generated index of reviewed Precode filesystem memory cards.
-> NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, bead state, or generated progress state.
-> LOAD_WHEN: Searching or auditing reviewed memory; never as active session memory or a task plan.
-> CLASS: generated
->
-> Generated from reviewed memory cards and `scripts/update-memory-index.py` or `scripts/os-health.py`.
-> Do not use this file as active memory.
-> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-
-Generated at: `{datetime.now(timezone.utc).isoformat()}`
-
-## Reading Rule
-
-Use this index to find reviewed memory cards. Before acting, return to active memory, the active bead, and the primary authority file.
-
-Use this prompt when asking an agent to search memory:
-
-```text
-{details.get('safe_usage_prompt', 'Search reviewed memory, cite matching cards, and treat memory as evidence only.')}
-```
-
-## Summary
-
-- Status: {memory.get('status', 'missing')}
-- Reviewed memory cards: {details.get('card_count', 0)}
-- Project glossary cards: {len(details.get('glossary_terms') or [])}
-- Promotion-needed cards: {len(details.get('promotion_needed') or [])}
-- Stale or superseded cards: {len(details.get('stale_or_superseded') or [])}
-- Generated-evidence warning: {memory.get('generated_report_warning', MEMORY_GENERATED_WARNING)}
-
-## Current Reviewed Cards
-
-{card_table(current_cards)}
-
-## Promotion Needed
-
-{card_table(promotion_needed_cards)}
-
-## Stale, Superseded, Or Archived
-
-{card_table(stale_or_superseded_cards)}
-
-## Low Confidence
-
-{card_table(low_confidence_cards)}
-
-## Project Glossary Cards
-
-{card_table([card for card in cards if isinstance(card, dict) and card.get('category') == 'project_glossary'])}
-
-## Citation List
-
-{citation_list(cards)}
-
-## Warnings
-
-{chr(10).join(f"- {warning}" for warning in warnings) if warnings else "- No first-pass memory warnings."}
-"""
-
-
 def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
     branch = run_git(["rev-parse", "--abbrev-ref", "HEAD"], root) or "unknown"
@@ -4363,553 +4039,3 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "shim_index": compile_shim_index(root),
         "events": events,
     }
-
-
-def write_json(path: Path, payload: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-
-def render_simple_yaml(value: Any, indent: int = 0) -> str:
-    pad = " " * indent
-    if isinstance(value, dict):
-        lines: list[str] = []
-        for key, item in value.items():
-            if isinstance(item, (dict, list)):
-                lines.append(f"{pad}{key}:")
-                lines.append(render_simple_yaml(item, indent + 2))
-            else:
-                lines.append(f"{pad}{key}: {json.dumps(item)}")
-        return "\n".join(lines)
-    if isinstance(value, list):
-        if not value:
-            return f"{pad}[]"
-        lines = []
-        for item in value:
-            if isinstance(item, (dict, list)):
-                lines.append(f"{pad}-")
-                lines.append(render_simple_yaml(item, indent + 2))
-            else:
-                lines.append(f"{pad}- {json.dumps(item)}")
-        return "\n".join(lines)
-    return f"{pad}{json.dumps(value)}"
-
-
-def write_yaml(path: Path, payload: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(render_simple_yaml(payload) + "\n", encoding="utf-8")
-
-
-def write_events_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, separators=(",", ":")) + "\n")
-
-
-def render_handoff_packet(payload: dict[str, Any]) -> str:
-    completion = payload.get("completion_handoff") or {}
-    details = completion.get("details") or {}
-    packet = details.get("handoff_packet") or {}
-    warnings = completion.get("warnings") or []
-
-    def item(name: str) -> str:
-        return str(packet.get(name) or "not recorded")
-
-    return f"""# PrecodeOS -- Handoff Packet
-<!-- ANCHOR: handoff-packet -->
-
-> AUTHORITY: Generated handoff orientation snapshot for the current PrecodeOS session.
-> NOT_AUTHORITY: Active memory, task selection, product decisions, review acceptance, transition approval, implementation plans, or external mutations.
-> LOAD_WHEN: Preparing an agent handoff or reviewing completion state; never as active session memory.
-> CLASS: generated
->
-> Generated from `scripts/os_compiler.py`.
-> Generated by PrecodeOS, created by Dan Sears / Recode.
-> Do not use this file as active memory.
-> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-
-Generated at: `{payload.get('generated_at')}`
-
-## Context Pack
-
-- Active bead: `{item('active bead')}`
-- State: `{item('state')}`
-- Primary authority: `{item('primary authority')}`
-- Next safe action: {item('next safe action')}
-- Generated-report warning: {item('generated-report warning')}
-
-## Done When
-
-{item('done-when')}
-
-## Files In Play
-
-{item('files in play')}
-
-## Out Of Scope
-
-{item('out of scope')}
-
-## Checks
-
-{item('checks')}
-
-## Allowed Actions
-
-{item('allowed actions')}
-
-## Proof Needed
-
-{item('proof needed')}
-
-## Stop Conditions
-
-{item('stop conditions')}
-
-## Open Questions
-
-{item('open questions')}
-
-## Latest Evidence
-
-{item('latest evidence')}
-
-## Blockers
-
-{item('blockers')}
-
-## Completion Warnings
-
-{chr(10).join(f"- {warning}" for warning in warnings) if warnings else "- No first-pass completion or handoff warnings."}
-"""
-
-
-def render_precode_help(payload: dict[str, Any]) -> str:
-    next_step = payload.get("next_step") or {}
-    next_details = next_step.get("details") or {}
-    depth = payload.get("bead_depth") or {}
-    depth_details = depth.get("details") or {}
-    guardrail = payload.get("files_in_play_guardrail") or {}
-    guardrail_details = guardrail.get("details") or {}
-    run_contract = payload.get("run_contract") or {}
-    run_details = run_contract.get("details") or {}
-    goal_frame = payload.get("goal_frame") or {}
-    goal_details = goal_frame.get("details") or {}
-    current_goal = goal_details.get("current") or {}
-    stable_fix = payload.get("stable_fix_eligibility") or {}
-    stable_fix_details = stable_fix.get("details") or {}
-    blockers = next_details.get("blockers") or []
-    load_plan = next_details.get("load_plan") or {}
-    context_footprint = next_details.get("context_footprint") or {}
-
-    return f"""# Precode Help
-<!-- ANCHOR: precode-help -->
-
-> AUTHORITY: Generated next-step guidance for the current PrecodeOS workspace.
-> NOT_AUTHORITY: Active memory, task selection authority, product decisions, implementation plans, review acceptance, bead transition approval, or command approval.
-> LOAD_WHEN: A user wants a quick generated hint about what Precode expects next; never as active session memory.
-> CLASS: generated
->
-> Generated from `scripts/os_compiler.py`.
-> Generated by PrecodeOS, created by Dan Sears / Recode.
-> Do not use this file as active memory.
-> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-
-Generated at: `{payload.get('generated_at')}`
-
-## Next Step
-
-- What to do now: {next_details.get('plain_english_summary', next_details.get('recommended_action', 'repair active state before continuing'))}
-- User decision: `{next_details.get('user_decision', 'repair state')}`
-- Active bead: `{next_details.get('current_bead', 'missing')}`
-- State: `{next_details.get('current_bead_status', 'missing')}`
-- Recommended action: {next_details.get('recommended_action', 'repair active state before continuing')}
-- Action category: `{next_details.get('action_category', 'unknown')}`
-- Single next protocol: `{next_details.get('single_next_protocol', 'not recorded')}`
-- Why not more context: {next_details.get('why_not_more_context', 'Load only what the active bead proves is needed.')}
-- Stop if: {next_details.get('stop_if', 'stop if workflow, scope, evidence, or approval is unclear')}
-- Approval prompt: {next_details.get('approval_prompt', 'No approval prompt compiled.')}
-- Needs review: {next_details.get('needs_review', False)}
-- Needs transition approval: {next_details.get('needs_transition', False)}
-- Next bead: `{next_details.get('next_bead', 'not recorded')}`
-
-## Load Plan
-
-- Router owner: `{load_plan.get('router_owner', 'scripts/next-step.py')}`
-- Required first: `{', '.join(load_plan.get('required_first') or [])}`
-- Then load: `{', '.join(load_plan.get('then_load') or [])}`
-- Single next protocol: `{load_plan.get('single_next_protocol', 'not recorded')}`
-- Why not more context: {load_plan.get('why_not_more_context', 'Load only what the active bead proves is needed.')}
-
-## Context Footprint
-
-- Active memory: `{', '.join(context_footprint.get('active_memory') or [])}`
-- Active bead: `{context_footprint.get('active_bead', 'missing')}`
-- Primary authority: `{context_footprint.get('primary_authority', 'missing')}`
-- Required context: `{', '.join(context_footprint.get('required_context') or [])}`
-- Conditional references: `{', '.join(context_footprint.get('conditional_references') or []) or 'none'}`
-- Generated reports touched: `{', '.join(context_footprint.get('generated_reports_touched') or [])}`
-- Approx document lines: `{context_footprint.get('approx_document_lines', 'unknown')}`
-- Budget rule: {context_footprint.get('budget_rule', 'Prepare a checkpoint, compaction, restart, or handoff around 80% context usage.')}
-
-## Goal Frame
-
-- Status: {current_goal.get('status', 'none')}
-- Owner file: `{current_goal.get('path', 'not recorded')}`
-- Horizon: `{current_goal.get('horizon', 'not recorded')}`
-- Workflow guidance: `{current_goal.get('workflow_guidance', 'not recorded')}`
-- Goal: {current_goal.get('goal', 'not recorded')}
-- Reaffirmation trigger: {current_goal.get('reaffirmation_trigger', 'not recorded')}
-- Advisory warning: {next_details.get('goal_frame_advisory', 'Goal Frames are advisory only.')}
-
-{chr(10).join(f"- Warning: {warning}" for warning in (goal_frame.get('warnings') or [])) if goal_frame.get('warnings') else "- No Goal Frame warnings."}
-
-## Blockers
-
-{chr(10).join(f"- {blocker}" for blocker in blockers) if blockers else "- No compiled next-step blockers."}
-
-## Stable-Fix Eligibility
-
-- Status: {stable_fix.get('status', 'missing')}
-- Classification: `{stable_fix_details.get('classification', 'unknown')}`
-- Eligible: {stable_fix_details.get('eligible', False)}
-- Required route: `{stable_fix_details.get('required_route', 'PRD/bead')}`
-- Advisory only: {stable_fix_details.get('advisory_only', True)}
-- Why this matters: {stable_fix_details.get('why_this_matters', 'Stable-fix eligibility is advisory and does not approve mutation.')}
-
-{chr(10).join(f"- Warning: {warning}" for warning in (stable_fix.get('warnings') or [])) if stable_fix.get('warnings') else "- No stable-fix eligibility warnings."}
-
-## Adaptive Depth
-
-- Status: {depth.get('status', 'missing')}
-- Complexity: `{depth_details.get('complexity', 'unspecified')}`
-- Required planning depth: `{depth_details.get('required_planning_depth', 'unspecified')}`
-- Autonomy level: `{depth_details.get('autonomy_level', 'unspecified')}`
-- User decision: `{depth_details.get('user_decision', 'continue')}`
-- Why this matters: {depth_details.get('why_this_matters', 'Adaptive depth keeps planning proportional to risk.')}
-- Stop if: {depth_details.get('stop_if', 'Stop if risk and planning depth do not match.')}
-
-{chr(10).join(f"- Warning: {warning}" for warning in (depth.get('warnings') or [])) if depth.get('warnings') else "- No adaptive-depth warnings."}
-
-## Files In Play Guardrail
-
-- Status: {guardrail.get('status', 'missing')}
-- Git status available: {guardrail_details.get('git_status_available', False)}
-- Changed paths: {len(guardrail_details.get('changed_paths') or [])}
-- Out-of-scope paths: {len(guardrail_details.get('out_of_scope_paths') or [])}
-- User decision: `{guardrail_details.get('user_decision', 'continue')}`
-- Why this matters: {guardrail_details.get('why_this_matters', 'Files in play keep edits inside the approved bead.')}
-- Stop if: {guardrail_details.get('stop_if', 'Stop if changed paths are outside files_in_play.')}
-
-{chr(10).join(f"- Warning: {warning}" for warning in (guardrail.get('warnings') or [])) if guardrail.get('warnings') else "- No files-in-play guardrail warnings."}
-
-## Run Contract
-
-- Status: {run_contract.get('status', 'missing')}
-- Present: {run_details.get('present', False)}
-- Required: {run_details.get('required', False)}
-- User decision: `{run_details.get('user_decision', 'continue')}`
-- Why this matters: {run_details.get('why_this_matters', 'Run contracts clarify allowed actions and proof needed when risk rises.')}
-- Stop if: {run_details.get('stop_if', 'Stop if allowed actions, proof needed, approval gates, or rollback path are unclear.')}
-
-{chr(10).join(f"- Warning: {warning}" for warning in (run_contract.get('warnings') or [])) if run_contract.get('warnings') else "- No run-contract warnings."}
-"""
-
-
-def markdown_table(rows: list[list[str]]) -> str:
-    if not rows:
-        return ""
-    escaped = [[str(cell).replace("|", "\\|") for cell in row] for row in rows]
-    header = "| " + " | ".join(escaped[0]) + " |"
-    divider = "| " + " | ".join("---" for _ in escaped[0]) + " |"
-    body = ["| " + " | ".join(row) + " |" for row in escaped[1:]]
-    return "\n".join([header, divider, *body])
-
-
-def first_bullets(text: str, limit: int = 4) -> list[str]:
-    items = bullet_items(text)
-    return items[:limit]
-
-
-def progress_payload(payload: dict[str, Any]) -> dict[str, Any]:
-    todo = payload.get("todo") or {}
-    todo_sections = todo.get("sections") or {}
-    current_checks = payload.get("active_bead_checks") or []
-    missing_checks = sum(1 for row in current_checks if row.get("status") == "missing")
-    failing_checks = sum(1 for row in current_checks if row.get("status") == "fail")
-    passing_checks = sum(1 for row in current_checks if row.get("status") == "pass")
-    readiness = payload.get("readiness") or {}
-    promotion = readiness.get("current_promotion") or {}
-    next_step = payload.get("next_step") or {}
-    next_details = next_step.get("details") or {}
-    state = payload.get("state_integrity") or {}
-
-    attention: list[str] = []
-    if missing_checks:
-        attention.append(f"{missing_checks} declared check(s) have no recorded evidence.")
-    if failing_checks:
-        attention.append(f"{failing_checks} declared check(s) are currently failing.")
-    for blocker in (promotion.get("blockers") or [])[:4]:
-        attention.append(str(blocker))
-    for warning in (next_step.get("warnings") or []):
-        text = str(warning)
-        if "adaptive depth" in text:
-            message = "Planning and proof depth need review before continuing."
-        elif "run contract" in text:
-            message = "Run contract details may be needed before this bead is accepted."
-        else:
-            message = text
-        if message not in attention:
-            attention.append(message)
-        if len(attention) >= 7:
-            break
-
-    stale_reports = [
-        str(warning).split(":", 1)[1].strip()
-        for warning in (state.get("warnings") or [])
-        if str(warning).startswith("generated report may be stale relative to latest evidence:")
-        and "PROGRESS.md" not in str(warning)
-    ]
-    if stale_reports:
-        attention.append("Some generated reports may be stale; refresh generated reports before reviewing them.")
-    for warning in (state.get("warnings") or []):
-        text = str(warning)
-        if text.startswith("generated report may be stale relative to latest evidence:"):
-            continue
-        if text not in attention:
-            attention.append(text)
-        if len(attention) >= 8:
-            break
-
-    return {
-        "generated_at": payload.get("generated_at"),
-        "source": "scripts/progress.py or scripts/os-health.py via scripts/os_compiler.py",
-        "current_work": {
-            "current_bead": payload.get("current_bead") or "missing",
-            "status": payload.get("current_bead_status") or "missing",
-            "build_lane": todo.get("build_lane") or "not recorded",
-            "active_feature_window": todo.get("active_feature_window") or "not recorded",
-            "primary_authority": todo.get("primary_authority") or "not recorded",
-            "done_when": first_bullets(str(todo_sections.get("Done When", ""))),
-            "next_step": next_details.get("plain_english_summary", next_details.get("recommended_action", "repair active state before continuing")),
-            "user_decision": next_details.get("user_decision", "repair state"),
-            "stop_if": next_details.get("stop_if", "stop if workflow, scope, evidence, or approval is unclear"),
-        },
-        "completion": {
-            "bead_status_counts": payload.get("bead_status_counts") or {},
-            "beads": [
-                {
-                    "bead_id": bead.get("bead_id") or "",
-                    "title": bead.get("title") or bead.get("rel_path") or "untitled",
-                    "status": bead.get("status") or "missing",
-                    "path": bead.get("rel_path") or "",
-                }
-                for bead in (payload.get("beads") or [])
-            ],
-        },
-        "proof": {
-            "declared_checks": len(current_checks),
-            "passing_checks": passing_checks,
-            "missing_checks": missing_checks,
-            "failing_checks": failing_checks,
-            "checks": current_checks,
-        },
-        "needs_attention": attention,
-        "boundaries": [
-            "Generated reports are evidence only.",
-            "Repair owner files first, then regenerate this report.",
-            "Active memory remains AGENT.md, DECISIONS.md, and tasks/todo.md.",
-        ],
-    }
-
-
-def render_progress_markdown(payload: dict[str, Any]) -> str:
-    progress = progress_payload(payload)
-    current = progress["current_work"]
-    completion = progress["completion"]
-    proof = progress["proof"]
-    counts = completion.get("bead_status_counts") or {}
-    checks = proof.get("checks") or []
-
-    status_rows = [["Status", "Count"]] + [[f"`{status}`", str(count)] for status, count in sorted(counts.items())]
-    bead_rows = [["Bead", "Status", "Path"]] + [
-        [
-            str(bead.get("title") or bead.get("bead_id") or "untitled"),
-            f"`{bead.get('status', 'missing')}`",
-            f"`{bead.get('path', '')}`",
-        ]
-        for bead in completion.get("beads", [])
-    ]
-    check_rows = [["Command", "Status", "Evidence"]] + [
-        [
-            f"`{row.get('command', 'missing')}`",
-            str(row.get("status", "missing")),
-            f"`{row.get('output')}`" if row.get("output") else "missing",
-        ]
-        for row in checks
-    ]
-    done_when = current.get("done_when") or []
-    attention = progress.get("needs_attention") or []
-
-    return f"""# PrecodeOS -- Generated Progress
-<!-- ANCHOR: progress -->
-
-> AUTHORITY: Generated user-facing progress snapshot for the current PrecodeOS workspace.
-> NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, roadmap authority, review acceptance, bead transition approval, or proof by itself.
-> LOAD_WHEN: A user wants a short generated answer to where the work is and what appears complete; never as active session memory.
-> CLASS: generated
->
-> Generated from `scripts/progress.py` or `scripts/os-health.py`.
-> Generated by PrecodeOS, created by Dan Sears / Recode.
-> Do not use this file as active memory.
-> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-
-Generated at: `{progress.get('generated_at')}`
-
-## Where You Are
-
-- Current bead: `{current.get('current_bead')}`
-- State: `{current.get('status')}`
-- Build lane: {current.get('build_lane')}
-- Active feature window: {current.get('active_feature_window')}
-- Primary authority: `{current.get('primary_authority')}`
-- What to do now: {current.get('next_step')}
-- User decision: `{current.get('user_decision')}`
-- Stop if: {current.get('stop_if')}
-
-## Done When
-
-{chr(10).join(f"- {item}" for item in done_when) if done_when else "- No current Done When bullets found."}
-
-## Completion Picture
-
-{markdown_table(status_rows) if len(status_rows) > 1 else "- No bead status counts found."}
-
-{markdown_table(bead_rows) if len(bead_rows) > 1 else "- No beads found."}
-
-## Proof Status
-
-- Declared checks: {proof.get('declared_checks', 0)}
-- Passing checks: {proof.get('passing_checks', 0)}
-- Missing checks: {proof.get('missing_checks', 0)}
-- Failing checks: {proof.get('failing_checks', 0)}
-
-{markdown_table(check_rows) if len(check_rows) > 1 else "- No declared active-bead checks found."}
-
-## Needs Attention
-
-{chr(10).join(f"- {item}" for item in attention) if attention else "- No compiled progress blockers or warnings."}
-
-## Boundaries
-
-- Generated reports are evidence only.
-- Repair owner files first, then regenerate this report.
-- Active memory remains `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-"""
-
-
-def render_work_graph_markdown(payload: dict[str, Any]) -> str:
-    graph = payload.get("work_graph") or {}
-    details = graph.get("details") or {}
-    nodes = details.get("nodes") or []
-    edges = details.get("edges") or []
-    warnings = graph.get("warnings") or []
-    node_counts = details.get("node_counts") or {}
-    edge_counts = details.get("edge_counts") or {}
-
-    node_rows = [["Type", "Count"]] + [[f"`{key}`", str(value)] for key, value in node_counts.items()]
-    edge_rows = [["Relation", "Count"]] + [[f"`{key}`", str(value)] for key, value in edge_counts.items()]
-    bead_rows = [["Bead", "Status", "Kind"]] + [
-        [
-            f"`{item.get('path')}`",
-            f"`{item.get('status', 'missing')}`",
-            f"`{item.get('kind', 'unknown')}`",
-        ]
-        for item in nodes
-        if item.get("type") == "bead"
-    ]
-    relationship_rows = [["Source", "Relation", "Target"]] + [
-        [
-            f"`{item.get('source')}`",
-            f"`{item.get('relation')}`",
-            f"`{item.get('target')}`",
-        ]
-        for item in edges[:40]
-    ]
-
-    return f"""# PrecodeOS -- Work Graph Report
-<!-- ANCHOR: work-graph -->
-
-> AUTHORITY: Generated evidence-only work graph compiled from PrecodeOS markdown contracts and logs.
-> NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, review acceptance, bead transition approval, or proof by itself.
-> LOAD_WHEN: Inspecting bead, PRD, owner-file, check, blocker, follow-up, and transition relationships; never as active session memory.
-> CLASS: generated
->
-> Generated from `scripts/os_compiler.py`.
-> Generated by PrecodeOS, created by Dan Sears / Recode.
-> Do not use this file as active memory.
-> Working memory lives in `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-
-Generated at: `{payload.get('generated_at')}`
-
-## Summary
-
-- Status: {graph.get('status', 'missing')}
-- Current bead: `{details.get('current_bead', 'missing')}`
-- Advisory only: {details.get('advisory_only', True)}
-- Nodes: {len(nodes)}
-- Edges: {len(edges)}
-
-## Warnings
-
-{chr(10).join(f"- {warning}" for warning in warnings) if warnings else "- No first-pass work graph warnings."}
-
-## Node Counts
-
-{markdown_table(node_rows) if len(node_rows) > 1 else "- No graph nodes found."}
-
-## Edge Counts
-
-{markdown_table(edge_rows) if len(edge_rows) > 1 else "- No graph edges found."}
-
-## Beads
-
-{markdown_table(bead_rows) if len(bead_rows) > 1 else "- No bead nodes found."}
-
-## Relationship Sample
-
-{markdown_table(relationship_rows) if len(relationship_rows) > 1 else "- No graph relationships found."}
-
-## Boundaries
-
-- Generated work graph reports are evidence only.
-- Repair owner files first, then regenerate this report.
-- The graph does not choose tasks, approve transitions, accept review, replace beads, or override owner files.
-"""
-
-
-def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
-    write_json(root / "logs" / "authority-map.json", payload["authority_map"])
-    write_json(root / "logs" / "adapter-index.json", payload["adapter_index"])
-    write_json(root / "logs" / "shim-index.json", payload["shim_index"])
-    write_json(root / "logs" / "readiness.json", payload["readiness"])
-    write_json(root / "logs" / "orchestration-map.json", payload["intent_orchestration"])
-    write_json(root / "logs" / "workflow-map.json", payload["workflow_planning"])
-    write_json(root / "logs" / "long-horizon-map.json", payload["long_horizon_planning"])
-    write_json(root / "logs" / "goal-frame.json", payload["goal_frame"])
-    write_json(root / "logs" / "handoff-packet.json", payload["completion_handoff"])
-    write_json(root / "logs" / "next-step.json", payload["next_step"])
-    write_json(root / "logs" / "run-contract.json", payload["run_contract"])
-    write_yaml(root / "logs" / "run-contract.yaml", payload["run_contract"])
-    write_json(root / "logs" / "pattern-guidance.json", payload["pattern_guidance"])
-    write_json(root / "logs" / "progress.json", progress_payload(payload))
-    write_json(root / "logs" / "memory-index.json", payload["memory"])
-    (root / "logs" / "memory-index.md").write_text(render_memory_index_markdown(payload["memory"]), encoding="utf-8")
-    write_json(root / "logs" / "file-inventory.json", payload["file_inventory"])
-    write_json(root / "logs" / "work-graph.json", payload["work_graph"])
-    (root / "logs" / "work-graph.md").write_text(render_work_graph_markdown(payload), encoding="utf-8")
-    (root / "logs" / "handoff-packet.md").write_text(render_handoff_packet(payload), encoding="utf-8")
-    (root / "PROGRESS.md").write_text(render_progress_markdown(payload), encoding="utf-8")
-    (root / "PRECODE-HELP.md").write_text(render_precode_help(payload), encoding="utf-8")
-    write_events_jsonl(root / "logs" / "os-events.jsonl", payload["events"])

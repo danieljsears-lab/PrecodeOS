@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.3.0
+# Version: v0.4.0
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -123,6 +123,7 @@ DEFERRED_SETUP_PATHS = {
     ".githooks/",
     ".github/workflows/",
 }
+APPLY_ALLOWED_TARGET_KINDS = {"empty", "nearly_empty"}
 
 
 def resolve_candidate(raw: str) -> Path:
@@ -495,6 +496,125 @@ def build_supervised_setup_plan(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def safe_copy_path(source_root: Path, target_root: Path, relative_path: str) -> dict[str, str]:
+    source_path = source_root / relative_path.rstrip("/")
+    target_path = target_root / relative_path.rstrip("/")
+
+    if not source_path.exists():
+        return {"path": relative_path, "reason": "source path is missing"}
+    if target_path.exists():
+        return {"path": relative_path, "reason": "target path already exists; refusing to overwrite"}
+
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    if source_path.is_dir():
+        shutil.copytree(source_path, target_path)
+    else:
+        shutil.copy2(source_path, target_path)
+    return {"path": relative_path, "reason": "copied approved setup action"}
+
+
+def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[str]) -> dict[str, Any]:
+    if "supervised_setup_plan" not in payload:
+        raise ValueError("supervised setup apply requires --supervised-setup-plan")
+
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    plan = payload["supervised_setup_plan"]
+    approved = set(approved_action_ids)
+    copied: list[dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
+    blocked: list[dict[str, str]] = []
+
+    if not approved:
+        blocked.append({"path": "<approval>", "reason": "at least one --approve-action ID is required"})
+
+    if payload["target_kind"] not in APPLY_ALLOWED_TARGET_KINDS:
+        blocked.append(
+            {
+                "path": "<target-project-root>",
+                "reason": "supervised setup apply is limited to empty or nearly empty targets",
+            }
+        )
+
+    if payload["blockers"] or plan["blockers"]:
+        for blocker in payload["blockers"] + plan["blockers"]:
+            blocked.append({"path": "<setup>", "reason": str(blocker)})
+
+    plan_actions = {str(action["id"]): action for action in plan["actions"]}
+    for action_id in sorted(approved):
+        action = plan_actions.get(action_id)
+        if action is None:
+            blocked.append({"path": action_id, "reason": "approved action ID is not present in the setup plan"})
+            continue
+        if action["category"] != "review_copy_candidate":
+            blocked.append(
+                {
+                    "path": str(action["path"]),
+                    "reason": f"{action_id} is {action['category']}; apply only supports review_copy_candidate actions",
+                }
+            )
+
+    if not blocked:
+        for action_id in sorted(approved):
+            action = plan_actions[action_id]
+            path = str(action["path"])
+            source_path = source_root / path.rstrip("/")
+            target_path = target_root / path.rstrip("/")
+            if not source_path.exists():
+                blocked.append({"path": path, "reason": "source path is missing"})
+            if target_path.exists():
+                blocked.append({"path": path, "reason": "target path already exists; refusing to overwrite"})
+
+    apply_allowed = not blocked
+    for action in plan["actions"]:
+        action_id = str(action["id"])
+        path = str(action["path"])
+        if action_id not in approved:
+            skipped.append({"path": path, "reason": f"{action_id} was not approved"})
+            continue
+        if action["category"] != "review_copy_candidate":
+            continue
+        if not apply_allowed:
+            skipped.append({"path": path, "reason": "apply blocked before mutation"})
+            continue
+        result = safe_copy_path(source_root, target_root, path)
+        if result["reason"].startswith("copied"):
+            copied.append(result)
+        else:
+            blocked.append(result)
+
+    status = "blocked" if blocked else "applied"
+    return {
+        "apply_kind": "supervised_setup_apply",
+        "status": status,
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": payload["target_kind"],
+        "approved_actions": sorted(approved),
+        "copied": copied,
+        "skipped": skipped,
+        "blocked": blocked,
+        "validation_next_step": (
+            "Inspect target git status, then run `bash scripts/validate-memory.sh` from the target after copied files are present."
+            if status == "applied"
+            else "Resolve blockers and rerun the supervised setup plan before applying setup actions."
+        ),
+        "target_mutation_allowed": status == "applied",
+        "not_authority_for": [
+            "owner-file adaptation",
+            "overwriting target material",
+            "installing hooks",
+            "changing CI",
+            "running app commands",
+            "writing app code",
+            "release channels",
+            "package-manager updates",
+            "rollback automation",
+            "installable precode CLI",
+        ],
+    }
+
+
 def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     source = resolve_candidate(source_raw)
     target = resolve_candidate(target_raw)
@@ -640,13 +760,36 @@ def render_setup_plan_plain(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_apply_plain(payload: dict[str, Any]) -> str:
+    summary = payload["supervised_setup_apply"]
+    lines = [
+        render_setup_plan_plain(payload),
+        "\nSupervised Setup Apply Summary:",
+        f"- Apply kind: `{summary['apply_kind']}`",
+        f"- Apply status: `{summary['status']}`",
+        "- Scope: approved setup-plan copy actions for empty or nearly empty targets only.",
+        "- This apply mode does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, define release channels, provide rollback automation, install a CLI, or provide package-manager behavior.",
+    ]
+    if summary["copied"]:
+        lines.append("\nCopied:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["copied"])
+    if summary["skipped"]:
+        lines.append("\nSkipped:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["skipped"])
+    if summary["blocked"]:
+        lines.append("\nBlocked:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["blocked"])
+    lines.append(f"\nValidation next step: {summary['validation_next_step']}")
+    return "\n".join(lines)
+
+
 def write_evidence(payload: dict[str, Any]) -> None:
     source = Path(str(payload["source_root"]))
     logs = source / "logs"
     logs.mkdir(parents=True, exist_ok=True)
     (logs / "bootstrap-check.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     if "supervised_setup_plan" in payload:
-        renderer = render_setup_plan_plain
+        renderer = render_apply_plain if "supervised_setup_apply" in payload else render_setup_plan_plain
     elif "install_update_preview" in payload:
         renderer = render_preview_plain
     else:
@@ -778,6 +921,50 @@ def self_test() -> int:
         assert "Supervised Setup Plan" in (source / "logs" / "bootstrap-check.md").read_text(encoding="utf-8")
         assert not (empty_target / "logs").exists()
 
+        approved_copy_ids = [
+            action["id"]
+            for action in empty_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_copy_candidate" and action["path"] == "AGENT.md"
+        ]
+        assert len(approved_copy_ids) == 1
+        apply_target = base / "apply-target"
+        apply_target.mkdir()
+        apply_payload = build_payload(source.as_posix(), apply_target.as_posix())
+        apply_payload["install_update_preview"] = build_manifest_preview(apply_payload)
+        apply_payload["supervised_setup_plan"] = build_supervised_setup_plan(apply_payload)
+        apply_payload["supervised_setup_apply"] = apply_supervised_setup(apply_payload, approved_copy_ids)
+        assert apply_payload["supervised_setup_apply"]["status"] == "applied"
+        assert (apply_target / "AGENT.md").is_file()
+        assert not (apply_target / "DECISIONS.md").exists()
+
+        blocked_no_approval = apply_supervised_setup(apply_payload, [])
+        assert blocked_no_approval["status"] == "blocked"
+        assert any("at least one" in item["reason"] for item in blocked_no_approval["blocked"])
+
+        adapt_ids = [
+            action["id"]
+            for action in nearly_empty_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_adaptation_candidate"
+        ]
+        assert adapt_ids
+        blocked_adapt = apply_supervised_setup(nearly_empty_payload, [adapt_ids[0]])
+        assert blocked_adapt["status"] == "blocked"
+        assert any("review_adaptation_candidate" in item["reason"] for item in blocked_adapt["blocked"])
+
+        existing_blocked_apply = apply_supervised_setup(existing_payload, ["SP-001"])
+        assert existing_blocked_apply["status"] == "blocked"
+        assert any("empty or nearly empty" in item["reason"] for item in existing_blocked_apply["blocked"])
+
+        conflict_copy_ids = [
+            action["id"]
+            for action in nearly_empty_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_copy_candidate" and action["path"] == "AGENT.md"
+        ]
+        (nearly_empty_target / "AGENT.md").write_text("existing\n", encoding="utf-8")
+        blocked_conflict = apply_supervised_setup(nearly_empty_payload, conflict_copy_ids)
+        assert blocked_conflict["status"] == "blocked"
+        assert any("refusing to overwrite" in item["reason"] for item in blocked_conflict["blocked"])
+
     print(json.dumps({"tool": "bootstrap-check-self-test", "status": "pass"}, indent=2, sort_keys=True))
     return 0
 
@@ -797,6 +984,17 @@ def main() -> int:
         action="store_true",
         help="include non-mutating supervised setup-plan output; implies --preview-manifest",
     )
+    parser.add_argument(
+        "--apply-supervised-setup",
+        action="store_true",
+        help="apply explicitly approved supervised setup copy actions for empty or nearly empty targets",
+    )
+    parser.add_argument(
+        "--approve-action",
+        action="append",
+        default=[],
+        help="approve one supervised setup action ID for --apply-supervised-setup; repeat for multiple actions",
+    )
     parser.add_argument("--write-evidence", action="store_true", help="write generated evidence under the source logs directory")
     parser.add_argument("--self-test", action="store_true", help="run fixture-style bootstrap confidence checks")
     args = parser.parse_args()
@@ -806,12 +1004,16 @@ def main() -> int:
 
     if not args.source or not args.target:
         parser.error("--source and --target are required unless --self-test is used")
+    if args.apply_supervised_setup and not args.supervised_setup_plan:
+        parser.error("--apply-supervised-setup requires --supervised-setup-plan")
 
     payload = build_payload(args.source, args.target)
     if args.preview_manifest or args.supervised_setup_plan:
         payload["install_update_preview"] = build_manifest_preview(payload)
     if args.supervised_setup_plan:
         payload["supervised_setup_plan"] = build_supervised_setup_plan(payload)
+    if args.apply_supervised_setup:
+        payload["supervised_setup_apply"] = apply_supervised_setup(payload, args.approve_action)
     if args.write_evidence:
         if payload["source_root"] == payload["target_root"]:
             raise SystemExit("bootstrap-check: refusing to write evidence when source and target are the same")
@@ -822,7 +1024,7 @@ def main() -> int:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
         if args.supervised_setup_plan:
-            print(render_setup_plan_plain(payload))
+            print(render_apply_plain(payload) if args.apply_supervised_setup else render_setup_plan_plain(payload))
         elif args.preview_manifest:
             print(render_preview_plain(payload))
         else:

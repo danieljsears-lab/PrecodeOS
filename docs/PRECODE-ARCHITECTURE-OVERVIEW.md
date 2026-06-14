@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.20
+Document version: v0.3.23
 Last updated: 2026-06-14
 
 ## Executive Summary
@@ -163,7 +163,7 @@ The application can use any framework. Precode's architecture overview is not th
 | Setup-intake layer | Keep first-run confidence and existing-repo intake read-only until a user explicitly chooses a setup path. | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md`, `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md`, `scripts/bootstrap-check.py`, `scripts/existing-repo-intake.py`. |
 | Architecture-shaping layer | Make auth, data, API, integration, dependency, migration, workflow, or multi-system risk visible before beads are derived. | `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md`, `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md`. |
 | Execution bead layer | Bound one journey unit of work. | `tasks/beads/*.md`, bead frontmatter and sections, delegation mode, test strategy, review context. |
-| Adaptive-depth layer | Scale planning and autonomy expectations to the bead's risk while giving beginners a plain continue/ask/stop decision. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`. |
+| Adaptive-depth layer | Scale planning, proof, autonomy, and human-gate expectations to the bead's risk while giving beginners a plain continue, ask-for-proof, approval-needed, or stop signal. | `complexity`, `required_planning_depth`, `autonomy_level`, inferred defaults, `scripts/bead-depth-check.py`, generated Help and Health summaries. |
 | Run-contract layer | Tighten high-risk execution policy without burdening ordinary beads. | bead `Run Contract` sections, `scripts/run-contract-check.py`, `logs/run-contract.json`, `logs/run-contract.yaml`. |
 | Ralph attempt layer | Run opt-in bounded retry attempts for one active bead and record validator-backed attempt evidence. | `tasks/reference/RALPH-LOOP-PROTOCOL.md`, optional bead Ralph frontmatter, `scripts/ralph-loop.py`, `logs/ralph-attempts.jsonl`, `logs/ralph-summary.md`. |
 | Mode layer | Separate planning, exploration, building, and review behavior with compact role contracts. | `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, `modes/REVIEW.md`. |
@@ -395,7 +395,7 @@ Precode treats coding agents as replaceable execution surfaces. The repo contrac
 Precode's current architecture direction is router-first externally and modular internally.
 
 - Externally, `next-step.py` owns the generated "what now?" decision; `session-start.sh` presents it; future diagnostic wrappers may explain warnings after the router is trusted.
-- Internally, compiler domains should move out of `scripts/os_compiler.py` into small service modules when they become distinct, while preserving existing command paths and generated JSON shapes.
+- Internally, compiler domains move behind small service modules such as `scripts/precode_state.py`, `scripts/precode_outputs.py`, and `scripts/precode_routing.py`, while `scripts/os_compiler.py` remains the stable facade for existing commands, imports, and generated JSON shapes.
 - Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
 - Ralph stays a bounded attempt engine for one active bead, not a multi-bead scheduler or autonomous agent platform.
 - Bootstrap and existing-repo intake remain read-only confidence workflows until a user explicitly chooses a setup path.
@@ -501,7 +501,7 @@ This public architecture overview previews direction without depending on privat
 
 - improve onboarding and bootstrap so builders can adopt the smallest useful Precode tier first
 - keep sharpening next-step clarity around continue, ask, prove, approve, repair, and stop
-- harden adaptive depth plus file/command guardrails before adding heavier layers
+- keep adaptive depth and file/command guardrails quiet, specific, and advisory before adding heavier layers
 - add risk-triggered run contracts for allowed actions, proof needed, approval gates, and stop conditions only where they prove value
 - strengthen evidence, release readiness, and review lanes without turning Precode into a specialist-team simulator
 - add import bridges and optional packs later, after the kernel remains quiet and trusted
@@ -557,7 +557,7 @@ The script layer has these families:
 |---|---|---|
 | Session loop | `session-start.sh`, `checkpoint.sh`, `session-close.sh`, `handoff.sh` | Orient, pause, close, and transfer work safely. |
 | Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `execution-state.py`, `log-loop-event.sh`, `log-tool-run.sh`, `log-agent-spend.sh`, `import-agent-spend.py` | Record what happened without relying on chat memory. |
-| Compilation and reports | `os_compiler.py`, `precode_routing.py`, `os-health.py`, `progress.py`, `next-step.py`, `update-learning-diary.py`, `update-memory-index.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence and route the next human decision. |
+| Compilation and reports | `os_compiler.py`, `precode_state.py`, `precode_outputs.py`, `precode_routing.py`, `os-health.py`, `progress.py`, `next-step.py`, `update-learning-diary.py`, `update-memory-index.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence, render sidecars, and route the next human decision behind stable command paths. |
 | Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `files-in-play-check.py`, `run-contract-check.py`, `public-repo-check.py`, `local-hygiene-check.py`, and related checkers | Surface likely drift without mutating active memory. |
 | Setup and intake checks | `bootstrap-check.py`, `existing-repo-intake.py`, `github-audit.py`, `import-github-sources.py` | Inspect adoption targets or external source material while keeping mutation explicit and gated. |
 | Maintenance helpers | `validate-memory.sh`, `version-check.py`, `file-inventory.py`, `pre-commit-validate.sh`, `install-git-hooks.sh`, `write-guard.sh`, `os-integrity-check.py`, `os-checkpoint.py` | Protect package structure, provenance, inventory, scoped writes, protected OS-owned source surfaces, and explicit restore points. |
@@ -585,18 +585,20 @@ When changing the OS itself:
 
 1. Identify the owner file or protocol first.
 2. Keep active memory unchanged unless explicitly changing the kernel.
-3. Update version metadata on touched OS-owned files.
-4. Keep generated outputs demoted.
-5. Add or update advisory checks only when they can report clear, actionable warnings.
-6. Use static validation and docs generation for package review; do not treat this repository as an app to launch unless a task explicitly says so.
-7. Run `bash scripts/validate-memory.sh` and `python3 scripts/version-check.py`.
-8. Regenerate public `docs-html/` when public docs change, and regenerate health/audit outputs when reporting surfaces changed.
+3. Use `tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md` before implementation or merge when a change may alter active memory, authority ownership, generated-output demotion, package install/update boundaries, governance or contribution semantics, or beginner-facing safety language.
+4. Update version metadata on touched OS-owned files.
+5. Keep generated outputs demoted.
+6. Add or update advisory checks only when they can report clear, actionable warnings.
+7. Use static validation and docs generation for package review; do not treat this repository as an app to launch unless a task explicitly says so.
+8. Run `bash scripts/validate-memory.sh` and `python3 scripts/version-check.py`.
+9. Regenerate public `docs-html/` when public docs change, and regenerate health/audit outputs when reporting surfaces changed.
 
 Common maintenance moves:
 
 | Maintenance task | Owner |
 |---|---|
 | Add a protocol | `tasks/reference/EXTENSION-PROTOCOL.md` plus the new protocol file. |
+| Change semantic package boundaries | `tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md` plus the affected owner files. |
 | Add a checker | The checker script, command surfaces, README pointer, and generated report only if useful. |
 | Add a bead template | `tasks/beads/BEAD-SCHEMA.md`. |
 | Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |

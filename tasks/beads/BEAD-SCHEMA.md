@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.11
 Last updated: 2026-06-14
 
 ## Purpose
@@ -54,7 +54,7 @@ These keys are optional for backward compatibility but recommended for new or am
 
 `review_context` records whether review can happen in the same session or should reload the work in a fresh context before acceptance.
 
-`complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; `python3 scripts/bead-depth-check.py` reports advisory warnings when the declared depth looks inconsistent with the bead's risk, files in play, checks, or stop conditions.
+`complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; Precode infers beginner-readable defaults for backward compatibility. `python3 scripts/bead-depth-check.py` reports advisory warnings when declared depth looks inconsistent with risk, files in play, checks, stop conditions, proof strength, or human approval gates. Treat warnings as routing prompts: fix the metadata, add rationale, strengthen proof, ask for approval, or split the bead.
 
 `run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter.
 
@@ -76,6 +76,8 @@ Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when a bead needs execution-level o
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when closing a session, reviewing closeout, preparing handoff, or checking transition readiness.
 
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when a completed or nearly completed bead may affect users, production, deployment, external services, documentation needed for use, or post-release support. Release readiness prepares evidence and approval questions; it does not deploy, approve release, accept review, or activate the next bead.
+
+A release-relevant bead may include a Release Candidate Evidence Profile when the work is nearly ready for a human release decision. Keep it in the bead body or closeout, not as required frontmatter. The profile should name the candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. The decision state is evidence framing only: `candidate`, `needs evidence`, `blocked`, or `ready for human release decision`.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 
@@ -155,7 +157,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - `tasks/todo.md` and the bead frontmatter should agree on the active bead and its current state.
 - Product-feature beads must cite one parent PRD shard and the requirement IDs they implement.
 - Code-changing beads should declare `test_strategy` and `review_context`.
-- New or amended beads should declare `complexity`, `required_planning_depth`, and `autonomy_level` when the risk level affects planning, verification, or delegation safety.
+- New or amended beads should declare `complexity`, `required_planning_depth`, and `autonomy_level` when the risk level affects planning, verification, delegation safety, or human approval gates.
 - `afk_candidate` beads must have bounded files in play, explicit checks, stop conditions, and review evidence before acceptance.
 - Sensitive, external, destructive, or `bounded-afk` beads should include a Run Contract that names allowed actions, proof needed, approval gates, stop conditions, expiration, and rollback or blocked escape.
 - `tasks/todo.md` must point to the current active bead.
@@ -189,6 +191,7 @@ Every template still needs the required frontmatter, required sections, one prim
 | Refactor bead | Improving structure without changing product behavior | Codebase guide or architecture file |
 | Setup bead | Completing scaffold, environment, dependency, or dashboard setup | Setup or deployment protocol |
 | Release readiness bead | Preparing shipping evidence, smoke checks, docs freshness, rollback or blocked escape, and approval questions before user-project release | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
+| Release candidate evidence bead | Preparing or reviewing a compact candidate profile for nearly shippable user-project work before a human release decision | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 | Planning bead | Shaping an uncertain product bet before implementation | `tasks/reference/PLANNING-PROTOCOL.md` or PRD protocol |
 | PRFAQ/challenge planning bead | Hardening rough, risky, or source-heavy ideas before PRD approval | `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` or `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` |
 | External integration bead | Adding or changing third-party service behavior | Integration authority plus security/payment docs when relevant |

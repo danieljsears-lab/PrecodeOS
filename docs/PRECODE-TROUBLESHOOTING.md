@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.10
 Last updated: 2026-06-14
 
 ## Purpose
@@ -144,6 +144,7 @@ find . -maxdepth 2 -type f | sort
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
 
 Safe path:
@@ -153,6 +154,7 @@ Safe path:
 - use Bootstrap Confidence output to identify target kind, conflicts, missing dependencies, and the first safe next action
 - use the manifest dry-run preview to identify candidate copy, adaptation, preserve, exclusion, blocked, and deferred actions without mutating the target
 - use the supervised setup plan for action IDs, approval gates, exclusions, blockers, and validation steps before approving manual setup work
+- use supervised setup apply only for approved `review_copy_candidate` actions in empty or nearly empty targets
 - use `docs/PRECODE-GUIDED-SETUP.md` for copy groups and exclusions
 
 Do not copy files in either direction until source and target are unambiguous.
@@ -428,6 +430,7 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` | First setup, source/target folder identity, copy groups, exclusions, conflicts, or first safe setup action are uncertain. | Read-only by default; output is evidence only and does not approve mutation. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest` | Source and target are clear enough to preview candidate setup actions before mutation. | Dry-run evidence only; not copy permission, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan` | Source and target are clear enough to show a setup checklist before manual setup approval. | Setup-plan evidence only; not copy permission, owner-file adaptation approval, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>` | Empty or nearly empty target setup has a reviewed copy action ID the user approves. | Copies only approved `review_copy_candidate` actions; not owner-file adaptation, existing-repo mutation, overwrite permission, hook setup, CI setup, app commands, app-code edits, release-channel metadata, package-manager behavior, rollback automation, or a CLI. |
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" or whether a small repair looks stable-fix eligible. | It is generated guidance, not approval; stable-fix eligibility only routes the next decision. |

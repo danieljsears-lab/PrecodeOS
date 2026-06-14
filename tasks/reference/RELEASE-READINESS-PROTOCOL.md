@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-06-14
 
 ## Purpose
@@ -64,6 +64,54 @@ Before release approval, prepare a short release-readiness note with:
 - explicit approval still needed before deployment, promotion, rollback, merge, migration, dashboard change, secret change, or external mutation
 
 Use existing Closeout Evidence where possible. Do not duplicate proof in a separate report unless the release-relevant bead needs a concise shipping summary.
+
+## Release Candidate Evidence Profile
+
+Use a Release Candidate Evidence Profile when release-relevant work is nearly ready for a human release decision and the builder needs one compact view of what changed, what is proven, what is still uncertain, and which approvals remain.
+
+The profile is human-authored evidence framing. It is not a generated report, release approval, deployment approval, review acceptance, merge approval, rollback approval, GitHub action, provider action, package-release checkpoint, CLI command, release-channel behavior, or package-manager behavior.
+
+Profile fields:
+
+- candidate label
+- release target or environment
+- changed surfaces
+- affected users or workflows
+- recorded checks and results
+- smoke path and result
+- browser or manual verification status
+- docs or support freshness
+- rollback path or blocked escape
+- known risks and remaining uncertainty
+- explicit approvals still required before release, deployment, promotion, merge, migration, dashboard change, secret change, GitHub mutation, provider mutation, rollback, external mutation, or post-release owner action
+- decision state
+
+Decision state must use one of:
+
+- `candidate`: evidence is being assembled and no release decision is ready yet
+- `needs evidence`: required checks, smoke path, docs/support freshness, manual/browser verification, rollback, or approval framing is missing
+- `blocked`: release-candidate review cannot continue until a named blocker, missing owner action, or unblocker bead is resolved
+- `ready for human release decision`: evidence and remaining approvals are clear enough for the user to decide the next release action
+
+`ready for human release decision` is not approval to release. It only means the evidence profile is clear enough for the human to make the release decision explicitly.
+
+Use this copyable profile shape:
+
+```text
+Release Candidate Evidence Profile:
+- Candidate label:
+- Release target or environment:
+- Changed surfaces:
+- Affected users or workflows:
+- Recorded checks and results:
+- Smoke path and result:
+- Browser or manual verification status:
+- Docs or support freshness:
+- Rollback path or blocked escape:
+- Known risks and remaining uncertainty:
+- Approvals still required:
+- Decision state: candidate | needs evidence | blocked | ready for human release decision
+```
 
 ## Smoke Evidence
 
@@ -129,11 +177,29 @@ Do not deploy, promote, roll back, merge, migrate, change dashboards, change sec
 Show changed behavior, affected users, release target, recorded checks, smoke test path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and exactly what I must approve before any release action.
 ```
 
+## Release Candidate Prompt
+
+```text
+Prepare a Release Candidate Evidence Profile for this release-relevant bead.
+Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
+Use the profile fields from the Release Readiness Protocol: candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision.
+Make clear that ready for human release decision is not release approval.
+```
+
 ## Review Prompt
 
 ```text
 Before I approve release, compare the release-readiness note with Closeout Evidence.
 Tell me what evidence is recorded, what remains review input only, what manual or browser verification is missing, what rollback or blocked escape exists, and which release actions still require my explicit approval.
+```
+
+## Release Candidate Review Prompt
+
+```text
+Review this Release Candidate Evidence Profile against Closeout Evidence and recorded checks.
+Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
+Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
 ```
 
 ## Post-Release Review

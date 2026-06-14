@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.11
+# Version: v0.1.12
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -361,10 +361,13 @@ Generated at: `{payload['generated_at']}`
 - Required planning depth: {bead_depth_details.get('required_planning_depth', 'unspecified')}
 - Autonomy level: {bead_depth_details.get('autonomy_level', 'unspecified')}
 - User decision: {bead_depth_details.get('user_decision', 'unknown')}
+- Shortest next action: {bead_depth_details.get('shortest_next_action', 'unknown')}
 - Stop if: {bead_depth_details.get('stop_if', 'unknown')}
+- Inferred defaults used: {bead_depth_details.get('inferred_defaults_used', False)}
 - Advisory only: {bead_depth_details.get('advisory_only', True)}
 
 {chr(10).join(f"- Warning: {warning}" for warning in bead_depth_warnings) if bead_depth_warnings else "- No first-pass adaptive-depth warnings."}
+{chr(10).join(f"- Reason: {reason}" for reason in (bead_depth_details.get('decision_reasons') or [])) if bead_depth_details.get('decision_reasons') else "- No first-pass adaptive-depth decision reasons."}
 
 ## Files In Play Guardrail
 

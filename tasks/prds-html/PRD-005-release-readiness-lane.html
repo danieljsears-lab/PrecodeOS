@@ -72,11 +72,54 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
     @media (max-width: 860px) {
       header { padding: 24px 18px; }
       main { padding: 18px; }
       .layout { display: block; }
       .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
     }
     </style>
 </head>
@@ -93,7 +136,7 @@
 </header>
 <main>
   <section class="notice">
-    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, edit source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
   <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Release Readiness / Shipping Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
   <section class="summary">
@@ -105,6 +148,8 @@
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future release-candidate evidence helper compile release-readiness notes from closeout?</td><td>Follow-up roadmap scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after V1?</td><td>Follow-up automation scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-005-FR01</code></td><td>Add a Release Readiness Protocol for user-project shipping decisions.</td><td>P0</td><td>Protocol owns scope, evidence, approvals, and forbidden actions.</td></tr><tr><td><code>PRD-005-FR02</code></td><td>Define when a bead is release-relevant.</td><td>P0</td><td>Includes deployment, production config, user-visible behavior, data/security/auth/payment risk, browser-facing flows, docs required for use, or external-service impact.</td></tr><tr><td><code>PRD-005-FR03</code></td><td>Define required release-readiness notes.</td><td>P0</td><td>Changed behavior, affected users, checks, smoke test, browser/manual evidence, rollback or blocked escape, known uncertainty, docs freshness, post-release follow-up.</td></tr><tr><td><code>PRD-005-FR04</code></td><td>Add release-relevant bead guidance to the bead schema.</td><td>P0</td><td>Keep one primary authority and existing closeout/review rules.</td></tr><tr><td><code>PRD-005-FR05</code></td><td>Point verification and completion protocols to release readiness without weakening sensitive-surface gates.</td><td>P0</td><td>Deployment still requires explicit approval.</td></tr><tr><td><code>PRD-005-FR06</code></td><td>Clarify GitHub Releases are PrecodeOS package checkpoints, not user-project release authority.</td><td>P0</td><td>Avoids accidental GitHub mutation or package-release confusion.</td></tr><tr><td><code>PRD-005-FR07</code></td><td>Add user-facing prompts in beginner docs.</td><td>P0</td><td>Prompts prepare evidence and approval questions only.</td></tr><tr><td><code>PRD-005-FR08</code></td><td>Update package inventory and generated public docs.</td><td>P0</td><td>Markdown remains canonical; HTML is generated reading surface.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, external-service mutation, or production configuration change.</li><li>Stop if release target, affected users, smoke path, manual/browser verification, rollback or blocked escape, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none for V1 docs/protocol work.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li></ul>
     <h3>Agent context</h3>
@@ -153,6 +198,46 @@
     </nav>
   </div>
 </main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
 
 </body>
 </html>

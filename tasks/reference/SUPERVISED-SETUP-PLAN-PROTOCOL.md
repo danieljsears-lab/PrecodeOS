@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-14
 
 ## Purpose
@@ -52,6 +52,14 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 - `logs/bootstrap-check.md`
 
 The helper must not write to the target project.
+
+After the setup plan is reviewed, a separate apply mode may copy explicitly approved `review_copy_candidate` actions into empty or nearly empty targets:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+```
+
+That apply mode is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md`. The plan itself remains evidence only and does not approve the apply step.
 
 ## Required Plan Shape
 
@@ -139,6 +147,7 @@ These steps are validation suggestions, not proof that setup occurred.
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
+- It must not imply that `--apply-supervised-setup` can adapt owner files, overwrite target material, install hooks, change CI, mutate existing projects, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
 
 ## Builder Prompt
 

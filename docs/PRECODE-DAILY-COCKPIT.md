@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-06-14
 
 Use this cockpit while you work with an AI coding agent.
@@ -33,6 +33,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Prepare release | `Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.` | Shipping evidence and approval questions without release action. |
+| Release candidate | `Prepare a Release Candidate Evidence Profile. Show candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs or support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. Do not approve release or mutate anything.` | A compact candidate evidence profile without release approval. |
 | Ralph | `Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.` | Retry evidence for one active bead without accepting work or activating anything. |
 | Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
 | Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
@@ -123,6 +124,19 @@ bash scripts/record-check.sh -- <check command>
 ```
 
 Expected output: a recorded check result in `logs/check-results.jsonl`, check output under `logs/check-output/`, and updated closeout evidence for the active bead.
+
+### Prepare A Release Candidate Evidence Profile
+
+Use when a release-relevant bead is nearly ready and you need one compact view before a human release decision.
+
+```text
+Prepare a Release Candidate Evidence Profile for this release-relevant bead.
+Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+```
+
+Expected output: a human-authored evidence profile. It prepares a release decision; it does not approve release, deploy, merge, roll back, or mutate external systems.
 
 ### Run A Bounded Ralph Attempt
 

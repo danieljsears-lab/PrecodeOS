@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-06-14
 
 ## Purpose
@@ -20,7 +20,7 @@ A PRD shard is the durable destination document between an idea and implementati
 
 `FEATURES.md` remains the compiled feature and functional-requirement inventory. PRD shards own the deeper requirement definition that feeds that inventory.
 
-`tasks/prds-html/` holds generated static HTML review pages for non-template PRD shards. The HTML pages improve scanability and source navigation, but they are generated output. They do not approve PRDs, activate beads, choose tasks, accept implementation, edit Markdown, or become source truth.
+`tasks/prds-html/` holds generated static HTML review pages for non-template PRD shards. The HTML pages improve scanability and source navigation, and may include an export-only Acceptance Oracle Matrix cockpit that produces proposed Markdown for manual application. They are generated output. They do not approve PRDs, activate beads, choose tasks, accept implementation, write Markdown, persist browser edits, or become source truth.
 
 ## File Naming
 
@@ -101,7 +101,7 @@ Use `PRD-000-template.md` when creating a new shard.
 - Check `PRODUCT.md` when feature work may affect product promise, users, strategy, non-goals, current bets, success signals, or design and voice.
 - Requirement IDs are stable and granular. Use IDs such as `PRD-002-FR01`, `PRD-002-UX01`, `PRD-002-SEC01`, and `PRD-002-NFR01`.
 - `FEATURES.md` compiles approved PRD shards into feature inventory and functional requirements. It should not become the deep PRD itself.
-- `scripts/prd-html.py` may regenerate `tasks/prds-html/*.html` from PRD shards. Run `python3 scripts/prd-html.py --check` when PRD source or PRD review-surface behavior changes.
+- `scripts/prd-html.py` may regenerate `tasks/prds-html/*.html` from PRD shards. Generated pages may export proposed Acceptance Oracle Matrix Markdown, but canonical source changes still happen manually in `tasks/prds/*.md`. Run `python3 scripts/prd-html.py --check` when PRD source or PRD review-surface behavior changes.
 - Beads cite the parent PRD and requirement IDs they implement. New bead proposals should include delegation mode, test strategy, and review context when relevant.
 - If a PRD changes after implementation starts, add an amendment note to the PRD and create follow-up beads rather than silently widening the active bead.
 - Completed PRDs, old alignment transcripts, and closed source issues are historical evidence when current code or owner files have moved on.

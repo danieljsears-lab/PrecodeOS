@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-010 -- Supervised Setup Apply v1</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-010 -- Supervised Setup Apply v1</h1>
+  <p class="muted">Static HTML generated from <code>PRD-010-supervised-setup-apply.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-010-supervised-setup-apply.md#prd-010-supervised-setup-apply">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Installer / Bootstrap Experience</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-14</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the narrowly mutating, approval-gated setup apply slice of the PrecodeOS Installer / Bootstrap Experience.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, existing-repo mutation, owner-file adaptation approval, hook installation, CI mutation, app-code edits, release channels, package-manager behavior, rollback automation, implementation acceptance, or generated evidence truth.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a later command approve file groups instead of action IDs?</td><td>Follow-up ergonomics</td><td>no</td></tr><tr><td>Should existing-repo owner-file adaptation get its own separate apply protocol?</td><td>Follow-up existing-project setup</td><td>no</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-010-FR01</code></td><td>Add <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code>.</td><td>P0</td><td>Owns mutation boundary.</td></tr><tr><td><code>PRD-010-FR02</code></td><td>Add <code>--apply-supervised-setup</code> and repeatable <code>--approve-action</code> to <code>scripts/bootstrap-check.py</code>.</td><td>P0</td><td>Requires <code>--supervised-setup-plan</code>.</td></tr><tr><td><code>PRD-010-FR03</code></td><td>Apply only approved <code>review_copy_candidate</code> actions for <code>empty</code> or <code>nearly_empty</code> targets.</td><td>P0</td><td>No owner-file adaptation.</td></tr><tr><td><code>PRD-010-FR04</code></td><td>Refuse blockers, unknown IDs, non-copy actions, existing targets, existing projects, existing Precode targets, same source/target, hooks, CI, app code, excluded paths, generated evidence, local state, and secrets.</td><td>P0</td><td>No silent fallback.</td></tr><tr><td><code>PRD-010-FR05</code></td><td>Preserve non-mutating behavior for default, JSON, preview, plan, and source-side evidence modes unless apply is explicitly requested.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-010-FR06</code></td><td>Output copied, skipped, blocked, and validation next-step fields in plain text and JSON.</td><td>P0</td><td>Inspectable result.</td></tr><tr><td><code>PRD-010-FR07</code></td><td>Update setup docs, protocols, prompt patterns, package inventory, README, maintainer changelog, roadmap history, roadmap journal, and generated HTML surfaces.</td><td>P0</td><td>Follow-through required.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-010-supervised-setup-apply.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-010-supervised-setup-apply.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-010-FR02`</textarea></td><td><textarea data-cockpit-cell>Apply mode requires supervised setup plan and explicit action approval.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect CLI help and error behavior.</textarea></td><td><textarea data-cockpit-cell>temp fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-010-FR03`</textarea></td><td><textarea data-cockpit-cell>Approved copy action copies only the named safe path.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect target fixture after apply.</textarea></td><td><textarea data-cockpit-cell>empty target fixture</textarea></td><td><textarea data-cockpit-cell>temp target</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-010-FR04`</textarea></td><td><textarea data-cockpit-cell>Existing projects, adaptation actions, missing approval, and overwrite attempts are blocked.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Confirm blocked reasons are plain.</textarea></td><td><textarea data-cockpit-cell>temp fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-010-FR05`</textarea></td><td><textarea data-cockpit-cell>Non-apply modes remain non-mutating.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Confirm default output still says read-only.</textarea></td><td><textarea data-cockpit-cell>temp fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-010-FR07`</textarea></td><td><textarea data-cockpit-cell>Docs, inventory, roadmap, and generated HTML stay fresh.</textarea></td><td><textarea data-cockpit-cell>docs/roadmap/html checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-010-supervised-setup-apply">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-010-supervised-setup-apply" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-010-FR02` | Apply mode requires supervised setup plan and explicit action approval. | `python3 scripts/bootstrap-check.py --self-test` | Inspect CLI help and error behavior. | temp fixtures | check output |
+| `PRD-010-FR03` | Approved copy action copies only the named safe path. | `python3 scripts/bootstrap-check.py --self-test` | Inspect target fixture after apply. | empty target fixture | temp target |
+| `PRD-010-FR04` | Existing projects, adaptation actions, missing approval, and overwrite attempts are blocked. | `python3 scripts/bootstrap-check.py --self-test` | Confirm blocked reasons are plain. | temp fixtures | check output |
+| `PRD-010-FR05` | Non-apply modes remain non-mutating. | `python3 scripts/bootstrap-check.py --self-test` | Confirm default output still says read-only. | temp fixtures | check output |
+| `PRD-010-FR07` | Docs, inventory, roadmap, and generated HTML stay fresh. | docs/roadmap/html checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before any setup apply action, owner-file adaptation, overwrite, hook installation, CI change, active-memory edit, app command, app-code edit, package update, rollback, release-channel change, or CLI installation.</li><li>Stop if source, target, target kind, action ID, path safety, existing target material, excluded-path boundary, or validation next step is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></li><li>Parent PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>README.md</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>existing target app code</li><li>package manager files</li><li>hooks and CI mutation</li><li>generated setup logs except explicit source-side evidence</li><li>provider configuration, dashboards, secrets, credentials, environment files, billing, auth, payments, or private data</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li>Manual verification:</li><li>Confirm apply mode copies only approved setup-plan copy actions and cannot be mistaken for owner-file adaptation, package update, release, rollback, hooks, CI, CLI, package-manager, or existing-repo migration.</li><li>Forbidden assumptions:</li><li>A setup plan is copy approval.</li><li>A broad <code>--yes</code> is acceptable.</li><li>Existing projects can be mutated before Existing Repo Intake.</li><li>Owner files can be adapted automatically.</li><li>A copied Precode layer is valid without memory validation.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B010-supervised-setup-apply-v1</code></td><td><code>PRD-010-FR01</code> through <code>PRD-010-FR07</code></td><td>PRD shard, apply protocol, bootstrap apply mode, self-tests, docs/protocol/inventory updates, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>fixture_self_test</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></td><td>bootstrap self-test plus static freshness checks</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-010-supervised-setup-apply-v1">PRD-010 -- Supervised Setup Apply v1</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-010</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>high</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Installer / Bootstrap Experience</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped bootstrap evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item 1, <code>Installer / Bootstrap Experience</code></li><li><code>tasks/prds/PRD-002-bootstrap-confidence-lane.md</code></li><li><code>tasks/prds/PRD-003-existing-repo-intake.md</code></li><li><code>tasks/prds/PRD-004-install-update-manifest-preview.md</code></li><li><code>tasks/prds/PRD-006-supervised-setup-plan.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li>Stable facts:</li><li>Bootstrap Confidence, manifest preview, and supervised setup plan already keep setup inspection non-mutating by default.</li><li>The setup plan has stable action IDs and marks copy, adaptation, preserve, exclude, blocked, and deferred actions separately.</li><li>Existing projects must run Existing Repo Intake before any Precode copy or owner-file adaptation becomes actionable.</li><li>Hooks, CI, owner-file adaptation, app commands, app code, update channels, package-manager behavior, rollback automation, and CLI wrapper behavior remain deferred.</li><li>Assumptions:</li><li>Fresh or nearly empty targets are enough for the first mutating setup slice.</li><li>Per-action approval is safer than one broad <code>--yes</code> or package-manager-style install command.</li><li>Privacy or secrets redactions:</li><li>Setup apply must copy only approved package paths and must not read, print, or copy secret, credential, environment, local-agent, local-editor, cache, or generated-evidence paths.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>PrecodeOS can now explain setup, preview setup categories, and generate a supervised checklist, but a beginner still has to translate approved copy actions into manual filesystem work. That manual step is error-prone: a user or agent can copy too broadly, overwrite target material, include generated output, or confuse owner-file adaptation with safe package-file copying.</p>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS can apply explicitly approved setup-plan copy actions into an empty or nearly empty target while refusing every broader installer, updater, owner-file adaptation, hook, CI, existing-repo, and app-code mutation.</li><li>Definition of done:</li><li>PRD-010 exists and is linked to the earlier bootstrap PRDs.</li><li>Supervised Setup Apply Protocol exists.</li><li><code>scripts/bootstrap-check.py --supervised-setup-plan --apply-supervised-setup --approve-action &amp;lt;SP-ID&amp;gt;</code> applies only approved <code>review_copy_candidate</code> actions.</li><li>Apply mode refuses missing targets, same source/target, existing projects, existing Precode targets, blockers, unknown action IDs, unapproved actions, adaptation actions, deferred actions, excluded paths, hooks, CI, existing target paths, generated evidence, local state, secrets, and app code.</li><li>Default, JSON, manifest preview, and supervised setup-plan modes remain non-mutating unless apply mode is explicitly requested.</li><li>Apply output includes copied, skipped, blocked, and validation next-step fields.</li><li>Public setup, support, troubleshooting, package inventory, prompt, and protocol docs explain the apply command without implying package-manager, release-channel, rollback, CLI, hook, CI, owner-file adaptation, existing-repo mutation, app-command, or app-code behavior.</li><li>Maintainer changelog, roadmap implemented history, roadmap journal, public docs HTML, PRD HTML, and roadmap HTML are refreshed as needed.</li><li>First useful vertical slice: approved copy actions for fresh/nearly-empty targets only.</li></ul>
+<h2 id="semantic-change-proposal">Semantic Change Proposal</h2>
+<p>Semantic boundary changed: package setup mutation after non-mutating bootstrap evidence.</p>
+<p>Affected owner files: <code>scripts/bootstrap-check.py</code>, <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code>, <code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code>, <code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code>, setup/support/troubleshooting docs, package inventory, prompt patterns, README, roadmap, roadmap journal, and <code>_maintainer/CHANGELOG.md</code>.</p>
+<p>Current authority: Bootstrap Confidence, manifest preview, and supervised setup plan are generated evidence only and do not copy files.</p>
+<p>Proposed change: add an explicitly approved apply mode that copies only setup-plan <code>review_copy_candidate</code> paths into empty or nearly empty targets.</p>
+<p>Preserved non-authority boundaries: no owner-file adaptation approval, existing-repo mutation, hooks, CI, app commands, app code, active-memory expansion, release channels, package-manager behavior, rollback automation, installable CLI, task selection, PRD approval, bead activation, implementation acceptance, or generated-evidence authority.</p>
+<p>Validation evidence: embedded bootstrap self-tests, file inventory check, docs HTML freshness check, roadmap HTML check, and manual boundary review.</p>
+<p>Docs/protocol/inventory follow-through: update setup protocols, public setup/support/troubleshooting docs, prompt patterns, package inventory, README setup pointers, generated docs HTML, generated PRD HTML, roadmap history, roadmap journal, and maintainer changelog.</p>
+<p>Rollback or reversal path: remove the apply flags and apply helper from <code>scripts/bootstrap-check.py</code>, revert docs/protocol references to non-mutating setup-plan guidance, and leave Bootstrap Confidence, manifest preview, and setup-plan behavior intact.</p>
+<p>Maintainer decision state: approved to implement.</p>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Solo beginner or non-technical builder adopting PrecodeOS into a fresh or nearly empty project.</li><li>Secondary user: Support engineer or AI coding agent applying approved safe copy actions after a human reviews the setup plan.</li><li>Excluded user: Maintainer, package manager, updater, release-channel operator, CLI installer, hook installer, CI configurator, existing-repo migration tool, app-code generator, or rollback automation.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make the safest first setup mutation visible, narrow, and reversible by ordinary Git inspection.</li><li>Goal 2: Keep user approval attached to specific setup-plan action IDs.</li><li>Goal 3: Preserve non-mutating defaults and existing-repo intake boundaries.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: installable <code>precode</code> CLI, package manager, release channel, pinned version, update flow, rollback automation, registry, optional pack, hook installer, CI installer, app command runner, owner-file adaptation engine, existing-repo mutation, app-code mutation, or broad overwrite command.</li><li>Deferred: existing-repo owner-file adaptation workflow, hook/CI setup, richer rollback notes, CLI wrapper, release-channel behavior, and package update semantics.</li><li>Explicitly out of scope: treating generated setup-plan output as approval or treating apply output as proof that setup is valid without validation.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-010-FR01</code></td><td>Add <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code>.</td><td>P0</td><td>Owns mutation boundary.</td></tr><tr><td><code>PRD-010-FR02</code></td><td>Add <code>--apply-supervised-setup</code> and repeatable <code>--approve-action</code> to <code>scripts/bootstrap-check.py</code>.</td><td>P0</td><td>Requires <code>--supervised-setup-plan</code>.</td></tr><tr><td><code>PRD-010-FR03</code></td><td>Apply only approved <code>review_copy_candidate</code> actions for <code>empty</code> or <code>nearly_empty</code> targets.</td><td>P0</td><td>No owner-file adaptation.</td></tr><tr><td><code>PRD-010-FR04</code></td><td>Refuse blockers, unknown IDs, non-copy actions, existing targets, existing projects, existing Precode targets, same source/target, hooks, CI, app code, excluded paths, generated evidence, local state, and secrets.</td><td>P0</td><td>No silent fallback.</td></tr><tr><td><code>PRD-010-FR05</code></td><td>Preserve non-mutating behavior for default, JSON, preview, plan, and source-side evidence modes unless apply is explicitly requested.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-010-FR06</code></td><td>Output copied, skipped, blocked, and validation next-step fields in plain text and JSON.</td><td>P0</td><td>Inspectable result.</td></tr><tr><td><code>PRD-010-FR07</code></td><td>Update setup docs, protocols, prompt patterns, package inventory, README, maintainer changelog, roadmap history, roadmap journal, and generated HTML surfaces.</td><td>P0</td><td>Follow-through required.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-010-FR02</code></td><td>Apply mode requires supervised setup plan and explicit action approval.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Inspect CLI help and error behavior.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-010-FR03</code></td><td>Approved copy action copies only the named safe path.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Inspect target fixture after apply.</td><td>empty target fixture</td><td>temp target</td></tr><tr><td><code>PRD-010-FR04</code></td><td>Existing projects, adaptation actions, missing approval, and overwrite attempts are blocked.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Confirm blocked reasons are plain.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-010-FR05</code></td><td>Non-apply modes remain non-mutating.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Confirm default output still says read-only.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-010-FR07</code></td><td>Docs, inventory, roadmap, and generated HTML stay fresh.</td><td>docs/roadmap/html checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before any setup apply action, owner-file adaptation, overwrite, hook installation, CI change, active-memory edit, app command, app-code edit, package update, rollback, release-channel change, or CLI installation.</li><li>Stop if source, target, target kind, action ID, path safety, existing target material, excluded-path boundary, or validation next step is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>scripts/bootstrap-check.py</code></td><td><code>--supervised-setup-plan --apply-supervised-setup --approve-action &amp;lt;SP-ID&amp;gt;</code></td><td>Copies only approved safe setup-plan copy actions into empty/nearly empty targets.</td><td>self-test fixtures</td><td><code>tasks/prds/PRD-010-supervised-setup-apply.md</code></td></tr><tr><td><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></td><td>Public mutation contract.</td><td>Names allowed actions, refusals, approvals, and validation.</td><td>source inspection and docs checks</td><td>PRD-010</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></li><li>Parent PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>README.md</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>existing target app code</li><li>package manager files</li><li>hooks and CI mutation</li><li>generated setup logs except explicit source-side evidence</li><li>provider configuration, dashboards, secrets, credentials, environment files, billing, auth, payments, or private data</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li>Manual verification:</li><li>Confirm apply mode copies only approved setup-plan copy actions and cannot be mistaken for owner-file adaptation, package update, release, rollback, hooks, CI, CLI, package-manager, or existing-repo migration.</li><li>Forbidden assumptions:</li><li>A setup plan is copy approval.</li><li>A broad <code>--yes</code> is acceptable.</li><li>Existing projects can be mutated before Existing Repo Intake.</li><li>Owner files can be adapted automatically.</li><li>A copied Precode layer is valid without memory validation.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B010-supervised-setup-apply-v1</code></td><td><code>PRD-010-FR01</code> through <code>PRD-010-FR07</code></td><td>PRD shard, apply protocol, bootstrap apply mode, self-tests, docs/protocol/inventory updates, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>fixture_self_test</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></td><td>bootstrap self-test plus static freshness checks</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a later command approve file groups instead of action IDs?</td><td>Follow-up ergonomics</td><td>no</td></tr><tr><td>Should existing-repo owner-file adaptation get its own separate apply protocol?</td><td>Follow-up existing-project setup</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-14</li><li>Approval notes: User approved implementation of Supervised Setup Apply v1 as a narrow approval-gated mutation slice for fresh or nearly empty targets only, explicitly excluding existing-repo mutation, owner-file adaptation, hooks, CI, app code, release channels, package-manager behavior, rollback automation, installable CLI, and broad overwrite behavior.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#semantic-change-proposal">Semantic Change Proposal</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

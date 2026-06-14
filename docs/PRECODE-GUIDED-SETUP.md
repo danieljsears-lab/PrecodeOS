@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.10
 Last updated: 2026-06-14
 
 ## What This Guide Is For
@@ -74,12 +74,21 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a `precode` CLI.
 
+For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+```
+
+This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and a `precode` CLI. After apply, inspect target Git status and validate memory before product work starts.
+
 Use JSON when an agent or support script needs structured output:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --json
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest --json
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --json
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID> --json
 ```
 
 Use generated evidence only when you explicitly want source-side setup evidence:
@@ -206,7 +215,7 @@ Create or adapt only the Precode operating files needed for a first safe session
 Before changing anything, show me the copy checklist and the files that will be excluded.
 ```
 
-After the user approves, copy the public package files by supervised file group. Do not use a bulk overwrite command.
+After the user approves, copy the public package files by supervised file group. Do not use a bulk overwrite command. For empty or nearly empty targets, `--apply-supervised-setup` can copy approved setup-plan copy actions by ID; it still cannot adapt owner files, overwrite target files, install hooks, change CI, or handle existing-project setup.
 
 For a new project, the setup should include:
 
