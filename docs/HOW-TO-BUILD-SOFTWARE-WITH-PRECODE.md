@@ -265,7 +265,7 @@ Use these prompts when you do not know what to say next.
 | Local files or logs look messy. | `Use Local Hygiene. Run the advisory check or dry-run preview and explain what is protected, generated evidence, cache, or cleanup candidate. Do not delete, archive, move, compact, or rewrite anything.` |
 | Prove this works. | `Run the relevant checks through record-check.sh and explain the evidence in plain English.` |
 | Help me decide if it is done. | `Run a completion check. Recommend accepted, revise, split, blocked, or stop based on recorded evidence and manual verification.` |
-| Prepare this for deployment. | `List the deployment, secret, dashboard, database, rollback, and approval steps. Do not deploy until I explicitly approve.` |
+| Prepare this for release. | `Use Release Readiness. List changed behavior, affected users, smoke evidence, browser or manual verification, docs freshness, rollback or blocked escape, post-release follow-up, and the exact approval needed before any release action. Do not deploy until I explicitly approve.` |
 | Record what we learned. | `Summarize learning diary candidates and propose memory cards for my approval. Do not make memory authority.` |
 
 For more prompts, use `tasks/reference/PROMPT-PATTERNS.md`.
@@ -521,6 +521,10 @@ This seems sensitive. Stop and classify the approval gates, risks, checks, rollb
 
 ```text
 Do not deploy, migrate, push, merge, change secrets, or update dashboards. First explain the exact action, expected effect, rollback path, and evidence we will record afterward.
+```
+
+```text
+Use Release Readiness before shipping. Show the smoke path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, and post-release follow-up. Do not treat this as approval to deploy.
 ```
 
 ## How To Know If Work Is Actually Done

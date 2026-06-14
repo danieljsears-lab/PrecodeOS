@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-02
+Document version: v0.1.3
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -128,6 +128,8 @@ Recommended first workflow:
 ## Release Checkpoint Path
 
 Use GitHub Releases for public checkpoints after a package baseline or release candidate is ready.
+
+This path is for PrecodeOS package checkpoints. User-project shipping readiness belongs to `tasks/reference/RELEASE-READINESS-PROTOCOL.md` and does not imply GitHub issue, pull request, release, workflow, deployment, or environment mutation.
 
 Each release should include:
 

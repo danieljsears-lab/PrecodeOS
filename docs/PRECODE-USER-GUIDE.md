@@ -541,6 +541,7 @@ A bead is ready to accept only when the evidence fits the risk:
 - medium/high-risk code-changing beads got the review context the bead required
 - Closeout Evidence says what changed and what remains uncertain
 - review decision is `accepted`, `revise`, `split`, or `blocked`
+- release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action
 - next-bead transition is still separate and user-approved
 
 Say this:
@@ -552,6 +553,22 @@ Before I accept this bead, show me the recorded checks, manual verification, Clo
 Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.
 
 Why this matters: In Precode, done means proved and reviewed, not merely plausible.
+
+## Prepare Release Without Shipping
+
+Use Release Readiness when completed work may affect users, production, deployment, external services, docs needed for use, or post-release support.
+
+Say this:
+
+```text
+Use the Release Readiness Protocol.
+Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead.
+Show changed behavior, affected users, release target, recorded checks, smoke test path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and exactly what I must approve before any release action.
+```
+
+Stop if: the agent treats a release-readiness note, screenshot, browser note, generated report, GitHub status, or smoke check as release approval.
+
+Why this matters: shipping is a user-owned risk decision. Precode can prepare the evidence, but it cannot approve the release for you.
 
 ## Approve The Right Things
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-13
+Document version: v0.1.7
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -77,6 +77,8 @@ Review input becomes evidence only after it is recorded, accepted, or promoted.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding whether evidence is complete enough for review, closeout, handoff, or transition proposal.
 
+Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared for user-project shipping, deployment readiness, smoke evidence, browser/manual release checks, docs freshness, rollback or blocked escape, or post-release review. Release readiness does not weaken sensitive-surface gates or approve release actions.
+
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when the active bead is testable enough for bounded retry against a validator set. Ralph attempt results are evidence inputs; they do not replace recorded checks, closeout evidence, review, or acceptance.
 
 ## Minimum Expectations
@@ -91,6 +93,7 @@ Use the smallest proof that controls the risk.
 | UI work | `browser` or manual visual verification in addition to static checks |
 | API, data, auth, or integration work | `integration`, explicit manual approval gates, and rollback or blocked escape path |
 | Deployment, migration, payments, security, or destructive work | user-approved sensitive-surface gate, `external` or manual verification, and rollback or escape path |
+| Release-relevant user-project work | release-readiness note, smoke evidence, docs freshness when relevant, manual or browser verification when needed, and explicit approval before release action |
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
 

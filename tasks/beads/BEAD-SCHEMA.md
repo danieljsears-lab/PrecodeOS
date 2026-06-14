@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-13
+Document version: v0.1.9
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -74,6 +74,8 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when reviewing ready, bl
 Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when a bead needs execution-level orientation from a reviewed Goal Frame. Goal Frames are advisory orientation only; they do not activate beads, approve transitions, or replace `tasks/todo.md`.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when closing a session, reviewing closeout, preparing handoff, or checking transition readiness.
+
+Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when a completed or nearly completed bead may affect users, production, deployment, external services, documentation needed for use, or post-release support. Release readiness prepares evidence and approval questions; it does not deploy, approve release, accept review, or activate the next bead.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 
@@ -186,6 +188,7 @@ Every template still needs the required frontmatter, required sections, one prim
 | Bugfix bead | Repairing one reproducible defect | Bug report, acceptance doc, or codebase guide |
 | Refactor bead | Improving structure without changing product behavior | Codebase guide or architecture file |
 | Setup bead | Completing scaffold, environment, dependency, or dashboard setup | Setup or deployment protocol |
+| Release readiness bead | Preparing shipping evidence, smoke checks, docs freshness, rollback or blocked escape, and approval questions before user-project release | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 | Planning bead | Shaping an uncertain product bet before implementation | `tasks/reference/PLANNING-PROTOCOL.md` or PRD protocol |
 | PRFAQ/challenge planning bead | Hardening rough, risky, or source-heavy ideas before PRD approval | `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` or `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` |
 | External integration bead | Adding or changing third-party service behavior | Integration authority plus security/payment docs when relevant |

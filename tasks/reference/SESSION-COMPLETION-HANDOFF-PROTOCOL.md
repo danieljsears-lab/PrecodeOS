@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-13
+Document version: v0.1.6
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -53,6 +53,7 @@ Closeout Evidence should include:
 - blocked escape
 - evidence source
 - allowed actions and proof needed when the bead has a Run Contract
+- release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -63,6 +64,8 @@ Use `review_context` in bead frontmatter:
 - `fresh_context_required` — high-risk, sensitive, broad, or architecture-shaping work must be reviewed in a fresh context before acceptance
 
 Manual verification should follow `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when it applies.
+
+Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-PROTOCOL.md`. The closeout should name changed behavior, affected users, smoke evidence, browser or manual verification, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and approval still required before any release action.
 
 ## Required Handoff Context Pack
 
@@ -80,6 +83,7 @@ A handoff should be able to explain:
 - open questions
 - latest evidence
 - latest Ralph attempt decision when Ralph was used
+- release-readiness status when the bead may ship to users
 - blockers
 - next safe action
 - generated-report warning
