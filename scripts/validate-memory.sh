@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.6
-# Last updated: 2026-05-28
+# Version: v0.1.7
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -75,7 +75,7 @@ def read(path: str) -> str:
 def contract(text: str) -> dict[str, str]:
     values: dict[str, str] = {}
     for key in ("AUTHORITY", "NOT_AUTHORITY", "LOAD_WHEN", "CLASS"):
-        match = re.search(rf"^>\s*{key}:\s*(.+)$", text, re.MULTILINE)
+        match = re.search(rf"^(?:>\s*)?{key}:\s*(.+)$", text, re.MULTILINE)
         if match:
             values[key] = match.group(1).strip()
     return values
