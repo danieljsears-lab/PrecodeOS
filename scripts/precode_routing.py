@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
+# Version: v0.1.2
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -105,6 +105,7 @@ def next_step_guidance(
     guardrail_state: dict[str, Any],
     run_contract_state: dict[str, Any],
     goal_frame_state: dict[str, Any],
+    stable_fix_state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     warnings: list[str] = []
     todo_sections = todo.get("sections") or {}
@@ -202,6 +203,12 @@ def next_step_guidance(
                     contract_details.get("approval_prompt")
                     or "Ask the user to approve risky work only after the run contract is clear."
                 )
+    stable_fix_state = stable_fix_state or {}
+    stable_fix_details = stable_fix_state.get("details") or {}
+    if stable_fix_state.get("status") == "warning":
+        stable_fix_warnings = stable_fix_state.get("warnings") or []
+        if stable_fix_warnings:
+            warnings.append(f"stable-fix eligibility affects this decision: {stable_fix_warnings[0]}")
     guard_details = guardrail_state.get("details") or {}
     if guard_details.get("out_of_scope_paths"):
         warnings.append("files-in-play guardrail found out-of-scope changed files")
@@ -235,6 +242,7 @@ def next_step_guidance(
     return {
         "status": "warning" if warnings or blockers else "pass",
         "warnings": warnings,
+        "stable_fix_eligibility": stable_fix_state,
         "details": {
             "current_bead": bead_value(bead, "rel_path", todo.get("current_bead") or "missing"),
             "current_bead_status": bead_value(bead, "status", "missing"),
@@ -262,6 +270,8 @@ def next_step_guidance(
             "next_bead": promotion_state.get("next_bead") or "not recorded",
             "goal_frame": current_goal or {},
             "goal_frame_advisory": "Goal Frames can guide workflow selection only; they cannot choose tasks, approve transitions, or override active memory.",
+            "stable_fix_eligibility": stable_fix_details,
+            "stable_fix_advisory": "Stable-fix eligibility is advisory only; it cannot approve edits, recovery, release, rollback, transitions, setup mutation, or package update behavior.",
             "recovery_flow": recovery_flow,
             "recovery_protocol": "tasks/reference/RECOVERY-PROTOCOL.md",
             "beginner_prompt": beginner_prompt,

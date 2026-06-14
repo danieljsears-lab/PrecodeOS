@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
+# Version: v0.1.7
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -20,6 +20,7 @@ from os_compiler import (
     completion_session_freshness,
     next_step_guidance,
     run_contract_quality,
+    stable_fix_eligibility,
 )
 
 
@@ -89,6 +90,7 @@ def next_payload(
     depth: dict[str, Any] | None = None,
     run_contract: dict[str, Any] | None = None,
     goal_frame: dict[str, Any] | None = None,
+    stable_fix: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
         Path("."),
@@ -101,6 +103,7 @@ def next_payload(
         guardrail or {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
         run_contract or {"status": "pass", "warnings": [], "details": {}},
         goal_frame or {"status": "pass", "warnings": [], "details": {}},
+        stable_fix or {"status": "pass", "warnings": [], "details": {}},
     )
 
 
@@ -182,6 +185,22 @@ def loop_status(loop_health: Any, context: dict[str, Any], state: dict[str, Any]
         "Leverage": loop_health.leverage_dimension(state, context),
     }
     return str(loop_health.overall_status(dimensions))
+
+
+def passing_checks(current: BeadRecord) -> dict[tuple[str, str], dict[str, Any]]:
+    rows: dict[tuple[str, str], dict[str, Any]] = {}
+    for raw in current.checks:
+        command = raw.split(" -- ", 1)[1] if " -- " in raw else raw
+        rows[(command, ".")] = {
+            "bead": current.rel_path,
+            "command": command,
+            "cwd": ".",
+            "status": "pass",
+            "exit_code": 0,
+            "timestamp": "2026-06-14T12:00:00+00:00",
+            "output": "fixture",
+        }
+    return rows
 
 
 def main() -> int:
@@ -356,6 +375,125 @@ def main() -> int:
         assert_recovery_flow(f"next-step recovery: {name}", payload, expected, failures)
         assert_router_contract(f"next-step router: {name}", payload, failures)
 
+    stable_fix_fixture = bead(
+        title="B999 - Stable Fix Fixture",
+        bead_kind="bugfix",
+        primary_authority="tasks/reference/RECOVERY-PROTOCOL.md",
+        files_in_play=["tasks/reference/RECOVERY-PROTOCOL.md"],
+        checks=["bash scripts/validate-memory.sh"],
+        verification_type=["static"],
+        sections={
+            "Objective": "Apply a narrow stable fix to repair a broken link.",
+            "Done When": "The narrow fix is validated.",
+            "Stop If": "The fix changes behavior or expands beyond the owner file.",
+        },
+    )
+    stable_fix_scenarios = [
+        (
+            "narrow tested source repair",
+            stable_fix_eligibility(stable_fix_fixture, passing_checks(stable_fix_fixture)),
+            "eligible_stable_fix",
+            "current_bead",
+            True,
+        ),
+        (
+            "missing evidence",
+            stable_fix_eligibility(stable_fix_fixture, {}),
+            "needs_evidence",
+            "VERIFICATION-GUARDRAIL-PROTOCOL",
+            False,
+        ),
+        (
+            "active-state repair",
+            stable_fix_eligibility(
+                bead(
+                    title="B999 - Active State Repair",
+                    bead_kind="unblocker",
+                    primary_authority="tasks/reference/RECOVERY-PROTOCOL.md",
+                    files_in_play=["tasks/todo.md"],
+                    checks=["bash scripts/validate-memory.sh"],
+                    sections={
+                        "Objective": "Repair broken active state after generated report confusion.",
+                        "Done When": "State is coherent.",
+                        "Stop If": "Owner file is unclear.",
+                    },
+                ),
+                {},
+            ),
+            "recovery_repair",
+            "RECOVERY-PROTOCOL",
+            False,
+        ),
+        (
+            "release relevant",
+            stable_fix_eligibility(
+                bead(
+                    title="B999 - User Facing Stable Fix",
+                    bead_kind="bugfix",
+                    primary_authority="tasks/reference/RELEASE-READINESS-PROTOCOL.md",
+                    files_in_play=["app/page.tsx"],
+                    checks=["npm test"],
+                    sections={
+                        "Objective": "Apply a narrow stable fix to a user-facing page before release.",
+                        "Done When": "The page behavior is validated.",
+                        "Stop If": "Release evidence is unclear.",
+                    },
+                ),
+                passing_checks(bead(checks=["npm test"])),
+            ),
+            "broader_change",
+            "RELEASE-READINESS-PROTOCOL",
+            False,
+        ),
+        (
+            "sensitive mutation",
+            stable_fix_eligibility(
+                bead(
+                    title="B999 - Auth Stable Fix",
+                    bead_kind="bugfix",
+                    primary_authority="SECURITY.md",
+                    files_in_play=["SECURITY.md"],
+                    checks=["python3 scripts/version-check.py"],
+                    sections={
+                        "Objective": "Apply a narrow stable fix to auth permissions.",
+                        "Done When": "Security guidance is validated.",
+                        "Stop If": "Approval is missing.",
+                    },
+                ),
+                passing_checks(bead(checks=["python3 scripts/version-check.py"])),
+            ),
+            "broader_change",
+            "PRD/bead",
+            False,
+        ),
+    ]
+    for name, payload, expected_classification, expected_route, expected_eligible in stable_fix_scenarios:
+        details = payload.get("details") or {}
+        if details.get("classification") != expected_classification:
+            failures.append(
+                {
+                    "scenario": f"stable-fix: {name}",
+                    "expected": expected_classification,
+                    "actual": str(details.get("classification")),
+                }
+            )
+        if details.get("required_route") != expected_route:
+            failures.append(
+                {
+                    "scenario": f"stable-fix route: {name}",
+                    "expected": expected_route,
+                    "actual": str(details.get("required_route")),
+                }
+            )
+        if details.get("eligible") is not expected_eligible:
+            failures.append(
+                {
+                    "scenario": f"stable-fix eligible: {name}",
+                    "expected": str(expected_eligible),
+                    "actual": str(details.get("eligible")),
+                }
+            )
+
     depth_scenarios = [
         ("omitted fields", bead_depth_quality(bead())["details"].get("user_decision"), "continue"),
         ("invalid fields", bead_depth_quality(bead(complexity="huge"))["details"].get("user_decision"), "ask for proof"),
@@ -443,15 +581,31 @@ def main() -> int:
 
     command_scenarios = [
         ("verification", command_classification("python3 scripts/version-check.py", bead()).get("user_decision"), "continue"),
+        ("local edit", command_classification("apply_patch update app/page.tsx", bead()).get("user_decision"), "continue"),
+        ("dependency install", command_classification("npm install lucide-react", bead()).get("user_decision"), "continue"),
+        ("dependency add", command_classification("pnpm add zod", bead()).get("user_decision"), "continue"),
         ("force push", command_classification("git push --force origin main", bead()).get("user_decision"), "stop"),
         ("hard reset", command_classification("git reset --hard HEAD~1", bead()).get("user_decision"), "stop"),
+        ("git restore", command_classification("git restore app/page.tsx", bead()).get("user_decision"), "stop"),
         ("delete", command_classification("rm -rf logs/check-output", bead()).get("user_decision"), "stop"),
         ("database drop", command_classification("psql -c 'drop database app'", bead()).get("user_decision"), "stop"),
+        ("migration reset", command_classification("prisma migrate reset", bead()).get("user_decision"), "stop"),
+        ("database migration", command_classification("prisma migrate deploy", bead()).get("user_decision"), "approval needed"),
         ("production deploy", command_classification("vercel deploy --prod", bead()).get("user_decision"), "approval needed"),
+        ("git push", command_classification("git push origin feature-branch", bead()).get("user_decision"), "approval needed"),
+        ("release publish", command_classification("npm publish", bead()).get("user_decision"), "approval needed"),
         ("secret access", command_classification("cat .env", bead()).get("user_decision"), "approval needed"),
+        ("api key access", command_classification("print API key from dashboard", bead()).get("user_decision"), "approval needed"),
         ("payments", command_classification("stripe listen --forward-to localhost", bead()).get("user_decision"), "approval needed"),
         ("auth", command_classification("edit auth permissions", bead()).get("user_decision"), "approval needed"),
         ("github mutation", command_classification("gh pr merge 12", bead()).get("user_decision"), "approval needed"),
+        (
+            "sensitive bead local mutation",
+            command_classification("npm install auth-helper", bead(primary_authority="SECURITY.md", files_in_play=["SECURITY.md"])).get(
+                "user_decision"
+            ),
+            "approval needed",
+        ),
     ]
     for name, actual, expected in command_scenarios:
         assert_decision(f"command: {name}", str(actual), expected, failures)
@@ -510,6 +664,7 @@ def main() -> int:
         "scenario_count": len(next_scenarios)
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
+        + len(stable_fix_scenarios)
         + len(depth_scenarios)
         + len(run_contract_scenarios)
         + len(command_scenarios)

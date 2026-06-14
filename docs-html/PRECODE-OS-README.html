@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.19</span><span>Updated 2026-06-13</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.20</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -205,7 +205,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h2 id="the-short-version">The Short Version</h2>
 <p>AI coding agents can produce code faster than a new builder can review, direct, and recover from it. That speed is useful only when the project still knows what is true, what is active, what is out of scope, and what evidence proves done.</p>
 <p>Precode gives the repo a small operating model:</p>
-<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
+<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
 <p>The agent can inspect, draft, implement, explain, and propose. The builder still owns intent, approval, risk, and acceptance.</p>
 <h2 id="why-precodeos-matters">Why PrecodeOS Matters</h2>
 <p>PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. It keeps the project human-owned by making intent, scope, approval, proof, and recovery visible inside the repo.</p>
@@ -221,7 +221,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Everything else is reference, evidence, template, archive, adapter, or generated output. Load it only when the current work needs it.</p>
 <p>Do not add a fourth active-memory file.</p>
 <h3 id="2-generated-reports-are-evidence-not-authority">2. Generated Reports Are Evidence, Not Authority</h3>
-<p>Generated reports help humans see state, warnings, checks, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.</p>
+<p>Generated reports help humans see state, warnings, checks, work-graph relationships, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.</p>
 <p>Examples:</p>
 <div class="table-wrap"><table><thead><tr><th>Generated surface</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td><code>PRECODE-HELP.md</code></td><td>Quick next-step, load plan, context-footprint, and warning snapshot.</td><td>Active memory, task selection, or transition approval.</td></tr><tr><td><code>OS-HEALTH.md</code></td><td>Health, warnings, evidence quality, spend, and state snapshots.</td><td>Active memory or acceptance by itself.</td></tr><tr><td><code>PROGRESS.md</code></td><td>Generated progress summary.</td><td>Product decisions or current task authority.</td></tr><tr><td><code>logs/*.md</code>, <code>logs/*.json</code>, <code>logs/*.jsonl</code></td><td>Evidence, sidecars, handoff, diary, indexes, and check output.</td><td>Replacing owner files.</td></tr></tbody></table></div>
 <p>If a generated report looks wrong, repair the source state first and regenerate the report. Do not hand-edit generated Markdown as if it were truth.</p>
@@ -251,7 +251,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="4-build">4. Build</h3>
 <p>Build answers: &quot;What may the agent change right now?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, and easy to steer</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
+<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
 <p>Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.</p>
 <h3 id="5-prove">5. Prove</h3>
 <p>Prove answers: &quot;What evidence says this is done?&quot;</p>
@@ -299,16 +299,18 @@ bash scripts/session-close.sh
 bash scripts/handoff.sh next-agent
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
+python3 scripts/os-health.py
 python3 scripts/ralph-loop.py --dry-run
 python3 scripts/bead-depth-check.py
 python3 scripts/files-in-play-check.py
 python3 scripts/files-in-play-check.py --command &quot;&lt;command summary&gt;&quot;
+python3 scripts/files-in-play-check.py --edit-lock
 python3 scripts/run-contract-check.py
 python3 scripts/bead-transition.py --approve</code></pre>
 <p>The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.</p>
 <h2 id="when-to-stop-the-agent">When To Stop The Agent</h2>
 <p>Stop or checkpoint when:</p>
-<ul><li>the agent cannot name the active bead</li><li>the next workflow is unclear</li><li>product definition starts during implementation</li><li>a task needs a second primary authority file</li><li>more files are changing than the bead allowed</li><li>checks are missing, vague, failing, or not tied to risk</li><li>discovery says <code>pause</code>, <code>narrow</code>, or <code>kill</code> and the agent keeps planning implementation</li><li>sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path</li><li>the work touches auth, payments, personal data, uploads, deployment, secrets, GitHub mutation, dashboard mutation, or destructive action without approval</li><li>generated reports, source notes, or old artifacts start acting like instructions</li><li>the next task starts before you approve a bead transition</li></ul>
+<ul><li>the agent cannot name the active bead</li><li>the next workflow is unclear</li><li>product definition starts during implementation</li><li>a task needs a second primary authority file</li><li>more files are changing than the bead allowed</li><li>a command classification says <code>approval needed</code> or <code>stop</code></li><li>checks are missing, vague, failing, or not tied to risk</li><li>discovery says <code>pause</code>, <code>narrow</code>, or <code>kill</code> and the agent keeps planning implementation</li><li>sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path</li><li>the work touches auth, payments, personal data, uploads, deployment, secrets, GitHub mutation, dashboard mutation, or destructive action without approval</li><li>generated reports, source notes, or old artifacts start acting like instructions</li><li>the next task starts before you approve a bead transition</li></ul>
 <p>Stopping is not failure. In Precode, stopping is how the builder keeps the project understandable.</p>
 <h2 id="how-to-use-this-map">How To Use This Map</h2>
 <p>This explainer names the six rooms and the Builder OS mental model behind them. It is not the canonical document router and it is not the exhaustive file dictionary.</p>

@@ -58,6 +58,8 @@ When a bead expects risky tools, the bead should name:
 
 Low-risk doc or validation beads can rely on the normal `Checks`, `Stop If`, and `Closeout Evidence` sections. Sensitive or external work should be explicit before the command runs.
 
+Dependency installs and other local mutations are not automatically forbidden, but they are still side effects. They may continue only when the expected files stay inside `files_in_play` and the bead does not touch a sensitive surface. Ask first when the command changes dependencies, migrations, generated authority-like files, secrets, auth, data, payments, deployment, external services, releases, or shared branches.
+
 ## Allowed Actions
 
 Risk-triggered run contracts use allowed actions as the plain-language wrapper over capability leases. A capability lease is not new permission; it is a stricter statement of the permissions already implied by the active bead, `files_in_play`, tool-call classes, approval gates, and stop conditions.
@@ -90,7 +92,7 @@ Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scri
 
 `python3 scripts/ralph-loop.py` is a bounded bead-attempt engine. It may run one explicit attempt command and a validator set, then write `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md`. Ralph does not invent commands, approve risky commands, accept work, or approve transitions.
 
-`python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command.
+`python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command. If it says continue for a local mutation, keep the mutation inside `files_in_play` and stop if the command would install dependencies, widen scope, touch sensitive surfaces, or rewrite generated evidence as if it were authority.
 
 `python3 scripts/files-in-play-check.py --edit-lock` is also advisory. It compares current changed paths with the active bead's `files_in_play` and generated-output exceptions. It does not create a filesystem lock, approve edits, or replace human review.
 

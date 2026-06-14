@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-13
+Document version: v0.1.5
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -51,6 +51,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 - Generated files are compiled snapshots only.
 - `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles, not authority.
 - `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` are generated Ralph attempt evidence, not review acceptance, command approval, task selection, or transition approval.
+- `logs/work-graph.json` and `logs/work-graph.md` are generated relationship evidence, not task selection, transition approval, active memory, or a second tracker.
 - Goal Frames inside owner files are advisory orientation. If stale or conflicting, they require reaffirmation before they guide workflow selection.
 - If generated output conflicts with active memory or a bead, inspect the source file and regenerate the output.
 
@@ -71,6 +72,7 @@ Generated reports should be refreshed after:
 - recorded checks
 - bead closeout updates
 - bead transitions
+- bead dependency, PRD, primary-authority, files-in-play, follow-up, or transition-proposal edits
 - session start, checkpoint, handoff, or close events
 - scheduled audits
 - edits to authority contracts or reference protocols

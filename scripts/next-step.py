@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
+# Version: v0.1.7
 # Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -50,10 +50,21 @@ def render(payload: dict[str, object]) -> str:
         if fit_blockers:
             lines.extend(f"  - Fit blocker: {blocker}" for blocker in fit_blockers[:3])
     approval_prompt = details.get("approval_prompt")
+    stable_fix = details.get("stable_fix_eligibility") or {}
     load_plan = details.get("load_plan") or {}
     footprint = details.get("context_footprint") or {}
     if approval_prompt:
         lines.append(f"- Approval prompt: {approval_prompt}")
+    if stable_fix:
+        lines.extend(
+            [
+                "- Stable-fix eligibility:",
+                f"  - Classification: `{stable_fix.get('classification', 'unknown')}`",
+                f"  - Eligible: `{stable_fix.get('eligible', False)}`",
+                f"  - Required route: `{stable_fix.get('required_route', 'PRD/bead')}`",
+                f"  - Advisory only: `{stable_fix.get('advisory_only', True)}`",
+            ]
+        )
     if load_plan:
         lines.extend(
             [

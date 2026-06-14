@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-14
 
 ## Purpose
@@ -43,6 +43,8 @@ A normal bead becomes release-relevant when its output could affect:
 - rollback, blocked escape, monitoring, support, or post-release learning
 
 Tiny local-only docs or code cleanup can skip this lane unless it changes user-facing behavior, setup, support, release, validation, or sensitive surfaces.
+
+Stable-fix eligibility does not skip this lane. If `scripts/next-step.py --json` classifies work as `broader_change` because it is release-relevant or user-facing, prepare release readiness even when the code or docs edit is small. A stable fix can stay in the current bead only when it does not affect release behavior, setup/support expectations, sensitive surfaces, or user-facing evidence needs.
 
 ## Release Readiness Notes
 

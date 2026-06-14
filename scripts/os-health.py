@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.10
-# Last updated: 2026-06-04
+# Version: v0.1.11
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -164,6 +164,8 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "- `logs/memory-index.json`",
         "- `logs/memory-index.md`",
         "- `logs/file-inventory.json`",
+        "- `logs/work-graph.json`",
+        "- `logs/work-graph.md`",
         "- `logs/local-hygiene-preview.json`",
         "- `logs/local-hygiene-preview.md`",
         "- `logs/os-events.jsonl`",
@@ -223,6 +225,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
     local_hygiene = payload.get("local_hygiene") or {"status": "missing", "warnings": [], "details": {}}
     local_hygiene_warnings = local_hygiene.get("warnings") or []
     local_hygiene_details = local_hygiene.get("details") or {}
+    work_graph = payload.get("work_graph") or {"status": "missing", "warnings": [], "details": {}}
+    work_graph_warnings = work_graph.get("warnings") or []
+    work_graph_details = work_graph.get("details") or {}
+    work_graph_node_counts = work_graph_details.get("node_counts") or {}
+    work_graph_edge_counts = work_graph_details.get("edge_counts") or {}
 
     return f"""# PrecodeOS -- OS Health Report
 <!-- ANCHOR: os-health -->
@@ -419,6 +426,16 @@ Generated at: `{payload['generated_at']}`
 - Next safe action: {local_hygiene_details.get('next_safe_action', 'review candidates only')}
 
 {chr(10).join(f"- Warning: {warning}" for warning in local_hygiene_warnings) if local_hygiene_warnings else "- No first-pass local hygiene warnings."}
+
+## Work Graph
+
+- Status: {work_graph.get('status', 'missing')}
+- Current bead: `{work_graph_details.get('current_bead', 'missing')}`
+- Nodes: {sum(work_graph_node_counts.values()) if work_graph_node_counts else 0}
+- Edges: {sum(work_graph_edge_counts.values()) if work_graph_edge_counts else 0}
+- Advisory only: {work_graph_details.get('advisory_only', True)}
+
+{chr(10).join(f"- Warning: {warning}" for warning in work_graph_warnings) if work_graph_warnings else "- No first-pass work graph warnings."}
 
 ## Tool Execution
 

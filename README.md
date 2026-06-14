@@ -106,7 +106,7 @@ Ralph-style iteration is opt-in and bounded by the active bead.
 | PRDs | A destination before feature work. |
 | Beads | One bounded unit of execution. |
 | Checks | Proof over agent confidence. |
-| Reports | Readable status without authority drift. |
+| Reports | Readable status and graph visibility without authority drift. |
 | Recovery | A way to stop, repair, and resume. |
 
 The active-memory kernel limits startup context. Authority contracts show what each file owns and must not own. Beads constrain execution to one current unit of work. Recorded checks turn proof into durable evidence. Generated reports improve visibility without becoming authority. Human gates preserve ownership of risk, acceptance, and transitions.
@@ -171,7 +171,7 @@ For evidence, use recorded checks:
 bash scripts/record-check.sh -- <command>
 ```
 
-Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
+Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
 
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
@@ -186,7 +186,7 @@ python3 scripts/ralph-loop.py --dry-run
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
 
-`loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, and easy to steer. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
+`loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
 
 `ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
 
@@ -274,7 +274,7 @@ A bead is one bounded unit of work with scope, owner files, checks, stop conditi
 
 ### Are generated reports authority?
 
-No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, and `logs/` are evidence only.
+No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and `logs/` are evidence only.
 
 ### Where should I start?
 
@@ -297,7 +297,7 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.39
+Document version: v0.1.40
 Last updated: 2026-06-14
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.

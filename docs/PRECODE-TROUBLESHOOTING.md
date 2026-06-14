@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
+Document version: v0.1.9
 Last updated: 2026-06-14
 
 ## Purpose
@@ -40,6 +40,14 @@ If the agent cannot explain the current state, reload active memory if it exists
 ```text
 Load only AGENT.md, DECISIONS.md, and tasks/todo.md. Then explain the active bead, primary authority, files in play, checks, stop conditions, and blockers.
 ```
+
+For small repair claims, ask for stable-fix eligibility:
+
+```text
+Run next-step stable-fix eligibility and tell me the classification, required route, warnings, and why it is advisory only.
+```
+
+Use the result as routing help only. `eligible_stable_fix` can continue inside the current bead after recorded proof. `needs_evidence` needs verification. `recovery_repair` stays in the Recovery Protocol. `broader_change` needs release readiness, a PRD, or a normal bead. None of these classifications approve mutation, acceptance, release, rollback, transition, setup, or update behavior.
 
 ## Symptom Lookup
 
@@ -422,7 +430,7 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan` | Source and target are clear enough to show a setup checklist before manual setup approval. | Setup-plan evidence only; not copy permission, owner-file adaptation approval, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
-| `python3 scripts/next-step.py` | The user asks "what now?" | It is generated guidance, not approval. |
+| `python3 scripts/next-step.py` | The user asks "what now?" or whether a small repair looks stable-fix eligible. | It is generated guidance, not approval; stable-fix eligibility only routes the next decision. |
 | `python3 scripts/state-check.py` | Active bead or task state looks broken. | Repair source files before generated reports. |
 | `python3 scripts/files-in-play-check.py` | Scope may have widened or coding started too early. | It warns; it does not approve edits. |
 | `python3 scripts/workflow-check.py` | The path from setup, idea, PRD, bead, or repair is unclear. | Workflow advice is not task activation. |

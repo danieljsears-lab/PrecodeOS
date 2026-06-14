@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
+Document version: v0.1.6
 Last updated: 2026-06-14
 
 Use this cockpit while you work with an AI coding agent.
@@ -180,12 +180,12 @@ Only use these as evidence. They help you understand the project; they do not ch
 |---|---|---|
 | `bash scripts/session-start.sh` | Starting or resetting daily work. | Shows the context pack and router guidance. Treat it as orientation before work. |
 | `python3 scripts/next-step.py` | You ask "what now?" | Shows generated next-step guidance. It is not transition approval. |
-| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md` and `logs/os-health.json`; warnings mean inspect source state and evidence. |
+| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, and the generated work graph reports; warnings mean inspect source state and evidence. |
 | `bash scripts/checkpoint.sh` | Context is long, fuzzy, or ready to hand back. | Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity. |
 | `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |
-| `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, and evidenced. |
-| `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings for deeper diagnosis. |
+| `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, evidenced, and graph-coherent. |
+| `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings, including work-graph warnings, for deeper diagnosis. |
 | `python3 scripts/ralph-loop.py --dry-run` | A Ralph-enabled bead needs bounded retry evidence. | Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work. |
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
 | `python3 scripts/update-bead-build-journal.py --append` | You need to append a build-change entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory or acceptance. |
@@ -215,7 +215,7 @@ python3 scripts/files-in-play-check.py --command "<command summary>"
 python3 scripts/files-in-play-check.py --edit-lock
 ```
 
-Green means changed paths fit the current bead or generated evidence. Warnings mean stop and classify each path as current-bead work, generated evidence, or follow-up work. A command classification of `approval needed` or `stop` means do not run the command yet.
+Green means changed paths fit the current bead or generated evidence. Warnings mean stop and classify each path as generated evidence, current-bead work that needs explicit scope approval, follow-up work, or user-owned revert work. A command classification of `approval needed` or `stop` means do not run the command yet. A `continue` classification for local mutation still has to stay inside `files_in_play`.
 
 ### Is This Done?
 

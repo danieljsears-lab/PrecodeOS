@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-13
+Document version: v0.1.8
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -83,6 +83,8 @@ Generated JSON and JSONL files must be treated as evidence only. They may feed s
 `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
 
 `logs/next-step.json` may include generated router fields such as `load_plan`, `single_next_protocol`, and `context_footprint`. These fields are advisory evidence for context loading and user decisions, not command approval, bead activation, or active memory.
+
+`logs/work-graph.json` and `logs/work-graph.md` may expose bead, PRD, owner-file, check, blocker, follow-up, and transition relationships compiled from existing Precode surfaces. They are inspection evidence only; they must not become a second task tracker, choose work, approve transitions, rewrite beads, or replace markdown authority.
 
 ZYAL-like export belongs in an adapter or extension that maps the generic Precode run-contract profile to that host. The generic Precode profile must prove useful before any host-specific contract becomes a maintained surface.
 

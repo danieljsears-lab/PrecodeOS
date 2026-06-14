@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-05-28
+Document version: v0.1.5
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -26,6 +26,20 @@ The recovery posture is conservative:
 - resume only when the next safe action is clear
 
 Recovery is not auto-repair. Do not run destructive commands, overwrite user edits, delete evidence, rewrite logs, or guess from generated reports.
+
+## Stable-Fix Eligibility
+
+A stable fix is a narrow, evidence-backed repair inside an already named owner file. It is eligible only when:
+
+- the owner file or primary authority is clear
+- the files in play are narrow, usually three files or fewer
+- the change repairs existing intended behavior instead of creating new product, workflow, schema, authority, setup, release, or integration behavior
+- the validation path is explicit and recorded
+- the work avoids sensitive, external, destructive, deployment, rollback, secret, auth, billing, data, or migration surfaces
+
+`scripts/next-step.py --json` includes a `stable_fix_eligibility` advisory payload when a current bead exists. Its classification can help route the next conversation, but it does not approve edits, recovery, release, rollback, transition, setup mutation, package update behavior, or acceptance.
+
+If the classifier says `recovery_repair`, stay in this protocol until the symptom, owner file, safe repair path, and validation are clear. If it says `needs_evidence`, use the Verification Guardrail Protocol. If it says `broader_change`, route to release readiness, PRD, or a normal bead instead of treating the work as a stable fix.
 
 ## First Move
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.19
-Last updated: 2026-06-13
+Document version: v0.8.20
+Last updated: 2026-06-14
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -40,7 +40,7 @@ Precode gives the repo a small operating model:
 
 - tiny active memory
 - one current task
-- Build Loop Health for focused, stoppable, closeable, evidenced work
+- Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work
 - clear owner files for durable facts
 - optional discovery before PRD work
 - PRDs before feature implementation when intent is fuzzy or risky
@@ -90,7 +90,7 @@ Do not add a fourth active-memory file.
 
 ### 2. Generated Reports Are Evidence, Not Authority
 
-Generated reports help humans see state, warnings, checks, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.
+Generated reports help humans see state, warnings, checks, work-graph relationships, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.
 
 Examples:
 
@@ -167,7 +167,7 @@ Main surfaces:
 
 - `tasks/todo.md` for the active bead pointer
 - `tasks/beads/*.md` for current execution scope
-- `python3 scripts/loop-health.py` for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, and easy to steer
+- `python3 scripts/loop-health.py` for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent
 - `python3 scripts/ralph-loop.py` for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear
 - `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
 - `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` for tool-specific shims
@@ -267,10 +267,12 @@ bash scripts/session-close.sh
 bash scripts/handoff.sh next-agent
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
+python3 scripts/os-health.py
 python3 scripts/ralph-loop.py --dry-run
 python3 scripts/bead-depth-check.py
 python3 scripts/files-in-play-check.py
 python3 scripts/files-in-play-check.py --command "<command summary>"
+python3 scripts/files-in-play-check.py --edit-lock
 python3 scripts/run-contract-check.py
 python3 scripts/bead-transition.py --approve
 ```
@@ -286,6 +288,7 @@ Stop or checkpoint when:
 - product definition starts during implementation
 - a task needs a second primary authority file
 - more files are changing than the bead allowed
+- a command classification says `approval needed` or `stop`
 - checks are missing, vague, failing, or not tied to risk
 - discovery says `pause`, `narrow`, or `kill` and the agent keeps planning implementation
 - sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path

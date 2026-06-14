@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-05-19
+# Version: v0.2.0
+# Last updated: 2026-06-14
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -17,7 +17,7 @@ from os_parser import MarkdownDocument, colon_bullets
 
 STATUSES = ["Clear", "Watch", "Drift Risk", "Recenter", "Stop and Review"]
 SEVERITY = {status: index for index, status in enumerate(STATUSES)}
-DIMENSION_NAMES = ["Focus", "Stop Condition", "Closure", "Evidence", "Leverage"]
+DIMENSION_NAMES = ["Focus", "Stop Condition", "Closure", "Evidence", "Leverage", "Work Graph"]
 IMPLEMENTATION_PREFIXES = ("app/", "src/", "lib/", "components/", "scripts/")
 VAGUE_DONE_TERMS = {"improve", "better", "clean up", "polish", "etc", "and then", "as needed", "various"}
 EXPLORATION_TERMS = {
@@ -346,6 +346,48 @@ def leverage_dimension(state: dict[str, Any], context: dict[str, Any]) -> dict[s
     )
 
 
+def work_graph_dimension(state: dict[str, Any], context: dict[str, Any]) -> dict[str, str]:
+    graph = state.get("work_graph") or {}
+    warnings = [str(warning) for warning in (graph.get("warnings") or [])]
+    current = context["current_bead"]
+    if not graph:
+        return dimension(
+            "Watch",
+            "The work graph report is not available in compiled state.",
+            "Regenerate OS Health before relying on graph-derived loop warnings.",
+        )
+    if not warnings:
+        return dimension(
+            "Clear",
+            "No first-pass bead graph drift is visible.",
+            "Keep using owner files, bead contracts, and recorded checks as authority.",
+        )
+
+    active_warnings = [warning for warning in warnings if current and current in warning]
+    transition_warnings = [
+        warning
+        for warning in warnings
+        if any(term in warning.lower() for term in ("near closeout", "promotion", "review or done", "transition"))
+    ]
+    if transition_warnings:
+        return dimension(
+            "Stop and Review",
+            transition_warnings[0],
+            "Review closeout, transition destination, and user approval before continuing.",
+        )
+    if active_warnings:
+        return dimension(
+            "Drift Risk",
+            active_warnings[0],
+            "Recenter on the active bead graph: dependency, authority, files in play, or follow-up ownership needs review.",
+        )
+    return dimension(
+        "Watch",
+        warnings[0],
+        "Inspect `logs/work-graph.md` and repair owner files before treating graph warnings as resolved.",
+    )
+
+
 def overall_status(dimensions: dict[str, dict[str, str]]) -> str:
     focus_status = dimensions["Focus"]["status"]
     if status_at_least(focus_status, "Drift Risk"):
@@ -376,6 +418,7 @@ def build_payload(root: Path) -> dict[str, Any]:
         "Closure": closure_dimension(state, context),
         "Evidence": evidence_dimension(state, context),
         "Leverage": leverage_dimension(state, context),
+        "Work Graph": work_graph_dimension(state, context),
     }
     status = overall_status(dimensions)
     top = top_dimension(status, dimensions)

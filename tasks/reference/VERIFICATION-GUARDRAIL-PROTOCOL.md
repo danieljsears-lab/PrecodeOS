@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
+Document version: v0.1.9
 Last updated: 2026-06-14
 
 ## Purpose
@@ -97,13 +97,15 @@ Use the smallest proof that controls the risk.
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
 
+Stable-fix eligibility requires recorded proof, not just a declared check. When `scripts/next-step.py --json` reports `stable_fix_eligibility.classification` as `needs_evidence`, record the narrowest check that proves the owner-file repair, then reassess before accepting the work. A passing `eligible_stable_fix` classification is still advisory; it does not replace Closeout Evidence, review, user approval, release readiness, or sensitive-surface gates.
+
 Ralph can reduce false-done risk by rerunning validators and recording failures, but a passing Ralph summary is still not acceptance. The closeout and review decision must name the evidence that proves the bead's done-when target.
 
 Adaptive-depth metadata should raise verification expectations when risk rises. `high-risk` and `multi-system` beads should usually include manual, integration, browser, or external evidence; `human-only` beads should name the human approval or manual action; `bounded-afk` beads need bounded files in play, explicit checks, and stop conditions.
 
-`python3 scripts/files-in-play-check.py` is an advisory guardrail that compares current Git changes to the active bead `files_in_play`. Out-of-scope warnings should be resolved by narrowing the work, splitting a follow-up bead, or explaining generated evidence before acceptance.
+`python3 scripts/files-in-play-check.py` is an advisory guardrail that compares current Git changes to the active bead `files_in_play`. Out-of-scope warnings should be resolved by classifying each changed path as generated evidence, current-bead work that needs explicit scope approval, follow-up bead work, or user-owned revert work before acceptance.
 
-The guardrail can also classify a proposed command with `--command "<command summary>"` and can show an optional advisory edit lock with `--edit-lock`. These checks should reduce beginner confusion by saying `continue`, `approval needed`, or `stop`; they do not grant command approval, enforce filesystem permissions, or replace sensitive-surface gates.
+The guardrail can also classify a proposed command with `--command "<command summary>"` and can show an optional advisory edit lock with `--edit-lock`. These checks should reduce beginner confusion by saying `continue`, `approval needed`, or `stop`; they do not grant command approval, enforce filesystem permissions, or replace sensitive-surface gates. A `continue` classification for local mutation still depends on the command staying inside `files_in_play` and avoiding dependency, migration, sensitive, external, or destructive side effects unless those are explicitly approved by the active bead and user.
 
 Use `tasks/reference/OS-INTEGRITY-PROTOCOL.md` when the risky surface is PrecodeOS itself: active memory, protocols, maintained scripts, hooks, adapters, package docs, or public/private boundary files. `scripts/os-integrity-check.py` and `scripts/os-checkpoint.py` protect OS-owned source surfaces with explicit scoped checkpoints; they do not replace `files_in_play` checks for normal app work.
 

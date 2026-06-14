@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-06-14
 
 ## Purpose
@@ -103,6 +103,17 @@ Each action should include:
 | Nearly empty target | Preserve or adapt existing minimal material such as `README.md`; show remaining supervised candidates. |
 | Existing project | Defer copying and adaptation until Existing Repo Intake runs and conflicts are reviewed. |
 | Existing Precode target | Preserve existing Precode material and validate memory before setup, repair, or update decisions. |
+
+## Repair Or Stable-Fix Signals
+
+If an existing target looks like setup, repair, or update work, keep the manifest preview non-mutating. Use `stable_fix_eligibility` from `scripts/next-step.py --json` only as an advisory route:
+
+- `eligible_stable_fix` means the current bead may continue inside its approved owner file and validation path.
+- `needs_evidence` means validation or owner-file proof is missing.
+- `recovery_repair` means stop setup/update interpretation and use the Recovery Protocol.
+- `broader_change` means a supervised setup plan, release-readiness note, PRD, or normal bead is needed.
+
+The classifier must not turn manifest output into copy permission, owner-file adaptation approval, install permission, package update behavior, rollback automation, release-channel metadata, hook setup, CI setup, active-memory edits, or app-code edits.
 
 ## Guardrails
 
