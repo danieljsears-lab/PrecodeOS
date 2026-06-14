@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.35
+Document version: v0.7.36
 Last updated: 2026-06-14
 
 
@@ -717,12 +717,19 @@ Do this:
 - Ask the agent to search reviewed memory for a specific topic.
 - Make it cite the memory cards it used.
 - Make it say whether the memory is evidence only or should be promoted to an owner file.
+- Demote stale, superseded, archived, or low-confidence cards before relying on them.
 - Return to active memory and the active bead before editing.
 
 Say this:
 
 ```text
 Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.
+```
+
+You can also ask for a read-only filtered search:
+
+```text
+Run python3 scripts/memory-check.py --query "topic words". Cite card path, title, category, freshness, status, source pointers, and promotion owner. Do not promote anything without my approval.
 ```
 
 Stop if: the agent treats memory as a decision, requirement, next task, or implementation instruction.
@@ -843,7 +850,7 @@ Run session close. Summarize what changed, what checks ran, what remains blocked
 Search memory:
 
 ```text
-Search reviewed memory for what we have learned about X. Do not treat memory as authority.
+Search reviewed memory for what we have learned about X. Cite matching cards, demote stale or low-confidence results, and do not treat memory as authority.
 ```
 
 Propose a memory card:

@@ -360,6 +360,10 @@ MEMORY_FRESHNESS = {"current", "watch", "stale", "superseded"}
 MEMORY_STATUS = {"reviewed", "needs_promotion", "superseded", "archived"}
 MEMORY_SECRET_TERMS = {"api_key", "api key", "token", "password", "secret", "credential", "private key"}
 MEMORY_AUTHORITY_TERMS = {"must implement", "next task", "active memory", "approve transition", "decision:"}
+MEMORY_GENERATED_WARNING = (
+    "Reviewed memory search and indexes are generated evidence only; they do not choose tasks, approve work, "
+    "replace owner files, or expand active memory."
+)
 GOAL_FRAME_STATUSES = {"draft", "active", "reaffirm_needed", "retired"}
 GOAL_FRAME_HORIZONS = {"session", "feature", "product"}
 GOAL_FRAME_WORKFLOWS = {"intake", "PRD", "prd", "decomposition", "implementation", "review", "repair", "long-horizon"}
@@ -3435,6 +3439,60 @@ def section_excerpt(text: str, heading: str) -> str:
     return match.group(1).strip() if match else ""
 
 
+def compact_memory_text(value: Any, limit: int = 360) -> str:
+    return " ".join(str(value or "").split())[:limit]
+
+
+def memory_status_notes(card: dict[str, Any]) -> list[str]:
+    notes: list[str] = []
+    confidence = str(card.get("confidence") or "")
+    freshness = str(card.get("freshness") or "")
+    status = str(card.get("status") or "")
+    owner = str(card.get("authority_owner_if_promoted") or "none")
+    if confidence == "low":
+        notes.append("low-confidence memory; use only as a weak signal")
+    if freshness in {"stale", "superseded"}:
+        notes.append(f"{freshness} memory; verify against current owner files before reuse")
+    if status == "archived":
+        notes.append("archived memory; do not use as current guidance without renewed review")
+    if status == "superseded":
+        notes.append("superseded memory; prefer the newer owner file or replacement card")
+    if status == "needs_promotion":
+        if owner and owner.lower() not in FRONTMATTER_EMPTY_MARKERS:
+            notes.append(f"needs promotion review before it becomes authority; proposed owner: {owner}")
+        else:
+            notes.append("needs promotion review but has no authority owner")
+    return notes
+
+
+def memory_citation(card: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "path": card.get("path") or "missing",
+        "title": card.get("title") or "missing",
+        "category": card.get("category") or "missing",
+        "freshness": card.get("freshness") or "missing",
+        "status": card.get("status") or "missing",
+        "source_pointers": card.get("source_pointers") or [],
+        "authority_owner_if_promoted": card.get("authority_owner_if_promoted") or "none",
+    }
+
+
+def memory_search_text(card: dict[str, Any]) -> str:
+    fields = [
+        card.get("path"),
+        card.get("title"),
+        card.get("category"),
+        card.get("freshness"),
+        card.get("status"),
+        card.get("summary"),
+        card.get("glossary_excerpt"),
+        card.get("authority_owner_if_promoted"),
+        " ".join(card.get("topics") or []),
+        " ".join(card.get("source_pointers") or []),
+    ]
+    return " ".join(str(field or "") for field in fields).lower()
+
+
 def memory_summary(root: Path) -> dict[str, Any]:
     warnings: list[str] = []
     cards: list[dict[str, Any]] = []
@@ -3455,8 +3513,9 @@ def memory_summary(root: Path) -> dict[str, Any]:
         status = str(meta.get("status") or "").strip()
         sources = normalize_list(meta.get("source_pointers") if isinstance(meta.get("source_pointers"), list) else [meta.get("source_pointers")])
         topics = normalize_list(meta.get("topics") if isinstance(meta.get("topics"), list) else [meta.get("topics")])
-        summary_text = section_excerpt(text, "Summary")
+        summary_text = compact_memory_text(section_excerpt(text, "Summary"), 480)
         glossary_text = section_excerpt(text, "Project Glossary") or section_excerpt(text, "Glossary Terms") or section_excerpt(text, "Domain Terms")
+        glossary_excerpt = compact_memory_text(glossary_text, 480)
 
         if category not in MEMORY_CATEGORIES:
             warnings.append(f"{rel} has missing or unsupported category")
@@ -3498,8 +3557,8 @@ def memory_summary(root: Path) -> dict[str, Any]:
                     "status": status or "missing",
                     "topics": topics,
                     "authority_owner_if_promoted": str(meta.get("authority_owner_if_promoted") or "none"),
-                    "summary": " ".join(summary_text.split())[:240],
-                    "glossary_excerpt": " ".join(glossary_text.split())[:360],
+                    "summary": compact_memory_text(summary_text, 240),
+                    "glossary_excerpt": compact_memory_text(glossary_text, 360),
                 }
             )
 
@@ -3508,22 +3567,26 @@ def memory_summary(root: Path) -> dict[str, Any]:
         if freshness:
             by_freshness[freshness] += 1
 
-        cards.append(
-            {
-                "path": rel,
-                "title": title,
-                "category": category or "missing",
-                "confidence": confidence or "missing",
-                "freshness": freshness or "missing",
-                "status": status or "missing",
-                "related_bead": str(meta.get("related_bead") or "none"),
-                "related_prd": str(meta.get("related_prd") or "none"),
-                "authority_owner_if_promoted": str(meta.get("authority_owner_if_promoted") or "none"),
-                "source_pointers": sources,
-                "topics": topics,
-                "summary": " ".join(summary_text.split())[:240],
-            }
-        )
+        card = {
+            "path": rel,
+            "title": title,
+            "category": category or "missing",
+            "confidence": confidence or "missing",
+            "freshness": freshness or "missing",
+            "status": status or "missing",
+            "related_bead": str(meta.get("related_bead") or "none"),
+            "related_prd": str(meta.get("related_prd") or "none"),
+            "authority_owner_if_promoted": str(meta.get("authority_owner_if_promoted") or "none"),
+            "source_pointers": sources,
+            "topics": topics,
+            "summary": compact_memory_text(summary_text, 240),
+            "export_summary": summary_text,
+            "glossary_excerpt": glossary_excerpt,
+        }
+        card["warnings"] = memory_status_notes(card)
+        card["citation"] = memory_citation(card)
+        card["search_text"] = memory_search_text(card)
+        cards.append(card)
 
     details = {
         "cards": cards,
@@ -3531,41 +3594,77 @@ def memory_summary(root: Path) -> dict[str, Any]:
         "by_category": dict(sorted(by_category.items())),
         "by_freshness": dict(sorted(by_freshness.items())),
         "glossary_terms": glossary_terms,
+        "current_cards": [card for card in cards if card.get("freshness") in {"current", "watch"} and card.get("status") == "reviewed"],
+        "promotion_needed_cards": [card for card in cards if card.get("status") == "needs_promotion"],
+        "stale_or_superseded_cards": [
+            card for card in cards if card.get("freshness") in {"stale", "superseded"} or card.get("status") in {"superseded", "archived"}
+        ],
+        "low_confidence_cards": [card for card in cards if card.get("confidence") == "low"],
         "promotion_needed": promotion_needed,
         "stale_or_superseded": stale_or_superseded,
         "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting.",
+        "safe_usage_prompt": "Search reviewed memory, cite matching cards, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action.",
     }
-    return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
+    return {"status": "warning" if warnings else "pass", "generated_report_warning": MEMORY_GENERATED_WARNING, "warnings": warnings, "details": details}
 
 
 def render_memory_index_markdown(memory: dict[str, Any]) -> str:
     details = memory.get("details") if isinstance(memory.get("details"), dict) else {}
     cards = details.get("cards") if isinstance(details.get("cards"), list) else []
     warnings = memory.get("warnings") if isinstance(memory.get("warnings"), list) else []
-    rows: list[str] = []
-    for card in cards:
-        if not isinstance(card, dict):
-            continue
-        rows.append(
-            "| "
-            + " | ".join(
-                [
-                    f"`{card.get('path', 'missing')}`",
-                    str(card.get("category") or "missing"),
-                    str(card.get("freshness") or "missing"),
-                    str(card.get("status") or "missing"),
-                    str(card.get("summary") or "").replace("|", "\\|") or "missing",
-                ]
+
+    def cell(value: Any) -> str:
+        return str(value or "missing").replace("|", "\\|")
+
+    def card_table(selected: list[dict[str, Any]]) -> str:
+        rows: list[str] = []
+        for card in selected:
+            if not isinstance(card, dict):
+                continue
+            notes = "; ".join(card.get("warnings") or [])
+            rows.append(
+                "| "
+                + " | ".join(
+                    [
+                        f"`{cell(card.get('path'))}`",
+                        cell(card.get("title")),
+                        cell(card.get("category")),
+                        cell(card.get("freshness")),
+                        cell(card.get("status")),
+                        cell(card.get("authority_owner_if_promoted") or "none"),
+                        cell(notes or "none"),
+                        cell(card.get("summary")),
+                    ]
+                )
+                + " |"
             )
-            + " |"
-        )
-    table = "\n".join(
-        [
-            "| Card | Category | Freshness | Status | Summary |",
-            "| --- | --- | --- | --- | --- |",
-            *rows,
-        ]
-    ) if rows else "- No reviewed memory cards found."
+        return "\n".join(
+            [
+                "| Card | Title | Category | Freshness | Status | Promotion owner | Warnings | Summary |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- |",
+                *rows,
+            ]
+        ) if rows else "- No matching reviewed memory cards."
+
+    def citation_list(selected: list[dict[str, Any]]) -> str:
+        lines: list[str] = []
+        for card in selected:
+            citation = card.get("citation") if isinstance(card.get("citation"), dict) else {}
+            sources = citation.get("source_pointers") or []
+            source_text = ", ".join(str(source) for source in sources) if sources else "none"
+            lines.append(
+                "- "
+                + f"`{citation.get('path', 'missing')}`: {citation.get('title', 'missing')} "
+                + f"[{citation.get('category', 'missing')}, {citation.get('freshness', 'missing')}, {citation.get('status', 'missing')}] "
+                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}"
+            )
+        return "\n".join(lines) if lines else "- No citations available."
+
+    current_cards = details.get("current_cards") if isinstance(details.get("current_cards"), list) else []
+    promotion_needed_cards = details.get("promotion_needed_cards") if isinstance(details.get("promotion_needed_cards"), list) else []
+    stale_or_superseded_cards = details.get("stale_or_superseded_cards") if isinstance(details.get("stale_or_superseded_cards"), list) else []
+    low_confidence_cards = details.get("low_confidence_cards") if isinstance(details.get("low_confidence_cards"), list) else []
+    glossary_terms = details.get("glossary_terms") if isinstance(details.get("glossary_terms"), list) else []
 
     return f"""# PrecodeOS -- Memory Index
 <!-- ANCHOR: memory-index -->
@@ -3585,6 +3684,12 @@ Generated at: `{datetime.now(timezone.utc).isoformat()}`
 
 Use this index to find reviewed memory cards. Before acting, return to active memory, the active bead, and the primary authority file.
 
+Use this prompt when asking an agent to search memory:
+
+```text
+{details.get('safe_usage_prompt', 'Search reviewed memory, cite matching cards, and treat memory as evidence only.')}
+```
+
 ## Summary
 
 - Status: {memory.get('status', 'missing')}
@@ -3592,10 +3697,31 @@ Use this index to find reviewed memory cards. Before acting, return to active me
 - Project glossary cards: {len(details.get('glossary_terms') or [])}
 - Promotion-needed cards: {len(details.get('promotion_needed') or [])}
 - Stale or superseded cards: {len(details.get('stale_or_superseded') or [])}
+- Generated-evidence warning: {memory.get('generated_report_warning', MEMORY_GENERATED_WARNING)}
 
-## Cards
+## Current Reviewed Cards
 
-{table}
+{card_table(current_cards)}
+
+## Promotion Needed
+
+{card_table(promotion_needed_cards)}
+
+## Stale, Superseded, Or Archived
+
+{card_table(stale_or_superseded_cards)}
+
+## Low Confidence
+
+{card_table(low_confidence_cards)}
+
+## Project Glossary Cards
+
+{card_table([card for card in cards if isinstance(card, dict) and card.get('category') == 'project_glossary'])}
+
+## Citation List
+
+{citation_list(cards)}
 
 ## Warnings
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.20
+Document version: v0.2.21
 Last updated: 2026-06-14
 
 ## Purpose
@@ -109,10 +109,11 @@ session evidence
   -> memory candidate
   -> reviewed memory card in memory/cards/
   -> logs/memory-index.md/json
+  -> read-only memory search and citation prompts
   -> optional promotion to DECISIONS.md, PRD, or authority doc
 ```
 
-The diary is generated learning. Memory cards are reviewed evidence. Owner files hold authority.
+The diary is generated learning. Memory cards are reviewed evidence. Search results and indexes are generated evidence. Owner files hold authority.
 
 ### Scripts To Generated Sidecars
 
@@ -207,7 +208,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` | reference | User-project release-readiness lane, shipping evidence expectations, approval gates, rollback or blocked escape notes, and post-release review prompts. | Used before user-facing shipping risk; prepares evidence and approval questions without deploying, approving release, mutating external systems, accepting review, or activating the next bead. |
 | `tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md` | reference | Generated bead build journal rules, evidence sources, Daily Cockpit surfacing, and conservative uncertainty handling. | Governs `logs/bead-build-journal.md/jsonl` behavior. |
 | `tasks/reference/RALPH-LOOP-PROTOCOL.md` | reference | Bounded Ralph attempt lifecycle, retry budget, validator-set expectations, generated attempt evidence, stop decisions, and hidden-authority guardrails. | Governs optional Ralph frontmatter in beads, `scripts/ralph-loop.py`, and `logs/ralph-attempts.jsonl` / `logs/ralph-summary.md`. |
-| `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules and promotion path. | Governs `memory/cards/` and generated memory indexes. |
+| `tasks/reference/MEMORY-PROTOCOL.md` | reference | Reviewed filesystem memory rules, generated index/search behavior, citation expectations, demotion warnings, and manual promotion path. | Governs `memory/cards/`, `scripts/memory-check.py`, and generated memory indexes without expanding active memory. |
 | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` | reference | Shared domain-language workflow, project-glossary card expectations, terminology freshness, and PRD/bead naming guidance. | Used during alignment, PRD shaping, module/interface naming, review, and glossary memory creation. |
 | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md` | reference | Advisory local cleanup boundaries for truth, evidence, generated reports, bulky logs, caches, dry-run previews, and protected files. | Governs `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and generated preview manifests. |
 | `tasks/reference/RECOVERY-PROTOCOL.md` | reference | Beginner-safe recovery workflow for file damage, generated-report confusion, stale reports, active-state drift, missing proof, context loss, scope expansion, and approval confusion. | Canonical "I think I broke something" guide; informs user docs and next-step recovery prompts without authorizing destructive repair. |
@@ -271,6 +272,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `scripts/update-bead-build-journal.py` | Renders generated bead build journal. | Active bead, closeout, checks, tool runs, loop events, and Git metadata. | `logs/bead-build-journal.md/jsonl`. |
 | `scripts/update-learning-diary.py` | Renders generated learning diary. | Bead closeout, checks, spend, loop events. | `logs/learning-diary.md/jsonl`. |
 | `scripts/update-memory-index.py` | Renders reviewed memory index. | `memory/cards/*.md`. | `logs/memory-index.md/json`. |
+| `scripts/memory-check.py` | Searches or audits reviewed memory cards. | `memory/cards/*.md`, optional query/category/freshness/status/promotion filters. | Advisory JSON only; no card creation, owner-file promotion, task selection, or state mutation. |
 | `scripts/file-inventory.py` | Renders/checks file inventory metadata. | Repo files and authority contracts. | `logs/file-inventory.json` or advisory JSON. |
 | `scripts/*-check.py` | Advisory quality checks. | Compiled state and logs. | JSON warnings; no state mutation. |
 | `scripts/version-check.py` | Checks version metadata coverage. | Docs, scripts, workflows. | Advisory JSON. |
@@ -287,9 +289,9 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `modes/EXPLORER.md` | reference | Explorer role contract for bounded read-only repo inspection and source summarization. | Used when a narrow question needs cited repo facts before navigator, builder, or review decisions. |
 | `modes/BUILDER.md` | reference | Implementation role guidance. | Used during scoped code or doc changes. |
 | `modes/REVIEW.md` | reference | Review role guidance. | Used for code review, closeout, and acceptance checks. |
-| `memory/REVIEWED-MEMORY-GUIDE.md` | reference | Reviewed memory directory guidance. | Points to memory protocol and card directory. |
-| `memory/cards/MEMORY-CARD-FORMAT.md` | reference | Memory card format. | Defines reviewed memory card expectations. |
-| `memory/cards/MEMORY-CARD-template.md` | reference template | Starter shape for reviewed memory cards. | Copied for approved memory cards. |
+| `memory/REVIEWED-MEMORY-GUIDE.md` | reference | Reviewed memory directory guidance and search orientation. | Points to memory protocol, card directory, generated index refresh, and read-only memory search. |
+| `memory/cards/MEMORY-CARD-FORMAT.md` | reference | Memory card format, required fields, search topics, and promotion-owner expectations. | Defines reviewed memory card expectations and evidence-only search boundaries. |
+| `memory/cards/MEMORY-CARD-template.md` | reference template | Starter shape for reviewed memory cards. | Copied for approved memory cards; includes promotion-review reminders. |
 | `.github/workflows/precode-validate.yml` | workflow | GitHub Actions validation for Precode docs. | Runs read-only validation on pushes and pull requests. |
 
 ## Generated Evidence And Log Families
@@ -319,7 +321,7 @@ Maintained scripts should carry lightweight provenance headers: version, last up
 | `logs/long-horizon-map.json` | generated sidecar | Future/blocked/deferred work summary. | Evidence only. |
 | `logs/handoff-packet.md/json` | generated report | Handoff context pack. | Orientation only; not transition approval. |
 | `logs/learning-diary.md/jsonl` | generated report | Session learning digest and entries. | Not active memory. |
-| `logs/memory-index.md/json` | generated report | Reviewed memory card index. | Search aid only. |
+| `logs/memory-index.md/json` | generated report | Reviewed memory card index with grouped search, citation, freshness, and promotion-warning fields. | Search aid only; not active memory, task selection, owner-file authority, or promotion approval. |
 | `logs/file-inventory.json` | generated sidecar | Generated inventory metadata. | Maintenance aid only. |
 | `logs/bootstrap-check.json` and `logs/bootstrap-check.md` | generated sidecar/report | Optional Bootstrap Confidence, manifest-preview, and supervised setup-plan evidence written only when `scripts/bootstrap-check.py --write-evidence` is used. | Evidence only; not setup approval, install permission, update permission, owner-file adaptation approval, release-channel metadata, package-manager behavior, rollback automation, target-project authority, or active memory. |
 | `logs/existing-repo-intake.json` and `logs/existing-repo-intake.md` | generated sidecar/report | Optional Existing Repo Intake evidence written only when `scripts/existing-repo-intake.py --write-evidence` is used. | Evidence only; not owner-file adaptation, check execution, setup approval, PRD approval, bead activation, target-project authority, or active memory. |

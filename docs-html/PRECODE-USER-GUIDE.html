@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.35</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.36</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -427,9 +427,11 @@ Show changed behavior, affected users, release target, recorded checks, smoke te
 <h2 id="use-reviewed-memory">Use Reviewed Memory</h2>
 <p>Use memory when you want the agent to remember what the project has learned across prior sessions.</p>
 <p>Do this:</p>
-<ul><li>Ask the agent to search reviewed memory for a specific topic.</li><li>Make it cite the memory cards it used.</li><li>Make it say whether the memory is evidence only or should be promoted to an owner file.</li><li>Return to active memory and the active bead before editing.</li></ul>
+<ul><li>Ask the agent to search reviewed memory for a specific topic.</li><li>Make it cite the memory cards it used.</li><li>Make it say whether the memory is evidence only or should be promoted to an owner file.</li><li>Demote stale, superseded, archived, or low-confidence cards before relying on them.</li><li>Return to active memory and the active bead before editing.</li></ul>
 <p>Say this:</p>
 <pre><code class="language-text">Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.</code></pre>
+<p>You can also ask for a read-only filtered search:</p>
+<pre><code class="language-text">Run python3 scripts/memory-check.py --query &quot;topic words&quot;. Cite card path, title, category, freshness, status, source pointers, and promotion owner. Do not promote anything without my approval.</code></pre>
 <p>Stop if: the agent treats memory as a decision, requirement, next task, or implementation instruction.</p>
 <p>Why this matters: Memory helps continuity without making the agent carry the whole project in active context.</p>
 <h2 id="first-30-minutes-first-day-first-week">First 30 Minutes / First Day / First Week</h2>
@@ -471,7 +473,7 @@ Ask one blocking question at a time. Treat generated reports and source notes as
 <p>Close safely:</p>
 <pre><code class="language-text">Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.</code></pre>
 <p>Search memory:</p>
-<pre><code class="language-text">Search reviewed memory for what we have learned about X. Do not treat memory as authority.</code></pre>
+<pre><code class="language-text">Search reviewed memory for what we have learned about X. Cite matching cards, demote stale or low-confidence results, and do not treat memory as authority.</code></pre>
 <p>Propose a memory card:</p>
 <pre><code class="language-text">Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve.</code></pre>
 <p>Check promotion:</p>

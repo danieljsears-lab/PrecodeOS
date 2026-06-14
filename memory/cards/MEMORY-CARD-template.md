@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-03
+Document version: v0.1.2
+Last updated: 2026-06-14
 
 ---
 memory_id: MEMORY-000
@@ -47,4 +47,6 @@ Use this section only when `category: project_glossary`; otherwise write `Not ap
 
 ## Promotion Review
 
-- If this becomes a decision, requirement, architecture rule, security rule, acceptance rule, or task instruction, move it to the correct owner file.
+- If this becomes a decision, requirement, architecture rule, security rule, acceptance rule, or task instruction, move it to the correct owner file after human review.
+- If `status` is `needs_promotion`, replace `authority_owner_if_promoted: none` with the proposed owner file or protocol. Search results may warn about promotion need, but they must not perform the promotion.
+- If this card becomes stale, superseded, archived, or low-confidence, keep that state visible so memory search treats it as weak or historical context.

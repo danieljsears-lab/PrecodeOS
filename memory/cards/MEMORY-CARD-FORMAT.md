@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-07
+Document version: v0.1.3
+Last updated: 2026-06-14
 
 Each memory card captures one reusable piece of reviewed knowledge.
 
@@ -21,6 +21,8 @@ Cards should be short. If a card becomes a decision, requirement, architecture r
 - `freshness`: `current`, `watch`, `stale`, or `superseded`
 - `status`: `reviewed`, `needs_promotion`, `superseded`, or `archived`
 - `source_pointers`: files, beads, PRDs, diary entries, checks, or approved notes that support the memory
+- `authority_owner_if_promoted`: owner file or protocol if this memory should become authority; required when `status` is `needs_promotion`
+- `topics`: search terms that help `scripts/memory-check.py --query` find the card
 
 ## Project Glossary Guidance
 
@@ -37,3 +39,7 @@ Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` for the full shared-langua
 ## Review Rule
 
 Do not create a memory card automatically from generated diary output. Propose the card, get user approval, then write the reviewed card.
+
+## Search And Promotion Rule
+
+Memory cards may be searched and exported through generated indexes, but search results are evidence only. Stale, superseded, archived, and low-confidence cards must be treated as weak or historical context. A `needs_promotion` card names the owner file to review; it does not update that owner file or become authority by itself.

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-07
+Document version: v0.1.3
+Last updated: 2026-06-14
 
 This directory stores reviewed Precode memory as plain files.
 
@@ -34,5 +34,15 @@ Generated memory indexes live in `logs/` and can be refreshed with:
 ```bash
 python3 scripts/update-memory-index.py
 ```
+
+Search reviewed memory without mutating state:
+
+```bash
+python3 scripts/memory-check.py --query "topic words"
+```
+
+Optional filters include `--category`, `--freshness`, `--status`, and `--needs-promotion`.
+
+Search results and generated indexes are evidence only. Cite the card path, title, category, freshness, status, source pointers, and promotion owner before using a result. Demote stale, superseded, archived, or low-confidence cards, then return to active memory, the active bead, and the owner file before recommending action.
 
 Use `tasks/reference/MEMORY-PROTOCOL.md` for the full rules.

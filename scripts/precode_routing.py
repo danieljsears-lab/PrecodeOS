@@ -248,7 +248,10 @@ def next_step_guidance(
             "why_not_more_context": (
                 "More context is useful only when the active bead, authority file, or this router decision points to it."
             ),
-            "why_this_matters": "Precode should reduce the beginner's next decision to continue, ask, review, approve, repair, or stop.",
+            "why_this_matters": (
+                "Precode should reduce the beginner's next decision to continue, ask, reaffirm, review, approve, "
+                "repair, or stop."
+            ),
             "stop_if": stop_if,
             "approval_prompt": approval_prompt,
             "blockers": sorted(set(blockers)),
