@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-14">
+  <meta name="generated-at" content="2026-06-15">
   <title>PrecodeOS Explainer · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.20</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.21</span><span>Updated 2026-06-15</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -223,7 +223,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="2-generated-reports-are-evidence-not-authority">2. Generated Reports Are Evidence, Not Authority</h3>
 <p>Generated reports help humans see state, warnings, checks, work-graph relationships, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.</p>
 <p>Examples:</p>
-<div class="table-wrap"><table><thead><tr><th>Generated surface</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td><code>PRECODE-HELP.md</code></td><td>Quick next-step, load plan, context-footprint, and warning snapshot.</td><td>Active memory, task selection, or transition approval.</td></tr><tr><td><code>OS-HEALTH.md</code></td><td>Health, warnings, evidence quality, spend, and state snapshots.</td><td>Active memory or acceptance by itself.</td></tr><tr><td><code>PROGRESS.md</code></td><td>Generated progress summary.</td><td>Product decisions or current task authority.</td></tr><tr><td><code>logs/*.md</code>, <code>logs/*.json</code>, <code>logs/*.jsonl</code></td><td>Evidence, sidecars, handoff, diary, indexes, and check output.</td><td>Replacing owner files.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Generated surface</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td><code>PRECODE-HELP.md</code></td><td>Quick next-step, load plan, context-footprint, and warning snapshot.</td><td>Active memory, task selection, or transition approval.</td></tr><tr><td><code>OS-HEALTH.md</code></td><td>Health, Doctor Dashboard diagnostics, warnings, evidence quality, spend, and state snapshots.</td><td>Active memory, task selection, approval, or acceptance by itself.</td></tr><tr><td><code>PROGRESS.md</code></td><td>Generated progress summary.</td><td>Product decisions or current task authority.</td></tr><tr><td><code>logs/*.md</code>, <code>logs/*.json</code>, <code>logs/*.jsonl</code></td><td>Evidence, sidecars, handoff, diary, indexes, and check output.</td><td>Replacing owner files.</td></tr></tbody></table></div>
 <p>If a generated report looks wrong, repair the source state first and regenerate the report. Do not hand-edit generated Markdown as if it were truth.</p>
 <h2 id="why-the-precodeos-name">Why The PrecodeOS Name</h2>
 <p>“Precode” names the work that must happen before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means Precode is the small operating layer around the agent and the repo, not a replacement for the agent, the app, or the builder’s judgment.</p>
@@ -256,10 +256,10 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="5-prove">5. Prove</h3>
 <p>Prove answers: &quot;What evidence says this is done?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>bash scripts/record-check.sh -- &amp;lt;command&amp;gt;</code> to record checks as evidence</li><li><code>logs/ralph-attempts.jsonl</code> and <code>logs/ralph-summary.md</code> when a Ralph-enabled bead records bounded attempt history</li><li>verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval</li><li><code>scripts/*-check.py</code> advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more</li><li>Closeout Evidence in the active bead</li></ul>
+<ul><li><code>bash scripts/record-check.sh -- &amp;lt;command&amp;gt;</code> to record checks as evidence</li><li><code>logs/ralph-attempts.jsonl</code> and <code>logs/ralph-summary.md</code> when a Ralph-enabled bead records bounded attempt history</li><li>verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval</li><li>Review / Acceptance Skill when a builder wants a structured evidence-based recommendation before accepting one active bead</li><li><code>scripts/*-check.py</code> advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more</li><li>Closeout Evidence in the active bead</li></ul>
 <p>The review decision is one of:</p>
 <ul><li><code>accepted</code></li><li><code>revise</code></li><li><code>split</code></li><li><code>blocked</code></li></ul>
-<p>&quot;The agent sounds confident&quot; is not a review decision. Evidence is the review surface.</p>
+<p>&quot;The agent sounds confident&quot; is not a review decision. Evidence is the review surface. The Review / Acceptance Skill can organize the questions, missing proof, and recommendation, but it cannot accept implementation or activate the next bead.</p>
 <h3 id="6-recover">6. Recover</h3>
 <p>Recover answers: &quot;What do I do when something feels broken or confusing?&quot;</p>
 <p>Main surfaces:</p>
@@ -308,6 +308,7 @@ python3 scripts/files-in-play-check.py --edit-lock
 python3 scripts/run-contract-check.py
 python3 scripts/bead-transition.py --approve</code></pre>
 <p>The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.</p>
+<p>The Doctor Dashboard inside <code>OS-HEALTH.md</code> is a generated diagnostic summary. It explains warning sources, owner commands, and repair paths, but <code>scripts/next-step.py</code> still owns the next human decision.</p>
 <h2 id="when-to-stop-the-agent">When To Stop The Agent</h2>
 <p>Stop or checkpoint when:</p>
 <ul><li>the agent cannot name the active bead</li><li>the next workflow is unclear</li><li>product definition starts during implementation</li><li>a task needs a second primary authority file</li><li>more files are changing than the bead allowed</li><li>a command classification says <code>approval needed</code> or <code>stop</code></li><li>checks are missing, vague, failing, or not tied to risk</li><li>discovery says <code>pause</code>, <code>narrow</code>, or <code>kill</code> and the agent keeps planning implementation</li><li>sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path</li><li>the work touches auth, payments, personal data, uploads, deployment, secrets, GitHub mutation, dashboard mutation, or destructive action without approval</li><li>generated reports, source notes, or old artifacts start acting like instructions</li><li>the next task starts before you approve a bead transition</li></ul>

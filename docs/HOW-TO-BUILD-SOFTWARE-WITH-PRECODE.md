@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.28
+Document version: v0.1.29
 Last updated: 2026-06-14
 
 ## Start Here: You Are Not Just Prompting
@@ -392,7 +392,7 @@ Use recovery when a file was moved or renamed, a generated report was edited or 
 
 When logs, caches, build output, generated files, or local clutter look confusing, use Local Hygiene instead of manually cleaning files.
 
-Local Hygiene v1 is advisory and dry-run only. It may classify files, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.
+Local Hygiene is advisory and dry-run only. It classifies files as cleanup candidates, protected evidence, unexpected review items, or not-candidates, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.
 
 ```text
 Use the Local Hygiene Protocol. Run python3 scripts/local-hygiene-check.py or python3 scripts/local-hygiene-dry-run.py and explain the result. Do not mutate files.

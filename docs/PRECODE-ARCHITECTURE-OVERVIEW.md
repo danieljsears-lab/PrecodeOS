@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.23
+Document version: v0.3.24
 Last updated: 2026-06-14
 
 ## Executive Summary
@@ -57,7 +57,7 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Tool lock-in | Each AI coding tool develops its own project memory, model-routing habits, and command style. | Tool-neutral core with thin adapters, shared scripts, and Agent Routing discipline for model tier, context budget, delegation, and tool choice. |
 | Lost handoff state | A new session or tool cannot reconstruct current scope, blockers, or evidence. | Context Packs, handoff scripts, active bead pointer, and generated handoff reports. |
 | Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
-| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, private-local material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected evidence, and no cleanup mutation in v1. |
+| Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, private-local material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected generated evidence, v2 preview classifications, and no cleanup mutation. |
 | OS-owned file damage | Active memory, protocols, scripts, hooks, adapters, or public/private package boundaries are edited without a pre-mutation recovery point. | OS Integrity protocol, protected-source surface classes, strict staged checkpoint checks, and explicit scoped checkpoint restore. |
 
 Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
@@ -179,7 +179,7 @@ The application can use any framework. Precode's architecture overview is not th
 | Public docs layer | Provide committed reader-facing HTML without replacing canonical Markdown. | `docs/*.md`, `docs-html/*.html`, maintainer-only docs generation. |
 | Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
 | Public-package hygiene layer | Keep private local material out of the reusable public package. | `.gitignore`, `scripts/public-repo-check.py`, package inventory checks. |
-| Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`. |
+| Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and protected generated evidence handling for `logs/os-checkpoints/*`. |
 | Handoff layer | Orient the next session or agent safely. | Handoff script, Context Pack, handoff packet. |
 
 ### Artifact Lifecycle

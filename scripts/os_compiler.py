@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.28
-# Last updated: 2026-06-14
+# Version: v0.1.30
+# Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -31,6 +31,7 @@ from precode_outputs import (
     write_compiled_sidecars,
     write_json,
 )
+from precode_doctor import build_doctor_dashboard
 from precode_routing import next_step_guidance
 from precode_state import (
     BeadRecord,
@@ -143,9 +144,11 @@ GENERATED_JSON_FAMILIES = {
     "logs/*.jsonl",
     "logs/check-output/*",
     "logs/scheduled-audit-output/*",
+    "logs/os-checkpoints/*",
 }
 LOCAL_HYGIENE_RETENTION_DAYS = 90
 LOCAL_HYGIENE_BULKY_LOG_DIRS = {"logs/check-output", "logs/scheduled-audit-output"}
+LOCAL_HYGIENE_EXPECTED_LOG_FAMILIES = {"logs/os-checkpoints"}
 LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/LOG-EVIDENCE-TAXONOMY.md",
     "logs/adapter-index.json",
@@ -2961,7 +2964,12 @@ def git_tracked(root: Path, rel: str) -> bool:
     return bool(result and result.returncode == 0)
 
 
-def protected_evidence_outputs(root: Path, beads: list[Bead], check_results: list[dict[str, Any]], current_bead: Bead | None) -> set[str]:
+def local_hygiene_is_expected_log(rel: str) -> bool:
+    top_family = "/".join(rel.split("/")[:2])
+    return rel in LOCAL_HYGIENE_EXPECTED_LOG_FILES or top_family in LOCAL_HYGIENE_EXPECTED_LOG_FAMILIES
+
+
+def protected_evidence_outputs(root: Path, beads: list[BeadRecord], check_results: list[dict[str, Any]], current_bead: BeadRecord | None) -> set[str]:
     protected_beads: set[str] = set()
     if current_bead:
         protected_beads.add(current_bead.rel_path)
@@ -2980,9 +2988,9 @@ def protected_evidence_outputs(root: Path, beads: list[Bead], check_results: lis
 
 def local_hygiene_summary(
     root: Path,
-    beads: list[Bead],
+    beads: list[BeadRecord],
     check_results: list[dict[str, Any]],
-    current_bead: Bead | None,
+    current_bead: BeadRecord | None,
     *,
     now: datetime | None = None,
 ) -> dict[str, Any]:
@@ -3026,13 +3034,24 @@ def local_hygiene_summary(
 
     logs_dir = root / "logs"
     unexpected_logs: list[str] = []
+    protected_generated_outputs: list[dict[str, Any]] = []
     if logs_dir.is_dir():
         for path in sorted(item for item in logs_dir.rglob("*") if item.is_file()):
             rel = rel_path(path, root)
             top_family = "/".join(rel.split("/")[:2])
             if top_family in LOCAL_HYGIENE_BULKY_LOG_DIRS:
                 continue
-            if rel not in LOCAL_HYGIENE_EXPECTED_LOG_FILES:
+            if top_family in LOCAL_HYGIENE_EXPECTED_LOG_FAMILIES:
+                protected_generated_outputs.append(
+                    {
+                        "path": rel,
+                        "bytes": file_size(path),
+                        "reason": "expected protected generated evidence family",
+                        "rule": f"{top_family} is generated evidence, not cleanup clutter",
+                    }
+                )
+                continue
+            if not local_hygiene_is_expected_log(rel):
                 unexpected_logs.append(rel)
     if unexpected_logs:
         warnings.append(f"{len(unexpected_logs)} unexpected file(s) found under logs/")
@@ -3068,7 +3087,7 @@ def local_hygiene_summary(
         "retention_days": LOCAL_HYGIENE_RETENTION_DAYS,
         "advisory_only": True,
         "cleanup_modes_enabled": [],
-        "next_safe_action": "review candidates; no files are moved, deleted, archived, or compacted by Local Hygiene v1",
+        "next_safe_action": "review candidates; no files are moved, deleted, archived, or compacted by Local Hygiene v2 preview hardening",
         "bulky_log_candidates": bulky_outputs,
         "bulky_log_candidate_count": len(bulky_outputs),
         "bulky_log_candidate_bytes": sum(item["bytes"] for item in bulky_outputs),
@@ -3077,6 +3096,7 @@ def local_hygiene_summary(
         "cache_candidate_bytes": sum(item["bytes"] for item in cache_candidates),
         "protected_evidence_outputs": sorted(protected_outputs),
         "protected_bulky_outputs": protected_bulky_outputs,
+        "protected_generated_outputs": protected_generated_outputs,
         "unexpected_logs": unexpected_logs,
         "missing_referenced_outputs": sorted(set(missing_referenced_outputs)),
         "cache_observed_not_candidate": cache_observed_not_candidate,
@@ -3089,38 +3109,114 @@ def local_hygiene_summary(
 def local_hygiene_preview_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
     details = summary.get("details") if isinstance(summary.get("details"), dict) else {}
     actions: list[dict[str, Any]] = []
+
+    def add_action(
+        *,
+        classification: str,
+        action: str,
+        path: str | None,
+        bytes_value: int | str = 0,
+        reason: str | None = None,
+        protection_reason: str | None = None,
+        review_reason: str | None = None,
+        rollback_note: str | None = None,
+    ) -> None:
+        actions.append(
+            {
+                "candidate_id": f"LH-{len(actions) + 1:03d}",
+                "classification": classification,
+                "action": action,
+                "path": path,
+                "bytes": bytes_value,
+                "reason": reason,
+                "mutates_now": False,
+                "approval_required": classification == "candidate",
+                "protection_reason": protection_reason,
+                "review_reason": review_reason,
+                "rollback_note": rollback_note
+                or "No file is changed by this preview. Future cleanup apply would need a fresh preview, explicit approval, and a recovery note.",
+            }
+        )
+
     for item in details.get("bulky_log_candidates") or []:
         if not isinstance(item, dict):
             continue
-        actions.append(
-            {
-                "action": "would_archive_log_output",
-                "path": item.get("path"),
-                "bytes": item.get("bytes", 0),
-                "reason": item.get("rule"),
-                "mutates_now": False,
-            }
+        add_action(
+            classification="candidate",
+            action="would_archive_log_output",
+            path=item.get("path"),
+            bytes_value=item.get("bytes", 0),
+            reason=item.get("rule"),
+            review_reason="old bulky generated output is eligible for future archive review",
+            rollback_note="Future archive apply must preserve a restore path or documented archive location before moving this file.",
         )
     for item in details.get("cache_candidates") or []:
         if not isinstance(item, dict):
             continue
-        actions.append(
-            {
-                "action": "would_delete_cache",
-                "path": item.get("path"),
-                "bytes": item.get("bytes", 0),
-                "reason": item.get("rule"),
-                "mutates_now": False,
-            }
+        add_action(
+            classification="candidate",
+            action="would_delete_cache",
+            path=item.get("path"),
+            bytes_value=item.get("bytes", 0),
+            reason=item.get("rule"),
+            review_reason="ignored or untracked cache/build output is eligible for future delete review",
+            rollback_note="Future delete apply must confirm the path is regeneratable before removal.",
         )
+    protected_bulky_paths = {
+        item.get("path")
+        for item in details.get("protected_bulky_outputs") or []
+        if isinstance(item, dict)
+    }
     for path in details.get("protected_evidence_outputs") or []:
-        actions.append(
-            {
-                "action": "protected",
-                "path": path,
-                "reason": "referenced by current or unaccepted bead evidence",
-                "mutates_now": False,
-            }
+        if path in protected_bulky_paths:
+            continue
+        add_action(
+            classification="protected",
+            action="protected",
+            path=path,
+            reason="referenced by current or unaccepted bead evidence",
+            protection_reason="referenced by current or unaccepted bead evidence",
+        )
+    for item in details.get("protected_bulky_outputs") or []:
+        if not isinstance(item, dict):
+            continue
+        add_action(
+            classification="protected",
+            action="protected",
+            path=item.get("path"),
+            bytes_value=item.get("bytes", 0),
+            reason=item.get("rule"),
+            protection_reason=item.get("reason") or "protected bulky output",
+        )
+    for item in details.get("protected_generated_outputs") or []:
+        if not isinstance(item, dict):
+            continue
+        add_action(
+            classification="protected",
+            action="protected",
+            path=item.get("path"),
+            bytes_value=item.get("bytes", 0),
+            reason=item.get("rule"),
+            protection_reason=item.get("reason") or "protected generated evidence",
+        )
+    for path in details.get("unexpected_logs") or []:
+        add_action(
+            classification="unexpected_review",
+            action="review_unexpected_log",
+            path=path,
+            reason="unexpected file under logs/",
+            review_reason="unexpected logs files need human review before any cleanup policy applies",
+        )
+    for item in details.get("cache_observed_not_candidate") or []:
+        if not isinstance(item, dict):
+            continue
+        add_action(
+            classification="not_candidate",
+            action="not_candidate",
+            path=item.get("path"),
+            bytes_value=item.get("bytes", 0),
+            reason=item.get("rule"),
+            protection_reason=item.get("reason") or "not proven ignored or untracked",
         )
 
     return {
@@ -3132,7 +3228,9 @@ def local_hygiene_preview_from_summary(summary: dict[str, Any]) -> dict[str, Any
         "summary": {
             "would_archive_log_output": sum(1 for action in actions if action.get("action") == "would_archive_log_output"),
             "would_delete_cache": sum(1 for action in actions if action.get("action") == "would_delete_cache"),
-            "protected": sum(1 for action in actions if action.get("action") == "protected"),
+            "protected": sum(1 for action in actions if action.get("classification") == "protected"),
+            "unexpected_review": sum(1 for action in actions if action.get("classification") == "unexpected_review"),
+            "not_candidate": sum(1 for action in actions if action.get("classification") == "not_candidate"),
             "candidate_bytes": int(details.get("bulky_log_candidate_bytes") or 0) + int(details.get("cache_candidate_bytes") or 0),
         },
         "actions": actions,
@@ -3151,18 +3249,23 @@ def render_local_hygiene_preview_markdown(preview: dict[str, Any]) -> str:
             "| "
             + " | ".join(
                 [
+                    str(action.get("candidate_id") or "missing"),
+                    str(action.get("classification") or "missing"),
                     str(action.get("action") or "missing"),
                     f"`{action.get('path') or 'missing'}`",
                     str(action.get("bytes", "")),
+                    str(action.get("approval_required", "")),
                     str(action.get("reason") or "").replace("|", "\\|"),
+                    str(action.get("protection_reason") or action.get("review_reason") or "").replace("|", "\\|"),
+                    str(action.get("rollback_note") or "").replace("|", "\\|"),
                 ]
             )
             + " |"
         )
     table = "\n".join(
         [
-            "| Action | Path | Bytes | Reason |",
-            "| --- | --- | --- | --- |",
+            "| Candidate ID | Classification | Action | Path | Bytes | Approval required | Reason | Protection or review reason | Rollback note |",
+            "| --- | --- | --- | --- | ---: | --- | --- | --- | --- |",
             *rows,
         ]
     ) if rows else "- No local hygiene actions would be taken."
@@ -3191,6 +3294,8 @@ Generated at: `{preview.get('generated_at')}`
 - Would archive log outputs: {summary.get('would_archive_log_output', 0)}
 - Would delete caches: {summary.get('would_delete_cache', 0)}
 - Protected evidence entries: {summary.get('protected', 0)}
+- Unexpected review entries: {summary.get('unexpected_review', 0)}
+- Not-candidate entries: {summary.get('not_candidate', 0)}
 - Candidate bytes: {summary.get('candidate_bytes', 0)}
 - Next safe action: {preview.get('next_safe_action', 'review candidates only')}
 
@@ -3969,7 +4074,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "spend": spend_summary(spend_rows),
     }
 
-    return {
+    payload = {
         "generated_at": now,
         "app_dir": APP_DIR,
         "active_memory": ACTIVE_MEMORY,
@@ -4039,3 +4144,5 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "shim_index": compile_shim_index(root),
         "events": events,
     }
+    payload["doctor_dashboard"] = build_doctor_dashboard(payload)
+    return payload

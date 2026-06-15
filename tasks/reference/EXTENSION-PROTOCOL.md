@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-14
+Document version: v0.1.9
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -86,6 +86,8 @@ Generated JSON and JSONL files must be treated as evidence only. They may feed s
 
 `logs/work-graph.json` and `logs/work-graph.md` may expose bead, PRD, owner-file, check, blocker, follow-up, and transition relationships compiled from existing Precode surfaces. They are inspection evidence only; they must not become a second task tracker, choose work, approve transitions, rewrite beads, or replace markdown authority.
 
+The Doctor Dashboard inside `OS-HEALTH.md` and `logs/os-health.json` is a generated report extension. It may summarize warning sources, owner commands, owner protocols, severity, and shortest repair paths from existing compiled state. It must not become a standalone router, approve transitions, approve commands, select tasks, mutate files, or replace `scripts/next-step.py`.
+
 ZYAL-like export belongs in an adapter or extension that maps the generic Precode run-contract profile to that host. The generic Precode profile must prove useful before any host-specific contract becomes a maintained surface.
 
 ## Mutation Rules
@@ -119,7 +121,7 @@ Extension findings become action only after user review:
 
 ## Deferred Wrapper Rule
 
-Do not introduce a broad `precode doctor` command or installable `precode` CLI as an extension until the existing router, session-start, bootstrap, and generated evidence surfaces prove stable. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
+The Doctor Dashboard health extension is allowed as generated OS Health evidence. Do not introduce a broad standalone `precode doctor` command or installable `precode` CLI as an extension until the existing router, session-start, bootstrap, and generated evidence surfaces prove stable. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
 
 ## Extension Checklist
 

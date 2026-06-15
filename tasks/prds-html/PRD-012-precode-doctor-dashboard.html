@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-012 -- Precode Doctor Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-012 -- Precode Doctor Dashboard</h1>
+  <p class="muted">Static HTML generated from <code>PRD-012-precode-doctor-dashboard.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-012-precode-doctor-dashboard.md#prd-012-precode-doctor-dashboard">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Precode Doctor Dashboard</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-15</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the generated Precode Doctor Dashboard inside OS Health.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, transition approval, command approval, generated report truth, implementation acceptance, `precode doctor` command behavior, installable CLI behavior, wrapper behavior, external mutation, package-manager behavior, or release-channel behavior.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-012-FR01</code></td><td>OS Health must include a Doctor Dashboard section.</td><td>P0</td><td>Human-readable generated report.</td></tr><tr><td><code>PRD-012-FR02</code></td><td><code>logs/os-health.json</code> must include <code>doctor_dashboard</code>.</td><td>P0</td><td>Machine-readable generated evidence.</td></tr><tr><td><code>PRD-012-FR03</code></td><td>Dashboard rows must include source, status/severity, why it matters, owner command/protocol, shortest repair path, warnings, and <code>scripts/next-step.py</code> as decision owner.</td><td>P0</td><td>Do not create a second router.</td></tr><tr><td><code>PRD-012-FR04</code></td><td>Dashboard input must compose existing compiled state only.</td><td>P0</td><td>No independent app runtime, external calls, or mutating checks.</td></tr><tr><td><code>PRD-012-FR05</code></td><td>Deterministic scenario coverage must verify dashboard severity and generated-evidence boundaries.</td><td>P1</td><td>Use existing clarity harness unless a separate self-test is needed.</td></tr><tr><td><code>PRD-012-FR06</code></td><td>Public docs, package inventory, Extension Protocol, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-012-precode-doctor-dashboard.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-012-precode-doctor-dashboard.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-012-FR01`</textarea></td><td><textarea data-cockpit-cell>`OS-HEALTH.md` contains `## Doctor Dashboard`.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os-health.py`</textarea></td><td><textarea data-cockpit-cell>Inspect generated report.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`OS-HEALTH.md`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-012-FR02`</textarea></td><td><textarea data-cockpit-cell>`logs/os-health.json` has `doctor_dashboard`.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os-health.py`</textarea></td><td><textarea data-cockpit-cell>Inspect JSON shape.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`logs/os-health.json`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-012-FR03`</textarea></td><td><textarea data-cockpit-cell>Dashboard rows expose source, severity, owner, repair path, and next-step owner.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect one generated row.</textarea></td><td><textarea data-cockpit-cell>synthetic clarity scenarios</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-012-FR04`</textarea></td><td><textarea data-cockpit-cell>Dashboard composes compiled state and adds no public command.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/version-check.py`</textarea></td><td><textarea data-cockpit-cell>Confirm no `precode doctor` script or CLI wrapper was added.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-012-FR05`</textarea></td><td><textarea data-cockpit-cell>Clear, scope-drift, and transition-review scenarios classify deterministically.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>in-memory fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-012-FR06`</textarea></td><td><textarea data-cockpit-cell>Docs, generated surfaces, roadmap, and changelog are current.</textarea></td><td><textarea data-cockpit-cell>docs, PRD HTML, roadmap HTML, and roadmap maintenance checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-012-precode-doctor-dashboard">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-012-precode-doctor-dashboard" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-012-FR01` | `OS-HEALTH.md` contains `## Doctor Dashboard`. | `python3 scripts/os-health.py` | Inspect generated report. | current workspace | `OS-HEALTH.md` |
+| `PRD-012-FR02` | `logs/os-health.json` has `doctor_dashboard`. | `python3 scripts/os-health.py` | Inspect JSON shape. | current workspace | `logs/os-health.json` |
+| `PRD-012-FR03` | Dashboard rows expose source, severity, owner, repair path, and next-step owner. | `python3 scripts/clarity-scenario-check.py` | Inspect one generated row. | synthetic clarity scenarios | check output |
+| `PRD-012-FR04` | Dashboard composes compiled state and adds no public command. | `python3 scripts/version-check.py` | Confirm no `precode doctor` script or CLI wrapper was added. | current workspace | command output |
+| `PRD-012-FR05` | Clear, scope-drift, and transition-review scenarios classify deterministically. | `python3 scripts/clarity-scenario-check.py` | Boundary review. | in-memory fixtures | check output |
+| `PRD-012-FR06` | Docs, generated surfaces, roadmap, and changelog are current. | docs, PRD HTML, roadmap HTML, and roadmap maintenance checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Active memory: unchanged.</li><li>Generated evidence: dashboard remains evidence only.</li><li>Router authority: <code>scripts/next-step.py</code> remains the next-decision owner.</li><li>External systems: not touched.</li><li>File mutation: not performed by dashboard output.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any transition, cleanup, repair mutation, external mutation, release action, rollback, package update, or standalone command-wrapper work.</li><li>Stop if dashboard output is treated as a task selector, acceptance decision, or approval surface.</li></ul>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-012-precode-doctor-dashboard">PRD-012 -- Precode Doctor Dashboard</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-012</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-15</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Precode Doctor Dashboard</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | generated health evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Precode Doctor Dashboard</code></li><li><code>scripts/os-health.py</code></li><li><code>scripts/os_compiler.py</code></li><li><code>scripts/next-step.py</code></li><li><code>scripts/loop-health.py</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Stable facts:</li><li>OS Health already compiles state, warning sources, generated sidecars, and human-readable health output.</li><li><code>next-step.py</code> owns the generated next human decision.</li><li>Generated reports are evidence only and must not select tasks, approve transitions, or replace owner files.</li><li>Assumptions:</li><li>&quot;Full dashboard now&quot; means a generated diagnostic summary inside health reporting, not a visual app dashboard or new command.</li><li>The first implementation should compose existing compiled state instead of re-running independent checks.</li><li>Conflicts or stale inputs:</li><li>The maintainer roadmap previously ranked Doctor as P3 and deferred <code>precode doctor</code> until diagnostics were quiet enough. This PRD intentionally pulls forward the dashboard as a health extension while keeping the standalone command and CLI deferred.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>As Precode&#x27;s advisory checks grow, users and agents can see many warnings without knowing which source owns each warning, what repair path is shortest, or whether the warning is competing with the canonical next-step router.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder reads OS Health or several generated reports and cannot tell which warning matters most or which command owns the repair path.</li><li>After: OS Health includes a Doctor Dashboard that summarizes the highest-impact diagnostic sources and points back to the owner command and protocol.</li><li>Why now: The main loop now has enough warning sources that a compact diagnostic dashboard can clarify health without adding a second router.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Precode Doctor Dashboard explains existing warning sources inside OS Health while preserving <code>next-step.py</code> as the next-decision owner.</li><li>Definition of done:</li><li><code>OS-HEALTH.md</code> includes a <code>Doctor Dashboard</code> section.</li><li><code>logs/os-health.json</code> includes a <code>doctor_dashboard</code> payload.</li><li>Dashboard rows include source, status/severity, why it matters, owner command/protocol, shortest repair path, and <code>scripts/next-step.py</code> as decision owner.</li><li>Public docs, package inventory, Extension Protocol, generated docs/PRD surfaces, roadmap history, roadmap journal, and maintainer changelog are current.</li><li>First useful vertical slice: generated health-report dashboard only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder trying to understand why Precode is warning.</li><li>Secondary user: Maintainer, support helper, or AI coding agent diagnosing package health without expanding authority.</li><li>Excluded user: Automation expecting command approval, task selection, repair automation, a visual dashboard, installable CLI, <code>precode doctor</code>, external mutation, or package-manager behavior.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Explain which diagnostic source currently matters most.</li><li>Goal 2: Make owner commands and protocols visible without duplicating all protocol rules.</li><li>Goal 3: Preserve generated-evidence and router authority boundaries.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: standalone <code>precode doctor</code> command, shell wrapper, installable <code>precode</code> CLI, visual dashboard app, task selection, transition approval, command approval, repair automation, cleanup mutation, external status integration, package-manager behavior, release-channel behavior, or new active-memory file.</li><li>Deferred: standalone doctor command, CLI wrapper, richer visual review surface, external diagnostic integrations, and strict router JSON-shape contracts.</li><li>Explicitly out of scope: Any workflow that treats Doctor Dashboard output as proof of done, approval to mutate, or authority over Markdown PRDs, active beads, owner files, or human review.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-012-FR01</code></td><td>OS Health must include a Doctor Dashboard section.</td><td>P0</td><td>Human-readable generated report.</td></tr><tr><td><code>PRD-012-FR02</code></td><td><code>logs/os-health.json</code> must include <code>doctor_dashboard</code>.</td><td>P0</td><td>Machine-readable generated evidence.</td></tr><tr><td><code>PRD-012-FR03</code></td><td>Dashboard rows must include source, status/severity, why it matters, owner command/protocol, shortest repair path, warnings, and <code>scripts/next-step.py</code> as decision owner.</td><td>P0</td><td>Do not create a second router.</td></tr><tr><td><code>PRD-012-FR04</code></td><td>Dashboard input must compose existing compiled state only.</td><td>P0</td><td>No independent app runtime, external calls, or mutating checks.</td></tr><tr><td><code>PRD-012-FR05</code></td><td>Deterministic scenario coverage must verify dashboard severity and generated-evidence boundaries.</td><td>P1</td><td>Use existing clarity harness unless a separate self-test is needed.</td></tr><tr><td><code>PRD-012-FR06</code></td><td>Public docs, package inventory, Extension Protocol, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-012-SEC01</code></td><td>Doctor Dashboard must not read secrets, credentials, provider dashboards, private customer data, or external systems.</td><td>P0</td><td>Existing compiled local state only.</td></tr><tr><td><code>PRD-012-SEC02</code></td><td>Doctor Dashboard must not approve or perform file mutation, command execution, external mutation, transition approval, release approval, rollback, cleanup, or package update behavior.</td><td>P0</td><td>Generated evidence only.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-012-NFR01</code></td><td>Dashboard generation must run as part of <code>python3 scripts/os-health.py</code> without network access.</td><td>P0</td><td>Repo-local only.</td></tr><tr><td><code>PRD-012-NFR02</code></td><td>Dashboard output must be concise enough to scan before the detailed OS Health sections.</td><td>P1</td><td>Top summary plus table rows.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-012-FR01</code></td><td><code>OS-HEALTH.md</code> contains <code>## Doctor Dashboard</code>.</td><td><code>python3 scripts/os-health.py</code></td><td>Inspect generated report.</td><td>current workspace</td><td><code>OS-HEALTH.md</code></td></tr><tr><td><code>PRD-012-FR02</code></td><td><code>logs/os-health.json</code> has <code>doctor_dashboard</code>.</td><td><code>python3 scripts/os-health.py</code></td><td>Inspect JSON shape.</td><td>current workspace</td><td><code>logs/os-health.json</code></td></tr><tr><td><code>PRD-012-FR03</code></td><td>Dashboard rows expose source, severity, owner, repair path, and next-step owner.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Inspect one generated row.</td><td>synthetic clarity scenarios</td><td>check output</td></tr><tr><td><code>PRD-012-FR04</code></td><td>Dashboard composes compiled state and adds no public command.</td><td><code>python3 scripts/version-check.py</code></td><td>Confirm no <code>precode doctor</code> script or CLI wrapper was added.</td><td>current workspace</td><td>command output</td></tr><tr><td><code>PRD-012-FR05</code></td><td>Clear, scope-drift, and transition-review scenarios classify deterministically.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Boundary review.</td><td>in-memory fixtures</td><td>check output</td></tr><tr><td><code>PRD-012-FR06</code></td><td>Docs, generated surfaces, roadmap, and changelog are current.</td><td>docs, PRD HTML, roadmap HTML, and roadmap maintenance checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Active memory: unchanged.</li><li>Generated evidence: dashboard remains evidence only.</li><li>Router authority: <code>scripts/next-step.py</code> remains the next-decision owner.</li><li>External systems: not touched.</li><li>File mutation: not performed by dashboard output.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any transition, cleanup, repair mutation, external mutation, release action, rollback, package update, or standalone command-wrapper work.</li><li>Stop if dashboard output is treated as a task selector, acceptance decision, or approval surface.</li></ul>
+<h2 id="public-interface">Public Interface</h2>
+<ul><li>Existing command preserved: <code>python3 scripts/os-health.py</code></li><li>Generated Markdown extended:</li><li><code>OS-HEALTH.md#doctor-dashboard</code></li><li>Generated JSON extended:</li><li><code>logs/os-health.json[&amp;quot;doctor_dashboard&amp;quot;]</code></li></ul>
+<h2 id="affected-surfaces">Affected Surfaces</h2>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>Change</th><th>Authority boundary</th></tr></thead><tbody><tr><td><code>scripts/precode_doctor.py</code></td><td>Internal dashboard payload and Markdown helpers.</td><td>Imported by health reporting; no standalone command.</td></tr><tr><td><code>scripts/os_compiler.py</code></td><td>Adds <code>doctor_dashboard</code> to compiled state.</td><td>Generated evidence only.</td></tr><tr><td><code>scripts/os-health.py</code></td><td>Renders Doctor Dashboard in OS Health.</td><td>Does not choose tasks or approve work.</td></tr><tr><td><code>scripts/clarity-scenario-check.py</code></td><td>Adds deterministic dashboard classification fixtures.</td><td>Regression check only.</td></tr><tr><td>Public docs and package inventory</td><td>Describe the dashboard and boundaries.</td><td>Markdown remains canonical.</td></tr><tr><td>Extension Protocol</td><td>Reclassifies dashboard as a generated report extension while preserving deferred wrapper rule.</td><td>No CLI or wrapper authority.</td></tr><tr><td>Maintainer roadmap, journal, and changelog</td><td>Record implemented candidate.</td><td>Maintainer-local history only.</td></tr></tbody></table></div>
+<h2 id="validation-plan">Validation Plan</h2>
+<ul><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/os-health.py</code></li><li><code>python3 scripts/loop-health.py --json</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py</code></li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py --apply</code> after implemented-candidate entry is added.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<ul><li>None for this slice.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-2" href="#public-interface">Public Interface</a><a class="level-2" href="#affected-surfaces">Affected Surfaces</a><a class="level-2" href="#validation-plan">Validation Plan</a><a class="level-2" href="#open-questions">Open Questions</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.20
-Last updated: 2026-06-14
+Document version: v0.8.21
+Last updated: 2026-06-15
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -97,7 +97,7 @@ Examples:
 | Generated surface | Use it for | Do not use it for |
 |---|---|---|
 | `PRECODE-HELP.md` | Quick next-step, load plan, context-footprint, and warning snapshot. | Active memory, task selection, or transition approval. |
-| `OS-HEALTH.md` | Health, warnings, evidence quality, spend, and state snapshots. | Active memory or acceptance by itself. |
+| `OS-HEALTH.md` | Health, Doctor Dashboard diagnostics, warnings, evidence quality, spend, and state snapshots. | Active memory, task selection, approval, or acceptance by itself. |
 | `PROGRESS.md` | Generated progress summary. | Product decisions or current task authority. |
 | `logs/*.md`, `logs/*.json`, `logs/*.jsonl` | Evidence, sidecars, handoff, diary, indexes, and check output. | Replacing owner files. |
 
@@ -185,6 +185,7 @@ Main surfaces:
 - `bash scripts/record-check.sh -- <command>` to record checks as evidence
 - `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` when a Ralph-enabled bead records bounded attempt history
 - verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval
+- Review / Acceptance Skill when a builder wants a structured evidence-based recommendation before accepting one active bead
 - `scripts/*-check.py` advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more
 - Closeout Evidence in the active bead
 
@@ -195,7 +196,7 @@ The review decision is one of:
 - `split`
 - `blocked`
 
-"The agent sounds confident" is not a review decision. Evidence is the review surface.
+"The agent sounds confident" is not a review decision. Evidence is the review surface. The Review / Acceptance Skill can organize the questions, missing proof, and recommendation, but it cannot accept implementation or activate the next bead.
 
 ### 6. Recover
 
@@ -278,6 +279,8 @@ python3 scripts/bead-transition.py --approve
 ```
 
 The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.
+
+The Doctor Dashboard inside `OS-HEALTH.md` is a generated diagnostic summary. It explains warning sources, owner commands, and repair paths, but `scripts/next-step.py` still owns the next human decision.
 
 ## When To Stop The Agent
 

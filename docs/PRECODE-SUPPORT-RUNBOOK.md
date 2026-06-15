@@ -123,7 +123,7 @@ Do not run broad overwrite commands, install Git hooks, change CI, edit app code
 
 Do not create product truth for the user. If the product is fuzzy, help the user capture a Conviction Packet / Precode Ingestion Packet or PRD-ready source summary. That packet is evidence only until it is reviewed and placed in the right Precode owner file after setup.
 
-Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only.
+Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only. The Doctor Dashboard inside OS Health explains warning sources and repair paths, but it does not approve commands, task selection, transitions, or acceptance.
 
 ## Mainline Walkthrough: New Project
 

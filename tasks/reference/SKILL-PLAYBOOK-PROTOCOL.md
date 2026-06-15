@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-14
+Document version: v0.1.5
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -141,6 +141,37 @@ Discovery Summary:
 
 The output is evidence only. It does not validate demand, approve PRDs, activate beads, choose the next task, rewrite owner files, or start implementation.
 
+### Review / Acceptance Skill
+
+```text
+Name: Review / Acceptance Skill
+Purpose: Help a user review whether one active bead is ready for an evidence-based acceptance decision.
+Load when: The user asks for Review / Acceptance Skill, asks whether a bead is ready to accept, asks for an evidence-tied review recommendation, or needs to distinguish confidence, review input, missing proof, and acceptance blockers after closeout.
+Owner protocol or adapter: `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, and `modes/REVIEW.md`
+Allowed actions: Read active memory, the active bead, the primary authority file, closeout evidence, recorded checks, manual verification notes, relevant run contract or release-readiness note when present, and a changed-file or diff summary; compare evidence to the bead and authority; return acceptance questions, missing proof, risks, and a review recommendation.
+Forbidden actions: Edit files, approve PRDs, accept implementation, approve review decisions, activate beads, approve transitions, create follow-up tasks, start implementation, deploy, release, mutate external systems, run mutating commands, treat generated reports as authority, or treat confidence as proof.
+Generated evidence, if any: None in v1. The conversational recommendation is review input only until the user records or acts on it through normal closeout, owner-file, PRD, bead, or transition paths.
+User approval required before: Any file edit, review acceptance, PRD approval, bead activation, transition approval, follow-up bead creation, release action, external mutation, sensitive-surface action, or command execution beyond read-only inspection.
+Stop conditions: Active memory or the active bead is missing; the primary authority is unclear; recorded checks are missing or stale; manual verification is missing when required; closeout evidence is incomplete; a sensitive-surface, release, deploy, rollback, or external-service approval gate is unresolved; the diff cannot be inspected; or the work appears broader than one bead.
+Promotion path for findings: Promote accepted lessons, follow-ups, or defects only through Closeout Evidence, `DECISIONS.md`, the owning PRD or authority file, a candidate/approved bead, release-readiness evidence, or reviewed memory after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Review target:
+Authority checked:
+Evidence reviewed:
+Missing proof:
+Acceptance questions:
+Risks or drift:
+Recommendation: accepted | revise | split | blocked | stop
+Approval still required:
+Follow-up or promotion path:
+```
+
+The output is a review recommendation only. It does not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, or replace recorded checks and manual verification.
+
 ## V1 Skill Set
 
 ### Ask Precode Docs Skill
@@ -168,6 +199,15 @@ The output is evidence only. It does not validate demand, approve PRDs, activate
 - Allowed actions: interview one question at a time, apply Product Discovery Validation, and return the Discovery Summary with evidence strength and `proceed | pause | narrow | kill`.
 - Forbidden actions: edit files, approve PRDs, create or activate beads, choose tasks, start implementation, or treat discovery output as validation/proof.
 - Gain: makes the Product Discovery Validation protocol easier to invoke without duplicating the broader Product Conviction Packet idea-coaching path.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
+
+### Review / Acceptance Skill
+
+- Purpose: help a user decide whether one active bead is ready for an evidence-based acceptance decision.
+- Owner sources: `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, `modes/REVIEW.md`, the active bead, primary authority, closeout evidence, recorded checks, manual verification, and diff or changed-file evidence.
+- Allowed actions: read the review evidence, compare it to the bead and authority, identify missing proof and risks, and recommend `accepted`, `revise`, `split`, `blocked`, or `stop`.
+- Forbidden actions: accept implementation, approve review decisions, activate beads, create follow-up tasks, approve releases, run mutating commands, or treat generated reports or confidence as proof.
+- Gain: reduces false-done drift at the review boundary while keeping human acceptance and transition approval intact.
 - Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Maintainer Package Review Skill
@@ -255,10 +295,10 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Ask Precode Docs Skill | Implemented | User-facing docs-help prompt; keep it stable-documentation-only and cite canonical docs/protocols. |
 | Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
 | Product Discovery Interview Skill | Implemented | Worth-building interview prompt; keep it evidence-only and subordinate to Product Discovery Validation. |
+| Review / Acceptance Skill | Implemented | Evidence-tied bead acceptance review prompt; keep it recommendation-only and subordinate to closeout, verification, and Review mode. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |
 | Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
-| Review / Acceptance Skill | P2/P3 | Valuable, but risky if it becomes a fake QA persona instead of evidence-tied review guidance. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 
 ## Better Alternatives

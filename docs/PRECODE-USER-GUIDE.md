@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.41
-Last updated: 2026-06-14
+Document version: v0.7.43
+Last updated: 2026-06-15
 
 
 
@@ -412,13 +412,14 @@ Follow these steps in order.
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
 | Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. | The agent treats generated help as approval or active memory. |
 | Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, graph warning if relevant, and next move. | The agent treats loop health as a grade or hard approval. |
+| Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
 | Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
 | Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
 | Record checks | `Run the relevant checks through record-check.sh.` | Recorded command result and log path. | Checks are missing, failing, or not recorded. |
 | Close | `Run bash scripts/session-close.sh and summarize what changed, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
-| Review outcome | `Recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence. |
+| Review outcome | `Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence or tries to accept the work for you. |
 
 Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.
 
@@ -508,8 +509,8 @@ Use this table when you are unsure what kind of request to make.
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
 | Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
-| Work may be done | Completion check or review | `Run a completion check and recommend accepted, revise, split, or blocked based on evidence.` |
-| Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, or cleanup candidate. Do not delete anything.` |
+| Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
+| Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
 
 Why this matters: Not every request should become code. Good Precode use starts by choosing the right kind of work.
@@ -566,6 +567,12 @@ Say this:
 
 ```text
 Before I accept this bead, show me the recorded checks, manual verification, Closeout Evidence, review decision, and whether anything still requires my approval.
+```
+
+For a more structured review prompt, say:
+
+```text
+Use the Review / Acceptance Skill. Review the active bead against the primary authority, recorded checks, manual verification, closeout evidence, and changed-file summary. Recommend accepted, revise, split, blocked, or stop, and name any approval still required. Do not accept the work or activate the next bead for me.
 ```
 
 Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.
@@ -642,7 +649,7 @@ Use reports for learning and audit. Before work resumes, return to active memory
 | Report or evidence | Use it for | Do not use it for |
 |---|---|---|
 | `PRECODE-HELP.md` | Quick generated hint about the next safe action, bead depth, and files-in-play warnings. | Active memory, task approval, or transition approval. |
-| `OS-HEALTH.md` | Health, warnings, state, evidence quality, spend. | Choosing the next task. |
+| `OS-HEALTH.md` | Health, Doctor Dashboard diagnostics, warnings, state, evidence quality, spend. | Choosing the next task, approving commands, or approving transitions. |
 | `logs/learning-diary.md` | Plain-English session learning. | Implementation instructions. |
 | `memory/cards/*.md` | Reviewed lessons, preferences, glossary terms, risks, and source pointers. | Replacing `DECISIONS.md`, PRDs, beads, or active memory. |
 | `logs/memory-index.md` | Searching reviewed memory cards. | Choosing or approving work. |

@@ -194,7 +194,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 |---|---|---|
 | `bash scripts/session-start.sh` | Starting or resetting daily work. | Shows the context pack and router guidance. Treat it as orientation before work. |
 | `python3 scripts/next-step.py` | You ask "what now?" | Shows generated next-step guidance. It is not transition approval. |
-| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, and the generated work graph reports; warnings mean inspect source state and evidence. |
+| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, the Doctor Dashboard diagnostic summary, and the generated work graph reports; warnings mean inspect source state and evidence. |
 | `bash scripts/checkpoint.sh` | Context is long, fuzzy, or ready to hand back. | Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity. |
 | `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |

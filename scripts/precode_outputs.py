@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-14
+# Version: v0.1.1
+# Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 from typing import Any
 
 from os_parser import bullet_items
+
+
+MEMORY_GENERATED_WARNING = "Generated memory indexes are evidence only and must not be treated as active memory."
 
 
 def render_memory_index_markdown(memory: dict[str, Any]) -> str:

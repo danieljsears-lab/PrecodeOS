@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-011 -- Local Hygiene v2 Preview Hardening</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-011 -- Local Hygiene v2 Preview Hardening</h1>
+  <p class="muted">Static HTML generated from <code>PRD-011-local-hygiene-v2.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-011-local-hygiene-v2.md#prd-011-local-hygiene-v2">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Local Hygiene v2</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-14</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for Local Hygiene v2 preview classification, protected generated evidence handling, and explicit no-mutation cleanup boundaries.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, bead activation, cleanup approval, archive approval, delete approval, file mutation, evidence rewrite approval, generated report truth, implementation acceptance, or future cleanup-apply permission.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-011-FR01</code></td><td>Local Hygiene must classify preview rows as <code>candidate</code>, <code>protected</code>, <code>unexpected_review</code>, or <code>not_candidate</code>.</td><td>P0</td><td>Stable JSON fields required.</td></tr><tr><td><code>PRD-011-FR02</code></td><td>Preview rows must include <code>candidate_id</code>, <code>classification</code>, <code>action</code>, <code>path</code>, <code>mutates_now: false</code>, <code>approval_required</code>, reason fields, and rollback notes.</td><td>P0</td><td>Generated evidence only.</td></tr><tr><td><code>PRD-011-FR03</code></td><td><code>logs/os-checkpoints/*</code> must be treated as protected generated evidence, not unexpected clutter.</td><td>P0</td><td>OS checkpoints remain evidence.</td></tr><tr><td><code>PRD-011-FR04</code></td><td>Local Hygiene commands must keep stable public names and remain non-mutating.</td><td>P0</td><td>No cleanup/apply flag in this slice.</td></tr><tr><td><code>PRD-011-FR05</code></td><td><code>scripts/local-hygiene-dry-run.py --self-test</code> must cover representative v2 classifications.</td><td>P1</td><td>Fast deterministic check.</td></tr><tr><td><code>PRD-011-FR06</code></td><td>Public docs, package inventory, roadmap, roadmap journal, generated surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-011-local-hygiene-v2.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-011-local-hygiene-v2.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-011-FR01`</textarea></td><td><textarea data-cockpit-cell>Preview rows expose the four v2 classifications.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/local-hygiene-dry-run.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect generated preview JSON shape.</textarea></td><td><textarea data-cockpit-cell>Synthetic fixture summary</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-011-FR02`</textarea></td><td><textarea data-cockpit-cell>Preview rows include stable fields and no mutation.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/local-hygiene-dry-run.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect `logs/local-hygiene-preview.md`.</textarea></td><td><textarea data-cockpit-cell>Synthetic fixture summary</textarea></td><td><textarea data-cockpit-cell>generated preview</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-011-FR03`</textarea></td><td><textarea data-cockpit-cell>OS checkpoint files are protected and not unexpected.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/local-hygiene-dry-run.py --self-test` and `python3 scripts/local-hygiene-check.py`</textarea></td><td><textarea data-cockpit-cell>Confirm current repo no longer reports checkpoint files as unexpected clutter.</textarea></td><td><textarea data-cockpit-cell>temp `logs/os-checkpoints` fixture</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-011-FR04`</textarea></td><td><textarea data-cockpit-cell>Public command names stay stable and non-mutating.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/local-hygiene-check.py` and `python3 scripts/local-hygiene-dry-run.py`</textarea></td><td><textarea data-cockpit-cell>Confirm no cleanup/apply flag was added.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-011-FR06`</textarea></td><td><textarea data-cockpit-cell>Docs and generated reading surfaces are fresh.</textarea></td><td><textarea data-cockpit-cell>docs, PRD HTML, roadmap HTML, inventory, and version checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-011-local-hygiene-v2">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-011-local-hygiene-v2" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-011-FR01` | Preview rows expose the four v2 classifications. | `python3 scripts/local-hygiene-dry-run.py --self-test` | Inspect generated preview JSON shape. | Synthetic fixture summary | check output |
+| `PRD-011-FR02` | Preview rows include stable fields and no mutation. | `python3 scripts/local-hygiene-dry-run.py --self-test` | Inspect `logs/local-hygiene-preview.md`. | Synthetic fixture summary | generated preview |
+| `PRD-011-FR03` | OS checkpoint files are protected and not unexpected. | `python3 scripts/local-hygiene-dry-run.py --self-test` and `python3 scripts/local-hygiene-check.py` | Confirm current repo no longer reports checkpoint files as unexpected clutter. | temp `logs/os-checkpoints` fixture | check output |
+| `PRD-011-FR04` | Public command names stay stable and non-mutating. | `python3 scripts/local-hygiene-check.py` and `python3 scripts/local-hygiene-dry-run.py` | Confirm no cleanup/apply flag was added. | current workspace | command output |
+| `PRD-011-FR06` | Docs and generated reading surfaces are fresh. | docs, PRD HTML, roadmap HTML, inventory, and version checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Destructive actions: explicitly out of scope.</li><li>Generated evidence: protected from cleanup mutation.</li><li>Tool/session state: never cleared by Local Hygiene.</li><li>Private local state: not a cleanup target.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any future delete, archive, move, compact, or rewrite behavior.</li><li>Stop if a proposed cleanup path cannot name protected evidence, rollback or archive location, validation, and approval requirements.</li><li>Escalate when cleanup would affect active memory, PRDs, beads, owner files, reviewed memory, append-only ledgers, current/unaccepted bead evidence, secrets, auth/session state, or private local material.</li></ul>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-011-local-hygiene-v2-preview-hardening">PRD-011 -- Local Hygiene v2 Preview Hardening</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-011</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-14</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Local Hygiene v2</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped local hygiene evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Local Hygiene v2</code></li><li><code>tasks/reference/LOCAL-HYGIENE-PROTOCOL.md</code></li><li><code>scripts/local-hygiene-check.py</code></li><li><code>scripts/local-hygiene-dry-run.py</code></li><li><code>scripts/os_compiler.py</code></li><li>Stable facts:</li><li>Local Hygiene v1 is advisory and non-mutating.</li><li>Current local hygiene output reports <code>logs/os-checkpoints/*</code> as unexpected even though OS checkpoints are generated evidence.</li><li>Cleanup is risky because truth, evidence, generated reports, caches, and clutter can look similar.</li><li>Assumptions:</li><li>V2 should harden preview and protection rules before adding any mutating cleanup path.</li><li>Candidate requirements:</li><li>Stable preview row classifications.</li><li>Protected generated evidence handling for OS checkpoints.</li><li>Deterministic self-test coverage.</li><li>Public docs, inventory, roadmap, and maintainer changelog follow-through.</li><li>Candidate non-goals:</li><li>No delete, archive, move, compact, or rewrite behavior.</li><li>No cleanup approval command.</li><li>No package-manager, CLI wrapper, or doctor dashboard behavior.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Local clutter, bulky logs, caches, and generated outputs can confuse builders and agents. The current Local Hygiene preview is non-destructive, but its classifications are too coarse and can mislabel newer generated evidence families such as OS checkpoints as generic unexpected clutter.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder or agent sees generated files under <code>logs/</code> and cannot tell whether they are cleanup candidates, protected evidence, or review-only surprises.</li><li>After: Local Hygiene reports stable preview classifications and protects known generated evidence families without mutating files.</li><li>Why now: OS checkpoints expanded generated evidence under <code>logs/</code>, exposing a concrete classification gap.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Local Hygiene v2 gives users a safer, clearer preview of local clutter without granting cleanup mutation.</li><li>Definition of done: Preview rows distinguish candidates, protected evidence, unexpected review items, and not-candidates; <code>logs/os-checkpoints/*</code> is protected generated evidence; docs and roadmap history are current.</li><li>First useful vertical slice: Preview hardening only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder or support helper trying to understand local clutter.</li><li>Secondary user: Maintainer or coding agent reviewing generated evidence and cache/build output.</li><li>Excluded user: Automation expecting Local Hygiene to delete, archive, compact, rewrite, or approve cleanup.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Prevent generated evidence from being mistaken for cleanup clutter.</li><li>Goal 2: Make Local Hygiene preview rows stable enough for human review and future approval-gated cleanup planning.</li><li>Goal 3: Preserve the non-mutating cleanup boundary.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: delete command, archive command, compact command, cleanup apply mode, generated-evidence rewrite, approval automation, OS checkpoint cleanup, package-manager semantics, <code>precode doctor</code>, or installable CLI behavior.</li><li>Deferred: A separate cleanup-apply PRD or semantic-change proposal may define explicit approval, rollback, archive location, and recovery semantics after preview hardening proves trustworthy.</li><li>Explicitly out of scope: External mutation, tool/session cache clearing, auth/session state cleanup, private maintainer file cleanup, and app-runtime cleanup.</li></ul>
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Why rejected or deferred</th><th>Decision owner</th></tr></thead><tbody><tr><td>Add delete/archive now</td><td>Too much destructive-action risk before preview classifications are trustworthy.</td><td>maintainer</td></tr><tr><td>Keep v1 unchanged</td><td>Leaves OS checkpoints mislabeled as unexpected clutter and keeps preview rows too coarse.</td><td>maintainer</td></tr><tr><td>Add a broader doctor dashboard</td><td>Roadmap defers doctor aggregation until existing warnings are quiet and useful.</td><td>maintainer</td></tr></tbody></table></div>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-011-FR01</code></td><td>Local Hygiene must classify preview rows as <code>candidate</code>, <code>protected</code>, <code>unexpected_review</code>, or <code>not_candidate</code>.</td><td>P0</td><td>Stable JSON fields required.</td></tr><tr><td><code>PRD-011-FR02</code></td><td>Preview rows must include <code>candidate_id</code>, <code>classification</code>, <code>action</code>, <code>path</code>, <code>mutates_now: false</code>, <code>approval_required</code>, reason fields, and rollback notes.</td><td>P0</td><td>Generated evidence only.</td></tr><tr><td><code>PRD-011-FR03</code></td><td><code>logs/os-checkpoints/*</code> must be treated as protected generated evidence, not unexpected clutter.</td><td>P0</td><td>OS checkpoints remain evidence.</td></tr><tr><td><code>PRD-011-FR04</code></td><td>Local Hygiene commands must keep stable public names and remain non-mutating.</td><td>P0</td><td>No cleanup/apply flag in this slice.</td></tr><tr><td><code>PRD-011-FR05</code></td><td><code>scripts/local-hygiene-dry-run.py --self-test</code> must cover representative v2 classifications.</td><td>P1</td><td>Fast deterministic check.</td></tr><tr><td><code>PRD-011-FR06</code></td><td>Public docs, package inventory, roadmap, roadmap journal, generated surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-011-SEC01</code></td><td>Local Hygiene must not clear tool/session state, secrets, credentials, auth caches, or private local state.</td><td>P0</td><td>Preserve existing protection rule.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-011-NFR01</code></td><td>The self-test must run without network access, external services, or destructive filesystem mutation.</td><td>P0</td><td>Temporary fixtures only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-011-FR01</code></td><td>Preview rows expose the four v2 classifications.</td><td><code>python3 scripts/local-hygiene-dry-run.py --self-test</code></td><td>Inspect generated preview JSON shape.</td><td>Synthetic fixture summary</td><td>check output</td></tr><tr><td><code>PRD-011-FR02</code></td><td>Preview rows include stable fields and no mutation.</td><td><code>python3 scripts/local-hygiene-dry-run.py --self-test</code></td><td>Inspect <code>logs/local-hygiene-preview.md</code>.</td><td>Synthetic fixture summary</td><td>generated preview</td></tr><tr><td><code>PRD-011-FR03</code></td><td>OS checkpoint files are protected and not unexpected.</td><td><code>python3 scripts/local-hygiene-dry-run.py --self-test</code> and <code>python3 scripts/local-hygiene-check.py</code></td><td>Confirm current repo no longer reports checkpoint files as unexpected clutter.</td><td>temp <code>logs/os-checkpoints</code> fixture</td><td>check output</td></tr><tr><td><code>PRD-011-FR04</code></td><td>Public command names stay stable and non-mutating.</td><td><code>python3 scripts/local-hygiene-check.py</code> and <code>python3 scripts/local-hygiene-dry-run.py</code></td><td>Confirm no cleanup/apply flag was added.</td><td>current workspace</td><td>command output</td></tr><tr><td><code>PRD-011-FR06</code></td><td>Docs and generated reading surfaces are fresh.</td><td>docs, PRD HTML, roadmap HTML, inventory, and version checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Destructive actions: explicitly out of scope.</li><li>Generated evidence: protected from cleanup mutation.</li><li>Tool/session state: never cleared by Local Hygiene.</li><li>Private local state: not a cleanup target.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any future delete, archive, move, compact, or rewrite behavior.</li><li>Stop if a proposed cleanup path cannot name protected evidence, rollback or archive location, validation, and approval requirements.</li><li>Escalate when cleanup would affect active memory, PRDs, beads, owner files, reviewed memory, append-only ledgers, current/unaccepted bead evidence, secrets, auth/session state, or private local material.</li></ul>
+<h2 id="public-interface">Public Interface</h2>
+<ul><li>Existing command preserved: <code>python3 scripts/local-hygiene-check.py</code></li><li>Existing command preserved: <code>python3 scripts/local-hygiene-dry-run.py</code></li><li>Test command added: <code>python3 scripts/local-hygiene-dry-run.py --self-test</code></li><li>Generated preview files preserved:</li><li><code>logs/local-hygiene-preview.json</code></li><li><code>logs/local-hygiene-preview.md</code></li></ul>
+<h2 id="affected-surfaces">Affected Surfaces</h2>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>Change</th><th>Authority boundary</th></tr></thead><tbody><tr><td><code>tasks/reference/LOCAL-HYGIENE-PROTOCOL.md</code></td><td>Update v2 preview classification and protection rules.</td><td>Protocol owns behavior.</td></tr><tr><td><code>scripts/os_compiler.py</code></td><td>Classify OS checkpoints as protected generated evidence and emit v2 preview rows.</td><td>Generated evidence only.</td></tr><tr><td><code>scripts/local-hygiene-dry-run.py</code></td><td>Add deterministic self-test.</td><td>No cleanup mutation.</td></tr><tr><td>Public docs and package inventory</td><td>Update v1-only wording and command descriptions.</td><td>Markdown remains authority over generated HTML.</td></tr><tr><td>Maintainer roadmap, journal, and changelog</td><td>Record implemented candidate.</td><td>Maintainer-local history only.</td></tr></tbody></table></div>
+<h2 id="validation-plan">Validation Plan</h2>
+<ul><li><code>python3 scripts/local-hygiene-dry-run.py --self-test</code></li><li><code>python3 scripts/local-hygiene-check.py</code></li><li><code>python3 scripts/local-hygiene-dry-run.py</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li></ul>
+<h2 id="rollback-or-reversal-path">Rollback Or Reversal Path</h2>
+<p>Revert PRD-011, restore Local Hygiene protocol v1 wording, remove <code>--self-test</code>, remove v2 preview fields and checkpoint-family classification from <code>scripts/os_compiler.py</code>, regenerate docs/PRD/roadmap HTML, and record reversal in the maintainer changelog. Do not delete existing generated evidence during rollback.</p>
+<h2 id="bead-proposal">Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead ID</th><th>Requirement IDs</th><th>Scope</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Checks</th></tr></thead><tbody><tr><td><code>B011-local-hygiene-v2-preview-hardening</code></td><td><code>PRD-011-FR01</code> through <code>PRD-011-FR06</code>, <code>PRD-011-SEC01</code>, <code>PRD-011-NFR01</code></td><td>PRD shard, protocol, compiler classification, dry-run self-test, docs/inventory updates, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/LOCAL-HYGIENE-PROTOCOL.md</code></td><td>Local hygiene self-test plus package validation and manual boundary review</td></tr></tbody></table></div>
+<h2 id="approval-notes">Approval Notes</h2>
+<ul><li>Approval notes: User approved implementation of Local Hygiene v2 Preview Hardening as a non-mutating preview/protection hardening slice, explicitly excluding cleanup apply, delete, archive, move, compact, rewrite, package-manager behavior, CLI wrapper behavior, doctor dashboard behavior, external mutation, and generated-evidence authority.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#alternatives-considered">Alternatives Considered</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-2" href="#public-interface">Public Interface</a><a class="level-2" href="#affected-surfaces">Affected Surfaces</a><a class="level-2" href="#validation-plan">Validation Plan</a><a class="level-2" href="#rollback-or-reversal-path">Rollback Or Reversal Path</a><a class="level-2" href="#bead-proposal">Bead Proposal</a><a class="level-2" href="#approval-notes">Approval Notes</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

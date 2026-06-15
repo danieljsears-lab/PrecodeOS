@@ -434,6 +434,7 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" or whether a small repair looks stable-fix eligible. | It is generated guidance, not approval; stable-fix eligibility only routes the next decision. |
+| `python3 scripts/os-health.py` | Multiple warnings are confusing or the user asks why Precode is unhappy. | Refreshes OS Health and the Doctor Dashboard; diagnostics are evidence only, not task selection or approval. |
 | `python3 scripts/state-check.py` | Active bead or task state looks broken. | Repair source files before generated reports. |
 | `python3 scripts/files-in-play-check.py` | Scope may have widened or coding started too early. | It warns; it does not approve edits. |
 | `python3 scripts/workflow-check.py` | The path from setup, idea, PRD, bead, or repair is unclear. | Workflow advice is not task activation. |

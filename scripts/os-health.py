@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.12
-# Last updated: 2026-06-14
+# Version: v0.1.13
+# Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from os_compiler import compile_state, repo_root, write_compiled_sidecars, write_json
+from precode_doctor import render_doctor_dashboard_markdown
 
 
 HEALTH_JSON = "logs/os-health.json"
@@ -230,6 +231,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
     work_graph_details = work_graph.get("details") or {}
     work_graph_node_counts = work_graph_details.get("node_counts") or {}
     work_graph_edge_counts = work_graph_details.get("edge_counts") or {}
+    doctor_dashboard = payload.get("doctor_dashboard") or {}
 
     return f"""# PrecodeOS -- OS Health Report
 <!-- ANCHOR: os-health -->
@@ -249,6 +251,10 @@ Generated at: `{payload['generated_at']}`
 ## Summary
 
 {summary}
+
+## Doctor Dashboard
+
+{render_doctor_dashboard_markdown(doctor_dashboard)}
 
 ## Bead Status
 

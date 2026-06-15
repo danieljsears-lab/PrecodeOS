@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-14">
+  <meta name="generated-at" content="2026-06-15">
   <title>How To Build Software Using PrecodeOS + AI Coding Agents · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Build Software Using PrecodeOS + AI Coding Agents</h1>
   <p class="lede">Start Here: You Are Not Just Prompting</p>
-  <p class="meta"><a href="../docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md">Source Markdown</a><span>v0.1.28</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md">Source Markdown</a><span>v0.1.29</span><span>Updated 2026-06-14</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -326,7 +326,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Use recovery when a file was moved or renamed, a generated report was edited or stale, active state is unclear, proof is missing, the session is confused, scope expanded, or approval happened too quickly.</p>
 <h3 id="local-hygiene-truth-is-not-cleanup">Local Hygiene: Truth Is Not Cleanup</h3>
 <p>When logs, caches, build output, generated files, or local clutter look confusing, use Local Hygiene instead of manually cleaning files.</p>
-<p>Local Hygiene v1 is advisory and dry-run only. It may classify files, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.</p>
+<p>Local Hygiene is advisory and dry-run only. It classifies files as cleanup candidates, protected evidence, unexpected review items, or not-candidates, but it must not delete, archive, move, compact, or rewrite files. Evidence is preserved; caches are disposable only when ignored and regeneratable.</p>
 <pre><code class="language-text">Use the Local Hygiene Protocol. Run python3 scripts/local-hygiene-check.py or python3 scripts/local-hygiene-dry-run.py and explain the result. Do not mutate files.</code></pre>
 <h3 id="handoff-future-agents-need-durable-context">Handoff: Future Agents Need Durable Context</h3>
 <p>A handoff is not a new task approval. It is a safe orientation packet for the next session or agent.</p>

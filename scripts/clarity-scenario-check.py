@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.8
-# Last updated: 2026-06-14
+# Version: v0.1.9
+# Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -22,6 +22,7 @@ from os_compiler import (
     run_contract_quality,
     stable_fix_eligibility,
 )
+from precode_doctor import build_doctor_dashboard
 
 
 STABLE_DECISIONS = {
@@ -139,6 +140,25 @@ def assert_router_contract(name: str, payload: dict[str, Any], failures: list[di
         failures.append({"scenario": f"{name} footprint", "expected": "active memory footprint", "actual": str(footprint)})
     if footprint.get("advisory_only") is not True:
         failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(footprint.get("advisory_only"))})
+
+
+def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status: str, failures: list[dict[str, str]]) -> None:
+    dashboard = build_doctor_dashboard(payload)
+    if dashboard.get("status") != expected_status:
+        failures.append({"scenario": f"doctor: {name}", "expected": expected_status, "actual": str(dashboard.get("status"))})
+    if dashboard.get("next_step_decision_owner") != "scripts/next-step.py":
+        failures.append(
+            {
+                "scenario": f"doctor owner: {name}",
+                "expected": "scripts/next-step.py",
+                "actual": str(dashboard.get("next_step_decision_owner")),
+            }
+        )
+    if dashboard.get("advisory_only") is not True:
+        failures.append({"scenario": f"doctor advisory: {name}", "expected": "true", "actual": str(dashboard.get("advisory_only"))})
+    warning = str(dashboard.get("generated_evidence_warning") or "")
+    if "generated diagnostic evidence only" not in warning:
+        failures.append({"scenario": f"doctor warning: {name}", "expected": "generated evidence warning", "actual": warning})
 
 
 def loop_context(**overrides: Any) -> dict[str, Any]:
@@ -374,6 +394,42 @@ def main() -> int:
     for name, payload, expected in recovery_scenarios:
         assert_recovery_flow(f"next-step recovery: {name}", payload, expected, failures)
         assert_router_contract(f"next-step router: {name}", payload, failures)
+
+    doctor_clear_payload = {
+        "next_step": next_payload(bead()),
+        "state_integrity": {"status": "pass", "warnings": [], "details": {"in_progress_beads": ["tasks/beads/B999-clarity-fixture.md"]}},
+        "files_in_play_guardrail": {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
+        "bead_depth": {"status": "pass", "warnings": [], "details": {"shortest_next_action": "continue"}},
+        "run_contract": {"status": "pass", "warnings": [], "details": {"required": False}},
+        "completion_handoff": {"status": "pass", "warnings": [], "details": {"next_safe_action": "continue"}},
+        "verification_quality": {"status": "pass", "warnings": [], "details": {}},
+        "local_hygiene": {"status": "pass", "warnings": [], "details": {"next_safe_action": "review candidates only"}},
+        "work_graph": {"status": "pass", "warnings": [], "details": {}},
+        "tool_execution": {"status": "pass", "warnings": [], "details": {"approval_gap_count": 0, "destructive_count": 0}},
+    }
+    doctor_review_payload = {
+        **doctor_clear_payload,
+        "next_step": next_payload(
+            bead(status="done"),
+            promotion={"eligible": True, "blockers": [], "next_bead": "tasks/beads/B998-next.md"},
+        ),
+        "completion_handoff": {
+            "status": "pass",
+            "warnings": [],
+            "details": {"promotion_status": "eligible", "closeout_status": "complete", "next_safe_action": "Review evidence before transition."},
+        },
+    }
+    doctor_scope_payload = {
+        **doctor_clear_payload,
+        "files_in_play_guardrail": {
+            "status": "warning",
+            "warnings": ["Changed files appear outside the active bead files in play."],
+            "details": {"out_of_scope_paths": ["app/page.tsx"], "user_decision": "stop"},
+        },
+    }
+    assert_doctor_dashboard("clear", doctor_clear_payload, "clear", failures)
+    assert_doctor_dashboard("transition review", doctor_review_payload, "stop_review", failures)
+    assert_doctor_dashboard("scope drift", doctor_scope_payload, "drift_risk", failures)
 
     stable_fix_fixture = bead(
         title="B999 - Stable Fix Fixture",

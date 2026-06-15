@@ -180,7 +180,7 @@ For evidence, use recorded checks:
 bash scripts/record-check.sh -- <command>
 ```
 
-Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files.
+Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
 
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
@@ -190,12 +190,15 @@ For the immediate "what now?" question, use:
 bash scripts/session-start.sh
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
+python3 scripts/os-health.py
 python3 scripts/ralph-loop.py --dry-run
 ```
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
+
+`os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters and points to the owner command or protocol.
 
 `ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
 
@@ -285,6 +288,8 @@ A bead is one bounded unit of work with scope, owner files, checks, stop conditi
 ### Are generated reports authority?
 
 No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and `logs/` are evidence only.
+
+The Doctor Dashboard inside OS Health is also evidence only. It explains diagnostics, but it does not select work, approve transitions, approve commands, or replace `scripts/next-step.py`.
 
 ### Where should I start?
 

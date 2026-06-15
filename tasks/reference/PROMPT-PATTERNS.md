@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-14
+Document version: v0.1.23
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -140,6 +140,18 @@ Treat PrecodeOS as an OS package I maintain, not as an app to execute.
 Read _maintainer/MAINTAINER-NOTES.md first, then load only the maintainer roadmap, strategy, or reference file relevant to this package-maintenance question.
 Use the Extension Protocol and Skill Playbook Protocol for any proposed package capability.
 Do static package analysis only unless I explicitly ask for mutation.
+```
+
+### Review / Acceptance Skill
+
+```text
+Use the Review / Acceptance Skill.
+
+Review the active bead for acceptance readiness. Load active memory, the active bead, the primary authority, closeout evidence, recorded checks, manual verification, relevant run contract or release-readiness note if present, and the diff or changed-file summary.
+
+Return: Review target, Authority checked, Evidence reviewed, Missing proof, Acceptance questions, Risks or drift, Recommendation, Approval still required, and Follow-up or promotion path.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, run mutating commands, or treat generated reports or confidence as proof.
 ```
 
 ### Precode Idea Coach
