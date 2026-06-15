@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.10</span><span>Updated 2026-06-14</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.11</span><span>Updated 2026-06-15</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -200,6 +200,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>If you are helping someone else through setup, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</p>
 <p>The safest setup path is manual and visible:</p>
 <ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Run the read-only Bootstrap Confidence check before copying anything.</li><li>Choose the first adoption fork: fresh install or existing repo intake.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
+<p>The optional local <code>precode</code> CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.</p>
 <p>If you need the exact public package technical dictionary, use <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the package inventory remains the public file map.</p>
 <h2 id="before-you-start">Before You Start</h2>
 <p>You need:</p>
@@ -213,13 +214,16 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>The helper names the package source, target project, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. By default it writes nothing.</p>
 <p>After the basic check, use the install/update manifest dry-run preview when you want the next level of setup clarity without changing the target project:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --preview-manifest</code></pre>
-<p>The preview labels possible setup actions as <code>copy_candidate</code>, <code>adapt_candidate</code>, <code>preserve_existing</code>, <code>exclude</code>, <code>blocked</code>, or <code>deferred</code>. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a <code>precode</code> CLI.</p>
+<p>The preview labels possible setup actions as <code>copy_candidate</code>, <code>adapt_candidate</code>, <code>preserve_existing</code>, <code>exclude</code>, <code>blocked</code>, or <code>deferred</code>. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.</p>
 <p>After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan</code></pre>
-<p>The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a <code>precode</code> CLI.</p>
+<p>The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.</p>
 <p>For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan --apply-supervised-setup --approve-action &lt;SP-ID&gt;</code></pre>
-<p>This apply mode copies only approved <code>review_copy_candidate</code> actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and a <code>precode</code> CLI. After apply, inspect target Git status and validate memory before product work starts.</p>
+<p>This apply mode copies only approved <code>review_copy_candidate</code> actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.</p>
+<p>The optional wrapper exposes the same apply gate and still requires approved action IDs:</p>
+<pre><code class="language-bash">python3 scripts/precode_cli.py bootstrap-check --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan
+python3 scripts/precode_cli.py bootstrap-check --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan --apply-supervised-setup --approve-action &lt;SP-ID&gt;</code></pre>
 <p>Use JSON when an agent or support script needs structured output:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --json
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --preview-manifest --json

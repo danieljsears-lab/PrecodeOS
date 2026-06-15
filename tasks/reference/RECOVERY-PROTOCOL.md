@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-14
+Document version: v0.1.6
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -26,6 +26,30 @@ The recovery posture is conservative:
 - resume only when the next safe action is clear
 
 Recovery is not auto-repair. Do not run destructive commands, overwrite user edits, delete evidence, rewrite logs, or guess from generated reports.
+
+## Stuck Trigger Response
+
+When the user says `I am stuck`, `I am stuck, help me`, or an equivalent stuck/confused/help-me phrase, the agent must stop implementation and return prescriptive recovery guidance before editing.
+
+Required response:
+
+1. Restate the symptom in plain English, or say the symptom is not yet known.
+2. Say the first safe move: stop implementation and diagnose before repair.
+3. Name the likely owner surface, or say the owner is unknown until active memory and checks are inspected.
+4. Run or recommend no more than three read-only or advisory checks.
+5. Give the next safe prompt or action.
+6. State forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
+
+Good first checks are usually one to three of:
+
+- `bash scripts/session-start.sh`
+- `python3 scripts/next-step.py`
+- `python3 scripts/state-check.py`
+- `python3 scripts/files-in-play-check.py`
+- `python3 scripts/completion-check.py`
+- `python3 scripts/os-health.py`
+
+`OS-HEALTH.md`, Doctor Dashboard output, `PRECODE-HELP.md`, `next-step.py`, and stable-fix eligibility are diagnostic evidence only. They can help explain what is wrong, but they do not approve repair, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.
 
 ## Stable-Fix Eligibility
 
@@ -43,7 +67,7 @@ If the classifier says `recovery_repair`, stay in this protocol until the sympto
 
 ## First Move
 
-When a user says "I think I broke something," do this:
+When a user says "I think I broke something" or "I am stuck, help me," do this:
 
 1. Stop implementation.
 2. Ask what changed, if the user knows.

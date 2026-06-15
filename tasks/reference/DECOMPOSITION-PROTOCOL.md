@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-14
+Document version: v0.1.8
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -29,6 +29,8 @@ Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before decomposition when
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` after or alongside Architecture Shaping when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, deep module boundary, or direct-versus-pattern decision.
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when decomposition affects model tier, subagent delegation, long-horizon execution, or context-budget decisions.
+
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a small team wants multiple people to work on the same product build or when a candidate bead is marked `can run in parallel`.
 
 Active memory remains exactly:
 
@@ -105,6 +107,8 @@ Use these terms in bead notes, handback, or planning output:
 - `waits for manual setup`
 - `waits for PRD approval`
 - `waits for external status`
+
+`can run in parallel` means the candidate may run in a branch/worktree-isolated teammate context after coordinator approval and with its own bounded bead evidence. It does not activate multiple beads in one checkout, allow simultaneous edits to one active memory set, bypass review, or let GitHub issues, pull requests, comments, or project boards choose work.
 
 Use these delegation terms in bead frontmatter:
 

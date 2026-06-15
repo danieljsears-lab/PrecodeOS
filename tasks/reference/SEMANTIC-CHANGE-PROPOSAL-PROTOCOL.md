@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-14
+Document version: v0.1.1
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -26,7 +26,7 @@ Use a Semantic Change Proposal before changing:
 
 - active-memory membership, loading rules, or precedence
 - authority contracts, owner-file responsibility, or promotion paths
-- generated-output demotion rules or generated report behavior that could be mistaken for authority
+- generated-output demotion rules, generated authority-map surface classes, or generated report behavior that could be mistaken for authority
 - package install, update, setup, bootstrap, release-channel, rollback, or package-manager boundaries
 - governance, contribution, trademark, license, provenance, public-positioning, or official-project identity semantics
 - beginner-facing safety language, approval gates, stop conditions, destructive-action guidance, external-mutation guidance, or sensitive-surface guidance
@@ -79,7 +79,7 @@ Use plain language. The proposal should be short enough to review before impleme
 
 `Validation evidence` lists the static checks, freshness checks, manual review steps, or source comparisons needed before confidence is warranted.
 
-`Docs/protocol/inventory follow-through` names public docs, protocols, package inventory entries, generated docs HTML, roadmap history, and maintainer changelog entries that must be updated if the change lands.
+`Docs/protocol/inventory follow-through` names public docs, protocols, package inventory entries, generated authority-map impact, generated docs HTML, roadmap history, and maintainer changelog entries that must be updated if the change lands.
 
 `Rollback or reversal path` explains how the package meaning can be restored if the change creates confusion.
 

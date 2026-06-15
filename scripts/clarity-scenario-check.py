@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.9
+# Version: v0.1.10
 # Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -142,6 +142,38 @@ def assert_router_contract(name: str, payload: dict[str, Any], failures: list[di
         failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(footprint.get("advisory_only"))})
 
 
+def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
+    required_paths = [
+        Path("AGENT.md"),
+        Path("docs/PRECODE-DAILY-COCKPIT.md"),
+        Path("docs/PRECODE-TROUBLESHOOTING.md"),
+        Path("tasks/reference/RECOVERY-PROTOCOL.md"),
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"),
+        Path("tasks/reference/PROMPT-PATTERNS.md"),
+    ]
+    required_terms = [
+        "I am stuck, help me",
+        "symptom",
+        "first safe move",
+        "owner surface",
+        "read-only or advisory checks",
+        "next safe prompt or action",
+        "no delete",
+        "overwrite",
+        "regenerate",
+        "transition approval",
+        "rollback",
+        "setup/update mutation",
+        "destructive command",
+    ]
+    for path in required_paths:
+        text = path.read_text(encoding="utf-8")
+        lower_text = text.lower()
+        for term in required_terms:
+            if term.lower() not in lower_text:
+                failures.append({"scenario": f"stuck recovery contract: {path}", "expected": term, "actual": "missing"})
+
+
 def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status: str, failures: list[dict[str, str]]) -> None:
     dashboard = build_doctor_dashboard(payload)
     if dashboard.get("status") != expected_status:
@@ -159,6 +191,29 @@ def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status:
     warning = str(dashboard.get("generated_evidence_warning") or "")
     if "generated diagnostic evidence only" not in warning:
         failures.append({"scenario": f"doctor warning: {name}", "expected": "generated evidence warning", "actual": warning})
+    for key in ("top_plain_english_issue", "top_safe_ask", "top_do_not_approve", "top_validation_path"):
+        if not dashboard.get(key):
+            failures.append({"scenario": f"doctor triage top {key}: {name}", "expected": "plain-English triage field", "actual": "missing"})
+    rows = dashboard.get("rows") if isinstance(dashboard.get("rows"), list) else []
+    for row in rows:
+        source = str(row.get("source") or "unknown")
+        for key in (
+            "plain_english_issue",
+            "user_facing_meaning",
+            "safe_ask",
+            "do_not_approve",
+            "shortest_validation_path",
+        ):
+            if not row.get(key):
+                failures.append({"scenario": f"doctor row triage {source} {key}: {name}", "expected": "plain-English triage field", "actual": "missing"})
+        if row.get("next_step_decision_owner") != "scripts/next-step.py":
+            failures.append(
+                {
+                    "scenario": f"doctor row owner {source}: {name}",
+                    "expected": "scripts/next-step.py",
+                    "actual": str(row.get("next_step_decision_owner")),
+                }
+            )
 
 
 def loop_context(**overrides: Any) -> dict[str, Any]:
@@ -394,6 +449,8 @@ def main() -> int:
     for name, payload, expected in recovery_scenarios:
         assert_recovery_flow(f"next-step recovery: {name}", payload, expected, failures)
         assert_router_contract(f"next-step router: {name}", payload, failures)
+
+    assert_stuck_recovery_contract(failures)
 
     doctor_clear_payload = {
         "next_step": next_payload(bead()),

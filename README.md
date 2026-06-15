@@ -121,6 +121,15 @@ cd PrecodeOS
 bash scripts/validate-memory.sh
 ```
 
+Optional local command facade:
+
+```bash
+python3 scripts/precode_cli.py --help
+python3 scripts/precode_cli.py validate
+```
+
+For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
+
 Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
 
 ```bash
@@ -180,13 +189,14 @@ For evidence, use recorded checks:
 bash scripts/record-check.sh -- <command>
 ```
 
-Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
+Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, plain-English triage labels, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
 
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
 For the immediate "what now?" question, use:
 
 ```bash
+python3 scripts/precode_cli.py --dry-run next
 bash scripts/session-start.sh
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
@@ -194,11 +204,13 @@ python3 scripts/os-health.py
 python3 scripts/ralph-loop.py --dry-run
 ```
 
+`precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts.
+
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
 
-`os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters and points to the owner command or protocol.
+`os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters, gives a plain-English safe ask and do-not-approve warning, and points to the owner command or protocol.
 
 `ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
 
@@ -251,6 +263,7 @@ PrecodeOS is designed to be inspectable:
 Useful reviewer commands:
 
 ```bash
+python3 scripts/precode_cli.py check
 bash scripts/validate-memory.sh
 python3 scripts/version-check.py
 python3 scripts/file-inventory.py --check
@@ -289,7 +302,7 @@ A bead is one bounded unit of work with scope, owner files, checks, stop conditi
 
 No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and `logs/` are evidence only.
 
-The Doctor Dashboard inside OS Health is also evidence only. It explains diagnostics, but it does not select work, approve transitions, approve commands, or replace `scripts/next-step.py`.
+The Doctor Dashboard inside OS Health is also evidence only. It explains diagnostics in plain English, but it does not select work, approve transitions, approve commands, or replace `scripts/next-step.py`.
 
 ### Where should I start?
 

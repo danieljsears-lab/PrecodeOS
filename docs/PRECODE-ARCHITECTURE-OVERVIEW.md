@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.24
-Last updated: 2026-06-14
+Document version: v0.3.25
+Last updated: 2026-06-15
 
 ## Executive Summary
 
@@ -340,6 +340,7 @@ Use the Recovery Protocol for the full beginner-facing triage table covering fil
 - Prefer one observable outcome per bead.
 - Prefer vertical journey beads for user-facing work.
 - Use `afk_candidate` only as advisory delegation metadata; it does not activate parallel work or bypass review.
+- Use Small Team Collaboration Lane only through explicit coordinator invocation and branch/worktree isolation. It does not activate multiple beads in one checkout, turn GitHub into authority, or make teammate handoff packets acceptance evidence.
 - For code-changing beads, declare test strategy and prefer failing-first when practical.
 - Use Ralph only when a bead is testable, bounded, and opted in or explicitly requested for a one-off run.
 - For medium/high-risk code-changing beads, prefer or require fresh-context review.
@@ -389,6 +390,8 @@ Only the first three should drive acceptance. Ralph attempt evidence, generated 
 ### Handoff And Interoperability Model
 
 Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools. Compatibility shims and adapters should point back to the shared operating model instead of becoming separate tool-specific memories.
+
+For small teams, interoperability extends to people as well as agents: each contributor works from the shared repo contract in a branch or worktree, returns recorded evidence, and re-enters through coordinator review. The integration branch still preserves one active bead and one authority chain.
 
 ### Router-First Modularity
 

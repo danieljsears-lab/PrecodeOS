@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.4
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -19,6 +19,8 @@ GitHub can help PrecodeOS see repository status, CI status, pull request context
 GitHub must not become a second operating system. GitHub issues, pull requests, checks, comments, labels, project boards, and Actions are evidence or external status until a user promotes stable conclusions into the correct Precode owner file.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` before any GitHub tool call that mutates issues, pull requests, labels, branches, checks, comments, workflows, or repository settings.
+
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when GitHub branches, pull requests, reviews, or checks are used to coordinate a small team working on one product build.
 
 Active memory remains exactly:
 
@@ -96,6 +98,22 @@ It should report:
 - authentication, tooling, or configuration gaps
 
 The audit output is generated evidence. Findings become work only when a user promotes them into the owning Precode file or approves a follow-up bead.
+
+## Small Team Status Path
+
+For Small Team Collaboration Lane, GitHub can expose branch, pull request, review, and check status as team evidence.
+
+GitHub status may help a coordinator see:
+
+- contributor branches and pull requests
+- check results
+- review comments or unresolved findings
+- merge conflicts or stale branches when available
+- likely owner-file impacts from a pull request summary
+
+GitHub status must not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, or replace coordinator review. A contributor PR is source evidence until reviewed against the assigned bead, primary authority, recorded checks, manual verification, and team agreement.
+
+Do not create, edit, close, label, assign, comment on, approve, merge, rerun, cancel, push, rebase, or delete GitHub resources without explicit user approval and an active bead that allows the exact action.
 
 ## Source Intake Path
 

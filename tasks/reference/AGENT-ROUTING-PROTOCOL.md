@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-06
+Document version: v0.1.5
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -45,6 +45,7 @@ Escalate only when the current tier cannot safely decide. De-escalate when the n
 - Use `long-horizon` only with explicit checkpoints, review context, and a clear escape path.
 - If a delegated agent realizes it needs a smarter tier, broader scope, or new approval, it returns that finding to the parent instead of escalating independently.
 - Record durable spend when telemetry is available; missing spend is unknown, not zero.
+- For Small Team Collaboration Lane, teammate parallelism is a repo/workspace coordination pattern, not a model-routing shortcut. Each teammate branch or worktree still needs one bounded bead, one primary authority, explicit checks, and coordinator review before integration.
 
 ## Context Budget
 
@@ -83,10 +84,13 @@ Delegation must not:
 - exceed a Run Contract's allowed actions, proof needed, approval gates, or expiration condition
 - create recursive agent chains without explicit tool support and clear bounds
 - turn an `afk_candidate` bead into unsupervised product or architecture ownership
+- treat teammate branches, pull requests, or generated handoff packets as approval to merge, accept, activate another bead, or widen the current scope
 
 Prefer delegation for bounded repo exploration, focused review, isolated implementation slices with disjoint files, or long-running verification that can report back with evidence. Sensitive, external, destructive, or `bounded-afk` delegated work should have a Run Contract before delegation.
 
 Explorer is the preferred contract for read-only repo discovery. It returns findings and cited paths; it does not edit, activate, approve, or continue into implementation.
+
+When `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` applies, route each teammate through explicit branch/worktree confirmation and handoff/re-entry evidence instead of relying on chat history or host-agent subagent state.
 
 ## Tool Routing
 

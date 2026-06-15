@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-014 -- Authority Map For Package Surfaces</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-014 -- Authority Map For Package Surfaces</h1>
+  <p class="muted">Static HTML generated from <code>PRD-014-authority-map-package-surfaces.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-014-authority-map-package-surfaces.md#prd-014-authority-map-package-surfaces">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Authority Map For Package Surfaces</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-15</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for generated package-surface authority-map refinements.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, implementation acceptance, generated evidence truth, private maintainer authority, package-manager behavior, install/update behavior, command-wrapper behavior, registry behavior, optional-pack behavior, or release approval.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-014-FR01</code></td><td><code>logs/authority-map.json</code> must include <code>surface_classes</code> with class-level authority and non-authority boundaries.</td><td>P0</td><td>Covers active memory, owner/reference docs, protocols, PRDs, beads, templates, adapters, shims, generated public HTML, generated reports/sidecars, scripts, workflows, and maintainer-private surfaces.</td></tr><tr><td><code>PRD-014-FR02</code></td><td><code>logs/authority-map.json</code> must include <code>docs_by_surface</code> grouped from parsed authority contracts.</td><td>P0</td><td>Preserve current parsed-document source.</td></tr><tr><td><code>PRD-014-FR03</code></td><td>The existing flat <code>docs</code> array must remain available.</td><td>P0</td><td>Avoid breaking current readers.</td></tr><tr><td><code>PRD-014-FR04</code></td><td>The generated map must state that generated output is not authority and that private maintainer surfaces are excluded from public generated detail.</td><td>P0</td><td>Boundary flags are explicit.</td></tr><tr><td><code>PRD-014-FR05</code></td><td>Public inventory and relevant protocols must document the refined map without making it an approval surface.</td><td>P1</td><td>Inventory owns public package orientation.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-014-authority-map-package-surfaces.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-014-authority-map-package-surfaces.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-014-FR01`</textarea></td><td><textarea data-cockpit-cell>`logs/authority-map.json` includes `surface_classes` with requested classes and boundaries.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os_compiler.py`</textarea></td><td><textarea data-cockpit-cell>Inspect generated JSON.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`logs/authority-map.json`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-014-FR02`</textarea></td><td><textarea data-cockpit-cell>`docs_by_surface` groups parsed authority-contract documents.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os_compiler.py`</textarea></td><td><textarea data-cockpit-cell>Inspect grouped paths.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`logs/authority-map.json`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-014-FR03`</textarea></td><td><textarea data-cockpit-cell>Existing `docs` list remains present.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os_compiler.py`</textarea></td><td><textarea data-cockpit-cell>Confirm `docs` array exists.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`logs/authority-map.json`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-014-FR04`</textarea></td><td><textarea data-cockpit-cell>Boundary flags state generated output is not authority and private maintainer surfaces are excluded.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os_compiler.py`</textarea></td><td><textarea data-cockpit-cell>Inspect top-level flags.</textarea></td><td><textarea data-cockpit-cell>current workspace</textarea></td><td><textarea data-cockpit-cell>`logs/authority-map.json`</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-014-FR05`</textarea></td><td><textarea data-cockpit-cell>Inventory and protocols describe the map and boundaries.</textarea></td><td><textarea data-cockpit-cell>docs HTML and inventory checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-014-authority-map-package-surfaces">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-014-authority-map-package-surfaces" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-014-FR01` | `logs/authority-map.json` includes `surface_classes` with requested classes and boundaries. | `python3 scripts/os_compiler.py` | Inspect generated JSON. | current workspace | `logs/authority-map.json` |
+| `PRD-014-FR02` | `docs_by_surface` groups parsed authority-contract documents. | `python3 scripts/os_compiler.py` | Inspect grouped paths. | current workspace | `logs/authority-map.json` |
+| `PRD-014-FR03` | Existing `docs` list remains present. | `python3 scripts/os_compiler.py` | Confirm `docs` array exists. | current workspace | `logs/authority-map.json` |
+| `PRD-014-FR04` | Boundary flags state generated output is not authority and private maintainer surfaces are excluded. | `python3 scripts/os_compiler.py` | Inspect top-level flags. | current workspace | `logs/authority-map.json` |
+| `PRD-014-FR05` | Inventory and protocols describe the map and boundaries. | docs HTML and inventory checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Active memory: unchanged.</li><li>Authority model: clarified through generated evidence and public docs, not changed by generated output.</li><li>Private maintainer material: named as a class boundary but not exposed as public generated detail.</li><li>Generated evidence: remains evidence only.</li><li>External systems: not touched.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any package-surface change is treated as accepted, any semantic change is implemented, any bead is activated, any transition occurs, any source Markdown is rewritten from generated output, any external system is touched, or any install/update/package-manager behavior is added.</li><li>Stop if generated authority-map output is treated as task authority, approval evidence, a private maintainer inventory, or a source of package-manager behavior.</li></ul>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-014-authority-map-for-package-surfaces">PRD-014 -- Authority Map For Package Surfaces</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-014</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-15</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Authority Map For Package Surfaces</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>none</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | package inventory</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Authority Map For Package Surfaces</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>scripts/os_compiler.py</code></li><li><code>logs/authority-map.json</code></li><li><code>tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Stable facts:</li><li>Markdown owner files and protocols hold package meaning.</li><li>Generated JSON and reports are evidence only.</li><li>Public package docs must not depend on private <code>_maintainer/</code> material.</li><li>Assumptions:</li><li>The first implementation should refine the existing authority-map compiler instead of adding a new command, checker gate, registry, or public authority document.</li><li>Surface-class grouping helps contributors and agents avoid mistaking shims, generated surfaces, scripts, and private maintainer files for the same authority class.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Public docs, protocols, scripts, adapters, generated files, shims, and maintainer-private files can blur which package surface owns which facts.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A contributor or agent sees a file path or generated report and has to infer whether it is authority, evidence, compatibility guidance, or private maintainer material.</li><li>After: The generated authority map keeps the existing per-document contract list and adds package-surface class metadata that explains each class&#x27;s authority and non-authority boundaries.</li><li>Why now: PrecodeOS now has more shims, generated review surfaces, protocols, diagnostics, and maintainer-local roadmap history. The package needs better orientation without adding enforcement.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: <code>logs/authority-map.json</code> groups parsed authority contracts by package surface class and includes class-level boundaries for public package surfaces while excluding private maintainer detail.</li><li>Definition of done:</li><li><code>scripts/os_compiler.py</code> emits <code>surface_classes</code>, <code>docs_by_surface</code>, <code>generated_is_not_authority</code>, and <code>private_maintainer_surfaces_excluded</code> in <code>logs/authority-map.json</code>.</li><li>The existing flat <code>docs</code> list remains present for compatibility.</li><li>Public inventory and relevant protocols explain the refined map and generated-evidence boundary.</li><li>Roadmap history, roadmap journal, generated docs/roadmap HTML, and maintainer changelog are current.</li><li>First useful vertical slice: generated authority-map grouping and public inventory/protocol explanation only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Maintainer or contributor checking which package surface owns a fact.</li><li>Secondary user: AI coding agent orienting before editing public PrecodeOS package files.</li><li>Excluded user: Automation expecting approval, task selection, package installation, update behavior, registry behavior, or private maintainer material.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make package surface classes and ownership boundaries easier to inspect.</li><li>Goal 2: Preserve Markdown owner files and protocols as canonical.</li><li>Goal 3: Keep generated authority-map output evidence-only and public-package scoped.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: new active memory, new checker gate, new command, standalone authority-map tool, generated-output approval, PRD approval, bead activation, transition approval, registry, optional packs, command wrappers, install/update behavior, package-manager behavior, release behavior, external mutation, or public dependence on <code>_maintainer/</code>.</li><li>Deferred: stricter file inventory enforcement, richer generated review UI, contribution packaging thresholds, optional pack metadata, and command-wrapper review paths.</li><li>Explicitly out of scope: using the generated map to select tasks, rewrite source Markdown, approve changes, validate private maintainer files, or expose maintainer-private detail in public generated output.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-014-FR01</code></td><td><code>logs/authority-map.json</code> must include <code>surface_classes</code> with class-level authority and non-authority boundaries.</td><td>P0</td><td>Covers active memory, owner/reference docs, protocols, PRDs, beads, templates, adapters, shims, generated public HTML, generated reports/sidecars, scripts, workflows, and maintainer-private surfaces.</td></tr><tr><td><code>PRD-014-FR02</code></td><td><code>logs/authority-map.json</code> must include <code>docs_by_surface</code> grouped from parsed authority contracts.</td><td>P0</td><td>Preserve current parsed-document source.</td></tr><tr><td><code>PRD-014-FR03</code></td><td>The existing flat <code>docs</code> array must remain available.</td><td>P0</td><td>Avoid breaking current readers.</td></tr><tr><td><code>PRD-014-FR04</code></td><td>The generated map must state that generated output is not authority and that private maintainer surfaces are excluded from public generated detail.</td><td>P0</td><td>Boundary flags are explicit.</td></tr><tr><td><code>PRD-014-FR05</code></td><td>Public inventory and relevant protocols must document the refined map without making it an approval surface.</td><td>P1</td><td>Inventory owns public package orientation.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-014-SEC01</code></td><td>Authority-map output must not expose private <code>_maintainer/</code> file detail.</td><td>P0</td><td>Class metadata may name the private class, but public generated entries must not inventory private files.</td></tr><tr><td><code>PRD-014-SEC02</code></td><td>Authority-map output must not approve or perform file mutation, external mutation, package install/update behavior, transition approval, release approval, or package-manager behavior.</td><td>P0</td><td>Evidence only.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-014-NFR01</code></td><td>Authority-map generation must remain repo-local and network-free.</td><td>P0</td><td>Existing compiler path only.</td></tr><tr><td><code>PRD-014-NFR02</code></td><td>Grouping must be concise enough for manual inspection.</td><td>P1</td><td>Avoid duplicating the full package inventory.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-014-FR01</code></td><td><code>logs/authority-map.json</code> includes <code>surface_classes</code> with requested classes and boundaries.</td><td><code>python3 scripts/os_compiler.py</code></td><td>Inspect generated JSON.</td><td>current workspace</td><td><code>logs/authority-map.json</code></td></tr><tr><td><code>PRD-014-FR02</code></td><td><code>docs_by_surface</code> groups parsed authority-contract documents.</td><td><code>python3 scripts/os_compiler.py</code></td><td>Inspect grouped paths.</td><td>current workspace</td><td><code>logs/authority-map.json</code></td></tr><tr><td><code>PRD-014-FR03</code></td><td>Existing <code>docs</code> list remains present.</td><td><code>python3 scripts/os_compiler.py</code></td><td>Confirm <code>docs</code> array exists.</td><td>current workspace</td><td><code>logs/authority-map.json</code></td></tr><tr><td><code>PRD-014-FR04</code></td><td>Boundary flags state generated output is not authority and private maintainer surfaces are excluded.</td><td><code>python3 scripts/os_compiler.py</code></td><td>Inspect top-level flags.</td><td>current workspace</td><td><code>logs/authority-map.json</code></td></tr><tr><td><code>PRD-014-FR05</code></td><td>Inventory and protocols describe the map and boundaries.</td><td>docs HTML and inventory checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Active memory: unchanged.</li><li>Authority model: clarified through generated evidence and public docs, not changed by generated output.</li><li>Private maintainer material: named as a class boundary but not exposed as public generated detail.</li><li>Generated evidence: remains evidence only.</li><li>External systems: not touched.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before any package-surface change is treated as accepted, any semantic change is implemented, any bead is activated, any transition occurs, any source Markdown is rewritten from generated output, any external system is touched, or any install/update/package-manager behavior is added.</li><li>Stop if generated authority-map output is treated as task authority, approval evidence, a private maintainer inventory, or a source of package-manager behavior.</li></ul>
+<h2 id="public-interface">Public Interface</h2>
+<ul><li>Existing generated sidecar extended:</li><li><code>logs/authority-map.json[&amp;quot;surface_classes&amp;quot;]</code></li><li><code>logs/authority-map.json[&amp;quot;docs_by_surface&amp;quot;]</code></li><li><code>logs/authority-map.json[&amp;quot;generated_is_not_authority&amp;quot;]</code></li><li><code>logs/authority-map.json[&amp;quot;private_maintainer_surfaces_excluded&amp;quot;]</code></li><li>Existing generated sidecar preserved:</li><li><code>logs/authority-map.json[&amp;quot;docs&amp;quot;]</code></li></ul>
+<h2 id="affected-surfaces">Affected Surfaces</h2>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>Change</th><th>Authority boundary</th></tr></thead><tbody><tr><td><code>scripts/os_compiler.py</code></td><td>Adds authority-map surface-class metadata and grouped parsed contracts.</td><td>Generated evidence only.</td></tr><tr><td><code>logs/authority-map.json</code></td><td>Adds grouped and class-level fields.</td><td>Generated sidecar; not authority.</td></tr><tr><td><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></td><td>Explains the package surface authority map.</td><td>Public inventory remains curated Markdown.</td></tr><tr><td>Semantic Change Proposal Protocol</td><td>Names authority-map follow-through for trust-affecting changes.</td><td>Proposal evidence only.</td></tr><tr><td>Extension Protocol</td><td>Clarifies extension-generated surfaces should be classed without gaining approval authority.</td><td>Extension findings remain evidence until promoted.</td></tr><tr><td>Maintainer roadmap, journal, and changelog</td><td>Record implemented candidate.</td><td>Maintainer-local history only.</td></tr></tbody></table></div>
+<h2 id="validation-plan">Validation Plan</h2>
+<ul><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/os_compiler.py</code></li><li>Inspect <code>logs/authority-map.json</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py</code> if stale</li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py</code></li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py --apply</code> after the implemented-candidate entry is added</li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py</code> if stale</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-2" href="#public-interface">Public Interface</a><a class="level-2" href="#affected-surfaces">Affected Surfaces</a><a class="level-2" href="#validation-plan">Validation Plan</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-14
+Document version: v0.1.24
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -39,6 +39,24 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view of copy, adaptation, preserve, exclusion, blocked, and deferred actions. Use `--supervised-setup-plan` when the user needs action IDs, approval gates, exclusions, blockers, and validation steps before manual setup work. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. Then choose the first adoption fork: fresh install for empty targets or Existing Repo Intake for repos with app code, docs, CI, product history, or active work. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
+
+## Stuck User Recovery
+
+Use this when a beginner says `I am stuck`, `I am stuck, help me`, or cannot name the symptom.
+
+Support should help the user get a prescriptive diagnosis without taking over product authority or approving repair:
+
+1. Stop implementation.
+2. Restate the symptom in plain English, or say the symptom is not known yet.
+3. Name the first safe move: stop implementation and diagnose before repair.
+4. Name the likely owner surface, or say it is unknown until active memory and checks are inspected.
+5. Choose up to three read-only or advisory checks.
+6. Give the next safe prompt or action.
+7. State forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
+
+Good first checks are usually `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, or `python3 scripts/os-health.py`, depending on the symptom.
+
+OS Health, Doctor Dashboard output, `next-step.py`, and stable-fix eligibility help diagnose only. Doctor Dashboard triage labels may say what to ask and what not to approve, but they do not approve repair, acceptance, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.
 
 Support can say:
 
@@ -123,7 +141,7 @@ Do not run broad overwrite commands, install Git hooks, change CI, edit app code
 
 Do not create product truth for the user. If the product is fuzzy, help the user capture a Conviction Packet / Precode Ingestion Packet or PRD-ready source summary. That packet is evidence only until it is reviewed and placed in the right Precode owner file after setup.
 
-Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only. The Doctor Dashboard inside OS Health explains warning sources and repair paths, but it does not approve commands, task selection, transitions, or acceptance.
+Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only. The Doctor Dashboard inside OS Health explains warning sources, plain-English triage labels, and repair paths, but it does not approve commands, task selection, transitions, or acceptance.
 
 ## Mainline Walkthrough: New Project
 

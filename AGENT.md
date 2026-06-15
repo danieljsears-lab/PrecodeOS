@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.16
-Last updated: 2026-06-14
+Document version: v0.1.17
+Last updated: 2026-06-15
 
 ## Project
 
@@ -34,6 +34,21 @@ Use only these files as active memory:
 
 - `OPERATING-CONSTRAINTS.md` — shared constraints for any AI coding agent
 - Load deeper reference docs only when the current bead actually needs them
+
+## Stuck User Trigger
+
+When the user says `I am stuck`, `I am stuck, help me`, or an equivalent stuck/confused/help-me phrase, stop implementation and give prescriptive recovery guidance before editing.
+
+Required response:
+
+1. Restate the symptom in plain English, or say the symptom is not yet known.
+2. Say the first safe move: stop implementation and diagnose before repair.
+3. Name the likely owner surface, or say the owner is unknown until active memory and checks are inspected.
+4. Run or recommend no more than three read-only or advisory checks, chosen from the symptom and current state.
+5. Give the next safe prompt or action for the user.
+6. State the forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
+
+Use `tasks/reference/RECOVERY-PROTOCOL.md` as the owner protocol. Generated reports, Doctor Dashboard output, `next-step.py`, and stable-fix eligibility can help diagnose, but they do not approve repair.
 
 ## Execution Layer
 

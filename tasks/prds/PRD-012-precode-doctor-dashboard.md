@@ -19,7 +19,7 @@ related_prds: []
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-15
 
 ## State
@@ -41,6 +41,7 @@ Last updated: 2026-06-15
 - Source type: `maintainer roadmap evidence | approved implementation plan | generated health evidence`
 - Source references:
   - `_maintainer/PRECODE-ROADMAP.md` ranked item, `Precode Doctor Dashboard`
+  - `_maintainer/PRECODE-ROADMAP.md` ranked item, `Doctor Dashboard v2 / Plain-English Triage`
   - `scripts/os-health.py`
   - `scripts/os_compiler.py`
   - `scripts/next-step.py`
@@ -63,18 +64,19 @@ As Precode's advisory checks grow, users and agents can see many warnings withou
 ## User Moment
 
 - Before: A builder reads OS Health or several generated reports and cannot tell which warning matters most or which command owns the repair path.
-- After: OS Health includes a Doctor Dashboard that summarizes the highest-impact diagnostic sources and points back to the owner command and protocol.
+- After: OS Health includes a Doctor Dashboard that summarizes the highest-impact diagnostic sources, translates them into plain-English triage labels, and points back to the owner command and protocol.
 - Why now: The main loop now has enough warning sources that a compact diagnostic dashboard can clarify health without adding a second router.
 
 ## Destination
 
-- Destination statement: Precode Doctor Dashboard explains existing warning sources inside OS Health while preserving `next-step.py` as the next-decision owner.
+- Destination statement: Precode Doctor Dashboard explains existing warning sources inside OS Health in beginner-readable language while preserving `next-step.py` as the next-decision owner.
 - Definition of done:
   - `OS-HEALTH.md` includes a `Doctor Dashboard` section.
   - `logs/os-health.json` includes a `doctor_dashboard` payload.
   - Dashboard rows include source, status/severity, why it matters, owner command/protocol, shortest repair path, and `scripts/next-step.py` as decision owner.
+  - Dashboard rows include beginner triage fields for plain-English issue, user-facing meaning, safe ask, do-not-approve warning, and shortest validation path.
   - Public docs, package inventory, Extension Protocol, generated docs/PRD surfaces, roadmap history, roadmap journal, and maintainer changelog are current.
-- First useful vertical slice: generated health-report dashboard only.
+- First useful vertical slice: generated health-report dashboard and additive plain-English triage labels only.
 
 ## Users
 
@@ -104,7 +106,7 @@ As Precode's advisory checks grow, users and agents can see many warnings withou
 | `PRD-012-FR02` | `logs/os-health.json` must include `doctor_dashboard`. | P0 | Machine-readable generated evidence. |
 | `PRD-012-FR03` | Dashboard rows must include source, status/severity, why it matters, owner command/protocol, shortest repair path, warnings, and `scripts/next-step.py` as decision owner. | P0 | Do not create a second router. |
 | `PRD-012-FR04` | Dashboard input must compose existing compiled state only. | P0 | No independent app runtime, external calls, or mutating checks. |
-| `PRD-012-FR05` | Deterministic scenario coverage must verify dashboard severity and generated-evidence boundaries. | P1 | Use existing clarity harness unless a separate self-test is needed. |
+| `PRD-012-FR05` | Deterministic scenario coverage must verify dashboard severity, beginner triage fields, and generated-evidence boundaries. | P1 | Use existing clarity harness unless a separate self-test is needed. |
 | `PRD-012-FR06` | Public docs, package inventory, Extension Protocol, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated. | P1 | Required maintainer follow-through. |
 
 ### Security And Privacy Requirements
@@ -119,7 +121,7 @@ As Precode's advisory checks grow, users and agents can see many warnings withou
 | ID | Requirement | Priority | Notes |
 |---|---|---|---|
 | `PRD-012-NFR01` | Dashboard generation must run as part of `python3 scripts/os-health.py` without network access. | P0 | Repo-local only. |
-| `PRD-012-NFR02` | Dashboard output must be concise enough to scan before the detailed OS Health sections. | P1 | Top summary plus table rows. |
+| `PRD-012-NFR02` | Dashboard output must be concise enough to scan before the detailed OS Health sections. | P1 | Top triage summary plus compact row labels. |
 
 ## Acceptance Oracle Matrix
 
@@ -127,7 +129,7 @@ As Precode's advisory checks grow, users and agents can see many warnings withou
 |---|---|---|---|---|---|
 | `PRD-012-FR01` | `OS-HEALTH.md` contains `## Doctor Dashboard`. | `python3 scripts/os-health.py` | Inspect generated report. | current workspace | `OS-HEALTH.md` |
 | `PRD-012-FR02` | `logs/os-health.json` has `doctor_dashboard`. | `python3 scripts/os-health.py` | Inspect JSON shape. | current workspace | `logs/os-health.json` |
-| `PRD-012-FR03` | Dashboard rows expose source, severity, owner, repair path, and next-step owner. | `python3 scripts/clarity-scenario-check.py` | Inspect one generated row. | synthetic clarity scenarios | check output |
+| `PRD-012-FR03` | Dashboard rows expose source, severity, owner, repair path, beginner triage fields, and next-step owner. | `python3 scripts/clarity-scenario-check.py` | Inspect one generated row. | synthetic clarity scenarios | check output |
 | `PRD-012-FR04` | Dashboard composes compiled state and adds no public command. | `python3 scripts/version-check.py` | Confirm no `precode doctor` script or CLI wrapper was added. | current workspace | command output |
 | `PRD-012-FR05` | Clear, scope-drift, and transition-review scenarios classify deterministically. | `python3 scripts/clarity-scenario-check.py` | Boundary review. | in-memory fixtures | check output |
 | `PRD-012-FR06` | Docs, generated surfaces, roadmap, and changelog are current. | docs, PRD HTML, roadmap HTML, and roadmap maintenance checks | Boundary review. | Markdown docs | generated surfaces |
@@ -161,8 +163,8 @@ As Precode's advisory checks grow, users and agents can see many warnings withou
 |---|---|---|
 | `scripts/precode_doctor.py` | Internal dashboard payload and Markdown helpers. | Imported by health reporting; no standalone command. |
 | `scripts/os_compiler.py` | Adds `doctor_dashboard` to compiled state. | Generated evidence only. |
-| `scripts/os-health.py` | Renders Doctor Dashboard in OS Health. | Does not choose tasks or approve work. |
-| `scripts/clarity-scenario-check.py` | Adds deterministic dashboard classification fixtures. | Regression check only. |
+| `scripts/os-health.py` | Renders Doctor Dashboard and plain-English triage labels in OS Health. | Does not choose tasks or approve work. |
+| `scripts/clarity-scenario-check.py` | Adds deterministic dashboard classification and triage fixtures. | Regression check only. |
 | Public docs and package inventory | Describe the dashboard and boundaries. | Markdown remains canonical. |
 | Extension Protocol | Reclassifies dashboard as a generated report extension while preserving deferred wrapper rule. | No CLI or wrapper authority. |
 | Maintainer roadmap, journal, and changelog | Record implemented candidate. | Maintainer-local history only. |

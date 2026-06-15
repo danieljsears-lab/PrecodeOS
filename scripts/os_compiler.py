@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.30
+# Version: v0.1.31
 # Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -70,6 +70,128 @@ ADAPTER_DOCS = [
     "adapters/ANTIGRAVITY.md",
     "adapters/CURSOR.md",
 ]
+AUTHORITY_SURFACE_CLASSES: dict[str, dict[str, Any]] = {
+    "active-memory": {
+        "label": "Active memory",
+        "patterns": ACTIVE_MEMORY,
+        "authority": "Always-loaded operating state for a Precode session.",
+        "not_authority": "Does not replace owner files, PRDs, beads, generated evidence review, or human approval.",
+        "generated": False,
+        "public_package": True,
+    },
+    "owner-reference-doc": {
+        "label": "Owner and reference docs",
+        "patterns": ["*.md", "docs/*.md"],
+        "authority": "Durable package, product, architecture, policy, and user-facing reference meaning.",
+        "not_authority": "Does not activate work, approve transitions, or make generated evidence true.",
+        "generated": False,
+        "public_package": True,
+    },
+    "protocol": {
+        "label": "Protocols",
+        "patterns": ["tasks/reference/*.md"],
+        "authority": "Repeatable workflow rules and extension boundaries outside active memory.",
+        "not_authority": "Does not select tasks, approve PRDs, activate beads, or override owner files.",
+        "generated": False,
+        "public_package": True,
+    },
+    "prd": {
+        "label": "PRDs",
+        "patterns": ["tasks/prds/*.md"],
+        "authority": "Approved destination shards and requirement-level intent.",
+        "not_authority": "Does not activate implementation by itself or prove completion.",
+        "generated": False,
+        "public_package": True,
+    },
+    "bead": {
+        "label": "Beads",
+        "patterns": ["tasks/beads/*.md"],
+        "authority": "Executable journey units when approved and pointed to by active task state.",
+        "not_authority": "Does not supersede PRDs, owner files, active memory, or human acceptance.",
+        "generated": False,
+        "public_package": True,
+    },
+    "template": {
+        "label": "Templates",
+        "patterns": ["tasks/templates/*.md"],
+        "authority": "Copyable artifact shapes for source evidence, proposals, and completion evidence.",
+        "not_authority": "Does not approve product decisions, bead activation, acceptance, or implementation.",
+        "generated": False,
+        "public_package": True,
+    },
+    "adapter": {
+        "label": "Adapters",
+        "patterns": ["adapters/*.md"],
+        "authority": "Tool-specific compatibility guidance pointing back to the shared operating model.",
+        "not_authority": "Does not become an alternate Precode system or expand active memory.",
+        "generated": False,
+        "public_package": True,
+    },
+    "shim": {
+        "label": "Shims",
+        "patterns": SHIM_DOCS,
+        "authority": "Compatibility pointers for tools that auto-load a conventional instruction file.",
+        "not_authority": "Does not replace AGENT.md, active memory, PRDs, owner files, or implementation status.",
+        "generated": False,
+        "public_package": True,
+    },
+    "mode": {
+        "label": "Mode contracts",
+        "patterns": ["modes/*.md"],
+        "authority": "Compact role contracts for bounded agent behavior.",
+        "not_authority": "Does not choose tasks, approve transitions, or override active memory.",
+        "generated": False,
+        "public_package": True,
+    },
+    "log-reference": {
+        "label": "Log reference docs",
+        "patterns": ["logs/LOG-EVIDENCE-TAXONOMY.md"],
+        "authority": "Public reference guidance for generated evidence families.",
+        "not_authority": "Does not make generated logs authoritative or sufficient proof by itself.",
+        "generated": False,
+        "public_package": True,
+    },
+    "generated-public-html": {
+        "label": "Generated public HTML",
+        "patterns": ["docs-html/*.html", "tasks/prds-html/*.html"],
+        "authority": "Committed reading and review surfaces generated from canonical Markdown.",
+        "not_authority": "Does not replace source Markdown, approve PRDs, activate beads, or persist exported edits.",
+        "generated": True,
+        "public_package": True,
+    },
+    "generated-report": {
+        "label": "Generated reports and sidecars",
+        "patterns": ["OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md", "logs/*.json", "logs/*.jsonl", "logs/*.md", "logs/*.yaml"],
+        "authority": "Evidence and inspection output compiled from source files and recorded activity.",
+        "not_authority": "Does not select tasks, approve work, rewrite owner files, or become proof without review.",
+        "generated": True,
+        "public_package": True,
+    },
+    "script": {
+        "label": "Scripts",
+        "patterns": ["scripts/*.py", "scripts/*.sh"],
+        "authority": "Repo-local validation, compilation, routing, audit, and evidence generation behavior.",
+        "not_authority": "Does not approve user decisions, hide mutation, or become package-manager behavior.",
+        "generated": False,
+        "public_package": True,
+    },
+    "workflow": {
+        "label": "Workflows",
+        "patterns": [".github/workflows/*.yml", ".github/PULL_REQUEST_TEMPLATE.md"],
+        "authority": "Repository validation automation and pull-request evidence prompts.",
+        "not_authority": "Does not merge, release, approve roadmap direction, or replace maintainer review.",
+        "generated": False,
+        "public_package": True,
+    },
+    "maintainer-private": {
+        "label": "Maintainer-private surfaces",
+        "patterns": ["_maintainer/**"],
+        "authority": "Private local maintainer planning, roadmap, history, and review material.",
+        "not_authority": "Not public package authority, active memory, generated proof, task selection, or user workflow guidance.",
+        "generated": False,
+        "public_package": False,
+    },
+}
 PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "fail", "failed", "needs_info", "manual_testing"}
 APPROVED_MARKERS = ("accepted", "approve", "approved")
 VERIFICATION_TIERS = {"static", "unit", "integration", "browser", "manual", "external"}
@@ -2842,6 +2964,45 @@ def surface_group(rel: str) -> str:
     return "doc"
 
 
+def authority_surface_class(rel: str) -> str:
+    if rel in ACTIVE_MEMORY:
+        return "active-memory"
+    if rel in SHIM_DOCS:
+        return "shim"
+    if rel.startswith("adapters/"):
+        return "adapter"
+    if rel.startswith("tasks/reference/"):
+        return "protocol"
+    if rel.startswith("tasks/prds/"):
+        return "prd"
+    if rel.startswith("tasks/beads/"):
+        return "bead"
+    if rel.startswith("tasks/templates/"):
+        return "template"
+    if rel.startswith("modes/"):
+        return "mode"
+    if rel == "logs/LOG-EVIDENCE-TAXONOMY.md":
+        return "log-reference"
+    return "owner-reference-doc"
+
+
+def authority_surface_class_summary(docs: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    grouped_paths: dict[str, list[str]] = {name: [] for name in AUTHORITY_SURFACE_CLASSES}
+    for item in docs:
+        surface_class = str(item.get("surface_class", "owner-reference-doc"))
+        grouped_paths.setdefault(surface_class, []).append(str(item.get("path", "")))
+
+    summary: dict[str, dict[str, Any]] = {}
+    for name, metadata in AUTHORITY_SURFACE_CLASSES.items():
+        paths = sorted(path for path in grouped_paths.get(name, []) if path)
+        summary[name] = {
+            **metadata,
+            "parsed_authority_contract_count": len(paths),
+            "paths": paths,
+        }
+    return summary
+
+
 def compile_authority_map(root: Path) -> dict[str, Any]:
     docs: list[dict[str, Any]] = []
     for path in gather_markdown_docs(root):
@@ -2857,6 +3018,7 @@ def compile_authority_map(root: Path) -> dict[str, Any]:
                 "anchor": extract_anchor(text),
                 "class": contract.get("class"),
                 "surface": surface_group(rel),
+                "surface_class": authority_surface_class(rel),
                 "authority": contract.get("authority"),
                 "not_authority": contract.get("not_authority"),
                 "load_when": contract.get("load_when"),
@@ -2866,6 +3028,13 @@ def compile_authority_map(root: Path) -> dict[str, Any]:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "active_memory": ACTIVE_MEMORY,
+        "generated_is_not_authority": True,
+        "private_maintainer_surfaces_excluded": True,
+        "surface_classes": authority_surface_class_summary(docs),
+        "docs_by_surface": {
+            surface_class: [item for item in docs if item.get("surface_class") == surface_class]
+            for surface_class in sorted({str(item.get("surface_class", "owner-reference-doc")) for item in docs})
+        },
         "docs": docs,
     }
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
+Document version: v0.1.25
 Last updated: 2026-06-15
 
 ## Purpose
@@ -118,6 +118,40 @@ Return the current situation, recommended workflow, next artifact, required auth
 Do not edit files, approve work, activate a bead, run mutating commands, or start implementation.
 ```
 
+### Small Team Collaboration Lane
+
+```text
+Use the Small Team Collaboration Lane.
+
+We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
+
+Load the Small Team Collaboration Lane protocol. Treat the lane as built-in but explicit, not default-active and not a module, optional pack, runtime toggle, project board, or GitHub-driven task system.
+
+Return: Team situation, Coordinator and decision owner, Branch/worktree rule, Candidate parallel beads, Per-teammate startup prompt, Review and merge evidence, Approval gates, Stop conditions, Promotion path, and Generated-report warning.
+
+Do not edit files, approve PRDs, activate beads, approve merge, mutate GitHub, deploy, run mutating commands, or treat team notes, PRs, branch status, or generated handoff packets as authority.
+```
+
+### Teammate Startup In A Team Lane
+
+```text
+This repo is using the Small Team Collaboration Lane.
+
+Load active memory, the team coordination notes, and the bead assigned to this branch or worktree. Confirm my teammate role, branch/worktree, assigned bead, primary authority, files in play, checks, stop conditions, evidence I must return, and what requires coordinator approval before editing.
+
+Do not rely on chat history, generated reports, PR status, or teammate notes as authority. Do not edit until the branch/worktree and bead boundary are clear.
+```
+
+### Team Review And Merge Readiness
+
+```text
+Use the Small Team Collaboration Lane review path.
+
+Review this contributor branch or worktree for merge/re-entry readiness. Compare the assigned bead, primary authority, changed files, recorded checks, manual verification, owner-file impacts, conflicts with the integration branch, open questions, and follow-up bead candidates.
+
+Recommend only continue, review, split, block, or coordinator merge/re-entry review. Do not accept implementation, approve merge, activate another bead, mutate GitHub, deploy, or promote findings into owner files.
+```
+
 ### Product Discovery Interview Skill
 
 ```text
@@ -140,6 +174,18 @@ Treat PrecodeOS as an OS package I maintain, not as an app to execute.
 Read _maintainer/MAINTAINER-NOTES.md first, then load only the maintainer roadmap, strategy, or reference file relevant to this package-maintenance question.
 Use the Extension Protocol and Skill Playbook Protocol for any proposed package capability.
 Do static package analysis only unless I explicitly ask for mutation.
+```
+
+### Skill / Extension Review Skill
+
+```text
+Use the Skill / Extension Review Skill.
+
+Review this proposed Precode skill or extension before it becomes a maintained surface. Load the Extension Protocol and Skill Playbook Protocol, then inspect only the proposed skill or extension material I provide.
+
+Return: Review target, Extension type, Owner source, Authority boundaries, Mutation and external-system risk, Generated evidence, Approval gates, Validation needed, Promotion path, Rollback or removal note, Risks, Recommendation, and Stop condition.
+
+Recommend only accept-shape, revise, split, defer, or reject. Do not edit files, install skills, approve the extension, add a registry, create optional packs, run mutating commands, mutate external systems, promote generated findings, or bypass owner protocols.
 ```
 
 ### Review / Acceptance Skill
@@ -544,6 +590,16 @@ Help me write manual verification for this bead using the Precode format: who ch
 ```text
 The project state looks inconsistent. Stop implementation, run the advisory state and context checks, compare tasks/todo.md with the active bead, and tell me which canonical file needs repair before work continues.
 ```
+
+## Stuck Recovery
+
+```text
+I am stuck, help me.
+
+Stop implementation and diagnose before repair. Restate the symptom in plain English, or say the symptom is not known yet. Name the likely owner surface, or say it is unknown until active memory and checks are inspected. Run or recommend no more than three read-only or advisory checks. Give me the next safe prompt or action. Do not delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, or run a destructive command unless I explicitly approve that exact action.
+```
+
+Required response shape: symptom, first safe move, owner surface, read-only or advisory checks, next safe prompt or action, and forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
 
 ## Handoff
 

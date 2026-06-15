@@ -30,6 +30,27 @@ GENERATED_EVIDENCE_WARNING = (
     "but `scripts/next-step.py` owns the next human decision."
 )
 
+TRIAGE_LABELS = {
+    "Next Step": "Current decision needs attention",
+    "State Integrity": "Precode state may be confused",
+    "Files In Play": "Changed files may be outside scope",
+    "Adaptive Depth": "Planning depth may not match risk",
+    "Run Contract": "Risk rules may be missing",
+    "Completion And Handoff": "This may be a false-done moment",
+    "Verification Quality": "Proof may be too weak",
+    "Local Hygiene": "Cleanup needs classification first",
+    "Work Graph": "Work relationships need inspection",
+    "Tool Execution": "Tool history needs review",
+}
+
+DO_NOT_APPROVE_BY_SEVERITY = {
+    "clear": "No approval warning from this row.",
+    "watch": "Do not approve repair or transition from this row alone.",
+    "drift_risk": "Do not approve broader scope until the owner warning is resolved.",
+    "recenter": "Do not keep building until the owner state is repaired.",
+    "stop_review": "Do not approve transition, acceptance, or mutation from health output.",
+}
+
 
 def _details(signal: dict[str, Any]) -> dict[str, Any]:
     return signal.get("details") if isinstance(signal.get("details"), dict) else {}
@@ -55,6 +76,13 @@ def _row(
     repair_path: str,
     warnings: list[str] | None = None,
 ) -> dict[str, Any]:
+    triage = _triage_fields(
+        source=source,
+        severity=severity,
+        why=why,
+        owner_command=owner_command,
+        repair_path=repair_path,
+    )
     return {
         "source": source,
         "status": status,
@@ -66,6 +94,29 @@ def _row(
         "shortest_repair_path": repair_path,
         "next_step_decision_owner": "scripts/next-step.py",
         "warnings": warnings or [],
+        **triage,
+    }
+
+
+def _triage_fields(
+    *,
+    source: str,
+    severity: str,
+    why: str,
+    owner_command: str,
+    repair_path: str,
+) -> dict[str, str]:
+    issue = TRIAGE_LABELS.get(source, f"{source} needs review")
+    if severity == "clear":
+        issue = f"{source} looks clear"
+    return {
+        "plain_english_issue": issue,
+        "user_facing_meaning": why,
+        "safe_ask": (
+            f"Ask the agent to inspect `{owner_command}` output and explain the safest next step without approving work."
+        ),
+        "do_not_approve": DO_NOT_APPROVE_BY_SEVERITY.get(severity, DO_NOT_APPROVE_BY_SEVERITY["watch"]),
+        "shortest_validation_path": repair_path,
     }
 
 
@@ -309,6 +360,10 @@ def build_doctor_dashboard(payload: dict[str, Any]) -> dict[str, Any]:
         "status_label": SEVERITY_LABELS.get(_status_from_top(top), _status_from_top(top)),
         "top_source": top.get("source") if top else "none",
         "top_repair_path": top.get("shortest_repair_path") if top else "No visible doctor action.",
+        "top_plain_english_issue": top.get("plain_english_issue") if top else "No visible doctor issue.",
+        "top_safe_ask": top.get("safe_ask") if top else "Ask the agent to refresh OS Health and explain any warnings.",
+        "top_do_not_approve": top.get("do_not_approve") if top else DO_NOT_APPROVE_BY_SEVERITY["clear"],
+        "top_validation_path": top.get("shortest_validation_path") if top else "No visible doctor action.",
         "next_step_decision_owner": "scripts/next-step.py",
         "advisory_only": True,
         "generated_evidence_warning": GENERATED_EVIDENCE_WARNING,
@@ -323,8 +378,8 @@ def _cell(value: Any) -> str:
 def render_doctor_dashboard_markdown(dashboard: dict[str, Any]) -> str:
     rows = dashboard.get("rows") if isinstance(dashboard.get("rows"), list) else []
     table = [
-        "| Source | Status | Severity | Why it matters | Owner | Shortest repair path |",
-        "| --- | --- | --- | --- | --- | --- |",
+        "| Source | Severity | Plain-English issue | Safe ask | Do not approve |",
+        "| --- | --- | --- | --- | --- |",
     ]
     for row in rows:
         table.append(
@@ -332,11 +387,10 @@ def render_doctor_dashboard_markdown(dashboard: dict[str, Any]) -> str:
             + " | ".join(
                 [
                     _cell(row.get("source")),
-                    _cell(row.get("status")),
                     _cell(row.get("severity_label")),
-                    _cell(row.get("why_it_matters")),
-                    _cell(row.get("owner_command")),
-                    _cell(row.get("shortest_repair_path")),
+                    _cell(row.get("plain_english_issue")),
+                    _cell(row.get("safe_ask")),
+                    _cell(row.get("do_not_approve")),
                 ]
             )
             + " |"
@@ -345,7 +399,10 @@ def render_doctor_dashboard_markdown(dashboard: dict[str, Any]) -> str:
         [
             f"- Status: {dashboard.get('status_label', 'missing')}",
             f"- Top source: {dashboard.get('top_source', 'none')}",
-            f"- Top repair path: {dashboard.get('top_repair_path', 'No visible doctor action.')}",
+            f"- Plain-English issue: {dashboard.get('top_plain_english_issue', 'No visible doctor issue.')}",
+            f"- Safe ask: {dashboard.get('top_safe_ask', 'Ask the agent to refresh OS Health and explain any warnings.')}",
+            f"- Do not approve: {dashboard.get('top_do_not_approve', DO_NOT_APPROVE_BY_SEVERITY['clear'])}",
+            f"- Shortest validation path: {dashboard.get('top_validation_path', dashboard.get('top_repair_path', 'No visible doctor action.'))}",
             f"- Next decision owner: `{dashboard.get('next_step_decision_owner', 'scripts/next-step.py')}`",
             f"- Advisory only: {dashboard.get('advisory_only', True)}",
             f"- Generated-evidence warning: {dashboard.get('generated_evidence_warning', GENERATED_EVIDENCE_WARNING)}",

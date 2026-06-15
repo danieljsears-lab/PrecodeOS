@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
+Document version: v0.1.12
 Last updated: 2026-06-15
 
 ## Purpose
@@ -20,7 +20,9 @@ An extension may add a tool surface, workflow protocol, skill playbook, source i
 
 Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, docs-help invocation, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols or canonical docs.
 
-Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, or needs tool-call approval boundaries.
+Use the Skill / Extension Review Skill in `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when the user wants a structured advisory review of a proposed skill or extension before implementation. The review output is input to this protocol; it does not approve the extension, install a skill, mutate files, add a registry, or create optional-pack behavior.
+
+Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, wraps existing commands, or needs tool-call approval boundaries.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when an extension introduces a new integration boundary, provider abstraction, workflow state, audit trail, or other reusable implementation shape.
 
@@ -80,13 +82,15 @@ Generated evidence should live under `logs/` unless a legacy Precode report alre
 
 Generated JSON and JSONL files must be treated as evidence only. They may feed summaries, audits, or human review, but they must not directly rewrite active memory, bead state, PRDs, decisions, or product authority files.
 
+Generated reports, sidecars, and public generated HTML added by an extension should be represented in `logs/authority-map.json` surface classes when the generated map is refreshed. That classification is orientation evidence only; it does not approve the extension, make generated output authoritative, or replace the owning protocol, adapter, PRD, decision, authority file, or approved bead.
+
 `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
 
 `logs/next-step.json` may include generated router fields such as `load_plan`, `single_next_protocol`, and `context_footprint`. These fields are advisory evidence for context loading and user decisions, not command approval, bead activation, or active memory.
 
 `logs/work-graph.json` and `logs/work-graph.md` may expose bead, PRD, owner-file, check, blocker, follow-up, and transition relationships compiled from existing Precode surfaces. They are inspection evidence only; they must not become a second task tracker, choose work, approve transitions, rewrite beads, or replace markdown authority.
 
-The Doctor Dashboard inside `OS-HEALTH.md` and `logs/os-health.json` is a generated report extension. It may summarize warning sources, owner commands, owner protocols, severity, and shortest repair paths from existing compiled state. It must not become a standalone router, approve transitions, approve commands, select tasks, mutate files, or replace `scripts/next-step.py`.
+The Doctor Dashboard inside `OS-HEALTH.md` and `logs/os-health.json` is a generated report extension. It may summarize warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, owner protocols, severity, and shortest repair paths from existing compiled state. It must not become a standalone router, approve transitions, approve commands, approve repair, approve cleanup, select tasks, mutate files, or replace `scripts/next-step.py`.
 
 ZYAL-like export belongs in an adapter or extension that maps the generic Precode run-contract profile to that host. The generic Precode profile must prove useful before any host-specific contract becomes a maintained surface.
 
@@ -119,9 +123,11 @@ Extension findings become action only after user review:
 | Repeated process lesson | Relevant protocol, adapter, or agent rule |
 | Generated report gap | Follow-up bead or validator/audit improvement |
 
-## Deferred Wrapper Rule
+## Command Wrapper Rule
 
-The Doctor Dashboard health extension is allowed as generated OS Health evidence. Do not introduce a broad standalone `precode doctor` command or installable `precode` CLI as an extension until the existing router, session-start, bootstrap, and generated evidence surfaces prove stable. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
+The Doctor Dashboard health extension is allowed as generated OS Health evidence. The local `precode` CLI wrapper is allowed only as a facade over trusted commands that prints the exact underlying command, preserves exit codes, and keeps canonical scripts and Markdown owner files authoritative.
+
+Do not introduce broad command runners, package-manager behavior, release channels, registries, optional-pack installation, hidden setup approval, standalone `precode doctor` behavior, or external mutation through a wrapper. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
 
 ## Extension Checklist
 

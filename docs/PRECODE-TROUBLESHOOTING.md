@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-14
+Document version: v0.1.12
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -28,6 +28,21 @@ The safe troubleshooting posture is:
 This guide helps route common first-time issues. It does not approve destructive commands, broad overwrites, task transitions, app-code changes, external mutations, or edits to secrets and private data.
 
 ## First Move
+
+If you do not know which symptom applies, say:
+
+```text
+I am stuck, help me.
+```
+
+The agent should respond with a prescriptive recovery path before editing:
+
+- restate the symptom in plain English, or say it is not known yet
+- make the first safe move explicit: stop implementation and diagnose before repair
+- name the likely owner surface, or say it is unknown until active memory and checks are inspected
+- run or recommend up to three read-only or advisory checks
+- give the next safe prompt or action
+- state forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval
 
 Ask the agent:
 
@@ -434,7 +449,7 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" or whether a small repair looks stable-fix eligible. | It is generated guidance, not approval; stable-fix eligibility only routes the next decision. |
-| `python3 scripts/os-health.py` | Multiple warnings are confusing or the user asks why Precode is unhappy. | Refreshes OS Health and the Doctor Dashboard; diagnostics are evidence only, not task selection or approval. |
+| `python3 scripts/os-health.py` | Multiple warnings are confusing or the user asks why Precode is unhappy. | Refreshes OS Health and the Doctor Dashboard plain-English triage; diagnostics are evidence only, not task selection or approval. |
 | `python3 scripts/state-check.py` | Active bead or task state looks broken. | Repair source files before generated reports. |
 | `python3 scripts/files-in-play-check.py` | Scope may have widened or coding started too early. | It warns; it does not approve edits. |
 | `python3 scripts/workflow-check.py` | The path from setup, idea, PRD, bead, or repair is unclear. | Workflow advice is not task activation. |

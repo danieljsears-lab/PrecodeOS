@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.21</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.23</span><span>Updated 2026-06-15</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -205,7 +205,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h2 id="the-short-version">The Short Version</h2>
 <p>AI coding agents can produce code faster than a new builder can review, direct, and recover from it. That speed is useful only when the project still knows what is true, what is active, what is out of scope, and what evidence proves done.</p>
 <p>Precode gives the repo a small operating model:</p>
-<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
+<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
 <p>The agent can inspect, draft, implement, explain, and propose. The builder still owns intent, approval, risk, and acceptance.</p>
 <h2 id="why-precodeos-matters">Why PrecodeOS Matters</h2>
 <p>PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. It keeps the project human-owned by making intent, scope, approval, proof, and recovery visible inside the repo.</p>
@@ -245,9 +245,10 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="3-plan">3. Plan</h3>
 <p>Plan answers: &quot;What exactly should be built, and what is the smallest safe slice?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>tasks/prds/*.md</code> for destination PRD shards</li><li><code>FEATURES.md</code> for compiled approved feature inventory</li><li><code>tasks/beads/BEAD-SCHEMA.md</code> for bead shape, delegation mode, test strategy, review context, adaptive-depth fields, and closeout</li><li>PRD, decomposition, and system-design protocols when planning needs them</li></ul>
+<ul><li><code>tasks/prds/*.md</code> for destination PRD shards</li><li><code>FEATURES.md</code> for compiled approved feature inventory</li><li><code>tasks/beads/BEAD-SCHEMA.md</code> for bead shape, delegation mode, test strategy, review context, adaptive-depth fields, and closeout</li><li><code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code> when a small team needs coordinator roles, branch/worktree rules, candidate parallel beads, review gates, and merge/re-entry boundaries</li><li>PRD, decomposition, and system-design protocols when planning needs them</li></ul>
 <p>A PRD is a destination document. It explains what should be true for the product.</p>
 <p>A bead is an execution contract. It names one approved unit of work, one primary authority, files in play, checks, stop conditions, and proof needed.</p>
+<p>Small Team Collaboration Lane is explicit and built in, but not default-active. A coordinator invokes it, records accepted team agreement in shared owner files, and each teammate confirms the lane from repo state in their own branch or worktree. It does not create a module, optional pack, runtime toggle, GitHub task system, or multiple active beads in one checkout.</p>
 <h3 id="4-build">4. Build</h3>
 <p>Build answers: &quot;What may the agent change right now?&quot;</p>
 <p>Main surfaces:</p>
@@ -308,7 +309,7 @@ python3 scripts/files-in-play-check.py --edit-lock
 python3 scripts/run-contract-check.py
 python3 scripts/bead-transition.py --approve</code></pre>
 <p>The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.</p>
-<p>The Doctor Dashboard inside <code>OS-HEALTH.md</code> is a generated diagnostic summary. It explains warning sources, owner commands, and repair paths, but <code>scripts/next-step.py</code> still owns the next human decision.</p>
+<p>The Doctor Dashboard inside <code>OS-HEALTH.md</code> is a generated diagnostic summary. It explains warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths, but <code>scripts/next-step.py</code> still owns the next human decision.</p>
 <h2 id="when-to-stop-the-agent">When To Stop The Agent</h2>
 <p>Stop or checkpoint when:</p>
 <ul><li>the agent cannot name the active bead</li><li>the next workflow is unclear</li><li>product definition starts during implementation</li><li>a task needs a second primary authority file</li><li>more files are changing than the bead allowed</li><li>a command classification says <code>approval needed</code> or <code>stop</code></li><li>checks are missing, vague, failing, or not tied to risk</li><li>discovery says <code>pause</code>, <code>narrow</code>, or <code>kill</code> and the agent keeps planning implementation</li><li>sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path</li><li>the work touches auth, payments, personal data, uploads, deployment, secrets, GitHub mutation, dashboard mutation, or destructive action without approval</li><li>generated reports, source notes, or old artifacts start acting like instructions</li><li>the next task starts before you approve a bead transition</li></ul>

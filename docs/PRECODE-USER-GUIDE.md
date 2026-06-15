@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.43
+Document version: v0.7.45
 Last updated: 2026-06-15
 
 
@@ -174,6 +174,34 @@ Treat the output as evidence only. Do not write a PRD, create beads, update PROD
 ```
 
 Skip this for tiny fixes, already-approved PRD follow-through, clear bugs, or narrow maintenance work.
+
+## Use The Small Team Collaboration Lane
+
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when 2-5 people are working on the same product build. The lane is built into PrecodeOS, but it is explicit and advanced. It is not a separate module, not default-active, and not a runtime toggle.
+
+A coordinator should invoke the lane before teammates begin editing:
+
+```text
+Use the Small Team Collaboration Lane.
+
+We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
+
+Do not activate beads, merge, mutate GitHub, deploy, or change external systems.
+```
+
+After the team agreement is reviewed, record the accepted parts in shared repo authority such as `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, or another owner file. The conversation itself is evidence only.
+
+Each teammate then starts from the shared repo state:
+
+```text
+This repo is using the Small Team Collaboration Lane.
+
+Load active memory, the team coordination notes, and the bead assigned to this branch or worktree. Confirm my teammate role, branch/worktree, assigned bead, primary authority, files in play, checks, stop conditions, evidence I must return, and what requires coordinator approval before editing.
+```
+
+Parallel work requires branch or worktree isolation. One checkout still has one active bead. GitHub branches, pull requests, reviews, and checks are evidence until the coordinator reviews them against the assigned bead, primary authority, recorded checks, manual verification, and owner-file impacts.
+
+Stop if a teammate cannot name their branch or worktree, assigned bead, primary authority, files in play, checks, or stop conditions; if two teammates need the same files without a conflict plan; or if a pull request, issue, generated report, or teammate note is being treated as authority.
 
 ## Before You Start
 
@@ -412,7 +440,7 @@ Follow these steps in order.
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
 | Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. | The agent treats generated help as approval or active memory. |
 | Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, graph warning if relevant, and next move. | The agent treats loop health as a grade or hard approval. |
-| Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
+| Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
 | Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
@@ -649,7 +677,7 @@ Use reports for learning and audit. Before work resumes, return to active memory
 | Report or evidence | Use it for | Do not use it for |
 |---|---|---|
 | `PRECODE-HELP.md` | Quick generated hint about the next safe action, bead depth, and files-in-play warnings. | Active memory, task approval, or transition approval. |
-| `OS-HEALTH.md` | Health, Doctor Dashboard diagnostics, warnings, state, evidence quality, spend. | Choosing the next task, approving commands, or approving transitions. |
+| `OS-HEALTH.md` | Health, Doctor Dashboard diagnostics, plain-English triage labels, warnings, state, evidence quality, spend. | Choosing the next task, approving commands, or approving transitions. |
 | `logs/learning-diary.md` | Plain-English session learning. | Implementation instructions. |
 | `memory/cards/*.md` | Reviewed lessons, preferences, glossary terms, risks, and source pointers. | Replacing `DECISIONS.md`, PRDs, beads, or active memory. |
 | `logs/memory-index.md` | Searching reviewed memory cards. | Choosing or approving work. |

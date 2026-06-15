@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "precodeos"
+version = "0.0.0"
+description = "Local PrecodeOS command facade over repo-native scripts."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Dan Sears / Recode" }]
+dependencies = []
+
+[project.scripts]
+precode = "scripts.precode_cli:main"
+
+[tool.setuptools]
+packages = ["scripts"]

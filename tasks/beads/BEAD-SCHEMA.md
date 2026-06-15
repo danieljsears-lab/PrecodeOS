@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-14
+Document version: v0.1.12
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -16,6 +16,8 @@ A bead is the smallest durable execution unit in the PrecodeOS loop system.
 
 `tasks/todo.md` keeps the current pointer.
 Each bead holds the full contract for one logical unit of implementation or review.
+
+For small team work, the one-active-bead rule still applies inside each checkout. Parallel teammate work requires branch/worktree isolation plus the Small Team Collaboration Lane; it does not mean one Precode state may contain multiple active beads.
 
 ## Required Frontmatter Keys
 
@@ -66,6 +68,8 @@ The mirrored sections below stay readable for humans and for transition-safe val
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when choosing `verification_type`. Prefer the tier names `static`, `unit`, `integration`, `browser`, `manual`, and `external` for new beads.
 
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` when creating, reviewing, or splitting beads. Candidate beads should pass the Bead Decomposition Test before activation.
+
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a bead is assigned to a teammate branch/worktree, when a candidate is described as `can run in parallel`, or when a coordinator needs merge/re-entry evidence.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether the next artifact should be source intake, PRD shaping, decomposition, a planning bead, an implementation bead, a review bead, an unblocker, or state repair.
 
@@ -153,6 +157,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 ## Operating Rules
 
 - Only one bead may be `in_progress` at a time.
+- In small team work, only one bead may be `in_progress` per checkout; parallel beads must use separate branches or worktrees and return through coordinator review before integration.
 - Every bead must name exactly one primary authority file.
 - `tasks/todo.md` and the bead frontmatter should agree on the active bead and its current state.
 - Product-feature beads must cite one parent PRD shard and the requirement IDs they implement.

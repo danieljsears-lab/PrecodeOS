@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-14
+Document version: v0.1.11
+Last updated: 2026-06-15
 
 Use this cockpit while you work with an AI coding agent.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
 
 This page is prompt-first. When a command exists, the command is shown too, but the safest daily habit is to ask the agent to explain what it is doing before it changes anything.
+
+If the optional local `precode` console command is installed, treat it as a shortcut over the shown commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, or generated evidence as authority.
 
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
@@ -28,8 +30,9 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 |---|---|---|
 | Start | `Run the Precode session start. Explain the Context Pack in plain English before editing.` | Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning. |
 | Ask docs | `Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
-| Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
+| Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
+| Team lane | `Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Prepare release | `Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.` | Shipping evidence and approval questions without release action. |
@@ -37,7 +40,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Ralph | `Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.` | Retry evidence for one active bead without accepting work or activating anything. |
 | Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
 | Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
-| Recover | `I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.` | A conservative recovery plan before repair. |
+| Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 
 ## Core Prompts
 
@@ -68,6 +71,7 @@ Run the Precode session start. Explain the Context Pack in plain English: curren
 Command:
 
 ```bash
+python3 scripts/precode_cli.py start
 bash scripts/session-start.sh
 ```
 
@@ -98,6 +102,37 @@ python3 scripts/workflow-check.py
 ```
 
 Expected output: advisory workflow warnings or confirmation. Workflow guidance does not approve work, activate a bead, or replace the active bead.
+
+### Coordinate A Small Team
+
+Use when 2-5 people need to work on the same product build.
+
+```text
+Use the Small Team Collaboration Lane.
+
+We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
+```
+
+Expected output: the team situation, coordinator and decision owner, branch/worktree rule, candidate parallel beads, teammate startup prompt, review and merge evidence, approval gates, stop conditions, promotion path, and generated-report warning. The lane does not activate multiple beads in one checkout, approve merge, mutate GitHub, or turn pull requests and teammate notes into authority.
+
+### When You Are Stuck
+
+Use this exact phrase when the project feels confusing, broken, stale, out of bounds, or unsafe to continue:
+
+```text
+I am stuck, help me.
+```
+
+The agent must stop implementation and answer with:
+
+- the symptom in plain English, or a statement that the symptom is not known yet
+- the first safe move: stop implementation and diagnose before repair
+- the likely owner surface, or `unknown until active memory and checks are inspected`
+- up to three read-only or advisory checks, such as `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, or `python3 scripts/os-health.py`
+- the next safe prompt or action
+- forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval
+
+Use `tasks/reference/RECOVERY-PROTOCOL.md` for the full path. OS Health, Doctor Dashboard, `next-step.py`, and stable-fix eligibility are diagnostic evidence only; they do not approve repair. Doctor Dashboard triage labels explain what to ask and what not to approve, but they do not create approval.
 
 ### Keep Implementation Bounded
 
@@ -194,7 +229,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 |---|---|---|
 | `bash scripts/session-start.sh` | Starting or resetting daily work. | Shows the context pack and router guidance. Treat it as orientation before work. |
 | `python3 scripts/next-step.py` | You ask "what now?" | Shows generated next-step guidance. It is not transition approval. |
-| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, the Doctor Dashboard diagnostic summary, and the generated work graph reports; warnings mean inspect source state and evidence. |
+| `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, the Doctor Dashboard diagnostic summary with plain-English triage labels, and the generated work graph reports; warnings mean inspect source state and evidence. |
 | `bash scripts/checkpoint.sh` | Context is long, fuzzy, or ready to hand back. | Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity. |
 | `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |

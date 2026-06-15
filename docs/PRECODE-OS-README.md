@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.21
+Document version: v0.8.23
 Last updated: 2026-06-15
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -44,6 +44,7 @@ Precode gives the repo a small operating model:
 - clear owner files for durable facts
 - optional discovery before PRD work
 - PRDs before feature implementation when intent is fuzzy or risky
+- explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product
 - small journey beads for execution
 - recorded checks before acceptance
 - human approval at task transitions
@@ -153,11 +154,14 @@ Main surfaces:
 - `tasks/prds/*.md` for destination PRD shards
 - `FEATURES.md` for compiled approved feature inventory
 - `tasks/beads/BEAD-SCHEMA.md` for bead shape, delegation mode, test strategy, review context, adaptive-depth fields, and closeout
+- `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a small team needs coordinator roles, branch/worktree rules, candidate parallel beads, review gates, and merge/re-entry boundaries
 - PRD, decomposition, and system-design protocols when planning needs them
 
 A PRD is a destination document. It explains what should be true for the product.
 
 A bead is an execution contract. It names one approved unit of work, one primary authority, files in play, checks, stop conditions, and proof needed.
+
+Small Team Collaboration Lane is explicit and built in, but not default-active. A coordinator invokes it, records accepted team agreement in shared owner files, and each teammate confirms the lane from repo state in their own branch or worktree. It does not create a module, optional pack, runtime toggle, GitHub task system, or multiple active beads in one checkout.
 
 ### 4. Build
 
@@ -280,7 +284,7 @@ python3 scripts/bead-transition.py --approve
 
 The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.
 
-The Doctor Dashboard inside `OS-HEALTH.md` is a generated diagnostic summary. It explains warning sources, owner commands, and repair paths, but `scripts/next-step.py` still owns the next human decision.
+The Doctor Dashboard inside `OS-HEALTH.md` is a generated diagnostic summary. It explains warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths, but `scripts/next-step.py` still owns the next human decision.
 
 ## When To Stop The Agent
 

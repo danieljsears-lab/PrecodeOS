@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-14
+Document version: v0.1.11
+Last updated: 2026-06-15
 
 ## What This Guide Is For
 
@@ -29,6 +29,8 @@ The safest setup path is manual and visible:
 5. Adapt product and project owner files in plain English.
 6. Validate memory before letting an agent build.
 7. Stop for human review.
+
+The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
 
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
@@ -64,7 +66,7 @@ After the basic check, use the install/update manifest dry-run preview when you 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 ```
 
-The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a `precode` CLI.
+The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:
 
@@ -72,7 +74,7 @@ After the preview, use the supervised setup plan when you want a human-readable 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 ```
 
-The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or a `precode` CLI.
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
@@ -80,7 +82,14 @@ For an empty or nearly empty target, you may apply specific reviewed copy action
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
 
-This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and a `precode` CLI. After apply, inspect target Git status and validate memory before product work starts.
+This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
+
+The optional wrapper exposes the same apply gate and still requires approved action IDs:
+
+```bash
+python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+```
 
 Use JSON when an agent or support script needs structured output:
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-14
+Document version: v0.1.7
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -67,6 +67,8 @@ Manual verification should follow `tasks/reference/VERIFICATION-GUARDRAIL-PROTOC
 
 Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-PROTOCOL.md`. The closeout should name changed behavior, affected users, smoke evidence, browser or manual verification, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and approval still required before any release action.
 
+Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
+
 ## Required Handoff Context Pack
 
 A handoff should be able to explain:
@@ -84,11 +86,14 @@ A handoff should be able to explain:
 - latest evidence
 - latest Ralph attempt decision when Ralph was used
 - release-readiness status when the bead may ship to users
+- teammate role, branch/worktree, coordinator, integration target, and merge/re-entry status when the Small Team Collaboration Lane applies
 - blockers
 - next safe action
 - generated-report warning
 
 The handoff packet is orientation only. The next agent still starts from active memory, the active bead, and the primary authority file.
+
+For teammate handoff, generated handoff packets, PR notes, branch status, and chat summaries remain orientation evidence. They do not approve merge, accept work, activate another bead, or promote teammate findings into owner files.
 
 ## Decision Outcomes
 

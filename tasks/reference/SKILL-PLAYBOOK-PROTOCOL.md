@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
+Document version: v0.1.7
 Last updated: 2026-06-15
 
 ## Purpose
@@ -101,6 +101,38 @@ Generated-report warning:
 
 The output is guidance only. It does not approve a PRD, activate a bead, choose the next task, rewrite owner files, or start implementation.
 
+### Small Team Collaboration Lane Skill
+
+```text
+Name: Small Team Collaboration Lane Skill
+Purpose: Help a 2-5 person team coordinate Precode work on the same product build without weakening one-active-bead, owner-file, evidence, or human approval boundaries.
+Load when: The user asks for Small Team Collaboration Lane, says multiple people are working on the same product build, asks how teammates should use Precode together, or needs branch/worktree-isolated parallel bead guidance.
+Owner protocol or adapter: `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md`
+Allowed actions: Read active memory, load the Small Team Collaboration Lane protocol, inspect only the minimum owner files needed to identify current team agreement and active bead context, classify coordinator/product-owner/contributor/reviewer roles, propose branch/worktree rules, identify candidate parallel beads, and return bounded team coordination guidance.
+Forbidden actions: Edit files, approve PRDs, activate beads, accept review, approve merge, push, rebase, create branches, create or merge pull requests, mutate GitHub, deploy, run mutating commands, create optional packs, add registries, create a module/runtime toggle, or treat team notes, PRs, branch status, or generated handoff packets as authority.
+Generated evidence, if any: None in v1. Conversational output is source evidence until the user promotes accepted team agreement into `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, another owner file, or an approved bead.
+User approval required before: Any file edit, authority-file update, bead proposal/activation, branch/worktree mutation, GitHub mutation, merge, review acceptance, transition approval, release action, external mutation, or sensitive-surface action.
+Stop conditions: No coordinator or product decision owner is named; team agreement is absent from shared repo authority; multiple active beads are requested in one checkout; a teammate cannot name branch/worktree, bead, authority, files, checks, or stop conditions; GitHub status is being treated as authority; merge/deploy/external mutation is requested without approval; or the work needs conflict review before continuing.
+Promotion path for findings: Promote accepted team agreement into `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, an owner file, or candidate/approved beads after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Team situation:
+Coordinator and decision owner:
+Branch/worktree rule:
+Candidate parallel beads:
+Per-teammate startup prompt:
+Review and merge evidence:
+Approval gates:
+Stop conditions:
+Promotion path:
+Generated-report warning:
+```
+
+The output is coordination guidance only. It does not activate team mode automatically for every user, activate multiple beads in one checkout, approve merge, accept work, mutate GitHub, or replace the Small Team Collaboration Lane protocol.
+
 ### Product Discovery Interview Skill
 
 ```text
@@ -172,6 +204,41 @@ Follow-up or promotion path:
 
 The output is a review recommendation only. It does not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, or replace recorded checks and manual verification.
 
+### Skill / Extension Review Skill
+
+```text
+Name: Skill / Extension Review Skill
+Purpose: Help review a proposed Precode skill or extension against extension rules before it becomes a maintained surface.
+Load when: The user asks for Skill / Extension Review Skill, asks whether a proposed Precode skill, adapter, protocol, importer, audit, generated report, bead template, role contract, or external integration is safe to add, or asks for extension-review help before implementation.
+Owner protocol or adapter: `tasks/reference/EXTENSION-PROTOCOL.md`, `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`, and the proposed skill or extension material supplied by the user.
+Allowed actions: Read the proposed skill or extension material, classify the extension type, identify the owner protocol or adapter, name authority boundaries, mutation rules, generated evidence, approval gates, validation command, promotion path, rollback or removal note, and hidden-authority risks, and return an advisory review recommendation.
+Forbidden actions: Edit files, install skills, approve extensions, approve PRDs, activate beads, approve review decisions, run mutating commands, mutate external systems, add a registry, create optional packs, promote generated findings, bypass owner protocols, or treat the review output as package authority.
+Generated evidence, if any: None in v1. The conversational review is advisory input only until the user promotes accepted findings through the owning protocol, adapter, PRD, decision, authority file, or approved bead.
+User approval required before: Any file edit, extension addition, skill installation, protocol or adapter update, PRD approval, bead activation, command execution beyond read-only inspection, generated-evidence write, external mutation, registry or optional-pack behavior, or sensitive-surface action.
+Stop conditions: The proposed capability lacks a clear owner protocol or adapter; active memory would expand; generated output would become authority; mutation or external-system behavior is unclear; user approval gates are missing; secrets or privacy handling is unspecified; validation cannot be named; rollback or removal is unclear; or the proposal implies installer, registry, optional-pack, marketplace, CLI, package-manager, or command-wrapper behavior without a separate approved extension.
+Promotion path for findings: Promote accepted findings only through `tasks/reference/EXTENSION-PROTOCOL.md`, the relevant owner protocol or adapter, a PRD, `DECISIONS.md`, another authority file, or a candidate/approved bead after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Review target:
+Extension type:
+Owner source:
+Authority boundaries:
+Mutation and external-system risk:
+Generated evidence:
+Approval gates:
+Validation needed:
+Promotion path:
+Rollback or removal note:
+Risks:
+Recommendation: accept-shape | revise | split | defer | reject
+Stop condition:
+```
+
+The output is an extension-shape review only. It does not approve the extension, install a skill, edit files, add a registry, create optional packs, run commands, mutate external systems, or replace the Extension Protocol.
+
 ## V1 Skill Set
 
 ### Ask Precode Docs Skill
@@ -201,6 +268,15 @@ The output is a review recommendation only. It does not accept implementation, a
 - Gain: makes the Product Discovery Validation protocol easier to invoke without duplicating the broader Product Conviction Packet idea-coaching path.
 - Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
+### Small Team Collaboration Lane Skill
+
+- Purpose: help a 2-5 person founder-led or peer builder team coordinate Precode work through explicit team agreement, branch/worktree isolation, contributor evidence, coordinator review, and merge/re-entry gates.
+- Owner source: `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md`.
+- Allowed actions: read active memory and the team protocol, inspect the minimum owner files needed to identify team agreement and active bead context, and return team coordination fields.
+- Forbidden actions: edit files, approve PRDs, activate beads, accept implementation, merge, mutate GitHub, deploy, create optional packs, add registries, create modules, or treat teammate notes, PRs, branch status, or generated handoff packets as authority.
+- Gain: gives teams one explicit invocation path while preserving single-builder defaults and one active bead per checkout.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
+
 ### Review / Acceptance Skill
 
 - Purpose: help a user decide whether one active bead is ready for an evidence-based acceptance decision.
@@ -221,10 +297,11 @@ The output is a review recommendation only. It does not accept implementation, a
 ### Skill / Extension Review Skill
 
 - Purpose: evaluate any proposed skill against Precode's extension rules before it becomes a maintained surface.
-- Owner source: `tasks/reference/EXTENSION-PROTOCOL.md`.
-- Allowed actions: classify the proposed skill, name authority boundaries, mutation rules, generated evidence, validation, and promotion path.
-- Forbidden actions: install the skill, add a registry, create optional packs, approve the extension, or edit Precode files without an approved implementation path.
+- Owner sources: `tasks/reference/EXTENSION-PROTOCOL.md`, this protocol, and the proposed skill or extension material supplied by the user.
+- Allowed actions: classify the proposed extension type, name the owner source, authority boundaries, mutation and external-system risk, generated evidence, approval gates, validation needed, promotion path, rollback or removal note, and hidden-authority risks.
+- Forbidden actions: install skills, approve extensions, edit files from review output, add registries, create optional packs, run mutating commands, mutate external systems, promote generated findings, or bypass owner protocols.
 - Gain: prevents skill sprawl and hidden authority before skills become an ecosystem.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Product Conviction Packet Skill
 
@@ -295,9 +372,10 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Ask Precode Docs Skill | Implemented | User-facing docs-help prompt; keep it stable-documentation-only and cite canonical docs/protocols. |
 | Workflow Selection Skill | Implemented | First v1 skill playbook; keep it prompt-only and subordinate to Workflow Selection. |
 | Product Discovery Interview Skill | Implemented | Worth-building interview prompt; keep it evidence-only and subordinate to Product Discovery Validation. |
+| Small Team Collaboration Lane Skill | Implemented | Team coordination prompt; keep it read-only, explicit, branch/worktree-isolated, and subordinate to the Small Team Collaboration Lane protocol. |
 | Review / Acceptance Skill | Implemented | Evidence-tied bead acceptance review prompt; keep it recommendation-only and subordinate to closeout, verification, and Review mode. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
-| Skill / Extension Review Skill | P2 | Controls future growth before skills become an ecosystem. |
+| Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |
 | Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 
