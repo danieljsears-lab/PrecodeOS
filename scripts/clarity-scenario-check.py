@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.10
+# Version: v0.1.11
 # Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -172,6 +172,39 @@ def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
         for term in required_terms:
             if term.lower() not in lower_text:
                 failures.append({"scenario": f"stuck recovery contract: {path}", "expected": term, "actual": "missing"})
+
+
+def assert_no_engineer_fallback_prompt_pack(failures: list[dict[str, str]]) -> None:
+    path = Path("tasks/reference/PROMPT-PATTERNS.md")
+    text = path.read_text(encoding="utf-8")
+    lower_text = text.lower()
+    required_terms = [
+        "No-Engineer Fallback Prompt Pack",
+        "Agent Is Lost",
+        "Checks Failed",
+        "App Will Not Start",
+        "Approved Too Much",
+        "Copied Wrong Files",
+        "Decide Whether To Stop",
+        "Recovery Protocol",
+        "owner surface",
+        "read-only or advisory checks",
+        "next safe prompt or action",
+        "Do not edit",
+        "delete",
+        "overwrite",
+        "regenerate",
+        "transition",
+        "roll back",
+        "setup/update behavior",
+        "change app code",
+        "touch secrets",
+        "mutate external systems",
+        "destructive command",
+    ]
+    for term in required_terms:
+        if term.lower() not in lower_text:
+            failures.append({"scenario": "no-engineer fallback prompt pack", "expected": term, "actual": "missing"})
 
 
 def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status: str, failures: list[dict[str, str]]) -> None:
@@ -451,6 +484,7 @@ def main() -> int:
         assert_router_contract(f"next-step router: {name}", payload, failures)
 
     assert_stuck_recovery_contract(failures)
+    assert_no_engineer_fallback_prompt_pack(failures)
 
     doctor_clear_payload = {
         "next_step": next_payload(bead()),

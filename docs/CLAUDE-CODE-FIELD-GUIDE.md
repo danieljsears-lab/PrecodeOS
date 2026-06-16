@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-14
+Document version: v0.1.15
+Last updated: 2026-06-15
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -627,6 +627,8 @@ Before clearing for the next feature slice, make sure the accepted slice has evi
 ## When Things Go Sideways
 
 These are the common problems beginners hit. Each one has a name, a 2-sentence description, and a recovery prompt.
+
+For a shared PrecodeOS prompt source, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It covers agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments while routing back to the Recovery Protocol.
 
 ---
 

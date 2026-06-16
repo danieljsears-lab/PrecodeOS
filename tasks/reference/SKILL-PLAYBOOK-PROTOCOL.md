@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
+Document version: v0.1.8
 Last updated: 2026-06-15
 
 ## Purpose
@@ -376,6 +376,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Review / Acceptance Skill | Implemented | Evidence-tied bead acceptance review prompt; keep it recommendation-only and subordinate to closeout, verification, and Review mode. |
 | Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
 | Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |
+| No-Engineer Fallback Prompt Pack | Implemented outside skill set | Implemented as Prompt Patterns and user/support docs, not a skill playbook; keep it subordinate to Recovery Protocol and approval gates. |
 | Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 

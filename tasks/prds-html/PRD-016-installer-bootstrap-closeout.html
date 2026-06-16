@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-016 -- Installer / Bootstrap Experience Whole-Lane Closeout</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-016 -- Installer / Bootstrap Experience Whole-Lane Closeout</h1>
+  <p class="muted">Static HTML generated from <code>PRD-016-installer-bootstrap-closeout.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-016-installer-bootstrap-closeout.md#prd-016-installer-bootstrap-closeout">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Installer / Bootstrap Experience</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-15</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-15</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for closing the P0 Installer / Bootstrap Experience as staged, approval-gated bootstrap behavior.</p>
+    <p><strong>Not authority:</strong> Active memory, broad installer behavior, target-project truth, owner-file adaptation approval, dirty package-file replacement, hook installation, CI mutation, app-code edits, release channels, package-manager behavior, rollback automation, implementation acceptance, or generated evidence truth.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-016-FR01</code></td><td>Add Bootstrap Closeout Protocol.</td><td>P0</td><td>Owns final lane boundary.</td></tr><tr><td><code>PRD-016-FR02</code></td><td>Add existing-project adaptation planning mode.</td><td>P0</td><td>Non-mutating and intake-first.</td></tr><tr><td><code>PRD-016-FR03</code></td><td>Add package upgrade preview mode and classification.</td><td>P0</td><td>Existing Precode targets only.</td></tr><tr><td><code>PRD-016-FR04</code></td><td>Add recovery guidance mode.</td><td>P0</td><td>Support-assisted, non-mutating.</td></tr><tr><td><code>PRD-016-FR05</code></td><td>Add upgrade apply for approved missing package-owned files only.</td><td>P0</td><td>Refuses dirty/unknown package states and overwrites.</td></tr><tr><td><code>PRD-016-FR06</code></td><td>Preserve existing bootstrap defaults and fresh-target apply behavior.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-016-FR07</code></td><td>Update public docs, protocols, inventory, prompt patterns, maintainer changelog, roadmap history, roadmap journal, and generated HTML.</td><td>P0</td><td>Required follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-016-installer-bootstrap-closeout.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-016-installer-bootstrap-closeout.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-016-FR02`</textarea></td><td><textarea data-cockpit-cell>Existing-project adaptation plan names owner adaptation candidates and remains non-mutating.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Review output wording.</textarea></td><td><textarea data-cockpit-cell>temp existing-project fixture</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-016-FR03`</textarea></td><td><textarea data-cockpit-cell>Upgrade preview classifies clean, dirty owner, dirty package, mixed, and blocked states.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Review JSON/plain output.</textarea></td><td><textarea data-cockpit-cell>temp existing-Precode fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-016-FR04`</textarea></td><td><textarea data-cockpit-cell>Recovery guidance names support steps and forbidden actions without rollback automation.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Read recovery output.</textarea></td><td><textarea data-cockpit-cell>temp fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-016-FR05`</textarea></td><td><textarea data-cockpit-cell>Upgrade apply copies approved missing package-owned files and refuses dirty/unknown package states.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/bootstrap-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect target fixture after apply.</textarea></td><td><textarea data-cockpit-cell>temp existing-Precode fixture</textarea></td><td><textarea data-cockpit-cell>temp target</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-016-FR07`</textarea></td><td><textarea data-cockpit-cell>Docs, inventory, PRD HTML, roadmap, journal, and generated HTML stay fresh.</textarea></td><td><textarea data-cockpit-cell>docs/PRD/roadmap checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-016-installer-bootstrap-closeout">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-016-installer-bootstrap-closeout" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-016-FR02` | Existing-project adaptation plan names owner adaptation candidates and remains non-mutating. | `python3 scripts/bootstrap-check.py --self-test` | Review output wording. | temp existing-project fixture | check output |
+| `PRD-016-FR03` | Upgrade preview classifies clean, dirty owner, dirty package, mixed, and blocked states. | `python3 scripts/bootstrap-check.py --self-test` | Review JSON/plain output. | temp existing-Precode fixtures | check output |
+| `PRD-016-FR04` | Recovery guidance names support steps and forbidden actions without rollback automation. | `python3 scripts/bootstrap-check.py --self-test` | Read recovery output. | temp fixtures | check output |
+| `PRD-016-FR05` | Upgrade apply copies approved missing package-owned files and refuses dirty/unknown package states. | `python3 scripts/bootstrap-check.py --self-test` | Inspect target fixture after apply. | temp existing-Precode fixture | temp target |
+| `PRD-016-FR07` | Docs, inventory, PRD HTML, roadmap, journal, and generated HTML stay fresh. | docs/PRD/roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li>Parent PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code>, <code>PRD-010</code>, <code>PRD-013</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></li><li><code>tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-ARCHITECTURE-OVERVIEW.md</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/existing-repo-intake.py --self-test</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py</code></li><li>Manual verification:</li><li>Confirm preview modes write no target files.</li><li>Confirm mutation requires explicit action IDs and refuses dirty/unknown package states.</li><li>Confirm docs do not imply installer, updater, release-channel, package-manager, rollback, hook/CI, or owner-file adaptation authority.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B016-installer-bootstrap-closeout</code></td><td><code>PRD-016-FR01</code> through <code>PRD-016-FR07</code></td><td>Protocol, script modes, self-tests, docs/protocol/inventory updates, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>fixture_self_test</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></td><td>bootstrap self-test plus static freshness checks</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-016-installer-bootstrap-experience-whole-lane-closeout">PRD-016 -- Installer / Bootstrap Experience Whole-Lane Closeout</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-016</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>high</code></li><li>Last updated: <code>2026-06-15</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Installer / Bootstrap Experience</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code>, <code>PRD-010</code>, <code>PRD-013</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped bootstrap evidence</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item 1, <code>Installer / Bootstrap Experience</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li>Stable facts:</li><li>Bootstrap Confidence, manifest preview, supervised setup plan, supervised setup apply, Existing Repo Intake, and the optional CLI wrapper already exist.</li><li>Setup behavior must remain source/target visible and must not hide filesystem changes.</li><li>Existing projects preserve project truth before owner-file adaptation or package copy decisions.</li><li>Dirty package-owned files are not safe automatic update candidates.</li><li>Assumptions:</li><li>Whole-lane closeout means staged gates, not a broad installer.</li><li>Missing package-owned files in an existing Precode target are the only upgrade-copy mutation safe enough for this closeout slice.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>PrecodeOS has a safe fresh-target setup path, but the full bootstrap lane still needs a visible closeout for existing-project adaptation planning, package upgrade preview, partial setup recovery, and narrowly approved package-file copy gates. Without that closeout, support and agents can still confuse setup preview with install/update permission or recommend reinstall before narrow repair.</p>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS closes the P0 bootstrap lane with non-mutating adaptation, upgrade, and recovery previews plus explicit action-ID mutation gates for the narrow cases that are safe.</li><li>Definition of done:</li><li>PRD-016 exists and links the previously shipped bootstrap PRDs.</li><li>Bootstrap Closeout Protocol exists.</li><li><code>scripts/bootstrap-check.py</code> supports <code>--existing-project-adaptation-plan</code>, <code>--upgrade-preview</code>, <code>--recovery-guidance</code>, and <code>--apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code>.</li><li>Upgrade preview classifies existing Precode targets as <code>clean</code>, <code>dirty_package_edits</code>, <code>dirty_project_or_owner_edits</code>, <code>mixed_or_unknown</code>, or <code>blocked</code>.</li><li>Upgrade apply copies only explicitly approved missing package-owned files and refuses dirty/unknown package states, overwrites, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.</li><li>Public setup, support, troubleshooting, architecture, prompt, protocol, package-inventory, README, changelog, roadmap, journal, and generated HTML surfaces are refreshed.</li><li>First useful vertical slice: closeout behavior inside <code>scripts/bootstrap-check.py</code> with self-test coverage and docs/protocol follow-through.</li></ul>
+<h2 id="semantic-change-proposal">Semantic Change Proposal</h2>
+<p>Semantic boundary changed: package bootstrap closeout from fresh-target setup into existing-project adaptation planning, existing-Precode upgrade preview, and recovery guidance.</p>
+<p>Affected owner files: <code>scripts/bootstrap-check.py</code>, <code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code>, setup/intake protocols, setup/support/troubleshooting docs, package inventory, prompt patterns, README, roadmap, roadmap journal, and <code>_maintainer/CHANGELOG.md</code>.</p>
+<p>Current authority: earlier bootstrap layers either inspect, preview, plan, or copy approved fresh-target setup actions.</p>
+<p>Proposed change: add the final staged closeout modes while keeping dirty-package replacement, owner-file adaptation, hooks, CI, release channels, package-manager behavior, rollback automation, and broad installer semantics out of scope.</p>
+<p>Preserved non-authority boundaries: no target-project truth from generated output, no automatic owner-file rewriting, no dirty package overwrite, no broad update command, no hook/CI mutation, no app commands, no app-code edits, no release-channel metadata, no package-manager behavior, no rollback automation, no PRD approval, no bead activation, no implementation acceptance, and no generated-evidence authority.</p>
+<p>Validation evidence: bootstrap self-test, existing-repo-intake self-test, file inventory check, PRD HTML check, docs HTML check, roadmap HTML check, roadmap maintenance preview, and manual boundary review.</p>
+<p>Rollback or reversal path: remove the new bootstrap-check flags and closeout protocol references while leaving PRD-002, PRD-003, PRD-004, PRD-006, PRD-010, and PRD-013 behavior intact.</p>
+<p>Maintainer decision state: approved to implement.</p>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-016-FR01</code></td><td>Add Bootstrap Closeout Protocol.</td><td>P0</td><td>Owns final lane boundary.</td></tr><tr><td><code>PRD-016-FR02</code></td><td>Add existing-project adaptation planning mode.</td><td>P0</td><td>Non-mutating and intake-first.</td></tr><tr><td><code>PRD-016-FR03</code></td><td>Add package upgrade preview mode and classification.</td><td>P0</td><td>Existing Precode targets only.</td></tr><tr><td><code>PRD-016-FR04</code></td><td>Add recovery guidance mode.</td><td>P0</td><td>Support-assisted, non-mutating.</td></tr><tr><td><code>PRD-016-FR05</code></td><td>Add upgrade apply for approved missing package-owned files only.</td><td>P0</td><td>Refuses dirty/unknown package states and overwrites.</td></tr><tr><td><code>PRD-016-FR06</code></td><td>Preserve existing bootstrap defaults and fresh-target apply behavior.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-016-FR07</code></td><td>Update public docs, protocols, inventory, prompt patterns, maintainer changelog, roadmap history, roadmap journal, and generated HTML.</td><td>P0</td><td>Required follow-through.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-016-FR02</code></td><td>Existing-project adaptation plan names owner adaptation candidates and remains non-mutating.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Review output wording.</td><td>temp existing-project fixture</td><td>check output</td></tr><tr><td><code>PRD-016-FR03</code></td><td>Upgrade preview classifies clean, dirty owner, dirty package, mixed, and blocked states.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Review JSON/plain output.</td><td>temp existing-Precode fixtures</td><td>check output</td></tr><tr><td><code>PRD-016-FR04</code></td><td>Recovery guidance names support steps and forbidden actions without rollback automation.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Read recovery output.</td><td>temp fixtures</td><td>check output</td></tr><tr><td><code>PRD-016-FR05</code></td><td>Upgrade apply copies approved missing package-owned files and refuses dirty/unknown package states.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code></td><td>Inspect target fixture after apply.</td><td>temp existing-Precode fixture</td><td>temp target</td></tr><tr><td><code>PRD-016-FR07</code></td><td>Docs, inventory, PRD HTML, roadmap, journal, and generated HTML stay fresh.</td><td>docs/PRD/roadmap checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li>Parent PRDs: <code>PRD-002</code>, <code>PRD-003</code>, <code>PRD-004</code>, <code>PRD-006</code>, <code>PRD-010</code>, <code>PRD-013</code></li><li>Secondary reference files:</li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md</code></li><li><code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code></li><li><code>tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/bootstrap-check.py</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-ARCHITECTURE-OVERVIEW.md</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package manager files</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>Required checks:</li><li><code>python3 scripts/bootstrap-check.py --self-test</code></li><li><code>python3 scripts/existing-repo-intake.py --self-test</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-maintenance.py</code></li><li>Manual verification:</li><li>Confirm preview modes write no target files.</li><li>Confirm mutation requires explicit action IDs and refuses dirty/unknown package states.</li><li>Confirm docs do not imply installer, updater, release-channel, package-manager, rollback, hook/CI, or owner-file adaptation authority.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<p>These are proposals only. Do not activate a bead until the user approves the transition.</p>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B016-installer-bootstrap-closeout</code></td><td><code>PRD-016-FR01</code> through <code>PRD-016-FR07</code></td><td>Protocol, script modes, self-tests, docs/protocol/inventory updates, changelog, roadmap history, generated PRD/docs/roadmap HTML, and validation are complete.</td><td><code>human_in_loop</code></td><td><code>fixture_self_test</code></td><td><code>same_session_ok</code></td><td><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></td><td>bootstrap self-test plus static freshness checks</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-15</li><li>Approval notes: User approved implementation of the P0 Installer / Bootstrap Experience whole-lane closeout as staged gated behavior, explicitly not a broad installer.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#semantic-change-proposal">Semantic Change Proposal</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

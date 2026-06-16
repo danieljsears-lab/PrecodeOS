@@ -20,7 +20,7 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-15
 
 ## State
@@ -48,6 +48,7 @@ Last updated: 2026-06-15
   - `tasks/reference/RECOVERY-PROTOCOL.md`
   - `docs/PRECODE-SUPPORT-RUNBOOK.md`
   - `tasks/reference/PROMPT-PATTERNS.md`
+  - `docs/CLAUDE-CODE-FIELD-GUIDE.md`
   - `tasks/prds/PRD-012-precode-doctor-dashboard.md`
 - Stable facts:
   - PrecodeOS already has recovery protocols, troubleshooting docs, next-step recovery prompts, and Doctor Dashboard diagnostics.
@@ -64,7 +65,7 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 ## User Moment
 
 - Before: A user asks for help while stuck and may receive a link, a broad troubleshooting suggestion, or premature repair.
-- After: The loaded agent and public docs require a prescriptive recovery response with the symptom, first safe move, likely owner surface, up to three read-only checks, next safe action, and forbidden actions.
+- After: The loaded agent and public docs require a prescriptive recovery response with the symptom, first safe move, likely owner surface, up to three read-only checks, next safe action, and forbidden actions. Copyable fallback prompts also cover common no-engineer moments where the user can name the symptom but not the right recovery path.
 - Why now: The package has strong recovery pieces, but beginner recovery should work from natural stuck language.
 
 ## Destination
@@ -73,6 +74,7 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 - Definition of done:
   - `AGENT.md` contains the active-agent stuck trigger and response shape.
   - Daily Cockpit, Troubleshooting, Recovery Protocol, Support Runbook, and Prompt Patterns expose the same phrase and contract.
+  - Prompt Patterns exposes a No-Engineer Fallback Prompt Pack for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments.
   - Deterministic clarity scenario coverage verifies the phrase and required response elements.
   - Package inventory, generated docs/PRD/roadmap surfaces, roadmap history, roadmap journal, and maintainer changelog are current.
 - First useful vertical slice: active-memory trigger plus public docs/protocol prompt contract only.
@@ -88,11 +90,12 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 - Goal 1: Make the exact phrase `I am stuck, help me` useful and prescriptive.
 - Goal 2: Keep diagnosis before repair.
 - Goal 3: Preserve Recovery Protocol and generated-evidence boundaries.
+- Goal 4: Give unsupported beginners short symptom-specific prompts without creating a second recovery workflow.
 
 ## Non-Goals
 
 - Not doing: auto-repair, destructive cleanup, rollback automation, standalone CLI, support-bot authority, new active-memory file, new generated report, setup/update mutation, package-manager behavior, command-wrapper behavior, registry, optional pack, or external mutation.
-- Deferred: richer recovery scenario harness, no-engineer fallback prompt pack, Doctor Dashboard v2 plain-English row labels, and router JSON shape contracts.
+- Deferred: richer recovery scenario harness and router JSON shape contracts.
 - Explicitly out of scope: using `I am stuck, help me` to approve edits, transition beads, accept implementation, regenerate reports, overwrite user files, roll back work, or bypass active memory.
 
 ## Requirements
@@ -106,7 +109,8 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 | `PRD-015-FR03` | Daily Cockpit, Troubleshooting, Recovery Protocol, Support Runbook, and Prompt Patterns must expose the same exact phrase and response contract. | P0 | Public guidance consistency. |
 | `PRD-015-FR04` | OS Health, Doctor Dashboard, `next-step.py`, and stable-fix eligibility must remain diagnostic only and must not approve repair. | P0 | No second router or auto-repair. |
 | `PRD-015-FR05` | Clarity scenario coverage must verify the stuck phrase and response contract in the owner surfaces. | P1 | Existing harness only. |
-| `PRD-015-FR06` | Package inventory, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated. | P1 | Required maintainer follow-through. |
+| `PRD-015-FR06` | Prompt Patterns must expose six copyable fallback prompts: agent is lost, checks failed, app will not start, approved too much, copied wrong files, and deciding whether to stop. | P1 | Prompt pack only; no new skill or command. |
+| `PRD-015-FR07` | Package inventory, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated. | P1 | Required maintainer follow-through. |
 
 ### Security And Privacy Requirements
 
@@ -130,7 +134,8 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 | `PRD-015-FR02` | Required response shape includes symptom, first safe move, owner surface, checks, next action, and forbidden actions. | `python3 scripts/clarity-scenario-check.py` | Review docs wording. | current workspace | check output |
 | `PRD-015-FR03` | Public docs/protocol surfaces expose the same phrase and contract. | `python3 scripts/clarity-scenario-check.py`; docs HTML check | Review rendered docs if needed. | Markdown docs | generated docs HTML |
 | `PRD-015-FR04` | Diagnostic surfaces remain advisory only. | `python3 scripts/clarity-scenario-check.py`; `python3 scripts/os-health.py` when health output changes | Boundary review. | current workspace | check output and OS Health |
-| `PRD-015-FR06` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |
+| `PRD-015-FR06` | Six fallback prompt labels and core forbidden-action boundaries are present. | `python3 scripts/clarity-scenario-check.py` | Review prompt wording. | Markdown docs | check output |
+| `PRD-015-FR07` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |
 
 ## Risk And Permission Model
 
@@ -166,6 +171,7 @@ Unsupported beginners may say "I am stuck, help me" before they can classify whe
 | `AGENT.md` | Adds active-agent stuck trigger. | Active-memory guidance only; no repair approval. |
 | `tasks/reference/RECOVERY-PROTOCOL.md` | Owns the stuck-trigger response contract. | Diagnosis before repair. |
 | Daily Cockpit, Troubleshooting, Support Runbook, Prompt Patterns | Expose copyable phrase and consistent response shape. | Public guidance only. |
+| Claude Code Field Guide | Cross-links common sideways moments to the prompt pack. | Beginner guide only; no new authority. |
 | `scripts/clarity-scenario-check.py` | Adds deterministic text contract coverage. | Existing advisory check; no runtime repair behavior. |
 | Package inventory, maintainer roadmap, roadmap journal, changelog | Record ownership and shipped scope. | Inventory and maintainer history only. |
 

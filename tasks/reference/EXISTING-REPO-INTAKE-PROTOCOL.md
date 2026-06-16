@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-06
+Document version: v0.1.1
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -52,6 +52,14 @@ Default mode prints a plain-English report and writes nothing.
 - `logs/existing-repo-intake.md`
 
 The helper must not write to the target project.
+
+After intake evidence is reviewed, use the non-mutating adaptation plan from Bootstrap Closeout when the user needs an owner-file adaptation checklist:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-repo-root> --existing-project-adaptation-plan
+```
+
+That plan is governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. It does not copy files, edit owner files, approve adaptation, install hooks, change CI, run app commands, or write app code.
 
 ## Required Output
 
@@ -140,6 +148,7 @@ Generated intake is evidence only. Stable conclusions require user review before
 - It must not update `tasks/todo.md`.
 - It must not read or print secret file contents.
 - It must not treat likely checks as proof.
+- It must not treat the Bootstrap Closeout adaptation plan as owner-file edit approval; each adaptation still needs user review and explicit approval.
 
 ## Stop Conditions
 

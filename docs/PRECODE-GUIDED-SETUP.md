@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.11
+Document version: v0.1.12
 Last updated: 2026-06-15
 
 ## What This Guide Is For
@@ -122,6 +122,38 @@ python3 scripts/existing-repo-intake.py --source <precode-package-root> --target
 ```
 
 Existing Repo Intake is also read-only by default. It summarizes the app shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, stop conditions, and first safe next action. Its output is evidence only, not permission to copy, overwrite, run checks, change CI, adapt owner files, approve a PRD, activate a bead, or write app code.
+
+After Existing Repo Intake has been reviewed, use the existing-project adaptation plan when you need an owner-file checklist before any edits:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+```
+
+The adaptation plan is non-mutating evidence. It names owner-file creation or adaptation candidates, approval gates, preserved project material, and deferred package-copy, hook, CI, app-command, and app-code work. It does not approve owner-file edits.
+
+For a target that already has PrecodeOS active memory, use upgrade preview before treating the work as setup repair or package update:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+```
+
+The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
+
+If the preview shows a missing package-owned file marked `review_package_copy_candidate`, you may copy that one file only after approving its `UP-ID`:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+```
+
+This apply mode refuses dirty or unknown package states, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+
+When setup state is partial or confusing, ask for recovery guidance:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
+```
+
+Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.
 
 ## Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?
 

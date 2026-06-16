@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
+Document version: v0.1.2
 Last updated: 2026-06-15
 
 ## Purpose
@@ -121,6 +121,8 @@ Stop before implementation or merge when:
 Use `tasks/reference/EXTENSION-PROTOCOL.md` when the change adds or reviews an extension, adapter, protocol, skill playbook, importer, audit, generated report, or external integration.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when the change affects command execution, tool logging, external systems, destructive commands, or approval gates.
+
+Use `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md` when the change affects existing-project adaptation planning, package upgrade preview, setup recovery guidance, or approved missing-package-file copy gates.
 
 Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when the change packages a named host-agent prompt playbook.
 

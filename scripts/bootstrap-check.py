@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# Version: v0.4.0
-# Last updated: 2026-06-14
+# Version: v0.5.0
+# Last updated: 2026-06-15
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import tempfile
@@ -124,6 +125,22 @@ DEFERRED_SETUP_PATHS = {
     ".github/workflows/",
 }
 APPLY_ALLOWED_TARGET_KINDS = {"empty", "nearly_empty"}
+OWNER_GROUPS = {"active_memory", "product_and_project_owner_files"}
+UPGRADE_DEFERRED_PATHS = {".githooks/", ".github/workflows/"}
+SECRET_OR_LOCAL_PARTS = {
+    ".agent-state",
+    ".claude",
+    ".codex",
+    ".cursor",
+    ".idea",
+    ".vscode",
+    "__pycache__",
+}
+SECRET_OR_LOCAL_NAMES = {
+    ".env",
+    "credentials",
+    "secrets",
+}
 
 
 def resolve_candidate(raw: str) -> Path:
@@ -181,6 +198,62 @@ def dependency_status() -> list[str]:
     if shutil.which("git") is None:
         missing.append("git")
     return missing
+
+
+def file_digest(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def is_secret_or_local_path(relative_path: str) -> bool:
+    parts = Path(relative_path).parts
+    if any(part in SECRET_OR_LOCAL_PARTS for part in parts):
+        return True
+    return any(part in SECRET_OR_LOCAL_NAMES or part.startswith(".env") for part in parts)
+
+
+def is_generated_log_path(relative_path: str) -> bool:
+    if not relative_path.startswith("logs/"):
+        return False
+    return relative_path != "logs/LOG-EVIDENCE-TAXONOMY.md"
+
+
+def is_deferred_setup_path(relative_path: str) -> bool:
+    normalized = relative_path.rstrip("/") + ("/" if relative_path.endswith("/") else "")
+    return any(normalized == path or normalized.startswith(path) for path in UPGRADE_DEFERRED_PATHS)
+
+
+def iter_source_group_files(source_root: Path, group: dict[str, Any]) -> list[str]:
+    files: list[str] = []
+    for raw_path in group["paths"]:
+        relative_path = str(raw_path)
+        source_path = source_root / relative_path.rstrip("/")
+        if relative_path.endswith("/"):
+            if not source_path.is_dir():
+                continue
+            for candidate in sorted(source_path.rglob("*")):
+                if not candidate.is_file():
+                    continue
+                candidate_relative = rel(candidate, source_root)
+                if (
+                    is_secret_or_local_path(candidate_relative)
+                    or is_generated_log_path(candidate_relative)
+                    or is_deferred_setup_path(candidate_relative)
+                ):
+                    continue
+                files.append(candidate_relative)
+        elif source_path.is_file():
+            if (
+                is_secret_or_local_path(relative_path)
+                or is_generated_log_path(relative_path)
+                or is_deferred_setup_path(relative_path)
+            ):
+                continue
+            files.append(relative_path)
+    return sorted(set(files))
 
 
 def recommended_next_step(kind: str, source_missing: list[str], conflicts: list[dict[str, str]]) -> str:
@@ -379,6 +452,226 @@ def setup_plan_action(
     if group:
         action["group"] = group
     return action
+
+
+def numbered_action(prefix: str, index: int, category: str, path: str, reason: str, group: str | None = None) -> dict[str, Any]:
+    action: dict[str, Any] = {
+        "id": f"{prefix}-{index:03d}",
+        "category": category,
+        "path": path,
+        "reason": reason,
+        "requires_user_approval": category.startswith("review_"),
+    }
+    if group:
+        action["group"] = group
+    return action
+
+
+def build_existing_project_adaptation_plan(payload: dict[str, Any]) -> dict[str, Any]:
+    kind = str(payload["target_kind"])
+    target_root = Path(str(payload["target_root"]))
+    blockers = list(payload["blockers"])
+    if kind != "existing_project":
+        blockers.append("existing-project adaptation planning applies only to existing project targets")
+
+    actions: list[dict[str, Any]] = []
+    action_index = 1
+    for group in payload["public_file_groups"]:
+        group_name = str(group["group"])
+        for raw_path in group["paths"]:
+            path = str(raw_path)
+            target_path = target_root / path.rstrip("/")
+            if group_name in OWNER_GROUPS:
+                if target_path.exists():
+                    category = "review_owner_adaptation_candidate"
+                    reason = "target already owns this project surface; preserve project truth and adapt manually after Existing Repo Intake"
+                else:
+                    category = "review_owner_creation_candidate"
+                    reason = "owner surface is missing; draft from Existing Repo Intake evidence and user confirmation before first implementation"
+            elif path in DEFERRED_SETUP_PATHS:
+                category = "deferred"
+                reason = "hooks and CI require separate explicit approval and are not part of adaptation planning"
+            elif target_path.exists() or path_has_conflict(path, payload["conflicts"]):
+                category = "preserve_existing"
+                reason = "target material exists; preserve it until the user approves a package/setup decision"
+            else:
+                category = "deferred"
+                reason = "existing projects must complete intake and owner-file review before package copying becomes actionable"
+            actions.append(numbered_action("EA", action_index, category, path, reason, group_name))
+            action_index += 1
+
+    return {
+        "plan_kind": "existing_project_adaptation_plan",
+        "status": "blocked" if blockers else payload["status"],
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "actions": actions,
+        "approval_gates": [
+            "Run Existing Repo Intake and review its evidence before editing owner files.",
+            "User confirms which existing project facts belong in Precode owner files.",
+            "User approves each owner-file creation or adaptation separately.",
+            "Package file copying, hooks, CI, app commands, and app-code edits remain separate decisions.",
+        ],
+        "blockers": blockers,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "copying files",
+            "overwriting target material",
+            "owner-file edits",
+            "installing hooks",
+            "changing CI",
+            "running app commands",
+            "writing app code",
+            "package updates",
+            "rollback automation",
+        ],
+        "next_manual_gate": "User must approve specific owner-file adaptation work after Existing Repo Intake.",
+    }
+
+
+def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    kind = str(payload["target_kind"])
+    blockers = list(payload["blockers"])
+    if kind != "existing_precode":
+        blockers.append("upgrade preview applies only to targets that already contain Precode active memory")
+
+    actions: list[dict[str, Any]] = []
+    dirty_package: list[str] = []
+    dirty_owner: list[str] = []
+    missing_package: list[str] = []
+    action_index = 1
+
+    for group in payload["public_file_groups"]:
+        group_name = str(group["group"])
+        if group_name in OWNER_GROUPS:
+            candidate_paths = [str(path) for path in group["paths"]]
+        else:
+            candidate_paths = iter_source_group_files(source_root, group)
+        for path in candidate_paths:
+            source_path = source_root / path.rstrip("/")
+            target_path = target_root / path.rstrip("/")
+            if group_name in OWNER_GROUPS:
+                if not target_path.exists():
+                    dirty_owner.append(path)
+                    category = "review_owner_creation_candidate"
+                    reason = "owner or active-memory surface is missing; create only after user confirms target project truth"
+                elif source_path.is_file() and target_path.is_file() and file_digest(source_path) != file_digest(target_path):
+                    dirty_owner.append(path)
+                    category = "preserve_owner_edit"
+                    reason = "target owner or active-memory surface differs from package template; preserve and review manually"
+                else:
+                    category = "preserve_existing"
+                    reason = "target owner or active-memory surface is present; preserve during package upgrade"
+            elif not source_path.exists():
+                continue
+            elif is_deferred_setup_path(path):
+                category = "deferred"
+                reason = "hooks and CI require separate explicit approval and are not part of upgrade preview"
+            elif not target_path.exists():
+                missing_package.append(path)
+                category = "review_package_copy_candidate"
+                reason = "package-owned file is missing in the target and may be copied after explicit action approval"
+            elif not source_path.is_file() or not target_path.is_file():
+                dirty_package.append(path)
+                category = "manual_package_review"
+                reason = "source and target path types differ; review manually before any package update"
+            elif file_digest(source_path) == file_digest(target_path):
+                category = "current"
+                reason = "target package-owned file matches the source package"
+            else:
+                dirty_package.append(path)
+                category = "manual_package_review"
+                reason = "target package-owned file differs from source; do not overwrite without a separate reviewed update decision"
+            actions.append(numbered_action("UP", action_index, category, path, reason, group_name))
+            action_index += 1
+
+    if blockers:
+        classification = "blocked"
+    elif dirty_package and dirty_owner:
+        classification = "mixed_or_unknown"
+    elif dirty_package:
+        classification = "dirty_package_edits"
+    elif dirty_owner:
+        classification = "dirty_project_or_owner_edits"
+    else:
+        classification = "clean"
+
+    return {
+        "preview_kind": "package_upgrade_preview",
+        "status": "blocked" if blockers else "warning" if dirty_package or dirty_owner or missing_package else "pass",
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "package_state_classification": classification,
+        "actions": actions,
+        "dirty_package_paths": dirty_package,
+        "dirty_project_or_owner_paths": dirty_owner,
+        "missing_package_paths": missing_package,
+        "blockers": blockers,
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "package update permission",
+            "overwriting target material",
+            "owner-file adaptation",
+            "installing hooks",
+            "changing CI",
+            "release channels",
+            "package-manager updates",
+            "rollback automation",
+        ],
+        "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review.",
+    }
+
+
+def build_recovery_guidance(payload: dict[str, Any]) -> dict[str, Any]:
+    kind = str(payload["target_kind"])
+    blockers = list(payload["blockers"])
+    if kind == "existing_precode":
+        path = "Validate active memory, run upgrade preview, then decide whether this is repair, package update, or normal Precode work."
+    elif kind == "existing_project":
+        path = "Run Existing Repo Intake, preserve current project truth, and plan owner-file adaptation before any setup mutation."
+    elif kind in {"empty", "nearly_empty"}:
+        path = "Use supervised setup plan and apply only explicitly approved fresh-target copy actions."
+    elif kind == "same_as_source":
+        path = "Stop; source and target are the same folder. Pick the target project before any setup or recovery work."
+    elif kind == "missing":
+        path = "Stop; identify or create the target folder before recovery continues."
+    else:
+        path = "Stop and clarify source, target, and target state before recovery continues."
+    return {
+        "guidance_kind": "bootstrap_recovery_guidance",
+        "status": "blocked" if blockers else payload["status"],
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "likely_recovery_path": path,
+        "support_steps": [
+            "Confirm source and target folders before interpreting setup state.",
+            "Inspect target git status before approving any mutation.",
+            "Use preview or intake evidence to name the smallest safe next action.",
+            "Ask for explicit approval before copying, adapting, deleting, overwriting, installing hooks, or changing CI.",
+        ],
+        "validation_next_steps": [
+            "Run `bash scripts/validate-memory.sh` in an existing Precode target when active memory is present.",
+            "Run `python3 scripts/file-inventory.py --check` only after package files exist in the target.",
+            "Run target-specific checks only after owner files name them.",
+        ],
+        "forbidden_actions": [
+            "do not automate rollback",
+            "do not run destructive cleanup",
+            "do not overwrite dirty package or owner files",
+            "do not install hooks or change CI silently",
+            "do not treat generated preview output as authority",
+        ],
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+    }
 
 
 def validation_steps_for_plan(kind: str) -> list[str]:
@@ -615,6 +908,106 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
     }
 
 
+def apply_upgrade_preview(payload: dict[str, Any], approved_action_ids: list[str]) -> dict[str, Any]:
+    if "package_upgrade_preview" not in payload:
+        raise ValueError("upgrade apply requires --upgrade-preview")
+
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    preview = payload["package_upgrade_preview"]
+    approved = set(approved_action_ids)
+    copied: list[dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
+    blocked: list[dict[str, str]] = []
+
+    if not approved:
+        blocked.append({"path": "<approval>", "reason": "at least one --approve-action ID is required"})
+    if payload["target_kind"] != "existing_precode":
+        blocked.append({"path": "<target-project-root>", "reason": "upgrade apply is limited to existing Precode targets"})
+    if preview["package_state_classification"] in {"dirty_package_edits", "mixed_or_unknown", "blocked"}:
+        blocked.append(
+            {
+                "path": "<upgrade>",
+                "reason": f"upgrade apply refuses dirty or unknown package state: {preview['package_state_classification']}",
+            }
+        )
+    if payload["blockers"] or preview["blockers"]:
+        for blocker in payload["blockers"] + preview["blockers"]:
+            blocked.append({"path": "<upgrade>", "reason": str(blocker)})
+
+    preview_actions = {str(action["id"]): action for action in preview["actions"]}
+    for action_id in sorted(approved):
+        action = preview_actions.get(action_id)
+        if action is None:
+            blocked.append({"path": action_id, "reason": "approved action ID is not present in the upgrade preview"})
+            continue
+        if action["category"] != "review_package_copy_candidate":
+            blocked.append(
+                {
+                    "path": str(action["path"]),
+                    "reason": f"{action_id} is {action['category']}; upgrade apply only supports review_package_copy_candidate actions",
+                }
+            )
+
+    if not blocked:
+        for action_id in sorted(approved):
+            action = preview_actions[action_id]
+            path = str(action["path"])
+            source_path = source_root / path.rstrip("/")
+            target_path = target_root / path.rstrip("/")
+            if not source_path.is_file():
+                blocked.append({"path": path, "reason": "source package file is missing or is not a file"})
+            if target_path.exists():
+                blocked.append({"path": path, "reason": "target path already exists; refusing to overwrite during upgrade apply"})
+
+    apply_allowed = not blocked
+    for action in preview["actions"]:
+        action_id = str(action["id"])
+        path = str(action["path"])
+        if action_id not in approved:
+            skipped.append({"path": path, "reason": f"{action_id} was not approved"})
+            continue
+        if action["category"] != "review_package_copy_candidate":
+            continue
+        if not apply_allowed:
+            skipped.append({"path": path, "reason": "upgrade apply blocked before mutation"})
+            continue
+        result = safe_copy_path(source_root, target_root, path)
+        if result["reason"].startswith("copied"):
+            copied.append(result)
+        else:
+            blocked.append(result)
+
+    status = "blocked" if blocked else "applied"
+    return {
+        "apply_kind": "package_upgrade_apply",
+        "status": status,
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": payload["target_kind"],
+        "approved_actions": sorted(approved),
+        "copied": copied,
+        "skipped": skipped,
+        "blocked": blocked,
+        "validation_next_step": (
+            "Inspect target git status, run `bash scripts/validate-memory.sh`, and rerun package upgrade preview."
+            if status == "applied"
+            else "Resolve blockers and rerun package upgrade preview before applying package copy actions."
+        ),
+        "target_mutation_allowed": status == "applied",
+        "not_authority_for": [
+            "overwriting target material",
+            "dirty package-file replacement",
+            "owner-file adaptation",
+            "installing hooks",
+            "changing CI",
+            "release channels",
+            "package-manager updates",
+            "rollback automation",
+        ],
+    }
+
+
 def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     source = resolve_candidate(source_raw)
     target = resolve_candidate(target_raw)
@@ -783,12 +1176,121 @@ def render_apply_plain(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_existing_project_adaptation_plain(payload: dict[str, Any]) -> str:
+    plan = payload["existing_project_adaptation_plan"]
+    lines = [
+        render_setup_plan_plain(payload) if "supervised_setup_plan" in payload else render_preview_plain(payload) if "install_update_preview" in payload else render_plain(payload),
+        "\nExisting Project Adaptation Plan:",
+        f"- Plan kind: `{plan['plan_kind']}`",
+        f"- Plan status: `{plan['status']}`",
+        "- Target mutation allowed: no",
+        "- Generated evidence only: yes",
+        "- This plan is not copy approval, owner-file edit approval, package update permission, hook/CI setup, app-code permission, or rollback approval.",
+        f"- Next manual gate: {plan['next_manual_gate']}",
+    ]
+    if plan["blockers"]:
+        lines.append("\nAdaptation-plan blockers:")
+        lines.extend(f"- {item}" for item in plan["blockers"])
+    lines.append("\nApproval gates:")
+    lines.extend(f"- {item}" for item in plan["approval_gates"])
+    lines.append("\nAdaptation-plan actions:")
+    for action in plan["actions"]:
+        group = f" ({action['group']})" if "group" in action else ""
+        approval = "approval required" if action["requires_user_approval"] else "not actionable"
+        lines.append(f"- {action['id']} {action['category']}: `{action['path']}`{group} -- {action['reason']} [{approval}]")
+    return "\n".join(lines)
+
+
+def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
+    preview = payload["package_upgrade_preview"]
+    lines = [
+        render_plain(payload),
+        "\nPackage Upgrade Preview:",
+        f"- Preview kind: `{preview['preview_kind']}`",
+        f"- Preview status: `{preview['status']}`",
+        f"- Package state classification: `{preview['package_state_classification']}`",
+        "- Target mutation allowed: no",
+        "- Writes by default: no",
+        "- This preview is not package update permission, overwrite approval, owner-file adaptation, release-channel metadata, package-manager behavior, hook/CI setup, or rollback automation.",
+        f"- Next setup gate: {preview['next_setup_gate']}",
+    ]
+    if preview["blockers"]:
+        lines.append("\nUpgrade-preview blockers:")
+        lines.extend(f"- {item}" for item in preview["blockers"])
+    if preview["dirty_package_paths"]:
+        lines.append("\nDirty package paths requiring manual review:")
+        lines.extend(f"- `{item}`" for item in preview["dirty_package_paths"])
+    if preview["dirty_project_or_owner_paths"]:
+        lines.append("\nProject or owner paths to preserve/review:")
+        lines.extend(f"- `{item}`" for item in preview["dirty_project_or_owner_paths"])
+    lines.append("\nUpgrade-preview actions:")
+    for action in preview["actions"]:
+        group = f" ({action['group']})" if "group" in action else ""
+        approval = "approval required" if action["requires_user_approval"] else "not actionable"
+        lines.append(f"- {action['id']} {action['category']}: `{action['path']}`{group} -- {action['reason']} [{approval}]")
+    lines.append(
+        "\nUpgrade warning: only missing package-owned files marked review_package_copy_candidate can be copied by apply mode; dirty files require manual review."
+    )
+    return "\n".join(lines)
+
+
+def render_upgrade_apply_plain(payload: dict[str, Any]) -> str:
+    summary = payload["package_upgrade_apply"]
+    lines = [
+        render_upgrade_preview_plain(payload),
+        "\nPackage Upgrade Apply Summary:",
+        f"- Apply kind: `{summary['apply_kind']}`",
+        f"- Apply status: `{summary['status']}`",
+        "- Scope: approved missing package-owned files only.",
+        "- This apply mode does not overwrite dirty files, adapt owner files, install hooks, change CI, define release channels, provide rollback automation, or provide package-manager behavior.",
+    ]
+    if summary["copied"]:
+        lines.append("\nCopied:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["copied"])
+    if summary["skipped"]:
+        lines.append("\nSkipped:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["skipped"])
+    if summary["blocked"]:
+        lines.append("\nBlocked:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["blocked"])
+    lines.append(f"\nValidation next step: {summary['validation_next_step']}")
+    return "\n".join(lines)
+
+
+def render_recovery_guidance_plain(payload: dict[str, Any]) -> str:
+    guidance = payload["bootstrap_recovery_guidance"]
+    lines = [
+        render_plain(payload),
+        "\nBootstrap Recovery Guidance:",
+        f"- Guidance kind: `{guidance['guidance_kind']}`",
+        f"- Guidance status: `{guidance['status']}`",
+        f"- Likely recovery path: {guidance['likely_recovery_path']}",
+        "- Target mutation allowed: no",
+        "- Generated evidence only: yes",
+        "\nSupport steps:",
+    ]
+    lines.extend(f"- {item}" for item in guidance["support_steps"])
+    lines.append("\nValidation next steps:")
+    lines.extend(f"- {item}" for item in guidance["validation_next_steps"])
+    lines.append("\nForbidden actions:")
+    lines.extend(f"- {item}" for item in guidance["forbidden_actions"])
+    return "\n".join(lines)
+
+
 def write_evidence(payload: dict[str, Any]) -> None:
     source = Path(str(payload["source_root"]))
     logs = source / "logs"
     logs.mkdir(parents=True, exist_ok=True)
     (logs / "bootstrap-check.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    if "supervised_setup_plan" in payload:
+    if "package_upgrade_apply" in payload:
+        renderer = render_upgrade_apply_plain
+    elif "package_upgrade_preview" in payload:
+        renderer = render_upgrade_preview_plain
+    elif "existing_project_adaptation_plan" in payload:
+        renderer = render_existing_project_adaptation_plain
+    elif "bootstrap_recovery_guidance" in payload:
+        renderer = render_recovery_guidance_plain
+    elif "supervised_setup_plan" in payload:
         renderer = render_apply_plain if "supervised_setup_apply" in payload else render_setup_plan_plain
     elif "install_update_preview" in payload:
         renderer = render_preview_plain
@@ -845,6 +1347,7 @@ def self_test() -> int:
 
         existing_payload["install_update_preview"] = build_manifest_preview(existing_payload)
         existing_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_payload)
+        existing_payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(existing_payload)
         assert any(
             action["category"] == "deferred" and action["path"] == "scripts/existing-repo-intake.py"
             for action in existing_payload["install_update_preview"]["actions"]
@@ -856,6 +1359,11 @@ def self_test() -> int:
         assert not any(
             action["category"] in {"review_copy_candidate", "review_adaptation_candidate"}
             for action in existing_payload["supervised_setup_plan"]["actions"]
+        )
+        assert existing_payload["existing_project_adaptation_plan"]["status"] == "warning"
+        assert any(
+            action["category"] in {"review_owner_adaptation_candidate", "review_owner_creation_candidate"}
+            for action in existing_payload["existing_project_adaptation_plan"]["actions"]
         )
 
         missing_source_payload = build_payload((base / "missing-source").as_posix(), empty_target.as_posix())
@@ -887,6 +1395,9 @@ def self_test() -> int:
         existing_precode_payload = build_payload(source.as_posix(), existing_precode_target.as_posix())
         existing_precode_payload["install_update_preview"] = build_manifest_preview(existing_precode_payload)
         existing_precode_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_precode_payload)
+        (source / "docs" / "NEW-PACKAGE-DOC.md").write_text("new package doc\n", encoding="utf-8")
+        existing_precode_payload["package_upgrade_preview"] = build_upgrade_preview(existing_precode_payload)
+        existing_precode_payload["bootstrap_recovery_guidance"] = build_recovery_guidance(existing_precode_payload)
         assert existing_precode_payload["target_kind"] == "existing_precode"
         assert any(
             action["category"] == "preserve_existing"
@@ -897,6 +1408,27 @@ def self_test() -> int:
             action["category"] == "preserve_existing"
             for action in existing_precode_payload["supervised_setup_plan"]["actions"]
         )
+        assert existing_precode_payload["package_upgrade_preview"]["package_state_classification"] == "dirty_project_or_owner_edits"
+        upgrade_copy_ids = [
+            action["id"]
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+            if action["category"] == "review_package_copy_candidate" and action["path"] == "docs/NEW-PACKAGE-DOC.md"
+        ]
+        assert len(upgrade_copy_ids) == 1
+        upgrade_apply = apply_upgrade_preview(existing_precode_payload, upgrade_copy_ids)
+        assert upgrade_apply["status"] == "applied"
+        assert (existing_precode_target / "docs" / "NEW-PACKAGE-DOC.md").is_file()
+        assert "Validate active memory" in existing_precode_payload["bootstrap_recovery_guidance"]["likely_recovery_path"]
+
+        dirty_precode_target = base / "dirty-precode-target"
+        make_source(dirty_precode_target)
+        (dirty_precode_target / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("target edit\n", encoding="utf-8")
+        dirty_precode_payload = build_payload(source.as_posix(), dirty_precode_target.as_posix())
+        dirty_precode_payload["package_upgrade_preview"] = build_upgrade_preview(dirty_precode_payload)
+        assert dirty_precode_payload["package_upgrade_preview"]["package_state_classification"] == "mixed_or_unknown"
+        dirty_apply = apply_upgrade_preview(dirty_precode_payload, upgrade_copy_ids)
+        assert dirty_apply["status"] == "blocked"
+        assert any("refuses dirty or unknown package state" in item["reason"] for item in dirty_apply["blocked"])
 
         empty_payload["install_update_preview"] = build_manifest_preview(empty_payload)
         empty_payload["supervised_setup_plan"] = build_supervised_setup_plan(empty_payload)
@@ -985,9 +1517,29 @@ def main() -> int:
         help="include non-mutating supervised setup-plan output; implies --preview-manifest",
     )
     parser.add_argument(
+        "--existing-project-adaptation-plan",
+        action="store_true",
+        help="include non-mutating existing-project owner-file adaptation planning output",
+    )
+    parser.add_argument(
+        "--upgrade-preview",
+        action="store_true",
+        help="include non-mutating package upgrade preview output for existing Precode targets",
+    )
+    parser.add_argument(
+        "--recovery-guidance",
+        action="store_true",
+        help="include non-mutating bootstrap recovery guidance output",
+    )
+    parser.add_argument(
         "--apply-supervised-setup",
         action="store_true",
         help="apply explicitly approved supervised setup copy actions for empty or nearly empty targets",
+    )
+    parser.add_argument(
+        "--apply-upgrade-preview",
+        action="store_true",
+        help="apply explicitly approved missing package-file copy actions from --upgrade-preview",
     )
     parser.add_argument(
         "--approve-action",
@@ -1006,14 +1558,24 @@ def main() -> int:
         parser.error("--source and --target are required unless --self-test is used")
     if args.apply_supervised_setup and not args.supervised_setup_plan:
         parser.error("--apply-supervised-setup requires --supervised-setup-plan")
+    if args.apply_upgrade_preview and not args.upgrade_preview:
+        parser.error("--apply-upgrade-preview requires --upgrade-preview")
 
     payload = build_payload(args.source, args.target)
     if args.preview_manifest or args.supervised_setup_plan:
         payload["install_update_preview"] = build_manifest_preview(payload)
     if args.supervised_setup_plan:
         payload["supervised_setup_plan"] = build_supervised_setup_plan(payload)
+    if args.existing_project_adaptation_plan:
+        payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(payload)
+    if args.upgrade_preview:
+        payload["package_upgrade_preview"] = build_upgrade_preview(payload)
+    if args.recovery_guidance:
+        payload["bootstrap_recovery_guidance"] = build_recovery_guidance(payload)
     if args.apply_supervised_setup:
         payload["supervised_setup_apply"] = apply_supervised_setup(payload, args.approve_action)
+    if args.apply_upgrade_preview:
+        payload["package_upgrade_apply"] = apply_upgrade_preview(payload, args.approve_action)
     if args.write_evidence:
         if payload["source_root"] == payload["target_root"]:
             raise SystemExit("bootstrap-check: refusing to write evidence when source and target are the same")
@@ -1023,7 +1585,15 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
-        if args.supervised_setup_plan:
+        if args.apply_upgrade_preview:
+            print(render_upgrade_apply_plain(payload))
+        elif args.upgrade_preview:
+            print(render_upgrade_preview_plain(payload))
+        elif args.existing_project_adaptation_plan:
+            print(render_existing_project_adaptation_plain(payload))
+        elif args.recovery_guidance:
+            print(render_recovery_guidance_plain(payload))
+        elif args.supervised_setup_plan:
             print(render_apply_plain(payload) if args.apply_supervised_setup else render_setup_plan_plain(payload))
         elif args.preview_manifest:
             print(render_preview_plain(payload))

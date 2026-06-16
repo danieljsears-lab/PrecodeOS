@@ -139,6 +139,26 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
 
+For existing projects, run Existing Repo Intake first, then use the adaptation plan only as a non-mutating checklist:
+
+```bash
+python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+```
+
+For existing Precode targets, use upgrade preview before any package repair or update copy. Only missing package-owned files marked `review_package_copy_candidate` can be copied, and only by approved action ID:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+```
+
+If setup is partial or confusing, use recovery guidance. It is diagnostic only and does not automate rollback, destructive cleanup, dirty-file overwrites, hooks, CI, release channels, or package-manager behavior:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
+```
+
 To adapt PrecodeOS into a target project, start with these files:
 
 - `docs/PRECODE-GUIDED-SETUP.md` for the step-by-step setup path and copy boundaries.
@@ -325,8 +345,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.41
-Last updated: 2026-06-14
+Document version: v0.1.42
+Last updated: 2026-06-15
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

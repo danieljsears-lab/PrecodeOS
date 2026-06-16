@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
+Document version: v0.1.26
 Last updated: 2026-06-15
 
 ## Purpose
@@ -60,6 +60,46 @@ Use the PrecodeOS checkout as the source and my empty or nearly empty project fo
 Run the supervised setup plan first, then apply only the approved review_copy_candidate action IDs I name.
 Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, approve a PRD, activate a bead, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
 After copying, show copied, skipped, blocked, and validation next steps.
+```
+
+### Existing Project Adaptation Plan
+
+```text
+Run the PrecodeOS existing-project adaptation plan after Existing Repo Intake.
+Use the PrecodeOS checkout as the source and my existing app repo as the target.
+Do not copy, edit, overwrite, install hooks, change CI, run app commands, write app code, approve a PRD, activate a bead, define release channels, provide package-manager behavior, or automate rollback.
+Show owner-file creation or adaptation candidates, preserved project material, approval gates, blockers, and deferred actions.
+Treat the plan as evidence only, not permission to mutate or adapt owner files.
+```
+
+### Package Upgrade Preview
+
+```text
+Run the PrecodeOS package upgrade preview for this existing Precode target.
+Use the PrecodeOS checkout as the source and my project folder as the target.
+Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or automate rollback.
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
+Show action IDs and wait for my explicit approval before any missing package-owned file copy.
+Treat the preview as evidence only, not package update permission.
+```
+
+### Package Upgrade Apply
+
+```text
+Apply only the package upgrade action IDs I explicitly approve.
+Run the upgrade preview first, then copy only approved review_package_copy_candidate files that are missing from the existing Precode target.
+Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or automate rollback.
+If the package state is dirty, mixed, unknown, or blocked, refuse mutation and show the manual review path.
+```
+
+### Bootstrap Recovery Guidance
+
+```text
+Give bootstrap recovery guidance for this setup state.
+Use the PrecodeOS checkout as the source and my project folder as the target.
+Do not delete, overwrite, regenerate, roll back, copy files, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or mutate setup.
+Name the likely recovery path, support steps, validation next steps, and forbidden actions.
+Treat the guidance as evidence only, not repair approval.
 ```
 
 ### One Question At A Time
@@ -600,6 +640,60 @@ Stop implementation and diagnose before repair. Restate the symptom in plain Eng
 ```
 
 Required response shape: symptom, first safe move, owner surface, read-only or advisory checks, next safe prompt or action, and forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
+
+## No-Engineer Fallback Prompt Pack
+
+Use these prompts when you can name what feels wrong but you do not have engineering support. They are symptom-specific front doors into the Recovery Protocol, not a competing repair workflow.
+
+Each prompt requires stop-and-diagnose behavior, the likely owner surface or unknown owner, no more than three read-only or advisory checks, the next safe action, and forbidden actions. They do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, release, app-code changes, secrets handling, external mutation, or destructive commands.
+
+### Agent Is Lost
+
+```text
+The agent seems lost.
+
+Stop implementation and diagnose before repair. Restate the symptom in plain English. Name the likely owner surface, or say it is unknown until active memory and checks are inspected. Run or recommend no more than three read-only or advisory checks to recover context. Give me the next safe prompt or action. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
+
+### Checks Failed
+
+```text
+Checks failed and I do not know what to do next.
+
+Stop implementation and diagnose before repair. Restate the failed check symptom in plain English. Name the likely owner surface, or say it is unknown until active memory, check output, and the active bead are inspected. Run or recommend no more than three read-only or advisory checks. Tell me the next safe prompt or action. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
+
+### App Will Not Start
+
+```text
+The app will not start.
+
+Stop implementation and diagnose before repair. Restate the startup symptom in plain English, including the command or error if known. Name the likely owner surface, or say it is unknown until active memory, project context, and available logs are inspected. Run or recommend no more than three read-only or advisory checks before changing anything. Give me the next safe prompt or action. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
+
+### Approved Too Much
+
+```text
+I may have approved too much.
+
+Stop implementation and diagnose before repair. Restate what may have been approved too broadly, or say it is not known yet. Name the likely owner surface, or say it is unknown until active memory, closeout evidence, transition state, and changed files are inspected. Run or recommend no more than three read-only or advisory checks. Tell me the next safe prompt or action. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
+
+### Copied Wrong Files
+
+```text
+I think I copied the wrong files.
+
+Stop implementation and diagnose before repair. Restate the copy mistake symptom in plain English, or say it is not known yet. Name the likely owner surface, or say it is unknown until the package source, target project, file inventory, and setup guidance are inspected. Run or recommend no more than three read-only or advisory checks. Give me the next safe prompt or action. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
+
+### Decide Whether To Stop
+
+```text
+I need help deciding whether to stop.
+
+Stop implementation and diagnose before repair. Restate the stop-or-continue symptom in plain English. Name the likely owner surface, or say it is unknown until active memory, the active bead, evidence, and blockers are inspected. Run or recommend no more than three read-only or advisory checks. Tell me whether the next safe prompt or action is continue, ask for proof, repair state, split, block, or stop. Do not edit, delete, overwrite, regenerate, approve a transition, roll back, mutate setup/update behavior, change app code, touch secrets, mutate external systems, or run a destructive command unless I explicitly approve that exact action.
+```
 
 ## Handoff
 

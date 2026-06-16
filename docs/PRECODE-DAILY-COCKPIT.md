@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.11
+Document version: v0.1.12
 Last updated: 2026-06-15
 
 Use this cockpit while you work with an AI coding agent.
@@ -41,6 +41,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
 | Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
 | Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
+| Named fallback | `Use the No-Engineer Fallback Prompt Pack for this symptom.` | A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments. |
 
 ## Core Prompts
 
@@ -133,6 +134,8 @@ The agent must stop implementation and answer with:
 - forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval
 
 Use `tasks/reference/RECOVERY-PROTOCOL.md` for the full path. OS Health, Doctor Dashboard, `next-step.py`, and stable-fix eligibility are diagnostic evidence only; they do not approve repair. Doctor Dashboard triage labels explain what to ask and what not to approve, but they do not create approval.
+
+If you can name the symptom but do not know the right recovery path, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It gives short prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments without approving repair or mutation.
 
 ### Keep Implementation Bounded
 

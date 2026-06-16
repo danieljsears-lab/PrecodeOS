@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-14
+Document version: v0.1.1
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -45,6 +45,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
+
+Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
 
 ## Required Apply Shape
 
@@ -133,6 +135,7 @@ Apply mode does not provide rollback automation. If copied files are wrong, use 
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
+- It must not replace package upgrade preview, dirty package-file review, support-assisted recovery guidance, or existing-project adaptation planning.
 
 ## Builder Prompt
 

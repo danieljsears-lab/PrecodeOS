@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.25
+Document version: v0.3.26
 Last updated: 2026-06-15
 
 ## Executive Summary
@@ -401,8 +401,8 @@ Precode's current architecture direction is router-first externally and modular 
 - Internally, compiler domains move behind small service modules such as `scripts/precode_state.py`, `scripts/precode_outputs.py`, and `scripts/precode_routing.py`, while `scripts/os_compiler.py` remains the stable facade for existing commands, imports, and generated JSON shapes.
 - Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
 - Ralph stays a bounded attempt engine for one active bead, not a multi-bead scheduler or autonomous agent platform.
-- Bootstrap and existing-repo intake remain read-only confidence workflows until a user explicitly chooses a setup path.
-- A broad `precode doctor` command, mutating installer/update flow, and installable `precode` CLI are deferred until router behavior and bootstrap/install needs are stable.
+- Bootstrap now has staged setup gates: read-only source/target confidence, manifest preview, supervised setup plan, narrow fresh-target apply, existing-project adaptation planning, existing-Precode upgrade preview, recovery guidance, and explicit action-ID copy gates for safe missing package-owned files.
+- A broad `precode doctor` command, broad mutating installer/update flow, release-channel behavior, rollback automation, and package-manager semantics remain deferred. The optional `precode` CLI is only a local facade over documented commands.
 
 Handoff should include:
 
@@ -605,7 +605,7 @@ Common maintenance moves:
 | Add a checker | The checker script, command surfaces, README pointer, and generated report only if useful. |
 | Add a bead template | `tasks/beads/BEAD-SCHEMA.md`. |
 | Add an integration | Integration protocol, `PROJECT-CONTEXT.md` boundaries, read-only audit/importer scripts. |
-| Add or change setup intake | Bootstrap or existing-repo intake protocol plus read-only checker behavior and public setup docs. |
+| Add or change setup intake | Bootstrap, Existing Repo Intake, or Bootstrap Closeout protocol plus checker behavior, public setup docs, and explicit mutation boundaries. |
 | Change generated report behavior | Compiler/report script plus generated-output demotion check. |
 | Change public docs rendering | Public Markdown docs plus regenerated `docs-html/` using the maintainer-only docs generator. |
 | Change version policy | `tasks/reference/VERSIONING-PROTOCOL.md` and `scripts/version-check.py`. |

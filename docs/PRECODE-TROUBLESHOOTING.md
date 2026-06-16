@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.12
+Document version: v0.1.13
 Last updated: 2026-06-15
 
 ## Purpose
@@ -63,6 +63,8 @@ Run next-step stable-fix eligibility and tell me the classification, required ro
 ```
 
 Use the result as routing help only. `eligible_stable_fix` can continue inside the current bead after recorded proof. `needs_evidence` needs verification. `recovery_repair` stays in the Recovery Protocol. `broader_change` needs release readiness, a PRD, or a normal bead. None of these classifications approve mutation, acceptance, release, rollback, transition, setup, or update behavior.
+
+If you can name the symptom but not the repair path, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It covers agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments. These prompts route back to the Recovery Protocol and do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
 ## Symptom Lookup
 
@@ -446,6 +448,10 @@ Do not let technical support become hidden product ownership.
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest` | Source and target are clear enough to preview candidate setup actions before mutation. | Dry-run evidence only; not copy permission, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan` | Source and target are clear enough to show a setup checklist before manual setup approval. | Setup-plan evidence only; not copy permission, owner-file adaptation approval, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>` | Empty or nearly empty target setup has a reviewed copy action ID the user approves. | Copies only approved `review_copy_candidate` actions; not owner-file adaptation, existing-repo mutation, overwrite permission, hook setup, CI setup, app commands, app-code edits, release-channel metadata, package-manager behavior, rollback automation, or a CLI. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan` | Existing Repo Intake has been reviewed and the user needs an owner-file adaptation checklist. | Evidence only; not owner-file edit approval, copy permission, hook setup, CI setup, app commands, app-code edits, release-channel metadata, package-manager behavior, or rollback automation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview` | Target already has Precode active memory and package setup/update state needs comparison. | Evidence only; classifies package state and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback automation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>` | Existing Precode target has a missing package-owned file marked `review_package_copy_candidate` and the user approves that action ID. | Copies only approved missing package-owned files; refuses dirty/unknown package states, overwrites, owner-file adaptation, hooks, CI, app commands, app-code edits, release-channel metadata, package-manager behavior, and rollback automation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance` | Setup is partial, confusing, or failed and support needs the next safe diagnostic path. | Guidance only; may recommend validation or preview commands but does not automate rollback, destructive cleanup, overwrites, hook setup, CI setup, or setup/update mutation. |
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |
 | `python3 scripts/next-step.py` | The user asks "what now?" or whether a small repair looks stable-fix eligible. | It is generated guidance, not approval; stable-fix eligibility only routes the next decision. |

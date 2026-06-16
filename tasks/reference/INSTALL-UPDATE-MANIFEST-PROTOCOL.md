@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-14
+Document version: v0.1.3
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -58,6 +58,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, or app-code edits.
+
+The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files.
 
 ## Required Preview Shape
 
@@ -129,6 +131,7 @@ The classifier must not turn manifest output into copy permission, owner-file ad
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
+- It must route package upgrades through Bootstrap Closeout before any existing Precode target receives missing package-owned files, and dirty package-owned files must stay manual-review only.
 
 ## Next Setup Layer
 

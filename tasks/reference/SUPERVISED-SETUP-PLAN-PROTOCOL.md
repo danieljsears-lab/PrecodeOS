@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-14
+Document version: v0.1.2
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -60,6 +60,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 That apply mode is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md`. The plan itself remains evidence only and does not approve the apply step.
+
+Existing-project adaptation planning, package upgrade preview, support-assisted recovery guidance, and upgrade apply are separate closeout paths governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`.
 
 ## Required Plan Shape
 
@@ -148,6 +150,7 @@ These steps are validation suggestions, not proof that setup occurred.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
 - It must not imply that `--apply-supervised-setup` can adapt owner files, overwrite target material, install hooks, change CI, mutate existing projects, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+- It must not imply that existing-project adaptation, package upgrade preview, recovery guidance, or upgrade apply are part of the fresh-target setup plan.
 
 ## Builder Prompt
 

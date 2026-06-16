@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.45
+Document version: v0.7.46
 Last updated: 2026-06-15
 
 
@@ -869,6 +869,8 @@ Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, 
 
 Ask one blocking question at a time. Treat generated reports and source notes as evidence only. Do not modify Precode control-layer files, active memory, scripts, protocols, validators, adapters, modes, generated reports, or task state unless the active bead explicitly includes that work.
 ```
+
+Use the No-Engineer Fallback Prompt Pack when the agent is lost, checks failed, the app will not start, you approved too much, you copied the wrong files, or you need help deciding whether to stop. The pack lives in `tasks/reference/PROMPT-PATTERNS.md` and routes back to the Recovery Protocol; it does not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
 Start safely:
 

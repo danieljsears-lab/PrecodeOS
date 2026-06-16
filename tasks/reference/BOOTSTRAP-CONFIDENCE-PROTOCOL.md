@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-14
+Document version: v0.1.5
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -39,6 +39,10 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
 ```
 
@@ -51,6 +55,8 @@ Default mode prints a plain-English report and writes nothing.
 `--supervised-setup-plan` adds the manifest preview plus a non-mutating setup checklist with action IDs, approval gates, exclusions, blockers, and validation steps. It still writes nothing by default and does not approve setup mutation.
 
 `--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and CLI installation.
+
+`--existing-project-adaptation-plan`, `--upgrade-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, package upgrade preview, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only.
 
 `--write-evidence` writes generated evidence only under the source Precode workspace:
 
@@ -151,6 +157,8 @@ Use plain recommendations:
 - It must not treat manifest preview output as copy, update, or install approval.
 - It must not treat supervised setup-plan output as copy, update, install, or owner-file adaptation approval.
 - It must not treat supervised setup apply as a broad installer, owner-file adaptation engine, update flow, rollback flow, hook installer, CI installer, package manager, release channel, or CLI.
+- It must not treat existing-project adaptation planning, upgrade preview, or recovery guidance as owner-file edit approval, package update permission, dirty-file overwrite approval, rollback approval, release-channel metadata, or package-manager behavior.
+- It must not treat upgrade apply as permission to replace dirty package files, adapt owner files, install hooks, change CI, automate rollback, or update through a package manager.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
 
 ## Builder Prompt

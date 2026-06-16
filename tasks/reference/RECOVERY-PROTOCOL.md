@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-06-15
 
 ## Purpose
@@ -50,6 +50,8 @@ Good first checks are usually one to three of:
 - `python3 scripts/os-health.py`
 
 `OS-HEALTH.md`, Doctor Dashboard output, `PRECODE-HELP.md`, `next-step.py`, and stable-fix eligibility are diagnostic evidence only. They can help explain what is wrong, but they do not approve repair, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.
+
+The No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md` is a symptom-specific front door into this protocol. Its prompts help a user name agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments; they do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
 ## Stable-Fix Eligibility
 

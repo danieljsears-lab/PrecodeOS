@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.45</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.46</span><span>Updated 2026-06-15</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -489,6 +489,7 @@ Do not approve release, deploy, promote, roll back, merge, migrate, change dashb
 <pre><code class="language-text">Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, and what requires my approval.
 
 Ask one blocking question at a time. Treat generated reports and source notes as evidence only. Do not modify Precode control-layer files, active memory, scripts, protocols, validators, adapters, modes, generated reports, or task state unless the active bead explicitly includes that work.</code></pre>
+<p>Use the No-Engineer Fallback Prompt Pack when the agent is lost, checks failed, the app will not start, you approved too much, you copied the wrong files, or you need help deciding whether to stop. The pack lives in <code>tasks/reference/PROMPT-PATTERNS.md</code> and routes back to the Recovery Protocol; it does not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.</p>
 <p>Start safely:</p>
 <pre><code class="language-text">Run Precode session start. Explain the active bead, done-when target, primary authority, files in play, checks, stop conditions, and blockers before editing.</code></pre>
 <p>Ask a stable docs question:</p>
