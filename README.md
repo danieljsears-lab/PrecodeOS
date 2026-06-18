@@ -8,7 +8,9 @@
 
 Learn more: `https://www.precodeos.org`.
 
-PrecodeOS is an AI anti-drift "Builder OS" for solo software builders using AI coding agents. It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. PrecodeOS keeps its active AI-agent context to 219 lines across three files.
+PrecodeOS is an AI anti-drift "Builder OS" for solo software builders using AI coding agents. PrecodeOS brings proven engineering discipline to AI-assisted building without asking a non-technical builder to become an engineering manager. It keeps the repository clear about intent, scope, proof, approval, and recovery, so any coding agent has safer rails to work inside.
+
+It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. PrecodeOS keeps its active AI-agent context to 219 lines across three files.
 
 PrecodeOS cares about:
 

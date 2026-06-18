@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.11
-# Last updated: 2026-06-15
+# Version: v0.1.12
+# Last updated: 2026-06-17
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -36,6 +36,19 @@ STABLE_DECISIONS = {
     "stop",
     "ask for reaffirmation",
 }
+RECOVERY_FIXTURE_FORBIDDEN_ACTIONS = [
+    "edit",
+    "delete",
+    "overwrite",
+    "regenerate",
+    "rollback",
+    "setup/update mutation",
+    "transition approval",
+    "repair approval",
+    "app-code change approval",
+    "external mutation",
+    "destructive command",
+]
 
 
 def load_loop_health_module() -> Any:
@@ -205,6 +218,151 @@ def assert_no_engineer_fallback_prompt_pack(failures: list[dict[str, str]]) -> N
     for term in required_terms:
         if term.lower() not in lower_text:
             failures.append({"scenario": "no-engineer fallback prompt pack", "expected": term, "actual": "missing"})
+
+
+def recovery_scenario_fixtures() -> list[dict[str, Any]]:
+    base = {
+        "owner_protocol": "tasks/reference/RECOVERY-PROTOCOL.md",
+        "advisory_only": True,
+        "synthetic_fixture": True,
+        "generated_evidence_only": True,
+        "repair_approval": False,
+        "rollback_approval": False,
+        "setup_update_approval": False,
+        "transition_approval": False,
+        "external_mutation_approval": False,
+        "first_checks": ["python3 scripts/next-step.py"],
+        "forbidden_actions": RECOVERY_FIXTURE_FORBIDDEN_ACTIONS,
+    }
+    return [
+        {
+            **base,
+            "category": "wrong-folder-or-partial-setup",
+            "symptom": "The user may be in the wrong folder or setup is partial.",
+            "classification": "setup-confusion",
+            "owner_surface": "docs/PRECODE-GUIDED-SETUP.md or tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md",
+            "first_checks": [
+                "python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance",
+                "python3 scripts/version-check.py",
+            ],
+            "beginner_prompt": "Stop setup work, name the source and target folders, and use recovery guidance before copying or overwriting anything.",
+        },
+        {
+            **base,
+            "category": "copied-excluded-private-or-generated-files",
+            "symptom": "The user copied private maintainer files, generated reports, logs, or excluded package material.",
+            "classification": "copy-boundary-confusion",
+            "owner_surface": "docs/PRECODE-PACKAGE-FILE-INVENTORY.md",
+            "first_checks": [
+                "python3 scripts/file-inventory.py --check",
+                "python3 scripts/bootstrap-check.py --preview-manifest --source <precode-package-root> --target <target-project-root>",
+            ],
+            "beginner_prompt": "Stop copying, classify each path as package source, generated evidence, private maintainer material, or target-project material before repair.",
+        },
+        {
+            **base,
+            "category": "stale-or-edited-generated-report",
+            "symptom": "A generated report is stale, edited by hand, missing, or being treated as truth.",
+            "classification": "generated-report-confusion",
+            "owner_surface": "owning source file and report-generating script",
+            "first_checks": ["python3 scripts/os-health.py", "python3 scripts/state-check.py"],
+            "beginner_prompt": "Repair source state first and refresh the report from its owning script; do not hand-edit generated output or treat it as authority.",
+        },
+        {
+            **base,
+            "category": "missing-proof-or-checks-failed",
+            "symptom": "The user wants to continue or accept work when checks are missing or failing.",
+            "classification": "missing-proof",
+            "owner_surface": "tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md",
+            "first_checks": ["python3 scripts/completion-check.py"],
+            "beginner_prompt": "Name the missing or failing proof, run the declared checks, and do not accept or transition from confidence alone.",
+        },
+        {
+            **base,
+            "category": "approval-happened-too-quickly",
+            "symptom": "A user may have approved too much, approved the wrong thing, or treated generated output as acceptance.",
+            "classification": "approval-confusion",
+            "owner_surface": "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+            "first_checks": ["python3 scripts/completion-check.py", "python3 scripts/next-step.py"],
+            "beginner_prompt": "Pause, review closeout evidence and transition state, then ask for accepted, revise, split, blocked, or stop.",
+        },
+        {
+            **base,
+            "category": "app-will-not-start",
+            "symptom": "The target app will not start and the user cannot tell whether this is setup, app code, dependency, or environment trouble.",
+            "classification": "local-app-blocker",
+            "owner_surface": "docs/PRECODE-TROUBLESHOOTING.md",
+            "first_checks": ["python3 scripts/next-step.py", "python3 scripts/completion-check.py"],
+            "beginner_prompt": "Name the start command and error, classify whether the blocker belongs to setup, app code, dependency, or environment, and do not change app code until the owner is clear.",
+        },
+        {
+            **base,
+            "category": "auth-demo-or-support-ownership-blocker",
+            "symptom": "Auth, demo, support, or secrets context is blocking progress and ownership is unclear.",
+            "classification": "support-ownership-blocker",
+            "owner_surface": "docs/PRECODE-SUPPORT-RUNBOOK.md",
+            "first_checks": ["python3 scripts/next-step.py"],
+            "beginner_prompt": "Name the missing owner, credential, demo step, or support decision; do not touch secrets or external systems while ownership is unclear.",
+        },
+        {
+            **base,
+            "category": "stop-or-continue-uncertainty",
+            "symptom": "The user cannot decide whether to keep going, stop, split, or ask for help.",
+            "classification": "stop-or-continue",
+            "owner_surface": "tasks/reference/PROMPT-PATTERNS.md",
+            "first_checks": ["python3 scripts/next-step.py", "python3 scripts/files-in-play-check.py"],
+            "beginner_prompt": "Ask the agent to summarize the next safe action, forbidden next action, and whether this should continue, stop, split, or wait for approval.",
+        },
+    ]
+
+
+def assert_recovery_scenario_harness(fixtures: list[dict[str, Any]], failures: list[dict[str, str]]) -> None:
+    expected_categories = {
+        "wrong-folder-or-partial-setup",
+        "copied-excluded-private-or-generated-files",
+        "stale-or-edited-generated-report",
+        "missing-proof-or-checks-failed",
+        "approval-happened-too-quickly",
+        "app-will-not-start",
+        "auth-demo-or-support-ownership-blocker",
+        "stop-or-continue-uncertainty",
+    }
+    actual_categories = {str(fixture.get("category")) for fixture in fixtures}
+    for category in sorted(expected_categories - actual_categories):
+        failures.append({"scenario": "recovery scenario harness category", "expected": category, "actual": "missing"})
+
+    for fixture in fixtures:
+        category = str(fixture.get("category") or "unknown")
+        if fixture.get("owner_protocol") != "tasks/reference/RECOVERY-PROTOCOL.md":
+            failures.append(
+                {
+                    "scenario": f"recovery fixture protocol: {category}",
+                    "expected": "tasks/reference/RECOVERY-PROTOCOL.md",
+                    "actual": str(fixture.get("owner_protocol")),
+                }
+            )
+        for key in ("advisory_only", "synthetic_fixture", "generated_evidence_only"):
+            if fixture.get(key) is not True:
+                failures.append({"scenario": f"recovery fixture {key}: {category}", "expected": "true", "actual": str(fixture.get(key))})
+        for key in (
+            "repair_approval",
+            "rollback_approval",
+            "setup_update_approval",
+            "transition_approval",
+            "external_mutation_approval",
+        ):
+            if fixture.get(key) is not False:
+                failures.append({"scenario": f"recovery fixture {key}: {category}", "expected": "false", "actual": str(fixture.get(key))})
+        first_checks = fixture.get("first_checks") if isinstance(fixture.get("first_checks"), list) else []
+        if not first_checks or len(first_checks) > 3:
+            failures.append({"scenario": f"recovery fixture first checks: {category}", "expected": "1-3 checks", "actual": str(first_checks)})
+        for key in ("symptom", "classification", "owner_surface", "beginner_prompt"):
+            if not str(fixture.get(key) or "").strip():
+                failures.append({"scenario": f"recovery fixture {key}: {category}", "expected": key, "actual": "missing"})
+        forbidden_actions = [str(action).lower() for action in (fixture.get("forbidden_actions") or [])]
+        for action in RECOVERY_FIXTURE_FORBIDDEN_ACTIONS:
+            if action.lower() not in forbidden_actions:
+                failures.append({"scenario": f"recovery fixture forbidden action: {category}", "expected": action, "actual": str(forbidden_actions)})
 
 
 def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status: str, failures: list[dict[str, str]]) -> None:
@@ -483,6 +641,8 @@ def main() -> int:
         assert_recovery_flow(f"next-step recovery: {name}", payload, expected, failures)
         assert_router_contract(f"next-step router: {name}", payload, failures)
 
+    recovery_fixture_scenarios = recovery_scenario_fixtures()
+    assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
 
@@ -855,6 +1015,7 @@ def main() -> int:
         "scenario_count": len(next_scenarios)
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
+        + len(recovery_fixture_scenarios)
         + len(stable_fix_scenarios)
         + len(depth_scenarios)
         + len(run_contract_scenarios)

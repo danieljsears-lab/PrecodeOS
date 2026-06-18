@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-15
+Document version: v0.1.11
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -204,6 +204,71 @@ Follow-up or promotion path:
 
 The output is a review recommendation only. It does not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, or replace recorded checks and manual verification.
 
+### Requirements Gap And Conflict Review Skill
+
+```text
+Name: Requirements Gap And Conflict Review Skill
+Purpose: Help a user inspect a PRD, spec, design note, or requirement set for ambiguity, conflicts, missing edge cases, unstated assumptions, and weak acceptance before approval or implementation.
+Load when: The user asks for Requirements Gap And Conflict Review, asks whether requirements are clear enough to approve, asks for PRD/spec conflict review, or needs to catch requirement drift before bead derivation, design promotion, or implementation.
+Owner protocol or adapter: `tasks/reference/PRD-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, and `modes/REVIEW.md`
+Allowed actions: Read the supplied PRD/spec/source, load only the owner files needed to understand authority, compare the requirement set against PRD approval and verification expectations, identify gaps, conflicts, missing edge cases, unstated assumptions, acceptance weaknesses, and owner-file follow-ups, and return advisory questions and suggested fixes.
+Forbidden actions: Edit files, approve PRDs, approve design promotion, activate beads, create tasks, start implementation, rewrite owner files, accept implementation, run mutating commands, treat review output as proof, or convert findings into implementation instructions.
+Generated evidence, if any: None in v1. The conversational review is review input only until the user promotes accepted fixes through the PRD, owner file, decision, review bead, candidate bead, or normal approval path.
+User approval required before: Any file edit, PRD approval, owner-file update, bead proposal/activation, implementation, review acceptance, external mutation, sensitive-surface action, or command execution beyond read-only inspection.
+Stop conditions: The review target is missing; authority files are unclear; source inputs conflict in a way that changes implementation; requirement IDs or acceptance oracles are absent for approval-bound work; sensitive-surface decisions are unresolved; or the user asks the skill to approve, rewrite, activate, or implement.
+Promotion path for findings: Promote accepted findings only through PRD amendment, `DECISIONS.md`, the relevant owner file, Architecture Shaping, Review mode, a candidate/approved bead, or reviewed memory after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Review target:
+Authority checked:
+Requirement gaps:
+Conflicts:
+Missing edge cases:
+Unstated assumptions:
+Acceptance weaknesses:
+Suggested owner-file updates:
+Stop conditions:
+Recommendation: revise | clarify | split | ready-for-human-approval-review | stop
+```
+
+The output is advisory review input only. It does not approve the PRD, accept design promotion, create implementation instructions, activate work, or replace human approval.
+
+### Maintainer Package Review Skill
+
+```text
+Name: Maintainer Package Review Skill
+Purpose: Help Dan maintain PrecodeOS as an OS package without treating the package as an app runtime or turning private maintainer context into public authority.
+Load when: Dan asks to maintain, review, roadmap-plan, boundary-check, design, or assess changes to the PrecodeOS package itself, especially when the question involves public/private boundaries, skill playbooks, extension review, roadmap fit, maintainer changelog impact, protocol impact, public reference-document impact, release-readiness posture, or package-health analysis.
+Owner protocol or adapter: `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/PRECODE-ROADMAP.md`, `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`, and `tasks/reference/EXTENSION-PROTOCOL.md`
+Allowed actions: Read `_maintainer/MAINTAINER-NOTES.md` first, then load only the maintainer roadmap, strategy, public package, protocol, reference, changelog, inventory, or boundary files relevant to the package-maintenance question; perform static package, roadmap, boundary, protocol-impact, reference-document, changelog-impact, and extension analysis; identify owner files, promotion path, validation path, and safe implementation scope; and return a bounded maintainer plan.
+Forbidden actions: Read normal active memory for this skill, run Precode as an app, launch app runtimes, edit files during planning, write generated evidence, activate beads, approve PRDs, approve transitions, approve review decisions, publish, deploy, install, update, mutate external systems, add command-wrapper behavior, add registries, create optional packs, or make maintainer files part of public package authority.
+Generated evidence, if any: None in v1. Conversational output is maintainer planning input only until Dan promotes accepted findings through the relevant public owner file, maintainer roadmap, changelog, protocol, reference document, PRD, decision, or approved bead.
+User approval required before: Any file edit, public package change, maintainer changelog update, roadmap update, protocol/reference update, generated-evidence write, PRD approval, bead proposal/activation, transition approval, review acceptance, command execution beyond read-only inspection, external mutation, publication, deployment, installation, update behavior, registry behavior, optional-pack behavior, or sensitive-surface action.
+Stop conditions: The goal is ambiguous enough that package surface, owner files, or done criteria cannot be named; the request would treat PrecodeOS as an app runtime; public/private authority boundaries are unclear; maintainer-private material would become public authority; normal active memory would be loaded as maintainer context; implementation would skip required changelog, protocol, or reference-document follow-through; or the proposal implies installer, update-channel, package-manager, registry, optional-pack, command-wrapper, external-mutation, release, or deployment behavior without a separate approved package change.
+Promotion path for findings: Promote accepted findings only through `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/CHANGELOG.md`, the relevant public protocol or reference document, a PRD, `DECISIONS.md`, another public authority file, or a candidate/approved bead after Dan review.
+```
+
+When invoked, use Plan Mode or an equivalent read-only planning posture when the host supports it. Return exactly these fields:
+
+```text
+Title:
+Summary:
+Relevant context and owner files:
+Proposed package or roadmap change:
+Public/private boundary notes:
+Risks and challenged assumptions:
+Maintainer changelog impact:
+Protocol impact:
+Public reference-document impact:
+Validation plan:
+Explicit assumptions:
+```
+
+The output is maintainer planning input only. It does not implement changes, approve work, activate beads, publish package state, or make private maintainer context public package authority.
+
 ### Skill / Extension Review Skill
 
 ```text
@@ -289,10 +354,11 @@ The output is an extension-shape review only. It does not approve the extension,
 ### Maintainer Package Review Skill
 
 - Purpose: help maintain PrecodeOS as an OS package, not an app runtime.
-- Owner sources: `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/PRECODE-ROADMAP.md`, and `tasks/reference/EXTENSION-PROTOCOL.md`.
-- Allowed actions: perform static package analysis, identify owner files, compare against package boundaries, and recommend a safe promotion path.
-- Forbidden actions: run Precode as an app, publish, deploy, mutate external repository settings, activate beads, or make maintainer files part of public package authority.
+- Owner sources: `_maintainer/MAINTAINER-NOTES.md`, `_maintainer/PRECODE-ROADMAP.md`, `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`, `tasks/reference/EXTENSION-PROTOCOL.md`, and only the package references relevant to the maintainer question.
+- Allowed actions: read maintainer notes first, inspect relevant package/roadmap/protocol/reference/changelog surfaces, identify owner files and boundary risks, and return a bounded maintainer plan.
+- Forbidden actions: read normal active memory for this skill, run Precode as an app, edit files during planning, write generated evidence, publish, deploy, install, update, mutate external systems, activate beads, approve PRDs/transitions/reviews, add wrappers/registries/optional packs, or make maintainer files public package authority.
 - Gain: keeps package health, public/private boundary, roadmap, release-readiness, and maintainer context easier to invoke consistently.
+- Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Skill / Extension Review Skill
 
@@ -307,32 +373,35 @@ The output is an extension-shape review only. It does not approve the extension,
 
 ```text
 Name: Product Conviction Packet Skill
-Purpose: Help a first-time non-technical builder research, explore, challenge, and package a rough idea before Precode Local Source Intake.
+Purpose: Help a first-time non-technical builder run a guided product-coach interview that researches, explores, challenges, clarifies, and packages a rough idea before Precode Local Source Intake.
 Load when: The user asks for an idea coach, Product Conviction Packet, pre-repo discovery, first-time founder discovery, SnapCamp/bootcamp idea shaping, or a skill-style product-discovery request before PRD creation.
 Owner protocol or adapter: `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`, `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, and `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md`
-Allowed actions: Interview one question at a time, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, challenge broad audience/missing workaround/risky scope/weak evidence supportively, and produce a Conviction Packet plus Local Source Intake handoff prompt.
-Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
+Allowed actions: Interview one question at a time, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, run a Challenge And Clarity pass, challenge broad audience/missing workaround/risky scope/weak evidence supportively but firmly, rate evidence strength, translate possible features into candidate capabilities, classify Local Source Intake readiness, and produce a Conviction Packet plus Local Source Intake handoff prompt.
+Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, create a roadmap or backlog, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
 Generated evidence, if any: None in Precode v1; the conversational output is source evidence that the user may later paste or store as local source material.
 User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, or sensitive-surface action.
 Stop conditions: The idea has no named user problem, no current workaround or evidence, sensitive information is being pasted, the first slice is too large to reason about, evidence is weak enough to require Product Discovery Interview Skill / Product Discovery Validation, or the user is asking to jump directly from raw discovery to coding.
 Promotion path for findings: Bring the reviewed Conviction Packet into Local Source Intake; promote only through the PRD, `PRODUCT.md`, `DECISIONS.md`, another owner file, or a candidate/approved bead after user review.
 ```
 
-When invoked, return a compact `Product Brief` first, then a `Conviction Packet` when the idea is ready. The Conviction Packet should include:
+When invoked, run as a guided interview inside Claude Code or an equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. Return a compact `Product Brief` first, then run Challenge And Clarity, Evidence And Assumption Check, Candidate Capability Matrix, and a `Conviction Packet` when the idea is ready. The Conviction Packet should include:
 
 - idea in plain English
 - intended user and situation
 - painful before moment
 - better after moment
 - current workaround or evidence
+- evidence strength: very weak | weak | medium | strong | strongest
 - strongest evidence
 - weakest assumption
+- what would change our mind
 - guided research notes with source links, dates or recency when available, confidence, and uncertainty
 - MVP-ready first slice
 - not-yet list
 - smallest learning step
 - sensitive surfaces
 - recommended next Precode path
+- Local Source Intake readiness
 - Local Source Intake handoff prompt
 
 ## Manifest Contract
@@ -374,7 +443,8 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Product Discovery Interview Skill | Implemented | Worth-building interview prompt; keep it evidence-only and subordinate to Product Discovery Validation. |
 | Small Team Collaboration Lane Skill | Implemented | Team coordination prompt; keep it read-only, explicit, branch/worktree-isolated, and subordinate to the Small Team Collaboration Lane protocol. |
 | Review / Acceptance Skill | Implemented | Evidence-tied bead acceptance review prompt; keep it recommendation-only and subordinate to closeout, verification, and Review mode. |
-| Maintainer Package Review Skill | P1/P2 | Useful for maintainer leverage and preserving the "Precode as package" frame. |
+| Requirements Gap And Conflict Review Skill | Implemented | Pre-approval requirements/spec review prompt; keep it advisory-only and subordinate to PRD Protocol, Verification Guardrail, and Review mode. |
+| Maintainer Package Review Skill | Implemented | Maintainer package-analysis prompt; keep it read-only, Plan Mode-oriented when available, and subordinate to maintainer notes, roadmap authority, Skill Playbook Protocol, and Extension Protocol. |
 | Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |
 | No-Engineer Fallback Prompt Pack | Implemented outside skill set | Implemented as Prompt Patterns and user/support docs, not a skill playbook; keep it subordinate to Recovery Protocol and approval gates. |
 | Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |

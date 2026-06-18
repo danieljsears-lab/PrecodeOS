@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-15
+Document version: v0.1.13
+Last updated: 2026-06-17
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -134,6 +134,8 @@ The agent must stop implementation and answer with:
 - forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval
 
 Use `tasks/reference/RECOVERY-PROTOCOL.md` for the full path. OS Health, Doctor Dashboard, `next-step.py`, and stable-fix eligibility are diagnostic evidence only; they do not approve repair. Doctor Dashboard triage labels explain what to ask and what not to approve, but they do not create approval.
+
+For a small repair that looks stable-fix eligible, ask for the Bugfix Spec Lane before editing. The agent should name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision, then stop if owner, route, or proof is unclear.
 
 If you can name the symptom but do not know the right recovery path, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It gives short prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments without approving repair or mutation.
 

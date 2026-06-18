@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-06
+Document version: v0.1.12
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -25,7 +25,7 @@ Use `PRODUCT.md` as the builder-facing product constitution when the idea may af
 For a net-new, rough product idea from a non-technical builder, the default path is:
 
 ```text
-Product Ideation Workbook -> Product Brief -> guided research/challenge -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> Architecture Shaping when risk-triggered -> bead proposals
+Product Ideation Workbook -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> Architecture Shaping when risk-triggered -> bead proposals
 ```
 
 Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
@@ -146,7 +146,7 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 
 Capture the request in the builder's words before turning it into implementation.
 
-For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority. If the builder is working before repo setup, a Cowork or Claude-style idea coach may help produce the same Product Brief and Conviction Packet outside Precode; Local Source Intake is still required before promotion.
+For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority. If the builder is working before repo setup, Precode Idea Coach may run as a guided product-coach interview inside Claude Code, Claude, Codex, or another equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. Local Source Intake is still required before promotion.
 
 Use a founder-friendly question budget during early intake: after at most three high-level product or business questions, produce a short `Product Brief` and one next best question. The Product Brief is evidence only and should include:
 
@@ -162,6 +162,8 @@ Use a founder-friendly question budget during early intake: after at most three 
 
 Early questions should ask about the user, pain, before/after moment, current workaround, evidence, business constraint, scope boundary, and what not to build yet. Do not ask the builder to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior unless a concrete risk has already surfaced.
 
+After the Product Brief, run a Challenge And Clarity pass before packaging the idea. Push back on broad users, vague pain, solution-first framing, missing current workaround, weak evidence, premature feature lists, oversized MVP slices, and sensitive surfaces. The pass should force plain-English answers for the intended user, painful before moment, better after moment, current workaround or evidence, weakest assumption, first useful slice, what would change our mind, and smallest non-code learning step. It should stop when clarity is good enough for the next Precode step and move non-blocking concerns to `Not yet`, `Needs discovery`, or `Open questions`.
+
 When the Product Brief is stable enough for deeper pre-PRD thinking, produce a Conviction Packet rather than a feature list. The packet should package MVP-ready confidence and the limits of that confidence:
 
 - idea in plain English
@@ -169,14 +171,17 @@ When the Product Brief is stable enough for deeper pre-PRD thinking, produce a C
 - painful before moment
 - better after moment
 - current workaround or evidence
+- evidence strength
 - strongest evidence
 - weakest assumption
+- what would change our mind
 - guided research notes with source links, dates or recency when available, confidence, and uncertainty
 - MVP-ready first slice
 - not-yet list
 - smallest learning step
 - sensitive surfaces
 - recommended next Precode path
+- Local Source Intake readiness
 
 Route weak, broad, paid, market-facing, evidence-poor, or solution-first packets through Product Discovery Validation before drafting a PRD.
 

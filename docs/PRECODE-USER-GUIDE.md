@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.46
-Last updated: 2026-06-15
+Document version: v0.7.48
+Last updated: 2026-06-17
 
 
 
@@ -38,22 +38,26 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 
 ## Before Your Repo Exists
 
-If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, the agent is a thinking coach. It can interview you, guide research, challenge weak assumptions, and help produce a Conviction Packet.
+If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, run `Precode Idea Coach` as a guided product-coach interview. The agent can interview you, guide research, challenge weak assumptions, force clearer answers, and help produce a Conviction Packet.
 
-The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path.
+The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.
 
 Say this:
 
 ```text
-Use the Product Conviction Packet path as my pre-repo idea coach.
+Use Precode Idea Coach / the Product Conviction Packet Skill as my pre-repo guided product coach.
 
-I am a first-time non-technical builder with a rough product idea. Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively, but do not decide for me.
+I am a first-time non-technical builder with a rough product idea. Run this as a guided interview inside Claude Code or an equivalent agent surface. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
+
+Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively but firmly, but do not decide for me.
+
+Push back when the user is too broad, the painful before moment is vague, the current workaround is missing, evidence is weak, the idea is solution-first, the first slice is too large, or I jump into features before the user moment is clear.
 
 Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
-When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
+When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
-Do not write a PRD, create beads, update PRODUCT.md, or code.
+Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
 ```
 
 When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
@@ -64,18 +68,26 @@ If you are a non-technical builder with a net-new, rough product idea, start wit
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 
-Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, or create a PRD from the workbook by itself.
+Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a guided product coach. The agent can interview you, help research sources, challenge assumptions, force clarity, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, create a PRD, or create a roadmap or backlog from the workbook by itself.
 
 To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.
+
+The flow is:
+
+```text
+Open Claude Code or equivalent -> invoke Precode Idea Coach -> guided interview -> Product Brief -> Challenge And Clarity pass -> Conviction Packet -> Local Source Intake
+```
 
 Say this:
 
 ```text
 I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
 
-Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.
+Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
+
+Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
 ```
 
 The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake. The later Conviction Packet is also evidence only; it packages MVP-ready clarity for intake, not implementation permission.
@@ -84,14 +96,14 @@ Follow the workbook steps:
 
 1. Make a copy of the workbook.
 2. Pick one product idea.
-3. Paste the thinking-coach prompt into Claude or Codex.
+3. Paste the guided product-coach prompt into Claude Code, Claude, Codex, or an equivalent agent.
 4. Fill out product-level thinking first.
 5. Gather source-cited research.
 6. Separate what you know, what you think, and what you need help deciding.
-7. Challenge the idea before turning it into features.
+7. Run the Challenge And Clarity pass before turning the idea into features.
 8. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
 9. Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.
-10. Ask for the Conviction Packet / Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.
+10. Ask for the Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness and a Candidate Goal Frame if durable intent is clear.
 11. Bring only that packet into Precode Local Source Intake.
 12. In a bootcamp Experience Design flow, use the packet's Design Canvas Input Prompt to create a focused design-tool brief from the approved PRD input, reference images, workflow examples, and not-yet boundaries.
 13. Use the approved PRD input and Experience artifacts to complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`, including the Core Spine Gate and feedback status, before Claude Code creates the first implementation bead.
@@ -412,7 +424,13 @@ For a small repair, ask the agent to check stable-fix eligibility:
 Use next-step stable-fix eligibility. Tell me whether this is an eligible stable fix, needs evidence, recovery repair, or broader change. Do not edit, release, roll back, approve a transition, or change setup/update behavior from the classifier alone.
 ```
 
-An eligible stable fix should be narrow, owned by a clear file, already validated, and not a new behavior, release change, sensitive change, destructive action, setup/update decision, or workaround for broken state. If the classifier says `needs_evidence`, ask for the missing checks. If it says `recovery_repair`, stay in the Recovery Protocol. If it says `broader_change`, use a normal bead, PRD, or release-readiness path.
+Before the agent edits a repair that looks eligible, ask for the Bugfix Spec Lane:
+
+```text
+Use the Bugfix Spec Lane before editing this small repair. Name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. Do not edit until the owner file, route, and proof path are clear.
+```
+
+An eligible stable fix should be narrow, owned by a clear file, already validated, and not a new behavior, release change, sensitive change, destructive action, setup/update decision, or workaround for broken state. If the classifier says `needs_evidence`, ask for the missing checks. If it says `recovery_repair`, stay in the Recovery Protocol. If it says `broader_change`, use a normal bead, PRD, or release-readiness path. The bugfix spec helps frame the repair, but it does not approve edits, acceptance, rollback, release, setup/update mutation, transition, destructive commands, or generated proof.
 
 Why this matters: The safest recovery move is usually a clean stop plus a clear owner file. You are not expected to know the repair path before asking.
 

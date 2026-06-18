@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-06-15
+Document version: v0.1.29
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -211,9 +211,15 @@ Treat the output as evidence only. Do not write a PRD, update PRODUCT.md, create
 ```text
 Use the Maintainer Package Review Skill.
 Treat PrecodeOS as an OS package I maintain, not as an app to execute.
-Read _maintainer/MAINTAINER-NOTES.md first, then load only the maintainer roadmap, strategy, or reference file relevant to this package-maintenance question.
-Use the Extension Protocol and Skill Playbook Protocol for any proposed package capability.
-Do static package analysis only unless I explicitly ask for mutation.
+Use Plan Mode or an equivalent read-only planning posture when available.
+
+Read _maintainer/MAINTAINER-NOTES.md first, then load only the maintainer roadmap, strategy, package reference, protocol, changelog, inventory, or boundary file relevant to this package-maintenance question. Do not read AGENT.md, DECISIONS.md, or tasks/todo.md for this maintainer review.
+
+Use the Skill Playbook Protocol and Extension Protocol for any proposed package capability, skill playbook, adapter, protocol, generated report, command wrapper, registry, optional pack, external integration, install/update behavior, or package-health surface.
+
+Return: Title, Summary, Relevant context and owner files, Proposed package or roadmap change, Public/private boundary notes, Risks and challenged assumptions, Maintainer changelog impact, Protocol impact, Public reference-document impact, Validation plan, and Explicit assumptions.
+
+Do static package analysis only unless I explicitly ask for mutation outside planning mode. Do not run Precode as an app, edit files during planning, write generated evidence, activate beads, approve PRDs, approve transitions, approve review decisions, publish, deploy, install, update, mutate external systems, add command-wrapper behavior, add registries, create optional packs, or make maintainer files part of public package authority.
 ```
 
 ### Skill / Extension Review Skill
@@ -245,19 +251,30 @@ Recommend only accepted, revise, split, blocked, or stop. Do not accept implemen
 ```text
 Use the Product Conviction Packet Skill as my pre-repo idea coach.
 
-I am a first-time non-technical builder with a rough product idea. Help me research, explore, challenge, and narrow the idea before I create a PRD or ask anyone to code.
+I am a first-time non-technical builder with a rough product idea. Run this as a guided PrecodeOS product-coach interview inside Claude Code, Claude, Codex, or an equivalent agent surface. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
 
-Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Help me research, explore, challenge, and narrow the idea before I create a PRD or ask anyone to code. Use plain language. If you use a product-management term, define it in one sentence.
+
+Stage 1: Orientation. Confirm we are discussing one idea, name the user type if known, and remind me not to paste secrets, credentials, billing data, private customer records, raw transcripts, dashboard values, production config, or sensitive personal data.
+
+Stage 2: First Three Questions. Interview me one question at a time. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+Stage 3: Challenge And Clarity. Challenge me supportively but firmly when the audience is too broad, the painful moment is vague, the problem is framed as a solution, the current workaround is missing, evidence is weak, scope is too large, feature lists appear before user moments are clear, or sensitive surfaces appear. Force plain-English answers for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice. Do not debate endlessly; move non-blocking concerns to Not yet.
+
+Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the strongest evidence, weakest assumption, what would change our mind, and the smallest non-code learning step.
+
+Stage 5: Candidate Capability Matrix. Translate possible features into candidate capabilities, not approved requirements:
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
 
 Guide source-cited research when useful. For each source, include the link, date or recency if available, the claim it supports, confidence, uncertainty, and what question it helps answer. Treat research as weak evidence unless it shows user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
-Challenge me supportively but firmly when the audience is too broad, the painful moment is vague, the current workaround is missing, evidence is weak, scope is too large, or sensitive surfaces appear.
-
 If worth-building uncertainty becomes the main question, route me to the Product Discovery Interview Skill / Product Discovery Validation instead of trying to turn weak evidence into a Conviction Packet.
 
-When ready, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
+Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
-Do not write a PRD, create beads, update PRODUCT.md, or code.
+Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
 ```
 
 ### Precode Conviction Handoff
@@ -390,6 +407,52 @@ Before naming modules, interfaces, tests, fixtures, routes, or UI labels, compar
 
 ```text
 Review this PRD as a destination document. Confirm the user problem, domain language, non-goals, before/after moment, plain-English acceptance checks, stale source inputs, agent-facing technical translation, and smallest first vertical slice. Do not activate any bead.
+```
+
+## Requirements Gap And Conflict Review
+
+```text
+Use Requirements Gap And Conflict Review.
+
+Review this PRD, spec, design note, or requirement set before PRD approval, design promotion, bead derivation, or implementation.
+
+Load the PRD Protocol, Verification Guardrail Protocol, the requirement source I provide, and only the owner files needed to understand authority. Check the requirement set as a whole for ambiguous language, conflicting constraints, missing edge cases, unstated assumptions, stale or conflicting source inputs, unverifiable acceptance oracles, and owner-file follow-ups needed before implementation.
+
+Return exactly:
+
+Review target:
+Authority checked:
+Requirement gaps:
+Conflicts:
+Missing edge cases:
+Unstated assumptions:
+Acceptance weaknesses:
+Suggested owner-file updates:
+Stop conditions:
+Recommendation: revise | clarify | split | ready-for-human-approval-review | stop
+
+Ask questions and suggest fixes only. Do not approve the PRD, rewrite owner files, create or activate beads, convert findings into implementation instructions, accept design promotion, run mutating commands, or treat the review output as proof.
+```
+
+## Bugfix Spec Lane
+
+```text
+Use the Bugfix Spec Lane before editing this small repair.
+
+Load the active bead, the likely owner file, the Recovery Protocol, and the Verification Guardrail Protocol. Return a compact bugfix spec with:
+
+Current behavior:
+Expected behavior:
+Unchanged behavior:
+Owner file:
+Root cause if known:
+Fix approach:
+Regression proof:
+Route decision: current_bead | needs_evidence | recovery_repair | PRD/bead | release_readiness
+
+Do not edit yet. If the owner file, route decision, or proof path is unclear, stop and ask for the missing information or checks first.
+
+Treat this spec as advisory only. It does not approve repair, accept implementation, approve a PRD, activate a bead, approve release, approve rollback, approve setup/update mutation, approve destructive commands, create implementation tasks, or become generated proof.
 ```
 
 ## Bead Decomposition

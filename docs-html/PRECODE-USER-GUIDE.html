@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-15">
+  <meta name="generated-at" content="2026-06-17">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.46</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.47</span><span>Updated 2026-06-17</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -206,33 +206,41 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>If you are helping someone else adopt PrecodeOS, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code>. If setup, active state, validation, or generated reports feel wrong, use <code>docs/PRECODE-TROUBLESHOOTING.md</code> before editing files.</p>
 <p>Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.</p>
 <h2 id="before-your-repo-exists">Before Your Repo Exists</h2>
-<p>If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, the agent is a thinking coach. It can interview you, guide research, challenge weak assumptions, and help produce a Conviction Packet.</p>
-<p>The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path.</p>
+<p>If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, run <code>Precode Idea Coach</code> as a guided product-coach interview. The agent can interview you, guide research, challenge weak assumptions, force clearer answers, and help produce a Conviction Packet.</p>
+<p>The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.</p>
 <p>Say this:</p>
-<pre><code class="language-text">Use the Product Conviction Packet path as my pre-repo idea coach.
+<pre><code class="language-text">Use Precode Idea Coach / the Product Conviction Packet Skill as my pre-repo guided product coach.
 
-I am a first-time non-technical builder with a rough product idea. Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively, but do not decide for me.
+I am a first-time non-technical builder with a rough product idea. Run this as a guided interview inside Claude Code or an equivalent agent surface. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
+
+Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively but firmly, but do not decide for me.
+
+Push back when the user is too broad, the painful before moment is vague, the current workaround is missing, evidence is weak, the idea is solution-first, the first slice is too large, or I jump into features before the user moment is clear.
 
 Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
-When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, and Local Source Intake handoff prompt.
+When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
-Do not write a PRD, create beads, update PRODUCT.md, or code.</code></pre>
+Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.</code></pre>
 <p>When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.</p>
 <h2 id="use-the-product-ideation-workbook-before-precode">Use The Product Ideation Workbook Before Precode</h2>
 <p>If you are a non-technical builder with a net-new, rough product idea, start with <code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> before asking Precode to update <code>PRODUCT.md</code>, write a PRD, create beads, or code.</p>
 <p>Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.</p>
-<p>Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a thinking coach. The agent can interview you, help research sources, challenge assumptions, and organize your thoughts. It must not decide the product for you, write code, edit <code>PRODUCT.md</code>, or create a PRD from the workbook by itself.</p>
+<p>Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a guided product coach. The agent can interview you, help research sources, challenge assumptions, force clarity, and organize your thoughts. It must not decide the product for you, write code, edit <code>PRODUCT.md</code>, create a PRD, or create a roadmap or backlog from the workbook by itself.</p>
 <p>To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.</p>
+<p>The flow is:</p>
+<pre><code class="language-text">Open Claude Code or equivalent -&gt; invoke Precode Idea Coach -&gt; guided interview -&gt; Product Brief -&gt; Challenge And Clarity pass -&gt; Conviction Packet -&gt; Local Source Intake</code></pre>
 <p>Say this:</p>
 <pre><code class="language-text">I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
 
-Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.</code></pre>
+Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
+
+Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.</code></pre>
 <p>The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake. The later Conviction Packet is also evidence only; it packages MVP-ready clarity for intake, not implementation permission.</p>
 <p>Follow the workbook steps:</p>
-<ol><li>Make a copy of the workbook.</li><li>Pick one product idea.</li><li>Paste the thinking-coach prompt into Claude or Codex.</li><li>Fill out product-level thinking first.</li><li>Gather source-cited research.</li><li>Separate what you know, what you think, and what you need help deciding.</li><li>Challenge the idea before turning it into features.</li><li>Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.</li><li>Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.</li><li>Ask for the Conviction Packet / Precode Ingestion Packet, including a Candidate Goal Frame if durable intent is clear.</li><li>Bring only that packet into Precode Local Source Intake.</li><li>In a bootcamp Experience Design flow, use the packet&#x27;s Design Canvas Input Prompt to create a focused design-tool brief from the approved PRD input, reference images, workflow examples, and not-yet boundaries.</li><li>Use the approved PRD input and Experience artifacts to complete <code>tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md</code>, including the Core Spine Gate and feedback status, before Claude Code creates the first implementation bead.</li><li>After the coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.</li></ol>
+<ol><li>Make a copy of the workbook.</li><li>Pick one product idea.</li><li>Paste the guided product-coach prompt into Claude Code, Claude, Codex, or an equivalent agent.</li><li>Fill out product-level thinking first.</li><li>Gather source-cited research.</li><li>Separate what you know, what you think, and what you need help deciding.</li><li>Run the Challenge And Clarity pass before turning the idea into features.</li><li>Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.</li><li>Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.</li><li>Ask for the Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness and a Candidate Goal Frame if durable intent is clear.</li><li>Bring only that packet into Precode Local Source Intake.</li><li>In a bootcamp Experience Design flow, use the packet&#x27;s Design Canvas Input Prompt to create a focused design-tool brief from the approved PRD input, reference images, workflow examples, and not-yet boundaries.</li><li>Use the approved PRD input and Experience artifacts to complete <code>tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md</code>, including the Core Spine Gate and feedback status, before Claude Code creates the first implementation bead.</li><li>After the coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.</li></ol>
 <p>When you are ready, say this inside Precode:</p>
 <pre><code class="language-text">Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 

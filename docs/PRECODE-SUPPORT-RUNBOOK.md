@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-06-15
+Document version: v0.1.26
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -57,6 +57,8 @@ Support should help the user get a prescriptive diagnosis without taking over pr
 Good first checks are usually `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, or `python3 scripts/os-health.py`, depending on the symptom.
 
 OS Health, Doctor Dashboard output, `next-step.py`, and stable-fix eligibility help diagnose only. Doctor Dashboard triage labels may say what to ask and what not to approve, but they do not approve repair, acceptance, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.
+
+For small repair claims, use the Bugfix Spec Lane before implementation. Ask the agent to name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. If the owner file, route, or proof path is unclear, keep the work in diagnosis instead of repair.
 
 When the user can name the symptom but cannot choose the recovery path, route them to the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It gives public-safe prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments. Do not treat the pack as support approval, repair approval, app-code approval, secrets handling, external mutation, rollback, setup/update mutation, transition approval, or a replacement for the Recovery Protocol.
 

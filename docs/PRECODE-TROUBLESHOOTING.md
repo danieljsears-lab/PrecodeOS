@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-15
+Document version: v0.1.14
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -63,6 +63,8 @@ Run next-step stable-fix eligibility and tell me the classification, required ro
 ```
 
 Use the result as routing help only. `eligible_stable_fix` can continue inside the current bead after recorded proof. `needs_evidence` needs verification. `recovery_repair` stays in the Recovery Protocol. `broader_change` needs release readiness, a PRD, or a normal bead. None of these classifications approve mutation, acceptance, release, rollback, transition, setup, or update behavior.
+
+Before editing a repair that appears eligible, ask for the Bugfix Spec Lane. The agent should name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. If the owner file, route, or proof path is unclear, stop before editing.
 
 If you can name the symptom but not the repair path, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It covers agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments. These prompts route back to the Recovery Protocol and do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-14
+Document version: v0.1.11
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -98,6 +98,8 @@ Use the smallest proof that controls the risk.
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
 
 Stable-fix eligibility requires recorded proof, not just a declared check. When `scripts/next-step.py --json` reports `stable_fix_eligibility.classification` as `needs_evidence`, record the narrowest check that proves the owner-file repair, then reassess before accepting the work. A passing `eligible_stable_fix` classification is still advisory; it does not replace Closeout Evidence, review, user approval, release readiness, or sensitive-surface gates.
+
+For Bugfix Spec Lane work, regression proof must show both sides of the repair: the named defect is fixed and the named unchanged behavior still holds. For code-changing bugfixes, prefer a failing-first check that fails for the defect before the repair, or a characterization check that pins existing behavior before the change. If failing-first or characterization proof is not practical, record why and use the narrowest available static, unit, integration, browser, or manual verification that covers current behavior, expected behavior, and unchanged behavior.
 
 Ralph can reduce false-done risk by rerunning validators and recording failures, but a passing Ralph summary is still not acceptance. The closeout and review decision must name the evidence that proves the bead's done-when target.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-14
+Document version: v0.1.12
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -217,7 +217,40 @@ Move unresolved implementation-changing questions into the PRD `Open Questions` 
 
 When a question becomes a hard decision, record it in `DECISIONS.md` and point back to it from the PRD.
 
-### 6. Approve The PRD
+### 6. Run Requirements Gap And Conflict Review
+
+Before PRD approval, design promotion, bead derivation, or implementation, run an advisory requirements review when the PRD or spec is broad, ambiguous, source-heavy, user-facing, risky, or likely to hide edge cases.
+
+The review checks the requirement set as a whole, not just individual rows. It should identify:
+
+- requirement gaps
+- conflicting constraints
+- missing edge cases
+- unstated assumptions
+- vague or unverifiable acceptance oracles
+- stale or conflicting source inputs
+- owner-file follow-ups needed before implementation
+
+Return questions and suggested fixes only. The review output is review input, not authority. It must not approve the PRD, rewrite owner files, create or activate beads, convert findings into implementation instructions, accept design promotion, or treat generated review text as proof.
+
+Use this stable output shape:
+
+```text
+Review target:
+Authority checked:
+Requirement gaps:
+Conflicts:
+Missing edge cases:
+Unstated assumptions:
+Acceptance weaknesses:
+Suggested owner-file updates:
+Stop conditions:
+Recommendation: revise | clarify | split | ready-for-human-approval-review | stop
+```
+
+Resolve implementation-changing findings before approval. Non-blocking concerns may remain only when they are explicitly named as non-blocking, moved to not-yet scope, or routed to a follow-up PRD amendment, owner-file update, architecture-shaping pass, review bead, or candidate bead.
+
+### 7. Approve The PRD
 
 Set status to `approved` only when:
 - goals and non-goals are clear
@@ -225,6 +258,7 @@ Set status to `approved` only when:
 - product-constitution fit has been checked when relevant
 - requirement IDs are stable
 - every requirement has an acceptance oracle
+- requirements review gaps, conflicts, assumptions, and acceptance weaknesses are resolved or explicitly non-blocking
 - risk and permission gates are explicit
 - approval risks and sensitive surfaces are named
 - architecture/project-context impacts are known
@@ -233,7 +267,7 @@ Set status to `approved` only when:
 - the feature can be compiled into `FEATURES.md`
 - bead proposals are narrow enough to execute one logical unit at a time
 
-### 7. Compile Into `FEATURES.md`
+### 8. Compile Into `FEATURES.md`
 
 `FEATURES.md` remains the compiled feature inventory.
 
@@ -246,7 +280,7 @@ After PRD approval, update `FEATURES.md` with:
 Do not copy the whole PRD into `FEATURES.md`.
 Compile only the stable feature summary and functional requirements, not the full narrative shard.
 
-### 8. Shape Architecture Risk When Needed
+### 9. Shape Architecture Risk When Needed
 
 After PRD approval and feature compilation, run `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before bead derivation when the approved PRD touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
 
@@ -254,7 +288,7 @@ Architecture Shaping produces an evidence-only Architecture Brief. The brief may
 
 If shaping reveals product-changing technical risk, return to PRD amendment or blocking open questions. If shaping reveals durable architecture facts, promote them into the correct owner file before treating them as authority.
 
-### 9. Derive Beads
+### 10. Derive Beads
 
 Create beads from the approved PRD.
 
@@ -279,7 +313,7 @@ Each bead must include:
 
 The PRD may propose beads, but `tasks/todo.md` and the bead transition command control which bead becomes active.
 
-### 9. Amend Carefully
+### 11. Amend Carefully
 
 If the PRD changes after beads exist:
 - add an amendment note in the PRD
@@ -305,6 +339,7 @@ A feature is ready for implementation when:
 - project-context and architecture impacts have an owning file or are explicitly none
 - product-constitution impacts have been checked when the work can change product direction
 - PRFAQ-lite or user-moment framing has prevented shallow solution-first requirements
+- requirements gap and conflict review has no unresolved implementation-changing findings
 - verification is known before code starts
 - the smallest first bead is identified and does not require multiple primary authority files
 - candidate beads pass the decomposition test or are explicitly marked `not a bead yet`
@@ -316,6 +351,7 @@ Stop before bead creation if:
 - requirement IDs are missing
 - acceptance checks are vague
 - non-goals are missing for broad work
+- requirements review finds unresolved gaps, conflicts, assumptions, edge cases, or acceptance weaknesses that change implementation scope
 - risks require a human decision
 - the feature would need route, schema, or security changes that have no owning authority file update
 

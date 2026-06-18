@@ -9,14 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.1.8
-Last updated: 2026-06-06
+Document version: v0.1.9
+Last updated: 2026-06-17
 
 ## Purpose
 
 Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, or create implementation work for a net-new, rough product idea.
 
-This workbook helps you gather your thoughts offline with Claude, Claude Cowork, Claude Code, Codex, or another agent as a thinking coach. It helps you research, explain, challenge, and narrow your idea so Precode can later ingest a clean Conviction Packet through Local Source Intake.
+This workbook helps you gather your thoughts offline with Claude, Claude Cowork, Claude Code, Codex, or another agent as a guided product coach. It helps you research, explain, challenge, and narrow your idea so Precode can later ingest a clean Conviction Packet through Local Source Intake.
 
 Important rule: this workbook is evidence, not authority. Nothing in this file becomes true for the project until you review it and Precode promotes stable conclusions into the right owner file.
 
@@ -65,6 +65,21 @@ Conviction means MVP-ready clarity, not proof that the idea is validated. You ar
 
 The Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code.
 
+## Guided Interview Process
+
+When you use this workbook inside Claude Code or another agent, run it as a guided interview instead of filling every section mechanically. Claude Code Plan Mode, or an equivalent planning mode, is useful when available because it keeps the session exploratory and non-mutating.
+
+The guided interview stages are:
+
+1. Orientation: confirm one idea, user type, and that you are not pasting sensitive information.
+2. First Three Questions: answer one high-level product or business question at a time, then get a Product Brief.
+3. Challenge And Clarity: let the agent push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces.
+4. Evidence And Assumption Check: rate evidence strength, name the weakest assumption, what would change your mind, and the smallest non-code learning step.
+5. Candidate Capability Matrix: translate possible features into candidate capabilities, not approved requirements.
+6. Handoff: produce the Conviction Packet, Local Source Intake readiness, and the exact Local Source Intake handoff prompt.
+
+Stop the interview when the idea is clear enough for the next Precode step. Move unresolved but non-blocking concerns into `Not yet`, `Needs discovery`, or `Open questions`.
+
 ## Stop Before You Paste Sensitive Information
 
 Do not paste:
@@ -95,9 +110,9 @@ Step 2. Choose one product idea to explore.
 
 Do not put every possible idea into one workbook. One workbook should cover one product concept or one major product direction.
 
-Step 3. Open Claude or Codex and paste the thinking-coach prompt.
+Step 3. Open Claude Code, Claude, Codex, or an equivalent agent and paste the guided product-coach prompt.
 
-Use the prompt in the next section. Ask the agent to interview you, challenge assumptions, and organize your thinking. After at most three high-level questions, make it produce a Product Brief so you can see progress before deeper discovery. Do not let the agent decide the product for you.
+Use the prompt in the next section. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask the agent to interview you, challenge assumptions, and organize your thinking. After at most three high-level questions, make it produce a Product Brief so you can see progress before deeper discovery. Do not let the agent decide the product for you.
 
 If you are in a bootcamp or sprint setting, paste the Bootcamp MVP Context Preamble first. It tells the agent to keep useful challenge, but stop expanding the idea beyond a small first version.
 
@@ -119,9 +134,9 @@ Use the fields:
 - I think
 - I need help deciding
 
-Step 7. Challenge the idea before turning it into features.
+Step 7. Run the Challenge And Clarity pass before turning the idea into features.
 
-Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet. For a 4-week MVP, ask it to separate blockers from concerns that can move to the not-yet list.
+Ask Claude or Codex to identify weak assumptions, missing user evidence, risky scope, vague success criteria, current alternatives, demand or pricing signals, and reasons not to build yet. Make it force plain-English answers for the intended user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice. For a 4-week MVP, ask it to separate blockers from concerns that can move to the not-yet list.
 
 Step 8. Use the Exploration Loop when you already have notes to reuse.
 
@@ -187,14 +202,29 @@ Only ask another question if the answer would prevent an unsafe, impossible, mis
 Remember: this workbook is evidence, not authority. Do not edit PRODUCT.md, create a PRD, create beads, or write code.
 ```
 
-### Thinking-Coach Prompt
+### Guided Product-Coach Prompt
 
 ```text
-Act as my product thinking coach for this workbook.
+Act as my guided PrecodeOS product coach for this workbook. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
 
-Help me research, ideate, challenge, and refine one product idea. Interview me one question at a time. Give me a recommended answer when useful, but do not decide for me. Use plain language, not product-management jargon. Separate what I know, what I think, and what I need help deciding. Challenge me gently when my idea is vague, too broad, unsupported, or risky. Do not write code. Do not create a PRD. Do not tell me to paste secrets, credentials, private customer data, dashboard values, billing details, or sensitive personal data.
+Help me research, ideate, challenge, and refine one product idea. Interview me one question at a time. Give me a recommended answer when useful, but do not decide for me. Use plain language, not product-management jargon. If you use a product-management term, define it in one sentence. Separate what I know, what I think, and what I need help deciding.
 
-After at most three high-level product or business questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Stage 1: Orientation. Confirm we are discussing one idea, name the user type if known, and remind me not to paste secrets, credentials, billing data, private customer records, raw transcripts, dashboard values, production config, or sensitive personal data.
+
+Stage 2: First Three Questions. Ask only high-level product or business questions at first. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+Stage 3: Challenge And Clarity. Challenge me supportively but firmly when my idea is vague, too broad, unsupported, solution-first, feature-first, risky, or too large. Force clear plain-English answers for the intended user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice.
+
+Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the strongest evidence, weakest assumption, what would change our mind, and smallest non-code learning step.
+
+Stage 5: Candidate Capability Matrix. Translate possible features into candidate capabilities, not approved requirements, with this matrix:
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
+
+Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet, Local Source Intake readiness, and Local Source Intake handoff prompt. If worth-building uncertainty is the main issue, recommend Product Discovery Validation instead of forcing a Conviction Packet.
+
+Do not write code. Do not create a PRD. Do not create beads. Do not update PRODUCT.md. Do not create a roadmap or backlog. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
 
 Start by asking me to describe the product idea in plain English.
 ```
@@ -212,7 +242,19 @@ Give me source-cited summaries. For each source, include the link, date or recen
 ```text
 Challenge this idea before I turn it into features.
 
-Identify weak assumptions, missing user evidence, risky scope, vague success criteria, privacy or safety concerns, sensitive surfaces, and reasons not to build yet. Sort them into Must decide now, Good enough for MVP, and Defer / Not yet. Keep the tone supportive and practical. Then recommend the smallest safe next learning step. Do not make the decision for me.
+Identify weak assumptions, missing user evidence, risky scope, vague success criteria, privacy or safety concerns, sensitive surfaces, and reasons not to build yet. Push back on broad users, vague pain, missing current workaround, research-only proof, premature feature lists, and oversized MVP slices.
+
+Force plain-English answers for:
+- intended user
+- painful before moment
+- better after moment
+- current workaround or evidence
+- weakest assumption
+- first useful slice
+- what would change my mind
+- smallest non-code learning step
+
+Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet. Keep the tone supportive and practical. Then recommend the smallest safe next learning step. Do not make the decision for me.
 ```
 
 ### Exploration Loop Prompt
@@ -297,10 +339,11 @@ Use this format:
 - Weakest assumption:
 - Current alternatives or workarounds:
 - Evidence strength:
+- What would change my mind:
 - Demand or pricing signal:
 - MVP-ready first slice:
 - Smallest non-code learning step:
-- What would change my mind:
+- Local Source Intake readiness:
 - Exploration Loop summary:
 - New things discovered during exploration:
 - Capability candidates:

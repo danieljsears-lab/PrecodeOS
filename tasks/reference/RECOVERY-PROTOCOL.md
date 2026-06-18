@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-15
+Document version: v0.1.8
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -53,6 +53,8 @@ Good first checks are usually one to three of:
 
 The No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md` is a symptom-specific front door into this protocol. Its prompts help a user name agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments; they do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
+`scripts/clarity-scenario-check.py` includes synthetic recovery scenario fixtures for wrong-folder or partial setup confusion, copied excluded/private/generated files, stale or edited generated reports, missing proof or failed checks, too-fast approval, app-will-not-start blockers, auth/demo/support ownership blockers, and stop-or-continue uncertainty. These fixtures are regression tests for this protocol's advisory boundaries. They are not real recovery evidence, repair approval, rollback approval, setup/update approval, transition approval, support-bot authority, or external-system permission.
+
 ## Stable-Fix Eligibility
 
 A stable fix is a narrow, evidence-backed repair inside an already named owner file. It is eligible only when:
@@ -62,6 +64,21 @@ A stable fix is a narrow, evidence-backed repair inside an already named owner f
 - the change repairs existing intended behavior instead of creating new product, workflow, schema, authority, setup, release, or integration behavior
 - the validation path is explicit and recorded
 - the work avoids sensitive, external, destructive, deployment, rollback, secret, auth, billing, data, or migration surfaces
+
+Before editing a repair that looks stable-fix eligible, use the Bugfix Spec Lane:
+
+| Field | Purpose |
+|---|---|
+| Current behavior | Name the defect or broken behavior in plain English. |
+| Expected behavior | Name the intended behavior after the fix. |
+| Unchanged behavior | Name the behavior that must keep working and must not be refactored. |
+| Owner file | Name the source file or primary authority that owns the repair. |
+| Root cause if known | Say what appears to be causing the defect, or say it is not known yet. |
+| Fix approach | Describe the smallest repair path without turning it into a new feature or refactor. |
+| Regression proof | Name the check or manual verification that proves the defect is fixed and unchanged behavior still holds. |
+| Route decision | Choose `current_bead`, `needs_evidence`, `recovery_repair`, `PRD/bead`, or `release_readiness`. |
+
+Do not edit yet if the owner file, route decision, or regression proof is unclear. `eligible_stable_fix` may continue only inside the current active bead after the bugfix spec and recorded proof are clear. The bugfix spec is not repair approval, implementation acceptance, generated proof, release approval, rollback approval, setup/update permission, transition approval, or a substitute for Closeout Evidence.
 
 `scripts/next-step.py --json` includes a `stable_fix_eligibility` advisory payload when a current bead exists. Its classification can help route the next conversation, but it does not approve edits, recovery, release, rollback, transition, setup mutation, package update behavior, or acceptance.
 
