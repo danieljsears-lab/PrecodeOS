@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-17
+Document version: v0.1.13
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -146,11 +146,12 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 
 Capture the request in the builder's words before turning it into implementation.
 
-For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority. If the builder is working before repo setup, Precode Idea Coach may run as a guided product-coach interview inside Claude Code, Claude, Codex, or another equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. Local Source Intake is still required before promotion.
+For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority. If the builder is working before repo setup, Precode Idea Coach may run as a guided product-coach interview inside Claude Code, Claude, Codex, or another equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. The workbook may use builder lenses, visible iteration, core workflow spine, and smallest complete useful payoff framing to clarify the idea, but these are evidence only and do not create a separate student workflow or implementation handoff. Local Source Intake is still required before promotion.
 
 Use a founder-friendly question budget during early intake: after at most three high-level product or business questions, produce a short `Product Brief` and one next best question. The Product Brief is evidence only and should include:
 
 - product idea
+- builder lens when useful
 - intended user
 - painful before moment
 - better after moment
@@ -176,6 +177,7 @@ When the Product Brief is stable enough for deeper pre-PRD thinking, produce a C
 - weakest assumption
 - what would change our mind
 - guided research notes with source links, dates or recency when available, confidence, and uncertainty
+- optional visible iteration, core workflow spine, and smallest complete useful payoff when those clarified the idea
 - MVP-ready first slice
 - not-yet list
 - smallest learning step

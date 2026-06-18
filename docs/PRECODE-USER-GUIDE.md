@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.50
+Document version: v0.7.51
 Last updated: 2026-06-18
 
 
@@ -83,7 +83,7 @@ Say this:
 ```text
 I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
 
 Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
 
@@ -101,13 +101,13 @@ Follow the workbook steps:
 5. Gather source-cited research.
 6. Separate what you know, what you think, and what you need help deciding.
 7. Run the Challenge And Clarity pass before turning the idea into features.
-8. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
-9. Fill out capability or feature candidates only after the user moments, evidence, and first useful slice are clearer.
-10. Ask for the Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness and a Candidate Goal Frame if durable intent is clear.
-11. Bring only that packet into Precode Local Source Intake.
-12. In a bootcamp Experience Design flow, use the packet's Design Canvas Input Prompt to create a focused design-tool brief from the approved PRD input, reference images, workflow examples, and not-yet boundaries.
-13. Use the approved PRD input and Experience artifacts to complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`, including the Core Spine Gate and feedback status, before Claude Code creates the first implementation bead.
-14. After the coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
+8. Use the optional learning/MVE framing when the idea is still too abstract: builder lens, visible iteration, core workflow spine, and smallest complete useful payoff.
+9. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
+10. Fill out capability candidates only after the user moments, evidence, and first useful slice are clearer.
+11. Ask for the Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness and a Candidate Goal Frame only if durable intent is clear.
+12. Bring only that packet into Precode Local Source Intake.
+13. If a later approved PRD input and Experience artifacts exist in a bootcamp flow, complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code proposes the first implementation bead.
+14. After a coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
 
 When you are ready, say this inside Precode:
 
@@ -538,7 +538,7 @@ Use this table when you are unsure what kind of request to make.
 
 | Situation | Ask for | Copyable request |
 |---|---|---|
-| Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not write a PRD or code.` |
+| Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.` |
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |

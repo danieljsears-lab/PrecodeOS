@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.29
-Last updated: 2026-06-14
+Document version: v0.1.30
+Last updated: 2026-06-18
 
 ## Start Here: You Are Not Just Prompting
 
@@ -316,7 +316,7 @@ Show me the destination PRD and the next journey bead. Confirm the bead is a ver
 
 A Goal Frame preserves durable intent inside an existing owner file before workflow selection. It can say what you are aiming at, why now, what success would look like, what is out of scope, what approval gates matter, and when the goal needs reaffirmation.
 
-When the direction starts in the Product Ideation Workbook, the workbook should produce a Candidate Goal Frame first. Precode should run Local Source Intake, ask whether the candidate is stable enough to reaffirm, and only then update `PRODUCT.md` if you approve.
+When the direction starts in the Product Ideation Workbook, the workbook should produce a Conviction Packet first. If durable intent is clear, that packet may include a Candidate Goal Frame for review. Precode should run Local Source Intake, ask whether the candidate is stable enough to reaffirm, and only then update `PRODUCT.md` if you approve.
 
 It is not active memory, a backlog, a roadmap, a PRD approval, a bead transition, or permission to code.
 

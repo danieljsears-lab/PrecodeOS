@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.31
+Document version: v0.1.32
 Last updated: 2026-06-18
 
 ## Purpose
@@ -394,7 +394,9 @@ Review PRODUCT.md with me. Clarify product promise, users and jobs, strategy and
 ```text
 I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+
+If the idea is still abstract or too large, use the workbook's optional learning/MVE framing to name the smallest complete useful payoff, visible iteration, and core workflow spine. Treat that framing as evidence only, not an implementation handoff.
 
 Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, or code.
 ```

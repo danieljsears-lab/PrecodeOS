@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-17
+Document version: v0.1.11
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -47,7 +47,7 @@ Supported source types include:
 - chat transcript summaries
 - GitHub, Linear, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
-- Product Ideation Workbook Conviction Packets / Precode Ingestion Packets, including guided Precode Idea Coach outputs, Challenge And Clarity findings, Local Source Intake readiness, and Candidate Goal Frames
+- Product Ideation Workbook Conviction Packets / Precode Ingestion Packets, including guided Precode Idea Coach outputs, builder lens notes, Challenge And Clarity findings, evidence-strength review, optional visible-iteration/MVE framing, Local Source Intake readiness, and Candidate Goal Frames
 - user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
 - existing PRDs or product specs that need Precode review, amendment, or adaptation
 - existing codebases, repository snapshots, route trees, package manifests, tests, CI configs, and README conventions inspected read-only

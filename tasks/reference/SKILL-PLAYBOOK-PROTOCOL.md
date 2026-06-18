@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.13
+Document version: v0.1.14
 Last updated: 2026-06-18
 
 ## Purpose
@@ -407,7 +407,7 @@ Name: Product Conviction Packet Skill
 Purpose: Help a first-time non-technical builder run a guided product-coach interview that researches, explores, challenges, clarifies, and packages a rough idea before Precode Local Source Intake.
 Load when: The user asks for an idea coach, Product Conviction Packet, pre-repo discovery, first-time founder discovery, SnapCamp/bootcamp idea shaping, or a skill-style product-discovery request before PRD creation.
 Owner protocol or adapter: `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`, `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, and `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md`
-Allowed actions: Interview one question at a time, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, run a Challenge And Clarity pass, challenge broad audience/missing workaround/risky scope/weak evidence supportively but firmly, rate evidence strength, translate possible features into candidate capabilities, classify Local Source Intake readiness, and produce a Conviction Packet plus Local Source Intake handoff prompt.
+Allowed actions: Interview one question at a time, help the builder choose the closest lens without creating a separate workflow, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, run a Challenge And Clarity pass, challenge broad audience/missing workaround/risky scope/weak evidence supportively but firmly, rate evidence strength, optionally use visible-iteration/MVE framing to name the smallest complete useful payoff and core workflow spine, translate possible features into candidate capabilities, classify Local Source Intake readiness, and produce a Conviction Packet plus Local Source Intake handoff prompt.
 Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, create a roadmap or backlog, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
 Generated evidence, if any: None in Precode v1; the conversational output is source evidence that the user may later paste or store as local source material.
 User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, or sensitive-surface action.
@@ -415,9 +415,10 @@ Stop conditions: The idea has no named user problem, no current workaround or ev
 Promotion path for findings: Bring the reviewed Conviction Packet into Local Source Intake; promote only through the PRD, `PRODUCT.md`, `DECISIONS.md`, another owner file, or a candidate/approved bead after user review.
 ```
 
-When invoked, run as a guided interview inside Claude Code or an equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. Return a compact `Product Brief` first, then run Challenge And Clarity, Evidence And Assumption Check, Candidate Capability Matrix, and a `Conviction Packet` when the idea is ready. The Conviction Packet should include:
+When invoked, run as a guided interview inside Claude Code or an equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. Return a compact `Product Brief` first, then run Challenge And Clarity, Evidence And Assumption Check, optional Learning/MVE Framing, Candidate Capability Matrix, and a `Conviction Packet` when the idea is ready. The Conviction Packet should include:
 
 - idea in plain English
+- builder lens when useful
 - intended user and situation
 - painful before moment
 - better after moment
@@ -427,6 +428,7 @@ When invoked, run as a guided interview inside Claude Code or an equivalent agen
 - weakest assumption
 - what would change our mind
 - guided research notes with source links, dates or recency when available, confidence, and uncertainty
+- optional visible iteration, core workflow spine, and smallest complete useful payoff when those clarified the idea
 - MVP-ready first slice
 - not-yet list
 - smallest learning step
