@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.31
-# Last updated: 2026-06-15
+# Version: v0.1.32
+# Last updated: 2026-06-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -935,6 +935,90 @@ def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[di
         "sensitive_surface_detected": sensitive,
     }
     return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
+
+
+ACCESSIBILITY_ADVISORY_FIELDS = {
+    "invocation_decision": "Invocation decision",
+    "target": "Target",
+    "automated_check_evidence": "Automated check evidence",
+    "manual_review_notes": "Manual review notes",
+    "unresolved_findings": "Unresolved findings",
+    "acceptance_risk": "Acceptance risk",
+}
+
+
+def accessibility_field_present(value: str | None) -> bool:
+    normalized = normalize_optional(value or "").lower()
+    if normalized.startswith("not applicable because") or normalized.startswith("unavailable because"):
+        return True
+    return not is_missing_or_none(normalized) and normalized not in {"tbd", "todo", "pending", "unknown"}
+
+
+def accessibility_advisory_gate_quality(bead: BeadRecord | None) -> dict[str, Any]:
+    if bead is None:
+        return {
+            "status": "warning",
+            "warnings": ["current bead is missing"],
+            "details": {
+                "advisory_only": True,
+                "invoked": False,
+                "legal_compliance_claim": False,
+            },
+        }
+
+    closeout_text = bead.sections.get("Closeout Evidence", "")
+    release_text = "\n".join(
+        [
+            closeout_text,
+            bead.closeout.get("release_readiness_note", ""),
+            bead.closeout.get("accessibility_advisory", ""),
+            bead.handback,
+        ]
+    )
+    lower_text = release_text.lower()
+    invoked = any(
+        term in lower_text
+        for term in (
+            "accessibility advisory",
+            "accessibility advisor",
+            "invocation decision:",
+        )
+    )
+    if not invoked:
+        return {
+            "status": "not_invoked",
+            "warnings": [],
+            "details": {
+                "current_bead": bead.rel_path,
+                "advisory_only": True,
+                "invoked": False,
+                "reason": "No Accessibility Advisor invocation or accessibility advisory evidence block was found.",
+                "ui_default_gate": False,
+                "legal_compliance_claim": False,
+            },
+        }
+
+    values = colon_bullets(closeout_text)
+    missing = [
+        label
+        for key, label in ACCESSIBILITY_ADVISORY_FIELDS.items()
+        if not accessibility_field_present(values.get(key))
+    ]
+    warnings = [f"accessibility advisory is missing fields: {missing}"] if missing else []
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "advisory_only": True,
+            "invoked": True,
+            "required_fields": ACCESSIBILITY_ADVISORY_FIELDS,
+            "missing_fields": missing,
+            "fields": {key: values.get(key, "") for key in ACCESSIBILITY_ADVISORY_FIELDS},
+            "ui_default_gate": False,
+            "legal_compliance_claim": False,
+        },
+    }
 
 
 def run_contract_required_reasons(bead: BeadRecord) -> list[str]:
@@ -4198,6 +4282,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
     current_bead_depth = bead_depth_quality(current_bead)
     current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)
     current_run_contract = run_contract_quality(current_bead, check_results)
+    current_accessibility_advisory_gate = accessibility_advisory_gate_quality(current_bead)
     current_stable_fix_eligibility = stable_fix_eligibility(current_bead, current_checks)
     current_next_step = next_step_guidance(
         root,
@@ -4296,6 +4381,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "bead_depth": current_bead_depth,
         "files_in_play_guardrail": current_files_in_play_guardrail,
         "run_contract": current_run_contract,
+        "accessibility_advisory_gate": current_accessibility_advisory_gate,
         "stable_fix_eligibility": current_stable_fix_eligibility,
         "pattern_guidance": current_pattern_guidance,
         "memory": current_memory,

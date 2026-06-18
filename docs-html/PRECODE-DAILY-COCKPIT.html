@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-17">
+  <meta name="generated-at" content="2026-06-18">
   <title>PrecodeOS Daily Cockpit · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Daily Cockpit</h1>
   <p class="lede">Use this cockpit while you work with an AI coding agent.</p>
-  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.12</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.13</span><span>Updated 2026-06-17</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -242,6 +242,7 @@ We have [2-5] people working on this product. Help us define the coordinator, pr
 <p>The agent must stop implementation and answer with:</p>
 <ul><li>the symptom in plain English, or a statement that the symptom is not known yet</li><li>the first safe move: stop implementation and diagnose before repair</li><li>the likely owner surface, or <code>unknown until active memory and checks are inspected</code></li><li>up to three read-only or advisory checks, such as <code>bash scripts/session-start.sh</code>, <code>python3 scripts/next-step.py</code>, <code>python3 scripts/state-check.py</code>, <code>python3 scripts/files-in-play-check.py</code>, <code>python3 scripts/completion-check.py</code>, or <code>python3 scripts/os-health.py</code></li><li>the next safe prompt or action</li><li>forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval</li></ul>
 <p>Use <code>tasks/reference/RECOVERY-PROTOCOL.md</code> for the full path. OS Health, Doctor Dashboard, <code>next-step.py</code>, and stable-fix eligibility are diagnostic evidence only; they do not approve repair. Doctor Dashboard triage labels explain what to ask and what not to approve, but they do not create approval.</p>
+<p>For a small repair that looks stable-fix eligible, ask for the Bugfix Spec Lane before editing. The agent should name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision, then stop if owner, route, or proof is unclear.</p>
 <p>If you can name the symptom but do not know the right recovery path, use the No-Engineer Fallback Prompt Pack in <code>tasks/reference/PROMPT-PATTERNS.md</code>. It gives short prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments without approving repair or mutation.</p>
 <h3 id="keep-implementation-bounded">Keep Implementation Bounded</h3>
 <p>Use when the task is ready to build.</p>

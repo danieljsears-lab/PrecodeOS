@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-14
+Document version: v0.1.12
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -50,6 +50,7 @@ Choose the workflow that matches the current situation:
 | Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
 | Approved PRD with auth, data, API, integration, dependency, migration, workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
 | High-risk, uncertain, or challenge-worthy idea | PRFAQ/challenge planning bead | questions, risk notes, or narrowed proposal |
+| User is unsure whether accessibility review is needed for a bead, review, or release candidate | Accessibility Advisor Fit Interview | recommendation to invoke advisor, not needed, or defer |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
 | User asks for Workflow Selection Skill or another current-state skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
@@ -99,6 +100,8 @@ Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and be
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when Architecture Shaping or workflow selection reveals a feature that needs an external boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or a plain-English implementation-shape choice before coding.
 
 Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when workflow selection needs durable direction but the direction should not become a backlog, roadmap, implementation plan, or active task.
+
+Use the Accessibility Advisor Fit Interview when a user, owner file, review, or release-candidate decision raises accessibility uncertainty. The interview is opt-in and advisory. It recommends whether to invoke accessibility review for the specific bead or release candidate; it does not make accessibility review mandatory for every UI/interface change, prove accessibility, accept implementation, approve release, or claim legal compliance.
 
 ## Common Stop Conditions
 

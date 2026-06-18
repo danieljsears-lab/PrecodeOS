@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-17
+Document version: v0.1.9
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -53,7 +53,7 @@ Good first checks are usually one to three of:
 
 The No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md` is a symptom-specific front door into this protocol. Its prompts help a user name agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments; they do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
-`scripts/clarity-scenario-check.py` includes synthetic recovery scenario fixtures for wrong-folder or partial setup confusion, copied excluded/private/generated files, stale or edited generated reports, missing proof or failed checks, too-fast approval, app-will-not-start blockers, auth/demo/support ownership blockers, and stop-or-continue uncertainty. These fixtures are regression tests for this protocol's advisory boundaries. They are not real recovery evidence, repair approval, rollback approval, setup/update approval, transition approval, support-bot authority, or external-system permission.
+`scripts/clarity-scenario-check.py` includes synthetic recovery scenario fixtures for wrong-folder or partial setup confusion, copied excluded/private/generated files, stale or edited generated reports, missing proof or failed checks, too-fast approval, app-will-not-start blockers, auth/demo/support ownership blockers, and stop-or-continue uncertainty. It also checks that the Bugfix Spec Lane contract stays present in recovery, prompt, verification, and user guidance surfaces. These fixtures are regression tests for this protocol's advisory boundaries. They are not real recovery evidence, repair approval, rollback approval, setup/update approval, transition approval, support-bot authority, or external-system permission.
 
 ## Stable-Fix Eligibility
 

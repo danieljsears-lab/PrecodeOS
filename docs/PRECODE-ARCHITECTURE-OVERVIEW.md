@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.26
-Last updated: 2026-06-15
+Document version: v0.3.27
+Last updated: 2026-06-18
 
 ## Executive Summary
 
@@ -147,6 +147,8 @@ repo/
 The application can use any framework. Precode's architecture overview is not the target app architecture and should not be used as a route map or module-placement guide for product code.
 
 ### Layer Model
+
+This architectural layer model explains how PrecodeOS fits together. For operational context-loading discipline across active memory, owner files, protocols, adapters, skill playbooks, generated reports, reviewed memory, raw evidence, and maintainer-local context, use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`.
 
 | Layer | Purpose | Main surfaces |
 |---|---|---|

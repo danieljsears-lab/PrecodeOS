@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-17
+Document version: v0.1.13
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -29,6 +29,8 @@ Active memory remains exactly:
 Skills should make Precode easier to invoke, not bigger to trust.
 
 The benefit of skills is adoption and reliability: beginners can ask for a named workflow, and agents get a bounded playbook that says what to load, what to return, and when to stop. The main risk is hidden authority, so every skill playbook must point back to Precode owner files instead of becoming the source of truth.
+
+Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when designing or reviewing a skill playbook. A skill playbook is an invocation layer: it may point to active memory, owner protocols, source evidence, generated reports, or maintainer context when allowed, but it must not merge those layers or become an authority source itself.
 
 ## Skill Surface Model
 
@@ -173,6 +175,35 @@ Discovery Summary:
 
 The output is evidence only. It does not validate demand, approve PRDs, activate beads, choose the next task, rewrite owner files, or start implementation.
 
+### Accessibility Advisor Fit Interview
+
+```text
+Name: Accessibility Advisor Fit Interview
+Purpose: Help a user decide whether to invoke the Accessibility Advisor for a specific bead, review, or release candidate before accessibility evidence becomes part of acceptance risk.
+Load when: The user asks whether accessibility review is needed, a bead or owner file explicitly mentions accessibility review, a release/review decision depends on accessibility confidence, or Workflow Selection routes uncertainty here.
+Owner protocol or adapter: `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, and `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when release-relevant.
+Allowed actions: Interview one question at a time, inspect only the current bead, owner-file requirement, release-candidate profile, or user-supplied context needed to decide fit, and return an invocation recommendation plus target, evidence, manual review, unresolved risk, and stop condition.
+Forbidden actions: Edit files, accept implementation, approve a review decision, approve release, claim legal compliance, certify WCAG/ADA conformance, run background audits, make accessibility review mandatory for every UI bead, create follow-up tasks, activate beads, run mutating commands, or mutate external systems.
+Generated evidence, if any: None in v1. The conversational fit interview is advisory review input until the user invokes the advisor and records the resulting accessibility advisory in Closeout Evidence, a release-candidate profile, an owner file, or another reviewed artifact.
+User approval required before: Any file edit, acceptance decision, release action, external mutation, follow-up bead creation, owner-file update, command execution beyond read-only inspection, or adding accessibility advisory fields to closeout/release evidence.
+Stop conditions: The target feature or user-facing surface is unclear; the user expects legal compliance advice; evidence would require credentials, sensitive data, external mutation, or undisclosed users; the review target is broader than one bead or release candidate; or the user asks the advisor to accept, release, or certify the work.
+Promotion path for findings: If invoked, record the advisor output in Closeout Evidence, Release Candidate Evidence Profile, the relevant owner file, a candidate/approved follow-up bead, or reviewed memory only after user review.
+```
+
+When invoked, ask one question at a time until the recommendation is clear, then return exactly these fields:
+
+```text
+Recommendation: invoke advisor | not needed | defer
+Reason:
+Accessibility target:
+Evidence needed:
+Manual review needed:
+Unresolved risk:
+Stop condition:
+```
+
+The output is a fit recommendation only. It does not require accessibility review for all UI/interface work, prove accessibility, accept implementation, approve release, or replace human judgment.
+
 ### Review / Acceptance Skill
 
 ```text
@@ -180,11 +211,11 @@ Name: Review / Acceptance Skill
 Purpose: Help a user review whether one active bead is ready for an evidence-based acceptance decision.
 Load when: The user asks for Review / Acceptance Skill, asks whether a bead is ready to accept, asks for an evidence-tied review recommendation, or needs to distinguish confidence, review input, missing proof, and acceptance blockers after closeout.
 Owner protocol or adapter: `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, and `modes/REVIEW.md`
-Allowed actions: Read active memory, the active bead, the primary authority file, closeout evidence, recorded checks, manual verification notes, relevant run contract or release-readiness note when present, and a changed-file or diff summary; compare evidence to the bead and authority; return acceptance questions, missing proof, risks, and a review recommendation.
+Allowed actions: Read active memory, the active bead, the primary authority file, closeout evidence, recorded checks, manual verification notes, relevant run contract, accessibility advisory output when invoked, release-readiness note when present, and a changed-file or diff summary; compare evidence to the bead and authority; return acceptance questions, missing proof, risks, and a review recommendation.
 Forbidden actions: Edit files, approve PRDs, accept implementation, approve review decisions, activate beads, approve transitions, create follow-up tasks, start implementation, deploy, release, mutate external systems, run mutating commands, treat generated reports as authority, or treat confidence as proof.
 Generated evidence, if any: None in v1. The conversational recommendation is review input only until the user records or acts on it through normal closeout, owner-file, PRD, bead, or transition paths.
 User approval required before: Any file edit, review acceptance, PRD approval, bead activation, transition approval, follow-up bead creation, release action, external mutation, sensitive-surface action, or command execution beyond read-only inspection.
-Stop conditions: Active memory or the active bead is missing; the primary authority is unclear; recorded checks are missing or stale; manual verification is missing when required; closeout evidence is incomplete; a sensitive-surface, release, deploy, rollback, or external-service approval gate is unresolved; the diff cannot be inspected; or the work appears broader than one bead.
+Stop conditions: Active memory or the active bead is missing; the primary authority is unclear; recorded checks are missing or stale; manual verification is missing when required; invoked accessibility advisory evidence is incomplete; closeout evidence is incomplete; a sensitive-surface, release, deploy, rollback, or external-service approval gate is unresolved; the diff cannot be inspected; or the work appears broader than one bead.
 Promotion path for findings: Promote accepted lessons, follow-ups, or defects only through Closeout Evidence, `DECISIONS.md`, the owning PRD or authority file, a candidate/approved bead, release-readiness evidence, or reviewed memory after user review.
 ```
 
@@ -443,6 +474,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Product Discovery Interview Skill | Implemented | Worth-building interview prompt; keep it evidence-only and subordinate to Product Discovery Validation. |
 | Small Team Collaboration Lane Skill | Implemented | Team coordination prompt; keep it read-only, explicit, branch/worktree-isolated, and subordinate to the Small Team Collaboration Lane protocol. |
 | Review / Acceptance Skill | Implemented | Evidence-tied bead acceptance review prompt; keep it recommendation-only and subordinate to closeout, verification, and Review mode. |
+| Accessibility Advisor Fit Interview | Implemented | Opt-in interview for deciding whether accessibility advisory review is needed; keep it advisory-only and avoid compliance or default-UI gate behavior. |
 | Requirements Gap And Conflict Review Skill | Implemented | Pre-approval requirements/spec review prompt; keep it advisory-only and subordinate to PRD Protocol, Verification Guardrail, and Review mode. |
 | Maintainer Package Review Skill | Implemented | Maintainer package-analysis prompt; keep it read-only, Plan Mode-oriented when available, and subordinate to maintainer notes, roadmap authority, Skill Playbook Protocol, and Extension Protocol. |
 | Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |

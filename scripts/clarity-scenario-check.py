@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.12
-# Last updated: 2026-06-17
+# Version: v0.1.15
+# Last updated: 2026-06-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -15,6 +15,7 @@ from typing import Any
 
 from os_compiler import (
     BeadRecord,
+    accessibility_advisory_gate_quality,
     bead_depth_quality,
     command_classification,
     completion_session_freshness,
@@ -218,6 +219,212 @@ def assert_no_engineer_fallback_prompt_pack(failures: list[dict[str, str]]) -> N
     for term in required_terms:
         if term.lower() not in lower_text:
             failures.append({"scenario": "no-engineer fallback prompt pack", "expected": term, "actual": "missing"})
+
+
+def assert_bugfix_spec_lane_contract(failures: list[dict[str, str]]) -> None:
+    recovery_text = Path("tasks/reference/RECOVERY-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
+    verification_text = Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    cockpit_text = Path("docs/PRECODE-DAILY-COCKPIT.md").read_text(encoding="utf-8").lower()
+    troubleshooting_text = Path("docs/PRECODE-TROUBLESHOOTING.md").read_text(encoding="utf-8").lower()
+
+    recovery_terms = [
+        "bugfix spec lane",
+        "current behavior",
+        "expected behavior",
+        "unchanged behavior",
+        "owner file",
+        "root cause if known",
+        "fix approach",
+        "regression proof",
+        "route decision",
+        "current_bead",
+        "needs_evidence",
+        "recovery_repair",
+        "prd/bead",
+        "release_readiness",
+        "not repair approval",
+        "closeout evidence",
+    ]
+    for term in recovery_terms:
+        if term not in recovery_text:
+            failures.append({"scenario": "bugfix spec lane recovery contract", "expected": term, "actual": "missing"})
+
+    prompt_terms = [
+        "use the bugfix spec lane before editing this small repair",
+        "current behavior:",
+        "expected behavior:",
+        "unchanged behavior:",
+        "owner file:",
+        "root cause if known:",
+        "fix approach:",
+        "regression proof:",
+        "route decision:",
+        "treat this spec as advisory only",
+        "does not approve repair",
+        "create implementation tasks",
+        "become generated proof",
+    ]
+    for term in prompt_terms:
+        if term not in prompt_text:
+            failures.append({"scenario": "bugfix spec lane prompt contract", "expected": term, "actual": "missing"})
+
+    verification_terms = [
+        "for bugfix spec lane work",
+        "named defect is fixed",
+        "named unchanged behavior still holds",
+        "failing-first check",
+        "characterization check",
+        "current behavior, expected behavior, and unchanged behavior",
+    ]
+    for term in verification_terms:
+        if term not in verification_text:
+            failures.append({"scenario": "bugfix spec lane verification contract", "expected": term, "actual": "missing"})
+
+    for path, text in (
+        ("docs/PRECODE-DAILY-COCKPIT.md", cockpit_text),
+        ("docs/PRECODE-TROUBLESHOOTING.md", troubleshooting_text),
+    ):
+        for term in ("bugfix spec lane", "before editing"):
+            if term not in text:
+                failures.append({"scenario": f"bugfix spec lane user guidance: {path}", "expected": term, "actual": "missing"})
+
+
+def assert_accessibility_advisory_gate_contract(failures: list[dict[str, str]]) -> None:
+    ui_bead = bead(
+        files_in_play=["app/page.tsx"],
+        verification_type=["browser"],
+        checks=["npx playwright test"],
+        sections={
+            "Objective": "Update the visible interface.",
+            "Done When": "The page renders.",
+            "Stop If": "Scope or proof becomes unclear.",
+            "Closeout Evidence": "- Recorded checks: pending",
+        },
+    )
+    not_invoked = accessibility_advisory_gate_quality(ui_bead)
+    if not_invoked.get("status") != "not_invoked":
+        failures.append(
+            {
+                "scenario": "accessibility advisory not invoked for UI by default",
+                "expected": "not_invoked",
+                "actual": str(not_invoked.get("status")),
+            }
+        )
+    details = not_invoked.get("details") or {}
+    if details.get("ui_default_gate") is not False or details.get("advisory_only") is not True:
+        failures.append(
+            {
+                "scenario": "accessibility advisory default boundaries",
+                "expected": "advisory_only true and ui_default_gate false",
+                "actual": str(details),
+            }
+        )
+
+    invoked_incomplete = bead(
+        sections={
+            "Objective": "Review accessibility advisory output.",
+            "Done When": "The advisor evidence is recorded.",
+            "Stop If": "Scope or proof becomes unclear.",
+            "Closeout Evidence": "\n".join(
+                [
+                    "Accessibility advisory:",
+                    "- Invocation decision: invoke advisor",
+                    "- Target:",
+                    "- Automated check evidence:",
+                    "- Manual review notes:",
+                    "- Unresolved findings:",
+                    "- Acceptance risk:",
+                ]
+            ),
+        },
+    )
+    warning = accessibility_advisory_gate_quality(invoked_incomplete)
+    if warning.get("status") != "warning":
+        failures.append(
+            {
+                "scenario": "accessibility advisory invoked incomplete warning",
+                "expected": "warning",
+                "actual": str(warning.get("status")),
+            }
+        )
+    missing = ((warning.get("details") or {}).get("missing_fields") or [])
+    for field in ("Target", "Automated check evidence", "Manual review notes", "Unresolved findings", "Acceptance risk"):
+        if field not in missing:
+            failures.append({"scenario": "accessibility advisory missing field", "expected": field, "actual": str(missing)})
+
+    prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
+    skill_text = Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    verification_text = Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    for term in (
+        "accessibility advisor fit interview",
+        "invoke advisor",
+        "not needed",
+        "defer",
+        "do not make accessibility review mandatory for every ui/interface bead",
+    ):
+        if term not in prompt_text:
+            failures.append({"scenario": "accessibility advisor prompt contract", "expected": term, "actual": "missing"})
+    for term in ("accessibility advisor fit interview", "legal compliance", "wcag/ada", "not needed | defer"):
+        if term not in skill_text:
+            failures.append({"scenario": "accessibility advisor skill contract", "expected": term, "actual": "missing"})
+    for term in ("accessibility advisory:", "invocation decision:", "automated check evidence:", "acceptance risk:"):
+        if term not in verification_text:
+            failures.append({"scenario": "accessibility advisor verification contract", "expected": term, "actual": "missing"})
+
+
+def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
+    protocol_text = Path("tasks/reference/REVIEW-LANES-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
+    user_guide_text = Path("docs/PRECODE-USER-GUIDE.md").read_text(encoding="utf-8").lower()
+    bead_schema_text = Path("tasks/beads/BEAD-SCHEMA.md").read_text(encoding="utf-8").lower()
+
+    required_terms = [
+        "security review lane",
+        "release / docs freshness review lane",
+        "lane:",
+        "review target:",
+        "authority checked:",
+        "evidence reviewed:",
+        "findings:",
+        "missing proof:",
+        "acceptance questions:",
+        "recommendation: accepted | revise | split | blocked | stop",
+        "approval still required:",
+        "promotion path:",
+        "does not approve work",
+        "security certification",
+        "compliance approval",
+        "create follow-up tasks",
+        "mutate github",
+        "mutate external systems",
+        "persona system",
+    ]
+    for term in required_terms:
+        if term not in protocol_text:
+            failures.append({"scenario": "review lanes protocol contract", "expected": term, "actual": "missing"})
+
+    prompt_terms = [
+        "use the review lanes protocol for this active bead",
+        "run exactly one lane: security review lane or release / docs freshness review lane",
+        "findings, missing proof, acceptance questions",
+        "do not accept implementation",
+        "certify security or compliance",
+        "create follow-up tasks",
+        "mutate github",
+        "mutate external systems",
+    ]
+    for term in prompt_terms:
+        if term not in prompt_text:
+            failures.append({"scenario": "review lanes prompt contract", "expected": term, "actual": "missing"})
+
+    for term in ("use a review lane", "security review lane", "release / docs freshness review lane", "security sign-off"):
+        if term not in user_guide_text:
+            failures.append({"scenario": "review lanes user guidance", "expected": term, "actual": "missing"})
+
+    for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance"):
+        if term not in bead_schema_text:
+            failures.append({"scenario": "review lanes bead schema", "expected": term, "actual": "missing"})
 
 
 def recovery_scenario_fixtures() -> list[dict[str, Any]]:
@@ -645,6 +852,9 @@ def main() -> int:
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
+    assert_bugfix_spec_lane_contract(failures)
+    assert_accessibility_advisory_gate_contract(failures)
+    assert_review_lanes_contract(failures)
 
     doctor_clear_payload = {
         "next_step": next_payload(bead()),
@@ -1016,6 +1226,9 @@ def main() -> int:
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
+        + 1
+        + 2
+        + 1
         + len(stable_fix_scenarios)
         + len(depth_scenarios)
         + len(run_contract_scenarios)

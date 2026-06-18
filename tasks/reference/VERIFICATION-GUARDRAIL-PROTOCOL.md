@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-17
+Document version: v0.1.13
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -75,6 +75,20 @@ Review input is useful but not enough by itself:
 
 Review input becomes evidence only after it is recorded, accepted, or promoted.
 
+Accessibility advisory review is opt-in. Use the Accessibility Advisor Fit Interview when the user is unsure whether accessibility review is needed, when an owner file asks for it, or when a review/release decision depends on accessibility confidence. Do not infer an accessibility gate from every UI or interface file. If the advisor is invoked, record the advisory shape in Closeout Evidence or release evidence:
+
+```text
+Accessibility advisory:
+- Invocation decision:
+- Target:
+- Automated check evidence:
+- Manual review notes:
+- Unresolved findings:
+- Acceptance risk:
+```
+
+Automated accessibility checks are useful when available, but they are not legal compliance proof. Manual review notes and unresolved findings remain review input until recorded in Closeout Evidence, promoted into an owner file or follow-up bead, or accepted by the user through normal review.
+
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding whether evidence is complete enough for review, closeout, handoff, or transition proposal.
 
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared for user-project shipping, deployment readiness, smoke evidence, browser/manual release checks, docs freshness, rollback or blocked escape, or post-release review. Release readiness does not weaken sensitive-surface gates or approve release actions.
@@ -99,7 +113,7 @@ Use the smallest proof that controls the risk.
 
 Stable-fix eligibility requires recorded proof, not just a declared check. When `scripts/next-step.py --json` reports `stable_fix_eligibility.classification` as `needs_evidence`, record the narrowest check that proves the owner-file repair, then reassess before accepting the work. A passing `eligible_stable_fix` classification is still advisory; it does not replace Closeout Evidence, review, user approval, release readiness, or sensitive-surface gates.
 
-For Bugfix Spec Lane work, regression proof must show both sides of the repair: the named defect is fixed and the named unchanged behavior still holds. For code-changing bugfixes, prefer a failing-first check that fails for the defect before the repair, or a characterization check that pins existing behavior before the change. If failing-first or characterization proof is not practical, record why and use the narrowest available static, unit, integration, browser, or manual verification that covers current behavior, expected behavior, and unchanged behavior.
+For Bugfix Spec Lane work, this protocol owns the regression-proof expectation: proof must show both sides of the repair, that the named defect is fixed and the named unchanged behavior still holds. For code-changing bugfixes, prefer a failing-first check that fails for the defect before the repair, or a characterization check that pins existing behavior before the change. If failing-first or characterization proof is not practical, record why and use the narrowest available static, unit, integration, browser, or manual verification that covers current behavior, expected behavior, and unchanged behavior.
 
 Ralph can reduce false-done risk by rerunning validators and recording failures, but a passing Ralph summary is still not acceptance. The closeout and review decision must name the evidence that proves the bead's done-when target.
 

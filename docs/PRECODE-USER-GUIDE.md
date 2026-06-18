@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.48
-Last updated: 2026-06-17
+Document version: v0.7.50
+Last updated: 2026-06-18
 
 
 
@@ -551,9 +551,11 @@ Use this table when you are unsure what kind of request to make.
 | Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.` |
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
+| Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
+| Security, release, or docs freshness needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, release, security, compliance, or create tasks.` |
 | Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
 | Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.` |
@@ -572,6 +574,7 @@ Use these rules while the agent works:
 - Stop when checks are missing or vague.
 - Stop when product direction changes mid-task.
 - Stop when sensitive work appears without approval.
+- Use the Accessibility Advisor Fit Interview when accessibility risk is unclear; do not make accessibility review automatic for every UI change.
 - Stop when the next bead starts without your approval.
 
 Red flags:
@@ -624,6 +627,27 @@ Use the Review / Acceptance Skill. Review the active bead against the primary au
 Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.
 
 Why this matters: In Precode, done means proved and reviewed, not merely plausible.
+
+## Use A Review Lane
+
+Use a Review Lane when one active bead needs a named specialist review question without turning that specialist into a fake teammate or approval authority.
+
+Use Security Review Lane for auth, permissions, secrets, personal data, uploads, payments, admin, destructive actions, dependency risk, or other sensitive surfaces.
+
+Use Release / Docs Freshness Review Lane for user-facing behavior, setup, support, docs, onboarding, troubleshooting, smoke paths, rollback or blocked escape, release-readiness notes, or release-candidate evidence.
+
+Say this:
+
+```text
+Use the Review Lanes Protocol for this active bead.
+Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, mutate GitHub, mutate external systems, or treat generated reports or confidence as proof.
+```
+
+Stop if: the agent treats the lane as acceptance, release approval, security sign-off, compliance approval, or a task creator.
+
+Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.
 
 ## Prepare Release Without Shipping
 

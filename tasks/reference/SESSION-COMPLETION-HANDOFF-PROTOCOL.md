@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-15
+Document version: v0.1.8
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -54,6 +54,7 @@ Closeout Evidence should include:
 - evidence source
 - allowed actions and proof needed when the bead has a Run Contract
 - release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
+- accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -66,6 +67,8 @@ Use `review_context` in bead frontmatter:
 Manual verification should follow `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when it applies.
 
 Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-PROTOCOL.md`. The closeout should name changed behavior, affected users, smoke evidence, browser or manual verification, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and approval still required before any release action.
+
+Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
 

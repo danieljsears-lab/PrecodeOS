@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-15
+Document version: v0.1.14
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -31,6 +31,10 @@ Active memory remains exactly:
 - `AGENT.md`
 - `DECISIONS.md`
 - `tasks/todo.md`
+
+Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when an extension touches adapters, shims, skill playbooks, generated reports, reviewed memory, source evidence, or maintainer-local context. Extensions may add or improve one layer, but they must not let that layer become active memory, task authority, approval, or a hidden operating model.
+
+Future host shims and native rule-directory surfaces must start as advisory compatibility notes in `adapters/ADAPTER-INDEX.md` or a specific adapter, then pass extension review before they become shipped Precode surfaces. Do not add broad host support promises from speculative model, IDE, agent, pricing, quota, or cloud-runner behavior.
 
 ## Extension Types
 
@@ -61,6 +65,8 @@ Every extension must preserve these boundaries:
 - Keep docs-help playbooks limited to stable documentation questions; they must cite canonical docs/protocols and stop before current-state diagnosis.
 - Keep extension findings as evidence until promoted into a PRD, `DECISIONS.md`, an owning authority file, or an approved bead.
 - Keep bounded engines subordinate to one active bead, explicit user approval gates, and generated-evidence demotion.
+- Keep context layers distinct: adapters translate, skill playbooks invoke, generated reports summarize, reviewed memory or raw evidence informs, and maintainer-local files guide package maintenance only.
+- Keep host compatibility advisory-first until a repeated, validated gap warrants a shipped adapter or shim.
 
 ## Authority Contract Rules
 

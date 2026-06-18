@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-17">
+  <meta name="generated-at" content="2026-06-18">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.25</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.26</span><span>Updated 2026-06-17</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -209,6 +209,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <ol><li>Stop implementation.</li><li>Restate the symptom in plain English, or say the symptom is not known yet.</li><li>Name the first safe move: stop implementation and diagnose before repair.</li><li>Name the likely owner surface, or say it is unknown until active memory and checks are inspected.</li><li>Choose up to three read-only or advisory checks.</li><li>Give the next safe prompt or action.</li><li>State forbidden actions: no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.</li></ol>
 <p>Good first checks are usually <code>bash scripts/session-start.sh</code>, <code>python3 scripts/next-step.py</code>, <code>python3 scripts/state-check.py</code>, <code>python3 scripts/files-in-play-check.py</code>, <code>python3 scripts/completion-check.py</code>, or <code>python3 scripts/os-health.py</code>, depending on the symptom.</p>
 <p>OS Health, Doctor Dashboard output, <code>next-step.py</code>, and stable-fix eligibility help diagnose only. Doctor Dashboard triage labels may say what to ask and what not to approve, but they do not approve repair, acceptance, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.</p>
+<p>For small repair claims, use the Bugfix Spec Lane before implementation. Ask the agent to name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. If the owner file, route, or proof path is unclear, keep the work in diagnosis instead of repair.</p>
 <p>When the user can name the symptom but cannot choose the recovery path, route them to the No-Engineer Fallback Prompt Pack in <code>tasks/reference/PROMPT-PATTERNS.md</code>. It gives public-safe prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments. Do not treat the pack as support approval, repair approval, app-code approval, secrets handling, external mutation, rollback, setup/update mutation, transition approval, or a replacement for the Recovery Protocol.</p>
 <p>Support can say:</p>
 <pre><code class="language-text">I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.</code></pre>

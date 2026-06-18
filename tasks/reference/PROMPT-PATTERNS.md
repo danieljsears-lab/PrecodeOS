@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.29
-Last updated: 2026-06-17
+Document version: v0.1.31
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -206,6 +206,18 @@ Return the Discovery Summary with the target user and situation, user problem, c
 Treat the output as evidence only. Do not write a PRD, update PRODUCT.md, create or activate beads, choose tasks, run mutating commands, or code.
 ```
 
+### Accessibility Advisor Fit Interview
+
+```text
+Use the Accessibility Advisor Fit Interview.
+
+Help me decide whether to invoke the Accessibility Advisor for this bead, review, or release candidate. Ask one question at a time. Inspect only the current bead, owner-file requirement, release-candidate profile, or context I provide that is needed to decide fit.
+
+Return: Recommendation of invoke advisor, not needed, or defer; Reason; Accessibility target; Evidence needed; Manual review needed; Unresolved risk; and Stop condition.
+
+Treat this as an opt-in fit interview. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, certify WCAG/ADA conformance, accept implementation, approve review, approve release, create follow-up tasks, run mutating commands, mutate external systems, or edit files.
+```
+
 ### Maintainer Package Review Skill
 
 ```text
@@ -244,6 +256,20 @@ Review the active bead for acceptance readiness. Load active memory, the active 
 Return: Review target, Authority checked, Evidence reviewed, Missing proof, Acceptance questions, Risks or drift, Recommendation, Approval still required, and Follow-up or promotion path.
 
 Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, run mutating commands, or treat generated reports or confidence as proof.
+```
+
+### Review Lanes
+
+```text
+Use the Review Lanes Protocol for this active bead.
+
+Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+
+Load the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification, closeout evidence, and only the owner files needed for this lane.
+
+Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, screenshots, browser notes, GitHub status, or confidence as proof.
 ```
 
 ### Precode Idea Coach
@@ -651,6 +677,15 @@ Checkpoint the session. Tell me whether we should continue, repair, split, pause
 
 ```text
 Review the completed bead against its done-when target, primary authority, files in play, checks, manual verification, and closeout evidence. Recommend accepted, revise, split, or blocked, and explain the smallest reason.
+```
+
+## Review Lane
+
+```text
+Use the Review Lanes Protocol for this active bead.
+Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, mutate GitHub, mutate external systems, or treat generated reports or confidence as proof.
 ```
 
 ## Release Candidate Evidence Profile

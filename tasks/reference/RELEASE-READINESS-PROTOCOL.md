@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-14
+Document version: v0.1.3
+Last updated: 2026-06-18
 
 ## Purpose
 
@@ -62,6 +62,7 @@ Before release approval, prepare a short release-readiness note with:
 - known risks and remaining uncertainty
 - post-release follow-up or observation plan
 - explicit approval still needed before deployment, promotion, rollback, merge, migration, dashboard change, secret change, or external mutation
+- accessibility advisory status when the Accessibility Advisor was invoked, an owner file required it, or release confidence depends on it
 
 Use existing Closeout Evidence where possible. Do not duplicate proof in a separate report unless the release-relevant bead needs a concise shipping summary.
 
@@ -83,6 +84,7 @@ Profile fields:
 - docs or support freshness
 - rollback path or blocked escape
 - known risks and remaining uncertainty
+- accessibility advisory status when invoked or required
 - explicit approvals still required before release, deployment, promotion, merge, migration, dashboard change, secret change, GitHub mutation, provider mutation, rollback, external mutation, or post-release owner action
 - decision state
 
@@ -109,6 +111,7 @@ Release Candidate Evidence Profile:
 - Docs or support freshness:
 - Rollback path or blocked escape:
 - Known risks and remaining uncertainty:
+- Accessibility advisory status:
 - Approvals still required:
 - Decision state: candidate | needs evidence | blocked | ready for human release decision
 ```
@@ -142,6 +145,8 @@ Manual verification:
 ```
 
 Screenshots, browser notes, generated tests, GitHub status, and dashboard observations are review input until recorded in Closeout Evidence or explicitly accepted by the user.
+
+Accessibility review is optional unless the user invokes the Accessibility Advisor, an owner file requires it, or release review explicitly depends on accessibility confidence. Use the Accessibility Advisor Fit Interview when that choice is unclear. If invoked, include the advisory target, automated check evidence when available, manual review notes, unresolved findings, and acceptance risk in Closeout Evidence or the Release Candidate Evidence Profile. Do not claim legal compliance, certify WCAG/ADA conformance, or treat accessibility notes as release approval.
 
 ## Rollback Or Blocked Escape
 
