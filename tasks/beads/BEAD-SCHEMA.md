@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-18
+Document version: v0.1.14
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -82,6 +82,8 @@ Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when closing a sess
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when a completed or nearly completed bead may affect users, production, deployment, external services, documentation needed for use, or post-release support. Release readiness prepares evidence and approval questions; it does not deploy, approve release, accept review, or activate the next bead.
 
 A release-relevant bead may include a Release Candidate Evidence Profile when the work is nearly ready for a human release decision. Keep it in the bead body or closeout, not as required frontmatter. The profile should name the candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. The decision state is evidence framing only: `candidate`, `needs evidence`, `blocked`, or `ready for human release decision`.
+
+When release confidence depends on a specific requirement, behavior, or non-functional expectation, include verification and release evidence in the bead body or closeout. Name the requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty. This trace is advisory evidence framing only; it does not approve release, accept review, create generated proof, add required frontmatter, or create a new evidence report.
 
 Use the Review Lanes Protocol, `tasks/reference/REVIEW-LANES-PROTOCOL.md`, when a completed or nearly completed bead needs a Security Review Lane or Release / Docs Freshness Review Lane. Keep review lane output in the bead body or closeout, not as required frontmatter. Review lanes produce findings, missing proof, acceptance questions, a recommendation, approvals still required, and a promotion path. They do not accept implementation, approve review decisions, approve release, certify security or compliance, create follow-up tasks, override owner files, or activate another bead.
 

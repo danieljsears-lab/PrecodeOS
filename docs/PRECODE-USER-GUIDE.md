@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.51
-Last updated: 2026-06-18
+Document version: v0.7.52
+Last updated: 2026-06-19
 
 
 
@@ -556,7 +556,7 @@ Use this table when you are unsure what kind of request to make.
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
 | Security, release, or docs freshness needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, release, security, compliance, or create tasks.` |
-| Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
+| Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
 | Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
@@ -610,6 +610,7 @@ A bead is ready to accept only when the evidence fits the risk:
 - review decision is `accepted`, `revise`, `split`, or `blocked`
 - release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action
 - nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, remaining risks, approvals, and decision state
+- release confidence names the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty when traceability matters
 - next-bead transition is still separate and user-approved
 
 Say this:
@@ -636,16 +637,20 @@ Use Security Review Lane for auth, permissions, secrets, personal data, uploads,
 
 Use Release / Docs Freshness Review Lane for user-facing behavior, setup, support, docs, onboarding, troubleshooting, smoke paths, rollback or blocked escape, release-readiness notes, or release-candidate evidence.
 
+Use Dependency Graph Review Lane for dependency, blocker, follow-up, transition, owner-file overlap, broad files-in-play, stale Work Graph, or unsafe parallel-work questions.
+
 Say this:
 
 ```text
 Use the Review Lanes Protocol for this active bead.
-Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, or Dependency Graph Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, mutate GitHub, mutate external systems, or treat generated reports or confidence as proof.
+Do not accept implementation, approve review, approve release, approve transition, certify security or compliance, create follow-up tasks, rewrite owner files, approve parallel execution, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, or confidence as proof.
 ```
 
-Stop if: the agent treats the lane as acceptance, release approval, security sign-off, compliance approval, or a task creator.
+For dependency graph review, stale or misleading Work Graph output means repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated graph reports as the source of truth.
+
+Stop if: the agent treats the lane as acceptance, release approval, security sign-off, compliance approval, transition approval, parallel execution approval, Work Graph authority, or a task creator.
 
 Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.
 
@@ -674,7 +679,7 @@ Say this:
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
 ```
 
@@ -687,6 +692,22 @@ Do not approve release, deploy, promote, roll back, merge, migrate, change dashb
 ```
 
 Stop if: the agent treats the profile or `ready for human release decision` as release approval.
+
+## Review Verification And Release Evidence
+
+Use verification and release evidence review when a release-relevant bead needs a clear path from requirement or behavior to recorded proof.
+
+Say this:
+
+```text
+Review verification and release evidence for this release-relevant bead.
+Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
+Show requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs or support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty.
+Tell me what is durable recorded evidence, what is review input only, and what missing traceability means needs evidence before release review.
+Do not treat screenshots, browser notes, GitHub status, generated reports, smoke checks, or ready for human release decision as release approval.
+```
+
+Stop if: the agent treats the trace, `completion-check.py`, screenshots, browser notes, GitHub status, generated reports, smoke checks, or `ready for human release decision` as approval to ship.
 
 ## Approve The Right Things
 

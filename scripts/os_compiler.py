@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.32
-# Last updated: 2026-06-18
+# Version: v0.1.33
+# Last updated: 2026-06-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -195,6 +195,32 @@ AUTHORITY_SURFACE_CLASSES: dict[str, dict[str, Any]] = {
 PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "fail", "failed", "needs_info", "manual_testing"}
 APPROVED_MARKERS = ("accepted", "approve", "approved")
 VERIFICATION_TIERS = {"static", "unit", "integration", "browser", "manual", "external"}
+RELEASE_EVIDENCE_FIELDS = {
+    "requirement_or_behavior_proven": "Requirement or behavior proven",
+    "evidence_lane": "Evidence lane",
+    "recorded_source": "Recorded source",
+    "smoke_path_and_result": "Smoke path and result",
+    "docs_or_support_freshness": "Docs or support freshness",
+    "rollback_path_or_blocked_escape": "Rollback path or blocked escape",
+    "approvals_still_required": "Approvals still required",
+    "decision_state": "Decision state",
+    "remaining_uncertainty": "Remaining uncertainty",
+}
+RELEASE_PROFILE_FIELDS = {
+    "candidate_label": "Candidate label",
+    "release_target_or_environment": "Release target or environment",
+    "changed_surfaces": "Changed surfaces",
+    "affected_users_or_workflows": "Affected users or workflows",
+    "recorded_checks_and_results": "Recorded checks and results",
+    "smoke_path_and_result": "Smoke path and result",
+    "browser_or_manual_verification_status": "Browser or manual verification status",
+    "docs_or_support_freshness": "Docs or support freshness",
+    "rollback_path_or_blocked_escape": "Rollback path or blocked escape",
+    "known_risks_and_remaining_uncertainty": "Known risks and remaining uncertainty",
+    "approvals_still_required": "Approvals still required",
+    "decision_state": "Decision state",
+}
+RELEASE_DECISION_STATES = {"candidate", "needs evidence", "blocked", "ready for human release decision"}
 DELEGATION_MODES = {"human_in_loop", "afk_candidate", "human_required"}
 TEST_STRATEGIES = {"failing_first", "characterization", "static_only", "manual_only", "not_applicable"}
 REVIEW_CONTEXTS = {"same_session_ok", "fresh_context_recommended", "fresh_context_required"}
@@ -2166,6 +2192,146 @@ def completion_session_freshness(
     return "stale"
 
 
+def release_field_present(value: str | None) -> bool:
+    normalized = normalize_optional(value or "").lower()
+    if normalized.startswith("not applicable because") or normalized.startswith("unavailable because"):
+        return True
+    return not is_missing_or_none(normalized) and normalized not in {"tbd", "todo", "pending", "unknown"}
+
+
+def normalized_release_decision(value: str | None) -> str:
+    normalized = normalize_optional(value or "").lower().strip("` ")
+    normalized = normalized.replace("_", " ").replace("-", " ")
+    return " ".join(normalized.split())
+
+
+def release_evidence_quality(bead: BeadRecord | None, check_results: list[dict[str, Any]]) -> dict[str, Any]:
+    if bead is None:
+        return {
+            "status": "warning",
+            "warnings": ["current bead is missing"],
+            "details": {"advisory_only": True, "invoked": False},
+        }
+
+    closeout_text = bead.sections.get("Closeout Evidence", "")
+    combined_text = "\n".join(
+        [
+            closeout_text,
+            bead.closeout.get("release_readiness_note", ""),
+            bead.closeout.get("manual_verification", ""),
+            bead.handback,
+        ]
+    )
+    lower_text = combined_text.lower()
+    release_relevant = any(
+        term in lower_text
+        for term in (
+            "release-readiness",
+            "release readiness",
+            "release candidate evidence profile",
+            "verification and release evidence",
+            "release target",
+            "ready for human release decision",
+            "smoke path",
+            "docs or support freshness",
+            "docs/support freshness",
+        )
+    ) or "RELEASE-READINESS-PROTOCOL.md" in bead.primary_authority
+
+    if not release_relevant:
+        return {
+            "status": "not_invoked",
+            "warnings": [],
+            "details": {
+                "current_bead": bead.rel_path,
+                "advisory_only": True,
+                "invoked": False,
+                "reason": "No release-readiness note, release-candidate profile, or verification-and-release evidence signal was found.",
+            },
+        }
+
+    warnings: list[str] = []
+    values = colon_bullets(combined_text)
+    active_rows = [row for row in check_results if row.get("bead") == bead.rel_path]
+    passing_rows = [row for row in active_rows if str(row.get("status") or "").lower() == "pass"]
+    passing_commands = [str(row.get("command") or "") for row in passing_rows]
+    known_tiers = sorted((set(bead.verification_type) & VERIFICATION_TIERS) | check_tiers(passing_commands))
+
+    has_release_evidence_block = "verification and release evidence" in lower_text
+    missing_release_fields: list[str] = []
+    if has_release_evidence_block:
+        missing_release_fields = [
+            label for key, label in RELEASE_EVIDENCE_FIELDS.items() if not release_field_present(values.get(key))
+        ]
+        if missing_release_fields:
+            warnings.append(f"verification and release evidence is missing fields: {missing_release_fields}")
+
+    has_profile = "release candidate evidence profile" in lower_text
+    missing_profile_fields: list[str] = []
+    if has_profile:
+        missing_profile_fields = [
+            label for key, label in RELEASE_PROFILE_FIELDS.items() if not release_field_present(values.get(key))
+        ]
+        if missing_profile_fields:
+            warnings.append(f"release candidate evidence profile is missing fields: {missing_profile_fields}")
+
+    release_readiness_present = "release-readiness" in lower_text or "release readiness" in lower_text
+    release_readiness_missing: list[str] = []
+    if release_readiness_present:
+        release_readiness_checks = {
+            "smoke path and result": ("smoke path", "smoke test", "smoke evidence"),
+            "docs or support freshness": ("docs freshness", "support freshness", "docs or support freshness", "docs/support freshness"),
+            "rollback path or blocked escape": ("rollback", "blocked escape"),
+            "approvals still required": ("approval still required", "approvals still required", "explicit approval"),
+            "decision state": ("decision state", "candidate", "needs evidence", "blocked", "ready for human release decision"),
+        }
+        for label, terms in release_readiness_checks.items():
+            if not any(term in lower_text for term in terms):
+                release_readiness_missing.append(label)
+        if release_readiness_missing:
+            warnings.append(f"release-readiness evidence is missing fields: {release_readiness_missing}")
+
+    review_input_terms = ("screenshot", "browser note", "github status", "generated report", "dashboard observation")
+    review_input_claimed = sorted(term for term in review_input_terms if term in lower_text)
+    if review_input_claimed and not passing_rows and not manual_verification_structured(bead.closeout.get("manual_verification", "")):
+        warnings.append(
+            f"release evidence cites review input without recorded checks or structured manual verification: {review_input_claimed}"
+        )
+
+    proof_trace_present = all(term in lower_text for term in ("evidence lane", "recorded source")) and any(
+        term in lower_text for term in ("requirement or behavior proven", "requirement proven", "behavior proven")
+    )
+    if bead.requirement_ids and release_relevant and not proof_trace_present:
+        warnings.append("release evidence does not trace requirement or behavior to evidence lane and recorded source")
+
+    decision_value = normalized_release_decision(values.get("decision_state"))
+    if decision_value and decision_value not in RELEASE_DECISION_STATES:
+        warnings.append(f"release evidence decision state is unknown: {values.get('decision_state')}")
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "advisory_only": True,
+            "invoked": True,
+            "release_relevant": release_relevant,
+            "has_release_evidence_block": has_release_evidence_block,
+            "has_release_candidate_profile": has_profile,
+            "release_readiness_present": release_readiness_present,
+            "known_tiers": known_tiers,
+            "recorded_pass_commands": passing_commands,
+            "review_input_claimed": review_input_claimed,
+            "missing_release_evidence_fields": missing_release_fields,
+            "missing_profile_fields": missing_profile_fields,
+            "missing_release_readiness_fields": release_readiness_missing,
+            "proof_trace_present": proof_trace_present,
+            "decision_state": decision_value or "not recorded",
+            "generated_report_warning": "Release evidence warnings are advisory only; they do not approve release, accept work, or become proof.",
+        },
+    }
+
+
 def completion_handoff_quality(
     root: Path,
     todo: dict[str, Any],
@@ -2188,6 +2354,7 @@ def completion_handoff_quality(
     closeout = bead.closeout
     todo_sections = todo.get("sections") or {}
     bead_map = {item.rel_path: item for item in beads}
+    release_evidence = release_evidence_quality(bead, check_results)
 
     if not bead_rows:
         warnings.append("closeout exists but no recorded checks exist for the active bead")
@@ -2267,6 +2434,9 @@ def completion_handoff_quality(
         if not any(term in escape_text for term in required_terms):
             warnings.append("blocked or manual-testing bead lacks owner, exact missing input, escape path, or unblocker signal")
 
+    if release_evidence.get("status") == "warning":
+        warnings.extend([f"release evidence: {warning}" for warning in release_evidence.get("warnings") or []])
+
     details = {
         "current_bead": bead.rel_path,
         "closeout_status": "complete" if not close_state.get("blockers") else "incomplete",
@@ -2282,6 +2452,7 @@ def completion_handoff_quality(
         "next_bead_start_readiness": next_start,
         "handoff_context_missing": missing_context,
         "next_safe_action": next_safe_action,
+        "release_evidence": release_evidence,
         "handoff_packet": required_context,
         "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
     }

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-18
+Document version: v0.1.16
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -19,6 +19,8 @@ Extensions let PrecodeOS grow without turning into a giant prompt or a hidden au
 An extension may add a tool surface, workflow protocol, skill playbook, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
 
 Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, docs-help invocation, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols or canonical docs.
+
+Use `.agents/README.md` when inspecting host-discoverable skill files under `.agents/skills/`. Those files are host skill contracts, not PrecodeOS skill playbooks, and they do not expand active memory, approve commands, create a package registry, or replace the Skill Playbook Protocol.
 
 Use the Skill / Extension Review Skill in `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when the user wants a structured advisory review of a proposed skill or extension before implementation. The review output is input to this protocol; it does not approve the extension, install a skill, mutate files, add a registry, or create optional-pack behavior.
 
@@ -36,6 +38,8 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when an
 
 Future host shims and native rule-directory surfaces must start as advisory compatibility notes in `adapters/ADAPTER-INDEX.md` or a specific adapter, then pass extension review before they become shipped Precode surfaces. Do not add broad host support promises from speculative model, IDE, agent, pricing, quota, or cloud-runner behavior.
 
+Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
+
 ## Extension Types
 
 | Type | Purpose | Usual owner |
@@ -51,6 +55,7 @@ Future host shims and native rule-directory surfaces must start as advisory comp
 | Bounded attempt engine | Opt-in local loop that runs one explicit attempt command, validators, and generated attempt evidence for one active bead | `tasks/reference/RALPH-LOOP-PROTOCOL.md` plus `scripts/ralph-loop.py` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
 | Role contract | Compact mode card for bounded agent behavior | `modes/*.md` |
+| Future optional pack | Deferred package of related PrecodeOS reference surfaces, examples, or checks that must pass extension review before distribution | `tasks/reference/EXTENSION-PROTOCOL.md` plus the specific owning protocols or adapters |
 
 ## Boundary Rules
 
@@ -67,6 +72,48 @@ Every extension must preserve these boundaries:
 - Keep bounded engines subordinate to one active bead, explicit user approval gates, and generated-evidence demotion.
 - Keep context layers distinct: adapters translate, skill playbooks invoke, generated reports summarize, reviewed memory or raw evidence informs, and maintainer-local files guide package maintenance only.
 - Keep host compatibility advisory-first until a repeated, validated gap warrants a shipped adapter or shim.
+- Keep future optional packs explicit, reviewable, and non-installable until separate approved package work defines distribution behavior.
+
+## Future Pack Boundary Spec
+
+Optional packs are deferred. This section defines boundary rules for discussing or reviewing future packs before PrecodeOS ships any pack distribution surface.
+
+A future pack may contain related reference protocols, templates, examples, scripts or checks, adapter notes, generated-evidence profile definitions, and documentation. Each included surface must keep its normal owner file, authority contract, validation path, and promotion path.
+
+A future pack must not:
+
+- add or replace active-memory files
+- hide authority in generated output, host registries, examples, or metadata
+- choose tasks, approve PRDs, approve beads, approve reviews, approve releases, approve setup, or approve commands
+- require root shims, native rule directories, adapter files, hooks, CI, package managers, or host plugins
+- create auto-update, release-channel, install/update, package-manager, registry, marketplace, or optional-pack installation behavior
+- mutate external systems or target projects unless a separate approved bead and user gate allow the exact mutation
+- make maintainer-local files public package authority
+
+Illustrative non-installable metadata shape:
+
+```yaml
+pack:
+  id: example-readiness-pack
+  status: illustrative-only
+  owner_protocol: tasks/reference/EXTENSION-PROTOCOL.md
+  included_surfaces:
+    - tasks/reference/EXAMPLE-PROTOCOL.md
+    - tasks/templates/EXAMPLE-TEMPLATE.md
+  generated_evidence: none
+  active_memory_changes: none
+  external_mutation: none
+  validation:
+    - python3 scripts/extension-check.py
+  forbidden_effects:
+    - task approval
+    - command approval
+    - installation
+    - registry behavior
+    - package-manager behavior
+```
+
+The example above is a review shape only. It is not a shipped pack, install manifest, registry record, package index, or permission to distribute optional packs.
 
 ## Authority Contract Rules
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-18
+Document version: v0.1.14
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -92,6 +92,8 @@ Automated accessibility checks are useful when available, but they are not legal
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding whether evidence is complete enough for review, closeout, handoff, or transition proposal.
 
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared for user-project shipping, deployment readiness, smoke evidence, browser/manual release checks, docs freshness, rollback or blocked escape, or post-release review. Release readiness does not weaken sensitive-surface gates or approve release actions.
+
+For release-relevant work, proof should trace the requirement or behavior being shipped to the evidence lane and recorded source that proves it. The trace can live in Closeout Evidence, a release-readiness note, or a Release Candidate Evidence Profile. If the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, or decision state is unclear, treat the work as `needs evidence` before release review. This is an evidence-quality warning, not release approval, review acceptance, or generated proof.
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when the active bead is testable enough for bounded retry against a validator set. Ralph attempt results are evidence inputs; they do not replace recorded checks, closeout evidence, review, or acceptance.
 

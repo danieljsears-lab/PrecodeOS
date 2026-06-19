@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.15
-# Last updated: 2026-06-18
+# Version: v0.1.17
+# Last updated: 2026-06-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -8,7 +8,9 @@ from __future__ import annotations
 
 from dataclasses import replace
 from datetime import datetime, timezone
+from contextlib import redirect_stderr, redirect_stdout
 import importlib.util
+import io
 import json
 from pathlib import Path
 from typing import Any
@@ -20,6 +22,7 @@ from os_compiler import (
     command_classification,
     completion_session_freshness,
     next_step_guidance,
+    release_evidence_quality,
     run_contract_quality,
     stable_fix_eligibility,
 )
@@ -57,6 +60,16 @@ def load_loop_health_module() -> Any:
     spec = importlib.util.spec_from_file_location("loop_health", path)
     if spec is None or spec.loader is None:
         raise RuntimeError("Could not load loop-health.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_script_module(module_name: str, filename: str) -> Any:
+    path = Path(__file__).with_name(filename)
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Could not load {filename}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -382,6 +395,7 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
     required_terms = [
         "security review lane",
         "release / docs freshness review lane",
+        "dependency graph review lane",
         "lane:",
         "review target:",
         "authority checked:",
@@ -396,6 +410,11 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "security certification",
         "compliance approval",
         "create follow-up tasks",
+        "work graph reports are evidence only",
+        "repair the markdown owner files",
+        "approve parallel execution",
+        "choose tasks",
+        "task-runner system",
         "mutate github",
         "mutate external systems",
         "persona system",
@@ -406,11 +425,18 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
 
     prompt_terms = [
         "use the review lanes protocol for this active bead",
-        "run exactly one lane: security review lane or release / docs freshness review lane",
+        "run exactly one lane: security review lane, release / docs freshness review lane, or dependency graph review lane",
+        "run exactly one lane: dependency graph review lane",
         "findings, missing proof, acceptance questions",
+        "missing or non-done dependencies",
+        "ambiguous follow-up destination",
+        "stale generated graph evidence",
         "do not accept implementation",
+        "approve transitions",
+        "approve parallel execution",
         "certify security or compliance",
         "create follow-up tasks",
+        "treat work graph reports or confidence as proof",
         "mutate github",
         "mutate external systems",
     ]
@@ -418,13 +444,292 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         if term not in prompt_text:
             failures.append({"scenario": "review lanes prompt contract", "expected": term, "actual": "missing"})
 
-    for term in ("use a review lane", "security review lane", "release / docs freshness review lane", "security sign-off"):
+    for term in (
+        "use a review lane",
+        "security review lane",
+        "release / docs freshness review lane",
+        "dependency graph review lane",
+        "stale or misleading work graph output",
+        "transition approval",
+        "parallel execution approval",
+        "work graph authority",
+        "security sign-off",
+    ):
         if term not in user_guide_text:
             failures.append({"scenario": "review lanes user guidance", "expected": term, "actual": "missing"})
 
     for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance"):
         if term not in bead_schema_text:
             failures.append({"scenario": "review lanes bead schema", "expected": term, "actual": "missing"})
+
+
+def release_evidence_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
+    closeout = overrides.pop(
+        "closeout",
+        {
+            "manual_verification": "Manual verification: not applicable because release evidence fixture is static.",
+            "review_decision": "revise",
+        },
+    )
+    return bead(
+        primary_authority="tasks/reference/RELEASE-READINESS-PROTOCOL.md",
+        parent_prd="tasks/prds/PRD-020-verification-release-evidence.md",
+        requirement_ids=["PRD-020-FR04"],
+        files_in_play=["tasks/reference/RELEASE-READINESS-PROTOCOL.md"],
+        checks=["python3 scripts/clarity-scenario-check.py"],
+        verification_type=["static"],
+        closeout=closeout,
+        sections={
+            "Objective": "Review release evidence traceability.",
+            "Done When": "Release evidence warnings are stable.",
+            "Stop If": "Release proof becomes approval.",
+            "Closeout Evidence": "\n".join(closeout_lines),
+        },
+        **overrides,
+    )
+
+
+def assert_verification_release_evidence_contract(failures: list[dict[str, str]]) -> int:
+    release_protocol = Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    verification_protocol = Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    completion_protocol = Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
+    user_guide_text = Path("docs/PRECODE-USER-GUIDE.md").read_text(encoding="utf-8").lower()
+    bead_schema_text = Path("tasks/beads/BEAD-SCHEMA.md").read_text(encoding="utf-8").lower()
+
+    for term in (
+        "verification and release evidence review",
+        "requirement or behavior proven",
+        "evidence lane used",
+        "recorded check, closeout evidence, or manual verification source",
+        "missing traceability means `needs evidence`",
+        "not release approval",
+    ):
+        if term not in release_protocol:
+            failures.append({"scenario": "verification release evidence protocol contract", "expected": term, "actual": "missing"})
+    for term in ("requirement or behavior being shipped", "evidence lane", "recorded source", "needs evidence"):
+        if term not in verification_protocol:
+            failures.append({"scenario": "verification release evidence guardrail contract", "expected": term, "actual": "missing"})
+        if term not in completion_protocol:
+            failures.append({"scenario": "verification release evidence completion contract", "expected": term, "actual": "missing"})
+    for term in (
+        "review verification and release evidence for this release-relevant bead",
+        "durable recorded evidence",
+        "review input only",
+        "missing traceability means needs evidence",
+        "ready for human release decision as release approval",
+    ):
+        if term not in prompt_text:
+            failures.append({"scenario": "verification release evidence prompt contract", "expected": term, "actual": "missing"})
+    for term in ("review verification and release evidence", "requirement or behavior proven", "completion-check.py", "approval to ship"):
+        if term not in user_guide_text:
+            failures.append({"scenario": "verification release evidence user guidance", "expected": term, "actual": "missing"})
+    for term in ("verification and release evidence", "not as required frontmatter", "does not approve release"):
+        if term not in bead_schema_text:
+            failures.append({"scenario": "verification release evidence bead schema", "expected": term, "actual": "missing"})
+
+    complete = release_evidence_fixture(
+        [
+            "Release-readiness note:",
+            "- Smoke path and result: Opened changed flow and completed checkout smoke path.",
+            "- Docs or support freshness: User guide and support notes reviewed.",
+            "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "- Approvals still required: Human release approval still required.",
+            "- Decision state: ready for human release decision",
+            "Release Candidate Evidence Profile:",
+            "- Candidate label: Fixture release candidate",
+            "- Release target or environment: local fixture",
+            "- Changed surfaces: release evidence guidance",
+            "- Affected users or workflows: release-relevant beads",
+            "- Recorded checks and results: clarity scenario pass",
+            "- Smoke path and result: Opened changed flow and completed checkout smoke path.",
+            "- Browser or manual verification status: not applicable because static fixture",
+            "- Docs or support freshness: User guide and support notes reviewed.",
+            "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "- Known risks and remaining uncertainty: none for fixture",
+            "- Approvals still required: Human release approval still required.",
+            "- Decision state: ready for human release decision",
+            "Verification and release evidence:",
+            "- Requirement or behavior proven: PRD-020-FR04 completion-check advisory details.",
+            "- Evidence lane: static",
+            "- Recorded source: python3 scripts/clarity-scenario-check.py",
+            "- Smoke path and result: Opened changed flow and completed checkout smoke path.",
+            "- Docs or support freshness: User guide and support notes reviewed.",
+            "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "- Approvals still required: Human release approval still required.",
+            "- Decision state: ready for human release decision",
+            "- Remaining uncertainty: none for fixture",
+            "Ready for human release decision is not release approval.",
+        ]
+    )
+    complete_payload = release_evidence_quality(complete, list(passing_checks(complete).values()))
+    if complete_payload.get("status") != "pass":
+        failures.append({"scenario": "release evidence complete pass", "expected": "pass", "actual": str(complete_payload)})
+    if (complete_payload.get("details") or {}).get("decision_state") != "ready for human release decision":
+        failures.append({"scenario": "release evidence non-approval state", "expected": "ready for human release decision", "actual": str(complete_payload)})
+
+    incomplete = release_evidence_fixture(
+        [
+            "Release Candidate Evidence Profile:",
+            "- Candidate label: Fixture release candidate",
+            "- Decision state: needs evidence",
+            "Verification and release evidence:",
+            "- Requirement or behavior proven: PRD-020-FR04 completion-check advisory details.",
+            "- Evidence lane:",
+            "- Recorded source:",
+        ]
+    )
+    incomplete_payload = release_evidence_quality(incomplete, [])
+    if incomplete_payload.get("status") != "warning":
+        failures.append({"scenario": "release profile missing proof warning", "expected": "warning", "actual": str(incomplete_payload)})
+    if not any("missing fields" in warning.lower() for warning in incomplete_payload.get("warnings") or []):
+        failures.append({"scenario": "release profile missing fields warning", "expected": "missing fields warning", "actual": str(incomplete_payload)})
+
+    review_input_only = release_evidence_fixture(
+        [
+            "Release-readiness note:",
+            "- Smoke path and result: Screenshot and browser note looked correct.",
+            "- Docs or support freshness: pending",
+            "- Rollback path or blocked escape: pending",
+            "- Approvals still required: pending",
+            "- Decision state: needs evidence",
+        ],
+        closeout={"manual_verification": "pending", "review_decision": "revise"},
+    )
+    review_payload = release_evidence_quality(review_input_only, [])
+    if not any("review input" in warning.lower() for warning in review_payload.get("warnings") or []):
+        failures.append({"scenario": "release review input only warning", "expected": "review input warning", "actual": str(review_payload)})
+
+    no_trace = release_evidence_fixture(
+        [
+            "Release-readiness note:",
+            "- Smoke path and result: Local smoke passed.",
+            "- Docs or support freshness: current.",
+            "- Rollback path or blocked escape: revert the bead.",
+            "- Approvals still required: release approval.",
+            "- Decision state: needs evidence",
+        ]
+    )
+    no_trace_payload = release_evidence_quality(no_trace, list(passing_checks(no_trace).values()))
+    if not any("does not trace" in warning.lower() for warning in no_trace_payload.get("warnings") or []):
+        failures.append({"scenario": "release requirement proof trace warning", "expected": "does not trace warning", "actual": str(no_trace_payload)})
+
+    return 4
+
+
+def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> int:
+    precode_cli = load_script_module("precode_cli_fixture", "precode_cli.py")
+    parser = precode_cli.build_parser()
+    args = parser.parse_args(
+        [
+            "--dry-run",
+            "bootstrap-check",
+            "--source",
+            "source",
+            "--target",
+            "target",
+            "--preview-manifest",
+            "--supervised-setup-plan",
+            "--apply-supervised-setup",
+            "--approve-action",
+            "SP-001",
+        ]
+    )
+    commands = precode_cli.build_commands(args, parser)
+    command_text = precode_cli.command_text(commands[0])
+    for term in (
+        "python3",
+        "scripts/bootstrap-check.py",
+        "--apply-supervised-setup",
+        "--approve-action",
+        "SP-001",
+    ):
+        if term not in command_text:
+            failures.append({"scenario": "local command facade delegation", "expected": term, "actual": command_text})
+
+    output = io.StringIO()
+    with redirect_stdout(output):
+        exit_code = precode_cli.run_commands(commands, root=Path("."), dry_run=True)
+    rendered = output.getvalue()
+    if exit_code != 0:
+        failures.append({"scenario": "local command facade dry run", "expected": "exit 0", "actual": str(exit_code)})
+    for term in ("local wrapper over existing PrecodeOS scripts", "Underlying command:"):
+        if term not in rendered:
+            failures.append({"scenario": "local command facade visible boundary", "expected": term, "actual": rendered})
+
+    missing_approval_args = parser.parse_args(
+        [
+            "bootstrap-check",
+            "--source",
+            "source",
+            "--target",
+            "target",
+            "--supervised-setup-plan",
+            "--apply-supervised-setup",
+        ]
+    )
+    try:
+        with redirect_stderr(io.StringIO()):
+            precode_cli.build_commands(missing_approval_args, parser)
+    except SystemExit as error:
+        if error.code == 0:
+            failures.append({"scenario": "local command facade missing approval", "expected": "parser error", "actual": "exit 0"})
+    else:
+        failures.append({"scenario": "local command facade missing approval", "expected": "parser error", "actual": "accepted"})
+
+    return 3
+
+
+def assert_ralph_command_boundaries(failures: list[dict[str, str]]) -> int:
+    ralph_loop = load_script_module("ralph_loop_fixture", "ralph-loop.py")
+    missing_active = ralph_loop.decide(
+        active_bead="",
+        enabled=True,
+        force=False,
+        prior_count=0,
+        max_attempts=3,
+        guardrail={},
+        attempt_result=None,
+        validators=[],
+        retry_policy="bounded",
+    )
+    if missing_active != ("missing_active_bead", "stop", False, "Ralph needs one active bead."):
+        failures.append({"scenario": "ralph missing active bead", "expected": "stop", "actual": str(missing_active)})
+
+    not_enabled = ralph_loop.decide(
+        active_bead="tasks/beads/B999-clarity-fixture.md",
+        enabled=False,
+        force=False,
+        prior_count=0,
+        max_attempts=3,
+        guardrail={},
+        attempt_result=None,
+        validators=[],
+        retry_policy="bounded",
+    )
+    if not_enabled[0:3] != ("not_enabled", "stop", False):
+        failures.append({"scenario": "ralph opt-in boundary", "expected": "not_enabled stop", "actual": str(not_enabled)})
+
+    approval_needed = ralph_loop.decide(
+        active_bead="tasks/beads/B999-clarity-fixture.md",
+        enabled=True,
+        force=False,
+        prior_count=0,
+        max_attempts=3,
+        guardrail={"user_decision": "approval needed", "summary": "Ask before running this."},
+        attempt_result=None,
+        validators=[],
+        retry_policy="bounded",
+    )
+    if approval_needed[0:3] != ("approval_required", "ask", False):
+        failures.append({"scenario": "ralph risky attempt command", "expected": "approval_required ask", "actual": str(approval_needed)})
+
+    summary_source = Path("scripts/ralph-loop.py").read_text(encoding="utf-8")
+    for term in ('"generated_evidence_only": True', "if not args.dry_run:", "write_jsonl"):
+        if term not in summary_source:
+            failures.append({"scenario": "ralph generated evidence and dry-run boundary", "expected": term, "actual": "missing"})
+
+    return 4
 
 
 def recovery_scenario_fixtures() -> list[dict[str, Any]]:
@@ -855,6 +1160,7 @@ def main() -> int:
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
     assert_review_lanes_contract(failures)
+    release_evidence_scenario_count = assert_verification_release_evidence_contract(failures)
 
     doctor_clear_payload = {
         "next_step": next_payload(bead()),
@@ -1160,6 +1466,8 @@ def main() -> int:
         ("payments", command_classification("stripe listen --forward-to localhost", bead()).get("user_decision"), "approval needed"),
         ("auth", command_classification("edit auth permissions", bead()).get("user_decision"), "approval needed"),
         ("github mutation", command_classification("gh pr merge 12", bead()).get("user_decision"), "approval needed"),
+        ("generated refresh", command_classification("python3 scripts/os-health.py", bead()).get("user_decision"), "continue"),
+        ("setup apply", command_classification("python3 scripts/bootstrap-check.py --apply-supervised-setup", bead()).get("user_decision"), "continue"),
         (
             "sensitive bead local mutation",
             command_classification("npm install auth-helper", bead(primary_authority="SECURITY.md", files_in_play=["SECURITY.md"])).get(
@@ -1170,6 +1478,21 @@ def main() -> int:
     ]
     for name, actual, expected in command_scenarios:
         assert_decision(f"command: {name}", str(actual), expected, failures)
+    generated_refresh = command_classification("python3 scripts/os-health.py", bead())
+    if generated_refresh.get("class") != "generated_refresh" or "not proof by itself" not in str(
+        generated_refresh.get("plain_english_summary") or ""
+    ):
+        failures.append(
+            {
+                "scenario": "generated refresh demotion",
+                "expected": "generated_refresh not proof by itself",
+                "actual": str(generated_refresh),
+            }
+        )
+
+    boundary_scenario_count = 1
+    boundary_scenario_count += assert_local_command_facade_boundaries(failures)
+    boundary_scenario_count += assert_ralph_command_boundaries(failures)
 
     check_time = datetime(2026, 6, 4, 12, 0, tzinfo=timezone.utc)
     older_close = datetime(2026, 6, 4, 11, 0, tzinfo=timezone.utc)
@@ -1233,6 +1556,8 @@ def main() -> int:
         + len(depth_scenarios)
         + len(run_contract_scenarios)
         + len(command_scenarios)
+        + release_evidence_scenario_count
+        + boundary_scenario_count
         + len(freshness_scenarios)
         + len(loop_scenarios),
         "stable_decisions": sorted(STABLE_DECISIONS),

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.32
-Last updated: 2026-06-18
+Document version: v0.1.33
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -263,13 +263,13 @@ Recommend only accepted, revise, split, blocked, or stop. Do not accept implemen
 ```text
 Use the Review Lanes Protocol for this active bead.
 
-Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, or Dependency Graph Review Lane.
 
-Load the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification, closeout evidence, and only the owner files needed for this lane.
+Load the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification, closeout evidence, Work Graph evidence when dependency relationships are being reviewed, and only the owner files needed for this lane.
 
 Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
 
-Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, screenshots, browser notes, GitHub status, or confidence as proof.
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve release, approve transitions, approve parallel execution, certify security or compliance, create follow-up tasks, rewrite owner files, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, or confidence as proof.
 ```
 
 ### Precode Idea Coach
@@ -489,6 +489,23 @@ Treat this spec as advisory only. It does not approve repair, accept implementat
 Use the Decomposition Protocol to turn this approved work into candidate beads. Each candidate should have one outcome, one primary authority, bounded files in play, a verification strategy, dependencies, and a clear reason it is small enough.
 ```
 
+## Dependency Graph Review Lane
+
+```text
+Use the Review Lanes Protocol for this active bead.
+Run exactly one lane: Dependency Graph Review Lane.
+
+Load the active bead, primary authority, changed-file summary or files in play, recorded checks, relevant PRD/bead/dependency/follow-up/transition references, and `logs/work-graph.md` or compiled Work Graph summary when available.
+
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Focus on blocked work, missing or non-done dependencies, duplicate or out-of-order work, broad files in play, unsafe parallel assumptions, ambiguous follow-up destination, owner-file overlap, and stale generated graph evidence.
+
+If Work Graph evidence is stale or misleading, tell me which owner files, beads, PRDs, closeout notes, or recorded evidence need repair before regenerating the graph. Do not edit generated reports as source truth.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not choose tasks, approve transitions, accept implementation, approve parallel execution, create follow-up tasks, rewrite owner files, run tasks, mutate GitHub, mutate external systems, or treat Work Graph reports or confidence as proof.
+```
+
 ## Vertical-Slice Decomposition
 
 ```text
@@ -695,8 +712,18 @@ Do not accept implementation, approve review, approve release, certify security 
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+```
+
+## Verification And Release Evidence Review
+
+```text
+Review verification and release evidence for this release-relevant bead.
+Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
+Show requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs or support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty.
+Tell me what is durable recorded evidence, what is review input only, and what missing traceability means needs evidence before release review.
+Do not treat screenshots, browser notes, GitHub status, generated reports, smoke checks, or ready for human release decision as release approval.
 ```
 
 ## Release Candidate Review

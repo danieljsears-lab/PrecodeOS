@@ -2,21 +2,21 @@
 <!-- ANCHOR: review-lanes-protocol -->
 
 > AUTHORITY: Optional advisory review lane templates for one active bead.
-> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, command approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, or a persona system.
-> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, or Review Lanes review for one active bead.
+> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
+> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or Review Lanes review for one active bead.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-18
+Document version: v0.1.1
+Last updated: 2026-06-19
 
 ## Purpose
 
 Review Lanes help a builder ask specialist review questions without managing fake specialist personas.
 
-A lane attaches to one active bead and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, create work, replace Review mode, replace Release Readiness, or override owner files.
+A lane attaches to one active bead and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, create work, replace Review mode, replace Release Readiness, replace Work Graph evidence, or override owner files.
 
 ## When To Use Review Lanes
 
@@ -37,6 +37,14 @@ Use the Release / Docs Freshness Review Lane when the bead touches or may affect
 - public docs, README guidance, screenshots, examples, prompts, changelog-like notes, or support promises
 - deployment, production behavior, external services, migrations, post-release follow-up, or users who need fresh instructions
 
+Use the Dependency Graph Review Lane when the bead touches or may affect:
+
+- `depends_on`, follow-up, transition, blocker, or decomposition relationships
+- Work Graph warnings, stale graph evidence, or broad graph-coherence questions
+- broad files in play, overlapping owner files, or confusing changed-file scope
+- safe sequencing, split decisions, or whether relationship risks should block acceptance
+- branch/worktree-isolated teammate work or a `can run in parallel` claim
+
 Do not use a Review Lane as a general brainstorming step, a task planner, a second active bead, a required gate for every task, or a substitute for normal acceptance review.
 
 ## Required Inputs
@@ -50,6 +58,8 @@ Load only the sources needed for the lane:
 - manual verification, when relevant
 - Closeout Evidence or current closeout draft
 - relevant run contract, release-readiness note, or release-candidate profile if present
+- `logs/work-graph.md`, `logs/work-graph.json`, or compiled Work Graph summary when dependency relationships are being reviewed
+- relevant PRD, bead, dependency, blocker, follow-up, transition, or team-collaboration references when their `LOAD_WHEN` applies
 - relevant owner files, such as `SECURITY.md`, `ACCEPTANCE.md`, `docs/*.md`, or the owning PRD, only when their `LOAD_WHEN` applies
 
 If the active bead, primary authority, recorded evidence, or changed-file summary is missing, stop and ask for the missing source instead of inventing a review.
@@ -104,6 +114,24 @@ Focus on:
 
 The Release / Docs Freshness Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not deploy, approve release, approve rollback, approve merge, mutate dashboards, mutate GitHub, mutate external services, or replace the Release Readiness Protocol.
 
+## Dependency Graph Review Lane
+
+Use this lane to inspect whether the bead's relationship evidence is coherent enough for a review, split, blocked, or stop conversation.
+
+Focus on:
+
+- blocked work, missing dependencies, or non-done dependencies
+- duplicate, out-of-order, or ambiguous work relationships
+- broad files in play, owner-file overlap, or changed files that make the bead hard to review
+- ambiguous follow-up destinations, closeout blockers, or transition proposals
+- unsafe parallel assumptions, including `can run in parallel` claims that lack branch/worktree isolation and coordinator approval
+- stale generated Work Graph evidence that should be repaired through owner files and regenerated before it is trusted as review input
+- recorded checks and missing proof needed to resolve the relationship risk
+
+Generated Work Graph reports are evidence only. If graph output is stale, misleading, or incomplete, repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated Work Graph reports as the source of truth.
+
+The Dependency Graph Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not choose tasks, approve transitions, accept implementation, approve parallel execution, create follow-up tasks, rewrite owner files, run tasks, mutate GitHub, mutate external systems, replace Decomposition Protocol, replace Team Collaboration Protocol, or treat Work Graph reports as authority.
+
 ## Promotion Path
 
 Promote accepted findings only through normal reviewed paths:
@@ -127,6 +155,8 @@ Stop if:
 - a sensitive surface appears without an approval gate
 - the lane would require secrets, credentials, private data, provider config, dashboard values, or production details
 - the answer would certify security, compliance, release readiness, or acceptance
+- the answer would treat generated Work Graph reports as authority, proof, task selection, or transition approval
+- the answer would approve parallel execution instead of routing through branch/worktree isolation and coordinator review
 - findings would need a new PRD, bead, owner-file update, release action, GitHub mutation, external mutation, or destructive command before user review
 
 ## Forbidden Actions
@@ -136,6 +166,7 @@ Review Lanes must not:
 - edit files
 - approve PRDs
 - activate beads
+- approve transitions
 - accept implementation
 - approve review decisions
 - approve release
@@ -145,8 +176,12 @@ Review Lanes must not:
 - certify compliance
 - create follow-up tasks
 - rewrite owner files
+- choose tasks
+- run tasks from graph output
+- approve parallel execution
 - run mutating commands
 - mutate GitHub
 - mutate external systems
+- treat Work Graph reports as authority, proof, transition approval, or task selection
 - treat generated reports, screenshots, browser notes, GitHub status, or confidence as proof
-- create a registry, optional pack, command wrapper, package-manager behavior, release-channel behavior, generated report, checker gate, or persona system
+- create a registry, optional pack, command wrapper, package-manager behavior, release-channel behavior, generated report, checker gate, task-runner system, or persona system

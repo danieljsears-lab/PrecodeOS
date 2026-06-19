@@ -130,7 +130,7 @@ python3 scripts/precode_cli.py --help
 python3 scripts/precode_cli.py validate
 ```
 
-For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
+For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a curated wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
 
 Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
 
@@ -246,7 +246,7 @@ python3 scripts/ralph-loop.py --dry-run
 | Work units | `tasks/prds/`, `tasks/prds-html/`, `tasks/beads/`, `tasks/templates/` |
 | Protocols | `tasks/reference/`, including skill playbooks |
 | Raw project evidence | `project-evidence/` |
-| Agent surfaces | `modes/`, `adapters/`, shims, skill playbooks |
+| Agent surfaces | `modes/`, `adapters/`, shims, skill playbooks, and `.agents/README.md` for host-skill boundaries |
 | Scripts | `scripts/` |
 | Evidence | `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md` |
 

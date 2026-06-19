@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.27
-Last updated: 2026-06-18
+Document version: v0.3.28
+Last updated: 2026-06-19
 
 ## Executive Summary
 
@@ -509,7 +509,7 @@ This public architecture overview previews direction without depending on privat
 - keep adaptive depth and file/command guardrails quiet, specific, and advisory before adding heavier layers
 - add risk-triggered run contracts for allowed actions, proof needed, approval gates, and stop conditions only where they prove value
 - strengthen evidence, release readiness, and review lanes without turning Precode into a specialist-team simulator
-- add import bridges and optional packs later, after the kernel remains quiet and trusted
+- add import bridges and optional packs later, with future pack boundaries defined as protocol guardrails before any pack distribution exists
 - keep public package docs independent from maintainer-local planning surfaces while package adoption and update paths mature
 
 ## Reviewer Takeaway

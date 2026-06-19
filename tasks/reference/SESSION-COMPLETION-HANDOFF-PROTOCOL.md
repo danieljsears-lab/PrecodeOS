@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-18
+Document version: v0.1.9
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -68,6 +68,8 @@ Manual verification should follow `tasks/reference/VERIFICATION-GUARDRAIL-PROTOC
 
 Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-PROTOCOL.md`. The closeout should name changed behavior, affected users, smoke evidence, browser or manual verification, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and approval still required before any release action.
 
+When release confidence depends on proving a requirement or behavior being shipped, or a non-functional expectation, closeout should also name the verification and release evidence path: requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty. Missing traceability means the work still needs evidence; it does not approve release, accept implementation, or make checker output proof.
+
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
@@ -89,6 +91,7 @@ A handoff should be able to explain:
 - latest evidence
 - latest Ralph attempt decision when Ralph was used
 - release-readiness status when the bead may ship to users
+- verification and release evidence status when release confidence depends on traceable proof
 - teammate role, branch/worktree, coordinator, integration target, and merge/re-entry status when the Small Team Collaboration Lane applies
 - blockers
 - next safe action

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-13
+Document version: v0.1.1
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -72,6 +72,8 @@ Each Ralph run follows this lifecycle:
 9. Recommend exactly one next move: `retry`, `ask`, `split`, `review`, `handoff`, or `stop`.
 
 Ralph does not invent implementation steps. If the next implementation action is unclear, the next move is `ask`, `split`, or `stop`.
+
+If command classification says the attempt command needs approval or should stop, Ralph must not run that attempt command. It should return an approval-needed or stop decision and keep any output as generated evidence only. `scripts/clarity-scenario-check.py` includes regression coverage for missing active bead, no opt-in, approval-needed attempt commands, dry-run no-write behavior, and generated-evidence demotion.
 
 ## Validator Set
 

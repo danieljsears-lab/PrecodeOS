@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-15
+Document version: v0.1.2
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -105,6 +105,8 @@ Apply mode must refuse:
 - release channels, pinned versions, package-manager updates, rollback automation, registry behavior, optional packs, or an installable `precode` CLI
 
 No refusal should fall back to a broader copy command. Blocked output should name the shortest safe next action.
+
+The package keeps fixture coverage for the refusal contract in `scripts/bootstrap-check.py --self-test`. The fixtures are regression checks for setup-copy boundaries; they do not approve setup mutation, prove a target is safe, or replace the reviewed setup plan.
 
 ## Validation After Apply
 

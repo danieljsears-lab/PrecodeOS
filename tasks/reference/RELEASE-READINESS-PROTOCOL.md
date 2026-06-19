@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-18
+Document version: v0.1.4
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -116,6 +116,41 @@ Release Candidate Evidence Profile:
 - Decision state: candidate | needs evidence | blocked | ready for human release decision
 ```
 
+## Verification And Release Evidence Review
+
+Use verification and release evidence review when release confidence depends on proving a specific requirement, behavior, or non-functional expectation.
+
+This review is human-authored traceability. It is not a generated report, release approval, review acceptance, deployment approval, rollback approval, package release management, provider checklist, release-channel behavior, or package-manager behavior.
+
+Release evidence should name:
+
+- requirement or behavior proven
+- evidence lane used: `static`, `unit`, `integration`, `browser`, `manual`, or `external`
+- recorded check, Closeout Evidence, or manual verification source
+- smoke path and result
+- docs or support freshness
+- rollback path or blocked escape
+- approvals still required
+- decision state
+- remaining uncertainty
+
+Missing traceability means `needs evidence`. It does not approve release, block release by itself, replace review, or make generated checker output proof.
+
+Use this compact shape inside Closeout Evidence, a release-readiness note, or a Release Candidate Evidence Profile when a release-relevant bead needs clearer proof:
+
+```text
+Verification and release evidence:
+- Requirement or behavior proven:
+- Evidence lane:
+- Recorded source:
+- Smoke path and result:
+- Docs or support freshness:
+- Rollback path or blocked escape:
+- Approvals still required:
+- Decision state: candidate | needs evidence | blocked | ready for human release decision
+- Remaining uncertainty:
+```
+
 ## Smoke Evidence
 
 Smoke evidence is the smallest practical proof that the release target still works after the change.
@@ -187,7 +222,7 @@ Show changed behavior, affected users, release target, recorded checks, smoke te
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Use the profile fields from the Release Readiness Protocol: candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Use the profile fields from the Release Readiness Protocol: candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision.
 Make clear that ready for human release decision is not release approval.
 ```

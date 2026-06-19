@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-15
+# Version: v0.1.1
+# Last updated: 2026-06-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -115,6 +115,8 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             ["python3", "scripts/public-repo-check.py"],
         ]
     if args.command == "bootstrap-check":
+        if args.apply_supervised_setup and not args.supervised_setup_plan:
+            parser.error("bootstrap-check --apply-supervised-setup requires --supervised-setup-plan")
         if args.apply_supervised_setup and not args.approve_action:
             parser.error("bootstrap-check --apply-supervised-setup requires at least one --approve-action <SP-ID>")
         command = [

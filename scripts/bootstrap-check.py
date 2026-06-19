@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.0
-# Last updated: 2026-06-15
+# Version: v0.5.1
+# Last updated: 2026-06-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1306,12 +1306,31 @@ def make_source(root: Path) -> None:
         path.write_text("fixture\n", encoding="utf-8")
 
 
+def make_secret_local_and_generated_fixture_paths(root: Path) -> list[str]:
+    fixture_paths = [
+        ".env",
+        ".env.local",
+        "secrets/api-token.txt",
+        "credentials/service-account.json",
+        ".codex/session.jsonl",
+        "docs/.env.private",
+        "logs/work-graph.json",
+        "logs/check-output/secret-output.txt",
+    ]
+    for name in fixture_paths:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture secret or local state\n", encoding="utf-8")
+    return fixture_paths
+
+
 def self_test() -> int:
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp)
         source = base / "source"
         source.mkdir()
         make_source(source)
+        excluded_fixture_paths = make_secret_local_and_generated_fixture_paths(source)
 
         empty_target = base / "empty-target"
         empty_target.mkdir()
@@ -1439,6 +1458,23 @@ def self_test() -> int:
             action["category"] == "review_copy_candidate" for action in empty_payload["supervised_setup_plan"]["actions"]
         )
         assert empty_payload["supervised_setup_plan"]["target_mutation_allowed"] is False
+        preview_copy_paths = {
+            action["path"]
+            for action in empty_payload["install_update_preview"]["actions"]
+            if action["category"] == "copy_candidate"
+        }
+        setup_copy_paths = {
+            action["path"]
+            for action in empty_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_copy_candidate"
+        }
+        for excluded_path in excluded_fixture_paths:
+            assert excluded_path not in preview_copy_paths
+            assert excluded_path not in setup_copy_paths
+        assert any(
+            action["category"] == "exclude" and action["path"] == ".env"
+            for action in empty_payload["install_update_preview"]["actions"]
+        )
         rendered_setup_plan = render_setup_plan_plain(empty_payload)
         assert "evidence only" in rendered_setup_plan
         assert "does not approve copying" in rendered_setup_plan
@@ -1473,6 +1509,10 @@ def self_test() -> int:
         assert blocked_no_approval["status"] == "blocked"
         assert any("at least one" in item["reason"] for item in blocked_no_approval["blocked"])
 
+        blocked_unknown = apply_supervised_setup(apply_payload, ["SP-999"])
+        assert blocked_unknown["status"] == "blocked"
+        assert any("not present in the setup plan" in item["reason"] for item in blocked_unknown["blocked"])
+
         adapt_ids = [
             action["id"]
             for action in nearly_empty_payload["supervised_setup_plan"]["actions"]
@@ -1496,6 +1536,18 @@ def self_test() -> int:
         blocked_conflict = apply_supervised_setup(nearly_empty_payload, conflict_copy_ids)
         assert blocked_conflict["status"] == "blocked"
         assert any("refusing to overwrite" in item["reason"] for item in blocked_conflict["blocked"])
+
+        blocked_upgrade_no_approval = apply_upgrade_preview(existing_precode_payload, [])
+        assert blocked_upgrade_no_approval["status"] == "blocked"
+        assert any("at least one" in item["reason"] for item in blocked_upgrade_no_approval["blocked"])
+
+        blocked_upgrade_unknown = apply_upgrade_preview(existing_precode_payload, ["UP-999"])
+        assert blocked_upgrade_unknown["status"] == "blocked"
+        assert any("not present in the upgrade preview" in item["reason"] for item in blocked_upgrade_unknown["blocked"])
+
+        blocked_upgrade_existing = apply_upgrade_preview(existing_precode_payload, upgrade_copy_ids)
+        assert blocked_upgrade_existing["status"] == "blocked"
+        assert any("refusing to overwrite" in item["reason"] for item in blocked_upgrade_existing["blocked"])
 
     print(json.dumps({"tool": "bootstrap-check-self-test", "status": "pass"}, indent=2, sort_keys=True))
     return 0

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-15
+Document version: v0.1.1
+Last updated: 2026-06-19
 
 ## Purpose
 
@@ -96,6 +96,8 @@ Preview actions use stable IDs and categories:
 - the source file exists and the target path does not exist
 
 It must refuse dirty package states, unknown action IDs, non-copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+
+The package keeps fixture coverage for these upgrade-apply refusals in `scripts/bootstrap-check.py --self-test`, including missing approval, unknown IDs, dirty or unknown package state, missing source files, and overwrite refusal. The fixtures are regression evidence only; they do not approve package updates or dirty-file replacement.
 
 ## Recovery Guidance
 

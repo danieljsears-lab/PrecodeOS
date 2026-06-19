@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-06-09
+# Version: v0.1.6
+# Last updated: 2026-06-19
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -67,6 +67,8 @@ def markdown_files(root: Path) -> list[Path]:
     for path in candidates:
         name = rel(path, root)
         if ".git/" in name or name in MARKDOWN_EXCLUDES:
+            continue
+        if name.startswith(".agents/skills/"):
             continue
         if name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md":
             continue
