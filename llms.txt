@@ -1,0 +1,68 @@
+# PrecodeOS AI Navigation Index
+
+AUTHORITY: Curated AI-readable navigation index for stable PrecodeOS package documentation.
+NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, runtime integration, or a replacement for canonical Markdown owner files.
+LOAD_WHEN: An AI assistant or documentation tool needs a compact starting index for stable PrecodeOS docs and protocols before choosing the smallest relevant source.
+CLASS: reference-navigation
+
+Creator: Dan Sears / Recode
+License: Apache-2.0
+Copyright: (c) 2026 Dan Sears / Recode
+Document version: v0.1.0
+Last updated: 2026-06-20
+
+This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
+
+## Start Here
+
+- `README.md`: public package compass, usage fit, setup path, and high-level navigation.
+- `docs/PRECODE-OS-README.md`: beginner-facing Builder OS explainer.
+- `docs/PRECODE-DAILY-COCKPIT.md`: day-to-day user cockpit and safe next prompts.
+- `docs/PRECODE-USER-GUIDE.md`: practical operating guide for normal PrecodeOS use.
+- `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
+
+## Active Memory Contract
+
+Normal Precode sessions start from exactly:
+
+- `AGENT.md`
+- `DECISIONS.md`
+- `tasks/todo.md`
+
+Do not expand active memory through this index, generated reports, reviewed memory, adapters, skill playbooks, or maintainer-local files.
+
+## Protocol Entry Points
+
+- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting.
+- `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
+- `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.
+- `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
+- `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
+- `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`: proof expectations and generated-evidence limits.
+- `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`: closeout, handoff, and review evidence shape.
+- `tasks/reference/RECOVERY-PROTOCOL.md`: stuck-user recovery and safe triage.
+
+## Stable Help Surfaces
+
+- `docs/PRECODE-GUIDED-SETUP.md`: beginner-safe package adoption guidance.
+- `docs/PRECODE-TROUBLESHOOTING.md`: symptom-first recovery and validation routing.
+- `docs/PRECODE-SUPPORT-RUNBOOK.md`: support-assisted setup and recovery guidance.
+- `docs/CLAUDE-CODE-FIELD-GUIDE.md`: public field guide for Claude Code users.
+- `tasks/reference/PROMPT-PATTERNS.md`: copyable prompts for common Precode workflows.
+
+## Generated Reading Surfaces
+
+- `docs-html/*.html`: generated public reading surface for `docs/*.md`; Markdown remains canonical.
+- `tasks/prds-html/*.html`: generated PRD review surface; Markdown PRDs remain canonical.
+- `OS-HEALTH.md`, `PROGRESS.md`, and `logs/*`: generated evidence only, not authority.
+
+## Maintainer Context
+
+Private maintainer material under `_maintainer/` is not normal user-session input and is not public package authority. Use it only for Dan's package-maintenance work when explicitly requested.
+
+## Guardrails
+
+- Do not install, wrap, proxy, compress, update, or mutate any runtime from this index.
+- Do not use this file as a package registry, optional-pack manifest, or tool integration contract.
+- Do not summarize raw source evidence in a way that replaces owner files, PRDs, beads, recorded checks, logs, or manual verification.
+- When a question depends on current state, inspect active memory, the active bead, source Markdown, generated evidence, or the relevant owner file directly.

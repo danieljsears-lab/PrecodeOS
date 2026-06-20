@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.4
+Last updated: 2026-06-20
 
 Each memory card captures one reusable piece of reviewed knowledge.
 
@@ -23,6 +23,7 @@ Cards should be short. If a card becomes a decision, requirement, architecture r
 - `source_pointers`: files, beads, PRDs, diary entries, checks, or approved notes that support the memory
 - `authority_owner_if_promoted`: owner file or protocol if this memory should become authority; required when `status` is `needs_promotion`
 - `topics`: search terms that help `scripts/memory-check.py --query` find the card
+- optional `memory_space`: retrieval grouping such as `default`, a project name, or a domain; not an authority boundary
 
 ## Project Glossary Guidance
 
@@ -43,3 +44,5 @@ Do not create a memory card automatically from generated diary output. Propose t
 ## Search And Promotion Rule
 
 Memory cards may be searched and exported through generated indexes, but search results are evidence only. Stale, superseded, archived, and low-confidence cards must be treated as weak or historical context. A `needs_promotion` card names the owner file to review; it does not update that owner file or become authority by itself.
+
+Prefer short cards with focused summaries. If a card grows large enough that loading it would waste context, use selective recall through `scripts/memory-check.py --query "<topic>" --recall`, split the card, or promote durable truth into the correct owner file.

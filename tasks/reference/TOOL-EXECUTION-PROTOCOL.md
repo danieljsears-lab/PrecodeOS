@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-19
+Document version: v0.1.11
+Last updated: 2026-06-20
 
 ## Purpose
 
@@ -90,6 +90,8 @@ bash scripts/record-check.sh -- <command>
 
 A logged tool run does not count as a passing check unless it is also recorded through `record-check.sh` or accepted in Closeout Evidence with the required manual verification format.
 
+Repeated failed or blocked tool runs may be inspected later by a read-only session-friction review. That review may recommend path corrections, command-pattern notes, memory-card candidates, or protocol follow-ups, but it must not auto-edit active memory, shims, reviewed memory, owner files, generated reports, or command wrappers.
+
 Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation. If adaptive depth warns before a command, the agent should explain the warning's shortest next action and either fix the bead metadata, strengthen proof, ask for approval, or split scope before treating the command path as clear.
 
 `next-step` is the canonical generated router for the next human decision. Its `load_plan`, `single_next_protocol`, and `context_footprint` fields are context-routing evidence only; they do not approve tool calls or widen allowed tool classes.
@@ -142,6 +144,8 @@ Prefer the lowest-token, lowest-side-effect tool that can answer the question:
 This preference does not replace evidence requirements. A cheap tool answer is still source material unless it is recorded through the appropriate verification path.
 
 When a host supports subagents, map them to Precode's compact role contracts instead of broad personas. Explorer should stay read-only, Builder should stay inside files in play, and Review should judge evidence rather than continue implementation.
+
+AI-readable indexes such as `llms.txt` are context-routing aids only. They can help an agent choose a small starting source, but current-state claims still require direct inspection of active memory, the active bead, source Markdown, or generated evidence.
 
 ## Secret Handling
 

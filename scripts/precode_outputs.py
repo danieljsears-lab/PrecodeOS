@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-06-15
+# Version: v0.1.2
+# Last updated: 2026-06-20
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -37,9 +37,11 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
                     [
                         f"`{cell(card.get('path'))}`",
                         cell(card.get("title")),
+                        cell(card.get("memory_space") or "default"),
                         cell(card.get("category")),
                         cell(card.get("freshness")),
                         cell(card.get("status")),
+                        cell(card.get("estimated_tokens") or "0"),
                         cell(card.get("authority_owner_if_promoted") or "none"),
                         cell(notes or "none"),
                         cell(card.get("summary")),
@@ -49,8 +51,8 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
             )
         return "\n".join(
             [
-                "| Card | Title | Category | Freshness | Status | Promotion owner | Warnings | Summary |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- |",
+                "| Card | Title | Space | Category | Freshness | Status | Est. tokens | Promotion owner | Warnings | Summary |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
                 *rows,
             ]
         ) if rows else "- No matching reviewed memory cards."
@@ -74,6 +76,8 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
     stale_or_superseded_cards = details.get("stale_or_superseded_cards") if isinstance(details.get("stale_or_superseded_cards"), list) else []
     low_confidence_cards = details.get("low_confidence_cards") if isinstance(details.get("low_confidence_cards"), list) else []
     glossary_terms = details.get("glossary_terms") if isinstance(details.get("glossary_terms"), list) else []
+    token_budget = details.get("token_budget") if isinstance(details.get("token_budget"), dict) else {}
+    by_space = details.get("by_space") if isinstance(details.get("by_space"), dict) else {}
 
     return f"""# PrecodeOS -- Memory Index
 <!-- ANCHOR: memory-index -->
@@ -93,6 +97,8 @@ Generated at: `{datetime.now(timezone.utc).isoformat()}`
 
 Use this index to find reviewed memory cards. Before acting, return to active memory, the active bead, and the primary authority file.
 
+Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets; search misses should stay explicit instead of forcing weak memory into context.
+
 Use this prompt when asking an agent to search memory:
 
 ```text
@@ -104,9 +110,23 @@ Use this prompt when asking an agent to search memory:
 - Status: {memory.get('status', 'missing')}
 - Reviewed memory cards: {details.get('card_count', 0)}
 - Project glossary cards: {len(details.get('glossary_terms') or [])}
+- Memory spaces: {len(by_space)}
 - Promotion-needed cards: {len(details.get('promotion_needed') or [])}
 - Stale or superseded cards: {len(details.get('stale_or_superseded') or [])}
+- Oversized cards: {len(token_budget.get('oversized_cards') or [])}
+- Card-count warning: {token_budget.get('card_count_warning', False)}
 - Generated-evidence warning: {memory.get('generated_report_warning', MEMORY_GENERATED_WARNING)}
+
+## Memory Spaces
+
+{chr(10).join(f"- `{cell(space)}`: {count} card(s)" for space, count in sorted(by_space.items())) if by_space else "- No reviewed memory spaces found."}
+
+## Token Budget Guidance
+
+- Per-card warning threshold: {token_budget.get('context_warning_chars_per_card', 'missing')} characters.
+- Index card-count warning threshold: {token_budget.get('index_warning_card_count', 'missing')} cards.
+- Guidance: {token_budget.get('guidance', 'Use selective recall instead of loading whole memory files when memory grows large.')}
+- Oversized cards: {", ".join(f"`{card}`" for card in token_budget.get('oversized_cards') or []) if token_budget.get('oversized_cards') else "none"}
 
 ## Current Reviewed Cards
 

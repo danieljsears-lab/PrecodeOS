@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.33
-# Last updated: 2026-06-19
+# Version: v0.1.34
+# Last updated: 2026-06-20
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -636,6 +636,8 @@ MEMORY_GENERATED_WARNING = (
     "Reviewed memory search and indexes are generated evidence only; they do not choose tasks, approve work, "
     "replace owner files, or expand active memory."
 )
+MEMORY_CARD_CONTEXT_WARNING_CHARS = 8000
+MEMORY_INDEX_CONTEXT_WARNING_CARDS = 25
 GOAL_FRAME_STATUSES = {"draft", "active", "reaffirm_needed", "retired"}
 GOAL_FRAME_HORIZONS = {"session", "feature", "product"}
 GOAL_FRAME_WORKFLOWS = {"intake", "PRD", "prd", "decomposition", "implementation", "review", "repair", "long-horizon"}
@@ -4226,6 +4228,7 @@ def memory_search_text(card: dict[str, Any]) -> str:
     fields = [
         card.get("path"),
         card.get("title"),
+        card.get("memory_space"),
         card.get("category"),
         card.get("freshness"),
         card.get("status"),
@@ -4243,8 +4246,10 @@ def memory_summary(root: Path) -> dict[str, Any]:
     cards: list[dict[str, Any]] = []
     by_category: Counter[str] = Counter()
     by_freshness: Counter[str] = Counter()
+    by_space: Counter[str] = Counter()
     promotion_needed: list[str] = []
     stale_or_superseded: list[str] = []
+    oversized_cards: list[str] = []
     glossary_terms: list[dict[str, Any]] = []
 
     for path in memory_card_paths(root):
@@ -4258,9 +4263,13 @@ def memory_summary(root: Path) -> dict[str, Any]:
         status = str(meta.get("status") or "").strip()
         sources = normalize_list(meta.get("source_pointers") if isinstance(meta.get("source_pointers"), list) else [meta.get("source_pointers")])
         topics = normalize_list(meta.get("topics") if isinstance(meta.get("topics"), list) else [meta.get("topics")])
+        memory_space = str(meta.get("memory_space") or meta.get("space") or "default").strip() or "default"
         summary_text = compact_memory_text(section_excerpt(text, "Summary"), 480)
         glossary_text = section_excerpt(text, "Project Glossary") or section_excerpt(text, "Glossary Terms") or section_excerpt(text, "Domain Terms")
         glossary_excerpt = compact_memory_text(glossary_text, 480)
+        char_count = len(text)
+        line_count = len(text.splitlines())
+        estimated_tokens = max(1, char_count // 4) if char_count else 0
 
         if category not in MEMORY_CATEGORIES:
             warnings.append(f"{rel} has missing or unsupported category")
@@ -4286,6 +4295,9 @@ def memory_summary(root: Path) -> dict[str, Any]:
             warnings.append(f"{rel} may contain secret-bearing language; review before sharing or exporting")
         if any(term in lower_text for term in MEMORY_AUTHORITY_TERMS):
             warnings.append(f"{rel} may be acting like authority or active task instructions")
+        if char_count > MEMORY_CARD_CONTEXT_WARNING_CHARS:
+            oversized_cards.append(rel)
+            warnings.append(f"{rel} is large enough to risk context-window waste; prefer selective recall over whole-card loading")
         if status == "needs_promotion":
             owner = str(meta.get("authority_owner_if_promoted") or "").strip()
             if not owner or owner.lower() in FRONTMATTER_EMPTY_MARKERS:
@@ -4311,10 +4323,13 @@ def memory_summary(root: Path) -> dict[str, Any]:
             by_category[category] += 1
         if freshness:
             by_freshness[freshness] += 1
+        if memory_space:
+            by_space[memory_space] += 1
 
         card = {
             "path": rel,
             "title": title,
+            "memory_space": memory_space,
             "category": category or "missing",
             "confidence": confidence or "missing",
             "freshness": freshness or "missing",
@@ -4327,6 +4342,9 @@ def memory_summary(root: Path) -> dict[str, Any]:
             "summary": compact_memory_text(summary_text, 240),
             "export_summary": summary_text,
             "glossary_excerpt": glossary_excerpt,
+            "line_count": line_count,
+            "char_count": char_count,
+            "estimated_tokens": estimated_tokens,
         }
         card["warnings"] = memory_status_notes(card)
         card["citation"] = memory_citation(card)
@@ -4338,6 +4356,7 @@ def memory_summary(root: Path) -> dict[str, Any]:
         "card_count": len(cards),
         "by_category": dict(sorted(by_category.items())),
         "by_freshness": dict(sorted(by_freshness.items())),
+        "by_space": dict(sorted(by_space.items())),
         "glossary_terms": glossary_terms,
         "current_cards": [card for card in cards if card.get("freshness") in {"current", "watch"} and card.get("status") == "reviewed"],
         "promotion_needed_cards": [card for card in cards if card.get("status") == "needs_promotion"],
@@ -4347,8 +4366,15 @@ def memory_summary(root: Path) -> dict[str, Any]:
         "low_confidence_cards": [card for card in cards if card.get("confidence") == "low"],
         "promotion_needed": promotion_needed,
         "stale_or_superseded": stale_or_superseded,
+        "token_budget": {
+            "context_warning_chars_per_card": MEMORY_CARD_CONTEXT_WARNING_CHARS,
+            "index_warning_card_count": MEMORY_INDEX_CONTEXT_WARNING_CARDS,
+            "oversized_cards": oversized_cards,
+            "card_count_warning": len(cards) > MEMORY_INDEX_CONTEXT_WARNING_CARDS,
+            "guidance": "Use selective recall and citations instead of loading whole memory files when cards or indexes grow large.",
+        },
         "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting.",
-        "safe_usage_prompt": "Search reviewed memory, cite matching cards, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action.",
+        "safe_usage_prompt": "Search reviewed memory, recall concise cited snippets, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action.",
     }
     return {"status": "warning" if warnings else "pass", "generated_report_warning": MEMORY_GENERATED_WARNING, "warnings": warnings, "details": details}
 

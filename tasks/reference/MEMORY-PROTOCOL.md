@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.5
+Last updated: 2026-06-20
 
 ## Purpose
 
@@ -53,7 +53,15 @@ Generated memory indexes live under `logs/`:
 
 The generated indexes must declare `CLASS: generated` and must not be treated as active memory, task plans, owner files, or promotion approval.
 
-`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, but it does not create cards, edit owner files, promote memory, select tasks, or approve work.
+`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, and `--recall` may return concise cited snippets for selective recall, but it does not create cards, edit owner files, promote memory, select tasks, or approve work.
+
+Memory cards may include `memory_space` metadata to group project, domain, team, or topic memories. Memory spaces are retrieval labels only. They must not become a new authority tree, active-memory partition, task selector, permission boundary, registry, optional pack, or package-manager surface.
+
+Generated memory summaries may include line counts, character counts, estimated token counts, and oversized-card warnings. These warnings exist because loading whole memory files can consume the same context window that memory is meant to protect. Large cards should be split, summarized, or recalled through cited snippets before an agent loads the full file.
+
+Future session-friction review may inspect repeated command failures, wrong-path attempts, stale evidence warnings, missing proof patterns, or tool-run classifications to propose reviewed memory cards or protocol follow-ups. It must remain read-only and recommendation-only: no automatic writes to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, root shims, reviewed memory cards, generated reports, or owner files.
+
+Future retrieval-backed memory may use semantic search, hybrid keyword/semantic retrieval, a shared database, MCP, or dashboard-like browsing only after extension review. The default package posture remains filesystem-first: no Postgres, pgvector, Docker, REST API, shared backend, automatic agent write access, or MCP server is required for normal Precode memory.
 
 ## Approved Memory Categories
 
@@ -79,6 +87,7 @@ Each reviewed memory card should include:
 - related bead or PRD when known
 - status: `reviewed`, `needs_promotion`, `superseded`, or `archived`
 - authority owner if the memory should be promoted
+- optional `memory_space` when a project or domain grouping helps retrieval
 
 Cards with `status: needs_promotion` must name `authority_owner_if_promoted`. If no owner file accepts the claim, the item should remain reviewed memory and should not be treated as authority.
 
@@ -124,6 +133,7 @@ Never store:
 - full command output
 - active task instructions
 - product decisions that have not been promoted to `DECISIONS.md`
+- unreviewed failure-mining conclusions as if they were durable facts
 
 ## Agent Usage
 
@@ -141,6 +151,7 @@ When searching memory, agents must return citations with:
 
 - card path
 - title
+- memory space when present
 - category
 - freshness
 - status
@@ -149,10 +160,14 @@ When searching memory, agents must return citations with:
 
 Search results with `freshness: stale`, `freshness: superseded`, `status: archived`, `status: superseded`, or `confidence: low` are demoted signals. Use them only to find context, conflicts, or history, then verify against current active memory, the active bead, and the relevant owner file before recommending action.
 
+Selective recall results must return short snippets with card citations rather than whole-card dumps. If no reviewed memory matches well enough, the agent or script should say no useful memory was found instead of forcing weak recall into the context window.
+
+Session-friction findings are also demoted signals until reviewed. They may suggest path corrections, command-pattern notes, search-scope improvements, or protocol gaps, but they must cite the source evidence and name the owner file or memory card destination before any human-approved promotion.
+
 Copyable search prompt:
 
 ```text
-Search reviewed memory for this topic. Cite matching cards by path, title, category, freshness, status, source pointers, and promotion owner. Treat memory as evidence only, visibly demote stale, superseded, archived, or low-confidence cards, and return to active memory, the active bead, and the owner file before recommending action.
+Search reviewed memory for this topic with selective recall. Cite matching cards by path, title, memory space, category, freshness, status, source pointers, and promotion owner. Return concise snippets instead of loading whole memory files. Treat memory as evidence only, visibly demote stale, superseded, archived, or low-confidence cards, and return to active memory, the active bead, and the owner file before recommending action.
 ```
 
 ## Promotion Path

@@ -9,14 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-19
+Document version: v0.1.18
+Last updated: 2026-06-20
 
 ## Purpose
 
 Extensions let PrecodeOS grow without turning into a giant prompt or a hidden automation system.
 
-An extension may add a tool surface, workflow protocol, skill playbook, source importer, audit, generated report, bead template, or external integration. It must not add active-memory files or let generated evidence choose work.
+An extension may add a tool surface, workflow protocol, skill playbook, source importer, audit, generated report, bead template, AI-readable navigation index, or external integration. It must not add active-memory files or let generated evidence choose work.
 
 Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a named host-agent prompt playbook, docs-help invocation, beginner workflow invocation, maintainer package-review playbook, or extension-review playbook. Skill playbooks are read-only in v1 and must point back to their owner protocols or canonical docs.
 
@@ -27,6 +27,8 @@ Use the Skill / Extension Review Skill in `tasks/reference/SKILL-PLAYBOOK-PROTOC
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, wraps existing commands, or needs tool-call approval boundaries.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when an extension introduces a new integration boundary, provider abstraction, workflow state, audit trail, or other reusable implementation shape.
+
+Use `llms.txt` only as a compact navigation index for stable canonical PrecodeOS documentation. It is not active memory, a generated evidence report, a runtime integration contract, a package registry, or permission to compress, proxy, wrap, install, update, or mutate tools.
 
 Active memory remains exactly:
 
@@ -40,6 +42,8 @@ Future host shims and native rule-directory surfaces must start as advisory comp
 
 Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
 
+Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior.
+
 ## Extension Types
 
 | Type | Purpose | Usual owner |
@@ -51,6 +55,8 @@ Future optional packs are governed by this protocol before any pack distribution
 | Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
+| AI-readable navigation index | Compact stable-docs index for AI assistants and documentation tools | `llms.txt` plus canonical Markdown owner files |
+| Future retrieval-backed memory | Deferred optional retrieval layer for reviewed memory cards or approved memory exports | `tasks/reference/MEMORY-PROTOCOL.md`, this protocol, and a future extension review |
 | Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
 | Bounded attempt engine | Opt-in local loop that runs one explicit attempt command, validators, and generated attempt evidence for one active bead | `tasks/reference/RALPH-LOOP-PROTOCOL.md` plus `scripts/ralph-loop.py` |
 | External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
@@ -73,6 +79,8 @@ Every extension must preserve these boundaries:
 - Keep context layers distinct: adapters translate, skill playbooks invoke, generated reports summarize, reviewed memory or raw evidence informs, and maintainer-local files guide package maintenance only.
 - Keep host compatibility advisory-first until a repeated, validated gap warrants a shipped adapter or shim.
 - Keep future optional packs explicit, reviewable, and non-installable until separate approved package work defines distribution behavior.
+- Keep AI-readable navigation indexes as indexes only: they may point to canonical docs and protocols, but they must not summarize away source evidence, select work, approve commands, define runtime integration behavior, or replace owner files.
+- Keep retrieval-backed memory optional and reviewed: no required Postgres, pgvector, Docker, MCP server, REST API, dashboard, shared backend, semantic index, automatic agent write access, external mutation, or cross-machine memory dependency may be added without a separate approved extension.
 
 ## Future Pack Boundary Spec
 
@@ -126,6 +134,8 @@ Reference and generated markdown added by an extension must include:
 - `CLASS`
 
 Use `CLASS: reference` for durable rules and `CLASS: generated` for reports.
+
+AI-readable text indexes should carry the same authority, non-authority, load trigger, and class metadata even when they are not Markdown documents.
 
 Generated markdown must clearly say it is not active memory, not a task plan, and not an instruction source.
 
