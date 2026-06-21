@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-15
+Document version: v0.1.9
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -18,7 +18,9 @@ Decomposition turns a shaped destination into journey units small enough to veri
 
 This protocol helps Precode avoid premature implementation, overbroad beads, hidden dependencies, and mixed planning plus coding.
 
-Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when a candidate bead comes from changed, superseded, deferred, or source-heavy intent and needs a clear promotion path before activation.
+Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when a candidate bead comes from changed, superseded, deferred, queued, or source-heavy intent and needs a clear promotion path before activation.
+
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the source is a Candidate Queue entry. Queue entries can inform decomposition only after the relevant PRD, decision, or owner file is ready; the queue itself does not authorize bead creation or activation.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when the right next workflow is still unclear.
 
@@ -144,7 +146,7 @@ Execution beads may produce:
 
 Execution beads should not reshape product definition. If new product scope appears, stop and promote it through PRD or decision ownership.
 
-When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
+When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. A Candidate Queue ID may explain where the intent came from, but it does not replace parent PRD, requirement IDs, primary authority, checks, or stop conditions. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
 
 External sprint plans, Ember `Backend-dev-plan.md` sprints, backend implementation lists, or client project plans are source inputs for decomposition, not beads by default. Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when those plans arrive from a client engagement. Precode may split, merge, reorder, defer, or reject external sprint items so each candidate bead still has one outcome, one primary authority, bounded files in play, checks, and stop conditions.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-18
+Document version: v0.1.12
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -42,6 +42,7 @@ When a project keeps raw source material in the repo, the default location is ro
 Supported source types include:
 
 - notes and markdown docs
+- Candidate Queue entries from `CANDIDATE-QUEUE.md`
 - text files and manual drafts
 - screenshots, wireframes, design images, frontend design files, Figma exports, and design-system notes
 - chat transcript summaries
@@ -114,6 +115,8 @@ Source summary:
 - Smallest non-code learning step:
 - Local Source Intake readiness:
 - Candidate Goal Frame:
+- Candidate Queue ID:
+- Candidate Queue status:
 - Design inputs:
 - Visual intent:
 - Screens, states, and user flows:
@@ -145,7 +148,7 @@ Use the existing-codebase and external-plan fields only when the source includes
 6. If design files are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, and unresolved design decisions.
 7. Identify affected authority files.
 8. If an existing codebase or external plan is present, summarize repo topology, app directories, existing checks, implementation constraints, sprint-plan inputs, conflicts, and stale assumptions.
-9. Decide whether the next step is Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, or no action.
+9. Decide whether the next step is Candidate Queue update, Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, defer, kill, or no action.
 
 Stop before PRD drafting if the source material lacks:
 
@@ -161,6 +164,7 @@ Promote stable conclusions only after user review.
 
 | Intake finding | Destination |
 |---|---|
+| Parked intent that is not ready for source intake, PRD shaping, or decomposition | `CANDIDATE-QUEUE.md` |
 | Product promise, users and jobs, strategy, non-goals, current bets, success signals, design or voice pointers | `PRODUCT.md` |
 | Reviewed and reaffirmed product-level Goal Frame candidate | `PRODUCT.md` `## Goal Frame` section |
 | Product problem, users, goals, non-goals, requirements | `tasks/prds/*.md` |
@@ -191,6 +195,13 @@ They become evidence only when:
 Use the Local Source Intake Protocol on these notes.
 Do not write code.
 Summarize stable facts, assumptions, conflicts, open questions, candidate requirements, and likely authority files.
+```
+
+```text
+Use Local Source Intake on this Candidate Queue entry.
+Treat it as parked intent and source evidence, not authority.
+Tell me whether it should stay queued, move to Product Discovery, become a PRD draft or amendment, become a decision, update an authority file, route to decomposition review, defer, or be killed.
+Do not activate a bead or start coding.
 ```
 
 ```text

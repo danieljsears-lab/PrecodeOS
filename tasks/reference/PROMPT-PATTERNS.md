@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.33
-Last updated: 2026-06-19
+Document version: v0.1.34
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -300,7 +300,33 @@ If worth-building uncertainty becomes the main question, route me to the Product
 
 Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
-Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
+Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. If there are useful not-yet ideas, suggest Candidate Queue entries for my review instead of treating them as approved work. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
+```
+
+### Candidate Queue Review
+
+```text
+Use the Candidate Queue Protocol.
+
+Review `CANDIDATE-QUEUE.md` as parked intent, not task authority.
+
+Tell me: what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+
+Also tell me what the Candidate Queue cannot answer: the active task, what the agent should build next, whether a PRD is approved, whether a bead is active, or whether a ranked item is authorized for implementation.
+
+Return: Current candidate, status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
+
+Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, choose next work, or start coding.
+```
+
+### Add Candidate Queue Entry
+
+```text
+Add or draft a Candidate Queue entry for this intent.
+
+Use `CQ-###-short-name`, status, user intent, evidence or source pointers, open questions, evidence strength, weakest assumption, reviewed rank if I provide one, promotion target, blocked or stale reason, related PRDs, candidate bead visibility, next review trigger, and last reviewed date.
+
+Ranking is review order only, not implementation priority. Do not create a PRD, create or activate beads, reserve bead IDs, update `tasks/todo.md`, or code.
 ```
 
 ### Precode Conviction Handoff

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-17
+Document version: v0.1.15
+Last updated: 2026-06-21
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -31,6 +31,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Start | `Run the Precode session start. Explain the Context Pack in plain English before editing.` | Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning. |
 | Ask docs | `Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
+| Review candidates | `Use the Candidate Queue Protocol. Review CANDIDATE-QUEUE.md as parked intent, not task authority.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |
 | Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
 | Team lane | `Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
@@ -38,7 +39,7 @@ For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code cl
 | Prepare release | `Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.` | Shipping evidence and approval questions without release action. |
 | Release candidate | `Prepare a Release Candidate Evidence Profile. Show candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs or support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. Do not approve release or mutate anything.` | A compact candidate evidence profile without release approval. |
 | Ralph | `Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.` | Retry evidence for one active bead without accepting work or activating anything. |
-| Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session without using either as active memory or a task plan.` | A lesson summary plus build-change context that stays evidence-only. |
+| Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session and the path of already-worked beads without using either as active memory or a task plan.` | A lesson summary plus implemented-bead path and build-change context that stays evidence-only. |
 | Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
 | Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 | Named fallback | `Use the No-Engineer Fallback Prompt Pack for this symptom.` | A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments. |
@@ -103,6 +104,22 @@ python3 scripts/workflow-check.py
 ```
 
 Expected output: advisory workflow warnings or confirmation. Workflow guidance does not approve work, activate a bead, or replace the active bead.
+
+### Review Parked Candidates
+
+Use when you want to inspect ideas, not-yet items, research leads, or possible future beads without turning them into active work.
+
+```text
+Use the Candidate Queue Protocol.
+
+Review CANDIDATE-QUEUE.md as parked intent, not task authority. Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+
+Also tell me what the Candidate Queue cannot answer: the active task, what the agent should build next, whether a PRD is approved, whether a bead is active, or whether a ranked item is authorized for implementation.
+
+Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, choose next work, or start coding.
+```
+
+Expected output: candidate status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
 
 ### Coordinate A Small Team
 
@@ -242,8 +259,8 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings, including work-graph warnings, for deeper diagnosis. |
 | `python3 scripts/ralph-loop.py --dry-run` | A Ralph-enabled bead needs bounded retry evidence. | Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work. |
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
-| `python3 scripts/update-bead-build-journal.py --append` | You need to append a build-change entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory or acceptance. |
-| `logs/bead-build-journal.md` | You need to understand what implementation-relevant work changed for a bead. | Generated build-change journal; evidence only. |
+| `python3 scripts/update-bead-build-journal.py --append` | You need to append an implemented-bead path entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory, Candidate Queue authority, or acceptance. |
+| `logs/bead-build-journal.md` | You need to understand the path of already-worked beads or what implementation-relevant work changed for a bead. | Generated implemented-bead path and build-change journal; evidence only. Session-close entries do not accept work. |
 | `python3 scripts/update-memory-index.py` | Reviewed memory cards changed. | Refreshes the searchable memory index. Memory remains evidence only. |
 
 ## Checks By Student Question
@@ -357,7 +374,7 @@ Learning matters because Precode should make you more capable over time, not jus
 | Learning action | Prompt | Output |
 |---|---|---|
 | Read the lesson | `Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.` | A plain-English session lesson from `logs/learning-diary.md`. |
-| Understand build changes | `Read the generated bead build journal if it exists. Tell me what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory or acceptance.` | A plain-English build-change summary from `logs/bead-build-journal.md` when available. |
+| Understand build changes | `Read the generated bead build journal if it exists. Tell me the path of already-worked beads, what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory, Candidate Queue authority, or acceptance.` | A plain-English implemented-bead path and build-change summary from `logs/bead-build-journal.md` when available. |
 | Search reviewed memory | `Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.` | Relevant reviewed memory cards with source pointers. |
 | Propose memory | `Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.` | A proposed memory card or promotion recommendation. |
 | Check memory quality | `Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.` | Memory warnings or confirmation. |

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-18
+Document version: v0.1.13
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -41,6 +41,7 @@ Choose the workflow that matches the current situation:
 | Current situation | Recommended workflow | Next artifact |
 |---|---|---|
 | User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
+| User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, or candidate ranking without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry or Candidate Queue review |
 | First-time non-technical builder has a rough idea before repo setup | Product Ideation Workbook or Product Conviction Packet Skill | Product Brief, then Conviction Packet evidence |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
@@ -94,6 +95,8 @@ The output is guidance only. It does not approve a PRD, activate a bead, choose 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection discovers future, deferred, blocked, follow-up, or PRD-approved work that should remain visible but non-active.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
+
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs a human-maintained place to capture multiple intents before they are ready for intake, discovery, PRD shaping, or decomposition. Candidate Queue review may rank candidates for review, but it must not choose next work or authorize implementation.
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before decomposition when workflow selection reveals auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that a non-technical builder should approve or redirect before an AI coding agent derives beads.
 

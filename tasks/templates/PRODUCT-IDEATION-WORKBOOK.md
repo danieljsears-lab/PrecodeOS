@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.0
-Last updated: 2026-06-18
+Document version: v0.2.1
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -400,12 +400,12 @@ Translate user moments into capability candidates, not approved features. Sort c
 
 End with an Exploration Evidence Packet and a compact capability-candidate matrix.
 
-Treat the output as evidence only. Do not call it a feature list, roadmap, backlog, requirements, or PRD. Do not write a PRD, create beads, update PRODUCT.md, or code.
+Treat the output as evidence only. Do not call it a feature list, roadmap, backlog, requirements, or PRD. If useful not-yet ideas should not be lost, propose Candidate Queue entries for later review. Do not write a PRD, create beads, update PRODUCT.md, or code.
 ```
 
 ## Candidate Capability Matrix
 
-These are candidate capabilities, not approved features, a backlog, requirements, or permission to code.
+These are candidate capabilities, not approved features, a backlog, requirements, or permission to code. After Local Source Intake, some may become Candidate Queue entries if the user wants to park them for research, ranking, or future promotion review.
 
 | Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
 |---|---|---|---|---|---|---|
@@ -484,7 +484,7 @@ Use this format:
 - Recommended Precode next step:
 - Local Source Intake handoff prompt:
 
-End with: "This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
+End with: "This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. Not-yet ideas may be proposed as Candidate Queue entries after review, but the queue is not task authority. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
 ```
 
 ## Product Discovery Validation Fallback

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-09
+# Version: v0.1.1
+# Last updated: 2026-06-21
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -10,6 +10,7 @@ import argparse
 from collections import defaultdict
 from datetime import datetime, timezone
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,7 @@ JOURNAL_MD = "logs/bead-build-journal.md"
 EMPTY_MARKERS = {"", "none", "none recorded", "not recorded", "not evaluated", "missing"}
 GENERATED_PATH_PREFIXES = ("logs/", "docs-html/")
 GENERATED_PATHS = {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
+CANDIDATE_ID_RE = re.compile(r"\bCQ-\d{3}(?:-[A-Za-z0-9][A-Za-z0-9-]*)?\b")
 
 
 def git(root: Path, args: list[str]) -> subprocess.CompletedProcess[str] | None:
@@ -120,6 +122,24 @@ def compact_change_summary(items: list[dict[str, str]], empty: str) -> str:
     return shown
 
 
+def compact_text(value: Any, limit: int = 180) -> str:
+    text = str(value or "").strip()
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    text = re.sub(r"\s+", " ", text)
+    text = text.lstrip("- ").strip()
+    if len(text) <= limit:
+        return text
+    return text[: limit - 1].rstrip() + "..."
+
+
+def first_section_line(value: str) -> str:
+    for line in value.splitlines():
+        cleaned = compact_text(line)
+        if cleaned and not cleaned.startswith("#"):
+            return cleaned
+    return ""
+
+
 def latest_check_summary(checks: list[dict[str, Any]], bead: str) -> dict[str, Any]:
     bead_checks = [row for row in checks if row.get("bead") == bead]
     if not bead_checks:
@@ -172,6 +192,49 @@ def build_readiness(bead_status: str, check_status: str, review_decision: str, d
     return "in progress"
 
 
+def candidate_queue_ids(bead: Any) -> list[str]:
+    haystack = " ".join(
+        [
+            bead.rel_path,
+            bead.title,
+            bead.primary_authority,
+            bead.parent_prd,
+            " ".join(bead.requirement_ids),
+            " ".join(str(value) for value in bead.frontmatter.values()),
+            " ".join(bead.sections.values()),
+        ]
+    )
+    return sorted(set(CANDIDATE_ID_RE.findall(haystack)))
+
+
+def provenance(bead: Any) -> dict[str, Any]:
+    parent_prd = "" if (bead.parent_prd or "").lower() in EMPTY_MARKERS else bead.parent_prd
+    return {
+        "candidate_queue_ids": candidate_queue_ids(bead),
+        "parent_prd": parent_prd,
+        "requirement_ids": bead.requirement_ids,
+        "primary_authority": bead.primary_authority,
+    }
+
+
+def plain_outcome(bead: Any, implementation: list[dict[str, str]], generated: list[dict[str, str]], possible_implementation: list[dict[str, str]]) -> str:
+    result = compact_text(bead.closeout.get("result", ""))
+    if result and result.lower() not in EMPTY_MARKERS:
+        return result
+
+    objective = first_section_line(bead.sections.get("Objective", ""))
+    if objective:
+        return objective
+
+    if implementation:
+        return f"Worked on {bead.title}; committed implementation changes are recorded for this bead."
+    if possible_implementation:
+        return f"Worked on {bead.title}; possible implementation changes need review because the Git baseline is incomplete or dirty."
+    if generated:
+        return f"Worked on {bead.title}; generated evidence changed for this bead."
+    return f"Worked on {bead.title}."
+
+
 def uncertainty_lines(delta_complete: bool, delta_reason: str | None, dirty_paths: list[dict[str, str]]) -> list[str]:
     lines: list[str] = []
     if not delta_complete:
@@ -220,12 +283,17 @@ def build_entry(root: Path, existing_entries: list[dict[str, Any]]) -> dict[str,
     recent_tools = [row for row in tool_rows if row.get("task") == bead.rel_path][-8:]
     review_decision = bead.closeout.get("review_decision", "not reviewed")
 
+    evidence_state = build_readiness(bead.status, str(check_summary.get("latest_status")), review_decision, delta_complete)
+
     return {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "bead": bead.rel_path,
         "bead_id": bead.bead_id,
         "bead_title": bead.title,
         "bead_status": bead.status,
+        "plain_outcome": plain_outcome(bead, implementation, generated, possible_implementation),
+        "evidence_state": evidence_state,
+        "provenance": provenance(bead),
         "build_lane": todo.get("build_lane") or "",
         "active_feature_window": todo.get("active_feature_window") or "",
         "primary_authority": bead.primary_authority,
@@ -246,7 +314,7 @@ def build_entry(root: Path, existing_entries: list[dict[str, Any]]) -> dict[str,
         "checks": check_summary,
         "manual_verification": bead.closeout.get("manual_verification", "not recorded"),
         "review_decision": review_decision,
-        "build_readiness": build_readiness(bead.status, str(check_summary.get("latest_status")), review_decision, delta_complete),
+        "build_readiness": evidence_state,
         "remaining_uncertainty": uncertainty_lines(delta_complete, delta_reason, dirty),
         "latest_session_close": (close_event or {}).get("timestamp"),
         "recent_tool_runs": [
@@ -260,6 +328,37 @@ def build_entry(root: Path, existing_entries: list[dict[str, Any]]) -> dict[str,
             for row in recent_tools
         ],
     }
+
+
+def entry_evidence_state(entry: dict[str, Any]) -> str:
+    return str(entry.get("evidence_state") or entry.get("build_readiness") or "unknown")
+
+
+def entry_plain_outcome(entry: dict[str, Any]) -> str:
+    outcome = compact_text(entry.get("plain_outcome", ""))
+    if outcome:
+        return outcome
+    title = entry.get("bead_title") or entry.get("bead") or "this bead"
+    return f"Worked on {title}."
+
+
+def provenance_lines(entry: dict[str, Any]) -> list[str]:
+    raw = entry.get("provenance") if isinstance(entry.get("provenance"), dict) else {}
+    candidate_ids = raw.get("candidate_queue_ids") or []
+    parent_prd = raw.get("parent_prd") or entry.get("parent_prd") or ""
+    requirement_ids = raw.get("requirement_ids") or entry.get("requirement_ids") or []
+    primary_authority = raw.get("primary_authority") or entry.get("primary_authority") or ""
+
+    parts: list[str] = []
+    if candidate_ids:
+        parts.append("Candidate Queue: " + ", ".join(f"`{item}`" for item in candidate_ids))
+    if parent_prd and str(parent_prd).lower() not in EMPTY_MARKERS:
+        parts.append(f"Parent PRD: `{parent_prd}`")
+    if requirement_ids:
+        parts.append("Requirements: " + ", ".join(f"`{item}`" for item in requirement_ids))
+    if primary_authority and str(primary_authority).lower() not in EMPTY_MARKERS:
+        parts.append(f"Primary authority: `{primary_authority}`")
+    return parts
 
 
 def append_jsonl(path: Path, entry: dict[str, Any]) -> None:
@@ -277,19 +376,20 @@ def render_entry(entry: dict[str, Any]) -> str:
     lines = [
         f"### {entry.get('timestamp', 'unknown time')}",
         "",
+        f"- Outcome: {entry_plain_outcome(entry)}",
+        f"- Evidence state: {entry_evidence_state(entry)}",
         f"- Bead: `{entry.get('bead') or 'missing'}`",
         f"- Status: `{entry.get('bead_status') or 'missing'}`",
-        f"- Build lane: {entry.get('build_lane') or 'not recorded'}",
-        f"- Active feature window: {entry.get('active_feature_window') or 'not recorded'}",
-        f"- Primary authority: `{entry.get('primary_authority') or 'missing'}`",
-        f"- Build readiness: {entry.get('build_readiness') or 'unknown'}",
-        f"- Git baseline: `{git_info.get('start_commit') or 'missing'}` -> `{git_info.get('end_commit') or 'missing'}` on `{git_info.get('branch') or 'unknown'}`",
-        f"- Implementation changes: {compact_change_summary(changes.get('implementation') or [], 'none recorded from committed baseline')}",
-        f"- Generated evidence changes: {compact_change_summary(changes.get('generated_evidence') or [], 'none recorded from committed baseline')}",
         f"- Checks: {checks.get('summary') or 'No recorded checks for this bead yet.'}",
         f"- Manual verification: {entry.get('manual_verification') or 'not recorded'}",
         f"- Review decision: {entry.get('review_decision') or 'not reviewed'}",
+        f"- Implementation changes: {compact_change_summary(changes.get('implementation') or [], 'none recorded from committed baseline')}",
+        f"- Generated evidence changes: {compact_change_summary(changes.get('generated_evidence') or [], 'none recorded from committed baseline')}",
+        f"- Provenance: {'; '.join(provenance_lines(entry)) or 'no Candidate Queue or PRD lineage recorded; primary source unavailable'}",
         f"- Remaining uncertainty: {'; '.join(str(item) for item in uncertainty) if uncertainty else 'none recorded'}",
+        f"- Build lane: {entry.get('build_lane') or 'not recorded'}",
+        f"- Active feature window: {entry.get('active_feature_window') or 'not recorded'}",
+        f"- Git baseline: `{git_info.get('start_commit') or 'missing'}` -> `{git_info.get('end_commit') or 'missing'}` on `{git_info.get('branch') or 'unknown'}`",
     ]
 
     possible_impl = changes.get("unverified_possible_implementation") or []
@@ -327,7 +427,7 @@ def render_markdown(entries: list[dict[str, Any]]) -> str:
     return f"""# PrecodeOS -- Bead Build Journal
 <!-- ANCHOR: bead-build-journal -->
 
-> AUTHORITY: Generated bead-level build-change journal and evidence-backed implementation snapshot.
+> AUTHORITY: Generated bead-level build-change journal, implemented-bead path view, and evidence-backed implementation snapshot.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, feature requirements, implementation plans, route structure, schema definitions, bead activation, implementation acceptance, or generated progress state.
 > LOAD_WHEN: Reviewing what implementation-relevant work changed for a bead; never as active session memory.
 > CLASS: generated
@@ -339,7 +439,7 @@ Generated at: `{datetime.now(timezone.utc).isoformat()}`
 
 ## Reading Rule
 
-Use this journal to understand what changed and what evidence supports the current build state. To continue work, load `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, and the bead's primary authority file.
+Use this journal to understand the path of already-worked beads, what changed, and what evidence supports the current build state. Session-close entries are not acceptance. Candidate Queue and PRD links are provenance only. To continue work, load `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, and the bead's primary authority file.
 
 {body}
 """

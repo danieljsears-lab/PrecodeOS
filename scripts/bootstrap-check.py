@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.1
-# Last updated: 2026-06-19
+# Version: v0.5.2
+# Last updated: 2026-06-21
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -17,6 +17,7 @@ from typing import Any
 
 PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
     {"group": "active_memory", "paths": ["AGENT.md", "DECISIONS.md", "tasks/todo.md"]},
+    {"group": "candidate_queue", "paths": ["CANDIDATE-QUEUE.md"]},
     {
         "group": "product_and_project_owner_files",
         "paths": [
@@ -79,6 +80,7 @@ EXCLUDED_PATHS = [
 SOURCE_REQUIRED_PATHS = ["AGENT.md", "DECISIONS.md", "tasks/todo.md", "docs/PRECODE-GUIDED-SETUP.md"]
 CONFLICT_PATHS = [
     "README.md",
+    "CANDIDATE-QUEUE.md",
     "PRODUCT.md",
     "PROJECT-CONTEXT.md",
     "FEATURES.md",

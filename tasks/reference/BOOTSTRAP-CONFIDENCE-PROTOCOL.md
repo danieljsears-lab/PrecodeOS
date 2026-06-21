@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-15
+Document version: v0.1.6
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -110,6 +110,7 @@ Public file groups:
 | File group | Include |
 |---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
+| Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
 | Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |

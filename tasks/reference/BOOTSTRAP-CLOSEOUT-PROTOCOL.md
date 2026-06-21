@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-19
+Document version: v0.1.2
+Last updated: 2026-06-20
 
 ## Purpose
 
@@ -62,6 +62,8 @@ The plan is not copy approval or edit approval.
 ## Package Upgrade Preview
 
 `--upgrade-preview` applies to targets that already contain Precode active memory.
+
+For support-assisted upgrades of an existing Precode target with important active work, known local package edits, or unclear recovery state, prefer a clone-first preview: preserve the current environment as the backup, run `--upgrade-preview` against a fresh clone, and review dirty or customized paths before any approved copy action. This is a support safety posture, not rollback automation or package-update permission.
 
 It must classify package state as one of:
 

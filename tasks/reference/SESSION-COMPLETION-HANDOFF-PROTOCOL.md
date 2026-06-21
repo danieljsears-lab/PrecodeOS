@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-19
+Document version: v0.1.10
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -73,6 +73,8 @@ When release confidence depends on proving a requirement or behavior being shipp
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
+
+Follow-up candidates from closeout should be routed to one of: `CANDIDATE-QUEUE.md`, PRD amendment, `DECISIONS.md`, authority-file update, explicit defer/kill note, or a candidate bead proposal after decomposition review. Do not hide follow-up work in `tasks/todo.md`, and do not treat a Candidate Queue entry as the next active bead.
 
 ## Required Handoff Context Pack
 

@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.4
+Last updated: 2026-06-21
 
 ## Purpose
 
 A Goal Frame is reviewed orientation for a workflow arc.
 
 It helps a builder and agent remember what current work is in service of before choosing a workflow. It does not choose tasks, approve work, replace PRDs, activate beads, or expand active memory.
+
+Use `CANDIDATE-QUEUE.md` and `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs to park multiple candidate intents, review evidence, rank candidates for review, or decide what deserves promotion. A Goal Frame orients durable direction; the Candidate Queue preserves many possible intents without making them tasks.
 
 Active memory remains exactly:
 
@@ -93,7 +95,7 @@ Use this path:
 Initial Direction -> workbook refinement -> Candidate Goal Frame -> Local Source Intake -> user reaffirmation -> PRODUCT.md Goal Frame
 ```
 
-If the candidate is conflicting, incomplete, stale, too task-like, or broader than the product constitution can own, keep it as intake evidence and ask the user whether to revise, retire, split, or route it to a PRD, bead, or `DECISIONS.md`.
+If the candidate is conflicting, incomplete, stale, too task-like, or broader than the product constitution can own, keep it as intake evidence and ask the user whether to revise, retire, split, queue it in `CANDIDATE-QUEUE.md`, or route it to a PRD, bead, or `DECISIONS.md`.
 
 ## Reaffirmation Rules
 

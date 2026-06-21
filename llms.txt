@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-20
+Document version: v0.1.2
+Last updated: 2026-06-21
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -20,6 +20,7 @@ This file is a navigation aid only. It points to canonical Markdown files and mu
 - `docs/PRECODE-DAILY-COCKPIT.md`: day-to-day user cockpit and safe next prompts.
 - `docs/PRECODE-USER-GUIDE.md`: practical operating guide for normal PrecodeOS use.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
+- `CANDIDATE-QUEUE.md`: parked candidate intent and promotion review surface; not task authority.
 
 ## Active Memory Contract
 
@@ -34,6 +35,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 ## Protocol Entry Points
 
 - `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting.
+- `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
 - `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
@@ -52,7 +54,8 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 ## Generated Reading Surfaces
 
-- `docs-html/*.html`: generated public reading surface for `docs/*.md`; Markdown remains canonical.
+- `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`; Markdown remains canonical.
+- `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
 - `tasks/prds-html/*.html`: generated PRD review surface; Markdown PRDs remain canonical.
 - `OS-HEALTH.md`, `PROGRESS.md`, and `logs/*`: generated evidence only, not authority.
 

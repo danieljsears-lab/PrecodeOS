@@ -7,14 +7,16 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-14
+Document version: v0.1.8
+Last updated: 2026-06-21
 
 ## Purpose
 
 This folder holds product definition shards.
 
 A PRD shard is the durable destination document between an idea and implementation. It captures alignment/grilling results, domain language when terms matter, user problem, requirement IDs, acceptance oracles, risks, architecture-shaping evidence when risk-triggered, module/interface candidates, and journey bead proposals before an AI coding agent starts building.
+
+When a PRD starts from `CANDIDATE-QUEUE.md`, cite the originating Candidate Queue ID in `Source Inputs`. The queue ID preserves source traceability only; it does not approve the PRD, choose work, reserve bead IDs, or authorize implementation.
 
 `PRODUCT.md` is the builder-facing product constitution. Use it during PRD creation, review, approval, and amendment to check product promise, users, strategy, non-goals, current bets, success signals, and design or voice. It does not replace PRD shards or approve features.
 
@@ -103,6 +105,7 @@ Use `PRD-000-template.md` when creating a new shard.
 - `FEATURES.md` compiles approved PRD shards into feature inventory and functional requirements. It should not become the deep PRD itself.
 - `scripts/prd-html.py` may regenerate `tasks/prds-html/*.html` from PRD shards. Generated pages may export proposed Acceptance Oracle Matrix Markdown, but canonical source changes still happen manually in `tasks/prds/*.md`. Run `python3 scripts/prd-html.py --check` when PRD source or PRD review-surface behavior changes.
 - Beads cite the parent PRD and requirement IDs they implement. New bead proposals should include delegation mode, test strategy, and review context when relevant.
+- Candidate Queue IDs may be included as source context in PRDs and bead proposals, but final bead IDs are assigned only when actual bead files are created.
 - If a PRD changes after implementation starts, add an amendment note to the PRD and create follow-up beads rather than silently widening the active bead.
 - Completed PRDs, old alignment transcripts, and closed source issues are historical evidence when current code or owner files have moved on.
 - Product decisions discovered during PRD work move to `DECISIONS.md` when they become hard decisions.

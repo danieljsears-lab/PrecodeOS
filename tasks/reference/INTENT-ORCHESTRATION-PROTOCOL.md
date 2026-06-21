@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-05-11
+Document version: v0.1.3
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -31,6 +31,7 @@ Use these states when explaining where an idea is in the Precode loop:
 | State | Meaning | Typical owner |
 |---|---|---|
 | `raw` | A rough idea, note, issue, screenshot, or user request exists. | user/local source |
+| `candidate_queued` | The intent is parked with status, evidence pointers, review rank, and a promotion target, but no work is approved. | `CANDIDATE-QUEUE.md` |
 | `intake_summarized` | Source material has been summarized as evidence. | intake summary or PRD `Source Inputs` |
 | `goal_framed` | Durable intent has reviewed orientation for workflow selection, but no task is approved by default. | `PRODUCT.md`, PRD, bead, or `DECISIONS.md` |
 | `framed` | Problem, non-goals, before/after moment, risks, and verification path are understood enough to draft. | Idea-to-PRD workflow |
@@ -42,7 +43,7 @@ Use these states when explaining where an idea is in the Precode loop:
 | `accepted` | Review decision accepts the bead outcome. | bead closeout |
 | `changed` | Intent changed after work started and needs owner-file handling. | PRD, `DECISIONS.md`, authority doc, or follow-up bead |
 | `superseded` | Earlier intent is replaced by a newer approved decision or artifact. | owning authority file |
-| `deferred` | Intent is intentionally not acted on now. | PRD notes, `DECISIONS.md`, or follow-up/backlog bead |
+| `deferred` | Intent is intentionally not acted on now. | Candidate Queue, PRD notes, `DECISIONS.md`, or follow-up bead |
 
 Generated reports may summarize these states. They do not own them.
 
@@ -51,6 +52,7 @@ Generated reports may summarize these states. They do not own them.
 | Intent stage | Owns | Does not own |
 |---|---|---|
 | Local/source material | raw evidence and user-provided context | approved requirements or active work |
+| Candidate Queue | parked intent, evidence pointers, user-reviewed rank, status, promotion target, and next review trigger | active task selection, PRD approval, bead activation, implementation priority, or generated proof |
 | Intake summary | stable facts, assumptions, conflicts, open questions, candidates | product decisions or implementation plan |
 | Goal Frame | durable goal orientation, success signal, out of scope, approval gates, reaffirmation trigger | task selection, backlog, roadmap, PRD approval, or bead activation |
 | PRD shard | product problem, goals, non-goals, requirements, acceptance oracle, risks, approval | active task selection |
@@ -65,6 +67,7 @@ Generated reports may summarize these states. They do not own them.
 
 Raw or imported intent becomes action only through one of these paths:
 
+- raw or parked intent -> Candidate Queue -> Local Source Intake, Product Discovery, decision, PRD draft, authority update, decomposition review, defer, or kill
 - source material -> reviewed intake -> PRD shard
 - durable broad intent -> reviewed Goal Frame -> workflow selection
 - source material -> reviewed decision -> `DECISIONS.md`
@@ -74,6 +77,8 @@ Raw or imported intent becomes action only through one of these paths:
 - review finding -> accepted closeout, follow-up bead, decision, or authority update
 
 Do not promote intent directly from generated reports, diary entries, audit output, GitHub issues, screenshots, chat summaries, or local notes into active work.
+
+Do not promote a Candidate Queue entry directly into active work. It can preserve intent and review order, but action still needs the normal intake, discovery, PRD, decision, authority update, decomposition, or user-approved bead path.
 
 Do not promote a Goal Frame directly into active work. It can orient the next workflow after reaffirmation, but the chosen work still needs the normal PRD, decision, authority update, or user-approved bead path.
 
@@ -132,3 +137,5 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when intent state is clear 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when accepted, changed, superseded, deferred, or follow-up intent needs future-work visibility without task activation.
 
 Use `tasks/reference/GOAL-FRAME-PROTOCOL.md` when durable intent should be preserved as reviewed orientation before workflow selection without becoming hidden authority.
+
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user wants a backlog-like or roadmap-like place to park multiple intents, review what needs research, rank candidates for review, or decide which candidates deserve promotion.

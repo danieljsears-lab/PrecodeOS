@@ -9,21 +9,23 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-09
+Document version: v0.1.1
+Last updated: 2026-06-21
 
 ## Purpose
 
-The bead build journal helps a builder understand what code or implementation-relevant work changed during a bead, what evidence supports the current build state, and what remains uncertain.
+The bead build journal helps a builder understand the path of already-worked beads, what code or implementation-relevant work changed during each bead, what evidence supports the current build state, and what remains uncertain.
 
 It is a generated narrative build journal with traceability support. It is not active memory, not review acceptance, and not permission to continue from generated output alone.
 
 The journal should answer:
 
 - What bead did this session affect?
+- What plain-English outcome or path step did this session record?
 - What implementation-relevant files appear to have changed for the bead?
 - What generated evidence was produced?
 - What checks or manual verification support the current state?
+- What Candidate Queue, PRD, requirement, or primary-authority provenance is available?
 - What still needs review, proof, acceptance, or user approval?
 
 ## Source Inputs
@@ -62,8 +64,11 @@ Each entry should be short, plain-English, and evidence-backed.
 Capture:
 
 - timestamp
+- plain outcome first, in user-readable language
 - bead path, ID, title, and status
+- evidence state based on recorded checks, closeout, review decision, and Git baseline, not confidence
 - build lane and active feature window when available
+- provenance from Candidate Queue IDs, parent PRD, requirement IDs, and primary authority when available
 - Git branch and baseline/end metadata when available
 - changed-path summary
 - implementation changes, separated from generated evidence changes
@@ -75,13 +80,17 @@ Capture:
 
 Do not provide percentage completion by default. Use evidence-based wording such as `ready for review`, `evidence incomplete`, `checks failing`, `blocked`, or `accepted in closeout`.
 
+Candidate Queue and PRD lineage is provenance only. It can explain where the work came from, but it must not make `CANDIDATE-QUEUE.md` responsible for implementation history, rank work, approve PRDs, activate beads, or authorize implementation.
+
+Session-close entries are path visibility, not acceptance. A journal entry may show work that is still in progress, missing checks, waiting for manual verification, or awaiting review.
+
 ## Daily Cockpit Surfacing Rule
 
 The Daily Cockpit is the primary daily reader surface for this journal.
 
 When the bead build journal exists, Daily Cockpit report guidance should include it where a builder is trying to understand what changed or validate build status:
 
-- Learn: read the bead build journal alongside the learning diary when the question is "what code changed?"
+- Learn: read the bead build journal alongside the learning diary when the question is "what path of work happened?" or "what code changed?"
 - Close: session close should update or point to the latest bead build journal entry after closeout evidence refresh.
 - Runnable reports: list the generated journal command or file once implemented.
 - Done/evidence prompts: ask the agent to summarize the latest journal entry without treating it as active memory.

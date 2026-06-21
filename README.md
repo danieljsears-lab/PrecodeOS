@@ -1,6 +1,11 @@
 # PrecodeOS
 <!-- ANCHOR: readme -->
 
+> AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
+> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.
+> LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific PrecodeOS guide or protocol.
+> CLASS: reference
+
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
@@ -8,14 +13,19 @@
 
 Learn more: `https://www.precodeos.org`.
 
-PrecodeOS is an AI anti-drift "Builder OS" for solo software builders using AI coding agents. PrecodeOS brings proven engineering discipline to AI-assisted building without asking a non-technical builder to become an engineering manager. It keeps the repository clear about intent, scope, proof, approval, and recovery, so any coding agent has safer rails to work inside.
+PrecodeOS is an AI anti-drift "Builder OS" for solo software builders using AI coding agents. 
 
-It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. PrecodeOS keeps its active AI-agent context to 219 lines across three files.
+PrecodeOS brings proven engineering discipline, practices and patterns to AI-assisted building without asking a non-technical builder to become an engineering manager. It keeps the repository clear about intent, scope, proof, approval, and recovery, so any coding agent has safer rails to work inside.
+
+It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. 
+
+PrecodeOS keeps its active AI-agent context to 219 lines across three files.
 
 PrecodeOS cares about:
 
 - stopping shallow "vibe" work from becoming production code
 - turning vague intent into explicit artifacts
+- preserving parked intent in a Candidate Queue without turning it into active work
 - giving the agent bounded context
 - making the next safe action legible
 - using review as more than rubber-stamping
@@ -24,7 +34,9 @@ PrecodeOS cares about:
 
 ## How It Works
 
-PrecodeOS is a repo-native control layer for AI coding work. It uses build loops, bead contracts, recorded checks, advisory loop health, closeout evidence, and human-gated transitions to keep agentic iteration grounded, recoverable, and inspectable.
+PrecodeOS is a repo-native control layer for AI coding work. 
+
+It uses build loops, bead contracts, recorded checks, advisory loop health, closeout evidence, and human-gated transitions to keep agentic iteration grounded, recoverable, and inspectable.
 
 It lives inside a repository as Markdown owner files, execution contracts, validation scripts, compilers, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents, and it does not run the agent; you run the agent.
 
@@ -89,6 +101,8 @@ PrecodeOS gives AI-assisted work a shared operating model. It uses repeated work
 It uses tiny active memory to prevent stale context, forces authority into named repo files, records durable evidence as proof (instead of trusting agent claims), and requires the human to approve transitions. It uses generated reports to help the builder see what is going on and to inspect health.
 
 Ralph-style iteration is opt-in and bounded by the active bead. 
+
+`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, and candidate bead visibility. It says, "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion." It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code.
 
 ## What You Can Build
 
@@ -178,6 +192,8 @@ For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SE
 Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html).
 
 For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually.
+
+For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md). A generated reading page is available at [`docs-html/CANDIDATE-QUEUE.html`](docs-html/CANDIDATE-QUEUE.html), and public users can refresh it with `python3 scripts/docs-html.py`, but the Markdown queue remains canonical. Candidate ranking is review order only; it does not choose what the agent builds next, approve PRDs, activate beads, or reserve bead IDs.
 
 For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
@@ -347,8 +363,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.42
-Last updated: 2026-06-15
+Document version: v0.1.44
+Last updated: 2026-06-21
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-17
+Document version: v0.1.13
+Last updated: 2026-06-21
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-workbook or local material -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
+workbook, Candidate Queue, or local material -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
 ```
 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
@@ -31,6 +31,8 @@ Generated PRD HTML under `tasks/prds-html/` is a committed review convenience ge
 Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD amendment, or product drift checks. `PRODUCT.md` orients the product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. It does not approve features, activate beads, or replace PRD shards.
 
 Use `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` when the idea is sourced from local notes, docs, screenshots, chat summaries, issue exports, research files, or manual drafts.
+
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the idea starts from `CANDIDATE-QUEUE.md`. A Candidate Queue entry may be cited in PRD `Source Inputs`, but it is evidence and origin trace only; it does not approve the PRD, compile requirements, or authorize beads.
 
 Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a client PRD, existing codebase, frontend design handoff, Ember/backend plan, sprint plan, or repo-topology decision.
 
@@ -142,7 +144,7 @@ Ask only questions that can change product definition, risk, scope, or verificat
 
 When the idea may change product promise, target users, non-goals, current bets, success signals, or design and voice direction, load `PRODUCT.md` and check fit before drafting requirements.
 
-If the request comes from notes, docs, GitHub issues, research, screenshots, chat summaries, issue exports, or manual drafts, use the Local Source Intake Protocol and summarize those inputs in the PRD `Source Inputs` section. Source inputs are evidence, not authority.
+If the request comes from Candidate Queue entries, notes, docs, GitHub issues, research, screenshots, chat summaries, issue exports, or manual drafts, use the Local Source Intake Protocol and summarize those inputs in the PRD `Source Inputs` section. Source inputs are evidence, not authority.
 
 ### 1a. External PRD Normalization
 

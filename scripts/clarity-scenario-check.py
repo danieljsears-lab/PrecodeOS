@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.17
-# Last updated: 2026-06-19
+# Version: v0.1.18
+# Last updated: 2026-06-21
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -232,6 +232,100 @@ def assert_no_engineer_fallback_prompt_pack(failures: list[dict[str, str]]) -> N
     for term in required_terms:
         if term.lower() not in lower_text:
             failures.append({"scenario": "no-engineer fallback prompt pack", "expected": term, "actual": "missing"})
+
+
+def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("CANDIDATE-QUEUE.md"): [
+            "intents we have not lost",
+            "What is the active task?",
+            "What should the agent build next?",
+            "Is this PRD approved?",
+            "Is this bead active?",
+            "Is this ranked item authorized for implementation?",
+            "Candidate ranking is review order only",
+            "Candidate IDs do not reserve PRD IDs or bead IDs",
+            "Do not create `B###` bead IDs here",
+        ],
+        Path("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md"): [
+            "task selection",
+            "PRD approval",
+            "bead activation",
+            "automatic ranking",
+            "permission to code",
+            "Local Source Intake",
+            "Product Discovery Validation",
+            "Decomposition Protocol",
+            "Do not reserve PRD IDs or bead IDs",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Candidate Queue Protocol",
+            "product roadmap",
+            "backlog-like list",
+            "must not choose next work or authorize implementation",
+        ],
+        Path("tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md"): [
+            "Candidate Queue",
+            "human-maintained",
+            "Neither surface may choose work or activate beads",
+            "must not edit the queue, auto-rank candidates",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "Candidate Queue entry",
+            "does not authorize bead creation or activation",
+            "does not replace parent PRD",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "Candidate Queue entries",
+            "stay queued",
+            "Do not activate a bead or start coding",
+        ],
+        Path("tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md"): [
+            "candidate_queued",
+            "Candidate Queue",
+            "Do not promote a Candidate Queue entry directly into active work",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "Candidate Queue",
+            "does not approve the PRD",
+            "authorize beads",
+        ],
+        Path("tasks/prds/PRD-SHARD-SCHEMA.md"): [
+            "Candidate Queue ID",
+            "does not approve the PRD",
+            "final bead IDs are assigned only when actual bead files are created",
+        ],
+        Path("tasks/prds/PRD-000-template.md"): [
+            "Candidate Queue ID",
+            "Do not reserve `B###` IDs",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use The Candidate Queue For Parked Intent",
+            "psychological benefit of a backlog",
+            "cannot answer",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Review candidates",
+            "parked intent, not task authority",
+            "Do not update active memory",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Candidate Queue Review",
+            "Add Candidate Queue Entry",
+            "Ranking is review order only",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "CANDIDATE-QUEUE.md",
+            "Candidate Queue states",
+            "not active memory",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"candidate queue contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
 
 
 def assert_bugfix_spec_lane_contract(failures: list[dict[str, str]]) -> None:
@@ -1157,6 +1251,7 @@ def main() -> int:
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
+    candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
     assert_review_lanes_contract(failures)
@@ -1549,6 +1644,7 @@ def main() -> int:
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
+        + candidate_queue_scenario_count
         + 1
         + 2
         + 1

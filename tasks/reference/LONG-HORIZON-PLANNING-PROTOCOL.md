@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-05-11
+Document version: v0.1.2
+Last updated: 2026-06-21
 
 ## Purpose
 
 Long-horizon planning gives future work a visible but demoted place in Precode.
 
 It helps a solo builder see what is approved, blocked, deferred, proposed, or ready for human review without turning the future into active memory.
+
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` and `CANDIDATE-QUEUE.md` when the user needs a human-maintained place to park multiple intents, review evidence, rank candidates for review, or decide what deserves promotion. Long-horizon planning is generated or compiled visibility; the Candidate Queue is user-maintained candidate capture. Neither surface may choose work or activate beads.
 
 Active memory remains exactly:
 
@@ -31,6 +33,7 @@ Use these terms when reviewing future work:
 | State | Meaning |
 |---|---|
 | `idea` | A raw user idea or note that has not been shaped |
+| `candidate_queued` | A parked Candidate Queue entry exists with status, evidence pointers, and a promotion target |
 | `source_intake` | Local or external material summarized as evidence |
 | `prd_draft` | Product definition exists but is not approved |
 | `prd_approved` | Product direction is approved and can propose beads |
@@ -50,6 +53,7 @@ Use these terms when reviewing future work:
 - Bead closeout owns immediate follow-up signals from the just-finished or blocked work.
 - Reference docs own repeatable process rules.
 - Generated long-horizon maps summarize state only.
+- `CANDIDATE-QUEUE.md` owns user-maintained parked intent and review ordering, but not task authority.
 
 `tasks/todo.md` remains current execution only. It must not become a backlog, roadmap, milestone tracker, project board, or parking lot for future work.
 
@@ -62,6 +66,8 @@ source evidence or idea -> PRD, decision, or authority-file update -> candidate 
 ```
 
 Generated maps, health reports, diary entries, and audit warnings may point at future work, but they must not activate it, rank it, rewrite owner files, or bypass approval.
+
+Generated maps may mention Candidate Queue state, but they must not edit the queue, auto-rank candidates, or treat a ranked queue entry as implementation approval.
 
 ## Revisit Guidance
 

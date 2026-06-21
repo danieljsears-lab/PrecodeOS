@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-05-29
+Document version: v0.1.8
+Last updated: 2026-06-21
 
 ## State
 
@@ -40,6 +40,8 @@ Raw inputs are evidence, not authority. Use `tasks/reference/LOCAL-SOURCE-INTAKE
 
 - Source type: `notes | docs | screenshot | design | chat summary | issue export | research | customer quote | manual draft | existing feature doc | other`
 - Source references:
+- Candidate Queue ID:
+- Candidate Queue status:
 - Stable facts:
 - Assumptions:
 - Conflicts or stale inputs:
@@ -299,6 +301,8 @@ These are proposals only. Do not activate a bead until the user approves the tra
 | Proposed bead | Requirement IDs | Done when | Delegation mode | Test strategy | Review context | Primary authority | Verification |
 |---|---|---|---|---|---|---|---|
 | `B###-short-name` | `PRD-000-FR01` |  | `human_in_loop | afk_candidate | human_required` | `failing_first | characterization | static_only | manual_only | not_applicable` | `same_session_ok | fresh_context_recommended | fresh_context_required` |  |  |
+
+If this PRD came from `CANDIDATE-QUEUE.md`, cite the `CQ-###` ID in source notes only. Do not reserve `B###` IDs in the Candidate Queue; create final bead IDs only when actual bead files are created.
 
 ## Compilation Notes
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.52
-Last updated: 2026-06-19
+Document version: v0.7.53
+Last updated: 2026-06-21
 
 
 
@@ -338,6 +338,55 @@ This Goal Frame has a fit warning. Ask me whether to reaffirm, revise, retire, s
 
 Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent's next move.
 
+## Use The Candidate Queue For Parked Intent
+
+Use `CANDIDATE-QUEUE.md` when you have multiple ideas, research leads, not-yet items, or possible future slices that you do not want to lose, but that are not ready to become PRDs or beads.
+
+A Candidate Queue says: "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion."
+
+It can help answer:
+
+- What ideas have we parked?
+- Which ones need research?
+- Which ones are worth shaping?
+- Which ones are blocked or stale?
+- Which ones might become PRDs?
+- Which approved PRDs have candidate beads?
+
+It cannot answer:
+
+- What is the active task?
+- What should the agent build next?
+- Is this PRD approved?
+- Is this bead active?
+- Is this ranked item authorized for implementation?
+
+Candidate ranking is review order only. It is not implementation priority. Candidate IDs such as `CQ-001-owner-dashboard` are source IDs only. They do not reserve PRD IDs or bead IDs.
+
+Say this:
+
+```text
+Use the Candidate Queue Protocol.
+
+Review CANDIDATE-QUEUE.md as parked intent, not task authority.
+
+Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+
+Do not choose next work, approve a PRD, activate a bead, reserve bead IDs, update tasks/todo.md, or code.
+```
+
+Say this to add an item:
+
+```text
+Draft a Candidate Queue entry for this intent.
+
+Include a CQ ID, status, user intent, evidence or source pointers, open questions, evidence strength, weakest assumption, reviewed rank if I provide one, promotion target, blocked or stale reason, related PRDs, candidate bead visibility, next review trigger, and last reviewed date.
+
+Do not create a PRD, create or activate beads, reserve bead IDs, update tasks/todo.md, or code.
+```
+
+Why this matters: the Candidate Queue gives you the psychological benefit of a backlog without letting the backlog become hidden task authority.
+
 ## Do Not Move, Rename, Or Directly Edit Precode Files
 
 Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.
@@ -351,7 +400,7 @@ Hard rules:
 - Do not edit generated Markdown reports such as `OS-HEALTH.md`, `PROGRESS.md`, `logs/learning-diary.md`, `logs/memory-index.md`, `logs/handoff-packet.md`, or `logs/scheduled-audit.md`.
 - Do not change frontmatter, anchors, authority contracts, headings, bead state, or Closeout Evidence fields casually.
 - Do not add a new active-memory file.
-- Do not put backlog, roadmap, someday, or future-work lists into `tasks/todo.md`.
+- Do not put backlog, roadmap, Candidate Queue, someday, or future-work lists into `tasks/todo.md`.
 - Do not paste secrets, tokens, credentials, dashboard values, billing details, or private notes into Precode files.
 
 Do this instead:
@@ -365,7 +414,7 @@ Do this instead:
 | Record a decision | Put it in `DECISIONS.md` or ask which owner file should hold it. |
 | Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
 | Remember something for later | Propose a reviewed memory card under `memory/cards/`. |
-| Add future work | Use a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
+| Add future work | Use `CANDIDATE-QUEUE.md`, a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
 | Fix an accidental edit or move | Stop work, identify the damage, restore structure, then run validation. |
 
 Say this before changing Markdown:
@@ -1100,6 +1149,10 @@ Stop implementation. Decide whether the change belongs in a PRD amendment, `DECI
 #### What is a Goal Frame?
 
 A Goal Frame is reviewed orientation for a durable goal. It can help guide workflow selection, but it cannot approve work, activate beads, replace a PRD, or become a backlog.
+
+#### What is the Candidate Queue?
+
+It is a non-authoritative place to park intents you have not lost, with enough evidence and status to decide what deserves promotion. It can help review ideas, research needs, stale or blocked candidates, PRD candidates, and candidate bead visibility, but it cannot choose the active task, approve PRDs, activate beads, or authorize implementation.
 
 ### Evidence, Checks, And Done
 

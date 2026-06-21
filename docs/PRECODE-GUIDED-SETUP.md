@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-15
+Document version: v0.1.14
+Last updated: 2026-06-21
 
 ## What This Guide Is For
 
@@ -139,6 +139,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
 
+If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
+
 If the preview shows a missing package-owned file marked `review_package_copy_candidate`, you may copy that one file only after approving its `UP-ID`:
 
 ```bash
@@ -263,6 +265,7 @@ For a new project, the setup should include:
 | File group | Include |
 |---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
+| Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
 | Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
