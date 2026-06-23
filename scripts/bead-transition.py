@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-10
+# Version: v0.1.3
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -268,6 +268,9 @@ def preflight_approval(root: Path, assessment: dict[str, object]) -> tuple[str, 
         blockers.append("current bead is missing")
     elif not (root / current).is_file():
         blockers.append(f"current bead file is missing: {current}")
+    current_status = str(assessment.get("current_status") or "").strip()
+    if current_status and current_status != "review":
+        blockers.append(f"current bead status must be review before promotion; found {current_status}")
 
     if not isinstance(next_bead, str) or not next_bead.strip():
         blockers.append("next bead is missing")

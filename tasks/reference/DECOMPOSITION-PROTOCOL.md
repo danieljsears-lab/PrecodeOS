@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-21
+Document version: v0.1.10
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -33,6 +33,8 @@ Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` after or alongside Archi
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when decomposition affects model tier, subagent delegation, long-horizon execution, or context-budget decisions.
 
 Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a small team wants multiple people to work on the same product build or when a candidate bead is marked `can run in parallel`.
+
+Use `tasks/beads/BEAD-SCHEMA.md` for the recommended bead kind menu when choosing whether a candidate is intake, shaping, implementation, repair, refactor, setup/integration, unblocker, or review work. Treat that menu as guidance only: a bead-kind label does not make a candidate valid if it fails the decomposition test.
 
 Active memory remains exactly:
 
@@ -59,6 +61,8 @@ A candidate bead is ready to propose only when it has:
 - Architecture Brief evidence or an explicit low-risk skip reason when `required_planning_depth` is `PRD+architecture` or `PRD+architecture+test-plan`
 
 If the bead needs a second primary authority, a second outcome, or a second risk model, split it.
+
+`bead_kind` should describe the candidate's work shape, not replace decomposition judgment. If the plain-language label and frontmatter value differ, use the closest currently recognized frontmatter value from `tasks/beads/BEAD-SCHEMA.md` and explain the user-facing label in notes or handback.
 
 ## Not A Bead Yet
 

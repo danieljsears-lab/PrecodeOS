@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.53
-Last updated: 2026-06-21
+Document version: v0.7.54
+Last updated: 2026-06-23
 
 
 
@@ -673,6 +673,8 @@ For a more structured review prompt, say:
 ```text
 Use the Review / Acceptance Skill. Review the active bead against the primary authority, recorded checks, manual verification, closeout evidence, and changed-file summary. Recommend accepted, revise, split, blocked, or stop, and name any approval still required. Do not accept the work or activate the next bead for me.
 ```
+
+If you ask "do you accept these changes?", that is a review request. When the bead is still `in_progress`, the agent must switch the active bead to `review` first, show the review recommendation, and wait. It must not mark the bead `done`, approve acceptance for you, approve transition, or start the next bead.
 
 Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.
 

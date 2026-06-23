@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-14
+# Version: v0.1.3
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -53,6 +53,13 @@ def compact_unique(items: list[str]) -> list[str]:
             seen.add(cleaned)
             compact.append(cleaned)
     return compact
+
+
+def closeout_blockers_are_review_only(blockers: list[Any]) -> bool:
+    if not blockers:
+        return False
+    normalized = [str(item or "").lower() for item in blockers]
+    return all("review decision" in item for item in normalized)
 
 
 def context_footprint(root: Path, todo: dict[str, Any], bead: Any, single_next_protocol: str) -> dict[str, Any]:
@@ -154,6 +161,14 @@ def next_step_guidance(
             user_decision = "review"
             summary = "Review the evidence and blockers before accepting, revising, splitting, or blocking the bead."
             stop_if = "Stop if the recommendation relies on confidence instead of recorded evidence."
+            approval_prompt = "Ask the user for a review decision: accepted, revise, split, blocked, or stop."
+        elif bead_status == "in_progress" and closeout_blockers_are_review_only(closeout_blockers):
+            category = "review"
+            action = "switch the active bead to review and ask for an acceptance recommendation before any done or transition state"
+            blockers.extend(str(item) for item in closeout_blockers[:6])
+            user_decision = "review"
+            summary = "The bead is ready for acceptance review; do not mark it done or approve transition from review intent alone."
+            stop_if = "Stop if a review-request phrase such as `do you accept these changes?` is treated as done, transition approval, or automatic acceptance."
             approval_prompt = "Ask the user for a review decision: accepted, revise, split, blocked, or stop."
         elif closeout_blockers:
             category = "closeout"

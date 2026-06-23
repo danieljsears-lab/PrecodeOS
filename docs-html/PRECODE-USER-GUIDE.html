@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-21">
+  <meta name="generated-at" content="2026-06-23">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -190,7 +190,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.53</span><span>Updated 2026-06-21</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.54</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -426,6 +426,7 @@ Do not create a PRD, create or activate beads, reserve bead IDs, update tasks/to
 <pre><code class="language-text">Before I accept this bead, show me the recorded checks, manual verification, Closeout Evidence, review decision, and whether anything still requires my approval.</code></pre>
 <p>For a more structured review prompt, say:</p>
 <pre><code class="language-text">Use the Review / Acceptance Skill. Review the active bead against the primary authority, recorded checks, manual verification, closeout evidence, and changed-file summary. Recommend accepted, revise, split, blocked, or stop, and name any approval still required. Do not accept the work or activate the next bead for me.</code></pre>
+<p>If you ask &quot;do you accept these changes?&quot;, that is a review request. When the bead is still <code>in_progress</code>, the agent must switch the active bead to <code>review</code> first, show the review recommendation, and wait. It must not mark the bead <code>done</code>, approve acceptance for you, approve transition, or start the next bead.</p>
 <p>Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.</p>
 <p>Why this matters: In Precode, done means proved and reviewed, not merely plausible.</p>
 <h2 id="use-a-review-lane">Use A Review Lane</h2>

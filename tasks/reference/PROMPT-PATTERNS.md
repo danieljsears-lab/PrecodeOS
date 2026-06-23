@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.34
-Last updated: 2026-06-21
+Document version: v0.1.35
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -252,6 +252,8 @@ Recommend only accept-shape, revise, split, defer, or reject. Do not edit files,
 Use the Review / Acceptance Skill.
 
 Review the active bead for acceptance readiness. Load active memory, the active bead, the primary authority, closeout evidence, recorded checks, manual verification, relevant run contract or release-readiness note if present, and the diff or changed-file summary.
+
+If I ask "do you accept these changes?", treat that as a review request. If the active bead is still `in_progress`, it must switch the active bead to `review` first before any acceptance recommendation. Do not mark the bead `done` from this prompt.
 
 Return: Review target, Authority checked, Evidence reviewed, Missing proof, Acceptance questions, Risks or drift, Recommendation, Approval still required, and Follow-up or promotion path.
 

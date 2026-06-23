@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-06-21
+Document version: v0.1.12
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -36,6 +36,8 @@ Active memory remains exactly:
 | Transition approval | after user approval, move the current bead to `done` and the next bead to `in_progress` | run without explicit approval |
 | Handoff | orient another agent with a Context Pack and generated-report warning | choose tasks, approve transitions, or activate work |
 
+Review-intent phrases are review requests. If the active bead is still `in_progress` and the user asks "do you accept these changes?", "is this accepted?", "can I accept this?", or equivalent acceptance-review wording, the agent must switch the active bead to `review` first, present the Review / Acceptance output, and wait for a review decision. That wording must not mark the bead `done`, approve the review decision, approve transition, or activate the next bead.
+
 ## Required Completion Fields
 
 Closeout Evidence should include:
@@ -55,6 +57,7 @@ Closeout Evidence should include:
 - allowed actions and proof needed when the bead has a Run Contract
 - release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
 - accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
+- reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -71,6 +74,8 @@ Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-
 When release confidence depends on proving a requirement or behavior being shipped, or a non-functional expectation, closeout should also name the verification and release evidence path: requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty. Missing traceability means the work still needs evidence; it does not approve release, accept implementation, or make checker output proof.
 
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
+
+Reference follow-through closeout is required when public package source changes may affect docs, protocols, package inventory, navigation indexes, generated HTML freshness, or maintainer-local public-package history. Record `Reference follow-through: resolved`, `deferred`, or `not applicable`, followed by the shortest useful reason. Public package source changes should review `_maintainer/CHANGELOG.md`; maintainer roadmap and roadmap-journal review is expected only when the bead, PRD, or closeout names roadmap or roadmap-candidate work. Generated HTML should be refreshed or checked from canonical Markdown; do not hand-edit generated reading surfaces as authority.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
 
@@ -109,7 +114,7 @@ Use these outcomes at completion time:
 
 - `continue`: keep working inside the active bead
 - `close`: stop the session with current state recorded
-- `review`: ask for evidence and acceptance review
+- `review`: ask for evidence and acceptance review; review request wording must switch the active bead to `review` first when the bead is still `in_progress`
 - `split`: create or propose a narrower follow-up bead
 - `block`: mark missing input or blocker clearly
 - `manual_testing`: wait for manual verification
@@ -119,7 +124,9 @@ Use these outcomes at completion time:
 
 ## Advisory Check
 
-`scripts/completion-check.py` is advisory. It may warn about missing recorded checks, vague manual verification, invalid review decisions, unsafe next-bead references, follow-up work without a destination, vague handback, stale session close evidence, missing handoff Context Pack fields, transition eligibility that still needs user approval, or blocked work without a clear escape path.
+`scripts/completion-check.py` is advisory. It may warn about missing recorded checks, vague manual verification, invalid review decisions, unsafe next-bead references, follow-up work without a destination, vague handback, stale session close evidence, missing handoff Context Pack fields, transition eligibility that still needs user approval, blocked work without a clear escape path, or reference follow-through that needs review.
+
+Reference follow-through warnings are closeout-readiness evidence. They may name impacted surface families, expected public reference-document checks, generated HTML freshness checks, maintainer changelog review, and roadmap/journal review when applicable. They do not update owner files, approve maintainer history, accept implementation, block or approve transition by themselves, or make generated output authoritative.
 
 Ralph attempt evidence may support closeout and handoff, especially after repeated validator failures. It does not replace review acceptance, transition approval, or manual verification when those are required.
 

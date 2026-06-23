@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-19
+Document version: v0.1.16
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -32,6 +32,25 @@ For small team work, the one-active-bead rule still applies inside each checkout
 - `files_in_play`
 - `checks`
 - `verification_type`
+
+## Recommended Bead Kind Menu
+
+`bead_kind` is a work-shape hint, not a hard public enum, backlog category, or approval path. Use it to make the bead easier to route and review while preserving the core bead contract: one observable outcome, one primary authority, one main verification strategy, bounded files in play, clear stop conditions, and no hidden approval gate.
+
+Use these user-facing labels when explaining bead options, and prefer the mapped frontmatter value when creating or amending a bead:
+
+| User-facing label | Preferred `bead_kind` value | Use when |
+|---|---|---|
+| Intake | `source_intake` | Collecting and summarizing source material before PRD shaping, decision logging, or candidate bead proposal. Use `source_intake` instead of `collector`; source intake is evidence only and does not approve work. |
+| Shaping | `planning` | Turning uncertainty into PRD drafts, architecture notes, decisions, open questions, or candidate beads without editing app code. Use `prfaq` or `challenge` for narrow challenge-style planning when that wording is clearer. |
+| Implementation | `implementation` or `feature` | Building one approved requirement slice with PRD traceability, checks, and closeout evidence. |
+| Repair | `bugfix` | Fixing one reproducible defect or stable narrow breakage without widening into broader cleanup. |
+| Refactor | `refactor` | Improving structure without changing product behavior. Use `cleanup` only as explanatory prose unless a local project deliberately recognizes it. |
+| Setup / integration | `setup`, `external_integration`, or `manual_dashboard` | Completing scaffold, environment, dependency, third-party service, credential, dashboard, or other setup-bound work with the required approval gates. |
+| Unblocker | `unblocker` | Resolving one narrow blocker before the original bead can continue. |
+| Review | `review` | Reviewing evidence, acceptance, release/docs freshness, security, dependency relationships, or transition safety for one active bead. |
+
+Do not create new bead-kind values just to make a menu feel complete. If a label is not recognized by current scripts, use it as plain-language explanation and set `bead_kind` to the closest existing value. `complexity`, `required_planning_depth`, `autonomy_level`, `verification_type`, and the Run Contract carry risk and ceremony; do not overload `bead_kind` with those decisions.
 
 ## Recommended Frontmatter Keys
 
@@ -174,7 +193,8 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - Planning beads may produce PRDs, open questions, candidate requirements, architecture notes, source summaries, or candidate beads; they should not edit app code.
 - Execution beads may produce implementation changes and recorded evidence; they should not reshape product definition mid-flight.
 - Run checks through `bash scripts/record-check.sh -- <command>` so command output and exit codes are recorded.
-- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, and blocked escape status.
+- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review.
+- Reference follow-through should be recorded as `Reference follow-through: resolved`, `deferred`, or `not applicable`, with a short reason. Use it to show whether public reference docs, protocols, package inventory, generated HTML freshness, maintainer changelog, or roadmap/journal history were reviewed; it is not acceptance, transition approval, or generated-output authority.
 - Manual verification should use the Verification Guardrail Protocol format: who checked, what was checked, environment, result, and remaining uncertainty.
 - High-risk or sensitive beads must name approval gates and rollback, blocked escape, or unblocker guidance before acceptance.
 - Learning promotion is part of closeout: product or technical decisions move to `DECISIONS.md`, repeated agent mistakes move to the shared lessons/rules layer, validator misses become validator follow-up work, and authority mismatches move to the owning authority file.

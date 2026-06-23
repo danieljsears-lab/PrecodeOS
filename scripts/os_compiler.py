@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.34
-# Last updated: 2026-06-20
+# Version: v0.1.36
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -287,6 +287,7 @@ HORIZONTAL_SLICE_TERMS = {
 USER_FACING_TERMS = {"user-facing", "dashboard", "screen", "page", "route", "frontend", "ui", "browser", "user can", "visible"}
 GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
 LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
+GENERATED_HTML_PREFIXES = ("docs-html/", "tasks/prds-html/")
 GENERATED_JSON_FAMILIES = {
     "logs/*.json",
     "logs/*.jsonl",
@@ -337,6 +338,25 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/work-graph.json",
     "logs/work-graph.md",
     "logs/workflow-map.json",
+}
+REFERENCE_FOLLOWTHROUGH_TERMS = {
+    "authority",
+    "boundary",
+    "command",
+    "docs",
+    "documentation",
+    "generated",
+    "release",
+    "roadmap",
+    "setup",
+    "validation",
+    "workflow",
+}
+REFERENCE_FOLLOWTHROUGH_RESOLVED_TERMS = {
+    "resolved",
+    "deferred",
+    "not applicable",
+    "not_applicable",
 }
 LOCAL_HYGIENE_CACHE_NAMES = {
     ".cache",
@@ -2194,6 +2214,141 @@ def completion_session_freshness(
     return "stale"
 
 
+def reference_followthrough_changed_path(path: str) -> bool:
+    if not path:
+        return False
+    if path in ACTIVE_MEMORY:
+        return True
+    if path in {"README.md", "llms.txt", "SECURITY.md", "CONTRIBUTING.md", "GOVERNANCE.md", "TRADEMARK.md", "CANDIDATE-QUEUE.md"}:
+        return True
+    return path.startswith(
+        (
+            "docs/",
+            "tasks/reference/",
+            "tasks/prds/",
+            "tasks/beads/",
+            "tasks/templates/",
+            "adapters/",
+            ".agents/",
+            ".github/",
+            "scripts/",
+        )
+    )
+
+
+def generated_only_path(path: str) -> bool:
+    return (
+        path in GENERATED_REPORTS
+        or path in {"logs/file-inventory.json", "logs/authority-map.json"}
+        or path.startswith(GENERATED_HTML_PREFIXES)
+        or path.startswith("logs/")
+    )
+
+
+def reference_surface_family(path: str) -> str:
+    if path in ACTIVE_MEMORY:
+        return "active-memory"
+    if path.startswith("tasks/reference/"):
+        return "protocol"
+    if path == "docs/PRECODE-PACKAGE-FILE-INVENTORY.md":
+        return "package-inventory"
+    if path.startswith("docs/") or path in {"README.md", "llms.txt", "CANDIDATE-QUEUE.md"}:
+        return "public-docs"
+    if path.startswith("tasks/prds/"):
+        return "prd"
+    if path.startswith("tasks/beads/"):
+        return "bead"
+    if path.startswith("tasks/templates/"):
+        return "template"
+    if path.startswith("adapters/") or path in SHIM_DOCS:
+        return "adapter-or-shim"
+    if path.startswith(".agents/"):
+        return "host-agent-skill"
+    if path.startswith("scripts/"):
+        return "script"
+    if path.startswith(GENERATED_HTML_PREFIXES):
+        return "generated-html"
+    return "public-package"
+
+
+def reference_followthrough_quality(bead: BeadRecord, changed: list[str]) -> dict[str, Any]:
+    changed_names = [changed_path_name(item) for item in changed]
+    changed_names = [path for path in changed_names if path]
+    source_changes = [path for path in changed_names if not generated_only_path(path)]
+    public_source_changes = [path for path in source_changes if reference_followthrough_changed_path(path)]
+    generated_html_changes = [path for path in changed_names if path.startswith(GENERATED_HTML_PREFIXES)]
+    families = sorted({reference_surface_family(path) for path in public_source_changes + generated_html_changes})
+    closeout_text = "\n".join([bead.sections.get("Closeout Evidence", ""), *bead.closeout.values(), bead.handback])
+    bead_text = "\n".join(
+        [
+            bead.rel_path,
+            bead.title,
+            bead.bead_kind,
+            bead.primary_authority,
+            bead.parent_prd,
+            " ".join(bead.requirement_ids),
+            " ".join(bead.files_in_play),
+            " ".join(bead.sections.values()),
+            " ".join(bead.closeout.values()),
+            bead.handback,
+        ]
+    ).lower()
+    reference_terms_present = any(term in bead_text for term in REFERENCE_FOLLOWTHROUGH_TERMS)
+    roadmap_signal = any(term in bead_text for term in ("roadmap", "candidate", "maintainer-roadmap", "maintainer roadmap"))
+    note_value = normalize_optional(
+        bead.closeout.get("reference_followthrough")
+        or bead.closeout.get("reference followthrough")
+        or bead.closeout.get("reference follow-through")
+        or ""
+    )
+    note_lower = note_value.lower().replace("-", " ")
+    note_resolves = any(term in note_lower for term in REFERENCE_FOLLOWTHROUGH_RESOLVED_TERMS)
+    expected: list[str] = []
+    warnings: list[str] = []
+
+    if public_source_changes:
+        expected.append("Review affected public reference documents, protocols, package inventory, and navigation indexes.")
+        expected.append("Review `_maintainer/CHANGELOG.md` for the public package source change.")
+    if generated_html_changes or any(path.startswith("docs/") or path in {"README.md", "llms.txt", "CANDIDATE-QUEUE.md"} for path in public_source_changes):
+        expected.append("Run `python3 scripts/docs-html.py --check` after Markdown docs are current.")
+    if any(path.startswith("tasks/prds/") for path in public_source_changes):
+        expected.append("Run `python3 scripts/prd-html.py --check` after PRD Markdown is current.")
+    if roadmap_signal:
+        expected.append("Review `_maintainer/PRECODE-ROADMAP.md`, `_maintainer/PRECODE-ROADMAP-JOURNAL.md`, and roadmap HTML freshness.")
+    if reference_terms_present and not public_source_changes and not generated_html_changes:
+        expected.append("Review whether workflow, authority, validation, release, setup, command, or boundary claims need owner-file follow-through.")
+
+    status = "clear"
+    if expected:
+        status = "needs_review"
+        if note_resolves:
+            if "deferred" in note_lower:
+                status = "deferred"
+            elif "not applicable" in note_lower or "not_applicable" in note_lower:
+                status = "not_applicable"
+            else:
+                status = "resolved"
+        else:
+            warnings.append("reference follow-through needs review; record `Reference follow-through: resolved`, `deferred`, or `not applicable` in Closeout Evidence")
+
+    return {
+        "status": status,
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "impacted_surface_families": families,
+            "public_source_changes": public_source_changes,
+            "generated_html_changes": generated_html_changes,
+            "expected_followthrough": expected,
+            "closeout_note": note_value or "not recorded",
+            "roadmap_history_expected": roadmap_signal,
+            "maintainer_changelog_review_expected": bool(public_source_changes),
+            "advisory_only": True,
+            "generated_report_warning": "Reference follow-through warnings are advisory evidence only; they do not accept work, approve transitions, update maintainer history, or make generated output authoritative.",
+        },
+    }
+
+
 def release_field_present(value: str | None) -> bool:
     normalized = normalize_optional(value or "").lower()
     if normalized.startswith("not applicable because") or normalized.startswith("unavailable because"):
@@ -2343,6 +2498,7 @@ def completion_handoff_quality(
     current_checks: dict[tuple[str, str], dict[str, Any]],
     events: list[dict[str, Any]],
     promotion_state: dict[str, Any],
+    changed: list[str],
 ) -> dict[str, Any]:
     warnings: list[str] = []
     if bead is None:
@@ -2357,6 +2513,7 @@ def completion_handoff_quality(
     todo_sections = todo.get("sections") or {}
     bead_map = {item.rel_path: item for item in beads}
     release_evidence = release_evidence_quality(bead, check_results)
+    reference_followthrough = reference_followthrough_quality(bead, changed)
 
     if not bead_rows:
         warnings.append("closeout exists but no recorded checks exist for the active bead")
@@ -2438,6 +2595,8 @@ def completion_handoff_quality(
 
     if release_evidence.get("status") == "warning":
         warnings.extend([f"release evidence: {warning}" for warning in release_evidence.get("warnings") or []])
+    if reference_followthrough.get("status") == "needs_review":
+        warnings.extend([f"reference follow-through: {warning}" for warning in reference_followthrough.get("warnings") or []])
 
     details = {
         "current_bead": bead.rel_path,
@@ -2455,6 +2614,7 @@ def completion_handoff_quality(
         "handoff_context_missing": missing_context,
         "next_safe_action": next_safe_action,
         "release_evidence": release_evidence,
+        "reference_followthrough": reference_followthrough,
         "handoff_packet": required_context,
         "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
     }
@@ -2641,8 +2801,8 @@ def promotion_readiness(
     close_state = close_readiness(bead, latest_checks)
     blockers.extend(close_state["blockers"])
 
-    if bead.status not in {"review", "done"}:
-        blockers.append(f"current bead status must be review or done before promotion; found {bead.status or 'missing'}")
+    if bead.status != "review":
+        blockers.append(f"current bead status must be review before promotion; found {bead.status or 'missing'}")
 
     if not review_decision_accepted(close_state["review_decision"]):
         blockers.append("review decision is not accepted")
@@ -4475,6 +4635,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         current_checks,
         events,
         promotion_state,
+        changed,
     )
     current_bead_depth = bead_depth_quality(current_bead)
     current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)

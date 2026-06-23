@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-21
+Document version: v0.1.14
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -55,6 +55,8 @@ Choose the workflow that matches the current situation:
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
 | User asks for Workflow Selection Skill or another current-state skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
+
+When the recommended workflow is a bead proposal, use the bead kind menu in `tasks/beads/BEAD-SCHEMA.md` to explain the work shape in beginner-readable terms: intake, shaping, implementation, repair, refactor, setup/integration, unblocker, or review. The menu is guidance only. It does not choose work, approve PRDs, activate beads, add new schema authority, or override the Bead Decomposition Test.
 
 If no row fits, stop and name what is missing: source evidence, product definition, authority owner, decomposition, verification path, approval gate, or state repair.
 

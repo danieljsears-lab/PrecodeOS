@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-21
+Document version: v0.1.16
+Last updated: 2026-06-22
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -23,6 +23,21 @@ If the optional local `precode` console command is installed, treat it as a shor
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
 For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+
+## Where Your Work Lives
+
+Use this cockpit to find the right surface before asking an agent to continue.
+
+| Question | Look here | What it decides |
+|---|---|---|
+| What is active right now? | `tasks/todo.md`, the active bead, and the bead's primary authority file | The current work boundary, files in play, checks, stop conditions, and approval gates. |
+| Where do future ideas go? | `CANDIDATE-QUEUE.md` with the Candidate Queue Protocol | Parked intent, evidence, review order, and promotion target. It does not choose the active task or authorize implementation. |
+| Where do product or requirement decisions live? | Owner files such as `PRODUCT.md`, `FEATURES.md`, `ACCEPTANCE.md`, and approved PRDs in `tasks/prds/` | Reviewed product truth, requirements, acceptance criteria, and PRD destinations before executable beads. |
+| What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
+| What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
+| What did we learn? | The learning diary, bead build journal, and reviewed memory | Lessons and path visibility. These are evidence only until promoted through the right owner file. |
+
+If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
 ## Quick Daily Loop
 

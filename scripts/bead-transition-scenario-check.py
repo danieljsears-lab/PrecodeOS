@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-10
+# Version: v0.1.1
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -73,6 +73,7 @@ def approval_assessment() -> dict[str, object]:
         "eligible": True,
         "blockers": [],
         "current": "tasks/beads/B001-current.md",
+        "current_status": "review",
         "next": "tasks/beads/B002-next.md",
         "next_summary": {},
         "latest_results": [],
@@ -164,6 +165,28 @@ def run_ineligible_scenario(module: Any, failures: list[dict[str, str]]) -> None
             failures.append({"scenario": "ineligible blockers", "expected": "printed blocker", "actual": stdout.getvalue()})
 
 
+def run_in_progress_current_scenario(module: Any, failures: list[dict[str, str]]) -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        paths = make_fixture(root)
+        originals = {name: read_optional(path) for name, path in paths.items()}
+        install_fixture_mutators(module, 0)
+        assessment = dict(approval_assessment())
+        assessment["current_status"] = "in_progress"
+
+        stdout = io.StringIO()
+        with redirect_stdout(stdout):
+            code = module.approve_transition(root, assessment)
+        restored = {name: read_optional(path) for name, path in paths.items()}
+
+        if code != 1:
+            failures.append({"scenario": "in progress current exit", "expected": "1", "actual": str(code)})
+        if restored != originals:
+            failures.append({"scenario": "in progress current no mutation", "expected": str(originals), "actual": str(restored)})
+        if "current bead status must be review before promotion" not in stdout.getvalue():
+            failures.append({"scenario": "in progress current blocker", "expected": "review status blocker", "actual": stdout.getvalue()})
+
+
 def main() -> int:
     module = load_bead_transition_module()
     failures: list[dict[str, str]] = []
@@ -172,11 +195,12 @@ def main() -> int:
     run_rollback_scenario(module, failures)
     run_missing_next_scenario(module, failures)
     run_ineligible_scenario(module, failures)
+    run_in_progress_current_scenario(module, failures)
 
     payload = {
         "tool": "bead-transition-scenario-check",
         "status": "pass" if not failures else "fail",
-        "scenario_count": 4,
+        "scenario_count": 5,
         "failures": failures,
     }
     print(json.dumps(payload, indent=2, sort_keys=True))

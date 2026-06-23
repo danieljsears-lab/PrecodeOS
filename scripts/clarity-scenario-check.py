@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.18
-# Last updated: 2026-06-21
+# Version: v0.1.20
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -22,6 +22,7 @@ from os_compiler import (
     command_classification,
     completion_session_freshness,
     next_step_guidance,
+    reference_followthrough_quality,
     release_evidence_quality,
     run_contract_quality,
     stable_fix_eligibility,
@@ -1095,10 +1096,26 @@ def main() -> int:
         ("review", (next_payload(bead(status="review"))["details"] or {}).get("user_decision"), "review"),
         ("done", (next_payload(bead(status="done"))["details"] or {}).get("user_decision"), "review"),
         (
+            "in progress ready for review",
+            (
+                next_payload(
+                    bead(
+                        closeout={
+                            "manual_verification": "Who checked: fixture. What was checked: acceptance evidence. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+                            "review_decision": "not reviewed",
+                        }
+                    ),
+                    closeout_blockers=["review decision is missing or invalid"],
+                )["details"]
+                or {}
+            ).get("user_decision"),
+            "review",
+        ),
+        (
             "promotion eligible",
             (
                 next_payload(
-                    bead(status="done"),
+                    bead(status="review"),
                     promotion={"eligible": True, "blockers": [], "next_bead": "tasks/beads/B998-next.md"},
                 )["details"]
                 or {}
@@ -1126,6 +1143,22 @@ def main() -> int:
     ]
     for name, actual, expected in next_scenarios:
         assert_decision(f"next-step: {name}", str(actual), expected, failures)
+
+    review_trigger_terms = [
+        "do you accept these changes",
+        "review request",
+        "must switch the active bead to `review` first",
+    ]
+    review_trigger_sources = "\n".join(
+        [
+            Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md").read_text(encoding="utf-8").lower(),
+            Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower(),
+            Path("docs/PRECODE-USER-GUIDE.md").read_text(encoding="utf-8").lower(),
+        ]
+    )
+    for term in review_trigger_terms:
+        if term not in review_trigger_sources:
+            failures.append({"scenario": "review trigger text contract", "expected": term, "actual": "missing"})
 
     active_goal = {
         "path": "PRODUCT.md",
@@ -1602,6 +1635,115 @@ def main() -> int:
     for name, actual, expected in freshness_scenarios:
         if actual != expected:
             failures.append({"scenario": f"completion freshness: {name}", "expected": expected, "actual": actual})
+
+    followthrough_base = bead(
+        sections={
+            "Objective": "Check reference follow-through.",
+            "Done When": "The closeout warns when indirect surfaces need review.",
+            "Stop If": "Follow-through ownership is unclear.",
+            "Closeout Evidence": "- Result: Fixture closeout.",
+        },
+        closeout={
+            "manual_verification": "Who checked: fixture. What was checked: reference follow-through. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+            "review_decision": "accepted",
+        },
+    )
+    followthrough_scenarios = [
+        (
+            "public protocol/doc change warns",
+            reference_followthrough_quality(followthrough_base, [" M tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"]),
+            "needs_review",
+            True,
+            True,
+        ),
+        (
+            "generated-only change prompts freshness without changelog",
+            reference_followthrough_quality(followthrough_base, [" M docs-html/PRECODE-USER-GUIDE.html"]),
+            "needs_review",
+            False,
+            True,
+        ),
+        (
+            "public source prompts changelog",
+            reference_followthrough_quality(followthrough_base, [" M scripts/os_compiler.py"]),
+            "needs_review",
+            True,
+            True,
+        ),
+        (
+            "roadmap candidate prompts roadmap history",
+            reference_followthrough_quality(
+                bead(
+                    title="B999 - Roadmap Candidate Fixture",
+                    parent_prd="tasks/prds/PRD-999-roadmap-candidate.md",
+                    sections={
+                        "Objective": "Implement maintainer roadmap candidate.",
+                        "Done When": "Roadmap history is reviewed.",
+                        "Stop If": "Roadmap ownership is unclear.",
+                        "Closeout Evidence": "- Result: Fixture closeout.",
+                    },
+                    closeout=followthrough_base.closeout,
+                ),
+                [" M docs/PRECODE-PACKAGE-FILE-INVENTORY.md"],
+            ),
+            "needs_review",
+            True,
+            True,
+        ),
+        (
+            "deferred note clears missing-note warning",
+            reference_followthrough_quality(
+                bead(
+                    sections={
+                        "Objective": "Check reference follow-through.",
+                        "Done When": "The closeout records deferral.",
+                        "Stop If": "Follow-through ownership is unclear.",
+                        "Closeout Evidence": "- Result: Fixture closeout.\n- Reference follow-through: deferred because maintainer review will happen in a follow-up.",
+                    },
+                    closeout={**followthrough_base.closeout, "reference_followthrough": "deferred because maintainer review will happen in a follow-up"},
+                ),
+                [" M tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"],
+            ),
+            "deferred",
+            True,
+            True,
+        ),
+        (
+            "not applicable note clears missing-note warning",
+            reference_followthrough_quality(
+                bead(
+                    sections={
+                        "Objective": "Check reference follow-through.",
+                        "Done When": "The closeout records not applicable.",
+                        "Stop If": "Follow-through ownership is unclear.",
+                        "Closeout Evidence": "- Result: Fixture closeout.\n- Reference follow-through: not applicable because generated-only changes were reviewed.",
+                    },
+                    closeout={**followthrough_base.closeout, "reference_followthrough": "not applicable because generated-only changes were reviewed"},
+                ),
+                [" M scripts/os_compiler.py"],
+            ),
+            "not_applicable",
+            True,
+            True,
+        ),
+    ]
+    for name, payload, expected_status, expect_changelog, expect_expected in followthrough_scenarios:
+        details = payload.get("details") or {}
+        if payload.get("status") != expected_status:
+            failures.append({"scenario": f"reference follow-through: {name}", "expected": expected_status, "actual": str(payload.get("status"))})
+        if bool(details.get("maintainer_changelog_review_expected")) != expect_changelog:
+            failures.append(
+                {
+                    "scenario": f"reference follow-through changelog: {name}",
+                    "expected": str(expect_changelog),
+                    "actual": str(details.get("maintainer_changelog_review_expected")),
+                }
+            )
+        has_expected = bool(details.get("expected_followthrough"))
+        if has_expected != expect_expected:
+            failures.append({"scenario": f"reference follow-through expected items: {name}", "expected": str(expect_expected), "actual": str(has_expected)})
+        if expected_status in {"deferred", "not_applicable"} and payload.get("warnings"):
+            failures.append({"scenario": f"reference follow-through note warning: {name}", "expected": "no missing-note warning", "actual": str(payload.get("warnings"))})
 
     loop_scenarios = [
         ("clear builder", loop_context(), loop_state(), "Clear"),
