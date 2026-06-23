@@ -18,7 +18,7 @@ Long-horizon planning gives future work a visible but demoted place in Precode.
 
 It helps a solo builder see what is approved, blocked, deferred, proposed, or ready for human review without turning the future into active memory.
 
-Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` and `CANDIDATE-QUEUE.md` when the user needs a human-maintained place to park multiple intents, review evidence, rank candidates for review, or decide what deserves promotion. Long-horizon planning is generated or compiled visibility; the Candidate Queue is user-maintained candidate capture. Neither surface may choose work or activate beads.
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` and `CANDIDATE-QUEUE.md` when the user needs a human-maintained place to park multiple intents, review evidence, rank candidates for review, assign product-value ratings, group themes, sketch near-beads, or decide what deserves promotion. Long-horizon planning is generated or compiled visibility; the Candidate Queue is user-maintained candidate capture and shaping. Neither surface may choose work or activate beads.
 
 Active memory remains exactly:
 
@@ -67,7 +67,7 @@ source evidence or idea -> PRD, decision, or authority-file update -> candidate 
 
 Generated maps, health reports, diary entries, and audit warnings may point at future work, but they must not activate it, rank it, rewrite owner files, or bypass approval.
 
-Generated maps may mention Candidate Queue state, but they must not edit the queue, auto-rank candidates, or treat a ranked queue entry as implementation approval.
+Generated maps may mention Candidate Queue state, product-value ratings, themes, or near-bead sketch status, but they must not edit the queue, auto-rank candidates, treat P0/P1/P2/P3 as implementation priority, promote sketches into `B###` beads, or treat a ranked queue entry as implementation approval.
 
 ## Revisit Guidance
 

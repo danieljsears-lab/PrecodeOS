@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.36
+# Version: v0.1.39
 # Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -221,6 +221,24 @@ RELEASE_PROFILE_FIELDS = {
     "decision_state": "Decision state",
 }
 RELEASE_DECISION_STATES = {"candidate", "needs evidence", "blocked", "ready for human release decision"}
+REVERSAL_WORKFLOW_FIELDS = {
+    "superseded_bead": "Superseded bead",
+    "reversal_target": "Reversal target",
+    "reversal_reason": "Reversal reason",
+    "preserved_behavior": "Preserved behavior",
+    "reversal_proof": "Reversal proof",
+    "approvals_still_required": "Approvals still required",
+}
+REVERSAL_TRIGGER_TERMS = {
+    "reversal bead",
+    "reversal target",
+    "reversal reason",
+    "superseded bead",
+    "supersession",
+    "already-implemented",
+    "implemented bead needs reversal",
+    "git revert",
+}
 DELEGATION_MODES = {"human_in_loop", "afk_candidate", "human_required"}
 TEST_STRATEGIES = {"failing_first", "characterization", "static_only", "manual_only", "not_applicable"}
 REVIEW_CONTEXTS = {"same_session_ok", "fresh_context_recommended", "fresh_context_required"}
@@ -285,9 +303,12 @@ HORIZONTAL_SLICE_TERMS = {
     "test later",
 }
 USER_FACING_TERMS = {"user-facing", "dashboard", "screen", "page", "route", "frontend", "ui", "browser", "user can", "visible"}
-GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
-LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
+GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/build-attribution-ledger.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"]
+LOOP_FRESHNESS_REPORTS = {"PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md", "logs/work-graph.md", "logs/build-attribution-ledger.md", "logs/bead-build-journal.md", "logs/learning-diary.md", "logs/memory-index.md", "logs/scheduled-audit.md"}
 GENERATED_HTML_PREFIXES = ("docs-html/", "tasks/prds-html/")
+TEAM_COLLABORATION_GENERATED_WARNING = "Team collaboration preview output is generated evidence only and must not choose work, approve merge, or replace coordinator review."
+SESSION_FRICTION_GENERATED_WARNING = "Session Friction Review output is generated evidence only and must not choose work, promote memory, edit owner files, or approve commands."
+BUILD_ATTRIBUTION_GENERATED_WARNING = "Build Attribution Ledger output is generated evidence only and must not choose work, assign blame, score contributors, accept implementation, approve merge, or replace bead closeout review."
 GENERATED_JSON_FAMILIES = {
     "logs/*.json",
     "logs/*.jsonl",
@@ -305,6 +326,8 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/authority-map.json",
     "logs/bead-build-journal.jsonl",
     "logs/bead-build-journal.md",
+    "logs/build-attribution-ledger.json",
+    "logs/build-attribution-ledger.md",
     "logs/bead-transitions.jsonl",
     "logs/check-results.jsonl",
     "logs/file-inventory.json",
@@ -334,7 +357,9 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/scheduled-audit.json",
     "logs/scheduled-audit.md",
     "logs/shim-index.json",
+    "logs/session-friction-review.json",
     "logs/tool-runs.jsonl",
+    "logs/team-collaboration-preview.json",
     "logs/work-graph.json",
     "logs/work-graph.md",
     "logs/workflow-map.json",
@@ -2296,7 +2321,8 @@ def reference_followthrough_quality(bead: BeadRecord, changed: list[str]) -> dic
     reference_terms_present = any(term in bead_text for term in REFERENCE_FOLLOWTHROUGH_TERMS)
     roadmap_signal = any(term in bead_text for term in ("roadmap", "candidate", "maintainer-roadmap", "maintainer roadmap"))
     note_value = normalize_optional(
-        bead.closeout.get("reference_followthrough")
+        bead.closeout.get("reference_follow_through")
+        or bead.closeout.get("reference_followthrough")
         or bead.closeout.get("reference followthrough")
         or bead.closeout.get("reference follow-through")
         or ""
@@ -2489,6 +2515,93 @@ def release_evidence_quality(bead: BeadRecord | None, check_results: list[dict[s
     }
 
 
+def field_label_present(text: str, label: str) -> bool:
+    normalized = text.lower()
+    normalized_label = label.lower()
+    key = normalized_label.replace(" ", "_")
+    return f"{normalized_label}:" in normalized or f"- {normalized_label}:" in normalized or f"{key}:" in normalized
+
+
+def reversal_workflow_quality(bead: BeadRecord | None, check_results: list[dict[str, Any]]) -> dict[str, Any]:
+    if bead is None:
+        return {
+            "status": "warning",
+            "warnings": ["current bead is missing"],
+            "details": {"advisory_only": True, "invoked": False},
+        }
+
+    combined_text = "\n".join(
+        [
+            bead.title,
+            bead.bead_kind,
+            bead.primary_authority,
+            bead.parent_prd,
+            " ".join(bead.requirement_ids),
+            " ".join(str(value) for value in bead.frontmatter.values()),
+            " ".join(bead.closeout.values()),
+            " ".join(bead.sections.values()),
+            bead.handback,
+        ]
+    )
+    lower_text = combined_text.lower()
+    invoked = any(term in lower_text for term in REVERSAL_TRIGGER_TERMS)
+    if not invoked:
+        return {
+            "status": "not_invoked",
+            "warnings": [],
+            "details": {"current_bead": bead.rel_path, "advisory_only": True, "invoked": False},
+        }
+
+    missing_fields = [
+        key
+        for key, label in REVERSAL_WORKFLOW_FIELDS.items()
+        if not field_label_present(combined_text, label)
+    ]
+    bead_rows = [row for row in check_results if row.get("bead") == bead.rel_path]
+    passing_commands = [str(row.get("command") or "") for row in bead_rows if row.get("status") == "pass"]
+    warnings: list[str] = []
+    if missing_fields:
+        warnings.append("reversal workflow is missing required fields: " + ", ".join(missing_fields))
+    if not passing_commands:
+        warnings.append("reversal workflow has no recorded passing checks")
+    if not manual_verification_structured(bead.closeout.get("manual_verification", "")):
+        warnings.append("reversal workflow manual verification is missing or vague")
+    if not review_decision_valid(bead.closeout.get("review_decision", "")):
+        warnings.append("reversal workflow review decision is missing or invalid")
+    if "git revert" in lower_text and (not passing_commands or not field_label_present(combined_text, "Reversal proof")):
+        warnings.append("Git revert is review input only; record reversal proof before acceptance")
+
+    forbidden_markers = {
+        "reopen_done_bead": ("reopen done", "reopen a done", "reopen `done`", "reopened done", "reopened the done"),
+        "delete_evidence": ("delete evidence", "deleted evidence", "remove evidence", "erase evidence"),
+        "rewrite_transition_log": ("rewrite transition", "rewrote transition", "edit transition log", "transition-log rewrite"),
+    }
+    forbidden_present = [
+        key
+        for key, markers in forbidden_markers.items()
+        if any(marker in lower_text for marker in markers)
+    ]
+    if forbidden_present:
+        warnings.append("reversal workflow mentions forbidden history mutation: " + ", ".join(forbidden_present))
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "details": {
+            "current_bead": bead.rel_path,
+            "advisory_only": True,
+            "invoked": True,
+            "missing_fields": missing_fields,
+            "recorded_pass_commands": passing_commands,
+            "manual_verification_structured": manual_verification_structured(bead.closeout.get("manual_verification", "")),
+            "review_decision": bead.closeout.get("review_decision", "not recorded"),
+            "git_revert_mentioned": "git revert" in lower_text,
+            "forbidden_history_mutation_markers": forbidden_present,
+            "generated_report_warning": "Reversal workflow warnings are generated evidence only; they do not approve reversal, rollback, transition, or history mutation.",
+        },
+    }
+
+
 def completion_handoff_quality(
     root: Path,
     todo: dict[str, Any],
@@ -2514,6 +2627,7 @@ def completion_handoff_quality(
     bead_map = {item.rel_path: item for item in beads}
     release_evidence = release_evidence_quality(bead, check_results)
     reference_followthrough = reference_followthrough_quality(bead, changed)
+    reversal_workflow = reversal_workflow_quality(bead, check_results)
 
     if not bead_rows:
         warnings.append("closeout exists but no recorded checks exist for the active bead")
@@ -2568,6 +2682,8 @@ def completion_handoff_quality(
     if not (bead.run_contract or {}).get("present"):
         required_context["allowed actions"] = "not applicable; no run contract declared"
         required_context["proof needed"] = "not applicable; no run contract declared"
+    if reversal_workflow.get("details", {}).get("invoked"):
+        required_context["reversal workflow"] = "record superseded bead, reversal target, reversal reason, preserved behavior, reversal proof, and approvals still required"
 
     close_state = close_readiness(bead, current_checks)
     if bead.status in {"needs_info", "manual_testing"}:
@@ -2597,6 +2713,8 @@ def completion_handoff_quality(
         warnings.extend([f"release evidence: {warning}" for warning in release_evidence.get("warnings") or []])
     if reference_followthrough.get("status") == "needs_review":
         warnings.extend([f"reference follow-through: {warning}" for warning in reference_followthrough.get("warnings") or []])
+    if reversal_workflow.get("status") == "warning":
+        warnings.extend([f"reversal workflow: {warning}" for warning in reversal_workflow.get("warnings") or []])
 
     details = {
         "current_bead": bead.rel_path,
@@ -2615,6 +2733,7 @@ def completion_handoff_quality(
         "next_safe_action": next_safe_action,
         "release_evidence": release_evidence,
         "reference_followthrough": reference_followthrough,
+        "reversal_workflow": reversal_workflow,
         "handoff_packet": required_context,
         "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
     }
@@ -2712,6 +2831,359 @@ def tool_execution_quality(
         "missing_failure_category_count": len(missing_failure_category),
     }
     return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
+
+
+SESSION_FRICTION_FORBIDDEN_USES = [
+    "task selection",
+    "PRD approval",
+    "bead activation",
+    "command approval",
+    "review acceptance",
+    "memory promotion",
+    "owner-file edits",
+    "generated proof",
+    "package-manager behavior",
+]
+
+
+def session_friction_finding(
+    category: str,
+    summary: str,
+    source_refs: list[str],
+    *,
+    confidence: str = "medium",
+    freshness: str = "current",
+    recommended_destination: str = "human review",
+    suggested_next_step: str = "Review the cited evidence before promoting any lesson.",
+) -> dict[str, Any]:
+    return {
+        "category": category,
+        "summary": summary,
+        "source_refs": source_refs[:8],
+        "confidence": confidence,
+        "freshness": freshness,
+        "recommended_destination": recommended_destination,
+        "suggested_next_step": suggested_next_step,
+        "forbidden_uses": SESSION_FRICTION_FORBIDDEN_USES,
+    }
+
+
+def session_friction_review(
+    root: Path,
+    tool_rows: list[dict[str, Any]],
+    check_results: list[dict[str, Any]],
+    loop_rows: list[dict[str, Any]],
+    tool_execution: dict[str, Any],
+    completion_handoff: dict[str, Any],
+    memory: dict[str, Any],
+) -> dict[str, Any]:
+    findings: list[dict[str, Any]] = []
+    warnings: list[str] = []
+    failed_rows = [
+        row
+        for row in tool_rows
+        if str(row.get("status") or "").lower() in {"fail", "failed", "blocked"}
+    ]
+    category_counts = Counter(str(row.get("failure_category") or "").strip() for row in failed_rows)
+    for category, count in sorted(category_counts.items()):
+        if category and count >= 2:
+            refs = [
+                f"logs/tool-runs.jsonl:{row.get('timestamp') or 'unknown'}:{row.get('command') or row.get('tool') or 'tool run'}"
+                for row in failed_rows
+                if str(row.get("failure_category") or "").strip() == category
+            ]
+            findings.append(
+                session_friction_finding(
+                    "repeated_failure_category",
+                    f"{count} failed or blocked tool runs share failure category `{category}`.",
+                    refs,
+                    confidence="high",
+                    recommended_destination="tasks/reference/TOOL-EXECUTION-PROTOCOL.md or reviewed memory card candidate",
+                    suggested_next_step="Review whether a command-pattern note or protocol clarification would prevent the repeated failure.",
+                )
+            )
+
+    missing_failure_rows = [row for row in failed_rows if not str(row.get("failure_category") or "").strip()]
+    if missing_failure_rows:
+        findings.append(
+            session_friction_finding(
+                "missing_failure_category",
+                f"{len(missing_failure_rows)} failed or blocked tool runs lack a failure category.",
+                [
+                    f"logs/tool-runs.jsonl:{row.get('timestamp') or 'unknown'}:{row.get('command') or row.get('tool') or 'tool run'}"
+                    for row in missing_failure_rows
+                ],
+                recommended_destination="tasks/reference/TOOL-EXECUTION-PROTOCOL.md",
+                suggested_next_step="Classify future failures with the existing failure-category vocabulary before treating the lesson as reusable.",
+            )
+        )
+
+    unavailable_rows = [
+        row
+        for row in failed_rows
+        if str(row.get("failure_category") or "") in {"unavailable_command", "missing_dependency"}
+    ]
+    if unavailable_rows:
+        findings.append(
+            session_friction_finding(
+                "unavailable_command_or_dependency",
+                "One or more tool runs failed because a command or dependency was unavailable.",
+                [
+                    f"logs/tool-runs.jsonl:{row.get('timestamp') or 'unknown'}:{row.get('command') or row.get('tool') or 'tool run'}"
+                    for row in unavailable_rows
+                ],
+                recommended_destination="command-pattern note or setup/support protocol follow-up",
+                suggested_next_step="Prefer documenting the shortest validation path or fallback command over adding an installer or wrapper.",
+            )
+        )
+
+    blocked_rows = [
+        row
+        for row in failed_rows
+        if str(row.get("failure_category") or "") in {"permission_or_sandbox_blocked", "user_approval_required", "destructive_action_blocked"}
+    ]
+    if blocked_rows:
+        findings.append(
+            session_friction_finding(
+                "sandbox_or_approval_block",
+                "One or more tool runs were blocked by sandbox, approval, or destructive-action boundaries.",
+                [
+                    f"logs/tool-runs.jsonl:{row.get('timestamp') or 'unknown'}:{row.get('command') or row.get('tool') or 'tool run'}"
+                    for row in blocked_rows
+                ],
+                confidence="high",
+                recommended_destination="run contract, files-in-play, or tool execution protocol follow-up",
+                suggested_next_step="Review whether the active bead should name allowed actions, approval gates, or a narrower validation route.",
+            )
+        )
+
+    tool_warnings = [str(warning) for warning in (tool_execution.get("warnings") or [])]
+    completion_warnings = [str(warning) for warning in (completion_handoff.get("warnings") or [])]
+    stale_terms = ("stale", "newer than", "session close")
+    stale_warnings = [warning for warning in tool_warnings + completion_warnings if any(term in warning.lower() for term in stale_terms)]
+    if stale_warnings:
+        findings.append(
+            session_friction_finding(
+                "stale_check_or_closeout_evidence",
+                "Current generated checks indicate stale check or closeout evidence.",
+                [f"compiled_state:{warning}" for warning in stale_warnings],
+                recommended_destination="tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md or closeout review",
+                suggested_next_step="Refresh recorded checks or closeout evidence before using the old result as proof.",
+            )
+        )
+
+    generated_refresh_warnings = [warning for warning in tool_warnings if "generated reports were refreshed" in warning.lower()]
+    if generated_refresh_warnings:
+        findings.append(
+            session_friction_finding(
+                "generated_refresh_without_verification",
+                "Generated reports appear to have changed without matching verification evidence.",
+                [f"compiled_state:{warning}" for warning in generated_refresh_warnings],
+                recommended_destination="completion closeout or verification protocol follow-up",
+                suggested_next_step="Record the relevant verification command before treating refreshed generated output as useful evidence.",
+            )
+        )
+
+    memory_warnings = [str(warning) for warning in (memory.get("warnings") or [])]
+    memory_pressure = [
+        warning
+        for warning in memory_warnings
+        if any(term in warning.lower() for term in ("token", "oversized", "too large", "recall", "memory pressure"))
+    ]
+    if memory_pressure:
+        findings.append(
+            session_friction_finding(
+                "over_broad_context_or_memory_pressure",
+                "Reviewed memory or generated memory summaries indicate context-pressure risk.",
+                [f"compiled_state:memory:{warning}" for warning in memory_pressure],
+                recommended_destination="reviewed memory split, selective recall, or Memory Protocol follow-up",
+                suggested_next_step="Use selective recall or split/promote reviewed cards before loading broad memory context.",
+            )
+        )
+
+    memory_details = memory.get("details") if isinstance(memory.get("details"), dict) else {}
+    memory_search_sources = [
+        key
+        for key in ("query", "recall", "retrieval_review", "query_misses", "weak_matches")
+        if key in memory_details
+    ]
+    if not memory_search_sources:
+        warnings.append("memory-search source evidence is unavailable; memory-search friction was not inferred")
+
+    if not findings:
+        findings.append(
+            session_friction_finding(
+                "no_safe_evidence_found",
+                "No repeated safe session-friction evidence was found in local ledgers or compiled summaries.",
+                ["logs/tool-runs.jsonl", "logs/check-results.jsonl", "logs/loop-runs.jsonl", "compiled_state:tool_execution", "compiled_state:completion_handoff", "compiled_state:memory"],
+                confidence="low",
+                freshness="unknown",
+                recommended_destination="none",
+                suggested_next_step="Do not create a memory card or protocol follow-up without cited evidence.",
+            )
+        )
+
+    actionable = [finding for finding in findings if finding.get("category") != "no_safe_evidence_found"]
+    details = {
+        "advisory_only": True,
+        "owner_protocol": "tasks/reference/TOOL-EXECUTION-PROTOCOL.md",
+        "secondary_protocols": [
+            "tasks/reference/MEMORY-PROTOCOL.md",
+            "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+            "tasks/reference/EXTENSION-PROTOCOL.md",
+        ],
+        "source_ledgers": {
+            "tool_runs": len(tool_rows),
+            "failed_or_blocked_tool_runs": len(failed_rows),
+            "check_results": len(check_results),
+            "loop_events": len(loop_rows),
+        },
+        "memory_search_source_evidence": "available" if memory_search_sources else "unknown",
+        "findings": findings,
+    }
+    return {
+        "status": "warning" if actionable else "pass",
+        "generated_report_warning": SESSION_FRICTION_GENERATED_WARNING,
+        "warnings": warnings,
+        "details": details,
+    }
+
+
+ATTRIBUTION_EMPTY_VALUES = {"", "none", "none recorded", "not recorded", "missing", "unknown", "n/a"}
+
+
+def attribution_value_present(value: object) -> bool:
+    return str(value or "").strip().lower() not in ATTRIBUTION_EMPTY_VALUES
+
+
+def latest_journal_entries_by_bead(root: Path) -> dict[str, dict[str, Any]]:
+    latest: dict[str, dict[str, Any]] = {}
+    for row in load_jsonl(root / "logs" / "bead-build-journal.jsonl"):
+        bead = str(row.get("bead") or "")
+        if bead:
+            latest[bead] = row
+    return latest
+
+
+def git_commit_author_hint(root: Path, commit: object) -> str:
+    commit_id = str(commit or "").strip()
+    if not commit_id or commit_id.lower() in ATTRIBUTION_EMPTY_VALUES:
+        return ""
+    code, out = git_read(["show", "-s", "--format=%an <%ae>", commit_id], root)
+    return out.strip() if code == 0 else ""
+
+
+def build_attribution_entry(root: Path, bead: Any, latest_journal: dict[str, Any] | None) -> dict[str, Any]:
+    human = normalize_inline_status_value(bead.closeout.get("human_contributor", "not recorded"))
+    role = normalize_inline_status_value(bead.closeout.get("contributor_role", "not recorded"))
+    agent = normalize_inline_status_value(bead.closeout.get("agent_tool_surface", "not recorded"))
+    reviewer = normalize_inline_status_value(bead.closeout.get("attribution_reviewed_by", "not reviewed"))
+    uncertainty = normalize_inline_status_value(bead.closeout.get("attribution_uncertainty", "not recorded"))
+
+    journal = latest_journal if isinstance(latest_journal, dict) else {}
+    journal_git = journal.get("git") if isinstance(journal.get("git"), dict) else {}
+    git_author = git_commit_author_hint(root, journal_git.get("end_commit"))
+    changes = journal.get("changes") if isinstance(journal.get("changes"), dict) else {}
+    changed_paths: list[str] = []
+    for group in ("implementation", "unverified_possible_implementation"):
+        for item in changes.get(group) or []:
+            if isinstance(item, dict):
+                path = str(item.get("path") or "").strip()
+                if path and path not in changed_paths:
+                    changed_paths.append(path)
+
+    has_human = attribution_value_present(human)
+    has_agent = attribution_value_present(agent)
+    has_reviewer = attribution_value_present(reviewer) and reviewer.strip().lower() != "not reviewed"
+
+    if has_human and has_agent and has_reviewer:
+        confidence = "reviewed_closeout"
+        source = "bead closeout"
+    elif has_human or has_agent:
+        confidence = "partial_closeout"
+        source = "bead closeout"
+    elif git_author:
+        confidence = "git_hint_only"
+        source = "git commit author hint"
+    else:
+        confidence = "missing"
+        source = "not recorded"
+
+    entry_warnings: list[str] = []
+    if confidence == "missing":
+        entry_warnings.append("human contributor and agent/tool attribution are not recorded in closeout")
+    elif confidence == "git_hint_only":
+        entry_warnings.append("Git author evidence is only a hint and does not identify the human contributor or agent/tool surface")
+    elif confidence == "partial_closeout":
+        entry_warnings.append("attribution closeout is partial and needs review before relying on it")
+
+    return {
+        "bead": bead.rel_path,
+        "bead_id": bead.bead_id,
+        "title": bead.title,
+        "status": bead.status,
+        "primary_authority": bead.primary_authority,
+        "human_contributor": human,
+        "contributor_role": role,
+        "agent_tool_surface": agent,
+        "attribution_reviewed_by": reviewer,
+        "attribution_uncertainty": uncertainty,
+        "attribution_source": source,
+        "evidence_confidence": confidence,
+        "git_author_hint": git_author or "not available",
+        "journal_timestamp": journal.get("timestamp"),
+        "changed_paths": changed_paths[:20],
+        "warnings": entry_warnings,
+    }
+
+
+def build_attribution_ledger(root: Path, beads: list[Any]) -> dict[str, Any]:
+    latest_journal = latest_journal_entries_by_bead(root)
+    entries = [build_attribution_entry(root, bead, latest_journal.get(bead.rel_path)) for bead in beads]
+    missing = [entry for entry in entries if entry.get("evidence_confidence") == "missing"]
+    git_hints = [entry for entry in entries if entry.get("evidence_confidence") == "git_hint_only"]
+    partial = [entry for entry in entries if entry.get("evidence_confidence") == "partial_closeout"]
+    reviewed = [entry for entry in entries if entry.get("evidence_confidence") == "reviewed_closeout"]
+    warnings: list[str] = []
+    if missing:
+        warnings.append(f"{len(missing)} bead(s) have no reviewed build attribution")
+    if git_hints:
+        warnings.append(f"{len(git_hints)} bead(s) have only Git author hint attribution")
+    if partial:
+        warnings.append(f"{len(partial)} bead(s) have partial closeout attribution")
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "generated_report_warning": BUILD_ATTRIBUTION_GENERATED_WARNING,
+        "details": {
+            "entry_count": len(entries),
+            "reviewed_closeout_count": len(reviewed),
+            "partial_closeout_count": len(partial),
+            "git_hint_only_count": len(git_hints),
+            "missing_attribution_count": len(missing),
+            "advisory_only": True,
+            "primary_source": "bead Closeout Evidence",
+            "supporting_sources": ["logs/bead-build-journal.jsonl", "git commit author hints", "bead metadata"],
+            "forbidden_uses": [
+                "task selection",
+                "PRD approval",
+                "bead activation",
+                "implementation acceptance",
+                "merge approval",
+                "release approval",
+                "contributor scoring",
+                "blame assignment",
+                "telemetry",
+                "GitHub mutation",
+                "registry behavior",
+                "optional-pack behavior",
+                "package-manager behavior",
+            ],
+            "next_safe_action": "review missing or partial attribution in bead closeout before relying on the ledger",
+            "entries": entries,
+        },
+    }
 
 
 def start_readiness(bead: BeadRecord, bead_map: dict[str, BeadRecord]) -> dict[str, Any]:
@@ -3333,6 +3805,192 @@ def files_in_play_guardrail(root: Path, bead: BeadRecord | None, command: str = 
             "approval_prompt": approval_prompt,
             "command_classification": command_state,
             "edit_lock": edit_lock_state,
+        },
+    }
+
+
+def git_read(args: list[str], root: Path, timeout: int = 10) -> tuple[int, str]:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return 1, str(exc)
+    output = (result.stdout or result.stderr).strip()
+    return result.returncode, output
+
+
+def detect_integration_branch(root: Path, requested: str = "") -> tuple[str, str]:
+    if requested:
+        return requested, "requested"
+    default_code, default_ref = git_read(["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], root)
+    if default_code == 0 and default_ref:
+        return default_ref.removeprefix("origin/"), "origin_head"
+    upstream_code, upstream_ref = git_read(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], root)
+    if upstream_code == 0 and upstream_ref:
+        return upstream_ref, "upstream"
+    return "", "not_configured"
+
+
+def owner_like_path(path: str) -> bool:
+    return (
+        path in ACTIVE_MEMORY
+        or path in {"PROJECT-CONTEXT.md", "FEATURES.md", "PRODUCT.md", "SECURITY.md", "API.md", "ARCHITECTURE.md", "DATA-MODELS.md"}
+        or path.startswith("tasks/prds/")
+        or path.startswith("tasks/reference/")
+        or path.startswith("tasks/beads/")
+        or path.startswith("docs/")
+    )
+
+
+def team_collaboration_preview(
+    root: Path,
+    todo: dict[str, Any],
+    current_bead: BeadRecord | None,
+    beads: list[BeadRecord],
+    *,
+    integration_branch: str = "",
+    github_evidence: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    warnings: list[str] = []
+    branch_code, branch = git_read(["rev-parse", "--abbrev-ref", "HEAD"], root)
+    worktree_code, worktree_path = git_read(["rev-parse", "--show-toplevel"], root)
+    integration, integration_source = detect_integration_branch(root, integration_branch)
+    changed_paths, git_warning = git_status_changed_paths(root)
+    if git_warning:
+        warnings.append(git_warning)
+
+    in_progress_beads = [bead.rel_path for bead in beads if bead.status == "in_progress"]
+    one_active = len(in_progress_beads) <= 1
+    if not one_active:
+        warnings.append("multiple in_progress beads were found; small-team work still allows only one active bead per checkout")
+    if current_bead is None:
+        warnings.append("current active bead is missing; teammate work cannot be confirmed from repo state")
+
+    branch_changed_paths: list[str] = []
+    comparison_status = "not_configured"
+    ahead = behind = None
+    if integration:
+        diff_code, diff_text = git_read(["diff", "--name-only", f"{integration}...HEAD"], root)
+        if diff_code == 0:
+            branch_changed_paths = [line for line in diff_text.splitlines() if line.strip()]
+            comparison_status = "available"
+        else:
+            comparison_status = "warning"
+            warnings.append(f"integration branch comparison unavailable for {integration}: {diff_text}")
+        counts_code, counts_text = git_read(["rev-list", "--left-right", "--count", f"{integration}...HEAD"], root)
+        if counts_code == 0 and counts_text:
+            parts = counts_text.split()
+            if len(parts) == 2:
+                behind = int(parts[0])
+                ahead = int(parts[1])
+    else:
+        warnings.append("integration branch is not configured; re-entry and merge preview are local-only")
+
+    active_files = current_bead.files_in_play if current_bead else []
+    scoped_changed_paths = sorted(set(branch_changed_paths + changed_paths))
+    overlap_with_active_scope = [
+        path
+        for path in scoped_changed_paths
+        if active_files and any(path_matches_scope(path, allowed) or path_matches_scope(allowed, path) for allowed in active_files)
+    ]
+    owner_file_impacts = [path for path in scoped_changed_paths if owner_like_path(path)]
+    conflict_preview_status = "warning" if owner_file_impacts or overlap_with_active_scope else "pass"
+    if owner_file_impacts:
+        warnings.append(f"team preview found owner-file impact candidates: {owner_file_impacts[:8]}")
+    if overlap_with_active_scope and current_bead:
+        warnings.append("team preview found changed paths that overlap the active bead files_in_play")
+
+    re_entry_risks: list[str] = []
+    if behind and behind > 0:
+        re_entry_risks.append("branch is behind the integration branch")
+    if changed_paths:
+        re_entry_risks.append("local worktree has uncommitted changes")
+    if current_bead is None:
+        re_entry_risks.append("active bead is missing")
+    if not one_active:
+        re_entry_risks.append("multiple active beads in one checkout")
+    if owner_file_impacts:
+        re_entry_risks.append("owner-file impacts need coordinator review before merge or promotion")
+    if comparison_status != "available":
+        re_entry_risks.append("integration comparison is unavailable or incomplete")
+
+    github_payload = github_evidence or {
+        "status": "not_requested",
+        "advisory_only": True,
+        "summary": "Run scripts/team-collaboration-check.py --github for optional read-only GitHub evidence aggregation.",
+    }
+    if github_payload.get("status") not in {"pass", "not_requested"}:
+        warnings.append(str(github_payload.get("summary") or "GitHub team evidence is unavailable or incomplete"))
+
+    return {
+        "status": "warning" if warnings else "pass",
+        "generated_report_warning": TEAM_COLLABORATION_GENERATED_WARNING,
+        "warnings": warnings,
+        "details": {
+            "advisory_only": True,
+            "owner_protocol": "tasks/reference/TEAM-COLLABORATION-PROTOCOL.md",
+            "github_protocol": "tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md",
+            "current_branch": branch if branch_code == 0 else "unknown",
+            "worktree_path": worktree_path if worktree_code == 0 else "unknown",
+            "integration_branch": integration or "not_configured",
+            "integration_branch_source": integration_source,
+            "comparison_status": comparison_status,
+            "ahead": ahead,
+            "behind": behind,
+            "current_bead": current_bead.rel_path if current_bead else "missing",
+            "current_bead_status": current_bead.status if current_bead else "missing",
+            "current_state": todo.get("current_state", "missing"),
+            "in_progress_beads": in_progress_beads,
+            "one_active_bead_per_checkout": one_active,
+            "primary_authority": current_bead.primary_authority if current_bead else "missing",
+            "active_files_in_play": active_files,
+            "local_changed_paths": changed_paths,
+            "branch_changed_paths": branch_changed_paths,
+            "owner_file_impacts": owner_file_impacts,
+            "overlap_with_active_scope": overlap_with_active_scope,
+            "conflict_preview_status": conflict_preview_status,
+            "re_entry_risks": re_entry_risks,
+            "merge_review_packet_fields": [
+                "assigned bead and branch/worktree",
+                "primary authority and files changed",
+                "checks run and results",
+                "manual verification, if needed",
+                "owner-file impacts",
+                "conflicts with integration branch",
+                "open questions and follow-up bead candidates",
+                "forbidden actions not taken",
+            ],
+            "assignment_packet_fields": [
+                "coordinator",
+                "product decision owner",
+                "teammate role",
+                "branch or worktree",
+                "assigned bead",
+                "primary authority",
+                "files in play",
+                "checks",
+                "stop conditions",
+                "evidence to return",
+                "approval gates",
+            ],
+            "github_evidence": github_payload,
+            "forbidden_uses": [
+                "task selection",
+                "PRD approval",
+                "bead activation",
+                "implementation acceptance",
+                "merge approval",
+                "release approval",
+                "GitHub mutation",
+                "external mutation",
+            ],
+            "next_safe_action": "Coordinator reviews this preview against shared owner files before merge, re-entry, or follow-up bead decisions.",
         },
     }
 
@@ -4369,6 +5027,8 @@ def memory_status_notes(card: dict[str, Any]) -> list[str]:
             notes.append(f"needs promotion review before it becomes authority; proposed owner: {owner}")
         else:
             notes.append("needs promotion review but has no authority owner")
+    if card.get("category") == "project_glossary":
+        notes.append("project glossary memory is evidence only; verify against current owner files before naming work")
     return notes
 
 
@@ -4381,6 +5041,7 @@ def memory_citation(card: dict[str, Any]) -> dict[str, Any]:
         "status": card.get("status") or "missing",
         "source_pointers": card.get("source_pointers") or [],
         "authority_owner_if_promoted": card.get("authority_owner_if_promoted") or "none",
+        "glossary_excerpt": card.get("glossary_excerpt") or "",
     }
 
 
@@ -4449,6 +5110,14 @@ def memory_summary(root: Path) -> dict[str, Any]:
                 warnings.append(f"{rel} is a project_glossary card with no glossary terms section")
             if not topics and not glossary_text:
                 warnings.append(f"{rel} is a project_glossary card with no topics or glossary terms")
+            if not sources:
+                warnings.append(f"{rel} is a project_glossary card with no source pointers for its terms")
+            example_markers = ("example", "ui", "code", "test", "docs", "support", "user language")
+            if glossary_text and not any(marker in normalized_glossary for marker in example_markers):
+                warnings.append(f"{rel} is a project_glossary card with no visible UI/code/test/docs/support/user-language examples")
+            owner = str(meta.get("authority_owner_if_promoted") or "").strip()
+            if status == "needs_promotion" and (not owner or owner.lower() in FRONTMATTER_EMPTY_MARKERS):
+                warnings.append(f"{rel} is a project_glossary card needing promotion but has no authority owner")
 
         lower_text = text.lower()
         if any(term in lower_text for term in MEMORY_SECRET_TERMS):
@@ -4476,6 +5145,7 @@ def memory_summary(root: Path) -> dict[str, Any]:
                     "authority_owner_if_promoted": str(meta.get("authority_owner_if_promoted") or "none"),
                     "summary": compact_memory_text(summary_text, 240),
                     "glossary_excerpt": compact_memory_text(glossary_text, 360),
+                    "warnings": [],
                 }
             )
 
@@ -4670,6 +5340,17 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         readiness_by_bead,
         promotion_state,
     )
+    current_build_attribution = build_attribution_ledger(root, beads)
+    current_team_collaboration = team_collaboration_preview(root, todo, current_bead, beads)
+    current_session_friction_review = session_friction_review(
+        root,
+        tool_rows,
+        check_results,
+        loop_rows,
+        current_tool_execution,
+        current_completion_handoff,
+        current_memory,
+    )
 
     loop_metrics = {
         "events": len(events),
@@ -4746,6 +5427,9 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "file_inventory": current_file_inventory,
         "local_hygiene": current_local_hygiene,
         "work_graph": current_work_graph,
+        "build_attribution": current_build_attribution,
+        "team_collaboration": current_team_collaboration,
+        "session_friction_review": current_session_friction_review,
         "readiness": {
             "generated_at": now,
             "current_bead": current_rel,

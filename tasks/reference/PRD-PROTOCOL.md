@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-21
+Document version: v0.1.17
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -32,7 +32,7 @@ Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD
 
 Use `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` when the idea is sourced from local notes, docs, screenshots, chat summaries, issue exports, research files, or manual drafts.
 
-Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the idea starts from `CANDIDATE-QUEUE.md`. A Candidate Queue entry may be cited in PRD `Source Inputs`, but it is evidence and origin trace only; it does not approve the PRD, compile requirements, or authorize beads.
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the idea starts from `CANDIDATE-QUEUE.md`. A Candidate Queue entry may be cited in PRD `Source Inputs`, including product-value rating, themes, and near-bead sketch IDs when they helped shape the PRD, but it is evidence and origin trace only; it does not approve the PRD, compile requirements, reserve `B###` IDs, or authorize beads.
 
 Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a client PRD, existing codebase, frontend design handoff, Ember/backend plan, sprint plan, or repo-topology decision.
 
@@ -41,6 +41,8 @@ Use `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` when the idea is rough, ambiguous,
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` before deriving candidate beads or splitting approved feature work.
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when tracing source intent through PRD requirements, bead proposals, recorded evidence, and review decisions.
+
+Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` for Plan Loop routing when the user explicitly wants to explore a feature angle before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation. A Plan Packet is evidence only and does not approve the PRD, compile requirements, create beads, or authorize implementation.
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before bead derivation when approved requirements imply auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that should be visible to a non-technical builder before an AI coding agent plans implementation.
 
@@ -62,7 +64,8 @@ The PRD does not need to be large. It needs to be clear enough that a solo non-t
 - what the user can do after the change that they cannot do now
 - whether the work fits the product constitution in `PRODUCT.md`
 - how the agent translated the builder's intent into requirement IDs
-- how each requirement will be verified in plain English
+- how each requirement will be verified in plain English, including the evidence lane and recorded source when proof drift would matter
+- whether vague acceptance criteria can be clarified with optional EARS-style wording such as `WHEN [condition/event] THE SYSTEM SHALL [expected behavior]`
 - which risks require human approval
 - which source inputs are evidence and which facts have been promoted
 - whether project context or architecture boundaries are affected, explained without making the builder choose implementation internals
@@ -83,9 +86,9 @@ Discovery may be skipped only with an explicit reason, such as low risk, clear u
 
 For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions. If the builder is still before repo setup or still building product confidence, produce a Conviction Packet before Local Source Intake instead of drafting a PRD.
 
-The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
-The Conviction Packet should name the strongest evidence, weakest assumption, guided research notes, MVP-ready first slice, smallest learning step, and not-yet list. It is evidence only and must go through Local Source Intake before PRD shaping.
+The Conviction Packet should name the strongest evidence, weakest assumption, primary hypothesis or learning target, guided research notes, MVP-ready first slice, smallest learning step, and not-yet list. It is evidence only and must go through Local Source Intake before PRD shaping.
 
 The agent owns the technical translation after the builder confirms the product story. Requirement IDs, acceptance-check matrices, architecture/project context impact, module/interface candidates, agent context contracts, and bead proposals are internal control surfaces unless the builder must approve a specific risk or tradeoff.
 
@@ -144,7 +147,7 @@ Ask only questions that can change product definition, risk, scope, or verificat
 
 When the idea may change product promise, target users, non-goals, current bets, success signals, or design and voice direction, load `PRODUCT.md` and check fit before drafting requirements.
 
-If the request comes from Candidate Queue entries, notes, docs, GitHub issues, research, screenshots, chat summaries, issue exports, or manual drafts, use the Local Source Intake Protocol and summarize those inputs in the PRD `Source Inputs` section. Source inputs are evidence, not authority.
+If the request comes from Candidate Queue entries, Candidate Queue shaping proposals, notes, docs, GitHub issues, research, screenshots, chat summaries, issue exports, or manual drafts, use the Local Source Intake Protocol and summarize those inputs in the PRD `Source Inputs` section. Source inputs are evidence, not authority.
 
 ### 1a. External PRD Normalization
 
@@ -182,16 +185,18 @@ Name:
 - existing terms reused from product docs, code, or reviewed memory
 - aliases the builder or users may say
 - avoid or confusing terms
-- UI, code, test, or module/interface examples that should use the same vocabulary
+- UI, code, test, docs, support, or module/interface examples that should use the same vocabulary
 - stale vocabulary that should remain historical evidence only
 
-If the shared language should survive beyond the PRD, propose a reviewed `project_glossary` memory card. Do not treat glossary memory as authority.
+If the shared language should survive beyond the PRD, propose a reviewed `project_glossary` memory card with source pointers, examples, freshness, and promotion owner when applicable. Do not treat glossary memory as authority, and do not use it to rename broadly without current owner-file review.
 
 ### 3. Frame Before Writing Requirements
 
 Use lightweight framing before requirements:
 
 - `Product Brief`: non-authoritative summary of the idea, user, before/after moment, evidence, assumptions, not-yet list, smallest useful version, and next best question
+- `Primary hypothesis / learning target`: testable belief or learning question that names the user or situation, pain or current workaround, expected behavior, supporting evidence, weakest assumption, and falsifier; evidence only, not PRD approval or implementation permission
+- `Hypothesis review status`: optional learning review label from `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` such as `untested`, `tested`, `narrowed`, `killed`, `promoted`, `stale`, or `not applicable`; evidence only, not PRD approval, Candidate Queue ranking, bead activation, task selection, analytics requirement, or implementation permission
 - `Product Fit`: how the idea aligns with `PRODUCT.md`, or which product-constitution gap must be resolved
 - `Domain Language`: terms introduced, reused, rejected, or likely to shape UI/code/test names
 - `User Moment`: before/after description of what changes for the user
@@ -233,6 +238,8 @@ The review checks the requirement set as a whole, not just individual rows. It s
 - stale or conflicting source inputs
 - owner-file follow-ups needed before implementation
 
+When an acceptance oracle is vague, the agent may suggest optional EARS-style phrasing: `WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]`. Use the pattern only when it makes verification clearer. Do not require EARS syntax, reject clear non-EARS acceptance criteria, change PRD table schema, treat the wording as proof, or treat the rewrite as PRD approval, implementation acceptance, bead activation, or implementation authority.
+
 Return questions and suggested fixes only. The review output is review input, not authority. It must not approve the PRD, rewrite owner files, create or activate beads, convert findings into implementation instructions, accept design promotion, or treat generated review text as proof.
 
 Use this stable output shape:
@@ -252,6 +259,12 @@ Recommendation: revise | clarify | split | ready-for-human-approval-review | sto
 
 Resolve implementation-changing findings before approval. Non-blocking concerns may remain only when they are explicitly named as non-blocking, moved to not-yet scope, or routed to a follow-up PRD amendment, owner-file update, architecture-shaping pass, review bead, or candidate bead.
 
+### 6a. Map Requirements To Proof
+
+Use the Acceptance Oracle Matrix to make proof expectations inspectable before bead work begins. Each important requirement should have an expected behavior, the narrowest useful automated or manual check, and the likely evidence location.
+
+When a requirement, bug behavior, or acceptance criterion is risky, easy to misunderstand, or likely to be reviewed later, name the evidence lane and recorded source that will prove it. This requirement-to-proof trace is advisory traceability, not a separate approval gate. Do not require enterprise trace tables for tiny work, and do not treat generated tests, generated properties, screenshots, browser notes, AI critique, generated reports, or matrix text as proof until the result is recorded or accepted through normal evidence paths.
+
 ### 7. Approve The PRD
 
 Set status to `approved` only when:
@@ -260,6 +273,7 @@ Set status to `approved` only when:
 - product-constitution fit has been checked when relevant
 - requirement IDs are stable
 - every requirement has an acceptance oracle
+- acceptance oracles are observable and testable, with optional EARS-style wording only where it improves clarity
 - requirements review gaps, conflicts, assumptions, and acceptance weaknesses are resolved or explicitly non-blocking
 - risk and permission gates are explicit
 - approval risks and sensitive surfaces are named
@@ -297,6 +311,8 @@ Create beads from the approved PRD.
 Candidate beads must pass the Bead Decomposition Test before activation. If a proposal is too broad, has multiple authority owners, lacks verification, or mixes planning with implementation, mark it `not a bead yet` and keep shaping.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` if it is unclear whether the next artifact should be a PRD amendment, bead proposal, challenge-planning bead, review bead, unblocker bead, or state repair.
+
+If a Plan Packet exists, treat it as source evidence for the next owner workflow. Before PRD approval, it can inform PRD drafting, PRD amendment, Product Discovery, Candidate Queue, owner-file updates, or a stop decision, but it cannot propose beads. After PRD approval, it can inform Architecture Shaping or Decomposition, but candidate beads must still pass the Decomposition Protocol. Before candidate activation, it can challenge or refine the proposal, but it must not update `tasks/todo.md` or activate work.
 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when approved PRDs have proposed or deferred work that should be reviewed without becoming active work.
 

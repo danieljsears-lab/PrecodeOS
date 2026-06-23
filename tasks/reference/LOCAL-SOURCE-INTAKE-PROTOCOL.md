@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-21
+Document version: v0.1.13
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -42,7 +42,7 @@ When a project keeps raw source material in the repo, the default location is ro
 Supported source types include:
 
 - notes and markdown docs
-- Candidate Queue entries from `CANDIDATE-QUEUE.md`
+- Candidate Queue entries from `CANDIDATE-QUEUE.md`, including reviewed shaping fields, product-value ratings, themes, and near-bead sketches
 - text files and manual drafts
 - screenshots, wireframes, design images, frontend design files, Figma exports, and design-system notes
 - chat transcript summaries
@@ -109,6 +109,10 @@ Source summary:
 - Candidate requirements:
 - Candidate non-goals:
 - Candidate acceptance signals:
+- Primary hypothesis / learning target:
+- Hypothesis review status: `untested | tested | narrowed | killed | promoted | stale | not applicable`
+- Learning outcome:
+- Stale or untested signals:
 - Evidence strength:
 - Weakest assumption:
 - What would change our mind:
@@ -138,6 +142,8 @@ Use the design fields only when the source includes design files, screenshots, w
 
 Use the existing-codebase and external-plan fields only when the source includes a repository, codebase snapshot, backend plan, sprint plan, or implementation task list. Inspect those sources read-only during intake and treat conflicts with current code, active memory, approved current PRDs, or owner files as open questions or amendment candidates.
 
+Use `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when the intake question is specifically whether a hypothesis or learning target was tested, narrowed, killed, promoted, stale, or still untested. Hypothesis review status is evidence only; it does not approve product direction, approve PRDs, rank Candidate Queue entries, activate beads, choose tasks, require analytics, create a database, or promote findings automatically.
+
 ## Intake Workflow
 
 1. Identify the source type and why it matters.
@@ -148,7 +154,10 @@ Use the existing-codebase and external-plan fields only when the source includes
 6. If design files are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, and unresolved design decisions.
 7. Identify affected authority files.
 8. If an existing codebase or external plan is present, summarize repo topology, app directories, existing checks, implementation constraints, sprint-plan inputs, conflicts, and stale assumptions.
-9. Decide whether the next step is Candidate Queue update, Goal Frame reaffirmation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, defer, kill, or no action.
+9. Name the primary hypothesis or learning target when source material includes a hunch, unproven assumption, discovery summary, Candidate Queue entry, or experiment claim.
+10. When the source includes learning evidence, classify the hypothesis review status as `untested`, `tested`, `narrowed`, `killed`, `promoted`, `stale`, or `not applicable`, and summarize the learning outcome without treating it as authority.
+11. Decide whether the next step is Candidate Queue update, Goal Frame reaffirmation, Product Discovery Validation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, defer, kill, or no action.
+12. Treat `scripts/candidate-queue.py --preview-import <path>` output as minimal queue capture only. It may park a title, source pointer, short summary, open questions, and privacy warning, but it does not replace Local Source Intake, approve promotion, or authorize coding.
 
 Stop before PRD drafting if the source material lacks:
 
@@ -156,6 +165,7 @@ Stop before PRD drafting if the source material lacks:
 - a before/after user moment
 - non-goals for broad work
 - enough evidence to write observable requirements
+- a testable hypothesis when worth-building uncertainty is material
 - an owner file for architecture, API, schema, security, or acceptance changes
 
 ## Promotion Path
@@ -201,6 +211,7 @@ Summarize stable facts, assumptions, conflicts, open questions, candidate requir
 Use Local Source Intake on this Candidate Queue entry.
 Treat it as parked intent and source evidence, not authority.
 Tell me whether it should stay queued, move to Product Discovery, become a PRD draft or amendment, become a decision, update an authority file, route to decomposition review, defer, or be killed.
+Treat product-value rating as product value only and near-bead sketches as sketches only.
 Do not activate a bead or start coding.
 ```
 

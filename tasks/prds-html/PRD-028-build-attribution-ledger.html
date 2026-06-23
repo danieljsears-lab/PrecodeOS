@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-028 -- Build Attribution Ledger</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-028 -- Build Attribution Ledger</h1>
+  <p class="muted">Static HTML generated from <code>PRD-028-build-attribution-ledger.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-028-build-attribution-ledger.md#prd-028-build-attribution-ledger">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>unknown</strong></div><div class="metric"><span>Feature</span><strong>Build Attribution Ledger</strong></div><div class="metric"><span>Features status</span><strong>unknown</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for generated Build Attribution Ledger evidence, reviewed human contributor and agent/tool attribution fields, confidence states, and accountability boundaries.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation acceptance, merge approval, release approval, contributor scoring, blame assignment, telemetry, GitHub mutation, package registry, optional-pack behavior, install/update behavior, or package-manager behavior.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-028-build-attribution-ledger">PRD-028 -- Build Attribution Ledger</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS should help a builder answer &quot;who built what?&quot; without turning attribution into task authority, blame, scoring, telemetry, or a package registry.</p>
+<p>The Build Attribution Ledger compiles reviewed attribution evidence from beads and supporting Git/journal hints. Closeout-reviewed attribution is the strongest source. Git authorship, generated journal entries, branch names, tool logs, and teammate notes are evidence hints only until reviewed into bead Closeout Evidence.</p>
+<h2 id="problem">Problem</h2>
+<p>Existing Precode surfaces show what bead changed, what evidence exists, and what branch/worktree context may matter. They do not preserve a compact shared view of human contributor, contributor role, agent/tool surface, reviewer, and attribution uncertainty by bead.</p>
+<p>That gap matters more once Small Team Collaboration Lane, handoffs, fresh-context review, and generated build journal evidence are used together. A future reviewer should be able to trace who contributed the work and which agent/tool surface helped, without relying on chat memory.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Add reviewed build attribution fields to bead closeout.</li><li>Add generated ledger JSON and Markdown views for attribution by bead.</li><li>Preserve human contributor and agent/tool surface separately.</li><li>Label missing, partial, reviewed, and Git-hint-only attribution clearly.</li><li>Keep the ledger generated evidence only.</li><li>Record the shipped feature in maintainer roadmap history as an implemented candidate.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No task assignment or task selection.</li><li>No PRD approval, bead activation, implementation acceptance, merge approval, or release approval.</li><li>No contributor scoring, blame assignment, productivity ranking, telemetry, analytics, dashboard backend, or external tracking system.</li><li>No GitHub mutation, PR approval, label/comment mutation, workflow mutation, or project-board behavior.</li><li>No package registry, plugin registry, optional-pack behavior, install/update behavior, release channel, command wrapper, or package-manager behavior.</li><li>No new active-memory file.</li></ul>
+<h2 id="functional-requirements">Functional Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td>Add closeout fields for human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty.</td><td>P0</td><td>Existing reviewed values must be preserved by closeout refresh.</td></tr><tr><td><code>PRD-028-FR02</code></td><td>Add <code>scripts/build-attribution-ledger.py</code> as a read-only checker that prints JSON by default.</td><td>P0</td><td>Default command writes no files.</td></tr><tr><td><code>PRD-028-FR03</code></td><td>Add <code>--self-test</code> deterministic fixtures for reviewed closeout, partial closeout, missing attribution, generated warning, and forbidden uses.</td><td>P0</td><td>No network or external dependency.</td></tr><tr><td><code>PRD-028-FR04</code></td><td>Expose <code>build_attribution</code> in compiled state and generated OS Health sidecars.</td><td>P1</td><td>Sidecars are generated evidence only.</td></tr><tr><td><code>PRD-028-FR05</code></td><td>Generate <code>logs/build-attribution-ledger.json</code> and <code>logs/build-attribution-ledger.md</code>.</td><td>P1</td><td>Markdown must carry generated authority demotion.</td></tr><tr><td><code>PRD-028-FR06</code></td><td>Ledger entries must include bead identity, status, primary authority, human contributor, role, agent/tool surface, reviewer, uncertainty, source, confidence, Git author hint, journal timestamp, changed-path hints, and warnings.</td><td>P1</td><td>Git hints must not become contributor identity.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated.</td><td>P1</td><td>Maintainer-history follow-through is part of done.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td><code>scripts/update-bead-closeout.py</code> preserves attribution fields and fills explicit missing values.</td><td>Code review and closeout refresh behavior.</td></tr><tr><td><code>PRD-028-FR02</code></td><td><code>python3 scripts/build-attribution-ledger.py</code> prints JSON and writes no files.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR03</code></td><td><code>python3 scripts/build-attribution-ledger.py --self-test</code> passes.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR04</code> / <code>PRD-028-FR05</code></td><td><code>python3 scripts/os-health.py</code> refreshes attribution sidecars.</td><td><code>logs/build-attribution-ledger.json/md</code>.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Scenario, inventory, docs, PRD HTML, roadmap HTML, memory, and version checks pass.</td><td>Validation commands.</td></tr></tbody></table></div>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/build-attribution-ledger.py --self-test
+python3 scripts/clarity-scenario-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/public-repo-check.py
+python3 scripts/prd-html.py --check
+python3 scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py --check
+bash scripts/validate-memory.sh
+python3 scripts/version-check.py
+PYTHONPYCACHEPREFIX=/private/tmp/precode-pycache python3 -m py_compile scripts/build-attribution-ledger.py scripts/os_compiler.py scripts/os-health.py scripts/precode_outputs.py scripts/update-bead-closeout.py scripts/clarity-scenario-check.py</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p>The ledger answers attribution questions only as evidence. It must route any durable correction back to bead Closeout Evidence, owner files, recorded checks, coordinator review, or maintainer history. It must not become a second tracker, task registry, people registry, plugin registry, package registry, or authority surface.</p>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

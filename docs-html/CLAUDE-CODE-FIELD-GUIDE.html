@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,48 +243,48 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>Claude Code Field Guide For Students</h1>
   <p class="lede">A Bootcamp Companion For Claude Code + PrecodeOS</p>
-  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.15</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a><span>v0.1.16</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
-    <h2 id="a-bootcamp-companion-for-claude-code-precodeos">A Bootcamp Companion For Claude Code + PrecodeOS</h2>
+    <h2 id="a-bootcamp-companion-for-claude-code-precodeos"><a class="heading-anchor" href="#a-bootcamp-companion-for-claude-code-precodeos" aria-label="Link to A Bootcamp Companion For Claude Code + PrecodeOS">#</a>A Bootcamp Companion For Claude Code + PrecodeOS</h2>
 <hr>
-<h2 id="how-to-use-this-guide">How to use this guide</h2>
+<h2 id="how-to-use-this-guide"><a class="heading-anchor" href="#how-to-use-this-guide" aria-label="Link to How to use this guide">#</a>How to use this guide</h2>
 <p>This guide is for first-time students and non-technical builders using Claude Code inside a project that already has PrecodeOS installed. You do not need to understand the codebase before you begin. You do need to know how to slow the agent down, confirm the task, and ask for proof.</p>
 <p>Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The <strong>Prompt Cookbook</strong> and <strong>Quick Reference Card</strong> are the sections you&#x27;ll reach for most.</p>
 <p>This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another school-provided surface. If you cannot find Claude Code or open your project folder, ask your instructor or engineer before starting.</p>
-<p>If you are still exploring an idea before the project exists, use Claude Cowork, Claude, or the Product Ideation Workbook as a thinking coach first. The pre-repo goal is a Conviction Packet: user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only.</p>
+<p>If you are still exploring an idea before the project exists, use Claude Cowork, Claude, or the Product Ideation Workbook as a thinking coach first. The pre-repo goal is a Conviction Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only.</p>
 <hr>
-<h2 id="the-mental-model">The Mental Model</h2>
-<h3 id="you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor">You are the boss. Precode is your project manager. Claude Code is your contractor.</h3>
+<h2 id="the-mental-model"><a class="heading-anchor" href="#the-mental-model" aria-label="Link to The Mental Model">#</a>The Mental Model</h2>
+<h3 id="you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor"><a class="heading-anchor" href="#you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor" aria-label="Link to You are the boss. Precode is your project manager. Claude Code is your contractor.">#</a>You are the boss. Precode is your project manager. Claude Code is your contractor.</h3>
 <p>That&#x27;s the whole model. Hold onto that.</p>
 <p><strong>Claude Code</strong> is an AI coding agent. It may run inside VS Code or in a terminal-style Claude Code surface, depending on your setup. You talk to it in plain English. It reads your project, writes code, runs checks, and explains what it did. It&#x27;s very good at doing what you ask — which means you need to be precise about what you ask.</p>
 <p><strong>PrecodeOS</strong> is a set of files that live inside your project folder. Think of it as a job board and rulebook for Claude Code. It tells the agent what the current task is, what files it&#x27;s allowed to touch, what &quot;done&quot; looks like, and when to stop. Without Precode, Claude Code is a very capable contractor with no job description — it will fill in the blanks itself, and you might not like what it builds.</p>
 <p><strong>You</strong> approve everything. You decide what gets built, when work is done, and when to stop. Claude Code proposes. You approve. That&#x27;s the deal.</p>
 <hr>
-<h3 id="what-is-vibe-coding">What is &quot;vibe coding&quot;?</h3>
+<h3 id="what-is-vibe-coding"><a class="heading-anchor" href="#what-is-vibe-coding" aria-label="Link to What is &quot;vibe coding&quot;?">#</a>What is &quot;vibe coding&quot;?</h3>
 <p>Vibe coding means describing what you want to build in plain English and letting an AI agent write the code. You don&#x27;t need to know how to code. You need to know what you want.</p>
 <p>The power is real. The risk is real too. The risk is <strong>drift</strong>: Claude Code moves fast, generates a lot, and sounds confident even when it&#x27;s going in the wrong direction. PrecodeOS exists to give that momentum a steering wheel.</p>
 <blockquote><p><strong>The one rule you must never break:</strong> Never let Claude Code start working without a confirmed task card (called a <strong>bead</strong>). A bead is a single, specific job with a clear definition of done. No bead = no work. Full stop.</p></blockquote>
 <hr>
-<h3 id="key-vocabulary-all-you-need-for-now">Key vocabulary (all you need for now)</h3>
+<h3 id="key-vocabulary-all-you-need-for-now"><a class="heading-anchor" href="#key-vocabulary-all-you-need-for-now" aria-label="Link to Key vocabulary (all you need for now)">#</a>Key vocabulary (all you need for now)</h3>
 <div class="table-wrap"><table><thead><tr><th>Word</th><th>Plain English</th></tr></thead><tbody><tr><td><strong>Bead</strong></td><td>One task card. One job at a time. Never two.</td></tr><tr><td><strong>Active memory</strong></td><td>The 3 files Precode expects Claude to start from every session. Always the same 3.</td></tr><tr><td><strong>Evidence</strong></td><td>Proof that something works — not Claude saying it works.</td></tr><tr><td><strong>Checkpoint</strong></td><td>A mid-session check: are we still on track?</td></tr><tr><td><strong>Authority file</strong></td><td>The one file that owns a particular fact. If two files disagree, the authority file wins.</td></tr></tbody></table></div>
 <hr>
-<h3 id="checkpoint-before-the-chat-gets-crowded">Checkpoint before the chat gets crowded</h3>
+<h3 id="checkpoint-before-the-chat-gets-crowded"><a class="heading-anchor" href="#checkpoint-before-the-chat-gets-crowded" aria-label="Link to Checkpoint before the chat gets crowded">#</a>Checkpoint before the chat gets crowded</h3>
 <p>Long AI coding sessions can get crowded with file reads, command output, screenshots, and decisions. Do not wait until the agent is obviously confused.</p>
 <p>When the session feels long or busy, ask for a checkpoint:</p>
 <pre><code class="language-text">Checkpoint before this context gets crowded. Tell me the active bead, primary authority, files in play, what changed, what evidence exists, what is still uncertain, and the next exact check.</code></pre>
 <p>If Claude needs to compact, restart, or hand off, ask for a Context Pack first. After that, make it reload active memory, the active bead, and the primary authority before continuing.</p>
 <p>A checkpoint is a status report, not approval. Claude should not mark the bead accepted, claim you manually verified something, or start the next bead just because checkpoint output looks good.</p>
 <hr>
-<h2 id="before-you-open-claude-code">Before You Open Claude Code</h2>
+<h2 id="before-you-open-claude-code"><a class="heading-anchor" href="#before-you-open-claude-code" aria-label="Link to Before You Open Claude Code">#</a>Before You Open Claude Code</h2>
 <p>Do this every single session, before you type anything to Claude.</p>
 <p>Field rule: one bead, one feature slice, one chat. When you finish and accept a slice, commit it, push it, then start a fresh chat for the next slice.</p>
-<h3 id="the-pre-session-checklist">The Pre-Session Checklist</h3>
+<h3 id="the-pre-session-checklist"><a class="heading-anchor" href="#the-pre-session-checklist" aria-label="Link to The Pre Session Checklist">#</a>The Pre-Session Checklist</h3>
 <ul><li>[ ] I know which bead (task card) we&#x27;re working on today</li><li>[ ] I can say in one sentence what &quot;done&quot; looks like for this bead</li><li>[ ] I am not expecting Claude to figure out what to build — I have a specific task</li><li>[ ] I have not asked Claude to work on two things at once</li><li>[ ] I am in the project root folder, and I have not renamed it</li></ul>
 <p>If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. The packet should include the design-tool brief used to create the rough Experience artifact, plus the artifact itself. Before you paste it in, complete the packet&#x27;s &quot;Complete Before Claude Code Handoff&quot; checklist and Core Spine Gate. If required fields are missing or the Core Spine Gate is blocked, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.</p>
 <p>The safe path is:</p>
@@ -244,7 +301,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Use this Local Source Intake prompt:</p>
 <pre><code class="language-text">Use Local Source Intake on this Conviction Packet.
 
-Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate PRD inputs, likely owner files, and recommended next safe Precode workflow.
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, candidate PRD inputs, likely owner files, and recommended next safe Precode workflow.
 
 Do not write a PRD, create beads, update PRODUCT.md, or code until I review the intake summary and approve the next step.</code></pre>
 <p><strong>Fill in before every session:</strong></p>
@@ -252,29 +309,29 @@ Do not write a PRD, create beads, update PRODUCT.md, or code until I review the 
 <p>Done looks like: <code>_________________________________</code></p>
 <p>What is NOT in scope today: <code>_________________________________</code></p></blockquote>
 <hr>
-<h3 id="the-3-files-every-session-starts-from">The 3 files every session starts from</h3>
+<h3 id="the-3-files-every-session-starts-from"><a class="heading-anchor" href="#the-3-files-every-session-starts-from" aria-label="Link to The 3 files every session starts from">#</a>The 3 files every session starts from</h3>
 <p>At the start of every session, Precode expects Claude to orient from exactly these 3 files:</p>
 <ol><li><strong><code>AGENT.md</code></strong> — the shared rulebook for how Claude works in this project</li><li><strong><code>DECISIONS.md</code></strong> — hard decisions that have already been made (Claude respects these)</li><li><strong><code>tasks/todo.md</code></strong> — the pointer to which bead (task card) is currently active</li></ol>
 <p>Claude should not treat your whole project as active memory. It should start with these 3 files, then load only the additional files the active bead or authority docs require. This keeps the session focused.</p>
 <blockquote><p><strong>Why this matters:</strong> If you skip loading active memory and jump straight to &quot;build X,&quot; Claude will try to help but without its bearings. It may code something adjacent to what you want, touch files it shouldn&#x27;t, or build something that conflicts with decisions already made.</p></blockquote>
 <hr>
-<h2 id="starting-your-session">Starting Your Session</h2>
-<h3 id="finding-claude-code">Finding Claude Code</h3>
+<h2 id="starting-your-session"><a class="heading-anchor" href="#starting-your-session" aria-label="Link to Starting Your Session">#</a>Starting Your Session</h2>
+<h3 id="finding-claude-code"><a class="heading-anchor" href="#finding-claude-code" aria-label="Link to Finding Claude Code">#</a>Finding Claude Code</h3>
 <p>Your course may use Claude Code in VS Code, in a terminal-style surface, or through another approved setup. You do not need to understand every button. You only need to find the project folder and the place where you can type to Claude.</p>
 <p>If you are using VS Code:</p>
 <ol><li>Look for the <strong>Claude icon</strong> in the left sidebar (it looks like a small diamond shape)</li><li>Click it. A chat panel opens on the left side of your screen.</li><li>This is where you talk to Claude Code.</li></ol>
 <blockquote><p><strong>VS Code feels overwhelming at first.</strong> That&#x27;s normal. You only need the file explorer (left panel) and the Claude chat (left sidebar). Ignore everything else until your engineer points you to it.</p></blockquote>
 <hr>
-<h3 id="first-session-script">First session script</h3>
+<h3 id="first-session-script"><a class="heading-anchor" href="#first-session-script" aria-label="Link to First session script">#</a>First session script</h3>
 <p>Use this exact sequence the first time you work with a bead:</p>
 <ol><li>Run <code>bash scripts/session-start.sh</code>.</li><li>Paste the bead-confirmation prompt below.</li><li>Read Claude&#x27;s summary before approving work.</li><li>If the bead, files, checks, or stop conditions sound wrong, correct them before Claude edits.</li><li>If they sound right, say <code>Confirmed. Go ahead.</code></li></ol>
-<h3 id="step-1-start-the-session">Step 1 — Start the session</h3>
+<h3 id="step-1-start-the-session"><a class="heading-anchor" href="#step-1-start-the-session" aria-label="Link to Step 1 — Start the session">#</a>Step 1 — Start the session</h3>
 <p>Type this command in the Claude Code chat and press Enter:</p>
 <pre><code>bash scripts/session-start.sh</code></pre>
 <p>Claude will run the session start script. It prepares the session and helps orient Claude to the Precode files for your project.</p>
 <p>Session start also prints a <strong>Router Decision</strong> from <code>python3 scripts/next-step.py</code>. That is Precode&#x27;s generated &quot;what now?&quot; hint. It should name the user decision, the one next protocol or mode to load if needed, and a rough context footprint. It is guidance only; it cannot approve work or replace the bead.</p>
 <hr>
-<h3 id="step-2-confirm-the-bead-before-anything-else">Step 2 — Confirm the bead before anything else</h3>
+<h3 id="step-2-confirm-the-bead-before-anything-else"><a class="heading-anchor" href="#step-2-confirm-the-bead-before-anything-else" aria-label="Link to Step 2 — Confirm the bead before anything else">#</a>Step 2 — Confirm the bead before anything else</h3>
 <p>Paste this prompt and press Enter:</p>
 <pre><code>Before editing, load only Precode active memory: AGENT.md, DECISIONS.md,
 and tasks/todo.md. Then tell me the active bead, primary authority,
@@ -286,12 +343,12 @@ Do not start coding yet.</code></pre>
 <ul><li>Claude can&#x27;t name the active bead</li><li>Claude starts writing code immediately</li><li>Claude asks a vague question like &quot;what should I build today?&quot;</li><li>Claude lists files you didn&#x27;t expect</li></ul>
 <blockquote><p><strong>If Claude starts coding before you confirmed the bead — type <code>STOP</code> and start Step 2 again.</strong> Do not let work proceed without a confirmed bead. This is the most common beginner mistake.</p></blockquote>
 <hr>
-<h3 id="step-3-approve-or-adjust-before-work-begins">Step 3 — Approve (or adjust) before work begins</h3>
+<h3 id="step-3-approve-or-adjust-before-work-begins"><a class="heading-anchor" href="#step-3-approve-or-adjust-before-work-begins" aria-label="Link to Step 3 — Approve (or adjust) before work begins">#</a>Step 3 — Approve (or adjust) before work begins</h3>
 <p>After Claude confirms the bead, read its summary. Ask yourself:</p>
 <ul><li>Is this the right task?</li><li>Do the files in play match what I expected?</li><li>Is the definition of done what I had in mind?</li></ul>
 <p>If yes: say <code>Confirmed. Go ahead.</code> If no: correct Claude before it writes a single line of code.</p>
 <hr>
-<h3 id="when-claude-over-challenges-a-4-week-mvp">When Claude Over-Challenges A 4-Week MVP</h3>
+<h3 id="when-claude-over-challenges-a-4-week-mvp"><a class="heading-anchor" href="#when-claude-over-challenges-a-4-week-mvp" aria-label="Link to When Claude Over Challenges A 4 Week MVP">#</a>When Claude Over-Challenges A 4-Week MVP</h3>
 <p>Claude is useful when it catches real risks. It becomes unhelpful when it treats a bootcamp MVP like a company-scale product, keeps adding future features, or keeps asking questions after the first version is clear enough.</p>
 <p>For a 4-week MVP, your job is not to remove every uncertainty. Your job is to choose a small, safe first version, defer the rest, and keep Precode authority boundaries intact.</p>
 <p>Paste this at the start of an ideation, planning, or PRD-shaping session:</p>
@@ -313,7 +370,7 @@ Only ask another question if the answer would prevent an unsafe, impossible, mis
 
 Keep Precode authority boundaries: evidence is not approval, generated output is not authority, and no PRODUCT.md, PRD, bead, or code change happens without the required review and approval.</code></pre>
 <hr>
-<h2 id="the-daily-loop">The Daily Loop</h2>
+<h2 id="the-daily-loop"><a class="heading-anchor" href="#the-daily-loop" aria-label="Link to The Daily Loop">#</a>The Daily Loop</h2>
 <p>Every work session follows the same rhythm. Once this loop feels natural, you&#x27;ll know exactly what to do at every moment.</p>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │                     THE DAILY LOOP                      │
@@ -333,12 +390,12 @@ Keep Precode authority boundaries: evidence is not approval, generated output is
 │  5. CLOSE          Run session-close. Log what happened.│
 └─────────────────────────────────────────────────────────┘</code></pre>
 <hr>
-<h3 id="the-5-decision-words">The 5 decision words</h3>
+<h3 id="the-5-decision-words"><a class="heading-anchor" href="#the-5-decision-words" aria-label="Link to The 5 decision words">#</a>The 5 decision words</h3>
 <p>At every checkpoint, you&#x27;ll make one of 5 decisions. Memorize these:</p>
 <div class="table-wrap"><table><thead><tr><th>Word</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Continue</strong></td><td>Work looks good. Keep going.</td></tr><tr><td><strong>Ask for missing info</strong></td><td>Claude needs something before it can proceed.</td></tr><tr><td><strong>Ask for proof</strong></td><td>Claude says it&#x27;s done — but I need to see it working.</td></tr><tr><td><strong>Review</strong></td><td>Something needs a closer look before moving forward.</td></tr><tr><td><strong>Stop</strong></td><td>Something is wrong. Stop all work now.</td></tr></tbody></table></div>
 <blockquote><p><strong>&quot;It should work&quot; is not proof.</strong> Ask for evidence: a working demo, a recorded check, something you can see and verify yourself. Confidence is not evidence.</p></blockquote>
 <hr>
-<h3 id="the-evidence-ladder">The evidence ladder</h3>
+<h3 id="the-evidence-ladder"><a class="heading-anchor" href="#the-evidence-ladder" aria-label="Link to The evidence ladder">#</a>The evidence ladder</h3>
 <p>Not all proof is equal. From weakest to strongest:</p>
 <pre><code>Claude says it works   →   weakest, not evidence
 Working demo           →   better
@@ -349,7 +406,7 @@ Reviewed + accepted    →   strongest</code></pre>
 <p><strong>Fill in before each checkpoint:</strong></p>
 <blockquote><p>My checkpoint question for today&#x27;s bead: <code>_________________________________</code></p></blockquote>
 <hr>
-<h3 id="closing-your-session">Closing your session</h3>
+<h3 id="closing-your-session"><a class="heading-anchor" href="#closing-your-session" aria-label="Link to Closing your session">#</a>Closing your session</h3>
 <p>When you&#x27;re done for the day, run:</p>
 <pre><code>bash scripts/session-close.sh</code></pre>
 <p>Then ask Claude:</p>
@@ -358,10 +415,10 @@ split, pause for manual testing, or close. Include what changed,
 what evidence exists, and what is still uncertain.</code></pre>
 <p>Read the summary. If work is incomplete, that&#x27;s okay — the bead stays open. Never close a bead just because time ran out.</p>
 <hr>
-<h2 id="prompt-cookbook">Prompt Cookbook</h2>
+<h2 id="prompt-cookbook"><a class="heading-anchor" href="#prompt-cookbook" aria-label="Link to Prompt Cookbook">#</a>Prompt Cookbook</h2>
 <p>Copy and paste these prompts. Each one is annotated with why it works.</p>
 <hr>
-<h3 id="starting">STARTING</h3>
+<h3 id="starting"><a class="heading-anchor" href="#starting" aria-label="Link to STARTING">#</a>STARTING</h3>
 <p><strong>Load context and confirm the bead</strong></p>
 <pre><code>Before editing, load only Precode active memory: AGENT.md, DECISIONS.md,
 and tasks/todo.md. Then tell me the active bead, primary authority,
@@ -375,7 +432,7 @@ current bead, done-when target, primary authority, files in play,
 out of scope, checks, stop conditions, open questions.</code></pre>
 <p><em>Why it works: Forces Claude to explain the full picture in language you can understand.</em></p>
 <hr>
-<h3 id="building">BUILDING</h3>
+<h3 id="building"><a class="heading-anchor" href="#building" aria-label="Link to BUILDING">#</a>BUILDING</h3>
 <p><strong>Give a single, scoped instruction</strong></p>
 <pre><code>Work only on [specific thing]. Do not touch any files outside the active
 bead&#x27;s files in play. Show me what you plan to do before you do it.</code></pre>
@@ -405,7 +462,7 @@ or implementation-changing output. Move non-blocking concerns to Defer /
 Not yet.</code></pre>
 <p><em>Why it works: Gives Claude a clear stop signal without ignoring real blockers.</em></p>
 <hr>
-<h3 id="checking">CHECKING</h3>
+<h3 id="checking"><a class="heading-anchor" href="#checking" aria-label="Link to CHECKING">#</a>CHECKING</h3>
 <p><strong>Ask for evidence, not confidence</strong></p>
 <pre><code>You said this is done. Show me the evidence. Run the recorded check
 and tell me what passed, what failed, and what I should verify myself.</code></pre>
@@ -420,7 +477,7 @@ and tell me what passed, what failed, and what I should verify myself.</code></p
 in each one. Do not continue until I&#x27;ve reviewed this list.</code></pre>
 <p><em>Why it works: Keeps you in the loop. You should never be surprised by what changed.</em></p>
 <hr>
-<h3 id="when-something-seems-off">WHEN SOMETHING SEEMS OFF</h3>
+<h3 id="when-something-seems-off"><a class="heading-anchor" href="#when-something-seems-off" aria-label="Link to WHEN SOMETHING SEEMS OFF">#</a>WHEN SOMETHING SEEMS OFF</h3>
 <p><strong>Scope check</strong></p>
 <pre><code>Use the files-in-play check to confirm you are only touching files
 allowed in the active bead. List anything you touched outside that scope.</code></pre>
@@ -431,7 +488,7 @@ allowed in the active bead. List anything you touched outside that scope.</code>
 what is the active bead, what was changed, and what should happen next.</code></pre>
 <p><em>Why it works: Immediately halts progress and forces a full state report.</em></p>
 <hr>
-<h3 id="closing">CLOSING</h3>
+<h3 id="closing"><a class="heading-anchor" href="#closing" aria-label="Link to CLOSING">#</a>CLOSING</h3>
 <p><strong>Session summary</strong></p>
 <pre><code>Checkpoint the session. Tell me whether we should continue, repair,
 split, pause for manual testing, or close. Include what changed,
@@ -443,8 +500,8 @@ what evidence exists, and what is still uncertain.</code></pre>
 is complete and what still requires my approval.</code></pre>
 <p><em>Why it works: Prevents &quot;false done&quot; — when something feels finished but hasn&#x27;t been proven.</em></p>
 <hr>
-<h2 id="memory-management-best-practices">Memory Management Best Practices</h2>
-<h3 id="how-claude-code-remembers-things">How Claude Code &quot;remembers&quot; things</h3>
+<h2 id="memory-management-best-practices"><a class="heading-anchor" href="#memory-management-best-practices" aria-label="Link to Memory Management Best Practices">#</a>Memory Management Best Practices</h2>
+<h3 id="how-claude-code-remembers-things"><a class="heading-anchor" href="#how-claude-code-remembers-things" aria-label="Link to How Claude Code &quot;remembers&quot; things">#</a>How Claude Code &quot;remembers&quot; things</h3>
 <p>Claude Code is not like a note-taking app. It does not remember everything you&#x27;ve ever said. Each session starts with a <strong>fresh context</strong> — meaning Claude only knows what you explicitly load at the start of the session.</p>
 <p>This is actually a feature, not a bug. It means you control what Claude knows.</p>
 <p><strong>What Claude remembers across sessions:</strong></p>
@@ -453,7 +510,7 @@ is complete and what still requires my approval.</code></pre>
 <ul><li>Your conversation from yesterday</li><li>Something you mentioned casually mid-session</li><li>Anything that wasn&#x27;t written into a project file</li></ul>
 <blockquote><p><strong>The most common beginner mistake:</strong> Starting a session with &quot;continue from where we left off.&quot; Claude has no idea where that was. Always load context explicitly.</p></blockquote>
 <hr>
-<h3 id="the-golden-rule-one-topic-per-task">The golden rule: one topic per task</h3>
+<h3 id="the-golden-rule-one-topic-per-task"><a class="heading-anchor" href="#the-golden-rule-one-topic-per-task" aria-label="Link to The golden rule: one topic per task">#</a>The golden rule: one topic per task</h3>
 <p><strong>One bead. One feature slice. One chat.</strong></p>
 <p>Mixing topics in a single session is the fastest way to lose control. When you ask Claude to work on two things at once:</p>
 <ul><li>It loses track of scope</li><li>Files get touched that shouldn&#x27;t be</li><li>Evidence becomes muddled</li><li>You can&#x27;t tell what changed or why</li></ul>
@@ -462,7 +519,7 @@ is complete and what still requires my approval.</code></pre>
 <p><strong>Fill in when a new idea comes up:</strong></p>
 <blockquote><p>New idea to come back to (don&#x27;t act on it now): <code>_________________________________</code></p></blockquote>
 <hr>
-<h3 id="starting-a-session-with-good-context">Starting a session with good context</h3>
+<h3 id="starting-a-session-with-good-context"><a class="heading-anchor" href="#starting-a-session-with-good-context" aria-label="Link to Starting a session with good context">#</a>Starting a session with good context</h3>
 <p>Never say &quot;continue from yesterday.&quot; Instead, use these prompting habits:</p>
 <p><strong>1. Load context explicitly every time</strong></p>
 <pre><code>Before editing, load only Precode active memory: AGENT.md, DECISIONS.md,
@@ -475,7 +532,7 @@ the active bead&#x27;s files in play.</code></pre>
 to be, what files you&#x27;ll touch, and what done looks like.</code></pre>
 <p><em>If Claude&#x27;s summary doesn&#x27;t match your expectation — correct it before work begins.</em></p>
 <hr>
-<h3 id="commit-before-the-next-slice">Commit before the next slice</h3>
+<h3 id="commit-before-the-next-slice"><a class="heading-anchor" href="#commit-before-the-next-slice" aria-label="Link to Commit before the next slice">#</a>Commit before the next slice</h3>
 <p>Do not let changes pile up across features. After one slice is checked and accepted, ask Claude for a summary, then commit and push before starting the next slice.</p>
 <p>Use a name that describes the visible outcome or repair:</p>
 <pre><code class="language-text">add onboarding checklist
@@ -490,23 +547,23 @@ changes</code></pre>
 evidence recorded, manual verification still needed, and a concise commit
 name that describes the user-visible feature or repair.</code></pre>
 <hr>
-<h3 id="slash-commands">Slash commands</h3>
+<h3 id="slash-commands"><a class="heading-anchor" href="#slash-commands" aria-label="Link to Slash commands">#</a>Slash commands</h3>
 <p>In many Claude Code setups, you can use slash commands for quick actions:</p>
 <div class="table-wrap"><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/help</code></td><td>Shows available commands and how Claude works</td></tr><tr><td><code>/memory</code></td><td>Adds something to Claude&#x27;s persistent memory</td></tr><tr><td><code>/clear</code></td><td>Clears the current conversation (starts fresh context)</td></tr><tr><td><code>/review</code></td><td>Asks Claude to review recent code changes</td></tr><tr><td><code>/init</code></td><td>Creates or updates a CLAUDE.md file for your project</td></tr></tbody></table></div>
 <blockquote><p><strong>When to use <code>/clear</code>:</strong> When Claude seems confused, is mixing up different tasks, or is referencing something from earlier in the session that&#x27;s no longer relevant. <code>/clear</code> resets the conversation — then reload context with the session-start prompt.</p></blockquote>
 <hr>
-<h3 id="when-to-clear-context-vs-continue-a-thread">When to clear context vs. continue a thread</h3>
+<h3 id="when-to-clear-context-vs-continue-a-thread"><a class="heading-anchor" href="#when-to-clear-context-vs-continue-a-thread" aria-label="Link to When to clear context vs. continue a thread">#</a>When to clear context vs. continue a thread</h3>
 <p><strong>Clear and restart when:</strong></p>
 <ul><li>Claude starts referencing the wrong task</li><li>You&#x27;ve switched topics mid-session (you shouldn&#x27;t, but if you did)</li><li>The current bead was accepted and you are starting the next feature slice</li><li>Claude is repeating the same wrong approach</li><li>The session has gone on a long time and Claude seems to have lost the thread</li></ul>
 <p><strong>Continue the thread when:</strong></p>
 <ul><li>You&#x27;re still working on the same bead</li><li>Claude&#x27;s last response was correct and on-scope</li><li>You&#x27;re just asking a follow-up question about the current task</li></ul>
 <p>Before clearing for the next feature slice, make sure the accepted slice has evidence, a commit, and a push. A fresh chat is clean context; it is not a replacement for saving the work in Git.</p>
 <hr>
-<h2 id="when-things-go-sideways">When Things Go Sideways</h2>
+<h2 id="when-things-go-sideways"><a class="heading-anchor" href="#when-things-go-sideways" aria-label="Link to When Things Go Sideways">#</a>When Things Go Sideways</h2>
 <p>These are the common problems beginners hit. Each one has a name, a 2-sentence description, and a recovery prompt.</p>
 <p>For a shared PrecodeOS prompt source, use the No-Engineer Fallback Prompt Pack in <code>tasks/reference/PROMPT-PATTERNS.md</code>. It covers agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments while routing back to the Recovery Protocol.</p>
 <hr>
-<h3 id="1-agent-wanders">1. Agent Wanders</h3>
+<h3 id="1-agent-wanders"><a class="heading-anchor" href="#1-agent-wanders" aria-label="Link to 1. Agent Wanders">#</a>1. Agent Wanders</h3>
 <p><strong>What happened:</strong> Claude started working on something adjacent to the bead — touching files it shouldn&#x27;t, adding features you didn&#x27;t ask for, or expanding scope without permission.</p>
 <p><strong>Why it happens:</strong> The task description was vague, or Claude filled in gaps with its own judgment.</p>
 <p><strong>Recovery:</strong></p>
@@ -514,7 +571,7 @@ name that describes the user-visible feature or repair.</code></pre>
 session. Anything outside the active bead&#x27;s files in play must be reverted.
 Tell me what happened and what needs repair before we continue.</code></pre>
 <hr>
-<h3 id="2-false-done">2. False Done</h3>
+<h3 id="2-false-done"><a class="heading-anchor" href="#2-false-done" aria-label="Link to 2. False Done">#</a>2. False Done</h3>
 <p><strong>What happened:</strong> Claude said &quot;done&quot; but the feature doesn&#x27;t work, or works differently than expected.</p>
 <p><strong>Why it happens:</strong> Claude evaluates completion based on code it wrote, not evidence it verified. It&#x27;s optimistic.</p>
 <p><strong>Recovery:</strong></p>
@@ -528,14 +585,14 @@ details, and the output of python3 scripts/bead-transition.py --json.
 If manual verification was claimed without me checking it, mark the
 bead as revise, blocked, or manual_testing instead of accepted.</code></pre>
 <hr>
-<h3 id="3-context-lost">3. Context Lost</h3>
+<h3 id="3-context-lost"><a class="heading-anchor" href="#3-context-lost" aria-label="Link to 3. Context Lost">#</a>3. Context Lost</h3>
 <p><strong>What happened:</strong> Mid-session, Claude seems confused — it&#x27;s asking questions it already answered, referencing the wrong task, or giving generic responses.</p>
 <p><strong>Why it happens:</strong> The conversation got long, or too many topics got mixed in.</p>
 <p><strong>Recovery:</strong></p>
 <pre><code>/clear</code></pre>
 <p>Then restart from the bead-confirmation prompt in <strong>Starting Your Session</strong>. This reloads clean context.</p>
 <hr>
-<h3 id="4-too-many-changes">4. Too Many Changes</h3>
+<h3 id="4-too-many-changes"><a class="heading-anchor" href="#4-too-many-changes" aria-label="Link to 4. Too Many Changes">#</a>4. Too Many Changes</h3>
 <p><strong>What happened:</strong> Claude made changes but you can&#x27;t tell what it actually touched or why.</p>
 <p><strong>Why it happens:</strong> You didn&#x27;t ask Claude to list files before or after working.</p>
 <p><strong>Recovery:</strong></p>
@@ -543,7 +600,7 @@ bead as revise, blocked, or manual_testing instead of accepted.</code></pre>
 what you changed in each one, and why. Do not make any more changes
 until I review this list.</code></pre>
 <hr>
-<h3 id="5-stuck-in-a-loop">5. Stuck in a Loop</h3>
+<h3 id="5-stuck-in-a-loop"><a class="heading-anchor" href="#5-stuck-in-a-loop" aria-label="Link to 5. Stuck in a Loop">#</a>5. Stuck in a Loop</h3>
 <p><strong>What happened:</strong> Claude keeps trying the same approach, failing, and trying again — without making progress.</p>
 <p><strong>Why it happens:</strong> Claude has hit an unknown constraint and is cycling rather than escalating.</p>
 <p><strong>Recovery:</strong></p>
@@ -552,7 +609,7 @@ what is blocking you, what you&#x27;ve already tried, and what you
 would try next if you were starting fresh. Do not continue the
 previous approach.</code></pre>
 <hr>
-<h3 id="6-over-challenged-mvp">6. Over-Challenged MVP</h3>
+<h3 id="6-over-challenged-mvp"><a class="heading-anchor" href="#6-over-challenged-mvp" aria-label="Link to 6. Over Challenged MVP">#</a>6. Over-Challenged MVP</h3>
 <p><strong>What happened:</strong> Claude keeps challenging a small bootcamp idea, adding future features, or asking questions after the first version is good enough to define.</p>
 <p><strong>Why it happens:</strong> Claude is trying to be careful, but it is optimizing for exhaustive product critique instead of a 4-week MVP.</p>
 <p><strong>Recovery:</strong></p>
@@ -562,7 +619,7 @@ Defer / Not yet. Then produce the requested output now. Do not edit
 PRODUCT.md, create a PRD, create beads, or write code unless the active
 Precode workflow explicitly allows it and I approve.</code></pre>
 <hr>
-<h3 id="7-root-folder-renamed">7. Root Folder Renamed</h3>
+<h3 id="7-root-folder-renamed"><a class="heading-anchor" href="#7-root-folder-renamed" aria-label="Link to 7. Root Folder Renamed">#</a>7. Root Folder Renamed</h3>
 <p><strong>What happened:</strong> The project root folder was renamed casually, or Claude suggests renaming it as cleanup.</p>
 <p><strong>Why it happens:</strong> Beginners sometimes treat the folder name like a desktop label, but it is the repo that connects your editor, Git, GitHub, app paths, and Precode files.</p>
 <p><strong>Recovery:</strong></p>
@@ -571,34 +628,34 @@ Tell me the current project root, Git remote, branch, changed files, and
 whether Precode validation still runs. Explain the safest repair path
 before making any changes.</code></pre>
 <hr>
-<h2 id="quick-reference-card">Quick Reference Card</h2>
+<h2 id="quick-reference-card"><a class="heading-anchor" href="#quick-reference-card" aria-label="Link to Quick Reference Card">#</a>Quick Reference Card</h2>
 <p><em>Keep this visible while you work.</em></p>
 <hr>
-<h3 id="session-commands">Session Commands</h3>
+<h3 id="session-commands"><a class="heading-anchor" href="#session-commands" aria-label="Link to Session Commands">#</a>Session Commands</h3>
 <pre><code class="language-bash">bash scripts/session-start.sh     # Start every session with this
 python3 scripts/next-step.py      # Show the same generated Router Decision
 bash scripts/checkpoint.sh        # Mid-session status check
 bash scripts/session-close.sh     # End every session with this</code></pre>
 <hr>
-<h3 id="key-slash-commands">Key Slash Commands</h3>
+<h3 id="key-slash-commands"><a class="heading-anchor" href="#key-slash-commands" aria-label="Link to Key Slash Commands">#</a>Key Slash Commands</h3>
 <div class="table-wrap"><table><thead><tr><th><code>/help</code></th><th>What can Claude do right now</th></tr></thead><tbody><tr><td><code>/memory</code></td><td>Save something to Claude&#x27;s memory</td></tr><tr><td><code>/clear</code></td><td>Reset the conversation (then reload context)</td></tr><tr><td><code>/review</code></td><td>Review recent changes</td></tr><tr><td><code>/init</code></td><td>Set up or update CLAUDE.md</td></tr></tbody></table></div>
 <hr>
-<h3 id="the-5-decision-words-2">The 5 Decision Words</h3>
+<h3 id="the-5-decision-words-2"><a class="heading-anchor" href="#the-5-decision-words-2" aria-label="Link to The 5 Decision Words">#</a>The 5 Decision Words</h3>
 <div class="table-wrap"><table><thead><tr><th>Word</th><th>Use when...</th></tr></thead><tbody><tr><td><strong>Continue</strong></td><td>Work looks right. Keep going.</td></tr><tr><td><strong>Ask for missing info</strong></td><td>Claude needs more before proceeding.</td></tr><tr><td><strong>Ask for proof</strong></td><td>Claude claims done — I need evidence.</td></tr><tr><td><strong>Review</strong></td><td>Pause for a closer look.</td></tr><tr><td><strong>Stop</strong></td><td>Something is wrong. Halt all work.</td></tr></tbody></table></div>
 <hr>
-<h3 id="the-evidence-ladder-2">The Evidence Ladder</h3>
+<h3 id="the-evidence-ladder-2"><a class="heading-anchor" href="#the-evidence-ladder-2" aria-label="Link to The Evidence Ladder">#</a>The Evidence Ladder</h3>
 <pre><code>Claude says it works   ← NOT evidence. Don&#x27;t accept this.
 Working demo           ← Better. You can see it.
 Recorded check         ← Strong. Script ran and passed.
 You verified it        ← Strong. You saw it work.
 Reviewed + accepted    ← Strongest. You signed off.</code></pre>
 <hr>
-<h3 id="memory-rules-at-a-glance">Memory Rules at a Glance</h3>
+<h3 id="memory-rules-at-a-glance"><a class="heading-anchor" href="#memory-rules-at-a-glance" aria-label="Link to Memory Rules at a Glance">#</a>Memory Rules at a Glance</h3>
 <ul><li><strong>One bead. One feature slice. One chat.</strong> Never split your attention.</li><li><strong>Load context first. Always.</strong> Never &quot;continue from yesterday.&quot;</li><li><strong>Scope explicitly.</strong> Tell Claude what NOT to touch, not just what to build.</li><li><strong>Commit small checked slices.</strong> Push before starting the next slice.</li><li><strong>Ask Claude to confirm</strong> what it understood before it starts.</li><li><strong><code>/clear</code> when confused.</strong> Reset + reload beats spiraling.</li></ul>
 <hr>
-<h3 id="green-flags-claude-is-working-well">Green Flags — Claude is working well</h3>
+<h3 id="green-flags-claude-is-working-well"><a class="heading-anchor" href="#green-flags-claude-is-working-well" aria-label="Link to Green Flags — Claude is working well">#</a>Green Flags — Claude is working well</h3>
 <ul><li>Names the active bead without being asked</li><li>Lists specific files in play</li><li>Asks for your approval before big changes</li><li>Offers recorded evidence, not just claims</li><li>Tells you when something is out of scope</li></ul>
-<h3 id="red-flags-time-to-intervene">Red Flags — Time to intervene</h3>
+<h3 id="red-flags-time-to-intervene"><a class="heading-anchor" href="#red-flags-time-to-intervene" aria-label="Link to Red Flags — Time to intervene">#</a>Red Flags — Time to intervene</h3>
 <ul><li>Can&#x27;t name the active bead</li><li>Starts coding before you confirmed the task</li><li>References files you didn&#x27;t expect</li><li>Says &quot;done&quot; without running a check</li><li>Treats checkpoint output as approval</li><li>Keeps going after you said stop</li></ul>
 <hr>
 <blockquote><p><strong>When in doubt: checkpoint.</strong> <code>bash scripts/checkpoint.sh</code> Read the output. Then decide.</p></blockquote>
@@ -606,11 +663,33 @@ Reviewed + accepted    ← Strongest. You signed off.</code></pre>
 <p><em>For the full document compass, go back to <code>README.md</code>. For day-to-day operation, use <code>docs/PRECODE-USER-GUIDE.md</code>.</em></p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-USER-GUIDE.html"><span>Previous</span>How To Use PrecodeOS</a><a href="PRECODE-GUIDED-SETUP.html"><span>Next</span>PrecodeOS Guided Setup</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#a-bootcamp-companion-for-claude-code-precodeos">A Bootcamp Companion For Claude Code + PrecodeOS</a><a class="level-2" href="#how-to-use-this-guide">How to use this guide</a><a class="level-2" href="#the-mental-model">The Mental Model</a><a class="level-3" href="#you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor">You are the boss. Precode is your project manager. Claude Code is your contractor.</a><a class="level-3" href="#what-is-vibe-coding">What is &quot;vibe coding&quot;?</a><a class="level-3" href="#key-vocabulary-all-you-need-for-now">Key vocabulary (all you need for now)</a><a class="level-3" href="#checkpoint-before-the-chat-gets-crowded">Checkpoint before the chat gets crowded</a><a class="level-2" href="#before-you-open-claude-code">Before You Open Claude Code</a><a class="level-3" href="#the-pre-session-checklist">The Pre Session Checklist</a><a class="level-3" href="#the-3-files-every-session-starts-from">The 3 files every session starts from</a><a class="level-2" href="#starting-your-session">Starting Your Session</a><a class="level-3" href="#finding-claude-code">Finding Claude Code</a><a class="level-3" href="#first-session-script">First session script</a><a class="level-3" href="#step-1-start-the-session">Step 1 — Start the session</a><a class="level-3" href="#step-2-confirm-the-bead-before-anything-else">Step 2 — Confirm the bead before anything else</a><a class="level-3" href="#step-3-approve-or-adjust-before-work-begins">Step 3 — Approve (or adjust) before work begins</a><a class="level-3" href="#when-claude-over-challenges-a-4-week-mvp">When Claude Over Challenges A 4 Week MVP</a><a class="level-2" href="#the-daily-loop">The Daily Loop</a><a class="level-3" href="#the-5-decision-words">The 5 decision words</a><a class="level-3" href="#the-evidence-ladder">The evidence ladder</a><a class="level-3" href="#closing-your-session">Closing your session</a><a class="level-2" href="#prompt-cookbook">Prompt Cookbook</a><a class="level-3" href="#starting">STARTING</a><a class="level-3" href="#building">BUILDING</a><a class="level-3" href="#checking">CHECKING</a><a class="level-3" href="#when-something-seems-off">WHEN SOMETHING SEEMS OFF</a><a class="level-3" href="#closing">CLOSING</a><a class="level-2" href="#memory-management-best-practices">Memory Management Best Practices</a><a class="level-3" href="#how-claude-code-remembers-things">How Claude Code &quot;remembers&quot; things</a><a class="level-3" href="#the-golden-rule-one-topic-per-task">The golden rule: one topic per task</a><a class="level-3" href="#starting-a-session-with-good-context">Starting a session with good context</a><a class="level-3" href="#commit-before-the-next-slice">Commit before the next slice</a><a class="level-3" href="#slash-commands">Slash commands</a><a class="level-3" href="#when-to-clear-context-vs-continue-a-thread">When to clear context vs. continue a thread</a><a class="level-2" href="#when-things-go-sideways">When Things Go Sideways</a><a class="level-3" href="#1-agent-wanders">1. Agent Wanders</a><a class="level-3" href="#2-false-done">2. False Done</a><a class="level-3" href="#3-context-lost">3. Context Lost</a><a class="level-3" href="#4-too-many-changes">4. Too Many Changes</a><a class="level-3" href="#5-stuck-in-a-loop">5. Stuck in a Loop</a><a class="level-3" href="#6-over-challenged-mvp">6. Over Challenged MVP</a><a class="level-3" href="#7-root-folder-renamed">7. Root Folder Renamed</a><a class="level-2" href="#quick-reference-card">Quick Reference Card</a><a class="level-3" href="#session-commands">Session Commands</a><a class="level-3" href="#key-slash-commands">Key Slash Commands</a><a class="level-3" href="#the-5-decision-words-2">The 5 Decision Words</a><a class="level-3" href="#the-evidence-ladder-2">The Evidence Ladder</a><a class="level-3" href="#memory-rules-at-a-glance">Memory Rules at a Glance</a><a class="level-3" href="#green-flags-claude-is-working-well">Green Flags — Claude is working well</a><a class="level-3" href="#red-flags-time-to-intervene">Red Flags — Time to intervene</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/CLAUDE-CODE-FIELD-GUIDE.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#a-bootcamp-companion-for-claude-code-precodeos">A Bootcamp Companion For Claude Code + PrecodeOS</a><a class="level-2" href="#how-to-use-this-guide">How to use this guide</a><a class="level-2" href="#the-mental-model">The Mental Model</a><a class="level-3" href="#you-are-the-boss-precode-is-your-project-manager-claude-code-is-your-contractor">You are the boss. Precode is your project manager. Claude Code is your contractor.</a><a class="level-3" href="#what-is-vibe-coding">What is &quot;vibe coding&quot;?</a><a class="level-3" href="#key-vocabulary-all-you-need-for-now">Key vocabulary (all you need for now)</a><a class="level-3" href="#checkpoint-before-the-chat-gets-crowded">Checkpoint before the chat gets crowded</a><a class="level-2" href="#before-you-open-claude-code">Before You Open Claude Code</a><a class="level-3" href="#the-pre-session-checklist">The Pre Session Checklist</a><a class="level-3" href="#the-3-files-every-session-starts-from">The 3 files every session starts from</a><a class="level-2" href="#starting-your-session">Starting Your Session</a><a class="level-3" href="#finding-claude-code">Finding Claude Code</a><a class="level-3" href="#first-session-script">First session script</a><a class="level-3" href="#step-1-start-the-session">Step 1 — Start the session</a><a class="level-3" href="#step-2-confirm-the-bead-before-anything-else">Step 2 — Confirm the bead before anything else</a><a class="level-3" href="#step-3-approve-or-adjust-before-work-begins">Step 3 — Approve (or adjust) before work begins</a><a class="level-3" href="#when-claude-over-challenges-a-4-week-mvp">When Claude Over Challenges A 4 Week MVP</a><a class="level-2" href="#the-daily-loop">The Daily Loop</a><a class="level-3" href="#the-5-decision-words">The 5 decision words</a><a class="level-3" href="#the-evidence-ladder">The evidence ladder</a><a class="level-3" href="#closing-your-session">Closing your session</a><a class="level-2" href="#prompt-cookbook">Prompt Cookbook</a><a class="level-3" href="#starting">STARTING</a><a class="level-3" href="#building">BUILDING</a><a class="level-3" href="#checking">CHECKING</a><a class="level-3" href="#when-something-seems-off">WHEN SOMETHING SEEMS OFF</a><a class="level-3" href="#closing">CLOSING</a><a class="level-2" href="#memory-management-best-practices">Memory Management Best Practices</a><a class="level-3" href="#how-claude-code-remembers-things">How Claude Code &quot;remembers&quot; things</a><a class="level-3" href="#the-golden-rule-one-topic-per-task">The golden rule: one topic per task</a><a class="level-3" href="#starting-a-session-with-good-context">Starting a session with good context</a><a class="level-3" href="#commit-before-the-next-slice">Commit before the next slice</a><a class="level-3" href="#slash-commands">Slash commands</a><a class="level-3" href="#when-to-clear-context-vs-continue-a-thread">When to clear context vs. continue a thread</a><a class="level-2" href="#when-things-go-sideways">When Things Go Sideways</a><a class="level-3" href="#1-agent-wanders">1. Agent Wanders</a><a class="level-3" href="#2-false-done">2. False Done</a><a class="level-3" href="#3-context-lost">3. Context Lost</a><a class="level-3" href="#4-too-many-changes">4. Too Many Changes</a><a class="level-3" href="#5-stuck-in-a-loop">5. Stuck in a Loop</a><a class="level-3" href="#6-over-challenged-mvp">6. Over Challenged MVP</a><a class="level-3" href="#7-root-folder-renamed">7. Root Folder Renamed</a><a class="level-2" href="#quick-reference-card">Quick Reference Card</a><a class="level-3" href="#session-commands">Session Commands</a><a class="level-3" href="#key-slash-commands">Key Slash Commands</a><a class="level-3" href="#the-5-decision-words-2">The 5 Decision Words</a><a class="level-3" href="#the-evidence-ladder-2">The Evidence Ladder</a><a class="level-3" href="#memory-rules-at-a-glance">Memory Rules at a Glance</a><a class="level-3" href="#green-flags-claude-is-working-well">Green Flags — Claude is working well</a><a class="level-3" href="#red-flags-time-to-intervene">Red Flags — Time to intervene</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

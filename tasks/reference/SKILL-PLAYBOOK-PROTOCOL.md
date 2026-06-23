@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-18
+Document version: v0.1.15
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -110,9 +110,9 @@ Name: Small Team Collaboration Lane Skill
 Purpose: Help a 2-5 person team coordinate Precode work on the same product build without weakening one-active-bead, owner-file, evidence, or human approval boundaries.
 Load when: The user asks for Small Team Collaboration Lane, says multiple people are working on the same product build, asks how teammates should use Precode together, or needs branch/worktree-isolated parallel bead guidance.
 Owner protocol or adapter: `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md`
-Allowed actions: Read active memory, load the Small Team Collaboration Lane protocol, inspect only the minimum owner files needed to identify current team agreement and active bead context, classify coordinator/product-owner/contributor/reviewer roles, propose branch/worktree rules, identify candidate parallel beads, and return bounded team coordination guidance.
+Allowed actions: Read active memory, load the Small Team Collaboration Lane protocol, inspect only the minimum owner files needed to identify current team agreement and active bead context, optionally run `python3 scripts/team-collaboration-check.py` for read-only preview evidence, classify coordinator/product-owner/contributor/reviewer roles, propose branch/worktree rules, identify candidate parallel beads, and return bounded team coordination guidance.
 Forbidden actions: Edit files, approve PRDs, activate beads, accept review, approve merge, push, rebase, create branches, create or merge pull requests, mutate GitHub, deploy, run mutating commands, create optional packs, add registries, create a module/runtime toggle, or treat team notes, PRs, branch status, or generated handoff packets as authority.
-Generated evidence, if any: None in v1. Conversational output is source evidence until the user promotes accepted team agreement into `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, another owner file, or an approved bead.
+Generated evidence, if any: Optional `logs/team-collaboration-preview.json` or command JSON from `scripts/team-collaboration-check.py`; this is generated evidence only. Conversational output is source evidence until the user promotes accepted team agreement into `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, another owner file, or an approved bead.
 User approval required before: Any file edit, authority-file update, bead proposal/activation, branch/worktree mutation, GitHub mutation, merge, review acceptance, transition approval, release action, external mutation, or sensitive-surface action.
 Stop conditions: No coordinator or product decision owner is named; team agreement is absent from shared repo authority; multiple active beads are requested in one checkout; a teammate cannot name branch/worktree, bead, authority, files, checks, or stop conditions; GitHub status is being treated as authority; merge/deploy/external mutation is requested without approval; or the work needs conflict review before continuing.
 Promotion path for findings: Promote accepted team agreement into `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, an owner file, or candidate/approved beads after user review.
@@ -142,7 +142,7 @@ Name: Product Discovery Interview Skill
 Purpose: Help a user run a worth-building discovery interview before PRD shaping when the user problem, current workaround, evidence, demand signal, or smallest learning step is uncertain.
 Load when: The user asks for Product Discovery Interview Skill, asks whether an idea is worth defining, asks for a skill-style product-discovery interview, or has a broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty is the main question.
 Owner protocol or adapter: `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`
-Allowed actions: Interview one question at a time, inspect user-provided idea and evidence, apply the discovery evidence ladder, identify the current workaround, strongest evidence, weakest assumption, demand or pricing signal, sensitive surfaces, smallest non-code learning step, and return the Product Discovery Validation Discovery Summary.
+Allowed actions: Interview one question at a time, inspect user-provided idea and evidence, apply the discovery evidence ladder, identify the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, demand or pricing signal, sensitive surfaces, smallest non-code learning step, and return the Product Discovery Validation Discovery Summary.
 Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, choose tasks, start implementation, run mutating commands, treat research as validation, treat discovery output as proof that the idea is worth building, promote findings into authority, or decide the product for the builder.
 Generated evidence, if any: None in Precode v1; the conversational Discovery Summary is source evidence that the user may later paste or store as local source material.
 User approval required before: Any file edit, authority-file update, PRD draft/approval, bead proposal/activation, implementation, external mutation, command execution, or sensitive-surface action.
@@ -158,6 +158,7 @@ Discovery Summary:
 - Target user and situation:
 - User problem:
 - Current alternatives or workarounds:
+- Primary hypothesis / learning target:
 - Strongest evidence:
 - Weakest assumption:
 - Evidence strength: very weak | weak | medium | strong | strongest

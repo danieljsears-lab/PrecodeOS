@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-06
+Document version: v0.1.2
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -85,9 +85,34 @@ Use plain evidence-strength language. Do not treat all signals as equal.
 | Existing workaround, spend, or switching effort | strong | Behavioral evidence that the problem costs something. |
 | User tries a prototype, signs up, pays, returns, or changes behavior | strongest | Demand or value evidence, depending on the action. |
 
-Name the strongest evidence and the weakest assumption in every Discovery Summary.
+Name the primary hypothesis or learning target, strongest evidence, and weakest assumption in every Discovery Summary.
 
 Treat source-cited guided research as helpful context unless it is paired with behavior. Research can show market language, categories, competitors, rough demand signals, or risks, but it is not validation by itself. Evidence becomes stronger when it shows a real current workaround, repeated user behavior, spend, switching effort, signup intent, prototype use, payment, return visits, or another costly action.
+
+## Hypothesis Mechanics
+
+Use one shared vocabulary before PRD shaping:
+
+- A `hunch` is an early belief or idea worth exploring.
+- An `assumption` is an unproven dependency that must be true for the idea to work.
+- A `hypothesis` is a testable belief about a specific user or situation, expected behavior, supporting evidence, weakest assumption, and falsifier.
+- An `experiment hypothesis` is a metric-backed rollout bet. Use `tasks/reference/PLANNING-PROTOCOL.md` when success metrics, exposure, monitoring, and kill criteria are needed.
+
+Plain hypothesis shape:
+
+```text
+Primary hypothesis / learning target:
+- User or situation:
+- Pain or current workaround:
+- Expected behavior or change:
+- Supporting evidence:
+- Weakest assumption:
+- Falsifier or what would change our mind:
+```
+
+Do not treat a hunch, assumption, or hypothesis as product approval. Weak or research-only hypotheses should route to the smallest learning step, Product Discovery Validation, Candidate Queue review, defer, narrow, or kill before PRD or implementation momentum starts.
+
+Use `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when a user later asks whether the hypothesis or learning target was tested, narrowed, killed, promoted, left untested, made stale, or ready for the next workflow. The review is evidence only and does not approve product direction, approve a PRD, rank candidates, activate beads, choose tasks, require analytics, or create a database.
 
 ## Assumption Categories
 
@@ -142,6 +167,7 @@ Discovery Summary:
 - Target user and situation:
 - User problem:
 - Current alternatives or workarounds:
+- Primary hypothesis / learning target:
 - Strongest evidence:
 - Weakest assumption:
 - Evidence strength: very weak | weak | medium | strong | strongest
@@ -149,6 +175,8 @@ Discovery Summary:
 - Demand or pricing signal:
 - Smallest non-code learning step:
 - What would change our mind:
+- Hypothesis review status: `untested | tested | narrowed | killed | promoted | stale | not applicable`
+- Learning outcome:
 - Sensitive surfaces:
 - Recommendation: proceed | pause | narrow | kill
 - Reason:
@@ -200,6 +228,6 @@ Discovery findings are evidence. Promote only reviewed conclusions:
 ```text
 Use Product Discovery Validation on this idea.
 Interview me one question at a time. Challenge assumptions supportively.
-Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
+Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
 Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
 ```

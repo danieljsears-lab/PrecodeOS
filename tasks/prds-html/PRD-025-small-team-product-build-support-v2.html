@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-025 -- Small Team Product Build Support V2 Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-025 -- Small Team Product Build Support V2 Preview</h1>
+  <p class="muted">Static HTML generated from <code>PRD-025-small-team-product-build-support-v2.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-025-small-team-product-build-support-v2.md#prd-025-small-team-product-build-support-v2">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Small Team Product Build Support V2 Preview</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the Small Team Collaboration Lane V2 read-only preview, scenario harness, team workspace state preview, owner-file conflict preview, merge/re-entry review packet, GitHub evidence aggregation preview, and team assignment prompts.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation acceptance, merge approval, release approval, GitHub mutation, external mutation, project-management behavior, module behavior, registry behavior, runtime-toggle behavior, optional-pack behavior, installer behavior, update-channel behavior, package-manager behavior, or implementation status.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-025-FR01</code></td><td>Add <code>scripts/team-collaboration-check.py</code> as a read-only advisory preview script.</td><td>P0</td><td>Default local preview writes nothing.</td></tr><tr><td><code>PRD-025-FR02</code></td><td>Script output must include current branch/worktree, integration branch, active bead, one-active-bead status, files in play, changed paths, owner-file impacts, re-entry risks, merge packet fields, assignment packet fields, forbidden uses, and generated-report warning.</td><td>P0</td><td>JSON output.</td></tr><tr><td><code>PRD-025-FR03</code></td><td>Add <code>--github</code> optional read-only aggregation through <code>gh</code>; missing CLI/auth/network/config must be <code>not_configured</code> or <code>warning</code>, not guessed.</td><td>P0</td><td>No GitHub mutation.</td></tr><tr><td><code>PRD-025-FR04</code></td><td>Add <code>--integration-branch &amp;lt;branch&amp;gt;</code> and otherwise detect origin HEAD or upstream when available.</td><td>P1</td><td>Report unavailable comparisons visibly.</td></tr><tr><td><code>PRD-025-FR05</code></td><td>Add <code>--self-test</code> deterministic fixtures for coordinator invocation, teammate startup, isolated parallel bead, PR conflict review, stale branch re-entry, and GitHub evidence demotion.</td><td>P0</td><td>Scenario harness must pass.</td></tr><tr><td><code>PRD-025-FR06</code></td><td>Expose a local <code>team_collaboration</code> payload from <code>scripts/os_compiler.py</code> and OS Health sidecars.</td><td>P1</td><td>Advisory only; no <code>next-step.py</code> routing.</td></tr><tr><td><code>PRD-025-FR07</code></td><td>Update protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces.</td><td>P1</td><td>Package follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-025-small-team-product-build-support-v2.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-025-small-team-product-build-support-v2.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-025-FR01`</textarea></td><td><textarea data-cockpit-cell>Local preview prints advisory JSON and writes no files.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/team-collaboration-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect output.</textarea></td><td><textarea data-cockpit-cell>Current repo</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-025-FR03`</textarea></td><td><textarea data-cockpit-cell>GitHub preview is read-only and reports unavailable config visibly.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/team-collaboration-check.py --github` when appropriate</textarea></td><td><textarea data-cockpit-cell>Inspect output.</textarea></td><td><textarea data-cockpit-cell>Optional `gh` auth</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-025-FR05`</textarea></td><td><textarea data-cockpit-cell>Scenario fixtures protect six team contracts.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/team-collaboration-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Review fixture failures if any.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-025-FR06`</textarea></td><td><textarea data-cockpit-cell>OS Health payload includes `team_collaboration`.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect OS Health after generation.</textarea></td><td><textarea data-cockpit-cell>Compiler payload</textarea></td><td><textarea data-cockpit-cell>generated sidecar</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-025-FR07`</textarea></td><td><textarea data-cockpit-cell>Docs, protocols, inventory, roadmap, changelog, and generated surfaces are current.</textarea></td><td><textarea data-cockpit-cell>inventory/docs/PRD/roadmap checks</textarea></td><td><textarea data-cockpit-cell>Read changed docs.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-025-small-team-product-build-support-v2">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-025-small-team-product-build-support-v2" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-025-FR01` | Local preview prints advisory JSON and writes no files. | `python3 scripts/team-collaboration-check.py` | Inspect output. | Current repo | command output |
+| `PRD-025-FR03` | GitHub preview is read-only and reports unavailable config visibly. | `python3 scripts/team-collaboration-check.py --github` when appropriate | Inspect output. | Optional `gh` auth | command output |
+| `PRD-025-FR05` | Scenario fixtures protect six team contracts. | `python3 scripts/team-collaboration-check.py --self-test` | Review fixture failures if any. | Markdown source | command output |
+| `PRD-025-FR06` | OS Health payload includes `team_collaboration`. | `python3 scripts/clarity-scenario-check.py` | Inspect OS Health after generation. | Compiler payload | generated sidecar |
+| `PRD-025-FR07` | Docs, protocols, inventory, roadmap, changelog, and generated surfaces are current. | inventory/docs/PRD/roadmap checks | Read changed docs. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before any file edit, owner-file promotion, PRD amendment, bead creation or activation, branch/worktree mutation, GitHub mutation, merge, review acceptance, release, deployment, external mutation, or sensitive-surface action.</li><li>Stop if the coordinator or product decision owner is missing, team agreement is absent from shared authority, active bead state is unclear, multiple active beads are requested in one checkout, owner-file conflicts lack a plan, GitHub status is treated as authority, or the work requires mutation.</li><li>Network needs: none by default; optional <code>--github</code> may read GitHub through authenticated <code>gh</code>.</li><li>Dependency changes: none.</li><li>Generated reports added: <code>logs/team-collaboration-preview.json</code> through OS Health sidecar generation.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-025-small-team-product-build-support-v2.md</code></li><li>Owner protocol: <code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-OS-README.md</code></li><li><code>docs/PRECODE-ARCHITECTURE-OVERVIEW.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/team-collaboration-check.py</code></li><li><code>scripts/os_compiler.py</code></li><li><code>scripts/os-health.py</code></li><li><code>scripts/precode_outputs.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li><code>scripts/precode_cli.py</code></li><li>branch/worktree mutation</li><li>GitHub mutation</li><li>external systems</li><li>Required checks:</li><li><code>python3 scripts/team-collaboration-check.py --self-test</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>bash scripts/validate-memory.sh</code></li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-025-small-team-product-build-support-v2-preview">PRD-025 -- Small Team Product Build Support V2 Preview</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-025</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-23</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Small Team Product Build Support V2 Preview</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Originating maintainer roadmap candidate: <code>#6</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap candidate | approved implementation plan | shipped Small Team Collaboration Lane v1</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> candidate <code>Small Team Product Build Support</code></li><li><code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code></li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>scripts/team-collaboration-check.py</code></li><li>Stable facts:</li><li>Small Team Collaboration Lane v1 is built in but explicit, not default-active.</li><li>Team work still requires one active bead per checkout.</li><li>Branches, worktrees, pull requests, reviews, checks, teammate notes, and generated handoff packets are evidence until reviewed and promoted.</li><li>Assumptions:</li><li>Full V2 Preview means read-only local and optional GitHub evidence previews, not merge automation or project management.</li><li>Deterministic scenario fixtures must ship in the same slice as broader preview support.</li><li>Conflicts or stale inputs:</li><li>The roadmap recommended the scenario harness before script-level support. This PRD intentionally takes the broader V2 slice, so the harness is a required acceptance condition.</li><li>Privacy or secrets redactions:</li><li>The preview must not require secrets, credentials, provider dashboards, production configuration, private issue content, or sensitive personal data.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Small teams can coordinate Precode work only if teammate branches, worktrees, bead scope, owner-file impacts, checks, pull requests, and re-entry risks stay visible without becoming authority.</p>
+<p>Without a read-only preview, coordinators may rely on chat history, PR status, generated reports, or teammate notes as if they can choose work, approve merge, or replace owner files.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A 2-5 person team has branches or worktrees in motion and cannot quickly tell whether a teammate can continue, re-enter, or merge safely.</li><li>After: The coordinator can run a local preview, optionally add read-only GitHub evidence, and review a merge/re-entry packet without changing tasks, branches, GitHub, owner files, or active memory.</li><li>Why now: The v1 lane, GitHub evidence boundaries, decomposition language, and review lanes are already documented enough to support advisory preview fixtures.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Precode provides a read-only Small Team Collaboration Lane V2 preview that helps coordinators inspect team state, owner-file conflicts, re-entry risk, and GitHub evidence while preserving one active bead per checkout and human review.</li><li>Definition of done:</li><li><code>scripts/team-collaboration-check.py</code> provides local preview, optional <code>--github</code>, <code>--integration-branch</code>, and <code>--self-test</code>.</li><li><code>scripts/os_compiler.py</code> exposes a <code>team_collaboration</code> payload for OS Health sidecars without routing authority.</li><li>Scenario fixtures cover coordinator invocation, teammate startup, branch/worktree isolation, PR conflict review, stale branch re-entry, and GitHub evidence demotion.</li><li>Protocols, prompt patterns, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, generated docs, PRD HTML, and roadmap HTML are refreshed.</li><li>First useful vertical slice: read-only preview script, compiler payload, fixtures, protocol/docs/prompt propagation, and generated reading surfaces.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make branch/worktree, active bead, files in play, owner-file impact, and re-entry risks visible before coordinator decisions.</li><li>Goal 2: Treat optional GitHub PR, review, and check status as evidence only.</li><li>Goal 3: Standardize the coordinator&#x27;s merge/re-entry review packet and teammate assignment packet.</li><li>Goal 4: Preserve single-builder defaults and one active bead per checkout.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: branch creation, worktree creation, push, rebase, merge, PR creation, PR approval, issue mutation, workflow rerun, deployment, release, task selection, PRD approval, bead activation, acceptance approval, owner-file rewrite, generated proof, project board, dashboard, module, optional pack, registry, runtime toggle, installer, update channel, package-manager behavior, or <code>precode team</code> facade.</li><li>Deferred: validator enforcement, compiler warnings that block work, automatic merge readiness decisions, GitHub mutation support, multi-repo team orchestration, and project-management views.</li><li>Explicitly out of scope: treating generated preview JSON, GitHub status, teammate notes, or handoff packets as authority.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-025-FR01</code></td><td>Add <code>scripts/team-collaboration-check.py</code> as a read-only advisory preview script.</td><td>P0</td><td>Default local preview writes nothing.</td></tr><tr><td><code>PRD-025-FR02</code></td><td>Script output must include current branch/worktree, integration branch, active bead, one-active-bead status, files in play, changed paths, owner-file impacts, re-entry risks, merge packet fields, assignment packet fields, forbidden uses, and generated-report warning.</td><td>P0</td><td>JSON output.</td></tr><tr><td><code>PRD-025-FR03</code></td><td>Add <code>--github</code> optional read-only aggregation through <code>gh</code>; missing CLI/auth/network/config must be <code>not_configured</code> or <code>warning</code>, not guessed.</td><td>P0</td><td>No GitHub mutation.</td></tr><tr><td><code>PRD-025-FR04</code></td><td>Add <code>--integration-branch &amp;lt;branch&amp;gt;</code> and otherwise detect origin HEAD or upstream when available.</td><td>P1</td><td>Report unavailable comparisons visibly.</td></tr><tr><td><code>PRD-025-FR05</code></td><td>Add <code>--self-test</code> deterministic fixtures for coordinator invocation, teammate startup, isolated parallel bead, PR conflict review, stale branch re-entry, and GitHub evidence demotion.</td><td>P0</td><td>Scenario harness must pass.</td></tr><tr><td><code>PRD-025-FR06</code></td><td>Expose a local <code>team_collaboration</code> payload from <code>scripts/os_compiler.py</code> and OS Health sidecars.</td><td>P1</td><td>Advisory only; no <code>next-step.py</code> routing.</td></tr><tr><td><code>PRD-025-FR07</code></td><td>Update protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces.</td><td>P1</td><td>Package follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-025-SEC01</code></td><td>The preview must not mutate files, branches, worktrees, GitHub resources, workflows, releases, deployments, external systems, secrets, or dashboards.</td><td>P0</td><td>Read-only by design.</td></tr><tr><td><code>PRD-025-SEC02</code></td><td>GitHub evidence must not include secrets, tokens, credentials, private dashboard data, or production configuration.</td><td>P0</td><td>Use <code>gh</code> status metadata only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-025-FR01</code></td><td>Local preview prints advisory JSON and writes no files.</td><td><code>python3 scripts/team-collaboration-check.py</code></td><td>Inspect output.</td><td>Current repo</td><td>command output</td></tr><tr><td><code>PRD-025-FR03</code></td><td>GitHub preview is read-only and reports unavailable config visibly.</td><td><code>python3 scripts/team-collaboration-check.py --github</code> when appropriate</td><td>Inspect output.</td><td>Optional <code>gh</code> auth</td><td>command output</td></tr><tr><td><code>PRD-025-FR05</code></td><td>Scenario fixtures protect six team contracts.</td><td><code>python3 scripts/team-collaboration-check.py --self-test</code></td><td>Review fixture failures if any.</td><td>Markdown source</td><td>command output</td></tr><tr><td><code>PRD-025-FR06</code></td><td>OS Health payload includes <code>team_collaboration</code>.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Inspect OS Health after generation.</td><td>Compiler payload</td><td>generated sidecar</td></tr><tr><td><code>PRD-025-FR07</code></td><td>Docs, protocols, inventory, roadmap, changelog, and generated surfaces are current.</td><td>inventory/docs/PRD/roadmap checks</td><td>Read changed docs.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before any file edit, owner-file promotion, PRD amendment, bead creation or activation, branch/worktree mutation, GitHub mutation, merge, review acceptance, release, deployment, external mutation, or sensitive-surface action.</li><li>Stop if the coordinator or product decision owner is missing, team agreement is absent from shared authority, active bead state is unclear, multiple active beads are requested in one checkout, owner-file conflicts lack a plan, GitHub status is treated as authority, or the work requires mutation.</li><li>Network needs: none by default; optional <code>--github</code> may read GitHub through authenticated <code>gh</code>.</li><li>Dependency changes: none.</li><li>Generated reports added: <code>logs/team-collaboration-preview.json</code> through OS Health sidecar generation.</li></ul>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-025-small-team-product-build-support-v2.md</code></li><li>Owner protocol: <code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-OS-README.md</code></li><li><code>docs/PRECODE-ARCHITECTURE-OVERVIEW.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/team-collaboration-check.py</code></li><li><code>scripts/os_compiler.py</code></li><li><code>scripts/os-health.py</code></li><li><code>scripts/precode_outputs.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li><code>scripts/precode_cli.py</code></li><li>branch/worktree mutation</li><li>GitHub mutation</li><li>external systems</li><li>Required checks:</li><li><code>python3 scripts/team-collaboration-check.py --self-test</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>bash scripts/validate-memory.sh</code></li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

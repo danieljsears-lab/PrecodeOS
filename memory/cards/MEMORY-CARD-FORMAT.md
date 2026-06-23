@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-20
+Document version: v0.1.6
+Last updated: 2026-06-23
 
 Each memory card captures one reusable piece of reviewed knowledge.
 
@@ -30,10 +30,17 @@ Cards should be short. If a card becomes a decision, requirement, architecture r
 Cards with `category: project_glossary` should include:
 
 - domain terms with plain-English meanings
-- aliases the builder or users may say
-- avoid or confusing terms
-- examples in UI, code, tests, docs, or user language
+- aliases the builder, users, support, or teammates may say
+- avoid or confusing terms, including stale or overloaded vocabulary
+- source pointers for each useful term group
+- examples in UI, code, tests, docs, support language, or user language
+- freshness for terms that may drift
 - authority owner if a term should be promoted
+
+Use this table shape for `Project Glossary` when possible:
+
+| Term | Plain-English meaning | Aliases | Avoid/confusing terms | Source pointers | Examples | Freshness | Authority owner if promoted |
+|---|---|---|---|---|---|---|---|
 
 Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` for the full shared-language workflow.
 
@@ -45,4 +52,8 @@ Do not create a memory card automatically from generated diary output. Propose t
 
 Memory cards may be searched and exported through generated indexes, but search results are evidence only. Stale, superseded, archived, and low-confidence cards must be treated as weak or historical context. A `needs_promotion` card names the owner file to review; it does not update that owner file or become authority by itself.
 
+For `project_glossary` cards, search and recall may surface term excerpts and demotion warnings. The agent must still verify the term against current active memory, active bead, approved PRD, code, and owner files before using it to name UI, modules, routes, tests, or docs.
+
 Prefer short cards with focused summaries. If a card grows large enough that loading it would waste context, use selective recall through `scripts/memory-check.py --query "<topic>" --recall`, split the card, or promote durable truth into the correct owner file.
+
+Use `scripts/memory-check.py --retrieval-review` before considering any optional retrieval backend. The review may expose oversized cards, token pressure, stale or low-confidence cards, promotion-needed cards, memory spaces, and query misses, but it remains generated evidence only. It does not approve semantic search, shared storage, new dependencies, card creation, owner-file promotion, task selection, or active-memory expansion.

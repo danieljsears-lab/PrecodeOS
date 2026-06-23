@@ -41,6 +41,7 @@ TRIAGE_LABELS = {
     "Local Hygiene": "Cleanup needs classification first",
     "Work Graph": "Work relationships need inspection",
     "Tool Execution": "Tool history needs review",
+    "Session Friction": "Repeated friction needs review",
 }
 
 DO_NOT_APPROVE_BY_SEVERITY = {
@@ -341,6 +342,29 @@ def _tool_execution_row(payload: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def _session_friction_row(payload: dict[str, Any]) -> dict[str, Any]:
+    signal = payload.get("session_friction_review") or {}
+    details = _details(signal)
+    findings = details.get("findings") if isinstance(details.get("findings"), list) else []
+    actionable = [finding for finding in findings if finding.get("category") != "no_safe_evidence_found"]
+    if _status(signal) == "pass":
+        severity = "clear"
+    elif len(actionable) >= 3:
+        severity = "drift_risk"
+    else:
+        severity = "watch"
+    return _row(
+        source="Session Friction",
+        status=_status(signal),
+        severity=severity,
+        why="Session-friction findings are cited review input; they are not memory promotion, task selection, or command approval.",
+        owner_command="python3 scripts/session-friction-check.py",
+        owner_protocol="tasks/reference/TOOL-EXECUTION-PROTOCOL.md",
+        repair_path="Review cited findings, then manually choose whether a protocol note, command-pattern note, or reviewed memory candidate is warranted.",
+        warnings=_warnings(signal)[:3],
+    )
+
+
 def build_doctor_dashboard(payload: dict[str, Any]) -> dict[str, Any]:
     rows = [
         _next_step_row(payload),
@@ -353,6 +377,7 @@ def build_doctor_dashboard(payload: dict[str, Any]) -> dict[str, Any]:
         _local_hygiene_row(payload),
         _work_graph_row(payload),
         _tool_execution_row(payload),
+        _session_friction_row(payload),
     ]
     top = _top_row(rows)
     return {

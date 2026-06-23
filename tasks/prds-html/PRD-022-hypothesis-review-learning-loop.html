@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-022 -- Hypothesis Review And Learning Loop v2</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-022 -- Hypothesis Review And Learning Loop v2</h1>
+  <p class="muted">Static HTML generated from <code>PRD-022-hypothesis-review-learning-loop.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-022-hypothesis-review-learning-loop.md#prd-022-hypothesis-review-learning-loop">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Hypothesis Review And Learning Loop v2</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the Hypothesis Review / Learning Loop advisory protocol and checker coverage across discovery, source intake, Candidate Queue, PRD source inputs, and Planning Briefs.</p>
+    <p><strong>Not authority:</strong> Active memory, product decisions, PRD approval, Candidate Queue ranking, task selection, bead activation, implementation priority, generated proof, analytics requirements, experiment database, dashboard, command wrapper, registry, optional pack, package-manager behavior, route structure, schema definitions, or implementation status.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-022-FR01</code></td><td>Add a Hypothesis Review / Learning Loop Protocol with pre-PRD and post-planning load conditions.</td><td>P0</td><td>Must not require one active bead.</td></tr><tr><td><code>PRD-022-FR02</code></td><td>Protocol output must include review target, authority checked, hypothesis or learning target, evidence reviewed, learning status, learning outcome, stale or untested signals, recommended next workflow, user approval needed, stop condition, and generated-report warning.</td><td>P0</td><td>Stable copyable output shape.</td></tr><tr><td><code>PRD-022-FR03</code></td><td>Review status vocabulary must be <code>untested</code>, <code>tested</code>, <code>narrowed</code>, <code>killed</code>, <code>promoted</code>, <code>stale</code>, and <code>not applicable</code>.</td><td>P0</td><td>Review labels only.</td></tr><tr><td><code>PRD-022-FR04</code></td><td>Discovery, Local Source Intake, Candidate Queue, PRD, and Planning guidance must carry the source fields needed for review.</td><td>P0</td><td>Avoid duplicate workflow machinery.</td></tr><tr><td><code>PRD-022-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, and Package File Inventory must expose the loop and boundaries.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-022-FR06</code></td><td><code>scripts/hypothesis-check.py</code> must check v1 guidance and v2 review-loop contract coverage without writing files.</td><td>P0</td><td>Deterministic advisory checker.</td></tr><tr><td><code>PRD-022-FR07</code></td><td>Clarity scenario coverage must protect evidence-only, no ranking, no PRD approval, no bead activation, no analytics requirement, no database, no generated status authority, and pre-PRD usability.</td><td>P1</td><td>Text-contract regression.</td></tr><tr><td><code>PRD-022-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, generated docs, generated PRD HTML, and generated roadmap HTML must be updated.</td><td>P1</td><td>Package-maintenance follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-022-hypothesis-review-learning-loop.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-022-hypothesis-review-learning-loop.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-022-FR01`</textarea></td><td><textarea data-cockpit-cell>Protocol exists and names pre-PRD sources plus Planning Briefs.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/hypothesis-check.py`</textarea></td><td><textarea data-cockpit-cell>Read protocol.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-022-FR02`</textarea></td><td><textarea data-cockpit-cell>Output contract has all required review fields.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Compare copyable output.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-022-FR03`</textarea></td><td><textarea data-cockpit-cell>Status vocabulary is stable and non-authoritative.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/hypothesis-check.py`</textarea></td><td><textarea data-cockpit-cell>Read status table.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-022-FR05`</textarea></td><td><textarea data-cockpit-cell>Prompt Patterns, User Guide, Daily Cockpit, and Package Inventory expose invocation and boundaries.</textarea></td><td><textarea data-cockpit-cell>docs HTML freshness check</textarea></td><td><textarea data-cockpit-cell>Read public docs.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated docs HTML</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-022-FR06`</textarea></td><td><textarea data-cockpit-cell>Checker returns advisory JSON and writes no files.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/hypothesis-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect command output.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-022-FR08`</textarea></td><td><textarea data-cockpit-cell>PRD HTML, docs HTML, roadmap HTML, changelog, and journal are current.</textarea></td><td><textarea data-cockpit-cell>PRD/docs/roadmap checks</textarea></td><td><textarea data-cockpit-cell>Read generated surfaces.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-022-hypothesis-review-learning-loop">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-022-hypothesis-review-learning-loop" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-022-FR01` | Protocol exists and names pre-PRD sources plus Planning Briefs. | `python3 scripts/hypothesis-check.py` | Read protocol. | Markdown source | check output |
+| `PRD-022-FR02` | Output contract has all required review fields. | `python3 scripts/clarity-scenario-check.py` | Compare copyable output. | Markdown source | check output |
+| `PRD-022-FR03` | Status vocabulary is stable and non-authoritative. | `python3 scripts/hypothesis-check.py` | Read status table. | Markdown source | check output |
+| `PRD-022-FR05` | Prompt Patterns, User Guide, Daily Cockpit, and Package Inventory expose invocation and boundaries. | docs HTML freshness check | Read public docs. | Markdown docs | generated docs HTML |
+| `PRD-022-FR06` | Checker returns advisory JSON and writes no files. | `python3 scripts/hypothesis-check.py` | Inspect command output. | Markdown source | command output |
+| `PRD-022-FR08` | PRD HTML, docs HTML, roadmap HTML, changelog, and journal are current. | PRD/docs/roadmap checks | Read generated surfaces. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before owner-file updates, PRD creation or amendment, PRD approval, Candidate Queue writeback, <code>DECISIONS.md</code> updates, bead creation or activation, active-memory edits, implementation, external mutation, release, or package-manager behavior.</li><li>Stop if the source material is missing, the hypothesis or learning target is unclear, learning evidence cannot be inspected, current owner files conflict, or review would require secrets, raw private data, dashboards, production analytics, or external mutation.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-022-hypothesis-review-learning-loop.md</code></li><li>Owner protocol:</li><li><code>tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PLANNING-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/hypothesis-check.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>analytics dashboards</li><li>generated evidence reports beyond docs/PRD/roadmap HTML</li><li>GitHub, deployment, provider dashboards, secrets, credentials, or environment files</li><li>Required checks:</li><li><code>python3 scripts/hypothesis-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/version-check.py</code></li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-022-hypothesis-review-and-learning-loop-v2">PRD-022 -- Hypothesis Review And Learning Loop v2</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-022</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-23</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Hypothesis Review And Learning Loop v2</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Originating maintainer roadmap candidate: <code>#11</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap candidate | approved implementation plan | shipped Hypothesis Guidance And Mechanics v1</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> candidate <code>Hypothesis Review And Learning Loop v2</code></li><li><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PLANNING-PROTOCOL.md</code></li><li><code>scripts/hypothesis-check.py</code></li><li>Stable facts:</li><li>Hypothesis Guidance And Mechanics v1 introduced shared hunch, assumption, hypothesis, experiment-hypothesis, and <code>Primary hypothesis / learning target</code> language.</li><li>Discovery Summary, Local Source Intake, Candidate Queue, PRD source inputs, and Planning Briefs already carry the evidence fields needed for a review loop.</li><li>Existing Review Lanes are scoped to one active bead; hypothesis review must also work before PRD and bead activation.</li><li>Assumptions:</li><li>The first useful v2 slice is a public advisory protocol plus checker coverage.</li><li>Generated stale-hypothesis dashboards, analytics integrations, and OS Health routing are premature.</li><li>Conflicts or stale inputs:</li><li>The roadmap originally deferred v2 until v1 evidence existed. This PRD implements only a quiet review shape after v1 vocabulary/checker coverage is present.</li><li>Privacy or secrets redactions:</li><li>Hypothesis review must not require raw private transcripts, secrets, credentials, dashboard values, production analytics, billing data, or sensitive personal data.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>After hypothesis mechanics are visible, users still need a safe way to ask what was actually learned before parked ideas, discovery notes, or planning briefs become product-definition momentum.</p>
+<p>Without an explicit review shape, stale or untested hypotheses can look like PRD inputs, while generated summaries or Candidate Queue labels can appear more authoritative than they are.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A user has a Discovery Summary, Candidate Queue entry, intake summary, PRD source section, or Planning Brief and cannot tell whether the hypothesis was tested, narrowed, killed, promoted, stale, or still just a learning target.</li><li>After: The user can invoke Hypothesis Review / Learning Loop and receive an evidence-only status, learning outcome, stale or untested signals, and next safe Precode workflow.</li><li>Why now: v1 hypothesis vocabulary and checker coverage make the review shape small enough to add without creating product-management machinery.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Precode provides a lightweight advisory hypothesis review loop that works before PRD and bead activation and keeps learning visible without creating authority.</li><li>Definition of done:</li><li><code>tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md</code> defines load conditions, input scope, output contract, status vocabulary, promotion paths, and forbidden actions.</li><li><code>scripts/hypothesis-check.py</code> checks both v1 hypothesis guidance and v2 review-loop contract coverage.</li><li>Discovery, intake, Candidate Queue, PRD, and Planning surfaces expose the handoff fields needed for the review loop.</li><li>Prompt Patterns, User Guide, Daily Cockpit, and Package File Inventory make the loop discoverable.</li><li>Clarity scenario coverage protects the evidence-only, pre-PRD, no-ranking, no-analytics, no-database boundaries.</li><li>Maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces are refreshed.</li><li>First useful vertical slice: advisory protocol, text-contract checker, copyable prompt, docs, and generated surfaces only.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Let users review whether a hypothesis or learning target is <code>untested</code>, <code>tested</code>, <code>narrowed</code>, <code>killed</code>, <code>promoted</code>, <code>stale</code>, or <code>not applicable</code>.</li><li>Goal 2: Keep the loop usable on pre-PRD artifacts, not only active beads.</li><li>Goal 3: Route learning to the next safe owner workflow without approving, ranking, activating, or implementing anything.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: analytics requirement, generated stale-hypothesis dashboard, experiment database, automatic Candidate Queue ranking, auto-promotion, workflow routing automation, product decision approval, PRD approval, bead activation, task selection, command wrapper, registry, optional pack, package-manager behavior, or generated proof.</li><li>Deferred: richer stale-hypothesis visibility, generated reports, OS Health integration, and additional script parsing only after real review sessions show repeated ambiguity.</li><li>Explicitly out of scope: treating <code>promoted</code> as implementation permission or treating generated hypothesis status as source of truth.</li></ul>
+<p>Contract phrases for checks: the loop does not approve product direction, does not rank candidates, and does not require analytics.</p>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-022-FR01</code></td><td>Add a Hypothesis Review / Learning Loop Protocol with pre-PRD and post-planning load conditions.</td><td>P0</td><td>Must not require one active bead.</td></tr><tr><td><code>PRD-022-FR02</code></td><td>Protocol output must include review target, authority checked, hypothesis or learning target, evidence reviewed, learning status, learning outcome, stale or untested signals, recommended next workflow, user approval needed, stop condition, and generated-report warning.</td><td>P0</td><td>Stable copyable output shape.</td></tr><tr><td><code>PRD-022-FR03</code></td><td>Review status vocabulary must be <code>untested</code>, <code>tested</code>, <code>narrowed</code>, <code>killed</code>, <code>promoted</code>, <code>stale</code>, and <code>not applicable</code>.</td><td>P0</td><td>Review labels only.</td></tr><tr><td><code>PRD-022-FR04</code></td><td>Discovery, Local Source Intake, Candidate Queue, PRD, and Planning guidance must carry the source fields needed for review.</td><td>P0</td><td>Avoid duplicate workflow machinery.</td></tr><tr><td><code>PRD-022-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, and Package File Inventory must expose the loop and boundaries.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-022-FR06</code></td><td><code>scripts/hypothesis-check.py</code> must check v1 guidance and v2 review-loop contract coverage without writing files.</td><td>P0</td><td>Deterministic advisory checker.</td></tr><tr><td><code>PRD-022-FR07</code></td><td>Clarity scenario coverage must protect evidence-only, no ranking, no PRD approval, no bead activation, no analytics requirement, no database, no generated status authority, and pre-PRD usability.</td><td>P1</td><td>Text-contract regression.</td></tr><tr><td><code>PRD-022-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, generated docs, generated PRD HTML, and generated roadmap HTML must be updated.</td><td>P1</td><td>Package-maintenance follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-022-SEC01</code></td><td>The protocol must stop before requiring secrets, credentials, private raw transcripts, billing data, dashboard values, production analytics, or sensitive personal data.</td><td>P0</td><td>Review can cite redacted summaries instead.</td></tr><tr><td><code>PRD-022-SEC02</code></td><td>The checker must be local, read-only, deterministic, and stdlib-only.</td><td>P0</td><td>No network, external systems, or generated evidence writes.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-022-NFR01</code></td><td>User-facing language must be plain enough for a non-technical builder to distinguish learning status from approval.</td><td>P0</td><td>Avoid product-management jargon.</td></tr><tr><td><code>PRD-022-NFR02</code></td><td>The implementation must reuse existing owner workflows rather than create a dashboard, database, or routing engine.</td><td>P0</td><td>Keeps v2 quiet and bounded.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-022-FR01</code></td><td>Protocol exists and names pre-PRD sources plus Planning Briefs.</td><td><code>python3 scripts/hypothesis-check.py</code></td><td>Read protocol.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-022-FR02</code></td><td>Output contract has all required review fields.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Compare copyable output.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-022-FR03</code></td><td>Status vocabulary is stable and non-authoritative.</td><td><code>python3 scripts/hypothesis-check.py</code></td><td>Read status table.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-022-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, and Package Inventory expose invocation and boundaries.</td><td>docs HTML freshness check</td><td>Read public docs.</td><td>Markdown docs</td><td>generated docs HTML</td></tr><tr><td><code>PRD-022-FR06</code></td><td>Checker returns advisory JSON and writes no files.</td><td><code>python3 scripts/hypothesis-check.py</code></td><td>Inspect command output.</td><td>Markdown source</td><td>command output</td></tr><tr><td><code>PRD-022-FR08</code></td><td>PRD HTML, docs HTML, roadmap HTML, changelog, and journal are current.</td><td>PRD/docs/roadmap checks</td><td>Read generated surfaces.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before owner-file updates, PRD creation or amendment, PRD approval, Candidate Queue writeback, <code>DECISIONS.md</code> updates, bead creation or activation, active-memory edits, implementation, external mutation, release, or package-manager behavior.</li><li>Stop if the source material is missing, the hypothesis or learning target is unclear, learning evidence cannot be inspected, current owner files conflict, or review would require secrets, raw private data, dashboards, production analytics, or external mutation.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md</code></td><td>User-invoked advisory review.</td><td>Produces learning status and next workflow without approval authority.</td><td><code>scripts/hypothesis-check.py</code>, clarity scenario.</td><td><code>tasks/prds/PRD-022-hypothesis-review-learning-loop.md</code></td></tr><tr><td><code>scripts/hypothesis-check.py</code></td><td>Read-only package-contract check.</td><td>Checks canonical Markdown terms and guardrails; writes nothing.</td><td>Direct command.</td><td><code>tasks/prds/PRD-022-hypothesis-review-learning-loop.md</code></td></tr><tr><td>Public docs and prompts</td><td>Copyable invocation.</td><td>Teaches the review loop as evidence-only and pre-PRD-capable.</td><td>Docs HTML check.</td><td><code>tasks/prds/PRD-022-hypothesis-review-learning-loop.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-022-hypothesis-review-learning-loop.md</code></li><li>Owner protocol:</li><li><code>tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PLANNING-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/hypothesis-check.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>analytics dashboards</li><li>generated evidence reports beyond docs/PRD/roadmap HTML</li><li>GitHub, deployment, provider dashboards, secrets, credentials, or environment files</li><li>Required checks:</li><li><code>python3 scripts/hypothesis-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li><code>python3 scripts/version-check.py</code></li></ul>
+<h2 id="forbidden-assumptions">Forbidden Assumptions</h2>
+<ul><li>A learning status is product approval.</li><li><code>promoted</code> means implementation is approved.</li><li>Hypothesis Review ranks Candidate Queue entries.</li><li>The loop requires analytics, production data, a database, dashboard, or generated stale-hypothesis report.</li><li>Generated hypothesis status can override owner files, current code, approved PRDs, active beads, or user judgment.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#forbidden-assumptions">Forbidden Assumptions</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

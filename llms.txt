@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-21
+Document version: v0.1.5
+Last updated: 2026-06-23
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -20,7 +20,7 @@ This file is a navigation aid only. It points to canonical Markdown files and mu
 - `docs/PRECODE-DAILY-COCKPIT.md`: day-to-day user cockpit and safe next prompts.
 - `docs/PRECODE-USER-GUIDE.md`: practical operating guide for normal PrecodeOS use.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
-- `CANDIDATE-QUEUE.md`: parked candidate intent and promotion review surface; not task authority.
+- `CANDIDATE-QUEUE.md`: parked candidate intent, product-value ratings, themes, near-bead sketches, and promotion review surface; not task authority.
 
 ## Active Memory Contract
 
@@ -34,13 +34,14 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 ## Protocol Entry Points
 
-- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting.
-- `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
+- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting, including Plan Loop routing for explicit post-intake or post-PRD feature-angle exploration before bead commitment.
+- `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, assign product-value ratings, group themes, sketch near-beads, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
 - `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
 - `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
 - `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`: proof expectations and generated-evidence limits.
+- `ACCEPTANCE.md` and `tasks/reference/PRD-PROTOCOL.md`: acceptance criteria and PRD acceptance-oracle guidance, including optional EARS-style wording for vague expected behavior.
 - `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`: closeout, handoff, and review evidence shape.
 - `tasks/reference/RECOVERY-PROTOCOL.md`: stuck-user recovery and safe triage.
 
@@ -54,8 +55,11 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 ## Generated Reading Surfaces
 
-- `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`; Markdown remains canonical.
+- `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`, with static progress cues, section links, and source Markdown links; Markdown remains canonical.
 - `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
+- `scripts/candidate-queue.py`: local Candidate Queue preview/apply helper; preview is non-authority and apply requires explicit `--approve-action`.
+- `scripts/session-friction-check.py`: read-only Session Friction Review diagnostic; findings are generated evidence only and require manual promotion.
+- `scripts/build-attribution-ledger.py`: read-only Build Attribution Ledger diagnostic; who-built-what findings are generated evidence only and require closeout review.
 - `tasks/prds-html/*.html`: generated PRD review surface; Markdown PRDs remain canonical.
 - `OS-HEALTH.md`, `PROGRESS.md`, and `logs/*`: generated evidence only, not authority.
 

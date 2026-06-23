@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,44 +243,82 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Candidate Queue</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../CANDIDATE-QUEUE.md">Source Markdown</a><span>v0.1.0</span><span>Updated 2026-06-21</span></p>
+  <p class="meta"><a href="../CANDIDATE-QUEUE.md">Source Markdown</a><span>v0.1.1</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
-    <h2 id="purpose">Purpose</h2>
+    <h2 id="purpose"><a class="heading-anchor" href="#purpose" aria-label="Link to Purpose">#</a>Purpose</h2>
 <p>The Candidate Queue is a place for intents we have not lost, with enough evidence and status to decide what, if anything, deserves promotion.</p>
 <p>It is upstream of PRDs and beads. It helps answer:</p>
-<ul><li>What ideas have we parked?</li><li>Which ones need research?</li><li>Which ones are worth shaping?</li><li>Which ones are blocked or stale?</li><li>Which ones might become PRDs?</li><li>Which approved PRDs have candidate beads?</li></ul>
+<ul><li>What ideas have we parked?</li><li>Which ones need research?</li><li>Which ones are worth shaping?</li><li>Which ones are blocked or stale?</li><li>Which ones might become PRDs?</li><li>Which approved PRDs have candidate beads?</li><li>Which reviewed candidates have product-value ratings, themes, or near-bead sketches?</li></ul>
 <p>It cannot answer:</p>
 <ul><li>What is the active task?</li><li>What should the agent build next?</li><li>Is this PRD approved?</li><li>Is this bead active?</li><li>Is this ranked item authorized for implementation?</li></ul>
 <p>Use <code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code> before adding, reviewing, ranking, promoting, deferring, or killing queue entries.</p>
 <p>Active memory remains exactly:</p>
 <ul><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li></ul>
-<h2 id="queue-rules">Queue Rules</h2>
-<ul><li>Candidate ranking is review order only. It is not implementation priority.</li><li>Candidate IDs use <code>CQ-###-short-name</code>, for example <code>CQ-001-owner-dashboard</code>.</li><li>Candidate IDs do not reserve PRD IDs or bead IDs.</li><li>Do not create <code>B###</code> bead IDs here. Bead IDs are assigned only when real bead files are created.</li><li>Do not copy raw notes wholesale into this file. Link or name the source and summarize only the decision-relevant parts.</li><li>Do not store secrets, credentials, dashboard values, billing details, or private raw transcripts here.</li><li>Promote only reviewed conclusions through Local Source Intake, Product Discovery, PRDs, decisions, authority-file updates, decomposition review, defer, or kill decisions.</li></ul>
-<h2 id="candidate-states">Candidate States</h2>
+<h2 id="queue-rules"><a class="heading-anchor" href="#queue-rules" aria-label="Link to Queue Rules">#</a>Queue Rules</h2>
+<ul><li>Candidate ranking is review order only. It is not implementation priority.</li><li>Product-value ratings <code>P0</code>, <code>P1</code>, <code>P2</code>, and <code>P3</code> are product value only. They are not review order, implementation priority, sprint priority, task selection, or permission to code.</li><li>Candidate IDs use <code>CQ-###-short-name</code>, for example <code>CQ-001-owner-dashboard</code>.</li><li>Candidate IDs do not reserve PRD IDs or bead IDs.</li><li>Do not create <code>B###</code> bead IDs here. Bead IDs are assigned only when real bead files are created.</li><li>Near-bead sketch IDs use <code>CQ-###-short-name-S##</code>, for example <code>CQ-001-owner-dashboard-S01</code>. They are sketches only, not bead files.</li><li>Do not copy raw notes wholesale into this file. Link or name the source and summarize only the decision-relevant parts.</li><li>Do not store secrets, credentials, dashboard values, billing details, or private raw transcripts here.</li><li>Promote only reviewed conclusions through Local Source Intake, Product Discovery, PRDs, decisions, authority-file updates, decomposition review, defer, or kill decisions.</li></ul>
+<h2 id="product-value-ratings"><a class="heading-anchor" href="#product-value-ratings" aria-label="Link to Product Value Ratings">#</a>Product-Value Ratings</h2>
+<p>Use product-value ratings only after review:</p>
+<div class="table-wrap"><table><thead><tr><th>Rating</th><th>Meaning</th><th>Boundary</th></tr></thead><tbody><tr><td><code>P0</code></td><td>Highest product value if the evidence and authority path hold.</td><td>Does not mean build now.</td></tr><tr><td><code>P1</code></td><td>Strong product value, likely worth shaping after open questions are addressed.</td><td>Does not outrank active work.</td></tr><tr><td><code>P2</code></td><td>Possible product value, needs more evidence or narrower framing.</td><td>Does not create a task.</td></tr><tr><td><code>P3</code></td><td>Low or speculative product value, likely defer, kill, or revisit later.</td><td>Does not close the candidate by itself.</td></tr><tr><td><code>unrated</code></td><td>No reviewed product-value rating yet.</td><td>Default for raw capture.</td></tr></tbody></table></div>
+<h2 id="global-theme-index"><a class="heading-anchor" href="#global-theme-index" aria-label="Link to Global Theme Index">#</a>Global Theme Index</h2>
+<p>Use themes to help scan related parked intent. Themes do not rank candidates or choose work.</p>
+<div class="table-wrap"><table><thead><tr><th>Theme</th><th>Candidate IDs</th><th>Notes</th></tr></thead><tbody><tr><td>Example theme</td><td><code>CQ-001-example</code></td><td>Replace or remove when real candidates are reviewed.</td></tr></tbody></table></div>
+<h2 id="candidate-states"><a class="heading-anchor" href="#candidate-states" aria-label="Link to Candidate States">#</a>Candidate States</h2>
 <p>Use one status per candidate:</p>
 <ul><li><code>idea</code></li><li><code>research_needed</code></li><li><code>ready_for_intake</code></li><li><code>prd_candidate</code></li><li><code>bead_candidate</code></li><li><code>blocked</code></li><li><code>stale</code></li><li><code>deferred</code></li><li><code>promoted</code></li><li><code>superseded</code></li><li><code>done</code></li><li><code>killed</code></li></ul>
-<h2 id="review-queue">Review Queue</h2>
+<h2 id="review-queue"><a class="heading-anchor" href="#review-queue" aria-label="Link to Review Queue">#</a>Review Queue</h2>
 <p>Keep this table short. Move detailed notes into each candidate entry.</p>
 <div class="table-wrap"><table><thead><tr><th>Rank</th><th>Candidate ID</th><th>Title</th><th>Status</th><th>Promotion target</th><th>Next review trigger</th></tr></thead><tbody><tr><td>1</td><td><code>CQ-001-example</code></td><td>Example candidate</td><td><code>idea</code></td><td>Local Source Intake</td><td>user review</td></tr></tbody></table></div>
-<h2 id="candidate-entry-template">Candidate Entry Template</h2>
+<h2 id="candidate-entries"><a class="heading-anchor" href="#candidate-entries" aria-label="Link to Candidate Entries">#</a>Candidate Entries</h2>
+<p>Reviewed queue entries live here. Keep templates below this section.</p>
+<h2 id="candidate-entry-template"><a class="heading-anchor" href="#candidate-entry-template" aria-label="Link to Candidate Entry Template">#</a>Candidate Entry Template</h2>
 <p>Copy this section for each candidate.</p>
-<h3 id="cq-001-example-example-candidate">CQ-001-example -- Example Candidate</h3>
-<ul><li>Status: <code>idea</code></li><li>Reviewed rank: <code>1</code></li><li>User intent:</li><li>Why this matters:</li><li>Evidence or source pointers:</li><li>Open questions:</li><li>Evidence strength: <code>unknown | weak | medium | strong</code></li><li>Weakest assumption:</li><li>Blocked or stale reason:</li><li>Promotion target: <code>Local Source Intake | Product Discovery | PRD draft | PRD amendment | DECISIONS.md | authority-file update | decomposition review | defer | kill</code></li><li>Related PRDs:</li><li>Candidate bead visibility:</li><li>Next review trigger:</li><li>Last reviewed: <code>YYYY-MM-DD</code></li></ul>
+<h3 id="cq-001-example-example-candidate"><a class="heading-anchor" href="#cq-001-example-example-candidate" aria-label="Link to CQ 001 example Example Candidate">#</a>CQ-001-example -- Example Candidate</h3>
+<ul><li>Status: <code>idea</code></li><li>Reviewed rank: <code>1</code></li><li>Shaping status: <code>unshaped | proposed | reviewed | needs_research | blocked | stale | deferred</code></li><li>Product-value rating: <code>unrated | P0 | P1 | P2 | P3</code></li><li>Product-value rationale:</li><li>Themes:</li><li>User intent:</li><li>Why this matters:</li><li>Raw source pointer:</li><li>Evidence or source pointers:</li><li>Open questions:</li><li>Primary hypothesis / learning target:</li><li>Hypothesis review status: <code>untested | tested | narrowed | killed | promoted | stale | not applicable</code></li><li>Learning outcome:</li><li>Stale or untested signals:</li><li>Evidence strength: <code>unknown | weak | medium | strong</code></li><li>Weakest assumption:</li><li>Blocked or stale reason:</li><li>Promotion target: <code>Local Source Intake | Product Discovery | PRD draft | PRD amendment | DECISIONS.md | authority-file update | decomposition review | defer | kill</code></li><li>Related PRDs:</li><li>Candidate bead visibility:</li><li>Near-bead sketches:</li><li><code>CQ-001-example-S01</code> -- Sketch title; likely authority; likely verification; dependencies; sketch status.</li><li>Next review trigger:</li><li>Last reviewed: <code>YYYY-MM-DD</code></li></ul>
+<p>Shaping review:</p>
+<ul><li>Rating boundary: Product value only; not review order, implementation priority, task selection, or permission to code.</li><li>Sketch boundary: Near-bead sketches are not bead files, do not reserve <code>B###</code> IDs, and do not activate beads.</li><li>Learning boundary: Hypothesis review status is evidence only; it does not approve product direction, rank candidates, promote entries, activate beads, choose tasks, require analytics, or create an experiment database.</li></ul>
 <p>Promotion notes:</p>
 <ul><li>No promotion has been approved yet.</li></ul>
+<h2 id="script-assisted-review"><a class="heading-anchor" href="#script-assisted-review" aria-label="Link to Script Assisted Review">#</a>Script-Assisted Review</h2>
+<p><code>python3 scripts/candidate-queue.py --preview-import &amp;lt;path&amp;gt;</code> may preview minimal raw-note capture. The preview includes only a title, source pointer, short summary, open questions, and privacy warning.</p>
+<p><code>python3 scripts/candidate-queue.py --preview-shaping &amp;lt;path&amp;gt;</code> may validate an agent-authored JSON shaping proposal with candidate ID, product-value rating, rationale, themes, and near-bead sketches.</p>
+<p>Script output is preview evidence only:</p>
+<ul><li><code>mutates_now: false</code></li><li>generated preview is not authority</li><li>apply requires explicit <code>--apply --approve-action &amp;lt;ID&amp;gt;</code></li><li>product-value rating is not implementation priority</li><li>near-bead sketches are not bead files</li></ul>
+<p>Apply may write only approved action IDs to <code>CANDIDATE-QUEUE.md</code>. It must not mutate <code>tasks/todo.md</code>, approve PRDs, activate beads, reserve <code>B###</code> IDs, or authorize implementation.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-DAILY-COCKPIT.html"><span>Previous</span>PrecodeOS Daily Cockpit</a><a href="PRECODE-OS-README.html"><span>Next</span>PrecodeOS Explainer</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#purpose">Purpose</a><a class="level-2" href="#queue-rules">Queue Rules</a><a class="level-2" href="#candidate-states">Candidate States</a><a class="level-2" href="#review-queue">Review Queue</a><a class="level-2" href="#candidate-entry-template">Candidate Entry Template</a><a class="level-3" href="#cq-001-example-example-candidate">CQ 001 example Example Candidate</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../CANDIDATE-QUEUE.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#purpose">Purpose</a><a class="level-2" href="#queue-rules">Queue Rules</a><a class="level-2" href="#product-value-ratings">Product Value Ratings</a><a class="level-2" href="#global-theme-index">Global Theme Index</a><a class="level-2" href="#candidate-states">Candidate States</a><a class="level-2" href="#review-queue">Review Queue</a><a class="level-2" href="#candidate-entries">Candidate Entries</a><a class="level-2" href="#candidate-entry-template">Candidate Entry Template</a><a class="level-3" href="#cq-001-example-example-candidate">CQ 001 example Example Candidate</a><a class="level-2" href="#script-assisted-review">Script Assisted Review</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

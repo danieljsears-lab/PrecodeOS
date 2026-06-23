@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-20
+# Version: v0.1.4
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -63,13 +63,45 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
             citation = card.get("citation") if isinstance(card.get("citation"), dict) else {}
             sources = citation.get("source_pointers") or []
             source_text = ", ".join(str(source) for source in sources) if sources else "none"
+            glossary_text = str(citation.get("glossary_excerpt") or "").strip()
+            glossary_note = f"; glossary excerpt: {glossary_text}" if glossary_text else ""
             lines.append(
                 "- "
                 + f"`{citation.get('path', 'missing')}`: {citation.get('title', 'missing')} "
                 + f"[{citation.get('category', 'missing')}, {citation.get('freshness', 'missing')}, {citation.get('status', 'missing')}] "
-                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}"
+                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}{glossary_note}"
             )
         return "\n".join(lines) if lines else "- No citations available."
+
+    def glossary_table(selected: list[dict[str, Any]]) -> str:
+        rows: list[str] = []
+        for card in selected:
+            if not isinstance(card, dict):
+                continue
+            notes = "; ".join(card.get("warnings") or [])
+            rows.append(
+                "| "
+                + " | ".join(
+                    [
+                        f"`{cell(card.get('path'))}`",
+                        cell(card.get("title")),
+                        cell(card.get("memory_space") or "default"),
+                        cell(card.get("freshness")),
+                        cell(card.get("status")),
+                        cell(card.get("authority_owner_if_promoted") or "none"),
+                        cell(card.get("glossary_excerpt") or "missing"),
+                        cell(notes or "none"),
+                    ]
+                )
+                + " |"
+            )
+        return "\n".join(
+            [
+                "| Card | Title | Space | Freshness | Status | Promotion owner | Glossary excerpt | Demotion or warning |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- |",
+                *rows,
+            ]
+        ) if rows else "- No project glossary cards."
 
     current_cards = details.get("current_cards") if isinstance(details.get("current_cards"), list) else []
     promotion_needed_cards = details.get("promotion_needed_cards") if isinstance(details.get("promotion_needed_cards"), list) else []
@@ -146,7 +178,9 @@ Use this prompt when asking an agent to search memory:
 
 ## Project Glossary Cards
 
-{card_table([card for card in cards if isinstance(card, dict) and card.get('category') == 'project_glossary'])}
+Use glossary cards as reviewed evidence only. Verify terms against active memory, the active bead, approved PRDs, current code, and owner files before naming UI, modules, routes, tests, or docs.
+
+{glossary_table([card for card in cards if isinstance(card, dict) and card.get('category') == 'project_glossary'])}
 
 ## Citation List
 
@@ -685,6 +719,67 @@ Generated at: `{payload.get('generated_at')}`
 """
 
 
+def render_build_attribution_markdown(payload: dict[str, Any]) -> str:
+    attribution = payload.get("build_attribution") or {"status": "missing", "warnings": [], "details": {}}
+    details = attribution.get("details") or {}
+    entries = details.get("entries") or []
+    rows = [
+        ["Bead", "Human", "Role", "Agent/tool", "Reviewed by", "Confidence"],
+    ]
+    for entry in entries[:80]:
+        rows.append(
+            [
+                f"`{entry.get('bead') or 'missing'}`",
+                str(entry.get("human_contributor") or "not recorded"),
+                str(entry.get("contributor_role") or "not recorded"),
+                str(entry.get("agent_tool_surface") or "not recorded"),
+                str(entry.get("attribution_reviewed_by") or "not reviewed"),
+                str(entry.get("evidence_confidence") or "missing"),
+            ]
+        )
+
+    warning_lines = [f"- {warning}" for warning in attribution.get("warnings") or []]
+    forbidden = [f"- {item}" for item in details.get("forbidden_uses") or []]
+
+    return f"""# PrecodeOS -- Build Attribution Ledger
+<!-- ANCHOR: build-attribution-ledger -->
+
+> AUTHORITY: Generated build attribution evidence showing reviewed human contributor, role, agent/tool surface, reviewer, and attribution uncertainty by bead.
+> NOT_AUTHORITY: Active memory, task selection, product decisions, PRD approval, bead activation, implementation acceptance, merge approval, release approval, contributor scoring, blame assignment, telemetry, GitHub mutation, package registry, optional-pack behavior, or package-manager behavior.
+> LOAD_WHEN: Reviewing who built what, attribution gaps, teammate accountability evidence, or build traceability; never as active session memory.
+> CLASS: generated
+>
+> Generated from `scripts/os-health.py` and `scripts/precode_outputs.py`.
+> Do not use this file as active memory, task authority, acceptance, merge approval, release approval, blame, or contributor scoring.
+
+Generated at: `{payload.get('generated_at')}`
+
+## Summary
+
+- Status: {attribution.get('status', 'missing')}
+- Entries: {details.get('entry_count', 0)}
+- Reviewed closeout entries: {details.get('reviewed_closeout_count', 0)}
+- Partial closeout entries: {details.get('partial_closeout_count', 0)}
+- Git-hint-only entries: {details.get('git_hint_only_count', 0)}
+- Missing attribution entries: {details.get('missing_attribution_count', 0)}
+- Generated warning: {attribution.get('generated_report_warning', 'generated evidence only')}
+
+{chr(10).join(warning_lines) if warning_lines else "- No attribution ledger warnings."}
+
+## Entries
+
+{markdown_table(rows) if len(rows) > 1 else "- No bead attribution entries found."}
+
+## Reading Rule
+
+Closeout-reviewed attribution is the strongest source. Git authorship, generated journal entries, branch names, tool logs, and teammate notes are evidence hints only until reviewed into bead Closeout Evidence.
+
+## Forbidden Uses
+
+{chr(10).join(forbidden) if forbidden else "- Do not use this generated ledger as authority."}
+"""
+
+
 def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     write_json(root / "logs" / "authority-map.json", payload["authority_map"])
     write_json(root / "logs" / "adapter-index.json", payload["adapter_index"])
@@ -704,7 +799,11 @@ def write_compiled_sidecars(root: Path, payload: dict[str, Any]) -> None:
     (root / "logs" / "memory-index.md").write_text(render_memory_index_markdown(payload["memory"]), encoding="utf-8")
     write_json(root / "logs" / "file-inventory.json", payload["file_inventory"])
     write_json(root / "logs" / "work-graph.json", payload["work_graph"])
+    write_json(root / "logs" / "build-attribution-ledger.json", payload["build_attribution"])
+    write_json(root / "logs" / "team-collaboration-preview.json", payload["team_collaboration"])
+    write_json(root / "logs" / "session-friction-review.json", payload["session_friction_review"])
     (root / "logs" / "work-graph.md").write_text(render_work_graph_markdown(payload), encoding="utf-8")
+    (root / "logs" / "build-attribution-ledger.md").write_text(render_build_attribution_markdown(payload), encoding="utf-8")
     (root / "logs" / "handoff-packet.md").write_text(render_handoff_packet(payload), encoding="utf-8")
     (root / "PROGRESS.md").write_text(render_progress_markdown(payload), encoding="utf-8")
     (root / "PRECODE-HELP.md").write_text(render_precode_help(payload), encoding="utf-8")

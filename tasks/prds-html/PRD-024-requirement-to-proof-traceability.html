@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-024 -- Requirement-To-Proof Traceability</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-024 -- Requirement-To-Proof Traceability</h1>
+  <p class="muted">Static HTML generated from <code>PRD-024-requirement-to-proof-traceability.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-024-requirement-to-proof-traceability.md#prd-024-requirement-to-proof-traceability">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Requirement-To-Proof Traceability</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for advisory requirement, bug-behavior, and acceptance-criterion proof traceability in PrecodeOS.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, review acceptance, implementation acceptance, release approval, generated proof, generated trace report, test-generation authority, package-manager behavior, release-channel behavior, or external mutation.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-024-FR01</code></td><td>Verification Guardrail must define a compact requirement-to-proof trace shape.</td><td>P0</td><td>Advisory human-authored evidence framing only.</td></tr><tr><td><code>PRD-024-FR02</code></td><td>PRD Protocol and PRD template must make Acceptance Oracle Matrix proof mapping explicit without adding enterprise ceremony.</td><td>P0</td><td>Uses existing requirement IDs.</td></tr><tr><td><code>PRD-024-FR03</code></td><td>Session Completion/Handoff and Bead Schema must route closeout through proof traces when requirement IDs, bug behavior, or acceptance claims are central to review confidence.</td><td>P0</td><td>Does not require every tiny bead to use a trace.</td></tr><tr><td><code>PRD-024-FR04</code></td><td>Review Lanes and Prompt Patterns must expose proof-trace review questions and missing-proof wording.</td><td>P1</td><td>Review input only.</td></tr><tr><td><code>PRD-024-FR05</code></td><td>User-facing docs and package inventory must explain the guidance and boundaries.</td><td>P1</td><td>Public discoverability.</td></tr><tr><td><code>PRD-024-FR06</code></td><td>Clarity scenarios must pin advisory-only behavior and refuse trace-table-as-proof wording.</td><td>P1</td><td>Deterministic local regression.</td></tr><tr><td><code>PRD-024-FR07</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-024-requirement-to-proof-traceability.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-024-requirement-to-proof-traceability.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-024-FR01`</textarea></td><td><textarea data-cockpit-cell>Verification Guardrail includes generic requirement-to-proof trace fields and guardrails.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Read protocol.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-024-FR02`</textarea></td><td><textarea data-cockpit-cell>PRD template clarifies proof mapping from requirement to evidence lane and recorded source.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/prd-html.py --check`</textarea></td><td><textarea data-cockpit-cell>Review template wording.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>PRD HTML</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-024-FR03`</textarea></td><td><textarea data-cockpit-cell>Closeout and bead guidance name when generic traces are useful and optional.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Review wording.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-024-FR04`</textarea></td><td><textarea data-cockpit-cell>Prompt and review guidance can request a proof trace without approving work.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Review copyable prompt.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-024-FR07`</textarea></td><td><textarea data-cockpit-cell>Roadmap, journal, changelog, and generated surfaces are current.</textarea></td><td><textarea data-cockpit-cell>inventory, docs, PRD HTML, and roadmap checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-024-requirement-to-proof-traceability">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-024-requirement-to-proof-traceability" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-024-FR01` | Verification Guardrail includes generic requirement-to-proof trace fields and guardrails. | `python3 scripts/clarity-scenario-check.py` | Read protocol. | Markdown source | check output |
+| `PRD-024-FR02` | PRD template clarifies proof mapping from requirement to evidence lane and recorded source. | `python3 scripts/prd-html.py --check` | Review template wording. | Markdown source | PRD HTML |
+| `PRD-024-FR03` | Closeout and bead guidance name when generic traces are useful and optional. | `python3 scripts/clarity-scenario-check.py` | Review wording. | Markdown source | check output |
+| `PRD-024-FR04` | Prompt and review guidance can request a proof trace without approving work. | `python3 scripts/clarity-scenario-check.py` | Review copyable prompt. | Markdown source | check output |
+| `PRD-024-FR07` | Roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before sensitive mutation, release action, external mutation, PRD approval, review acceptance, bead transition, GitHub mutation, dashboard mutation, provider mutation, or destructive command.</li><li>Stop if the requirement or behavior, evidence lane, recorded source, proven claim, proof limit, or remaining uncertainty is unclear and the trace is needed for acceptance confidence.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></li><li>Related PRD: <code>tasks/prds/PRD-020-verification-release-evidence.md</code></li><li>Owner protocol: <code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence reports except generated docs/PRD/roadmap HTML</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm traceability guidance prepares evidence review only.</li><li>Confirm no wording treats generated tests, generated properties, trace tables, screenshots, browser notes, AI critiques, generated reports, or external status summaries as complete proof.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B024-requirement-to-proof-traceability</code></td><td><code>PRD-024-FR01</code> through <code>PRD-024-FR07</code>, <code>PRD-024-SEC01</code> through <code>PRD-024-SEC02</code>, <code>PRD-024-NFR01</code> through <code>PRD-024-NFR03</code></td><td>PRD shard, protocol guidance, template guidance, prompt/user guidance, package inventory, clarity scenario coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></td><td>clarity scenario, package/docs/roadmap checks</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-024-requirement-to-proof-traceability">PRD-024 -- Requirement-To-Proof Traceability</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-024</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-23</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Requirement-To-Proof Traceability</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-020</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | existing release evidence traceability</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>Requirement-To-Proof Traceability</code></li><li><code>tasks/prds/PRD-020-verification-release-evidence.md</code></li><li><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li>Stable facts:</li><li>PRD-020 already defines release-specific verification and release evidence traceability.</li><li>PRDs already use stable requirement IDs and an Acceptance Oracle Matrix.</li><li>Beads already name <code>requirement_ids</code>, checks, verification type, closeout evidence, and review decision.</li><li>Generated tests, screenshots, browser notes, AI critiques, generated reports, and trace tables are review input until recorded, accepted, or promoted through existing evidence paths.</li><li>Assumptions:</li><li>The first useful slice should generalize guidance and prompts before adding generated reports or broad checker behavior.</li><li>Deterministic clarity fixtures are enough to protect the advisory boundary in v1.</li><li>Conflicts or stale inputs:</li><li>&quot;Traceability&quot; can imply enterprise process, mandatory matrices, or generated proof. This PRD narrows the work to compact advisory traces used only when proof drift matters.</li><li>Privacy or secrets redactions:</li><li>Proof traces must not require secrets, tokens, credentials, personal data samples, private dashboard values, provider configuration, or sensitive production details.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Checks can pass without proving the requirement, bug behavior, or acceptance criterion the user cares about. Builders need a compact way to see which claim each recorded check or manual verification step supports, what it does not prove, and what uncertainty remains.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A bead has requirement IDs, checks, generated tests, browser notes, or manual comments, but the user must infer whether they actually prove the promised behavior.</li><li>After: The closeout, PRD acceptance oracle, or review prompt can name the requirement or behavior, evidence lane, recorded source, proven claim, limits, and remaining uncertainty.</li><li>Why now: Release-specific traceability already exists; the remaining gap is normal PRD, bead, bugfix, and acceptance-review proof drift.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS can show the path from requirement, bug behavior, or acceptance criterion to recorded proof without treating the trace itself as proof.</li><li>Definition of done:</li><li>PRD-024 exists and links to PRD-020.</li><li>Verification Guardrail defines a compact generic requirement-to-proof trace shape.</li><li>PRD Protocol and PRD template clarify Acceptance Oracle Matrix proof mapping.</li><li>Session Completion/Handoff and Bead Schema route closeout through generic proof traces when requirement IDs, bug behavior, or acceptance claims are central to review confidence.</li><li>Review Lanes and Prompt Patterns expose proof-trace review questions.</li><li>User Guide, Daily Cockpit when useful, and package inventory expose the public guidance.</li><li>Clarity scenario coverage pins advisory traceability and trace-table-not-proof behavior.</li><li>Maintainer changelog, roadmap implemented history, roadmap journal, public docs HTML, PRD HTML, and roadmap HTML are refreshed.</li><li>First useful vertical slice: protocol guidance, template guidance, prompt/user guidance, package inventory, and deterministic fixtures only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder deciding whether implementation evidence proves the requirement, bug behavior, or acceptance criterion.</li><li>Secondary user: AI coding agent or reviewer preparing closeout, bugfix proof, PRD acceptance mapping, or review-lane findings.</li><li>Excluded user: Enterprise requirements manager, generated proof system, test generator, project-management tracker, release bot, or compliance tool.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make proof drift visible before confidence outruns evidence.</li><li>Goal 2: Keep requirement, bug behavior, acceptance criterion, evidence lane, recorded source, proven claim, limits, and uncertainty together.</li><li>Goal 3: Preserve recorded checks, structured manual verification, closeout evidence, review decision, and human approval as the durable proof path.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: new command, new generated report, generated proof authority, enterprise traceability workflow, mandatory trace table for tiny work, test-generation feature, PRD approval, bead activation, review acceptance, release approval, deployment automation, GitHub mutation, external mutation, command wrapper, registry, optional pack, package-manager behavior, or release-channel behavior.</li><li>Deferred: production checker warnings for generic trace fields, richer Review Lane templates, generated diff artifacts, NFR-specific proof families, and stricter requirement-to-proof enforcement.</li><li>Explicitly out of scope: treating a generated test, generated property, trace table, screenshot, browser note, AI critique, external status summary, or generated report as complete proof by itself.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-024-FR01</code></td><td>Verification Guardrail must define a compact requirement-to-proof trace shape.</td><td>P0</td><td>Advisory human-authored evidence framing only.</td></tr><tr><td><code>PRD-024-FR02</code></td><td>PRD Protocol and PRD template must make Acceptance Oracle Matrix proof mapping explicit without adding enterprise ceremony.</td><td>P0</td><td>Uses existing requirement IDs.</td></tr><tr><td><code>PRD-024-FR03</code></td><td>Session Completion/Handoff and Bead Schema must route closeout through proof traces when requirement IDs, bug behavior, or acceptance claims are central to review confidence.</td><td>P0</td><td>Does not require every tiny bead to use a trace.</td></tr><tr><td><code>PRD-024-FR04</code></td><td>Review Lanes and Prompt Patterns must expose proof-trace review questions and missing-proof wording.</td><td>P1</td><td>Review input only.</td></tr><tr><td><code>PRD-024-FR05</code></td><td>User-facing docs and package inventory must explain the guidance and boundaries.</td><td>P1</td><td>Public discoverability.</td></tr><tr><td><code>PRD-024-FR06</code></td><td>Clarity scenarios must pin advisory-only behavior and refuse trace-table-as-proof wording.</td><td>P1</td><td>Deterministic local regression.</td></tr><tr><td><code>PRD-024-FR07</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-024-SEC01</code></td><td>Proof traces must not require secrets, tokens, credentials, personal data samples, private dashboard values, provider configuration, or sensitive production details.</td><td>P0</td><td>Use redacted/manual references when needed.</td></tr><tr><td><code>PRD-024-SEC02</code></td><td>Traceability guidance must not approve sensitive actions, release actions, external mutation, review acceptance, PRD approval, or bead transition.</td><td>P0</td><td>Human approval remains required.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-024-NFR01</code></td><td>Guidance must stay compact enough for non-technical builders.</td><td>P0</td><td>Avoid enterprise traceability.</td></tr><tr><td><code>PRD-024-NFR02</code></td><td>The slice must stay independent of private maintainer files.</td><td>P0</td><td>Public package completeness.</td></tr><tr><td><code>PRD-024-NFR03</code></td><td>Script coverage must stay advisory and avoid generated-proof authority.</td><td>P0</td><td>No new report or command.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-024-FR01</code></td><td>Verification Guardrail includes generic requirement-to-proof trace fields and guardrails.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Read protocol.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-024-FR02</code></td><td>PRD template clarifies proof mapping from requirement to evidence lane and recorded source.</td><td><code>python3 scripts/prd-html.py --check</code></td><td>Review template wording.</td><td>Markdown source</td><td>PRD HTML</td></tr><tr><td><code>PRD-024-FR03</code></td><td>Closeout and bead guidance name when generic traces are useful and optional.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Review wording.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-024-FR04</code></td><td>Prompt and review guidance can request a proof trace without approving work.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Review copyable prompt.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-024-FR07</code></td><td>Roadmap, journal, changelog, and generated surfaces are current.</td><td>inventory, docs, PRD HTML, and roadmap checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before sensitive mutation, release action, external mutation, PRD approval, review acceptance, bead transition, GitHub mutation, dashboard mutation, provider mutation, or destructive command.</li><li>Stop if the requirement or behavior, evidence lane, recorded source, proven claim, proof limit, or remaining uncertainty is unclear and the trace is needed for acceptance confidence.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></td><td>Generic requirement-to-proof trace shape.</td><td>Explains traceability without approving proof.</td><td>Text-contract and manual review.</td><td><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></td></tr><tr><td><code>tasks/prds/PRD-000-template.md</code></td><td>Acceptance Oracle Matrix proof mapping.</td><td>Helps agents map requirement IDs to recorded evidence.</td><td>PRD HTML check and manual review.</td><td><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></td></tr><tr><td><code>tasks/reference/PROMPT-PATTERNS.md</code></td><td>Copyable proof-trace prompt.</td><td>Requests traceability without mutation or approval.</td><td>Clarity scenarios and docs freshness.</td><td><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></li><li>Related PRD: <code>tasks/prds/PRD-020-verification-release-evidence.md</code></li><li>Owner protocol: <code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>provider configuration</li><li>dashboards</li><li>secrets or environment files</li><li>GitHub mutation</li><li>deployment scripts</li><li>generated evidence reports except generated docs/PRD/roadmap HTML</li><li>Required checks:</li><li><code>bash scripts/validate-memory.sh</code></li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 _maintainer/scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm traceability guidance prepares evidence review only.</li><li>Confirm no wording treats generated tests, generated properties, trace tables, screenshots, browser notes, AI critiques, generated reports, or external status summaries as complete proof.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If the proof trace does not say what requirement, bug behavior, or acceptance criterion is being proven, it is too vague.</li><li>If the trace does not point to recorded evidence or structured manual verification, it is review input only.</li><li>If the trace does not name what it does not prove, it can create false confidence.</li><li>If the trace becomes mandatory for tiny docs-only work, it violates the PRD.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B024-requirement-to-proof-traceability</code></td><td><code>PRD-024-FR01</code> through <code>PRD-024-FR07</code>, <code>PRD-024-SEC01</code> through <code>PRD-024-SEC02</code>, <code>PRD-024-NFR01</code> through <code>PRD-024-NFR03</code></td><td>PRD shard, protocol guidance, template guidance, prompt/user guidance, package inventory, clarity scenario coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></td><td>clarity scenario, package/docs/roadmap checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li><code>FEATURES.md</code> is not updated in this slice.</li><li>V1 is a public package evidence-quality contract, not a runtime traceability system.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<ul><li>None for v1.</li></ul>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-06-23.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

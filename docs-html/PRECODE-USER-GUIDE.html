@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,15 +243,15 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.54</span><span>Updated 2026-06-23</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.58</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
-    <h2 id="what-this-guide-helps-you-do">What This Guide Helps You Do</h2>
+    <h2 id="what-this-guide-helps-you-do"><a class="heading-anchor" href="#what-this-guide-helps-you-do" aria-label="Link to What This Guide Helps You Do">#</a>What This Guide Helps You Do</h2>
 <p>Use this guide while you work. It tells you what to ask the agent, what good output looks like, when to stop, and what you must approve.</p>
 <p>Precode matters in daily use because AI coding agents can move faster than you can understand, verify, and recover from. This guide helps you keep intent, scope, approval, proof, and recovery visible while the agent works.</p>
 <p>Precode lives inside your project folder. It keeps important project truth in readable Markdown files and uses small scripts to check whether the agent is staying aligned.</p>
@@ -205,9 +262,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Put raw reference material for the project in root-level <code>project-evidence/</code>: notes, documents, screenshots, research, design exports, and link lists. Treat that folder as evidence only. It is not active memory, not product truth, not task approval, and not permission for the agent to code. Use Local Source Intake before promoting anything from it into owner files.</p>
 <p>If you are helping someone else adopt PrecodeOS, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code>. If setup, active state, validation, or generated reports feel wrong, use <code>docs/PRECODE-TROUBLESHOOTING.md</code> before editing files.</p>
 <p>Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.</p>
-<h2 id="before-your-repo-exists">Before Your Repo Exists</h2>
+<h2 id="before-your-repo-exists"><a class="heading-anchor" href="#before-your-repo-exists" aria-label="Link to Before Your Repo Exists">#</a>Before Your Repo Exists</h2>
 <p>If you only have messy notes or a first product hunch, you can use Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. In that pre-repo phase, run <code>Precode Idea Coach</code> as a guided product-coach interview. The agent can interview you, guide research, challenge weak assumptions, force clearer answers, and help produce a Conviction Packet.</p>
-<p>The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.</p>
+<p>The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Use Precode Idea Coach / the Product Conviction Packet Skill as my pre-repo guided product coach.
 
@@ -219,11 +276,11 @@ Push back when the user is too broad, the painful before moment is vague, the cu
 
 Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
-When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
+When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.</code></pre>
 <p>When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.</p>
-<h2 id="use-the-product-ideation-workbook-before-precode">Use The Product Ideation Workbook Before Precode</h2>
+<h2 id="use-the-product-ideation-workbook-before-precode"><a class="heading-anchor" href="#use-the-product-ideation-workbook-before-precode" aria-label="Link to Use The Product Ideation Workbook Before Precode">#</a>Use The Product Ideation Workbook Before Precode</h2>
 <p>If you are a non-technical builder with a net-new, rough product idea, start with <code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> before asking Precode to update <code>PRODUCT.md</code>, write a PRD, create beads, or code.</p>
 <p>Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.</p>
 <p>Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a guided product coach. The agent can interview you, help research sources, challenge assumptions, force clarity, and organize your thoughts. It must not decide the product for you, write code, edit <code>PRODUCT.md</code>, create a PRD, or create a roadmap or backlog from the workbook by itself.</p>
@@ -233,7 +290,7 @@ Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog
 <p>Say this:</p>
 <pre><code class="language-text">I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
 
@@ -244,9 +301,9 @@ Do not ask me to decide architecture, module boundaries, test strategy, owner fi
 <p>When you are ready, say this inside Precode:</p>
 <pre><code class="language-text">Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, strongest evidence, weakest assumption, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.</code></pre>
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.</code></pre>
 <p>Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.</p>
-<h2 id="use-the-exploration-loop-before-prd-commitment">Use The Exploration Loop Before PRD Commitment</h2>
+<h2 id="use-the-exploration-loop-before-prd-commitment"><a class="heading-anchor" href="#use-the-exploration-loop-before-prd-commitment" aria-label="Link to Use The Exploration Loop Before PRD Commitment">#</a>Use The Exploration Loop Before PRD Commitment</h2>
 <p>Use the Exploration Loop when you have already collected material and want help thinking with it before committing to a PRD. This is especially useful for bootcamp MVPs, scattered workbook notes, rough feature lists, user quotes, research snippets, screenshots, sketches, chat summaries, Candidate Goal Frames, or prior not-yet ideas.</p>
 <p>The loop should not restart the interview or ask you to repeat what you already wrote. It should first summarize what is known, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.</p>
 <p>Say this:</p>
@@ -262,17 +319,43 @@ Translate user moments into capability candidates, not approved features. Sort c
 <p>Use this compact matrix:</p>
 <div class="table-wrap"><table><thead><tr><th>Candidate capability</th><th>User moment</th><th>Existing evidence</th><th>New insight</th><th>Risk</th><th>MVP fit</th><th>Recommendation</th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
 <p>Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak worth-building evidence, use the Product Discovery Interview Skill / Product Discovery Validation next.</p>
-<h2 id="validate-product-discovery-before-prd-shaping">Validate Product Discovery Before PRD Shaping</h2>
+<h2 id="use-the-plan-loop-before-bead-commitment"><a class="heading-anchor" href="#use-the-plan-loop-before-bead-commitment" aria-label="Link to Use The Plan Loop Before Bead Commitment">#</a>Use The Plan Loop Before Bead Commitment</h2>
+<p>Use the Plan Loop when you have already done intake or PRD shaping and want to think through one feature angle before committing it to a PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.</p>
+<p>The Plan Loop is not the same as the Exploration Loop. Exploration Loop is for pre-PRD thinking from notes and rough ideas. Plan Loop is for post-intake or post-PRD uncertainty before the work turns into an executable bead.</p>
+<p>Say this:</p>
+<pre><code class="language-text">Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
+
+Then ask one targeted question at a time only when the answer could change the next workflow, risk, first slice, owner-file impact, or stop condition.
+
+End with a Plan Packet containing: source context used, feature angle or topic explored, current known facts, assumptions and weak spots, options considered, risks and sensitive surfaces, recommended next path, candidate first-slice shape only when stage-appropriate, stop conditions, and what not to do yet.
+
+Treat the Plan Packet as evidence only. Do not approve a PRD, create or activate beads, choose tasks, create backlog authority, authorize implementation, or code.</code></pre>
+<p>Good Plan Packet output includes:</p>
+<ul><li>source context used</li><li>feature angle or topic explored</li><li>current known facts</li><li>assumptions and weak spots</li><li>options considered</li><li>risks and sensitive surfaces</li><li>recommended next path</li><li>candidate first-slice shape only when stage-appropriate</li><li>stop conditions</li><li>do not do yet</li></ul>
+<p>Before PRD approval, the packet may recommend discovery, PRD draft or amendment, Candidate Queue, owner-file update, or stop, but it should not propose beads. After an approved PRD, it may sketch a first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, it may challenge or refine the proposal, but it must not update <code>tasks/todo.md</code> or activate work.</p>
+<h2 id="validate-product-discovery-before-prd-shaping"><a class="heading-anchor" href="#validate-product-discovery-before-prd-shaping" aria-label="Link to Validate Product Discovery Before PRD Shaping">#</a>Validate Product Discovery Before PRD Shaping</h2>
 <p>Use the Product Discovery Interview Skill with <code>tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md</code> after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.</p>
 <p>This is not a proof machine. It helps you see:</p>
 <ul><li>who has the problem</li><li>what they do today instead</li><li>what evidence is strong or weak</li><li>which assumption could break the idea</li><li>what non-code learning step should happen first</li><li>whether the safer recommendation is <code>proceed</code>, <code>pause</code>, <code>narrow</code>, or <code>kill</code></li></ul>
 <p>Say this:</p>
 <pre><code class="language-text">Use the Product Discovery Interview Skill on this idea.
 Interview me one question at a time. Challenge assumptions supportively.
-Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
+Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
 Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.</code></pre>
 <p>Skip this for tiny fixes, already-approved PRD follow-through, clear bugs, or narrow maintenance work.</p>
-<h2 id="use-the-small-team-collaboration-lane">Use The Small Team Collaboration Lane</h2>
+<h2 id="review-what-a-hypothesis-taught-you"><a class="heading-anchor" href="#review-what-a-hypothesis-taught-you" aria-label="Link to Review What A Hypothesis Taught You">#</a>Review What A Hypothesis Taught You</h2>
+<p>Use Hypothesis Review / Learning Loop with <code>tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md</code> when you already have a Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, Product Brief, Conviction Packet, or Planning Brief and need to know what was learned.</p>
+<p>The loop can label the hypothesis or learning target as <code>untested</code>, <code>tested</code>, <code>narrowed</code>, <code>killed</code>, <code>promoted</code>, <code>stale</code>, or <code>not applicable</code>. These labels are evidence only. They do not approve product direction, rank candidates, approve PRDs, activate beads, choose tasks, require analytics, create a database, or make generated status true.</p>
+<p>Say this:</p>
+<pre><code class="language-text">Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief.
+
+Tell me what was tested, what was learned, whether the hypothesis is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow.
+
+Treat the output as evidence only. Do not approve product direction, rank candidates, create or activate beads, update owner files, choose tasks, require analytics, create a database, or code.</code></pre>
+<p>Stop if: the agent treats the review status as approval, uses it to choose work, asks for production analytics or dashboards you did not provide, or tries to write owner files without review.</p>
+<h2 id="use-the-small-team-collaboration-lane"><a class="heading-anchor" href="#use-the-small-team-collaboration-lane" aria-label="Link to Use The Small Team Collaboration Lane">#</a>Use The Small Team Collaboration Lane</h2>
 <p>Use <code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code> when 2-5 people are working on the same product build. The lane is built into PrecodeOS, but it is explicit and advanced. It is not a separate module, not default-active, and not a runtime toggle.</p>
 <p>A coordinator should invoke the lane before teammates begin editing:</p>
 <pre><code class="language-text">Use the Small Team Collaboration Lane.
@@ -286,8 +369,19 @@ Do not activate beads, merge, mutate GitHub, deploy, or change external systems.
 
 Load active memory, the team coordination notes, and the bead assigned to this branch or worktree. Confirm my teammate role, branch/worktree, assigned bead, primary authority, files in play, checks, stop conditions, evidence I must return, and what requires coordinator approval before editing.</code></pre>
 <p>Parallel work requires branch or worktree isolation. One checkout still has one active bead. GitHub branches, pull requests, reviews, and checks are evidence until the coordinator reviews them against the assigned bead, primary authority, recorded checks, manual verification, and owner-file impacts.</p>
+<p>For a read-only Small Team Collaboration Lane preview, run:</p>
+<pre><code class="language-text">python3 scripts/team-collaboration-check.py</code></pre>
+<p>The preview reports current branch/worktree, integration branch when available, active bead, one-active-bead status, files in play, owner-file impact candidates, re-entry risks, merge/re-entry packet fields, and teammate assignment packet fields. Add <code>--github</code> only when you want optional read-only GitHub branch, pull request, review, and check evidence through <code>gh</code>.</p>
+<p>The generated preview output is evidence only. It does not approve PRDs, activate beads, accept implementation, approve merge, mutate GitHub, create branches or worktrees, deploy, or replace coordinator review.</p>
 <p>Stop if a teammate cannot name their branch or worktree, assigned bead, primary authority, files in play, checks, or stop conditions; if two teammates need the same files without a conflict plan; or if a pull request, issue, generated report, or teammate note is being treated as authority.</p>
-<h2 id="before-you-start">Before You Start</h2>
+<h2 id="review-who-built-what"><a class="heading-anchor" href="#review-who-built-what" aria-label="Link to Review Who Built What">#</a>Review Who Built What</h2>
+<p>Use the Build Attribution Ledger when you need accountability and traceability for who contributed work on a bead and which agent/tool surface assisted.</p>
+<pre><code class="language-text">python3 scripts/build-attribution-ledger.py</code></pre>
+<p>The ledger reads bead Closeout Evidence first, then supporting generated journal and Git hints when available. Closeout-reviewed attribution is strongest. Git authorship, branch names, generated journal entries, tool logs, GitHub status, and teammate notes are hints until reviewed into Closeout Evidence.</p>
+<p>Ask an agent:</p>
+<pre><code class="language-text">Review the Build Attribution Ledger for this bead or recent work. Show human contributor, contributor role, agent/tool surface, attribution reviewer, attribution uncertainty, evidence confidence, missing attribution, Git-hint-only attribution, and the source that must be reviewed next. Do not choose tasks, accept implementation, approve merge, approve release, assign blame, score contributors, mutate GitHub, or treat generated ledger output as authority.</code></pre>
+<p>The ledger is evidence only. It is not a people registry, package registry, task tracker, telemetry system, blame report, contributor score, implementation acceptance, merge approval, or release approval.</p>
+<h2 id="before-you-start"><a class="heading-anchor" href="#before-you-start" aria-label="Link to Before You Start">#</a>Before You Start</h2>
 <p>Do this before letting an agent edit files:</p>
 <ul><li>Open the repo or project folder that contains PrecodeOS.</li><li>Confirm the agent is using Precode instructions.</li><li>Ask the agent to load active memory only: <code>AGENT.md</code>, <code>DECISIONS.md</code>, and <code>tasks/todo.md</code>.</li><li>Ask the agent to identify the active bead and primary authority file.</li><li>Work on one feature slice or bead at a time.</li><li>Do not approve broad changes, sensitive work, dependency changes, production actions, or the next bead yet.</li></ul>
 <p>Say this:</p>
@@ -295,7 +389,7 @@ Load active memory, the team coordination notes, and the bead assigned to this b
 <p>Expect this:</p>
 <ul><li>active bead path</li><li>done-when target</li><li>files in play</li><li>checks to run</li><li>stop conditions</li><li>blockers or open questions</li></ul>
 <p>Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.</p>
-<h2 id="check-build-loop-health">Check Build Loop Health</h2>
+<h2 id="check-build-loop-health"><a class="heading-anchor" href="#check-build-loop-health" aria-label="Link to Check Build Loop Health">#</a>Check Build Loop Health</h2>
 <p>Build Loop Health is a quiet Precode signal for whether the current work is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not you.</p>
 <p>Use it when the session feels busy, when scope starts to grow, at checkpoint, or before closeout:</p>
 <pre><code class="language-bash">python3 scripts/loop-health.py
@@ -305,7 +399,7 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <p>Say this:</p>
 <pre><code class="language-text">Run python3 scripts/loop-health.py and explain the top risk in plain English. If I am exploring without a bead, help me create a lightweight explorer bead with one question and one stopping condition before any implementation.</code></pre>
 <p>Why this matters: Precode should protect you from accidental sprawl without making creative exploration feel wrong.</p>
-<h2 id="use-ralph-for-bounded-retry">Use Ralph For Bounded Retry</h2>
+<h2 id="use-ralph-for-bounded-retry"><a class="heading-anchor" href="#use-ralph-for-bounded-retry" aria-label="Link to Use Ralph For Bounded Retry">#</a>Use Ralph For Bounded Retry</h2>
 <p>Ralph is an opt-in bead-attempt loop for testable work. It can run one explicit attempt command, run validators, classify the result, and record generated attempt evidence.</p>
 <p>Use Ralph when the active bead has clear files in play, checks, stop conditions, and a retry budget. Do not use Ralph for fuzzy product decisions, broad architecture guessing, sensitive setup, external mutation, or anything that needs approval before the next action is safe.</p>
 <p>Command:</p>
@@ -313,7 +407,7 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <p>Say this:</p>
 <pre><code class="language-text">Run python3 scripts/ralph-loop.py --dry-run and explain the decision, failure category, validator results, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.</code></pre>
 <p>Why this matters: failed attempts should become evidence instead of disappearing into chat. Ralph is useful only while it stays inside one active bead and human review remains the acceptance surface.</p>
-<h2 id="use-goal-frames-for-durable-intent">Use Goal Frames For Durable Intent</h2>
+<h2 id="use-goal-frames-for-durable-intent"><a class="heading-anchor" href="#use-goal-frames-for-durable-intent" aria-label="Link to Use Goal Frames For Durable Intent">#</a>Use Goal Frames For Durable Intent</h2>
 <p>Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.</p>
 <p>If you started in the Product Ideation Workbook, the safe sequence is:</p>
 <pre><code class="language-text">Initial Direction -&gt; workbook refinement -&gt; Candidate Goal Frame -&gt; Local Source Intake -&gt; reaffirmation -&gt; PRODUCT.md Goal Frame</code></pre>
@@ -331,14 +425,16 @@ python3 scripts/loop-health.py --verbose</code></pre>
 <p>Say this when a Goal Frame warning appears:</p>
 <pre><code class="language-text">This Goal Frame has a fit warning. Ask me whether to reaffirm, revise, retire, split it, or route changed intent to the right owner file before using it for workflow guidance.</code></pre>
 <p>Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent&#x27;s next move.</p>
-<h2 id="use-the-candidate-queue-for-parked-intent">Use The Candidate Queue For Parked Intent</h2>
+<h2 id="use-the-candidate-queue-for-parked-intent"><a class="heading-anchor" href="#use-the-candidate-queue-for-parked-intent" aria-label="Link to Use The Candidate Queue For Parked Intent">#</a>Use The Candidate Queue For Parked Intent</h2>
 <p>Use <code>CANDIDATE-QUEUE.md</code> when you have multiple ideas, research leads, not-yet items, or possible future slices that you do not want to lose, but that are not ready to become PRDs or beads.</p>
 <p>A Candidate Queue says: &quot;Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion.&quot;</p>
 <p>It can help answer:</p>
 <ul><li>What ideas have we parked?</li><li>Which ones need research?</li><li>Which ones are worth shaping?</li><li>Which ones are blocked or stale?</li><li>Which ones might become PRDs?</li><li>Which approved PRDs have candidate beads?</li></ul>
 <p>It cannot answer:</p>
 <ul><li>What is the active task?</li><li>What should the agent build next?</li><li>Is this PRD approved?</li><li>Is this bead active?</li><li>Is this ranked item authorized for implementation?</li></ul>
-<p>Candidate ranking is review order only. It is not implementation priority. Candidate IDs such as <code>CQ-001-owner-dashboard</code> are source IDs only. They do not reserve PRD IDs or bead IDs.</p>
+<p>Candidate ranking is review order only. It is not implementation priority. Product-value ratings <code>P0</code>, <code>P1</code>, <code>P2</code>, and <code>P3</code> are product value only; they do not choose the next task or authorize implementation. Candidate IDs such as <code>CQ-001-owner-dashboard</code> are source IDs only. Near-bead sketch IDs such as <code>CQ-001-owner-dashboard-S01</code> are shaping notes only. They do not reserve PRD IDs or <code>B###</code> bead IDs.</p>
+<p>Use <code>python3 scripts/candidate-queue.py --preview-import &amp;lt;path&amp;gt;</code> when you want a raw notes file turned into a minimal queue-capture preview. It captures only title, source pointer, short summary, open questions, and a privacy warning. It does not replace Local Source Intake.</p>
+<p>Use <code>python3 scripts/candidate-queue.py --preview-shaping &amp;lt;path&amp;gt;</code> when an agent has drafted structured JSON for themes, product-value rating, rationale, and near-bead sketches. Preview output says <code>mutates_now: false</code>; writeback requires <code>--apply --approve-action &amp;lt;ID&amp;gt;</code> and may update only <code>CANDIDATE-QUEUE.md</code>.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Use the Candidate Queue Protocol.
 
@@ -353,8 +449,13 @@ Do not choose next work, approve a PRD, activate a bead, reserve bead IDs, updat
 Include a CQ ID, status, user intent, evidence or source pointers, open questions, evidence strength, weakest assumption, reviewed rank if I provide one, promotion target, blocked or stale reason, related PRDs, candidate bead visibility, next review trigger, and last reviewed date.
 
 Do not create a PRD, create or activate beads, reserve bead IDs, update tasks/todo.md, or code.</code></pre>
+<p>Say this to shape a candidate:</p>
+<pre><code class="language-text">Use the Candidate Queue Protocol.
+Draft a shaping proposal for this candidate with product-value rating, rationale, themes, weakest assumption, and near-bead sketches using IDs like CQ-001-short-name-S01.
+Treat P0/P1/P2/P3 as product value only, not implementation priority.
+Do not create B### IDs, approve a PRD, activate a bead, update tasks/todo.md, or code.</code></pre>
 <p>Why this matters: the Candidate Queue gives you the psychological benefit of a backlog without letting the backlog become hidden task authority.</p>
-<h2 id="do-not-move-rename-or-directly-edit-precode-files">Do Not Move, Rename, Or Directly Edit Precode Files</h2>
+<h2 id="do-not-move-rename-or-directly-edit-precode-files"><a class="heading-anchor" href="#do-not-move-rename-or-directly-edit-precode-files" aria-label="Link to Do Not Move, Rename, Or Directly Edit Precode Files">#</a>Do Not Move, Rename, Or Directly Edit Precode Files</h2>
 <p>Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.</p>
 <p>Hard rules:</p>
 <ul><li>Do not rename the project root folder casually. That folder is the repo that mirrors GitHub and contains both the app code and the Precode operating files.</li><li>Do not move Markdown files.</li><li>Do not rename Markdown files.</li><li>Do not directly edit Markdown files until the agent has identified which file owns the fact and what structure must be preserved.</li><li>Do not edit generated Markdown reports such as <code>OS-HEALTH.md</code>, <code>PROGRESS.md</code>, <code>logs/learning-diary.md</code>, <code>logs/memory-index.md</code>, <code>logs/handoff-packet.md</code>, or <code>logs/scheduled-audit.md</code>.</li><li>Do not change frontmatter, anchors, authority contracts, headings, bead state, or Closeout Evidence fields casually.</li><li>Do not add a new active-memory file.</li><li>Do not put backlog, roadmap, Candidate Queue, someday, or future-work lists into <code>tasks/todo.md</code>.</li><li>Do not paste secrets, tokens, credentials, dashboard values, billing details, or private notes into Precode files.</li></ul>
@@ -369,56 +470,66 @@ Do not create a PRD, create or activate beads, reserve bead IDs, update tasks/to
 <p>Say this if something already went wrong:</p>
 <pre><code class="language-text">I accidentally edited, moved, or renamed a Precode file. Help me identify the damage, restore the expected path, name, anchor, authority contract, frontmatter, and headings, then run validation.</code></pre>
 <p>Why this matters: Precode files are not random notes. They are a small operating system made of readable files, and the structure is part of how the system works.</p>
-<h2 id="use-recovery-when-something-feels-broken">Use Recovery When Something Feels Broken</h2>
+<h2 id="make-acceptance-criteria-testable"><a class="heading-anchor" href="#make-acceptance-criteria-testable" aria-label="Link to Make Acceptance Criteria Testable">#</a>Make Acceptance Criteria Testable</h2>
+<p>When a PRD or acceptance note says something vague like &quot;works well,&quot; &quot;handles errors,&quot; or &quot;is easy to use,&quot; ask the agent to make the expected behavior observable before coding or review.</p>
+<p>Use this prompt:</p>
+<pre><code class="language-text">Review these acceptance criteria for vague or unverifiable behavior.
+
+Where it improves clarity, rewrite a criterion in optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
+
+Keep clear non-EARS criteria when they are already observable and testable. Do not require EARS syntax, reject valid non-EARS criteria, approve the PRD, accept implementation, activate a bead, create tasks, change schema, treat wording as proof, or code.</code></pre>
+<p>EARS-style wording is a clarity aid. It is not required syntax, PRD approval, implementation acceptance, generated proof, or permission to build.</p>
+<h2 id="use-recovery-when-something-feels-broken"><a class="heading-anchor" href="#use-recovery-when-something-feels-broken" aria-label="Link to Use Recovery When Something Feels Broken">#</a>Use Recovery When Something Feels Broken</h2>
 <p>Use <code>tasks/reference/RECOVERY-PROTOCOL.md</code> when you think Precode is broken, confusing, stale, or out of bounds.</p>
 <p>Start with this prompt:</p>
 <pre><code class="language-text">I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.</code></pre>
 <p>Common recovery paths:</p>
-<div class="table-wrap"><table><thead><tr><th>What feels wrong</th><th>What to ask for</th></tr></thead><tbody><tr><td>A Precode file was moved or renamed</td><td><code>Use the Recovery Protocol for file damage. Find the expected path, explain the repair, then validate.</code></td></tr><tr><td>A generated report was edited or looks wrong</td><td><code>Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit the report.</code></td></tr><tr><td>The active bead or todo state is unclear</td><td><code>Use the Recovery Protocol for active-state repair. Run state-check and explain the owner file before editing.</code></td></tr><tr><td>Checks are missing or the agent says &quot;done&quot; too early</td><td><code>Use the Recovery Protocol for missing proof. Tell me which checks or manual verification are missing.</code></td></tr><tr><td>The session feels confused</td><td><code>Use the Recovery Protocol for context loss. Re-read active memory, the active bead, and the primary authority.</code></td></tr><tr><td>Work touched files outside the task</td><td><code>Use the Recovery Protocol for scope expansion. Run files-in-play-check and explain each changed path.</code></td></tr><tr><td>I approved something too quickly</td><td><code>Use the Recovery Protocol for approval confusion. Review evidence and ask for accepted, revise, split, blocked, or stop.</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>What feels wrong</th><th>What to ask for</th></tr></thead><tbody><tr><td>A Precode file was moved or renamed</td><td><code>Use the Recovery Protocol for file damage. Find the expected path, explain the repair, then validate.</code></td></tr><tr><td>A generated report was edited or looks wrong</td><td><code>Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit the report.</code></td></tr><tr><td>The active bead or todo state is unclear</td><td><code>Use the Recovery Protocol for active-state repair. Run state-check and explain the owner file before editing.</code></td></tr><tr><td>Checks are missing or the agent says &quot;done&quot; too early</td><td><code>Use the Recovery Protocol for missing proof. Tell me which checks or manual verification are missing.</code></td></tr><tr><td>Already-implemented work needs to be undone</td><td><code>Use PRD-023 Implemented Bead Reversal Workflow. Preserve the old bead as done history and propose a separate reversal bead with target, reason, preserved behavior, checks, manual verification, and approvals.</code></td></tr><tr><td>The session feels confused</td><td><code>Use the Recovery Protocol for context loss. Re-read active memory, the active bead, and the primary authority.</code></td></tr><tr><td>Work touched files outside the task</td><td><code>Use the Recovery Protocol for scope expansion. Run files-in-play-check and explain each changed path.</code></td></tr><tr><td>I approved something too quickly</td><td><code>Use the Recovery Protocol for approval confusion. Review evidence and ask for accepted, revise, split, blocked, or stop.</code></td></tr></tbody></table></div>
 <p>Recovery is not automatic cleanup. The agent should not run destructive commands, overwrite user edits, delete evidence, or treat generated reports as instructions.</p>
 <p>For a small repair, ask the agent to check stable-fix eligibility:</p>
 <pre><code class="language-text">Use next-step stable-fix eligibility. Tell me whether this is an eligible stable fix, needs evidence, recovery repair, or broader change. Do not edit, release, roll back, approve a transition, or change setup/update behavior from the classifier alone.</code></pre>
 <p>Before the agent edits a repair that looks eligible, ask for the Bugfix Spec Lane:</p>
 <pre><code class="language-text">Use the Bugfix Spec Lane before editing this small repair. Name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. Do not edit until the owner file, route, and proof path are clear.</code></pre>
 <p>An eligible stable fix should be narrow, owned by a clear file, already validated, and not a new behavior, release change, sensitive change, destructive action, setup/update decision, or workaround for broken state. If the classifier says <code>needs_evidence</code>, ask for the missing checks. If it says <code>recovery_repair</code>, stay in the Recovery Protocol. If it says <code>broader_change</code>, use a normal bead, PRD, or release-readiness path. The bugfix spec helps frame the repair, but it does not approve edits, acceptance, rollback, release, setup/update mutation, transition, destructive commands, or generated proof.</p>
+<p>When the problem is already-implemented work that should be reversed, do not ask the agent to reopen the old bead or clean up history. Ask for a separate reversal bead. A Git revert can be one implementation move inside that bead, but acceptance still needs recorded checks, manual verification, preserved-behavior review, and a review decision.</p>
 <p>Why this matters: The safest recovery move is usually a clean stop plus a clear owner file. You are not expected to know the repair path before asking.</p>
-<h2 id="other-things-not-to-do">Other Things Not To Do</h2>
+<h2 id="other-things-not-to-do"><a class="heading-anchor" href="#other-things-not-to-do" aria-label="Link to Other Things Not To Do">#</a>Other Things Not To Do</h2>
 <p>Use these as stop signs:</p>
 <div class="table-wrap"><table><thead><tr><th>Do not...</th><th>Why it is dangerous</th><th>Do this instead</th></tr></thead><tbody><tr><td>Approve the next bead casually</td><td>It starts a new commitment.</td><td>Ask what evidence proves the current bead is done.</td></tr><tr><td>Ask for broad cleanup like &quot;fix everything&quot;</td><td>It hides scope creep inside a vague request.</td><td>Ask for one bead with files in play and checks.</td></tr><tr><td>Accept work without recorded checks</td><td>Agent confidence is not proof.</td><td>Run checks through <code>record-check.sh</code>.</td></tr><tr><td>Treat reports, diary, memory, or audits as instructions</td><td>They are evidence, not authority.</td><td>Return to active memory, the bead, and the primary authority.</td></tr><tr><td>Let the agent code around missing setup or approval</td><td>It may create the wrong workaround.</td><td>Record the blocker or create a narrow unblocker bead.</td></tr><tr><td>Store secrets in docs or logs</td><td>Files can be exported, shared, or committed.</td><td>Keep secrets in the proper external secret manager or dashboard.</td></tr></tbody></table></div>
 <p>Why this matters: Most beginner mistakes are not about code. They are about letting the project state become unclear.</p>
-<h2 id="run-your-first-precode-session">Run Your First Precode Session</h2>
+<h2 id="run-your-first-precode-session"><a class="heading-anchor" href="#run-your-first-precode-session" aria-label="Link to Run Your First Precode Session">#</a>Run Your First Precode Session</h2>
 <p>Follow these steps in order.</p>
-<div class="table-wrap"><table><thead><tr><th>Step</th><th>Say this</th><th>Expect this</th><th>Stop if</th></tr></thead><tbody><tr><td>Start</td><td><code>Run bash scripts/session-start.sh and explain the result in plain English.</code></td><td>Current bead, branch/status if available, files, checks, blockers.</td><td>The agent skips active memory or cannot name the bead.</td></tr><tr><td>Find next step</td><td><code>Run python3 scripts/next-step.py and explain the recommendation in plain English.</code></td><td>The canonical generated &quot;what now?&quot; hint: user decision, one next protocol to load, and rough context footprint.</td><td>The agent treats generated help as approval or active memory.</td></tr><tr><td>Check loop health</td><td><code>Run python3 scripts/loop-health.py and explain the top risk.</code></td><td>Advisory Build Loop Health status, top risk, graph warning if relevant, and next move.</td><td>The agent treats loop health as a grade or hard approval.</td></tr><tr><td>Read diagnostics</td><td><code>Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.</code></td><td>Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths.</td><td>The agent treats Doctor Dashboard as task selection, command approval, or transition approval.</td></tr><tr><td>Run Ralph</td><td><code>Run python3 scripts/ralph-loop.py --dry-run and explain the decision.</code></td><td>Bounded retry evidence for one active bead.</td><td>It treats Ralph as task selection, acceptance, or transition approval.</td></tr><tr><td>Confirm task</td><td><code>Is this bead clear enough to continue, or should we repair, split, block, or stop?</code></td><td>A clear recommendation and reason.</td><td>The task has multiple outcomes or no verification path.</td></tr><tr><td>Let agent work</td><td><code>Work only inside this bead and narrate file changes before editing.</code></td><td>Small scoped edits inside files in play.</td><td>It expands scope, changes unrelated files, or makes product decisions.</td></tr><tr><td>Guard scope</td><td><code>Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.</code></td><td>Advisory warning if changed files are outside the bead, with a plain stop/continue decision.</td><td>It treats the warning as permission to keep widening scope.</td></tr><tr><td>Record checks</td><td><code>Run the relevant checks through record-check.sh.</code></td><td>Recorded command result and log path.</td><td>Checks are missing, failing, or not recorded.</td></tr><tr><td>Close</td><td><code>Run bash scripts/session-close.sh and summarize what changed, what passed, and what remains blocked.</code></td><td>Closeout evidence, health refresh, transition proposal only if eligible.</td><td>The agent tries to start the next bead.</td></tr><tr><td>Review outcome</td><td><code>Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.</code></td><td>A review recommendation tied to checks and manual verification.</td><td>The recommendation relies only on confidence or tries to accept the work for you.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Say this</th><th>Expect this</th><th>Stop if</th></tr></thead><tbody><tr><td>Start</td><td><code>Run bash scripts/session-start.sh and explain the result in plain English.</code></td><td>Current bead, branch/status if available, files, checks, blockers.</td><td>The agent skips active memory or cannot name the bead.</td></tr><tr><td>Find next step</td><td><code>Run python3 scripts/next-step.py and explain the recommendation in plain English.</code></td><td>The canonical generated &quot;what now?&quot; hint: user decision, one next protocol to load, and rough context footprint. Its JSON shape is regression-covered for adapters and diagnostics.</td><td>The agent treats generated help as approval or active memory.</td></tr><tr><td>Check loop health</td><td><code>Run python3 scripts/loop-health.py and explain the top risk.</code></td><td>Advisory Build Loop Health status, top risk, graph warning if relevant, and next move.</td><td>The agent treats loop health as a grade or hard approval.</td></tr><tr><td>Read diagnostics</td><td><code>Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.</code></td><td>Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths.</td><td>The agent treats Doctor Dashboard as task selection, command approval, or transition approval.</td></tr><tr><td>Run Ralph</td><td><code>Run python3 scripts/ralph-loop.py --dry-run and explain the decision.</code></td><td>Bounded retry evidence for one active bead.</td><td>It treats Ralph as task selection, acceptance, or transition approval.</td></tr><tr><td>Confirm task</td><td><code>Is this bead clear enough to continue, or should we repair, split, block, or stop?</code></td><td>A clear recommendation and reason.</td><td>The task has multiple outcomes or no verification path.</td></tr><tr><td>Let agent work</td><td><code>Work only inside this bead and narrate file changes before editing.</code></td><td>Small scoped edits inside files in play.</td><td>It expands scope, changes unrelated files, or makes product decisions.</td></tr><tr><td>Guard scope</td><td><code>Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.</code></td><td>Advisory warning if changed files are outside the bead, with a plain stop/continue decision.</td><td>It treats the warning as permission to keep widening scope.</td></tr><tr><td>Record checks</td><td><code>Run the relevant checks through record-check.sh.</code></td><td>Recorded command result and log path.</td><td>Checks are missing, failing, or not recorded.</td></tr><tr><td>Close</td><td><code>Run bash scripts/session-close.sh and summarize what changed, what passed, and what remains blocked.</code></td><td>Closeout evidence, health refresh, transition proposal only if eligible.</td><td>The agent tries to start the next bead.</td></tr><tr><td>Review outcome</td><td><code>Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.</code></td><td>A review recommendation tied to checks and manual verification.</td><td>The recommendation relies only on confidence or tries to accept the work for you.</td></tr></tbody></table></div>
 <p>Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.</p>
-<h2 id="use-the-daily-loop">Use The Daily Loop</h2>
+<h2 id="use-the-daily-loop"><a class="heading-anchor" href="#use-the-daily-loop" aria-label="Link to Use The Daily Loop">#</a>Use The Daily Loop</h2>
 <p>Keep this table open during normal work.</p>
 <p>Beginner rule: one bead, one feature slice, one focused chat. When a bead is accepted or you are moving to the next feature slice, start a fresh chat, reload active memory, and make the agent confirm the new bead before coding again.</p>
 <div class="table-wrap"><table><thead><tr><th>Step</th><th>User action</th><th>Good output</th><th>Stop if</th></tr></thead><tbody><tr><td>Start</td><td>Ask for session start.</td><td>Agent explains active bead, scope, files, checks.</td><td>It starts coding first.</td></tr><tr><td>Orient</td><td>Ask for next-step help when unsure.</td><td><code>PRECODE-HELP.md</code>, <code>session-start.sh</code>, or <code>next-step.py</code> explains the same generated router decision.</td><td>The report replaces the active bead.</td></tr><tr><td>Check loop health</td><td>Ask for Build Loop Health when scope or stopping point feels fuzzy.</td><td>One status, top risk, graph warning if relevant, and next move.</td><td>The signal becomes a score of you instead of the work loop.</td></tr><tr><td>Confirm</td><td>Ask whether to continue, repair, split, block, or stop.</td><td>One clear path.</td><td>Scope is vague or too broad.</td></tr><tr><td>Work</td><td>Let the agent edit only scoped files.</td><td>Small changes tied to the bead.</td><td>It touches unrelated files.</td></tr><tr><td>Check</td><td>Ask for recorded checks.</td><td><code>record-check.sh</code> output and evidence path.</td><td>It says done without evidence.</td></tr><tr><td>Checkpoint</td><td>Pause when confused or scope grows.</td><td>Restated task, changed files, next check.</td><td>It resists narrowing.</td></tr><tr><td>Close</td><td>Ask for session close.</td><td>Closeout evidence and review state.</td><td>It starts the next bead.</td></tr><tr><td>Approve</td><td>Approve only after review.</td><td>Accepted, revise, split, blocked, or transition.</td><td>Manual verification is unclear.</td></tr><tr><td>Commit</td><td>Commit and push each completed, checked slice.</td><td>A small commit named for the user-visible slice or repair.</td><td>Changes pile up across features or the name is vague, such as <code>updates</code> or <code>fixes</code>.</td></tr></tbody></table></div>
 <p>Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.</p>
 <p>Use this before committing:</p>
 <pre><code class="language-text">Give me a commit-ready summary for this completed slice: files changed, evidence recorded, manual verification still needed, and a concise commit name that describes the user-visible feature or repair.</code></pre>
-<h2 id="checkpoint-before-context-gets-crowded">Checkpoint Before Context Gets Crowded</h2>
+<h2 id="checkpoint-before-context-gets-crowded"><a class="heading-anchor" href="#checkpoint-before-context-gets-crowded" aria-label="Link to Checkpoint Before Context Gets Crowded">#</a>Checkpoint Before Context Gets Crowded</h2>
 <p>Long sessions can get fuzzy even when the agent is still trying hard. When the conversation feels crowded, the agent is repeating itself, or a lot of files and tool outputs have passed through the chat, pause before the context gets full.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Use the Agent Routing Protocol and Context Engineering Protocol. If this session is near the context pressure point, prepare a Context Pack before compacting, restarting, or handing off. Include the bead, primary authority, files in play, latest evidence, changed files, remaining work, and next exact check.</code></pre>
 <p>Good output includes:</p>
 <ul><li>the active bead and primary authority</li><li>what changed</li><li>what evidence exists</li><li>what is still uncertain</li><li>the next exact check or question</li></ul>
 <p>Why this matters: You are not trying to tune the model. You are making sure the agent has enough clean room to finish, verify, and hand off without losing the task.</p>
-<h2 id="use-the-plain-decision-words">Use The Plain Decision Words</h2>
+<h2 id="use-the-plain-decision-words"><a class="heading-anchor" href="#use-the-plain-decision-words" aria-label="Link to Use The Plain Decision Words">#</a>Use The Plain Decision Words</h2>
 <p>Precode checks should help you choose what to do, not make you learn internal labels. When a script reports a <code>user_decision</code>, read it this way:</p>
 <div class="table-wrap"><table><thead><tr><th>Decision</th><th>What it means</th><th>What to say</th></tr></thead><tbody><tr><td><code>continue</code></td><td>The current bead can keep moving inside its named scope.</td><td><code>Continue inside this bead only, then record the declared checks.</code></td></tr><tr><td><code>ask for missing info</code></td><td>The agent needs an input, owner, manual step, or unblocker before coding.</td><td><code>Do not work around the blocker. Tell me exactly what is missing.</code></td></tr><tr><td><code>ask for proof</code></td><td>Work may be close, but evidence, checks, or review are not enough yet.</td><td><code>Show me the missing proof before I accept this.</code></td></tr><tr><td><code>review</code></td><td>The bead needs an acceptance decision.</td><td><code>Recommend accepted, revise, split, blocked, or stop based on evidence.</code></td></tr><tr><td><code>approve transition</code></td><td>A next bead may be ready, but only the user can activate it.</td><td><code>Show the transition proposal. Do not activate it until I approve.</code></td></tr><tr><td><code>repair state</code></td><td>Precode cannot safely orient because active state is unclear.</td><td><code>Repair active state before editing anything.</code></td></tr><tr><td><code>stop</code></td><td>Scope, command risk, sensitive work, or file drift needs human judgment first.</td><td><code>Stop and explain the risk in plain English.</code></td></tr></tbody></table></div>
 <p>Why this matters: You should not have to sound technical to operate Precode. The scripts should translate risk into a small number of safe decisions.</p>
-<h2 id="choose-what-to-ask-for">Choose What To Ask For</h2>
+<h2 id="choose-what-to-ask-for"><a class="heading-anchor" href="#choose-what-to-ask-for" aria-label="Link to Choose What To Ask For">#</a>Choose What To Ask For</h2>
 <p>Use this table when you are unsure what kind of request to make.</p>
-<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Ask for</th><th>Copyable request</th></tr></thead><tbody><tr><td>Net-new rough product idea from a non-technical founder</td><td>Product Ideation Workbook plus Product Brief</td><td><code>Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.</code></td></tr><tr><td>My PRD input feels thin or scattered</td><td>PRD-Ready Context</td><td><code>Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.</code></td></tr><tr><td>Existing notes or rough feature ideas need real thinking before PRD commitment</td><td>Exploration Loop</td><td><code>Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.</code></td></tr><tr><td>Starting a new product or checking product drift</td><td>Product constitution review</td><td><code>Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.</code></td></tr><tr><td>Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief</td><td>Product Discovery Interview Skill / Product Discovery Validation</td><td><code>Use the Product Discovery Interview Skill. Name the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.</code></td></tr><tr><td>I want the smallest safe build to teach me something</td><td>Fast Learning Lane</td><td><code>Use the Fast Learning Lane. Skip discovery ceremony only if this is low or medium risk with no sensitive surfaces, no product-promise drift, and a tiny reversible learning slice. Create a minimal PRD with requirement IDs, acceptance checks, risk flags, and one candidate bead. Do not code or activate the bead until I approve.</code></td></tr><tr><td>Rough idea, notes, screenshot, GitHub issue, research</td><td>Local source intake</td><td><code>Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.</code></td></tr><tr><td>Feature idea is fuzzy</td><td>Alignment / Product Brief</td><td><code>Use the Idea To PRD Workflow. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief. Do not plan or code yet.</code></td></tr><tr><td>Terms, labels, or names are confusing</td><td>Shared-language review</td><td><code>Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.</code></td></tr><tr><td>Durable intent needs to guide the next workflow</td><td>Goal Frame proposal or reaffirmation</td><td><code>Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.</code></td></tr><tr><td>Product direction is clear enough</td><td>Destination PRD</td><td><code>Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.</code></td></tr><tr><td>Approved PRD exists</td><td>Bead decomposition</td><td><code>Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.</code></td></tr><tr><td>Feature shape is unclear before coding</td><td>System design shape</td><td><code>Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.</code></td></tr><tr><td>Unsure whether accessibility review is needed</td><td>Accessibility Advisor Fit Interview</td><td><code>Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.</code></td></tr><tr><td>Known small task is active</td><td>Implement active bead</td><td><code>Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.</code></td></tr><tr><td>Risky or uncertain idea</td><td>Challenge planning bead</td><td><code>Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.</code></td></tr><tr><td>Work is stuck or confusing</td><td>Checkpoint or state repair</td><td><code>Checkpoint and tell me whether to continue, repair, split, block, or stop.</code></td></tr><tr><td>Security, release, or docs freshness needs a named review lens</td><td>Review Lane</td><td><code>Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, release, security, compliance, or create tasks.</code></td></tr><tr><td>Nearly shippable release-relevant work</td><td>Release candidate evidence profile</td><td><code>Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.</code></td></tr><tr><td>Work may be done</td><td>Completion check or Review / Acceptance Skill</td><td><code>Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.</code></td></tr><tr><td>Logs, caches, or generated files look messy</td><td>Local hygiene check</td><td><code>Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.</code></td></tr><tr><td>Future work needs review</td><td>Long-horizon review</td><td><code>Show approved, blocked, deferred, or ready work without activating anything.</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Ask for</th><th>Copyable request</th></tr></thead><tbody><tr><td>Net-new rough product idea from a non-technical founder</td><td>Product Ideation Workbook plus Product Brief</td><td><code>Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.</code></td></tr><tr><td>My PRD input feels thin or scattered</td><td>PRD-Ready Context</td><td><code>Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.</code></td></tr><tr><td>Existing notes or rough feature ideas need real thinking before PRD commitment</td><td>Exploration Loop</td><td><code>Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.</code></td></tr><tr><td>Post-intake or post-PRD feature angle needs thinking before bead commitment</td><td>Plan Loop</td><td><code>Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Ask only targeted questions that could change the next workflow, risk, first slice, owner-file impact, or stop condition, then produce a Plan Packet. Treat it as evidence only.</code></td></tr><tr><td>Starting a new product or checking product drift</td><td>Product constitution review</td><td><code>Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.</code></td></tr><tr><td>Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief</td><td>Product Discovery Interview Skill / Product Discovery Validation</td><td><code>Use the Product Discovery Interview Skill. Name the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.</code></td></tr><tr><td>Existing hypothesis or learning target needs review</td><td>Hypothesis Review / Learning Loop</td><td><code>Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief. Tell me what was tested, what was learned, whether it is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code.</code></td></tr><tr><td>I want the smallest safe build to teach me something</td><td>Fast Learning Lane</td><td><code>Use the Fast Learning Lane. Skip discovery ceremony only if this is low or medium risk with no sensitive surfaces, no product-promise drift, and a tiny reversible learning slice. Create a minimal PRD with requirement IDs, acceptance checks, risk flags, and one candidate bead. Do not code or activate the bead until I approve.</code></td></tr><tr><td>Rough idea, notes, screenshot, GitHub issue, research</td><td>Local source intake</td><td><code>Use Local Source Intake. Summarize facts, assumptions, conflicts, open questions, candidate requirements, and possible beads. Do not code.</code></td></tr><tr><td>Feature idea is fuzzy</td><td>Alignment / Product Brief</td><td><code>Use the Idea To PRD Workflow. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief. Do not plan or code yet.</code></td></tr><tr><td>Terms, labels, or names are confusing</td><td>Shared-language review</td><td><code>Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.</code></td></tr><tr><td>Durable intent needs to guide the next workflow</td><td>Goal Frame proposal or reaffirmation</td><td><code>Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.</code></td></tr><tr><td>Product direction is clear enough</td><td>Destination PRD</td><td><code>Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.</code></td></tr><tr><td>Approved PRD exists</td><td>Bead decomposition</td><td><code>Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.</code></td></tr><tr><td>Feature shape is unclear before coding</td><td>System design shape</td><td><code>Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.</code></td></tr><tr><td>Unsure whether accessibility review is needed</td><td>Accessibility Advisor Fit Interview</td><td><code>Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.</code></td></tr><tr><td>Known small task is active</td><td>Implement active bead</td><td><code>Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.</code></td></tr><tr><td>Risky or uncertain idea</td><td>Challenge planning bead</td><td><code>Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.</code></td></tr><tr><td>Work is stuck or confusing</td><td>Checkpoint or state repair</td><td><code>Checkpoint and tell me whether to continue, repair, split, block, or stop.</code></td></tr><tr><td>Security, release, or docs freshness needs a named review lens</td><td>Review Lane</td><td><code>Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, release, security, compliance, or create tasks.</code></td></tr><tr><td>A requirement, bug behavior, or acceptance criterion has unclear proof</td><td>Requirement-to-proof review</td><td><code>Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.</code></td></tr><tr><td>Nearly shippable release-relevant work</td><td>Release candidate evidence profile</td><td><code>Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.</code></td></tr><tr><td>Work may be done</td><td>Completion check or Review / Acceptance Skill</td><td><code>Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.</code></td></tr><tr><td>Logs, caches, or generated files look messy</td><td>Local hygiene check</td><td><code>Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.</code></td></tr><tr><td>Future work needs review</td><td>Long-horizon review</td><td><code>Show approved, blocked, deferred, or ready work without activating anything.</code></td></tr></tbody></table></div>
 <p>Why this matters: Not every request should become code. Good Precode use starts by choosing the right kind of work.</p>
-<h2 id="keep-the-agent-in-bounds">Keep The Agent In Bounds</h2>
+<h2 id="keep-the-agent-in-bounds"><a class="heading-anchor" href="#keep-the-agent-in-bounds" aria-label="Link to Keep The Agent In Bounds">#</a>Keep The Agent In Bounds</h2>
 <p>Use these rules while the agent works:</p>
 <ul><li>Make it explain the bead before coding.</li><li>Keep work inside files in play.</li><li>Keep product constitution changes inside <code>PRODUCT.md</code>, PRDs, decisions, or approved beads according to the owner file.</li><li>Stop when generated reports become instructions.</li><li>Stop when checks are missing or vague.</li><li>Stop when product direction changes mid-task.</li><li>Stop when sensitive work appears without approval.</li><li>Use the Accessibility Advisor Fit Interview when accessibility risk is unclear; do not make accessibility review automatic for every UI change.</li><li>Stop when the next bead starts without your approval.</li></ul>
 <p>Red flags:</p>
-<div class="table-wrap"><table><thead><tr><th>Red flag</th><th>What to say</th></tr></thead><tbody><tr><td>Agent starts coding too soon</td><td><code>Stop. Explain the active bead, primary authority, files in play, and checks first.</code></td></tr><tr><td>Agent plans before alignment is done</td><td><code>Stop. Ask the next alignment question one at a time and include your recommended answer.</code></td></tr><tr><td>Agent turns a weakly evidenced idea into a PRD</td><td><code>Stop. Use the Product Discovery Interview Skill first. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill.</code></td></tr><tr><td>Agent treats the shortcut as permission to code</td><td><code>Stop. Fast Learning Lane means less ceremony, not no PRD. Show the minimal PRD, acceptance checks, risk flags, and one candidate bead before coding.</code></td></tr><tr><td>Agent uses the wrong term or confusing label</td><td><code>Stop. Use the Ubiquitous Language Protocol and tell me which term should appear in the PRD, UI, tests, and code names.</code></td></tr><tr><td>Scope grows</td><td><code>Checkpoint. Is this still one bead, or should we split?</code></td></tr><tr><td>Generated report becomes instruction</td><td><code>Generated reports, including the Work Graph, are evidence only. Return to active memory and the active bead.</code></td></tr><tr><td>Old PRD or issue overrides current code</td><td><code>Treat that old artifact as historical evidence. Which current authority file or active bead wins?</code></td></tr><tr><td>Cleanup request sounds broad</td><td><code>Stop. Use Local Hygiene first. Truth is not cleanup; evidence is preserved; caches are disposable only when ignored and regeneratable.</code></td></tr><tr><td>Agent says done without checks</td><td><code>Show recorded checks, manual verification, closeout evidence, and review decision.</code></td></tr><tr><td>Product direction changes</td><td><code>Stop implementation. Which owner file should capture this changed intent?</code></td></tr><tr><td>Next task begins automatically</td><td><code>Stop. The next bead needs separate user approval.</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Red flag</th><th>What to say</th></tr></thead><tbody><tr><td>Agent starts coding too soon</td><td><code>Stop. Explain the active bead, primary authority, files in play, and checks first.</code></td></tr><tr><td>Agent plans before alignment is done</td><td><code>Stop. Ask the next alignment question one at a time and include your recommended answer.</code></td></tr><tr><td>Agent turns a weakly evidenced idea into a PRD</td><td><code>Stop. Use the Product Discovery Interview Skill first. Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill.</code></td></tr><tr><td>Agent treats the shortcut as permission to code</td><td><code>Stop. Fast Learning Lane means less ceremony, not no PRD. Show the minimal PRD, acceptance checks, risk flags, and one candidate bead before coding.</code></td></tr><tr><td>Agent uses the wrong term or confusing label</td><td><code>Stop. Use the Ubiquitous Language Protocol and tell me which term should appear in the PRD, UI, tests, and code names.</code></td></tr><tr><td>Scope grows</td><td><code>Checkpoint. Is this still one bead, or should we split?</code></td></tr><tr><td>Generated report becomes instruction</td><td><code>Generated reports, including the Work Graph, are evidence only. Return to active memory and the active bead.</code></td></tr><tr><td>Old PRD or issue overrides current code</td><td><code>Treat that old artifact as historical evidence. Which current authority file or active bead wins?</code></td></tr><tr><td>Cleanup request sounds broad</td><td><code>Stop. Use Local Hygiene first. Truth is not cleanup; evidence is preserved; caches are disposable only when ignored and regeneratable.</code></td></tr><tr><td>Agent says done without checks</td><td><code>Show recorded checks, manual verification, closeout evidence, and review decision.</code></td></tr><tr><td>Product direction changes</td><td><code>Stop implementation. Which owner file should capture this changed intent?</code></td></tr><tr><td>Next task begins automatically</td><td><code>Stop. The next bead needs separate user approval.</code></td></tr></tbody></table></div>
 <p>Why this matters: You do not need to sound technical to stop drift. You only need to ask the agent to return to the bead, owner file, and evidence.</p>
-<h2 id="know-when-work-is-done">Know When Work Is Done</h2>
+<h2 id="know-when-work-is-done"><a class="heading-anchor" href="#know-when-work-is-done" aria-label="Link to Know When Work Is Done">#</a>Know When Work Is Done</h2>
 <p>Do not accept work because the agent sounds confident.</p>
 <p>A bead is ready to accept only when the evidence fits the risk:</p>
 <ul><li>recorded checks ran through <code>record-check.sh</code></li><li>manual verification is recorded when needed</li><li>code-changing beads used or explained their <code>test_strategy</code></li><li>medium/high-risk code-changing beads got the review context the bead required</li><li>Closeout Evidence says what changed and what remains uncertain</li><li>review decision is <code>accepted</code>, <code>revise</code>, <code>split</code>, or <code>blocked</code></li><li>release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action</li><li>nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, remaining risks, approvals, and decision state</li><li>release confidence names the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty when traceability matters</li><li>next-bead transition is still separate and user-approved</li></ul>
@@ -429,7 +540,7 @@ Do not create a PRD, create or activate beads, reserve bead IDs, update tasks/to
 <p>If you ask &quot;do you accept these changes?&quot;, that is a review request. When the bead is still <code>in_progress</code>, the agent must switch the active bead to <code>review</code> first, show the review recommendation, and wait. It must not mark the bead <code>done</code>, approve acceptance for you, approve transition, or start the next bead.</p>
 <p>Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.</p>
 <p>Why this matters: In Precode, done means proved and reviewed, not merely plausible.</p>
-<h2 id="use-a-review-lane">Use A Review Lane</h2>
+<h2 id="use-a-review-lane"><a class="heading-anchor" href="#use-a-review-lane" aria-label="Link to Use A Review Lane">#</a>Use A Review Lane</h2>
 <p>Use a Review Lane when one active bead needs a named specialist review question without turning that specialist into a fake teammate or approval authority.</p>
 <p>Use Security Review Lane for auth, permissions, secrets, personal data, uploads, payments, admin, destructive actions, dependency risk, or other sensitive surfaces.</p>
 <p>Use Release / Docs Freshness Review Lane for user-facing behavior, setup, support, docs, onboarding, troubleshooting, smoke paths, rollback or blocked escape, release-readiness notes, or release-candidate evidence.</p>
@@ -442,7 +553,7 @@ Do not accept implementation, approve review, approve release, approve transitio
 <p>For dependency graph review, stale or misleading Work Graph output means repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated graph reports as the source of truth.</p>
 <p>Stop if: the agent treats the lane as acceptance, release approval, security sign-off, compliance approval, transition approval, parallel execution approval, Work Graph authority, or a task creator.</p>
 <p>Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.</p>
-<h2 id="prepare-release-without-shipping">Prepare Release Without Shipping</h2>
+<h2 id="prepare-release-without-shipping"><a class="heading-anchor" href="#prepare-release-without-shipping" aria-label="Link to Prepare Release Without Shipping">#</a>Prepare Release Without Shipping</h2>
 <p>Use Release Readiness when completed work may affect users, production, deployment, external services, docs needed for use, or post-release support.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Use the Release Readiness Protocol.
@@ -450,7 +561,7 @@ Do not deploy, promote, roll back, merge, migrate, change dashboards, change sec
 Show changed behavior, affected users, release target, recorded checks, smoke test path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and exactly what I must approve before any release action.</code></pre>
 <p>Stop if: the agent treats a release-readiness note, screenshot, browser note, generated report, GitHub status, or smoke check as release approval.</p>
 <p>Why this matters: shipping is a user-owned risk decision. Precode can prepare the evidence, but it cannot approve the release for you.</p>
-<h2 id="prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</h2>
+<h2 id="prepare-a-release-candidate-evidence-profile"><a class="heading-anchor" href="#prepare-a-release-candidate-evidence-profile" aria-label="Link to Prepare A Release Candidate Evidence Profile">#</a>Prepare A Release Candidate Evidence Profile</h2>
 <p>Use a Release Candidate Evidence Profile when release-relevant work is nearly ready and you need one compact evidence view before deciding what, if anything, to release.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Prepare a Release Candidate Evidence Profile for this release-relevant bead.
@@ -462,7 +573,7 @@ Use only one decision state: candidate, needs evidence, blocked, or ready for hu
 Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
 Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.</code></pre>
 <p>Stop if: the agent treats the profile or <code>ready for human release decision</code> as release approval.</p>
-<h2 id="review-verification-and-release-evidence">Review Verification And Release Evidence</h2>
+<h2 id="review-verification-and-release-evidence"><a class="heading-anchor" href="#review-verification-and-release-evidence" aria-label="Link to Review Verification And Release Evidence">#</a>Review Verification And Release Evidence</h2>
 <p>Use verification and release evidence review when a release-relevant bead needs a clear path from requirement or behavior to recorded proof.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Review verification and release evidence for this release-relevant bead.
@@ -471,19 +582,26 @@ Show requirement or behavior proven, evidence lane, recorded source, smoke path 
 Tell me what is durable recorded evidence, what is review input only, and what missing traceability means needs evidence before release review.
 Do not treat screenshots, browser notes, GitHub status, generated reports, smoke checks, or ready for human release decision as release approval.</code></pre>
 <p>Stop if: the agent treats the trace, <code>completion-check.py</code>, screenshots, browser notes, GitHub status, generated reports, smoke checks, or <code>ready for human release decision</code> as approval to ship.</p>
-<h2 id="approve-the-right-things">Approve The Right Things</h2>
+<h2 id="review-requirement-to-proof-traceability"><a class="heading-anchor" href="#review-requirement-to-proof-traceability" aria-label="Link to Review Requirement To Proof Traceability">#</a>Review Requirement-To-Proof Traceability</h2>
+<p>Use requirement-to-proof review when a normal PRD requirement, bug behavior, or acceptance criterion may sound done but the proof path is unclear.</p>
+<p>Say this:</p>
+<pre><code class="language-text">Review the proof for this requirement, bug behavior, or acceptance criterion.
+Show requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; remaining uncertainty; missing proof; acceptance question; and recommendation.
+Do not accept implementation, approve review, approve release, activate the next bead, create follow-up tasks, run mutating commands, or treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, generated reports, or confidence as proof by themselves.</code></pre>
+<p>Stop if: the agent treats the trace, generated test, screenshot, browser note, AI critique, external status, or generated report as complete proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.</p>
+<h2 id="approve-the-right-things"><a class="heading-anchor" href="#approve-the-right-things" aria-label="Link to Approve The Right Things">#</a>Approve The Right Things</h2>
 <p>You approve these decisions:</p>
 <ul><li>product direction, goals, and scope</li><li>product promise, target users, non-goals, current bets, success signals, and design or voice changes</li><li>sensitive work: auth, payments, personal data, uploads, secrets, destructive actions, deployment, production config</li><li>external dashboard or manual setup steps</li><li>new dependencies when the bead did not already allow them</li><li>review decision: accepted, revise, split, blocked, or stop</li><li>whether a lesson becomes a durable rule or decision</li><li>whether the next bead becomes active</li></ul>
 <p>Do not approve:</p>
 <ul><li>a next bead just because a script proposed it</li><li>sensitive work without an approval gate and rollback/escape note</li><li>a broad refactor hidden inside a small task</li><li>generated reports acting as task instructions</li><li>manual verification that does not say what was checked</li><li><code>afk_candidate</code> work that lacks bounded files, checks, stop conditions, and human review</li></ul>
 <p>Why this matters: Precode lets the agent work quickly, but it keeps judgment and risk with the user.</p>
-<h2 id="read-reports-without-being-misled">Read Reports Without Being Misled</h2>
+<h2 id="read-reports-without-being-misled"><a class="heading-anchor" href="#read-reports-without-being-misled" aria-label="Link to Read Reports Without Being Misled">#</a>Read Reports Without Being Misled</h2>
 <p>Use reports for learning and audit. Before work resumes, return to active memory, the active bead, and the primary authority file.</p>
 <div class="table-wrap"><table><thead><tr><th>Report or evidence</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td><code>PRECODE-HELP.md</code></td><td>Quick generated hint about the next safe action, bead depth, and files-in-play warnings.</td><td>Active memory, task approval, or transition approval.</td></tr><tr><td><code>OS-HEALTH.md</code></td><td>Health, Doctor Dashboard diagnostics, plain-English triage labels, warnings, state, evidence quality, spend.</td><td>Choosing the next task, approving commands, or approving transitions.</td></tr><tr><td><code>logs/learning-diary.md</code></td><td>Plain-English session learning.</td><td>Implementation instructions.</td></tr><tr><td><code>memory/cards/*.md</code></td><td>Reviewed lessons, preferences, glossary terms, risks, and source pointers.</td><td>Replacing <code>DECISIONS.md</code>, PRDs, beads, or active memory.</td></tr><tr><td><code>logs/memory-index.md</code></td><td>Searching reviewed memory cards.</td><td>Choosing or approving work.</td></tr><tr><td><code>logs/handoff-packet.md</code></td><td>Orienting another agent.</td><td>Transition approval.</td></tr><tr><td><code>logs/scheduled-audit.md</code></td><td>Background read-only audit findings.</td><td>Automatic action.</td></tr><tr><td><code>logs/goal-frame.json</code></td><td>Checking whether a Goal Frame is fresh, stale, missing fields, or conflicting.</td><td>Workflow authority, task approval, or bead activation.</td></tr><tr><td>GitHub audit/source intake</td><td>External status or issue/PR evidence.</td><td>Replacing PRDs, decisions, or beads.</td></tr><tr><td>Spend telemetry</td><td>Known token/cost visibility.</td><td>Billing truth when telemetry is incomplete.</td></tr></tbody></table></div>
 <p>Say this:</p>
 <pre><code class="language-text">Use reports as evidence only. Before doing work, return to AGENT.md, DECISIONS.md, tasks/todo.md, the active bead, and the primary authority file.</code></pre>
 <p>Why this matters: Reports help you understand what happened. They do not decide what happens next.</p>
-<h2 id="use-adaptive-depth-and-guardrails">Use Adaptive Depth And Guardrails</h2>
+<h2 id="use-adaptive-depth-and-guardrails"><a class="heading-anchor" href="#use-adaptive-depth-and-guardrails" aria-label="Link to Use Adaptive Depth And Guardrails">#</a>Use Adaptive Depth And Guardrails</h2>
 <p>Adaptive depth helps Precode scale the amount of ceremony to the risk. A typo fix can be <code>trivial</code>; a focused setup or feature slice can be <code>narrow</code> or <code>standard</code>; auth, payments, migrations, deployment, security, or multiple systems should usually be <code>high-risk</code> or <code>multi-system</code>.</p>
 <p>Ask for these three bead fields when risk matters:</p>
 <pre><code class="language-text">Before activating this bead, declare complexity, required_planning_depth, and autonomy_level. Then run python3 scripts/bead-depth-check.py and explain any advisory warnings.</code></pre>
@@ -503,7 +621,7 @@ Do not treat screenshots, browser notes, GitHub status, generated reports, smoke
 <pre><code class="language-text">Run python3 scripts/files-in-play-check.py --edit-lock and explain whether any changed path is outside this bead. Treat the lock as advisory evidence, not permission.</code></pre>
 <p>For sensitive, external, destructive, or bounded-AFK work, ask for the stricter plain-English contract before work starts:</p>
 <pre><code class="language-text">Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, and rollback or blocked escape path. Then run python3 scripts/run-contract-check.py.</code></pre>
-<h2 id="use-alignment-afk-candidates-and-fresh-review">Use Alignment, AFK Candidates, And Fresh Review</h2>
+<h2 id="use-alignment-afk-candidates-and-fresh-review"><a class="heading-anchor" href="#use-alignment-afk-candidates-and-fresh-review" aria-label="Link to Use Alignment, AFK Candidates, And Fresh Review">#</a>Use Alignment, AFK Candidates, And Fresh Review</h2>
 <p>Use alignment before a PRD when the idea is still fuzzy. For a non-technical founder, the agent should start with high-level product and business questions, recommend an answer when useful, and summarize a Product Brief after at most three questions.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Align this idea before writing a PRD. Ask one high-level product or business question at a time, include your recommended answer, and after at most three questions summarize a Product Brief and one next best question. Do not ask me to choose architecture, module boundaries, test strategy, owner files, or acceptance matrices yet.</code></pre>
@@ -516,7 +634,7 @@ Do not treat screenshots, browser notes, GitHub status, generated reports, smoke
 <p>For medium/high-risk work, ask for a fresh-context review. A fresh reviewer reloads active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence instead of relying on the implementation chat.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Review this bead in a fresh context. Reload active memory, the bead, primary authority, parent PRD if relevant, and the recorded evidence before recommending accepted, revise, split, or blocked.</code></pre>
-<h2 id="use-reviewed-memory">Use Reviewed Memory</h2>
+<h2 id="use-reviewed-memory"><a class="heading-anchor" href="#use-reviewed-memory" aria-label="Link to Use Reviewed Memory">#</a>Use Reviewed Memory</h2>
 <p>Use memory when you want the agent to remember what the project has learned across prior sessions.</p>
 <p>Do this:</p>
 <ul><li>Ask the agent to search reviewed memory for a specific topic.</li><li>Make it cite the memory cards it used.</li><li>Make it say whether the memory is evidence only or should be promoted to an owner file.</li><li>Demote stale, superseded, archived, or low-confidence cards before relying on them.</li><li>Return to active memory and the active bead before editing.</li></ul>
@@ -524,22 +642,28 @@ Do not treat screenshots, browser notes, GitHub status, generated reports, smoke
 <pre><code class="language-text">Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.</code></pre>
 <p>You can also ask for a read-only filtered search:</p>
 <pre><code class="language-text">Run python3 scripts/memory-check.py --query &quot;topic words&quot;. Cite card path, title, category, freshness, status, source pointers, and promotion owner. Do not promote anything without my approval.</code></pre>
-<p>Stop if: the agent treats memory as a decision, requirement, next task, or implementation instruction.</p>
+<p>Before discussing semantic search or a shared memory backend, ask for a retrieval-readiness review:</p>
+<pre><code class="language-text">Run python3 scripts/memory-check.py --retrieval-review --query &quot;topic words&quot;. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required. Treat the result as evidence only and do not add backend infrastructure, create cards, promote owner files, choose work, or expand active memory.</code></pre>
+<p>Stop if: the agent treats memory as a decision, requirement, next task, implementation instruction, backend approval, or permission to create a new memory service.</p>
 <p>Why this matters: Memory helps continuity without making the agent carry the whole project in active context.</p>
-<h2 id="first-30-minutes-first-day-first-week">First 30 Minutes / First Day / First Week</h2>
-<h3 id="first-30-minutes">First 30 Minutes</h3>
+<h3 id="review-repeated-friction"><a class="heading-anchor" href="#review-repeated-friction" aria-label="Link to Review Repeated Friction">#</a>Review Repeated Friction</h3>
+<p>When tool failures, stale evidence, generated refreshes, or memory/context warnings keep repeating, ask for Session Friction Review:</p>
+<pre><code class="language-text">Run python3 scripts/session-friction-check.py. Summarize each finding with category, cited source refs, confidence, freshness, recommended destination, and suggested next human review step. Treat the output as generated evidence only. Do not create memory cards, edit owner files, choose tasks, approve commands, approve PRDs, activate beads, or accept implementation.</code></pre>
+<p>Use the result to decide whether a command-pattern note, reviewed memory candidate, protocol follow-up, or no action is warranted. The checker does not repair anything and <code>logs/session-friction-review.json</code> is not authority.</p>
+<h2 id="first-30-minutes-first-day-first-week"><a class="heading-anchor" href="#first-30-minutes-first-day-first-week" aria-label="Link to First 30 Minutes / First Day / First Week">#</a>First 30 Minutes / First Day / First Week</h2>
+<h3 id="first-30-minutes"><a class="heading-anchor" href="#first-30-minutes" aria-label="Link to First 30 Minutes">#</a>First 30 Minutes</h3>
 <p>Do this:</p>
 <ul><li>Open the repo.</li><li>Ask the agent to load active memory.</li><li>Run session start.</li><li>Confirm the active bead.</li><li>Do not code until the bead is clear.</li><li>Close the session if anything feels confusing.</li></ul>
 <p>Goal: run one safe session, even if no code changes.</p>
-<h3 id="first-day">First Day</h3>
+<h3 id="first-day"><a class="heading-anchor" href="#first-day" aria-label="Link to First Day">#</a>First Day</h3>
 <p>Do this:</p>
 <ul><li>Use local source intake or Idea-to-PRD for one idea.</li><li>Ask for one small bead.</li><li>Run or record at least one check.</li><li>Close with evidence.</li><li>Review whether the bead is accepted, revise, split, blocked, or stop.</li></ul>
 <p>Goal: turn one idea into a bounded, checkable unit of work.</p>
-<h3 id="first-week">First Week</h3>
+<h3 id="first-week"><a class="heading-anchor" href="#first-week" aria-label="Link to First Week">#</a>First Week</h3>
 <p>Do this:</p>
 <ul><li>Practice checkpointing when scope grows.</li><li>Read <code>OS-HEALTH.md</code> without treating it as instructions.</li><li>Approve transitions deliberately.</li><li>Learn the red flags.</li><li>Promote repeated lessons into the right owner file.</li></ul>
 <p>Goal: build the habit of scope, proof, and approval.</p>
-<h2 id="copyable-prompts">Copyable Prompts</h2>
+<h2 id="copyable-prompts"><a class="heading-anchor" href="#copyable-prompts" aria-label="Link to Copyable Prompts">#</a>Copyable Prompts</h2>
 <p>Use these high-frequency prompts. For more, see <code>tasks/reference/PROMPT-PATTERNS.md</code>.</p>
 <p>Use the Safe Prompt Pack when you need the agent to slow down and confirm boundaries before work starts:</p>
 <pre><code class="language-text">Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, and what requires my approval.
@@ -571,76 +695,99 @@ Ask one blocking question at a time. Treat generated reports and source notes as
 <pre><code class="language-text">Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve.</code></pre>
 <p>Check promotion:</p>
 <pre><code class="language-text">Check whether this memory belongs in DECISIONS.md, a PRD, an authority doc, or should remain reviewed evidence.</code></pre>
-<h2 id="faq">FAQ</h2>
-<h3 id="getting-started">Getting Started</h3>
-<h4 id="what-does-precode-help-me-avoid">What does Precode help me avoid?</h4>
+<h2 id="faq"><a class="heading-anchor" href="#faq" aria-label="Link to FAQ">#</a>FAQ</h2>
+<h3 id="getting-started"><a class="heading-anchor" href="#getting-started" aria-label="Link to Getting Started">#</a>Getting Started</h3>
+<h4 id="what-does-precode-help-me-avoid"><a class="heading-anchor" href="#what-does-precode-help-me-avoid" aria-label="Link to What does Precode help me avoid?">#</a>What does Precode help me avoid?</h4>
 <p>Scope creep, stale context, confident wrong code, vague done, skipped checks, skipped manual verification, and uncontrolled next-task momentum.</p>
-<h4 id="what-habit-should-i-build-first">What habit should I build first?</h4>
+<h4 id="what-habit-should-i-build-first"><a class="heading-anchor" href="#what-habit-should-i-build-first" aria-label="Link to What habit should I build first?">#</a>What habit should I build first?</h4>
 <p>Start every serious session with <code>bash scripts/session-start.sh</code>, then make the agent explain the bead before coding.</p>
-<p><code>session-start.sh</code> now also displays the <code>next-step</code> router decision. If you run <code>python3 scripts/next-step.py</code> separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet.</p>
+<p><code>session-start.sh</code> now also displays the <code>next-step</code> router decision. If you run <code>python3 scripts/next-step.py</code> separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet. The machine-readable shape is kept stable for key fields and categories, but the generated prose may change to stay clear.</p>
 <p>After a checked slice is accepted, commit it before starting the next slice. Push when your repo has a remote and you need remote backup or collaboration. Name the commit for the visible outcome, such as <code>add onboarding checklist</code> or <code>repair login redirect</code>, not a vague label like <code>updates</code>.</p>
-<h4 id="what-if-i-do-not-understand-a-file">What if I do not understand a file?</h4>
+<h4 id="what-if-i-do-not-understand-a-file"><a class="heading-anchor" href="#what-if-i-do-not-understand-a-file" aria-label="Link to What if I do not understand a file?">#</a>What if I do not understand a file?</h4>
 <p>Ask: <code>What does this file own, what is it not allowed to decide, and when should it be loaded?</code></p>
-<h4 id="what-if-i-want-to-move-fast">What if I want to move fast?</h4>
+<h4 id="what-if-i-want-to-move-fast"><a class="heading-anchor" href="#what-if-i-want-to-move-fast" aria-label="Link to What if I want to move fast?">#</a>What if I want to move fast?</h4>
 <p>Use smaller beads, not fewer guardrails. Small checked work is usually faster than large vague work that needs cleanup.</p>
-<h3 id="active-memory-and-context">Active Memory And Context</h3>
-<h4 id="why-only-three-active-memory-files">Why only three active-memory files?</h4>
+<h3 id="active-memory-and-context"><a class="heading-anchor" href="#active-memory-and-context" aria-label="Link to Active Memory And Context">#</a>Active Memory And Context</h3>
+<h4 id="why-only-three-active-memory-files"><a class="heading-anchor" href="#why-only-three-active-memory-files" aria-label="Link to Why only three active memory files?">#</a>Why only three active-memory files?</h4>
 <p>They keep the agent&#x27;s starting point small and inspectable. More always-loaded files create more chances for stale context to override the current bead.</p>
-<h4 id="what-is-the-difference-between-notes-and-authority">What is the difference between notes and authority?</h4>
+<h4 id="what-is-the-difference-between-notes-and-authority"><a class="heading-anchor" href="#what-is-the-difference-between-notes-and-authority" aria-label="Link to What is the difference between notes and authority?">#</a>What is the difference between notes and authority?</h4>
 <p>Notes are evidence. Authority is an approved Precode file such as a PRD, <code>DECISIONS.md</code>, <code>ARCHITECTURE.md</code>, or the active bead.</p>
-<h4 id="what-should-i-do-if-the-agent-seems-confused">What should I do if the agent seems confused?</h4>
+<h4 id="what-should-i-do-if-the-agent-seems-confused"><a class="heading-anchor" href="#what-should-i-do-if-the-agent-seems-confused" aria-label="Link to What should I do if the agent seems confused?">#</a>What should I do if the agent seems confused?</h4>
 <p>Checkpoint. Ask it to restate the active bead, primary authority, files in play, next check, and stop conditions.</p>
-<h3 id="ideas-prds-and-beads">Ideas, PRDs, And Beads</h3>
-<h4 id="when-do-i-use-product-md">When do I use PRODUCT.md?</h4>
+<h3 id="ideas-prds-and-beads"><a class="heading-anchor" href="#ideas-prds-and-beads" aria-label="Link to Ideas, PRDs, And Beads">#</a>Ideas, PRDs, And Beads</h3>
+<h4 id="when-do-i-use-product-md"><a class="heading-anchor" href="#when-do-i-use-product-md" aria-label="Link to When do I use PRODUCT.md?">#</a>When do I use PRODUCT.md?</h4>
 <p>Use <code>PRODUCT.md</code> when you are starting a product, checking whether an idea fits the product direction, or updating product promise, users, strategy, non-goals, current bets, success signals, or design and voice. It is planning context only, not active memory and not a task list.</p>
-<h4 id="what-is-a-bead">What is a bead?</h4>
+<h4 id="what-is-a-bead"><a class="heading-anchor" href="#what-is-a-bead" aria-label="Link to What is a bead?">#</a>What is a bead?</h4>
 <p>A bead is one small unit of work with a contract: objective, owner file, files in play, checks, stop conditions, and closeout evidence.</p>
-<h4 id="when-do-i-use-a-prd">When do I use a PRD?</h4>
+<h4 id="when-do-i-use-a-prd"><a class="heading-anchor" href="#when-do-i-use-a-prd" aria-label="Link to When do I use a PRD?">#</a>When do I use a PRD?</h4>
 <p>Use a PRD when the feature needs a destination before coding: problem, non-goals, user moment, requirements, risks, acceptance checks, and likely journey beads.</p>
-<h4 id="what-is-alignment">What is alignment?</h4>
+<h4 id="what-is-alignment"><a class="heading-anchor" href="#what-is-alignment" aria-label="Link to What is alignment?">#</a>What is alignment?</h4>
 <p>It is the conversation before the PRD where the agent helps you share the same design concept before anyone plans or codes. For rough founder ideas, it should start with simple product questions and a Product Brief before technical translation.</p>
-<h4 id="what-is-shared-language">What is shared language?</h4>
+<h4 id="what-is-shared-language"><a class="heading-anchor" href="#what-is-shared-language" aria-label="Link to What is shared language?">#</a>What is shared language?</h4>
 <p>It is the small vocabulary you and the agent agree to use for the product. If you call something a &quot;client intake,&quot; the PRD, UI, tests, and code should not quietly call it four different things unless there is a reason.</p>
-<h4 id="what-is-a-project-glossary">What is a project glossary?</h4>
+<h4 id="what-is-a-project-glossary"><a class="heading-anchor" href="#what-is-a-project-glossary" aria-label="Link to What is a project glossary?">#</a>What is a project glossary?</h4>
 <p>It is a reviewed memory card for useful terms, aliases, avoid terms, examples, and source pointers. It helps future agents understand language, but it is evidence only. Current code, active beads, approved PRDs, and owner files still win.</p>
-<h4 id="what-is-an-afk-candidate">What is an AFK candidate?</h4>
+<p>Good glossary cards include source pointers, freshness, examples from UI/code/tests/docs/support/user language, and an authority owner when a term needs promotion. Search results can help naming review, but they do not rename code, approve PRDs, activate beads, or promote owner files.</p>
+<h4 id="what-is-an-afk-candidate"><a class="heading-anchor" href="#what-is-an-afk-candidate" aria-label="Link to What is an AFK candidate?">#</a>What is an AFK candidate?</h4>
 <p>It is a bead that may be safe for an agent to execute after context is loaded. It still needs bounded scope, checks, stop conditions, manual QA when needed, and review.</p>
-<h4 id="what-is-a-vertical-slice">What is a vertical slice?</h4>
+<h4 id="what-is-a-vertical-slice"><a class="heading-anchor" href="#what-is-a-vertical-slice" aria-label="Link to What is a vertical slice?">#</a>What is a vertical slice?</h4>
 <p>It is a small piece of work that crosses enough layers to show real behavior. For user-facing work, prefer that over schema-only, backend-only, frontend-only, or tests-later beads.</p>
-<h4 id="what-should-i-do-with-an-old-prd-or-closed-issue">What should I do with an old PRD or closed issue?</h4>
+<h4 id="what-should-i-do-with-an-old-prd-or-closed-issue"><a class="heading-anchor" href="#what-should-i-do-with-an-old-prd-or-closed-issue" aria-label="Link to What should I do with an old PRD or closed issue?">#</a>What should I do with an old PRD or closed issue?</h4>
 <p>Treat it as historical evidence. Current active memory, current code, the active bead, the current approved PRD, and owner files are stronger than stale artifacts.</p>
-<h4 id="what-should-i-do-with-noisy-logs-or-caches">What should I do with noisy logs or caches?</h4>
+<h4 id="what-should-i-do-with-noisy-logs-or-caches"><a class="heading-anchor" href="#what-should-i-do-with-noisy-logs-or-caches" aria-label="Link to What should I do with noisy logs or caches?">#</a>What should I do with noisy logs or caches?</h4>
 <p>Use Local Hygiene. The first commands only warn and dry-run. They should never delete, archive, compact, or move files. Evidence is preserved; caches are disposable only when ignored and regeneratable.</p>
-<h4 id="what-if-i-change-direction-mid-task">What if I change direction mid-task?</h4>
+<h4 id="what-if-i-change-direction-mid-task"><a class="heading-anchor" href="#what-if-i-change-direction-mid-task" aria-label="Link to What if I change direction mid task?">#</a>What if I change direction mid-task?</h4>
 <p>Stop implementation. Decide whether the change belongs in a PRD amendment, <code>DECISIONS.md</code>, an authority file, a follow-up bead, or deferral.</p>
-<h4 id="what-is-a-goal-frame">What is a Goal Frame?</h4>
+<h4 id="what-is-a-goal-frame"><a class="heading-anchor" href="#what-is-a-goal-frame" aria-label="Link to What is a Goal Frame?">#</a>What is a Goal Frame?</h4>
 <p>A Goal Frame is reviewed orientation for a durable goal. It can help guide workflow selection, but it cannot approve work, activate beads, replace a PRD, or become a backlog.</p>
-<h4 id="what-is-the-candidate-queue">What is the Candidate Queue?</h4>
+<h4 id="what-is-the-candidate-queue"><a class="heading-anchor" href="#what-is-the-candidate-queue" aria-label="Link to What is the Candidate Queue?">#</a>What is the Candidate Queue?</h4>
 <p>It is a non-authoritative place to park intents you have not lost, with enough evidence and status to decide what deserves promotion. It can help review ideas, research needs, stale or blocked candidates, PRD candidates, and candidate bead visibility, but it cannot choose the active task, approve PRDs, activate beads, or authorize implementation.</p>
-<h3 id="evidence-checks-and-done">Evidence, Checks, And Done</h3>
-<h4 id="what-counts-as-evidence">What counts as evidence?</h4>
+<h3 id="evidence-checks-and-done"><a class="heading-anchor" href="#evidence-checks-and-done" aria-label="Link to Evidence, Checks, And Done">#</a>Evidence, Checks, And Done</h3>
+<h4 id="what-counts-as-evidence"><a class="heading-anchor" href="#what-counts-as-evidence" aria-label="Link to What counts as evidence?">#</a>What counts as evidence?</h4>
 <p>Recorded checks, closeout evidence, manual verification, external read-only status, or accepted review notes. Chat confidence is not evidence.</p>
-<h4 id="how-does-precode-stop-false-done">How does Precode stop false done?</h4>
+<h4 id="how-does-precode-stop-false-done"><a class="heading-anchor" href="#how-does-precode-stop-false-done" aria-label="Link to How does Precode stop false done?">#</a>How does Precode stop false done?</h4>
 <p>It separates implementation from proof, review, and next-task approval.</p>
-<h4 id="when-should-i-checkpoint">When should I checkpoint?</h4>
+<h4 id="when-should-i-checkpoint"><a class="heading-anchor" href="#when-should-i-checkpoint" aria-label="Link to When should I checkpoint?">#</a>When should I checkpoint?</h4>
 <p>Checkpoint when the task feels fuzzy, a session gets long, the agent changes several files, an approach fails twice, or scope starts expanding.</p>
-<h3 id="approvals-blockers-and-reports">Approvals, Blockers, And Reports</h3>
-<h4 id="why-do-i-approve-the-next-bead">Why do I approve the next bead?</h4>
+<h3 id="approvals-blockers-and-reports"><a class="heading-anchor" href="#approvals-blockers-and-reports" aria-label="Link to Approvals, Blockers, And Reports">#</a>Approvals, Blockers, And Reports</h3>
+<h4 id="why-do-i-approve-the-next-bead"><a class="heading-anchor" href="#why-do-i-approve-the-next-bead" aria-label="Link to Why do I approve the next bead?">#</a>Why do I approve the next bead?</h4>
 <p>The next bead is a new commitment. Precode can propose it, but you decide whether to continue.</p>
-<h4 id="what-if-work-is-blocked-by-manual-setup">What if work is blocked by manual setup?</h4>
+<h4 id="what-if-work-is-blocked-by-manual-setup"><a class="heading-anchor" href="#what-if-work-is-blocked-by-manual-setup" aria-label="Link to What if work is blocked by manual setup?">#</a>What if work is blocked by manual setup?</h4>
 <p>Record the missing input, dashboard step, manual test, or narrower unblocker bead. Do not let the agent code around the blocker.</p>
-<h4 id="are-token-cost-numbers-exact">Are token/cost numbers exact?</h4>
+<h4 id="are-token-cost-numbers-exact"><a class="heading-anchor" href="#are-token-cost-numbers-exact" aria-label="Link to Are token/cost numbers exact?">#</a>Are token/cost numbers exact?</h4>
 <p>Only when reliable telemetry exists. Missing spend is unknown, not zero.</p>
-<h4 id="does-precode-replace-judgment">Does Precode replace judgment?</h4>
+<h4 id="does-precode-replace-judgment"><a class="heading-anchor" href="#does-precode-replace-judgment" aria-label="Link to Does Precode replace judgment?">#</a>Does Precode replace judgment?</h4>
 <p>No. It makes state, scope, evidence, and approvals visible so your judgment is easier to apply.</p>
 <hr>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="CLAUDE-CODE-FIELD-GUIDE.html"><span>Next</span>Claude Code Field Guide For Students</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-helps-you-do">What This Guide Helps You Do</a><a class="level-2" href="#before-your-repo-exists">Before Your Repo Exists</a><a class="level-2" href="#use-the-product-ideation-workbook-before-precode">Use The Product Ideation Workbook Before Precode</a><a class="level-2" href="#use-the-exploration-loop-before-prd-commitment">Use The Exploration Loop Before PRD Commitment</a><a class="level-2" href="#validate-product-discovery-before-prd-shaping">Validate Product Discovery Before PRD Shaping</a><a class="level-2" href="#use-the-small-team-collaboration-lane">Use The Small Team Collaboration Lane</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#check-build-loop-health">Check Build Loop Health</a><a class="level-2" href="#use-ralph-for-bounded-retry">Use Ralph For Bounded Retry</a><a class="level-2" href="#use-goal-frames-for-durable-intent">Use Goal Frames For Durable Intent</a><a class="level-2" href="#use-the-candidate-queue-for-parked-intent">Use The Candidate Queue For Parked Intent</a><a class="level-2" href="#do-not-move-rename-or-directly-edit-precode-files">Do Not Move, Rename, Or Directly Edit Precode Files</a><a class="level-2" href="#use-recovery-when-something-feels-broken">Use Recovery When Something Feels Broken</a><a class="level-2" href="#other-things-not-to-do">Other Things Not To Do</a><a class="level-2" href="#run-your-first-precode-session">Run Your First Precode Session</a><a class="level-2" href="#use-the-daily-loop">Use The Daily Loop</a><a class="level-2" href="#checkpoint-before-context-gets-crowded">Checkpoint Before Context Gets Crowded</a><a class="level-2" href="#use-the-plain-decision-words">Use The Plain Decision Words</a><a class="level-2" href="#choose-what-to-ask-for">Choose What To Ask For</a><a class="level-2" href="#keep-the-agent-in-bounds">Keep The Agent In Bounds</a><a class="level-2" href="#know-when-work-is-done">Know When Work Is Done</a><a class="level-2" href="#use-a-review-lane">Use A Review Lane</a><a class="level-2" href="#prepare-release-without-shipping">Prepare Release Without Shipping</a><a class="level-2" href="#prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</a><a class="level-2" href="#review-verification-and-release-evidence">Review Verification And Release Evidence</a><a class="level-2" href="#approve-the-right-things">Approve The Right Things</a><a class="level-2" href="#read-reports-without-being-misled">Read Reports Without Being Misled</a><a class="level-2" href="#use-adaptive-depth-and-guardrails">Use Adaptive Depth And Guardrails</a><a class="level-2" href="#use-alignment-afk-candidates-and-fresh-review">Use Alignment, AFK Candidates, And Fresh Review</a><a class="level-2" href="#use-reviewed-memory">Use Reviewed Memory</a><a class="level-2" href="#first-30-minutes-first-day-first-week">First 30 Minutes / First Day / First Week</a><a class="level-3" href="#first-30-minutes">First 30 Minutes</a><a class="level-3" href="#first-day">First Day</a><a class="level-3" href="#first-week">First Week</a><a class="level-2" href="#copyable-prompts">Copyable Prompts</a><a class="level-2" href="#faq">FAQ</a><a class="level-3" href="#getting-started">Getting Started</a><a class="level-3" href="#active-memory-and-context">Active Memory And Context</a><a class="level-3" href="#ideas-prds-and-beads">Ideas, PRDs, And Beads</a><a class="level-3" href="#evidence-checks-and-done">Evidence, Checks, And Done</a><a class="level-3" href="#approvals-blockers-and-reports">Approvals, Blockers, And Reports</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-helps-you-do">What This Guide Helps You Do</a><a class="level-2" href="#before-your-repo-exists">Before Your Repo Exists</a><a class="level-2" href="#use-the-product-ideation-workbook-before-precode">Use The Product Ideation Workbook Before Precode</a><a class="level-2" href="#use-the-exploration-loop-before-prd-commitment">Use The Exploration Loop Before PRD Commitment</a><a class="level-2" href="#use-the-plan-loop-before-bead-commitment">Use The Plan Loop Before Bead Commitment</a><a class="level-2" href="#validate-product-discovery-before-prd-shaping">Validate Product Discovery Before PRD Shaping</a><a class="level-2" href="#review-what-a-hypothesis-taught-you">Review What A Hypothesis Taught You</a><a class="level-2" href="#use-the-small-team-collaboration-lane">Use The Small Team Collaboration Lane</a><a class="level-2" href="#review-who-built-what">Review Who Built What</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#check-build-loop-health">Check Build Loop Health</a><a class="level-2" href="#use-ralph-for-bounded-retry">Use Ralph For Bounded Retry</a><a class="level-2" href="#use-goal-frames-for-durable-intent">Use Goal Frames For Durable Intent</a><a class="level-2" href="#use-the-candidate-queue-for-parked-intent">Use The Candidate Queue For Parked Intent</a><a class="level-2" href="#do-not-move-rename-or-directly-edit-precode-files">Do Not Move, Rename, Or Directly Edit Precode Files</a><a class="level-2" href="#make-acceptance-criteria-testable">Make Acceptance Criteria Testable</a><a class="level-2" href="#use-recovery-when-something-feels-broken">Use Recovery When Something Feels Broken</a><a class="level-2" href="#other-things-not-to-do">Other Things Not To Do</a><a class="level-2" href="#run-your-first-precode-session">Run Your First Precode Session</a><a class="level-2" href="#use-the-daily-loop">Use The Daily Loop</a><a class="level-2" href="#checkpoint-before-context-gets-crowded">Checkpoint Before Context Gets Crowded</a><a class="level-2" href="#use-the-plain-decision-words">Use The Plain Decision Words</a><a class="level-2" href="#choose-what-to-ask-for">Choose What To Ask For</a><a class="level-2" href="#keep-the-agent-in-bounds">Keep The Agent In Bounds</a><a class="level-2" href="#know-when-work-is-done">Know When Work Is Done</a><a class="level-2" href="#use-a-review-lane">Use A Review Lane</a><a class="level-2" href="#prepare-release-without-shipping">Prepare Release Without Shipping</a><a class="level-2" href="#prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</a><a class="level-2" href="#review-verification-and-release-evidence">Review Verification And Release Evidence</a><a class="level-2" href="#review-requirement-to-proof-traceability">Review Requirement To Proof Traceability</a><a class="level-2" href="#approve-the-right-things">Approve The Right Things</a><a class="level-2" href="#read-reports-without-being-misled">Read Reports Without Being Misled</a><a class="level-2" href="#use-adaptive-depth-and-guardrails">Use Adaptive Depth And Guardrails</a><a class="level-2" href="#use-alignment-afk-candidates-and-fresh-review">Use Alignment, AFK Candidates, And Fresh Review</a><a class="level-2" href="#use-reviewed-memory">Use Reviewed Memory</a><a class="level-3" href="#review-repeated-friction">Review Repeated Friction</a><a class="level-2" href="#first-30-minutes-first-day-first-week">First 30 Minutes / First Day / First Week</a><a class="level-3" href="#first-30-minutes">First 30 Minutes</a><a class="level-3" href="#first-day">First Day</a><a class="level-3" href="#first-week">First Week</a><a class="level-2" href="#copyable-prompts">Copyable Prompts</a><a class="level-2" href="#faq">FAQ</a><a class="level-3" href="#getting-started">Getting Started</a><a class="level-3" href="#active-memory-and-context">Active Memory And Context</a><a class="level-3" href="#ideas-prds-and-beads">Ideas, PRDs, And Beads</a><a class="level-3" href="#evidence-checks-and-done">Evidence, Checks, And Done</a><a class="level-3" href="#approvals-blockers-and-reports">Approvals, Blockers, And Reports</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

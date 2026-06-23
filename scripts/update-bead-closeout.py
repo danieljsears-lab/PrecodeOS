@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.2
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -25,6 +25,12 @@ CLOSEOUT_LABELS = [
     ("Lesson to promote", "lesson_to_promote"),
     ("Follow-up bead needed", "follow_up_bead_needed"),
     ("Blocked escape", "blocked_escape"),
+    ("Reference follow-through", "reference_follow_through"),
+    ("Human contributor", "human_contributor"),
+    ("Contributor role", "contributor_role"),
+    ("Agent/tool surface", "agent_tool_surface"),
+    ("Attribution reviewed by", "attribution_reviewed_by"),
+    ("Attribution uncertainty", "attribution_uncertainty"),
     ("Evidence source", "evidence_source"),
 ]
 
@@ -110,6 +116,16 @@ def main() -> int:
         "lesson_to_promote": bead.closeout.get("lesson_to_promote", "none"),
         "follow_up_bead_needed": follow_up_suggestion(bead, close_state),
         "blocked_escape": normalize_blocked_escape(bead.closeout.get("blocked_escape", blocked_fallback)),
+        "reference_follow_through": (
+            bead.closeout.get("reference_follow_through")
+            or bead.closeout.get("reference_followthrough")
+            or "not recorded"
+        ),
+        "human_contributor": bead.closeout.get("human_contributor", "not recorded"),
+        "contributor_role": bead.closeout.get("contributor_role", "not recorded"),
+        "agent_tool_surface": bead.closeout.get("agent_tool_surface", "not recorded"),
+        "attribution_reviewed_by": bead.closeout.get("attribution_reviewed_by", "not reviewed"),
+        "attribution_uncertainty": bead.closeout.get("attribution_uncertainty", "not recorded"),
         "evidence_source": "`logs/check-results.jsonl`",
     }
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-18
+Document version: v0.1.14
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -25,14 +25,14 @@ Use `PRODUCT.md` as the builder-facing product constitution when the idea may af
 For a net-new, rough product idea from a non-technical builder, the default path is:
 
 ```text
-Product Ideation Workbook -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> Architecture Shaping when risk-triggered -> bead proposals
+Product Ideation Workbook -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> optional Plan Loop when the user wants pre-commitment exploration -> Architecture Shaping when risk-triggered -> bead proposals
 ```
 
 Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
 
 For first-time solo vibecoders and SnapCamp-style bootcamp students, the Conviction Packet is the expected bridge between pre-repo idea exploration and Precode. Claude Cowork, Claude, Claude Code, Codex, or another host agent may help produce it before a repo exists, but the packet is evidence only. It is not product authority, not a PRD, not a backlog, not bead approval, and not permission to code.
 
-Conviction means MVP-ready clarity, not validated demand. The builder should be able to name the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, not-yet scope, smallest useful MVP slice, smallest learning step, and recommended next Precode path. Guided online research can support the packet, but it remains weak evidence unless paired with user behavior, a real workaround, spend, switching effort, or prototype demand.
+Conviction means MVP-ready clarity, not validated demand. The builder should be able to name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, not-yet scope, smallest useful MVP slice, smallest learning step, and recommended next Precode path. Guided online research can support the packet, but it remains weak evidence unless paired with user behavior, a real workaround, spend, switching effort, or prototype demand.
 
 The PRD shard is the destination document: it describes where the work is trying to arrive, what counts as done, and which requirements are stable enough to verify.
 
@@ -68,13 +68,14 @@ Default founder-facing handoffs:
 
 | Handoff | Next safe action | Do not do yet | Good-enough signal | Stop or pause trigger |
 |---|---|---|---|---|
-| Workbook -> Product Brief | Summarize the brief and ask one next best question. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code. | User, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, and smallest useful version are named. | The idea is still only a solution with no user problem or current alternative. |
+| Workbook -> Product Brief | Summarize the brief and ask one next best question. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code. | User, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, and smallest useful version are named. | The idea is still only a solution with no user problem or current alternative. |
 | Product Brief -> Conviction Packet or Discovery | Choose targeted exploration and guided research/challenge when more context exists, or Product Discovery Validation when worth-building is uncertain. | Do not turn capability candidates into requirements. | The next uncertainty is clear: missing context, weak evidence, broad audience, demand, risk, or first slice. | Evidence is weak, audience is too broad, or too many candidates need narrowing. |
-| Conviction Packet -> Local Source Intake | Bring only the reviewed packet into Local Source Intake. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code from the packet directly. | User, problem, before/after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready slice, not-yet list, and smallest learning step are named. | The packet is still raw enthusiasm, research-only proof, or a feature pile without user behavior or a current alternative. |
-| Discovery -> Local Source Intake or pause/narrow/kill | Use the Discovery Summary to proceed, pause, narrow, or kill. | Do not treat `proceed` as PRD approval or task activation. | Target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and recommendation are named. | Recommendation is `pause`, `narrow`, or `kill`, or a sensitive surface needs human judgment. |
+| Conviction Packet -> Local Source Intake | Bring only the reviewed packet into Local Source Intake. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code from the packet directly. | User, problem, before/after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready slice, not-yet list, and smallest learning step are named. | The packet is still raw enthusiasm, research-only proof, or a feature pile without user behavior or a current alternative. |
+| Discovery -> Local Source Intake or pause/narrow/kill | Use the Discovery Summary to proceed, pause, narrow, or kill. | Do not treat `proceed` as PRD approval or task activation. | Target user, current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and recommendation are named. | Recommendation is `pause`, `narrow`, or `kill`, or a sensitive surface needs human judgment. |
 | PRD draft -> Product Definition Gate | Review readiness against the gate. | Do not compile features or derive beads. | Requirements have stable IDs, acceptance oracles, non-goals, risk gates, and known authority impacts. | Implementation-changing questions remain blocking or requirements cannot be verified. |
 | Approved PRD -> `FEATURES.md` compile | Compile only stable feature inventory. | Do not copy the whole PRD, treat Architecture Shaping as implementation permission, or activate work. | Approved PRD has stable requirements that can be summarized in `FEATURES.md`. | PRD approval is missing or product-constitution impact is unresolved. |
 | `FEATURES.md` -> Architecture Shaping when risk-triggered | Produce an evidence-only Architecture Brief before decomposition. | Do not create a full implementation plan or promote brief facts into owner files without review. | Hidden auth, data, API, integration, migration, dependency, workflow, or multi-system risks are surfaced or explicitly skipped. | Product-changing technical risk appears, owner-file facts need promotion, or an unknown needs a planning/unblocker bead. |
+| Source intake or PRD shaping -> Plan Loop | Explore one feature angle, option, risk, or first-slice question before committing to the next workflow. | Do not approve a PRD, create or activate beads, choose tasks, update owner files, or code. | The Plan Packet names source context, current facts, assumptions, options, risks, recommended next path, stop conditions, and what not to do yet. | The output starts acting like requirements, backlog, implementation plan, or task approval. |
 | Architecture Shaping or low-risk skip -> bead proposals | Derive candidate beads from approved requirement IDs and Architecture Brief evidence when relevant. | Do not activate a bead. | Each candidate has one logical unit, one primary authority file, checks, manual verification, stop conditions, and risk-appropriate planning depth. | A candidate mixes planning and implementation, spans multiple owners, lacks verification, or hides an approval gate. |
 | Bead proposals -> user-approved activation only | Ask for explicit bead activation through the normal transition gate. | Do not update `tasks/todo.md` or begin implementation without approval. | The user approves exactly one next bead. | More than one bead is active, scope is unclear, or the transition would bypass review. |
 
@@ -157,6 +158,7 @@ Use a founder-friendly question budget during early intake: after at most three 
 - better after moment
 - current workaround or evidence
 - assumptions
+- primary hypothesis or learning target when useful
 - not-yet list
 - smallest useful version
 - next best question
@@ -174,6 +176,7 @@ When the Product Brief is stable enough for deeper pre-PRD thinking, produce a C
 - current workaround or evidence
 - evidence strength
 - strongest evidence
+- primary hypothesis or learning target
 - weakest assumption
 - what would change our mind
 - guided research notes with source links, dates or recency when available, confidence, and uncertainty
@@ -193,9 +196,13 @@ The Exploration Loop output is evidence only. It should package a short narrativ
 
 Stop the Exploration Loop before PRD shaping when evidence is weak, the conversation stops producing new insight, or too many candidates need narrowing. If weak evidence is the main blocker, run Product Discovery Validation before drafting a PRD.
 
-If the idea sounds exciting but weakly evidenced, too broad, paid, market-facing, or solution-first, run Product Discovery Validation before drafting a PRD. The output should be a short Discovery Summary with the target user, current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and advisory `proceed | pause | narrow | kill` recommendation.
+Use Plan Loop after Local Source Intake, during PRD shaping, after PRD approval, or before candidate bead activation when the user explicitly asks to think through a feature angle before committing it. The Plan Loop should ask one targeted question at a time only when the answer could change the next workflow, risk, first slice, owner-file impact, or stop condition.
 
-If discovery recommends `pause`, `narrow`, or `kill`, do not draft requirements yet. Return the Discovery Summary, name what evidence or narrowing is needed, and remind the builder that discovery is evidence only, not product approval or task activation.
+The Plan Loop output is a Plan Packet, not a PRD, backlog, requirements section, bead contract, or implementation plan. Before PRD approval, it may recommend Product Discovery, PRD draft or amendment, Candidate Queue, owner-file update, or stop, but no bead proposal. After an approved PRD, it may sketch a candidate first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, it may challenge or refine the proposal, but it must not update `tasks/todo.md`, activate work, or code.
+
+If the idea sounds exciting but weakly evidenced, too broad, paid, market-facing, or solution-first, run Product Discovery Validation before drafting a PRD. The output should be a short Discovery Summary with the target user, current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and advisory `proceed | pause | narrow | kill` recommendation.
+
+If discovery recommends `pause`, `narrow`, or `kill`, do not draft requirements yet. Return the Discovery Summary, name what evidence or narrowing is needed, and remind the builder that discovery is evidence only, not product approval, not PRD approval, and not task activation.
 
 If the target project has a `PRODUCT.md`, load it when the idea is product-facing or could change product direction. Use it to check fit, name product drift, and avoid suggestions that contradict current non-goals.
 

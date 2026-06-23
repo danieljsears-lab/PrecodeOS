@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,7 +243,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
@@ -194,7 +251,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </section>
 <section class="content layout">
   <article class="article">
-    <h2 id="what-this-guide-is-for">What This Guide Is For</h2>
+    <h2 id="what-this-guide-is-for"><a class="heading-anchor" href="#what-this-guide-is-for" aria-label="Link to What This Guide Is For">#</a>What This Guide Is For</h2>
 <p>Use this guide when you want to put PrecodeOS into a project for the first time.</p>
 <p>PrecodeOS is not an app you launch. It is a small repo-native operating layer for AI coding work: Markdown authority files, task contracts, adapter notes, validation scripts, and generated evidence rules that live inside a project folder.</p>
 <p>If you are helping someone else through setup, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use <code>docs/PRECODE-TROUBLESHOOTING.md</code>.</p>
@@ -202,13 +259,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <ol><li>Pull PrecodeOS from its public GitHub repository.</li><li>Run the read-only Bootstrap Confidence check before copying anything.</li><li>Choose the first adoption fork: fresh install or existing repo intake.</li><li>Copy only the public package files that belong in the target project.</li><li>Adapt product and project owner files in plain English.</li><li>Validate memory before letting an agent build.</li><li>Stop for human review.</li></ol>
 <p>The optional local <code>precode</code> CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.</p>
 <p>If you need the exact public package technical dictionary, use <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code>. This setup guide explains the adoption path; the package inventory remains the public file map.</p>
-<h2 id="before-you-start">Before You Start</h2>
+<h2 id="before-you-start"><a class="heading-anchor" href="#before-you-start" aria-label="Link to Before You Start">#</a>Before You Start</h2>
 <p>You need:</p>
 <ul><li>a local folder where you can clone or pull from GitHub</li><li>a target project folder</li><li>Git installed</li><li>Python 3 available for validation scripts</li><li>an AI coding agent that can read and edit local files</li></ul>
 <p>Do not paste secrets, API keys, billing data, private dashboard values, private customer data, or personal notes into Precode files.</p>
 <p>If you have notes, documents, screenshots, research, design exports, or links that belong with the project, put them in root-level <code>project-evidence/</code>. That folder is for project-owned raw evidence, not active memory, not task approval, and not implementation instructions. Each project decides whether to track or ignore it in Git; review contents before committing.</p>
 <p>Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.</p>
-<h2 id="bootstrap-confidence-check">Bootstrap Confidence Check</h2>
+<h2 id="bootstrap-confidence-check"><a class="heading-anchor" href="#bootstrap-confidence-check" aria-label="Link to Bootstrap Confidence Check">#</a>Bootstrap Confidence Check</h2>
 <p>Before copying, editing, installing hooks, or changing the target project, run the read-only Bootstrap Confidence helper from the PrecodeOS package checkout:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>The helper names the package source, target project, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. By default it writes nothing.</p>
@@ -251,7 +308,7 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>When setup state is partial or confusing, ask for recovery guidance:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --recovery-guidance</code></pre>
 <p>Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.</p>
-<h2 id="ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</h2>
+<h2 id="ember-bootcamp-fit-check-precodeos-or-plain-vs-code"><a class="heading-anchor" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code" aria-label="Link to Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?">#</a>Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</h2>
 <p>Use this fit check if you are in an Ember bootcamp and are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.</p>
 <p>Use PrecodeOS now when:</p>
 <ul><li>you are building a real product you may show to customers, users, coworkers, or collaborators</li><li>the app has multiple steps, screens, integrations, data flows, or future sessions</li><li>an engineer, instructor, or teammate may need to understand or continue the work</li><li>you need scope control, evidence, checkpoints, recovery, or a clear handoff</li><li>you are moving from rough design or workbook material into serious product build work</li></ul>
@@ -259,7 +316,7 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <ul><li>you are making a throwaway prototype, quick sketch, or learning-only demo</li><li>you are still learning how to open the project, use VS Code, run commands, or talk to Claude Code</li><li>you are doing early UI or design exploration before choosing what belongs in the real app</li><li>setup basics are blocking you and practicing the tool first would reduce confusion</li><li>the work is not intended to survive beyond the exercise</li></ul>
 <p>This is a two-way door. It is okay to practice basics first and add PrecodeOS later. Before you begin serious multi-session product development, especially work you want engineers or instructors to support, add PrecodeOS so the repo has a clear task, scope, and proof trail.</p>
 <p>Once real development starts in VS Code, keep development there. You may use design or prototype tools to explore ideas, but do not keep bouncing the product between Ember, Claude Design, Claude Code web, and local VS Code. Bring the chosen design or handoff material into the project, then develop locally from the project folder.</p>
-<h2 id="step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</h2>
+<h2 id="step-1-pull-precodeos-from-github"><a class="heading-anchor" href="#step-1-pull-precodeos-from-github" aria-label="Link to Step 1: Pull PrecodeOS From GitHub">#</a>Step 1: Pull PrecodeOS From GitHub</h2>
 <p>Start by getting a clean local copy of the public PrecodeOS package.</p>
 <p>If you do not have it yet:</p>
 <pre><code class="language-bash">git clone https://github.com/danieljsears-lab/PrecodeOS.git</code></pre>
@@ -272,7 +329,7 @@ find . -maxdepth 2 -type f | sort</code></pre>
 <p>You are using this checkout as the package source. Do not treat it as the target app you are building unless your goal is to maintain PrecodeOS itself.</p>
 <p>After you know the target project path, run Bootstrap Confidence before setup:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
-<h2 id="step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</h2>
+<h2 id="step-2-ask-the-agent-to-orient-first"><a class="heading-anchor" href="#step-2-ask-the-agent-to-orient-first" aria-label="Link to Step 2: Ask The Agent To Orient First">#</a>Step 2: Ask The Agent To Orient First</h2>
 <p>Before copying or editing, ask your agent to explain what it sees.</p>
 <pre><code class="language-text">I want to adopt PrecodeOS into a project.
 Treat PrecodeOS as a package source, not as an app to run.
@@ -283,10 +340,10 @@ Explain the plan in plain English and stop for my approval.</code></pre>
 <p>Expect the agent to name:</p>
 <ul><li>the PrecodeOS package checkout</li><li>the target project folder</li><li>whether this is a new project or existing project</li><li>the public file groups to copy</li><li>the private, generated, local, and secret files to exclude</li><li>conflicts, missing dependencies, and the first safe next action from Bootstrap Confidence</li><li>the first validation command</li></ul>
 <p>Stop if the agent tries to run a broad installer, invents a <code>precode</code> CLI command, installs hooks silently, or starts editing application code.</p>
-<h2 id="step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</h2>
+<h2 id="step-3-choose-the-first-adoption-fork"><a class="heading-anchor" href="#step-3-choose-the-first-adoption-fork" aria-label="Link to Step 3: Choose The First Adoption Fork">#</a>Step 3: Choose The First Adoption Fork</h2>
 <p>Use the new-project path first if you are starting from an empty or nearly empty repository.</p>
 <p>Use the existing-project path if your target project already has application code, product docs, project conventions, or active work.</p>
-<h3 id="path-a-new-project">Path A: New Project</h3>
+<h3 id="path-a-new-project"><a class="heading-anchor" href="#path-a-new-project" aria-label="Link to Path A: New Project">#</a>Path A: New Project</h3>
 <p>In a new project, the goal is to create the PrecodeOS operating layer before product work starts.</p>
 <p>Ask:</p>
 <pre><code class="language-text">Set up PrecodeOS for a new project.
@@ -299,7 +356,7 @@ Before changing anything, show me the copy checklist and the files that will be 
 <div class="table-wrap"><table><thead><tr><th>File group</th><th>Include</th></tr></thead><tbody><tr><td>Active memory</td><td><code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code></td></tr><tr><td>Candidate Queue</td><td><code>CANDIDATE-QUEUE.md</code></td></tr><tr><td>Product and project owner files</td><td><code>PRODUCT.md</code>, <code>PROJECT-CONTEXT.md</code>, <code>FEATURES.md</code>, <code>ACCEPTANCE.md</code>, <code>ARCHITECTURE.md</code>, <code>API.md</code>, <code>DATA-MODELS.md</code>, <code>SECURITY.md</code>, <code>CODEBASE-GUIDE.md</code></td></tr><tr><td>Public orientation docs</td><td><code>README.md</code>, <code>docs/</code>, <code>CONTRIBUTING.md</code>, <code>GOVERNANCE.md</code>, <code>TRADEMARK.md</code>, <code>NOTICE</code>, <code>LICENSE</code></td></tr><tr><td>Agent shims and adapters</td><td><code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, <code>.github/copilot-instructions.md</code>, <code>adapters/</code></td></tr><tr><td>Work structure</td><td><code>tasks/beads/</code>, <code>tasks/prds/</code>, <code>tasks/reference/</code>, <code>tasks/templates/</code>, <code>modes/</code>, <code>memory/</code></td></tr><tr><td>Project evidence guide</td><td><code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code></td></tr><tr><td>Scripts and checks</td><td><code>scripts/</code>, <code>.githooks/</code>, <code>.github/workflows/</code> when the target repo wants GitHub validation</td></tr><tr><td>Public generated-log guide</td><td><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></td></tr></tbody></table></div>
 <p>Then adapt these files before starting product work:</p>
 <ul><li><code>PRODUCT.md</code>: product promise, users, strategy, bets, success signals, and voice</li><li><code>PROJECT-CONTEXT.md</code>: app directory, stack, conventions, checks, integrations, and sensitive boundaries</li><li><code>DECISIONS.md</code>: hard decisions already known for this project</li><li><code>tasks/todo.md</code>: the first setup bead and current state</li></ul>
-<h3 id="path-b-existing-project">Path B: Existing Project</h3>
+<h3 id="path-b-existing-project"><a class="heading-anchor" href="#path-b-existing-project" aria-label="Link to Path B: Existing Project">#</a>Path B: Existing Project</h3>
 <p>In an existing project, the goal is to add Precode without flattening the project history, conventions, or current work.</p>
 <p>Run Existing Repo Intake before copying or adapting Precode files:</p>
 <pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
@@ -320,12 +377,12 @@ python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --
 <p>For existing projects, do not overwrite:</p>
 <ul><li>existing <code>README.md</code></li><li>existing product, architecture, API, security, or data-model docs</li><li>app source code</li><li>package manager files</li><li>CI files</li><li>environment files</li><li>generated output</li></ul>
 <p>Instead, ask the agent to propose how existing project facts should be reflected in Precode owner files, then stop for review.</p>
-<h2 id="step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</h2>
+<h2 id="step-4-exclude-private-generated-local-and-secret-files"><a class="heading-anchor" href="#step-4-exclude-private-generated-local-and-secret-files" aria-label="Link to Step 4: Exclude Private, Generated, Local, And Secret Files">#</a>Step 4: Exclude Private, Generated, Local, And Secret Files</h2>
 <p>Do not copy these from the package checkout into a user&#x27;s project:</p>
 <div class="table-wrap"><table><thead><tr><th>Exclusion</th><th>Why</th></tr></thead><tbody><tr><td>Private local planning material</td><td>Local context that is not part of the reusable public package.</td></tr><tr><td><code>OS-HEALTH.md</code>, <code>PRECODE-HELP.md</code>, <code>PROGRESS.md</code></td><td>Generated reports, not source authority.</td></tr><tr><td><code>logs/*.json</code>, <code>logs/*.jsonl</code>, <code>logs/*.yaml</code>, generated <code>logs/*.md</code></td><td>Generated evidence from one repo, not setup source for another repo.</td></tr><tr><td><code>logs/check-output/</code>, <code>logs/scheduled-audit-output/</code></td><td>Local command output and audit snapshots.</td></tr><tr><td><code>.agent-state/</code>, <code>.claude/</code>, <code>.codex/</code>, <code>.cursor/</code>, <code>.vscode/</code>, <code>.idea/</code></td><td>Local agent, editor, and IDE state.</td></tr><tr><td><code>.env</code>, <code>.env.*</code>, <code>secrets/</code>, <code>credentials/</code>, key and certificate files</td><td>Secrets and environment material.</td></tr><tr><td><code>__pycache__/</code>, test caches, coverage output, local virtual environments</td><td>Regeneratable local cache or environment output.</td></tr></tbody></table></div>
 <p>Keep <code>logs/LOG-EVIDENCE-TAXONOMY.md</code> if the package includes it. That file explains generated log semantics and is public documentation.</p>
 <p>Keep <code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code> if the package includes it. After setup, the folder belongs to the target project and may contain user-selected raw evidence. Do not copy private evidence from one project into another.</p>
-<h2 id="step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</h2>
+<h2 id="step-5-validate-before-work-starts"><a class="heading-anchor" href="#step-5-validate-before-work-starts" aria-label="Link to Step 5: Validate Before Work Starts">#</a>Step 5: Validate Before Work Starts</h2>
 <p>After the files are in place and owner files have been adapted, run the first validation command from the target project root:</p>
 <pre><code class="language-bash">bash scripts/validate-memory.sh</code></pre>
 <p>Then start the first session:</p>
@@ -334,7 +391,7 @@ python3 scripts/next-step.py</code></pre>
 <p>The first session should explain:</p>
 <ul><li>active memory is only <code>AGENT.md</code>, <code>DECISIONS.md</code>, and <code>tasks/todo.md</code></li><li>the active bead</li><li>the primary authority file</li><li>files in play</li><li>checks to run</li><li>stop conditions</li><li>blockers or missing setup</li></ul>
 <p>Stop if active memory includes extra files, the active bead is unclear, the app directory is wrong, or the checks are vague.</p>
-<h2 id="step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</h2>
+<h2 id="step-6-first-safe-agent-prompt"><a class="heading-anchor" href="#step-6-first-safe-agent-prompt" aria-label="Link to Step 6: First Safe Agent Prompt">#</a>Step 6: First Safe Agent Prompt</h2>
 <p>Use this after setup validation passes:</p>
 <pre><code class="language-text">Before editing, load only Precode active memory: AGENT.md, DECISIONS.md, and tasks/todo.md.
 Then tell me the active bead, primary authority, files in play, checks, stop conditions, and anything blocked.
@@ -344,13 +401,13 @@ Do not start coding yet.</code></pre>
 Do not write product app code.
 Help me verify that PRODUCT.md, PROJECT-CONTEXT.md, DECISIONS.md, and tasks/todo.md match this target project.
 Name any missing information and stop for my review.</code></pre>
-<h2 id="support-engineer-runbook">Support Engineer Runbook</h2>
+<h2 id="support-engineer-runbook"><a class="heading-anchor" href="#support-engineer-runbook" aria-label="Link to Support Engineer Runbook">#</a>Support Engineer Runbook</h2>
 <p>Use this section when you are helping someone else adopt PrecodeOS.</p>
 <p>For a short support slot, start with the fast support flow in <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code>, then use this guide for the setup mechanics.</p>
-<h3 id="preflight">Preflight</h3>
+<h3 id="preflight"><a class="heading-anchor" href="#preflight" aria-label="Link to Preflight">#</a>Preflight</h3>
 <p>Confirm:</p>
 <ul><li>the user has a target project folder</li><li>the user understands that PrecodeOS is a package layer, not an app runtime</li><li>the public PrecodeOS repo has been cloned or pulled</li><li>the target repo has a clean or understood <code>git status</code></li><li>no secrets are being pasted into prompts or docs</li><li>Bootstrap Confidence has named source, target, target kind, conflicts, exclusions, and first safe next action</li><li>the user can approve each file group before copy/adaptation</li></ul>
-<h3 id="target-project-inspection">Target-Project Inspection</h3>
+<h3 id="target-project-inspection"><a class="heading-anchor" href="#target-project-inspection" aria-label="Link to Target Project Inspection">#</a>Target-Project Inspection</h3>
 <p>Run safe inspection only:</p>
 <pre><code class="language-bash">git status
 find . -maxdepth 2 -type f | sort
@@ -361,24 +418,46 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 I will not overwrite conflicts automatically.
 I will copy or adapt Precode by file group, then run memory validation.
 Here are the conflicts and choices that need your approval:</code></pre>
-<h3 id="validation-checklist">Validation Checklist</h3>
+<h3 id="validation-checklist"><a class="heading-anchor" href="#validation-checklist" aria-label="Link to Validation Checklist">#</a>Validation Checklist</h3>
 <p>After setup:</p>
 <ul><li>run <code>bash scripts/validate-memory.sh</code></li><li>run <code>python3 scripts/file-inventory.py --check</code> if the full script set was copied</li><li>run <code>bash scripts/session-start.sh</code></li><li>confirm generated reports are evidence only</li><li>confirm the first active bead is setup or orientation, not product implementation</li><li>confirm project-specific checks in <code>PROJECT-CONTEXT.md</code></li><li>confirm any packet, design, PRD, or handoff input was ingested through the support runbook path or named as the next blocker</li></ul>
-<h3 id="escalation-and-stop-conditions">Escalation And Stop Conditions</h3>
+<h3 id="escalation-and-stop-conditions"><a class="heading-anchor" href="#escalation-and-stop-conditions" aria-label="Link to Escalation And Stop Conditions">#</a>Escalation And Stop Conditions</h3>
 <p>Stop and ask the user before:</p>
 <ul><li>overwriting an existing project document</li><li>installing Git hooks</li><li>adding or changing GitHub Actions</li><li>changing package manager files</li><li>editing app code</li><li>moving or renaming Precode files</li><li>adding active-memory files</li><li>touching secrets, env files, dashboard values, deployment settings, billing, auth, payments, or personal data</li><li>approving a bead transition</li></ul>
 <p>If setup is blocked, record the blocker in plain English and propose a narrow setup or unblocker bead. Do not widen setup into product work.</p>
-<h2 id="where-to-go-next">Where To Go Next</h2>
+<h2 id="where-to-go-next"><a class="heading-anchor" href="#where-to-go-next" aria-label="Link to Where To Go Next">#</a>Where To Go Next</h2>
 <p>After guided setup, use:</p>
 <ul><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code> when assisting another user through adoption and first use</li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code> when setup, state, checks, or generated reports are confusing</li><li><code>docs/PRECODE-USER-GUIDE.md</code> for day-to-day operation</li><li><code>docs/PRECODE-OS-README.md</code> for the Builder OS mental model</li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> for the public package file dictionary</li><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> if the product idea is still rough</li></ul>
 <p>Do not use private local files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="CLAUDE-CODE-FIELD-GUIDE.html"><span>Previous</span>Claude Code Field Guide For Students</a><a href="HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.html"><span>Next</span>How To Build Software Using PrecodeOS + AI Coding Agents</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

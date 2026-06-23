@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-20
+Document version: v0.1.12
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -90,13 +90,15 @@ bash scripts/record-check.sh -- <command>
 
 A logged tool run does not count as a passing check unless it is also recorded through `record-check.sh` or accepted in Closeout Evidence with the required manual verification format.
 
-Repeated failed or blocked tool runs may be inspected later by a read-only session-friction review. That review may recommend path corrections, command-pattern notes, memory-card candidates, or protocol follow-ups, but it must not auto-edit active memory, shims, reviewed memory, owner files, generated reports, or command wrappers.
+`python3 scripts/session-friction-check.py` runs Session Friction Review as a read-only advisory check over safe local ledgers and compiled summaries. It may flag repeated failure categories, missing failure categories, unavailable commands or dependencies, sandbox or approval blocks, stale check or closeout evidence, generated refresh without verification, reviewed-memory context pressure, or no safe evidence found. Each finding must cite source evidence, confidence, freshness, proposed destination, and a suggested next human review step. The output is generated evidence only: it must not auto-edit active memory, shims, reviewed memory, owner files, generated reports, or command wrappers, and it must not approve commands, select tasks, promote memory, accept review, or create package-manager behavior.
 
 Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation. If adaptive depth warns before a command, the agent should explain the warning's shortest next action and either fix the bead metadata, strengthen proof, ask for approval, or split scope before treating the command path as clear.
 
 `next-step` is the canonical generated router for the next human decision. Its `load_plan`, `single_next_protocol`, and `context_footprint` fields are context-routing evidence only; they do not approve tool calls or widen allowed tool classes.
 
 `python3 scripts/ralph-loop.py` is a bounded bead-attempt engine. It may run one explicit attempt command and a validator set, then write `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md`. Ralph does not invent commands, approve risky commands, accept work, or approve transitions.
+
+`python3 scripts/candidate-queue.py` is an approval-gated local Candidate Queue helper. Preview modes are read-only evidence and must say `mutates_now: false`. Apply mode is local mutation and requires explicit `--apply --approve-action <ID>`; that approval is approval for queue writeback only, not PRD approval, bead activation, `tasks/todo.md` mutation, implementation permission, external mutation, or `B###` reservation.
 
 `python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command. If it says continue for a local mutation, keep the mutation inside `files_in_play` and stop if the command would install dependencies, widen scope, touch sensitive surfaces, or rewrite generated evidence as if it were authority.
 

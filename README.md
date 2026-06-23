@@ -102,7 +102,7 @@ It uses tiny active memory to prevent stale context, forces authority into named
 
 Ralph-style iteration is opt-in and bounded by the active bead. 
 
-`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, and candidate bead visibility. It says, "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion." It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code.
+`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, product-value ratings, themes, and near-bead sketches. It says, "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion." It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code. `python3 scripts/candidate-queue.py` can preview raw-note import or shaping proposals, but apply requires explicit `--approve-action` and may write only to `CANDIDATE-QUEUE.md`.
 
 ## What You Can Build
 
@@ -189,9 +189,9 @@ Do not add more active-memory files. If a topic needs durable detail, give it a 
 
 For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md). If you are using PrecodeOS in a project, start with [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md). It is the daily command, prompt, report, recovery, check, and learning surface for students.
 
-Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface, open [`docs-html/index.html`](docs-html/index.html).
+Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
 
-For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually.
+For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually. Acceptance criteria may use optional EARS-style wording when it clarifies expected behavior; the syntax is not required and generated HTML does not approve or persist it.
 
 For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md). A generated reading page is available at [`docs-html/CANDIDATE-QUEUE.html`](docs-html/CANDIDATE-QUEUE.html), and public users can refresh it with `python3 scripts/docs-html.py`, but the Markdown queue remains canonical. Candidate ranking is review order only; it does not choose what the agent builds next, approve PRDs, activate beads, or reserve bead IDs.
 
@@ -227,7 +227,7 @@ For evidence, use recorded checks:
 bash scripts/record-check.sh -- <command>
 ```
 
-Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, plain-English triage labels, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
+Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, `logs/build-attribution-ledger.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, score contributors, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, plain-English triage labels, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
 
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
@@ -244,7 +244,7 @@ python3 scripts/ralph-loop.py --dry-run
 
 `precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts.
 
-`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, but it is generated guidance only.
+`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
 
@@ -363,7 +363,7 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.44
+Document version: v0.1.45
 Last updated: 2026-06-21
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.

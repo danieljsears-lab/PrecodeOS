@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-06-21
+# Version: v0.1.2
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -24,6 +24,13 @@ EMPTY_MARKERS = {"", "none", "none recorded", "not recorded", "not evaluated", "
 GENERATED_PATH_PREFIXES = ("logs/", "docs-html/")
 GENERATED_PATHS = {"OS-HEALTH.md", "PRECODE-HELP.md", "PROGRESS.md"}
 CANDIDATE_ID_RE = re.compile(r"\bCQ-\d{3}(?:-[A-Za-z0-9][A-Za-z0-9-]*)?\b")
+REVERSAL_FIELD_LABELS = {
+    "superseded_bead": "Superseded bead",
+    "reversal_target": "Reversal target",
+    "reversal_reason": "Reversal reason",
+    "preserved_behavior": "Preserved behavior",
+    "reversal_proof": "Reversal proof",
+}
 
 
 def git(root: Path, args: list[str]) -> subprocess.CompletedProcess[str] | None:
@@ -217,6 +224,31 @@ def provenance(bead: Any) -> dict[str, Any]:
     }
 
 
+def extract_labeled_value(text: str, label: str) -> str:
+    pattern = re.compile(rf"^\s*(?:[-*]\s*)?{re.escape(label)}\s*:\s*(.+?)\s*$", re.IGNORECASE | re.MULTILINE)
+    match = pattern.search(text)
+    return compact_text(match.group(1), 240) if match else ""
+
+
+def reversal_provenance(bead: Any) -> dict[str, Any] | None:
+    haystack = "\n".join(
+        [
+            bead.title,
+            bead.bead_kind,
+            bead.parent_prd,
+            " ".join(str(value) for value in bead.frontmatter.values()),
+            " ".join(bead.closeout.values()),
+            " ".join(bead.sections.values()),
+            bead.handback,
+        ]
+    )
+    lower = haystack.lower()
+    if not any(term in lower for term in ("reversal bead", "superseded bead", "reversal target", "reversal reason", "supersession", "git revert")):
+        return None
+    values = {key: extract_labeled_value(haystack, label) for key, label in REVERSAL_FIELD_LABELS.items()}
+    return {"recorded": any(values.values()), **values}
+
+
 def plain_outcome(bead: Any, implementation: list[dict[str, str]], generated: list[dict[str, str]], possible_implementation: list[dict[str, str]]) -> str:
     result = compact_text(bead.closeout.get("result", ""))
     if result and result.lower() not in EMPTY_MARKERS:
@@ -294,6 +326,7 @@ def build_entry(root: Path, existing_entries: list[dict[str, Any]]) -> dict[str,
         "plain_outcome": plain_outcome(bead, implementation, generated, possible_implementation),
         "evidence_state": evidence_state,
         "provenance": provenance(bead),
+        "reversal": reversal_provenance(bead),
         "build_lane": todo.get("build_lane") or "",
         "active_feature_window": todo.get("active_feature_window") or "",
         "primary_authority": bead.primary_authority,
@@ -372,6 +405,7 @@ def render_entry(entry: dict[str, Any]) -> str:
     changes = entry.get("changes") if isinstance(entry.get("changes"), dict) else {}
     checks = entry.get("checks") if isinstance(entry.get("checks"), dict) else {}
     uncertainty = entry.get("remaining_uncertainty") if isinstance(entry.get("remaining_uncertainty"), list) else []
+    reversal = entry.get("reversal") if isinstance(entry.get("reversal"), dict) else {}
 
     lines = [
         f"### {entry.get('timestamp', 'unknown time')}",
@@ -386,6 +420,7 @@ def render_entry(entry: dict[str, Any]) -> str:
         f"- Implementation changes: {compact_change_summary(changes.get('implementation') or [], 'none recorded from committed baseline')}",
         f"- Generated evidence changes: {compact_change_summary(changes.get('generated_evidence') or [], 'none recorded from committed baseline')}",
         f"- Provenance: {'; '.join(provenance_lines(entry)) or 'no Candidate Queue or PRD lineage recorded; primary source unavailable'}",
+        f"- Reversal/supersession: {reversal_line(reversal)}",
         f"- Remaining uncertainty: {'; '.join(str(item) for item in uncertainty) if uncertainty else 'none recorded'}",
         f"- Build lane: {entry.get('build_lane') or 'not recorded'}",
         f"- Active feature window: {entry.get('active_feature_window') or 'not recorded'}",
@@ -407,6 +442,19 @@ def render_entry(entry: dict[str, Any]) -> str:
             ]
         )
     return "\n".join(lines)
+
+
+def reversal_line(reversal: dict[str, Any]) -> str:
+    if not reversal:
+        return "not recorded"
+    parts = []
+    for key, label in REVERSAL_FIELD_LABELS.items():
+        value = reversal.get(key)
+        if value:
+            parts.append(f"{label}: {value}")
+    if parts:
+        return "; ".join(parts)
+    return "reversal vocabulary detected, but no labeled reversal fields were recorded"
 
 
 def render_markdown(entries: list[dict[str, Any]]) -> str:

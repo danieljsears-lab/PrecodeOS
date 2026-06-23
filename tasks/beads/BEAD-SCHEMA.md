@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.16
+Document version: v0.1.19
 Last updated: 2026-06-23
 
 ## Purpose
@@ -86,9 +86,11 @@ The mirrored sections below stay readable for humans and for transition-safe val
 
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when choosing `verification_type`. Prefer the tier names `static`, `unit`, `integration`, `browser`, `manual`, and `external` for new beads.
 
+When the bead's acceptance confidence depends on a specific requirement ID, bug behavior, or acceptance criterion, keep a compact requirement-to-proof trace in the bead body or Closeout Evidence. Name the requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what the evidence proves; what it does not prove; and remaining uncertainty. This is optional evidence framing for proof-sensitive work, not required ceremony for every tiny bead and not proof by itself.
+
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` when creating, reviewing, or splitting beads. Candidate beads should pass the Bead Decomposition Test before activation.
 
-Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a bead is assigned to a teammate branch/worktree, when a candidate is described as `can run in parallel`, or when a coordinator needs merge/re-entry evidence.
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a bead is assigned to a teammate branch/worktree, when a candidate is described as `can run in parallel`, or when a coordinator needs merge/re-entry evidence. `python3 scripts/team-collaboration-check.py` can provide read-only preview evidence for branch/worktree state, owner-file impacts, stale re-entry risk, and optional GitHub status, but it does not approve parallel work, activate beads, accept implementation, or approve merge.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether the next artifact should be source intake, PRD shaping, decomposition, a planning bead, an implementation bead, a review bead, an unblocker, or state repair.
 
@@ -109,6 +111,17 @@ Use the Review Lanes Protocol, `tasks/reference/REVIEW-LANES-PROTOCOL.md`, when 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when enabling, running, or reviewing bounded Ralph attempts for one active bead.
+
+Use `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md` when already-implemented work must be undone, removed, replaced, or superseded. A reversal is a separate normal bead. The prior bead stays `done` historical evidence; do not reopen it, delete evidence, rewrite transition logs, or treat Git revert alone as completion proof.
+
+A reversal bead should use the closest existing `bead_kind` value such as `bugfix`, `refactor`, or `implementation`. Do not invent a new `reversal` state or hard enum for v1. The bead body or Closeout Evidence should name:
+
+- Superseded bead
+- Reversal target
+- Reversal reason
+- Preserved behavior
+- Reversal proof
+- Approvals still required
 
 Use `python3 scripts/run-contract-check.py` when a bead has or should have a risk-triggered run contract.
 
@@ -180,7 +193,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 ## Operating Rules
 
 - Only one bead may be `in_progress` at a time.
-- In small team work, only one bead may be `in_progress` per checkout; parallel beads must use separate branches or worktrees and return through coordinator review before integration.
+- In small team work, only one bead may be `in_progress` per checkout; parallel beads must use separate branches or worktrees and return through coordinator review before integration. Team preview output is generated evidence only.
 - Every bead must name exactly one primary authority file.
 - `tasks/todo.md` and the bead frontmatter should agree on the active bead and its current state.
 - Product-feature beads must cite one parent PRD shard and the requirement IDs they implement.
@@ -194,6 +207,8 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - Execution beads may produce implementation changes and recorded evidence; they should not reshape product definition mid-flight.
 - Run checks through `bash scripts/record-check.sh -- <command>` so command output and exit codes are recorded.
 - Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review.
+- Closeout Evidence should also record Build Attribution fields when contributor accountability or handoff traceability matters: `Human contributor`, `Contributor role`, `Agent/tool surface`, `Attribution reviewed by`, and `Attribution uncertainty`. These fields are reviewed attribution evidence only; they do not assign blame, score contributors, accept implementation, approve merge, or make agent/tool identity responsible for human decisions.
+- Requirement-to-proof traces should be included when requirement IDs, bug behavior, or acceptance criteria are central to review confidence. Generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, and generated reports are not complete proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 - Reference follow-through should be recorded as `Reference follow-through: resolved`, `deferred`, or `not applicable`, with a short reason. Use it to show whether public reference docs, protocols, package inventory, generated HTML freshness, maintainer changelog, or roadmap/journal history were reviewed; it is not acceptance, transition approval, or generated-output authority.
 - Manual verification should use the Verification Guardrail Protocol format: who checked, what was checked, environment, result, and remaining uncertainty.
 - High-risk or sensitive beads must name approval gates and rollback, blocked escape, or unblocker guidance before acceptance.
@@ -206,6 +221,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - `python3 scripts/files-in-play-check.py --edit-lock` shows an optional advisory lock view for high-risk beads; it is evidence only, not a real filesystem lock or approval.
 - `python3 scripts/ralph-loop.py` may run one explicit attempt command and a validator set for a Ralph-enabled bead, then write generated attempt evidence under `logs/`; it does not choose tasks, approve commands, accept review, or transition beads.
 - `python3 scripts/bead-transition.py` may propose the next bead automatically, but `python3 scripts/bead-transition.py --approve` is required before the next bead becomes `in_progress`.
+- Reversal beads follow the same one-active-bead, files-in-play, checks, closeout, review, and transition rules as every other bead. The superseded bead remains historical evidence and must not be reopened to hide or erase prior work.
 
 ## Bead Template Library
 
@@ -218,6 +234,7 @@ Every template still needs the required frontmatter, required sections, one prim
 | Feature bead | Implementing one approved PRD requirement slice | PRD shard or one feature-specific reference file |
 | Bugfix bead | Repairing one reproducible defect | Bug report, acceptance doc, or codebase guide |
 | Refactor bead | Improving structure without changing product behavior | Codebase guide or architecture file |
+| Reversal / supersession bead | Undoing, removing, replacing, or superseding already-implemented work while preserving prior evidence | `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md` plus the prior bead and current owner file |
 | Setup bead | Completing scaffold, environment, dependency, or dashboard setup | Setup or deployment protocol |
 | Release readiness bead | Preparing shipping evidence, smoke checks, docs freshness, rollback or blocked escape, and approval questions before user-project release | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 | Release candidate evidence bead | Preparing or reviewing a compact candidate profile for nearly shippable user-project work before a human release decision | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |

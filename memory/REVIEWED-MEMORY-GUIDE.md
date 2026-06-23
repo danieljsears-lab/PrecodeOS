@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.4
+Last updated: 2026-06-23
 
 This directory stores reviewed Precode memory as plain files.
 
@@ -43,6 +43,20 @@ python3 scripts/memory-check.py --query "topic words"
 
 Optional filters include `--category`, `--freshness`, `--status`, and `--needs-promotion`.
 
+Use selective recall when whole-card loading would waste context:
+
+```bash
+python3 scripts/memory-check.py --query "topic words" --recall
+```
+
+Use retrieval-readiness review before discussing any optional semantic or shared memory backend:
+
+```bash
+python3 scripts/memory-check.py --retrieval-review --query "topic words"
+```
+
 Search results and generated indexes are evidence only. Cite the card path, title, category, freshness, status, source pointers, and promotion owner before using a result. Demote stale, superseded, archived, or low-confidence cards, then return to active memory, the active bead, and the owner file before recommending action.
+
+Retrieval-readiness review may recommend staying filesystem-first, splitting/promoting cards first, or running Extension Review. It does not approve semantic search, a shared backend, card creation, owner-file promotion, task selection, or active-memory changes.
 
 Use `tasks/reference/MEMORY-PROTOCOL.md` for the full rules.

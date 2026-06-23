@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,11 +243,11 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Daily Cockpit</h1>
   <p class="lede">Use this cockpit while you work with an AI coding agent.</p>
-  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.16</span><span>Updated 2026-06-22</span></p>
+  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.18</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -200,14 +257,14 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>If the optional local <code>precode</code> console command is installed, treat it as a shortcut over the shown commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, or generated evidence as authority.</p>
 <p>Generated reports are evidence only. Before work resumes, return to <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code>, the active bead, the primary authority file, and your explicit approval.</p>
 <p>For the deeper operating manual, see <code>PRECODE-USER-GUIDE.md</code>. For Claude Code classroom habits, see <code>CLAUDE-CODE-FIELD-GUIDE.md</code>. For symptom lookup, see <code>PRECODE-TROUBLESHOOTING.md</code>. For the full prompt source, see <code>../tasks/reference/PROMPT-PATTERNS.md</code>. For recovery details, see <code>../tasks/reference/RECOVERY-PROTOCOL.md</code>. For release readiness before user-facing shipping risk, see <code>../tasks/reference/RELEASE-READINESS-PROTOCOL.md</code>.</p>
-<h2 id="where-your-work-lives">Where Your Work Lives</h2>
+<h2 id="where-your-work-lives"><a class="heading-anchor" href="#where-your-work-lives" aria-label="Link to Where Your Work Lives">#</a>Where Your Work Lives</h2>
 <p>Use this cockpit to find the right surface before asking an agent to continue.</p>
-<div class="table-wrap"><table><thead><tr><th>Question</th><th>Look here</th><th>What it decides</th></tr></thead><tbody><tr><td>What is active right now?</td><td><code>tasks/todo.md</code>, the active bead, and the bead&#x27;s primary authority file</td><td>The current work boundary, files in play, checks, stop conditions, and approval gates.</td></tr><tr><td>Where do future ideas go?</td><td><code>CANDIDATE-QUEUE.md</code> with the Candidate Queue Protocol</td><td>Parked intent, evidence, review order, and promotion target. It does not choose the active task or authorize implementation.</td></tr><tr><td>Where do product or requirement decisions live?</td><td>Owner files such as <code>PRODUCT.md</code>, <code>FEATURES.md</code>, <code>ACCEPTANCE.md</code>, and approved PRDs in <code>tasks/prds/</code></td><td>Reviewed product truth, requirements, acceptance criteria, and PRD destinations before executable beads.</td></tr><tr><td>What proof or status exists?</td><td>Recorded checks, <code>PROGRESS.md</code>, <code>OS-HEALTH.md</code>, and <code>logs/*</code></td><td>Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files.</td></tr><tr><td>What if something feels wrong?</td><td><code>I am stuck, help me</code>, <code>PRECODE-TROUBLESHOOTING.md</code>, and the Recovery Protocol</td><td>A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval.</td></tr><tr><td>What did we learn?</td><td>The learning diary, bead build journal, and reviewed memory</td><td>Lessons and path visibility. These are evidence only until promoted through the right owner file.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Look here</th><th>What it decides</th></tr></thead><tbody><tr><td>What is active right now?</td><td><code>tasks/todo.md</code>, the active bead, and the bead&#x27;s primary authority file</td><td>The current work boundary, files in play, checks, stop conditions, and approval gates.</td></tr><tr><td>Where do future ideas go?</td><td><code>CANDIDATE-QUEUE.md</code> with the Candidate Queue Protocol</td><td>Parked intent, evidence, review order, and promotion target. It does not choose the active task or authorize implementation.</td></tr><tr><td>Where do product or requirement decisions live?</td><td>Owner files such as <code>PRODUCT.md</code>, <code>FEATURES.md</code>, <code>ACCEPTANCE.md</code>, and approved PRDs in <code>tasks/prds/</code></td><td>Reviewed product truth, requirements, acceptance criteria, and PRD destinations before executable beads.</td></tr><tr><td>What proof or status exists?</td><td>Recorded checks, <code>PROGRESS.md</code>, <code>OS-HEALTH.md</code>, and <code>logs/*</code></td><td>Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files.</td></tr><tr><td>What if something feels wrong?</td><td><code>I am stuck, help me</code>, <code>PRECODE-TROUBLESHOOTING.md</code>, and the Recovery Protocol</td><td>A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval.</td></tr><tr><td>What did we learn?</td><td>The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory</td><td>Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout.</td></tr><tr><td>Was this hypothesis tested?</td><td>Hypothesis Review / Learning Loop</td><td>Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database.</td></tr></tbody></table></div>
 <p>If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?</p>
-<h2 id="quick-daily-loop">Quick Daily Loop</h2>
-<div class="table-wrap"><table><thead><tr><th>Moment</th><th>Paste this first</th><th>What it should produce</th></tr></thead><tbody><tr><td>Start</td><td><code>Run the Precode session start. Explain the Context Pack in plain English before editing.</code></td><td>Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning.</td></tr><tr><td>Ask docs</td><td><code>Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.</code></td><td>A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state.</td></tr><tr><td>Choose path</td><td><code>Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.</code></td><td>A workflow recommendation without coding or task activation.</td></tr><tr><td>Review candidates</td><td><code>Use the Candidate Queue Protocol. Review CANDIDATE-QUEUE.md as parked intent, not task authority.</code></td><td>Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue.</td></tr><tr><td>Confirm</td><td><code>Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.</code></td><td>A bounded task explanation before implementation begins.</td></tr><tr><td>Team lane</td><td><code>Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.</code></td><td>Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout.</td></tr><tr><td>Build</td><td><code>Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.</code></td><td>Scoped implementation inside the approved files and task boundary.</td></tr><tr><td>Prove</td><td><code>You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.</code></td><td>Recorded proof, failures or blockers, and any manual verification needed.</td></tr><tr><td>Prepare release</td><td><code>Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.</code></td><td>Shipping evidence and approval questions without release action.</td></tr><tr><td>Release candidate</td><td><code>Prepare a Release Candidate Evidence Profile. Show candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs or support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. Do not approve release or mutate anything.</code></td><td>A compact candidate evidence profile without release approval.</td></tr><tr><td>Ralph</td><td><code>Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.</code></td><td>Retry evidence for one active bead without accepting work or activating anything.</td></tr><tr><td>Learn</td><td><code>Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session and the path of already-worked beads without using either as active memory or a task plan.</code></td><td>A lesson summary plus implemented-bead path and build-change context that stays evidence-only.</td></tr><tr><td>Close</td><td><code>Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.</code></td><td>Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present.</td></tr><tr><td>Recover</td><td><code>I am stuck, help me.</code></td><td>A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair.</td></tr><tr><td>Named fallback</td><td><code>Use the No-Engineer Fallback Prompt Pack for this symptom.</code></td><td>A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments.</td></tr></tbody></table></div>
-<h2 id="core-prompts">Core Prompts</h2>
-<h3 id="ask-a-stable-docs-question">Ask A Stable Docs Question</h3>
+<h2 id="quick-daily-loop"><a class="heading-anchor" href="#quick-daily-loop" aria-label="Link to Quick Daily Loop">#</a>Quick Daily Loop</h2>
+<div class="table-wrap"><table><thead><tr><th>Moment</th><th>Paste this first</th><th>What it should produce</th></tr></thead><tbody><tr><td>Start</td><td><code>Run the Precode session start. Explain the Context Pack in plain English before editing.</code></td><td>Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning.</td></tr><tr><td>Ask docs</td><td><code>Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.</code></td><td>A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state.</td></tr><tr><td>Choose path</td><td><code>Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.</code></td><td>A workflow recommendation without coding or task activation.</td></tr><tr><td>Review candidates</td><td><code>Use the Candidate Queue Protocol. Review CANDIDATE-QUEUE.md as parked intent, not task authority.</code></td><td>Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue.</td></tr><tr><td>Review hypothesis</td><td><code>Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief. Tell me what was tested, what was learned, whether it is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code.</code></td><td>Evidence-only learning status and next workflow, not approval or task selection.</td></tr><tr><td>Clarify acceptance</td><td><code>Review these acceptance criteria for vague or unverifiable behavior. Where useful, rewrite with optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]. Do not require EARS syntax, approve the PRD, accept implementation, activate beads, treat wording as proof, or code.</code></td><td>Clearer expected behavior for PRD or acceptance review without approval or implementation authority.</td></tr><tr><td>Confirm</td><td><code>Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.</code></td><td>A bounded task explanation before implementation begins.</td></tr><tr><td>Team lane</td><td><code>Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.</code></td><td>Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout.</td></tr><tr><td>Build</td><td><code>Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.</code></td><td>Scoped implementation inside the approved files and task boundary.</td></tr><tr><td>Prove</td><td><code>You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.</code></td><td>Recorded proof, failures or blockers, and any manual verification needed.</td></tr><tr><td>Prepare release</td><td><code>Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.</code></td><td>Shipping evidence and approval questions without release action.</td></tr><tr><td>Release candidate</td><td><code>Prepare a Release Candidate Evidence Profile. Show candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs or support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. Do not approve release or mutate anything.</code></td><td>A compact candidate evidence profile without release approval.</td></tr><tr><td>Trace proof</td><td><code>Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.</code></td><td>A compact proof trace without acceptance or generated-proof authority.</td></tr><tr><td>Review attribution</td><td><code>Review the Build Attribution Ledger for this bead or recent work. Show human contributor, role, agent/tool surface, reviewer, uncertainty, confidence, missing attribution, and what source needs review next. Do not accept implementation, approve merge, assign blame, score contributors, mutate GitHub, or treat generated output as authority.</code></td><td>A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior.</td></tr><tr><td>Reverse implemented bead</td><td><code>This already-implemented bead may need to be reversed or superseded. Use PRD-023 Implemented Bead Reversal Workflow. Name the superseded bead, reversal target, reversal reason, preserved behavior, checks needed, manual verification needed, approvals still required, and whether this should become a separate reversal bead. Do not reopen a done bead, delete evidence, rewrite transition logs, or treat Git revert as proof.</code></td><td>A safe reversal plan or candidate bead shape without rollback automation or history rewriting.</td></tr><tr><td>Ralph</td><td><code>Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.</code></td><td>Retry evidence for one active bead without accepting work or activating anything.</td></tr><tr><td>Learn</td><td><code>Read the generated learning diary and, when available, the bead build journal and Build Attribution Ledger. Explain what I should understand from the last session, the path of already-worked beads, and who-built-what evidence without using generated reports as active memory or a task plan.</code></td><td>A lesson summary plus implemented-bead path, build-change context, and attribution evidence that stays evidence-only.</td></tr><tr><td>Close</td><td><code>Run session close. Summarize what changed, who contributed when recorded, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal and Build Attribution Ledger entry when available.</code></td><td>Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, and attribution evidence when present.</td></tr><tr><td>Recover</td><td><code>I am stuck, help me.</code></td><td>A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair.</td></tr><tr><td>Named fallback</td><td><code>Use the No-Engineer Fallback Prompt Pack for this symptom.</code></td><td>A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments.</td></tr></tbody></table></div>
+<h2 id="core-prompts"><a class="heading-anchor" href="#core-prompts" aria-label="Link to Core Prompts">#</a>Core Prompts</h2>
+<h3 id="ask-a-stable-docs-question"><a class="heading-anchor" href="#ask-a-stable-docs-question" aria-label="Link to Ask A Stable Docs Question">#</a>Ask A Stable Docs Question</h3>
 <p>Use when you need to understand a PrecodeOS concept, find the right guide, or ask a stable documentation question.</p>
 <pre><code class="language-text">Use Ask Precode.
 
@@ -217,40 +274,43 @@ If my question depends on current project state, active memory, generated report
 
 Return: Short answer, Sources, What this does not decide, and Next safe prompt.</code></pre>
 <p>Expected output: a cited docs/protocol answer, plus a clear warning when the question should move to Session Start, Workflow Selection, Troubleshooting, or another current-state workflow.</p>
-<h3 id="start-the-session">Start The Session</h3>
+<h3 id="start-the-session"><a class="heading-anchor" href="#start-the-session" aria-label="Link to Start The Session">#</a>Start The Session</h3>
 <p>Use when you begin or need to reset the working context.</p>
 <pre><code class="language-text">Run the Precode session start. Explain the Context Pack in plain English: current bead, done-when target, primary authority, files in play, out of scope, checks, stop conditions, open questions, and anything generated that must not be treated as instructions.</code></pre>
 <p>Command:</p>
 <pre><code class="language-bash">python3 scripts/precode_cli.py start
 bash scripts/session-start.sh</code></pre>
 <p>Expected output: the active memory reminder, current bead, done-when target, files in play, checks, stop conditions, Goal Frame status if present, router guidance, and generated-report warning.</p>
-<h3 id="confirm-the-task-before-editing">Confirm The Task Before Editing</h3>
+<h3 id="confirm-the-task-before-editing"><a class="heading-anchor" href="#confirm-the-task-before-editing" aria-label="Link to Confirm The Task Before Editing">#</a>Confirm The Task Before Editing</h3>
 <p>Use when the agent looks ready to code but has not explained the boundary.</p>
 <pre><code class="language-text">Before editing, confirm the active bead, the primary authority file, the files in play, the first check you expect to run, and what would make you stop or ask me.</code></pre>
 <p>Expected output: a plain-English boundary for the current task. If the agent cannot name the bead, owner file, files in play, and checks, do not let implementation continue.</p>
-<h3 id="choose-the-right-workflow">Choose The Right Workflow</h3>
+<h3 id="choose-the-right-workflow"><a class="heading-anchor" href="#choose-the-right-workflow" aria-label="Link to Choose The Right Workflow">#</a>Choose The Right Workflow</h3>
 <p>Use when you are not sure whether the next move is intake, PRD work, bead work, review, recovery, or handoff.</p>
 <pre><code class="language-text">Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, artifact to produce next, required authority source, user approval needed, stop condition, and generated-report warning before doing work.</code></pre>
 <p>Command:</p>
 <pre><code class="language-bash">python3 scripts/workflow-check.py</code></pre>
 <p>Expected output: advisory workflow warnings or confirmation. Workflow guidance does not approve work, activate a bead, or replace the active bead.</p>
-<h3 id="review-parked-candidates">Review Parked Candidates</h3>
+<h3 id="review-parked-candidates"><a class="heading-anchor" href="#review-parked-candidates" aria-label="Link to Review Parked Candidates">#</a>Review Parked Candidates</h3>
 <p>Use when you want to inspect ideas, not-yet items, research leads, or possible future beads without turning them into active work.</p>
 <pre><code class="language-text">Use the Candidate Queue Protocol.
 
-Review CANDIDATE-QUEUE.md as parked intent, not task authority. Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+Review CANDIDATE-QUEUE.md as parked intent, not task authority. Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, which approved PRDs have candidate beads, and which reviewed candidates have product-value ratings, themes, or near-bead sketches.
 
 Also tell me what the Candidate Queue cannot answer: the active task, what the agent should build next, whether a PRD is approved, whether a bead is active, or whether a ranked item is authorized for implementation.
 
-Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, choose next work, or start coding.</code></pre>
+Do not update active memory, approve a PRD, activate a bead, reserve B### bead IDs, treat product-value rating as implementation priority, choose next work, or start coding.</code></pre>
 <p>Expected output: candidate status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.</p>
-<h3 id="coordinate-a-small-team">Coordinate A Small Team</h3>
+<h3 id="coordinate-a-small-team"><a class="heading-anchor" href="#coordinate-a-small-team" aria-label="Link to Coordinate A Small Team">#</a>Coordinate A Small Team</h3>
 <p>Use when 2-5 people need to work on the same product build.</p>
 <pre><code class="language-text">Use the Small Team Collaboration Lane.
 
 We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.</code></pre>
 <p>Expected output: the team situation, coordinator and decision owner, branch/worktree rule, candidate parallel beads, teammate startup prompt, review and merge evidence, approval gates, stop conditions, promotion path, and generated-report warning. The lane does not activate multiple beads in one checkout, approve merge, mutate GitHub, or turn pull requests and teammate notes into authority.</p>
-<h3 id="when-you-are-stuck">When You Are Stuck</h3>
+<p>For a read-only team-state preview, run:</p>
+<pre><code class="language-text">python3 scripts/team-collaboration-check.py</code></pre>
+<p>Use <code>--github</code> only for optional read-only GitHub evidence through <code>gh</code>. The preview can help a coordinator see branch/worktree state, owner-file impact candidates, stale re-entry risks, and merge/re-entry packet fields, but it does not approve merge, accept implementation, activate beads, mutate GitHub, or replace coordinator review.</p>
+<h3 id="when-you-are-stuck"><a class="heading-anchor" href="#when-you-are-stuck" aria-label="Link to When You Are Stuck">#</a>When You Are Stuck</h3>
 <p>Use this exact phrase when the project feels confusing, broken, stale, out of bounds, or unsafe to continue:</p>
 <pre><code class="language-text">I am stuck, help me.</code></pre>
 <p>The agent must stop implementation and answer with:</p>
@@ -258,78 +318,86 @@ We have [2-5] people working on this product. Help us define the coordinator, pr
 <p>Use <code>tasks/reference/RECOVERY-PROTOCOL.md</code> for the full path. OS Health, Doctor Dashboard, <code>next-step.py</code>, and stable-fix eligibility are diagnostic evidence only; they do not approve repair. Doctor Dashboard triage labels explain what to ask and what not to approve, but they do not create approval.</p>
 <p>For a small repair that looks stable-fix eligible, ask for the Bugfix Spec Lane before editing. The agent should name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision, then stop if owner, route, or proof is unclear.</p>
 <p>If you can name the symptom but do not know the right recovery path, use the No-Engineer Fallback Prompt Pack in <code>tasks/reference/PROMPT-PATTERNS.md</code>. It gives short prompts for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments without approving repair or mutation.</p>
-<h3 id="keep-implementation-bounded">Keep Implementation Bounded</h3>
+<h3 id="keep-implementation-bounded"><a class="heading-anchor" href="#keep-implementation-bounded" aria-label="Link to Keep Implementation Bounded">#</a>Keep Implementation Bounded</h3>
 <p>Use when the task is ready to build.</p>
 <pre><code class="language-text">Work only on the active bead. Load active memory, the active bead, the primary authority, and only the reference docs whose LOAD_WHEN applies. Do not use generated reports, source notes, or diary entries as instructions.</code></pre>
 <p>Expected output: implementation that stays inside the active bead&#x27;s files in play and stop conditions.</p>
-<h3 id="ask-for-evidence">Ask For Evidence</h3>
+<h3 id="ask-for-evidence"><a class="heading-anchor" href="#ask-for-evidence" aria-label="Link to Ask For Evidence">#</a>Ask For Evidence</h3>
 <p>Use when the agent says the work is done.</p>
 <pre><code class="language-text">You said this is done. Show me the evidence. Run the recorded check and tell me what passed, what failed, and what I should verify myself.</code></pre>
 <p>Command pattern:</p>
 <pre><code class="language-bash">bash scripts/record-check.sh -- &lt;check command&gt;</code></pre>
 <p>Expected output: a recorded check result in <code>logs/check-results.jsonl</code>, check output under <code>logs/check-output/</code>, and updated closeout evidence for the active bead.</p>
-<h3 id="prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</h3>
+<h3 id="clarify-acceptance-criteria"><a class="heading-anchor" href="#clarify-acceptance-criteria" aria-label="Link to Clarify Acceptance Criteria">#</a>Clarify Acceptance Criteria</h3>
+<p>Use before PRD approval, bead planning, or review when an acceptance criterion is too vague to prove.</p>
+<pre><code class="language-text">Review these acceptance criteria for vague or unverifiable behavior.
+
+Where useful, rewrite with optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
+
+Do not require EARS syntax, reject clear non-EARS criteria, approve the PRD, accept implementation, activate beads, treat wording as proof, or code.</code></pre>
+<p>Expected output: clearer observable expected behavior, unresolved questions, and any stop conditions. This is writing guidance only, not PRD approval or proof.</p>
+<h3 id="prepare-a-release-candidate-evidence-profile"><a class="heading-anchor" href="#prepare-a-release-candidate-evidence-profile" aria-label="Link to Prepare A Release Candidate Evidence Profile">#</a>Prepare A Release Candidate Evidence Profile</h3>
 <p>Use when a release-relevant bead is nearly ready and you need one compact view before a human release decision.</p>
 <pre><code class="language-text">Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
 Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.</code></pre>
 <p>Expected output: a human-authored evidence profile. It prepares a release decision; it does not approve release, deploy, merge, roll back, or mutate external systems.</p>
-<h3 id="run-a-bounded-ralph-attempt">Run A Bounded Ralph Attempt</h3>
+<h3 id="run-a-bounded-ralph-attempt"><a class="heading-anchor" href="#run-a-bounded-ralph-attempt" aria-label="Link to Run A Bounded Ralph Attempt">#</a>Run A Bounded Ralph Attempt</h3>
 <p>Use when the active bead is testable, has clear checks, and you want bounded retry evidence instead of a disappearing chat attempt.</p>
 <pre><code class="language-text">Run a bounded Ralph dry run for this bead. Show the attempt budget, validator set, decision, failure category, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.</code></pre>
 <p>Command:</p>
 <pre><code class="language-bash">python3 scripts/ralph-loop.py --dry-run</code></pre>
 <p>Expected output: a Ralph decision such as <code>retry</code>, <code>ask</code>, <code>review</code>, or <code>stop</code>. Without <code>--dry-run</code>, Ralph writes <code>logs/ralph-attempts.jsonl</code> and <code>logs/ralph-summary.md</code> as generated evidence only.</p>
-<h3 id="checkpoint-mid-session">Checkpoint Mid-Session</h3>
+<h3 id="checkpoint-mid-session"><a class="heading-anchor" href="#checkpoint-mid-session" aria-label="Link to Checkpoint Mid Session">#</a>Checkpoint Mid-Session</h3>
 <p>Use when context feels crowded, the task got fuzzy, or you may need to pause.</p>
 <pre><code class="language-text">Checkpoint the session. Tell me whether we should continue, repair, split, pause for manual testing, or close. Include what changed, what evidence exists, and what is still uncertain.</code></pre>
 <p>Command:</p>
 <pre><code class="language-bash">bash scripts/checkpoint.sh</code></pre>
 <p>Expected output: current bead state, done-when target, files in play, blockers, Build Loop Health, and a handback-style summary.</p>
-<h3 id="close-the-session">Close The Session</h3>
+<h3 id="close-the-session"><a class="heading-anchor" href="#close-the-session" aria-label="Link to Close The Session">#</a>Close The Session</h3>
 <p>Use when work is done for now or you need a clean stop.</p>
 <pre><code class="language-text">Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.</code></pre>
 <p>Command:</p>
 <pre><code class="language-bash">bash scripts/session-close.sh</code></pre>
 <p>Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, learning diary update, and bead build journal update when that generated report is available.</p>
-<h2 id="runnable-reports">Runnable Reports</h2>
+<h2 id="runnable-reports"><a class="heading-anchor" href="#runnable-reports" aria-label="Link to Runnable Reports">#</a>Runnable Reports</h2>
 <p>Only use these as evidence. They help you understand the project; they do not choose tasks or approve work.</p>
-<div class="table-wrap"><table><thead><tr><th>Report or command</th><th>Run it when</th><th>What the output means</th></tr></thead><tbody><tr><td><code>bash scripts/session-start.sh</code></td><td>Starting or resetting daily work.</td><td>Shows the context pack and router guidance. Treat it as orientation before work.</td></tr><tr><td><code>python3 scripts/next-step.py</code></td><td>You ask &quot;what now?&quot;</td><td>Shows generated next-step guidance. It is not transition approval.</td></tr><tr><td><code>python3 scripts/os-health.py</code></td><td>You need a refreshed health report.</td><td>Writes <code>OS-HEALTH.md</code>, <code>logs/os-health.json</code>, the Doctor Dashboard diagnostic summary with plain-English triage labels, and the generated work graph reports; warnings mean inspect source state and evidence.</td></tr><tr><td><code>bash scripts/checkpoint.sh</code></td><td>Context is long, fuzzy, or ready to hand back.</td><td>Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity.</td></tr><tr><td><code>bash scripts/session-close.sh</code></td><td>Ending work or preparing review.</td><td>Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available.</td></tr><tr><td><code>bash scripts/handoff.sh [next-agent]</code></td><td>Switching tools or handing work to another agent.</td><td>Produces a context pack for the next agent. It does not activate the next bead.</td></tr><tr><td><code>python3 scripts/loop-health.py</code></td><td>You want a compact loop-health signal.</td><td>Shows whether the current build loop is focused, stoppable, closeable, evidenced, and graph-coherent.</td></tr><tr><td><code>python3 scripts/loop-health.py --verbose</code></td><td>The compact signal is unclear.</td><td>Shows dimension-level warnings, including work-graph warnings, for deeper diagnosis.</td></tr><tr><td><code>python3 scripts/ralph-loop.py --dry-run</code></td><td>A Ralph-enabled bead needs bounded retry evidence.</td><td>Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work.</td></tr><tr><td><code>python3 scripts/update-learning-diary.py --append</code></td><td>You need to append a learning entry after closeout evidence.</td><td>Updates <code>logs/learning-diary.md</code>; the diary is evidence, not active memory.</td></tr><tr><td><code>python3 scripts/update-bead-build-journal.py --append</code></td><td>You need to append an implemented-bead path entry after closeout evidence.</td><td>Updates <code>logs/bead-build-journal.md/jsonl</code>; the journal is evidence, not active memory, Candidate Queue authority, or acceptance.</td></tr><tr><td><code>logs/bead-build-journal.md</code></td><td>You need to understand the path of already-worked beads or what implementation-relevant work changed for a bead.</td><td>Generated implemented-bead path and build-change journal; evidence only. Session-close entries do not accept work.</td></tr><tr><td><code>python3 scripts/update-memory-index.py</code></td><td>Reviewed memory cards changed.</td><td>Refreshes the searchable memory index. Memory remains evidence only.</td></tr></tbody></table></div>
-<h2 id="checks-by-student-question">Checks By Student Question</h2>
-<h3 id="is-my-state-okay">Is My State Okay?</h3>
+<div class="table-wrap"><table><thead><tr><th>Report or command</th><th>Run it when</th><th>What the output means</th></tr></thead><tbody><tr><td><code>bash scripts/session-start.sh</code></td><td>Starting or resetting daily work.</td><td>Shows the context pack and router guidance. Treat it as orientation before work.</td></tr><tr><td><code>python3 scripts/next-step.py</code></td><td>You ask &quot;what now?&quot;</td><td>Shows generated next-step guidance. It is not transition approval.</td></tr><tr><td><code>python3 scripts/os-health.py</code></td><td>You need a refreshed health report.</td><td>Writes <code>OS-HEALTH.md</code>, <code>logs/os-health.json</code>, the Doctor Dashboard diagnostic summary with plain-English triage labels, and the generated work graph reports; warnings mean inspect source state and evidence.</td></tr><tr><td><code>bash scripts/checkpoint.sh</code></td><td>Context is long, fuzzy, or ready to hand back.</td><td>Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity.</td></tr><tr><td><code>bash scripts/session-close.sh</code></td><td>Ending work or preparing review.</td><td>Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available.</td></tr><tr><td><code>bash scripts/handoff.sh [next-agent]</code></td><td>Switching tools or handing work to another agent.</td><td>Produces a context pack for the next agent. It does not activate the next bead.</td></tr><tr><td><code>python3 scripts/loop-health.py</code></td><td>You want a compact loop-health signal.</td><td>Shows whether the current build loop is focused, stoppable, closeable, evidenced, and graph-coherent.</td></tr><tr><td><code>python3 scripts/loop-health.py --verbose</code></td><td>The compact signal is unclear.</td><td>Shows dimension-level warnings, including work-graph warnings, for deeper diagnosis.</td></tr><tr><td><code>python3 scripts/ralph-loop.py --dry-run</code></td><td>A Ralph-enabled bead needs bounded retry evidence.</td><td>Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work.</td></tr><tr><td><code>python3 scripts/update-learning-diary.py --append</code></td><td>You need to append a learning entry after closeout evidence.</td><td>Updates <code>logs/learning-diary.md</code>; the diary is evidence, not active memory.</td></tr><tr><td><code>python3 scripts/update-bead-build-journal.py --append</code></td><td>You need to append an implemented-bead path entry after closeout evidence.</td><td>Updates <code>logs/bead-build-journal.md/jsonl</code>; the journal is evidence, not active memory, Candidate Queue authority, or acceptance.</td></tr><tr><td><code>logs/bead-build-journal.md</code></td><td>You need to understand the path of already-worked beads or what implementation-relevant work changed for a bead.</td><td>Generated implemented-bead path and build-change journal; evidence only. Session-close entries do not accept work.</td></tr><tr><td><code>python3 scripts/build-attribution-ledger.py</code></td><td>You need to inspect who built what across beads.</td><td>Prints generated attribution JSON from bead closeout and supporting hints; evidence only, not acceptance, merge approval, blame, scoring, telemetry, or a registry.</td></tr><tr><td><code>logs/build-attribution-ledger.md</code></td><td>You need a readable who-built-what evidence view.</td><td>Generated attribution ledger; closeout-reviewed attribution is strongest, while Git authorship remains a hint.</td></tr><tr><td><code>python3 scripts/update-memory-index.py</code></td><td>Reviewed memory cards changed.</td><td>Refreshes the searchable memory index. Memory remains evidence only.</td></tr></tbody></table></div>
+<h2 id="checks-by-student-question"><a class="heading-anchor" href="#checks-by-student-question" aria-label="Link to Checks By Student Question">#</a>Checks By Student Question</h2>
+<h3 id="is-my-state-okay"><a class="heading-anchor" href="#is-my-state-okay" aria-label="Link to Is My State Okay?">#</a>Is My State Okay?</h3>
 <p>Commands:</p>
 <pre><code class="language-bash">bash scripts/validate-memory.sh
 python3 scripts/state-check.py</code></pre>
 <p>Green means active memory and current bead state look coherent. Warnings or failures mean repair source files before coding. Do not trust generated reports more than active memory.</p>
-<h3 id="is-scope-widening">Is Scope Widening?</h3>
+<h3 id="is-scope-widening"><a class="heading-anchor" href="#is-scope-widening" aria-label="Link to Is Scope Widening?">#</a>Is Scope Widening?</h3>
 <p>Commands:</p>
 <pre><code class="language-bash">python3 scripts/files-in-play-check.py
 python3 scripts/files-in-play-check.py --command &quot;&lt;command summary&gt;&quot;
 python3 scripts/files-in-play-check.py --edit-lock</code></pre>
 <p>Green means changed paths fit the current bead or generated evidence. Warnings mean stop and classify each path as generated evidence, current-bead work that needs explicit scope approval, follow-up work, or user-owned revert work. A command classification of <code>approval needed</code> or <code>stop</code> means do not run the command yet. A <code>continue</code> classification for local mutation still has to stay inside <code>files_in_play</code>.</p>
-<h3 id="is-this-done">Is This Done?</h3>
+<h3 id="is-this-done"><a class="heading-anchor" href="#is-this-done" aria-label="Link to Is This Done?">#</a>Is This Done?</h3>
 <p>Commands:</p>
 <pre><code class="language-bash">python3 scripts/completion-check.py
 bash scripts/record-check.sh -- &lt;declared bead check&gt;</code></pre>
 <p>Green means recorded evidence and closeout are closer to review-ready. Missing or failing checks mean the bead is not accepted yet. Completion output does not accept work by itself.</p>
-<h3 id="should-ralph-retry">Should Ralph Retry?</h3>
+<h3 id="should-ralph-retry"><a class="heading-anchor" href="#should-ralph-retry" aria-label="Link to Should Ralph Retry?">#</a>Should Ralph Retry?</h3>
 <p>Command:</p>
 <pre><code class="language-bash">python3 scripts/ralph-loop.py --dry-run</code></pre>
 <p>Use Ralph only for one active bead with clear checks and retry boundaries. A <code>review</code> decision means evidence may be ready for human review; it does not mean accepted.</p>
-<h3 id="is-the-workflow-right">Is The Workflow Right?</h3>
+<h3 id="is-the-workflow-right"><a class="heading-anchor" href="#is-the-workflow-right" aria-label="Link to Is The Workflow Right?">#</a>Is The Workflow Right?</h3>
 <p>Commands:</p>
 <pre><code class="language-bash">python3 scripts/workflow-check.py
 python3 scripts/orchestration-check.py
 python3 scripts/decomposition-check.py</code></pre>
 <p>Green means the current path appears aligned with the active workflow. Warnings may mean the work needs intake, PRD shaping, decomposition, review, repair, or a narrower bead before implementation.</p>
-<h3 id="can-i-transition">Can I Transition?</h3>
+<h3 id="can-i-transition"><a class="heading-anchor" href="#can-i-transition" aria-label="Link to Can I Transition?">#</a>Can I Transition?</h3>
 <p>Command:</p>
 <pre><code class="language-bash">python3 scripts/bead-transition.py</code></pre>
 <p>Green readiness may show a next bead proposal. Transition still requires explicit approval:</p>
 <pre><code class="language-bash">python3 scripts/bead-transition.py --approve</code></pre>
 <p>Do not approve transition until review is accepted, manual verification is clear, and latest recorded checks pass.</p>
-<h3 id="what-does-this-warning-mean">What Does This Warning Mean?</h3>
+<h3 id="what-does-this-warning-mean"><a class="heading-anchor" href="#what-does-this-warning-mean" aria-label="Link to What Does This Warning Mean?">#</a>What Does This Warning Mean?</h3>
 <p>Commands:</p>
 <pre><code class="language-bash">python3 scripts/context-check.py
 python3 scripts/run-contract-check.py
@@ -338,11 +406,11 @@ python3 scripts/memory-check.py
 python3 scripts/pattern-check.py
 python3 scripts/long-horizon-check.py</code></pre>
 <p>Warnings are advisory evidence. They tell you what to inspect, split, repair, approve, or defer. They do not give the agent permission to widen scope.</p>
-<h2 id="recovery-methods">Recovery Methods</h2>
+<h2 id="recovery-methods"><a class="heading-anchor" href="#recovery-methods" aria-label="Link to Recovery Methods">#</a>Recovery Methods</h2>
 <p>Use recovery when something feels wrong. The first move is always to stop implementation and make the state visible.</p>
-<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Prompt</th><th>First check</th></tr></thead><tbody><tr><td>Active state is confusing</td><td><code>Stop implementation. Compare tasks/todo.md with the active bead and tell me which canonical file needs repair before work continues.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Generated report looks wrong</td><td><code>This generated report looks wrong. Tell me which source files and scripts own it, what evidence it summarizes, and how to refresh it without treating the report as authority.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Proof is missing</td><td><code>Run a completion check and show which declared checks are missing, failing, or stale. Do not recommend acceptance from confidence.</code></td><td><code>python3 scripts/completion-check.py</code></td></tr><tr><td>Scope expanded</td><td><code>Run the files-in-play guardrail. If any changed path is outside this bead, stop and explain whether it is generated evidence, current-bead work, or a separate follow-up.</code></td><td><code>python3 scripts/files-in-play-check.py</code></td></tr><tr><td>Context is lost</td><td><code>Prepare a compact Context Pack before continuing. Reload active memory, the active bead, and the primary authority before recommending action.</code></td><td><code>python3 scripts/context-check.py</code></td></tr><tr><td>Approval happened too quickly</td><td><code>Before proposing or activating the next bead, explain what evidence proves this bead is complete and what still requires my approval.</code></td><td><code>python3 scripts/bead-transition.py</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Prompt</th><th>First check</th></tr></thead><tbody><tr><td>Active state is confusing</td><td><code>Stop implementation. Compare tasks/todo.md with the active bead and tell me which canonical file needs repair before work continues.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Generated report looks wrong</td><td><code>This generated report looks wrong. Tell me which source files and scripts own it, what evidence it summarizes, and how to refresh it without treating the report as authority.</code></td><td><code>python3 scripts/state-check.py</code></td></tr><tr><td>Proof is missing</td><td><code>Run a completion check and show which declared checks are missing, failing, or stale. Do not recommend acceptance from confidence.</code></td><td><code>python3 scripts/completion-check.py</code></td></tr><tr><td>Implemented bead needs reversal</td><td><code>This already-implemented bead may need to be reversed or superseded. Use PRD-023. Preserve the old bead as history and propose a separate reversal bead with proof.</code></td><td><code>python3 scripts/completion-check.py</code></td></tr><tr><td>Scope expanded</td><td><code>Run the files-in-play guardrail. If any changed path is outside this bead, stop and explain whether it is generated evidence, current-bead work, or a separate follow-up.</code></td><td><code>python3 scripts/files-in-play-check.py</code></td></tr><tr><td>Context is lost</td><td><code>Prepare a compact Context Pack before continuing. Reload active memory, the active bead, and the primary authority before recommending action.</code></td><td><code>python3 scripts/context-check.py</code></td></tr><tr><td>Approval happened too quickly</td><td><code>Before proposing or activating the next bead, explain what evidence proves this bead is complete and what still requires my approval.</code></td><td><code>python3 scripts/bead-transition.py</code></td></tr></tbody></table></div>
 <p>Do not repair by deleting files, overwriting user edits, hand-editing generated reports, force-resetting git, or approving transitions unless the user explicitly approves that exact action.</p>
-<h2 id="daily-learning-loop">Daily Learning Loop</h2>
+<h2 id="daily-learning-loop"><a class="heading-anchor" href="#daily-learning-loop" aria-label="Link to Daily Learning Loop">#</a>Daily Learning Loop</h2>
 <p>Learning matters because Precode should make you more capable over time, not just move the repo forward.</p>
 <div class="table-wrap"><table><thead><tr><th>Learning action</th><th>Prompt</th><th>Output</th></tr></thead><tbody><tr><td>Read the lesson</td><td><code>Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.</code></td><td>A plain-English session lesson from <code>logs/learning-diary.md</code>.</td></tr><tr><td>Understand build changes</td><td><code>Read the generated bead build journal if it exists. Tell me the path of already-worked beads, what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory, Candidate Queue authority, or acceptance.</code></td><td>A plain-English implemented-bead path and build-change summary from <code>logs/bead-build-journal.md</code> when available.</td></tr><tr><td>Search reviewed memory</td><td><code>Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.</code></td><td>Relevant reviewed memory cards with source pointers.</td></tr><tr><td>Propose memory</td><td><code>Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.</code></td><td>A proposed memory card or promotion recommendation.</td></tr><tr><td>Check memory quality</td><td><code>Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.</code></td><td>Memory warnings or confirmation.</td></tr></tbody></table></div>
 <p>Commands:</p>
@@ -350,23 +418,45 @@ python3 scripts/long-horizon-check.py</code></pre>
 python3 scripts/update-memory-index.py
 python3 scripts/memory-check.py</code></pre>
 <p>Memory is reviewed evidence. It can help future agents understand lessons, preferences, glossary terms, risks, and source pointers. It does not replace <code>DECISIONS.md</code>, PRDs, beads, active memory, or current code.</p>
-<h2 id="appendix-stop-signals">Appendix: Stop Signals</h2>
+<h2 id="appendix-stop-signals"><a class="heading-anchor" href="#appendix-stop-signals" aria-label="Link to Appendix: Stop Signals">#</a>Appendix: Stop Signals</h2>
 <p>Stop the agent when:</p>
 <ul><li>it cannot name the active bead, files in play, checks, or stop conditions</li><li>it starts coding from a generated report, diary entry, source note, or old chat</li><li>it touches files outside the active bead without explaining why</li><li>it says work is done without recorded evidence or manual verification</li><li>it wants to approve the next bead without explicit user approval</li><li>it proposes deleting, overwriting, force-resetting, migrating, deploying, exposing secrets, or changing external services without exact approval</li><li>it keeps asking implementation questions when the product problem, user, scope, or authority file is still unclear</li></ul>
 <p>Use this prompt:</p>
 <pre><code class="language-text">STOP. Do not make any more changes. Tell me exactly where we are: active bead, primary authority, files changed, evidence recorded, blockers, and the safest next action.</code></pre>
-<h2 id="appendix-approval-gates">Appendix: Approval Gates</h2>
+<h2 id="appendix-approval-gates"><a class="heading-anchor" href="#appendix-approval-gates" aria-label="Link to Appendix: Approval Gates">#</a>Appendix: Approval Gates</h2>
 <p>You must explicitly approve:</p>
 <ul><li>starting a new bead or transition with <code>python3 scripts/bead-transition.py --approve</code></li><li>destructive commands, broad overwrites, deletes, moves, force resets, migrations, deploys, dashboard changes, secrets, billing, auth, payments, or private data actions</li><li>edits to Precode control-layer files when the active bead does not include them</li><li>PRD approval, review acceptance, manual verification claims, and changes that widen task scope</li><li>memory-card writes or promotion of a lesson into <code>DECISIONS.md</code>, a PRD, or another authority file</li></ul>
 <p>When in doubt, ask:</p>
 <pre><code class="language-text">Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, and rollback or blocked escape path. Then run python3 scripts/run-contract-check.py.</code></pre>
     <nav class="page-nav" aria-label="Previous and next docs"><span></span><a href="CANDIDATE-QUEUE.html"><span>Next</span>PrecodeOS Candidate Queue</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#where-your-work-lives">Where Your Work Lives</a><a class="level-2" href="#quick-daily-loop">Quick Daily Loop</a><a class="level-2" href="#core-prompts">Core Prompts</a><a class="level-3" href="#ask-a-stable-docs-question">Ask A Stable Docs Question</a><a class="level-3" href="#start-the-session">Start The Session</a><a class="level-3" href="#confirm-the-task-before-editing">Confirm The Task Before Editing</a><a class="level-3" href="#choose-the-right-workflow">Choose The Right Workflow</a><a class="level-3" href="#review-parked-candidates">Review Parked Candidates</a><a class="level-3" href="#coordinate-a-small-team">Coordinate A Small Team</a><a class="level-3" href="#when-you-are-stuck">When You Are Stuck</a><a class="level-3" href="#keep-implementation-bounded">Keep Implementation Bounded</a><a class="level-3" href="#ask-for-evidence">Ask For Evidence</a><a class="level-3" href="#prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</a><a class="level-3" href="#run-a-bounded-ralph-attempt">Run A Bounded Ralph Attempt</a><a class="level-3" href="#checkpoint-mid-session">Checkpoint Mid Session</a><a class="level-3" href="#close-the-session">Close The Session</a><a class="level-2" href="#runnable-reports">Runnable Reports</a><a class="level-2" href="#checks-by-student-question">Checks By Student Question</a><a class="level-3" href="#is-my-state-okay">Is My State Okay?</a><a class="level-3" href="#is-scope-widening">Is Scope Widening?</a><a class="level-3" href="#is-this-done">Is This Done?</a><a class="level-3" href="#should-ralph-retry">Should Ralph Retry?</a><a class="level-3" href="#is-the-workflow-right">Is The Workflow Right?</a><a class="level-3" href="#can-i-transition">Can I Transition?</a><a class="level-3" href="#what-does-this-warning-mean">What Does This Warning Mean?</a><a class="level-2" href="#recovery-methods">Recovery Methods</a><a class="level-2" href="#daily-learning-loop">Daily Learning Loop</a><a class="level-2" href="#appendix-stop-signals">Appendix: Stop Signals</a><a class="level-2" href="#appendix-approval-gates">Appendix: Approval Gates</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#where-your-work-lives">Where Your Work Lives</a><a class="level-2" href="#quick-daily-loop">Quick Daily Loop</a><a class="level-2" href="#core-prompts">Core Prompts</a><a class="level-3" href="#ask-a-stable-docs-question">Ask A Stable Docs Question</a><a class="level-3" href="#start-the-session">Start The Session</a><a class="level-3" href="#confirm-the-task-before-editing">Confirm The Task Before Editing</a><a class="level-3" href="#choose-the-right-workflow">Choose The Right Workflow</a><a class="level-3" href="#review-parked-candidates">Review Parked Candidates</a><a class="level-3" href="#coordinate-a-small-team">Coordinate A Small Team</a><a class="level-3" href="#when-you-are-stuck">When You Are Stuck</a><a class="level-3" href="#keep-implementation-bounded">Keep Implementation Bounded</a><a class="level-3" href="#ask-for-evidence">Ask For Evidence</a><a class="level-3" href="#clarify-acceptance-criteria">Clarify Acceptance Criteria</a><a class="level-3" href="#prepare-a-release-candidate-evidence-profile">Prepare A Release Candidate Evidence Profile</a><a class="level-3" href="#run-a-bounded-ralph-attempt">Run A Bounded Ralph Attempt</a><a class="level-3" href="#checkpoint-mid-session">Checkpoint Mid Session</a><a class="level-3" href="#close-the-session">Close The Session</a><a class="level-2" href="#runnable-reports">Runnable Reports</a><a class="level-2" href="#checks-by-student-question">Checks By Student Question</a><a class="level-3" href="#is-my-state-okay">Is My State Okay?</a><a class="level-3" href="#is-scope-widening">Is Scope Widening?</a><a class="level-3" href="#is-this-done">Is This Done?</a><a class="level-3" href="#should-ralph-retry">Should Ralph Retry?</a><a class="level-3" href="#is-the-workflow-right">Is The Workflow Right?</a><a class="level-3" href="#can-i-transition">Can I Transition?</a><a class="level-3" href="#what-does-this-warning-mean">What Does This Warning Mean?</a><a class="level-2" href="#recovery-methods">Recovery Methods</a><a class="level-2" href="#daily-learning-loop">Daily Learning Loop</a><a class="level-2" href="#appendix-stop-signals">Appendix: Stop Signals</a><a class="level-2" href="#appendix-approval-gates">Appendix: Approval Gates</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

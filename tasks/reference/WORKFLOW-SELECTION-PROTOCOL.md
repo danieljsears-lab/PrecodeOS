@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
+Document version: v0.1.15
 Last updated: 2026-06-23
 
 ## Purpose
@@ -41,12 +41,13 @@ Choose the workflow that matches the current situation:
 | Current situation | Recommended workflow | Next artifact |
 |---|---|---|
 | User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
-| User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, or candidate ranking without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry or Candidate Queue review |
+| User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, candidate ranking, product-value rating, theme grouping, or near-bead sketching without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry, Candidate Queue review, or approved `scripts/candidate-queue.py` preview/apply action |
 | First-time non-technical builder has a rough idea before repo setup | Product Ideation Workbook or Product Conviction Packet Skill | Product Brief, then Conviction Packet evidence |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Interview Skill / Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Rough idea, scattered notes, screenshots, research, chat summary, or issue export | Local Source Intake | reviewed source summary |
+| User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop | Plan Packet |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
 | Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
 | Approved PRD with auth, data, API, integration, dependency, migration, workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
@@ -96,9 +97,11 @@ The output is guidance only. It does not approve a PRD, activate a bead, choose 
 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection discovers future, deferred, blocked, follow-up, or PRD-approved work that should remain visible but non-active.
 
+Use Plan Loop when the user explicitly asks to explore a topic, implementation angle, feature slice, or unresolved choice before committing it to the next workflow. A Plan Packet is evidence only. It may recommend Product Discovery, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, Candidate Queue, or stop, but it must not approve a PRD, create or activate beads, choose tasks, become backlog authority, or authorize implementation.
+
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
 
-Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs a human-maintained place to capture multiple intents before they are ready for intake, discovery, PRD shaping, or decomposition. Candidate Queue review may rank candidates for review, but it must not choose next work or authorize implementation.
+Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs a human-maintained place to capture multiple intents before they are ready for intake, discovery, PRD shaping, or decomposition. Candidate Queue review may rank candidates for review, assign product-value ratings, group themes, or sketch near-beads, but it must not choose next work or authorize implementation, approve PRDs, activate beads, mutate `tasks/todo.md`, or reserve `B###` IDs.
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before decomposition when workflow selection reveals auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that a non-technical builder should approve or redirect before an AI coding agent derives beads.
 

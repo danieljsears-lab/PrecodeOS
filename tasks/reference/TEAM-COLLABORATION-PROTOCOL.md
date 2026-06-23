@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-15
+Document version: v0.2.1
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -98,6 +98,7 @@ Forbidden v1 shape:
 Before a contributor branch is merged or re-entered into the integration branch, the contributor should provide:
 
 - assigned bead and branch/worktree
+- human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty when known
 - primary authority and files changed
 - checks run and results
 - manual verification, if needed
@@ -111,9 +112,71 @@ The coordinator or integration owner decides whether findings are promoted into 
 
 Review evidence is not acceptance. Merge readiness is not product approval.
 
+Build attribution evidence is not blame or scoring. `scripts/build-attribution-ledger.py` may summarize who built what from bead closeout and supporting hints, but teammate accountability remains subordinate to the assigned bead, coordinator review, and accepted closeout evidence.
+
+Review and merge evidence must remain subordinate to the assigned bead, primary authority, recorded checks, manual verification, and coordinator review.
+
+## V2 Read-Only Preview
+
+`scripts/team-collaboration-check.py` provides a read-only Small Team Collaboration Lane preview. It is generated evidence only and must not choose work, approve merge, mutate GitHub, update owner files, or replace coordinator review.
+
+Default local preview reports:
+
+- current branch and worktree
+- detected or requested integration branch
+- active bead and one-active-bead-per-checkout status
+- active bead primary authority and files in play
+- local changed paths and branch comparison paths when available
+- owner-file impact candidates
+- overlap with active bead scope
+- stale branch or re-entry risks
+- merge/re-entry review packet fields
+- teammate assignment packet fields
+- forbidden uses and generated-report warning
+
+Optional GitHub preview:
+
+```text
+python3 scripts/team-collaboration-check.py --github
+```
+
+This may read branch, pull request, review, check, and workflow status through `gh` when available and authenticated. Missing `gh`, missing authentication, missing upstream/default branch, network failure, unavailable comparison base, or inaccessible GitHub status must be reported as `not_configured` or `warning`, not silently guessed.
+
+To compare against a specific integration branch:
+
+```text
+python3 scripts/team-collaboration-check.py --integration-branch <branch>
+```
+
+The script must not create branches, create worktrees, push, pull, rebase, merge, create pull requests, approve pull requests, comment, label, assign, rerun workflows, deploy, release, or mutate external systems.
+
+## Team Merge And Re-entry Review Pack
+
+The coordinator's merge/re-entry review should include:
+
+- assigned bead and branch/worktree
+- primary authority and files changed
+- checks run and results
+- manual verification, if needed
+- owner-file impacts
+- conflicts with the integration branch
+- stale evidence or stale branch signals
+- open questions and follow-up bead candidates
+- forbidden actions not taken
+
+The preview can help collect these fields, but the coordinator still decides whether to promote findings into owner files, ask for more proof, split follow-up work, block, or approve a separate merge action.
+
+## Team Owner-File Conflict Preview
+
+Owner-file impact candidates include active memory, PRDs, reference protocols, bead files, public docs, and common product authority files such as `PROJECT-CONTEXT.md`, `FEATURES.md`, `PRODUCT.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, and `SECURITY.md`.
+
+If two teammates touch the same owner file family, the coordinator must review the conflict before merge or re-entry. A preview warning is not proof of a conflict, and a clean preview is not proof that merge is safe.
+
 ## GitHub And External Status
 
 GitHub branches, pull requests, reviews, checks, labels, comments, and project-board status are external evidence.
+
+GitHub evidence must not choose tasks.
 
 They may help answer:
 

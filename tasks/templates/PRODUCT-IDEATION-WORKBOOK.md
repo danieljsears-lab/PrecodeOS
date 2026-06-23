@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.1
-Last updated: 2026-06-21
+Document version: v0.2.2
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -39,7 +39,7 @@ You do not need product-management vocabulary. You only need to keep asking plai
 - What would make this worth defining, testing, or building?
 - What could make this a bad idea?
 
-The goal is MVP-ready conviction, not proof that the idea is validated. Conviction means you can name the user, painful before moment, current workaround or evidence, strongest evidence, weakest assumption, smallest complete useful payoff, not-yet scope, and smallest learning step.
+The goal is MVP-ready conviction, not proof that the idea is validated. Conviction means you can name the user, painful before moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest complete useful payoff, not-yet scope, and smallest learning step.
 
 ## Choose Your Builder Lens
 
@@ -90,7 +90,7 @@ The stages are:
 1. Orientation: confirm one idea, builder lens, likely user type, and that you are not pasting sensitive information.
 2. First Three Questions: answer at most three high-level product or business questions, then get a Product Brief.
 3. Challenge And Clarity: push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces.
-4. Evidence And Assumption Check: rate evidence strength, name the strongest evidence, weakest assumption, what would change your mind, and smallest non-code learning step.
+4. Evidence And Assumption Check: rate evidence strength, name the primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, and smallest non-code learning step.
 5. Optional Learning/MVE Framing: when useful, define the smallest complete useful payoff, visible iteration, and core workflow spine.
 6. Candidate Capability Matrix: translate possible features into candidate capabilities, not approved requirements.
 7. Handoff: produce the Conviction Packet, Local Source Intake readiness, and the exact Local Source Intake handoff prompt.
@@ -127,11 +127,11 @@ First ask me to choose the builder lens that best fits this session:
 
 Stage 1: Orientation. Confirm we are discussing one idea, name the likely user type if known, and remind me not to paste secrets, credentials, billing data, private customer records, raw transcripts, dashboard values, production config, or sensitive personal data.
 
-Stage 2: First Three Questions. Ask only high-level product or business questions at first. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Stage 2: First Three Questions. Ask only high-level product or business questions at first. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 Stage 3: Challenge And Clarity. Challenge me supportively but firmly when my idea is vague, too broad, unsupported, solution-first, feature-first, risky, or too large. Force clear plain-English answers for the intended user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice.
 
-Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the strongest evidence, weakest assumption, what would change our mind, and smallest non-code learning step. Treat online research as weak evidence unless it is paired with behavior, a current workaround, spend, switching effort, prototype use, payment, return visits, or another costly action.
+Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, and smallest non-code learning step. Treat online research as weak evidence unless it is paired with behavior, a current workaround, spend, switching effort, prototype use, payment, return visits, or another costly action.
 
 Stage 5: Optional Learning/MVE Framing. If the idea is still too abstract, help me define the smallest complete useful payoff, a visible iteration, and a core workflow spine. Keep this as evidence only, not implementation approval.
 
@@ -162,6 +162,7 @@ Product Brief:
 - Better after moment:
 - Current workaround or evidence:
 - Assumptions:
+- Primary hypothesis / learning target:
 - Not-yet list:
 - Smallest useful version:
 - Next best question:
@@ -248,6 +249,7 @@ Force plain-English answers for:
 - painful before moment
 - better after moment
 - current workaround or evidence
+- primary hypothesis or learning target
 - weakest assumption
 - first useful slice
 - what would change my mind
@@ -450,6 +452,7 @@ Use this format:
 - Current alternatives or workarounds:
 - Problem or pain evidence:
 - Evidence strength:
+- Primary hypothesis / learning target:
 - Strongest evidence:
 - Weakest assumption:
 - What would change my mind:
@@ -496,7 +499,7 @@ Use Product Discovery Validation when the idea is broad, risky, market-facing, p
 ```text
 Use Product Discovery Validation on this idea.
 
-Interview me one question at a time. Challenge assumptions supportively. Tell me the current workaround, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
+Interview me one question at a time. Challenge assumptions supportively. Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
 
 Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
 ```
@@ -508,7 +511,7 @@ When the packet is ready, bring only the reviewed packet into Precode with this 
 ```text
 Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat the packet as source evidence only. Summarize stable conclusions, assumptions, open questions, risks, Local Source Intake readiness, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
+Treat the packet as source evidence only. Summarize stable conclusions, assumptions, primary hypothesis or learning target, open questions, risks, Local Source Intake readiness, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
 ```
 
 ## Close-The-Loop Prompt

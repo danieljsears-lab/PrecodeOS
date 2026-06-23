@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-18
+Document version: v0.1.10
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -26,6 +26,8 @@ The recovery posture is conservative:
 - resume only when the next safe action is clear
 
 Recovery is not auto-repair. Do not run destructive commands, overwrite user edits, delete evidence, rewrite logs, or guess from generated reports.
+
+When already-implemented bead work later proves wrong, obsolete, harmful, or no longer wanted, use the Implemented Bead Reversal Workflow in `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md`. Diagnose first, preserve the original bead as `done` historical evidence, then create or propose a separate reversal bead. Do not reopen the old bead, delete evidence, rewrite transition logs, or treat Git revert alone as proof.
 
 ## Stuck Trigger Response
 
@@ -114,6 +116,7 @@ I think I broke something in Precode. Stop work, identify the symptom, name the 
 | Session or agent is confused | Re-read active memory, active bead, and primary authority. | Run `bash scripts/checkpoint.sh` or prepare a handoff, then continue only with a clear context pack. | Do not continue from chat memory alone. |
 | Scope expanded accidentally | Run `python3 scripts/files-in-play-check.py`. | Explain each changed path as generated evidence, current-bead work, or separate follow-up; split or ask for approval when needed. | Do not silently widen the active task. |
 | Approval happened too quickly | Review closeout evidence and transition state. | Ask for accepted, revise, split, blocked, or stop; require explicit transition approval before activating the next bead. | Do not let generated next-step help approve work. |
+| Implemented bead needs reversal | Inspect the prior bead, Closeout Evidence, recorded checks, and current owner file. | Create or propose a separate reversal bead that names the superseded bead, reversal target, reversal reason, preserved behavior, checks, manual verification, and approvals still required. | Do not reopen a `done` bead, delete evidence, rewrite transition logs, or treat Git revert as complete proof. |
 
 ## Generated Reports
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-15
+Document version: v0.1.6
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -113,7 +113,15 @@ GitHub status may help a coordinator see:
 
 GitHub status must not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, or replace coordinator review. A contributor PR is source evidence until reviewed against the assigned bead, primary authority, recorded checks, manual verification, and team agreement.
 
+GitHub author, reviewer, assignee, branch, pull request, and check-run data may support Build Attribution Ledger review, but it remains external evidence until reviewed into bead Closeout Evidence. It must not assign blame, score contributors, accept implementation, approve merge, or replace coordinator review.
+
+GitHub evidence must not choose tasks or become GitHub mutation approval.
+
 Do not create, edit, close, label, assign, comment on, approve, merge, rerun, cancel, push, rebase, or delete GitHub resources without explicit user approval and an active bead that allows the exact action.
+
+`scripts/team-collaboration-check.py --github` is the read-only aggregation path for team GitHub evidence. It may report repository metadata, current branch pull requests, open pull requests, recent workflow runs, review decisions, merge-state labels, and check rollups when `gh` is available and authenticated.
+
+The output is generated evidence only. Missing `gh`, missing authentication, missing branch/upstream configuration, inaccessible PRs, unavailable checks, or network/API errors must be reported as `not_configured` or `warning`. The script must not silently infer GitHub state, and it must not mutate issues, pull requests, labels, comments, workflows, branches, releases, or project boards.
 
 ## Source Intake Path
 

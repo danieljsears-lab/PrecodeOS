@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-06-17
+Document version: v0.1.28
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -386,6 +386,24 @@ Support can say:
 A checkpoint is a status report, not approval. We are going to compare Claude's claims with recorded checks and manual verification. If the evidence was invented or overstated, we will mark the bead honestly and stop before activating anything new.
 ```
 
+### Implemented Bead Reversal Support
+
+Use this when a student or builder says already-implemented work needs to be undone, removed, or superseded.
+
+First keep history intact:
+
+- the prior bead remains `done` historical evidence
+- generated evidence, journal entries, and transition logs are not deleted or rewritten
+- Git revert is not proof by itself
+
+Support can say:
+
+```text
+We are not going to hide the old bead or treat a Git revert as proof. We will name the superseded bead, reversal target, reversal reason, preserved behavior, checks, manual verification, and approvals still required, then route the undo work into a separate reversal bead.
+```
+
+Do not approve rollback, destructive commands, setup/update mutation, transition-log edits, evidence deletion, GitHub mutation, external mutation, or next-bead activation from the support conversation.
+
 ## Engineer Initiation From User Packet
 
 Use this section when an engineer receives a user's Conviction Packet / Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.
@@ -585,11 +603,11 @@ Use this routing when a student arrives with messy notes, a Product Brief, guide
 | Student state | Support response | Do not do yet |
 |---|---|---|
 | Messy idea or scattered notes | Route to the Product Ideation Workbook or Product Conviction Packet prompt. Ask for a Product Brief after at most three high-level questions. | Do not create a PRD, bead, or code. |
-| Product Brief exists but evidence is weak | Ask the student/instructor to name current workaround, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
+| Product Brief exists but evidence is weak | Ask the student/instructor to name current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
 | Conviction Packet exists | Bring the reviewed packet into Local Source Intake as evidence. | Do not route directly to PRD drafting or Claude Code implementation. |
 | Approved PRD-like input plus Experience artifacts exist | Use `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates one bounded bead. | Do not let raw discovery notes substitute for approved PRD-like input. |
 
-Conviction means MVP-ready clarity, not validated demand. A good packet names intended user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and sensitive surfaces.
+Conviction means MVP-ready clarity, not validated demand. A good packet names intended user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and sensitive surfaces.
 
 Instructors own the learning and product-thinking layer:
 

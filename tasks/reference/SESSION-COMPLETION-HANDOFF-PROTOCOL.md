@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
+Document version: v0.1.15
 Last updated: 2026-06-23
 
 ## Purpose
@@ -58,6 +58,7 @@ Closeout Evidence should include:
 - release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
 - accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
+- build attribution when accountability, teammate work, handoff, fresh-context review, or future traceability matters: human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -73,13 +74,30 @@ Release-relevant closeout should also follow `tasks/reference/RELEASE-READINESS-
 
 When release confidence depends on proving a requirement or behavior being shipped, or a non-functional expectation, closeout should also name the verification and release evidence path: requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty. Missing traceability means the work still needs evidence; it does not approve release, accept implementation, or make checker output proof.
 
+When non-release acceptance confidence depends on a specific requirement ID, bug behavior, or acceptance criterion, closeout should include a compact requirement-to-proof trace: requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; and remaining uncertainty. Missing traceability is a review concern only when the proof claim matters to acceptance confidence. It does not approve or reject work by itself, and it must not turn generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, or generated reports into proof without recorded evidence or structured manual verification.
+
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Reference follow-through closeout is required when public package source changes may affect docs, protocols, package inventory, navigation indexes, generated HTML freshness, or maintainer-local public-package history. Record `Reference follow-through: resolved`, `deferred`, or `not applicable`, followed by the shortest useful reason. Public package source changes should review `_maintainer/CHANGELOG.md`; maintainer roadmap and roadmap-journal review is expected only when the bead, PRD, or closeout names roadmap or roadmap-candidate work. Generated HTML should be refreshed or checked from canonical Markdown; do not hand-edit generated reading surfaces as authority.
 
-Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review.
+Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, stale re-entry risks, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review. `python3 scripts/team-collaboration-check.py` may provide preview evidence for these fields, but generated preview output is not acceptance, merge approval, or owner-file promotion.
+
+Build attribution closeout should name who contributed the work, their role, which agent/tool surface assisted when known, who reviewed the attribution, and what uncertainty remains. `python3 scripts/build-attribution-ledger.py` and `logs/build-attribution-ledger.md/json` may summarize this evidence, but the generated ledger is not task authority, implementation acceptance, merge approval, release approval, contributor scoring, blame assignment, telemetry, or a registry.
 
 Follow-up candidates from closeout should be routed to one of: `CANDIDATE-QUEUE.md`, PRD amendment, `DECISIONS.md`, authority-file update, explicit defer/kill note, or a candidate bead proposal after decomposition review. Do not hide follow-up work in `tasks/todo.md`, and do not treat a Candidate Queue entry as the next active bead.
+
+When completed work later needs to be undone or superseded, use the Implemented Bead Reversal Workflow in `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md`. The original bead remains `done` historical evidence. The reversal work must be a separate normal bead with its own primary authority, files in play, checks, manual verification, closeout, review decision, and generated journal entry.
+
+Reversal closeout should name:
+
+- Superseded bead
+- Reversal target
+- Reversal reason
+- Preserved behavior
+- Reversal proof
+- Approvals still required
+
+Do not reopen a `done` bead, delete evidence, rewrite transition logs, treat Git revert alone as proof, or use generated reports as reversal authority.
 
 ## Required Handoff Context Pack
 
@@ -99,6 +117,7 @@ A handoff should be able to explain:
 - latest Ralph attempt decision when Ralph was used
 - release-readiness status when the bead may ship to users
 - verification and release evidence status when release confidence depends on traceable proof
+- reversal target, reversal reason, preserved behavior, and reversal proof when the bead reverses already-implemented work
 - teammate role, branch/worktree, coordinator, integration target, and merge/re-entry status when the Small Team Collaboration Lane applies
 - blockers
 - next safe action
@@ -106,7 +125,7 @@ A handoff should be able to explain:
 
 The handoff packet is orientation only. The next agent still starts from active memory, the active bead, and the primary authority file.
 
-For teammate handoff, generated handoff packets, PR notes, branch status, and chat summaries remain orientation evidence. They do not approve merge, accept work, activate another bead, or promote teammate findings into owner files.
+For teammate handoff, generated handoff packets, team collaboration preview output, PR notes, branch status, and chat summaries remain orientation evidence. They do not approve merge, accept work, activate another bead, or promote teammate findings into owner files.
 
 ## Decision Outcomes
 
@@ -129,6 +148,8 @@ Use these outcomes at completion time:
 Reference follow-through warnings are closeout-readiness evidence. They may name impacted surface families, expected public reference-document checks, generated HTML freshness checks, maintainer changelog review, and roadmap/journal review when applicable. They do not update owner files, approve maintainer history, accept implementation, block or approve transition by themselves, or make generated output authoritative.
 
 Ralph attempt evidence may support closeout and handoff, especially after repeated validator failures. It does not replace review acceptance, transition approval, or manual verification when those are required.
+
+session-friction findings from `python3 scripts/session-friction-check.py` may support closeout and handoff review when repeated tool failures, stale evidence, generated-refresh gaps, or memory/context pressure affected the session. They are review input only: do not promote memory, edit owner files, do not approve commands, accept implementation, approve transition, or treat `logs/session-friction-review.json` as proof.
 
 Session freshness is phase-aware. Evidence newer than the latest session close is reported as `open` detail while a bead is `in_progress`; it becomes a `stale` warning when the bead is in a close-oriented state such as `needs_info`, `manual_testing`, `review`, or `done`. A session close at or after the latest recorded check is `current`; a bead without recorded checks is `no-recorded-checks`.
 

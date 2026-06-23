@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-06-14
+Document version: v0.1.11
+Last updated: 2026-06-23
 
 Generated logs live here.
 
@@ -22,6 +22,8 @@ Generated logs live here.
 - `agent-spend.jsonl`
 - `bead-build-journal.jsonl`
 - `bead-build-journal.md`
+- `build-attribution-ledger.json`
+- `build-attribution-ledger.md`
 - `ralph-attempts.jsonl`
 - `ralph-summary.md`
 - `learning-diary.jsonl`
@@ -60,6 +62,16 @@ Local Hygiene v1 is advisory only:
 - dry-run manifests are generated evidence and do not authorize cleanup.
 - OS checkpoints are explicit scoped source snapshots for PrecodeOS-owned integrity recovery. They live under ignored `logs/os-checkpoints/`, do not make generated evidence authoritative, and must not roll back append-only proof ledgers.
 
+## Implemented Bead Reversal
+
+Reversal work preserves evidence history.
+
+- `logs/bead-build-journal.md/jsonl` may show reversal or supersession provenance when a reversal bead records it.
+- `logs/build-attribution-ledger.md/json` may show reviewed human contributor, contributor role, agent/tool surface, reviewer, uncertainty, Git author hints, and missing-attribution warnings by bead.
+- Existing journal entries, check ledgers, loop events, handoffs, and transition logs remain historical evidence.
+- Generated reversal warnings from `completion-check.py` are advisory evidence only.
+- Do not delete evidence, rewrite transition logs, reopen `done` beads, or treat Git revert as proof from generated output.
+
 ## Extension Output Rules
 
 Generated extension evidence belongs under `logs/` unless an existing Precode generated report already owns the surface.
@@ -67,6 +79,8 @@ Generated extension evidence belongs under `logs/` unless an existing Precode ge
 Generated markdown must include an authority contract and `CLASS: generated`.
 
 Generated JSON and JSONL files are evidence only. They must not be treated as active memory, task selection, product decisions, implementation plans, or bead state.
+
+Build attribution generated output must not be treated as acceptance, merge approval, release approval, blame, contributor scoring, telemetry, GitHub mutation, registry behavior, optional-pack behavior, or package-manager behavior.
 
 ## Versioning
 

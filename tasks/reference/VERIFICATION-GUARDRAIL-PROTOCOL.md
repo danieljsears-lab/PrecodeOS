@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-19
+Document version: v0.1.15
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -95,7 +95,23 @@ Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared
 
 For release-relevant work, proof should trace the requirement or behavior being shipped to the evidence lane and recorded source that proves it. The trace can live in Closeout Evidence, a release-readiness note, or a Release Candidate Evidence Profile. If the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, or decision state is unclear, treat the work as `needs evidence` before release review. This is an evidence-quality warning, not release approval, review acceptance, or generated proof.
 
+For non-release work, use a compact requirement-to-proof trace when acceptance confidence depends on a specific requirement, bug behavior, or acceptance criterion. The trace can live in a PRD Acceptance Oracle Matrix, bead body, Closeout Evidence, or review note:
+
+```text
+Requirement-to-proof trace:
+- Requirement, bug behavior, or acceptance criterion:
+- Evidence lane: static | unit | integration | browser | manual | external
+- Recorded source:
+- What this proves:
+- What this does not prove:
+- Remaining uncertainty:
+```
+
+Use the trace to explain evidence, not to create proof. A generated test, generated property, trace table, screenshot, browser note, AI critique, external status summary, or generated report is not complete proof by itself. It becomes evidence only when tied to recorded checks, structured manual verification, Closeout Evidence, accepted review, or a promoted follow-up path. Tiny docs-only or low-risk work does not need traceability ceremony unless proof drift would affect acceptance confidence.
+
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when the active bead is testable enough for bounded retry against a validator set. Ralph attempt results are evidence inputs; they do not replace recorded checks, closeout evidence, review, or acceptance.
+
+Use `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md` when proof is needed for a reversal bead. A Git revert, deleted code path, restored file, or manual undo is review input until the reversal bead records checks and manual verification. Reversal proof should show the intended behavior is restored or superseded and the named preserved behavior still works.
 
 ## Minimum Expectations
 
@@ -110,6 +126,7 @@ Use the smallest proof that controls the risk.
 | API, data, auth, or integration work | `integration`, explicit manual approval gates, and rollback or blocked escape path |
 | Deployment, migration, payments, security, or destructive work | user-approved sensitive-surface gate, `external` or manual verification, and rollback or escape path |
 | Release-relevant user-project work | release-readiness note, smoke evidence, docs freshness when relevant, manual or browser verification when needed, and explicit approval before release action |
+| Reversal or supersession of implemented work | superseded bead, reversal target, reversal reason, preserved behavior, recorded checks, manual verification, and explicit review decision |
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
 
@@ -209,5 +226,6 @@ Generated health or audit reports may warn when:
 - adaptive-depth fields are missing or inconsistent with the bead's risk
 - sensitive-surface work lacks approval, manual verification, rollback, or blocked escape notes
 - generated tests, screenshots, or external status are treated as proof without recorded evidence
+- Git revert or undo operations are treated as reversal proof without recorded checks, manual verification, preserved-behavior review, and acceptance
 
 These warnings are generated evidence only. They must not choose the next task or approve a transition.

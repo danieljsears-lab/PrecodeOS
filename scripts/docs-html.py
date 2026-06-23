@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
-# Last updated: 2026-06-21
+# Version: v0.1.4
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -309,7 +309,11 @@ def render_markdown(markdown: str, include_title: bool = False) -> tuple[str, li
                     anchor = anchor_match.group(1).strip()
                     index += 1
             anchor = unique_slug(anchor or slugify(plain_text(text)), used)
-            html.append(f'<h{level} id="{h(anchor)}">{inline(text)}</h{level}>')
+            heading_label = h(plain_text(text))
+            html.append(
+                f'<h{level} id="{h(anchor)}"><a class="heading-anchor" href="#{h(anchor)}" '
+                f'aria-label="Link to {heading_label}">#</a>{inline(text)}</h{level}>'
+            )
             if level <= 3:
                 toc.append(TocItem(level=level, text=plain_text(text), anchor=anchor))
             index += 1
@@ -410,6 +414,7 @@ def css() -> str:
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -422,6 +427,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -478,6 +500,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -495,6 +532,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -504,10 +542,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -515,6 +555,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -525,6 +577,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -539,7 +592,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -551,8 +610,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -610,6 +670,7 @@ def page_shell(title: str, body: str, docs: list[Doc], active: str | None = None
   <style>{css()}</style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     {sidebar(docs, active)}
     <main>
@@ -617,6 +678,20 @@ def page_shell(title: str, body: str, docs: list[Doc], active: str | None = None
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {{
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {{
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${{progress}})`;
+      }};
+      update();
+      window.addEventListener("scroll", update, {{ passive: true }});
+      window.addEventListener("resize", update);
+    }})();
+  </script>
 </body>
 </html>
 """
@@ -678,6 +753,15 @@ def render_toc(doc: Doc) -> str:
     return f'<aside class="toc"><p class="nav-label">On This Page</p>{items}</aside>'
 
 
+def render_page_tools(doc: Doc, source_href: str) -> str:
+    return f"""<aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="{h(source_href)}">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>"""
+
+
 def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_doc: Doc | None) -> str:
     previous_link = (
         f'<a href="{h(previous_doc.html_name)}"><span>Previous</span>{h(previous_doc.title)}</a>'
@@ -688,8 +772,13 @@ def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_do
         f'<a href="{h(next_doc.html_name)}"><span>Next</span>{h(next_doc.title)}</a>' if next_doc else "<span></span>"
     )
     source_href = f"../docs/{doc.filename}" if doc.path.parent == DOCS else f"../{doc.filename}"
+    reader_aside_items = [render_page_tools(doc, source_href)]
+    toc = render_toc(doc)
+    if toc:
+        reader_aside_items.append(toc)
+    reader_aside = "\n    ".join(reader_aside_items)
     body = f"""
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>{h(doc.title)}</h1>
   <p class="lede">{h(doc.summary)}</p>
@@ -700,7 +789,9 @@ def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_do
     {doc.content_html}
     <nav class="page-nav" aria-label="Previous and next docs">{previous_link}{next_link}</nav>
   </article>
-  {render_toc(doc)}
+  <div class="reader-aside">
+    {reader_aside}
+  </div>
 </section>
 """
     return page_shell(doc.title, body, docs, active=doc.html_name)

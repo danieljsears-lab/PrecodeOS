@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.35
+Document version: v0.1.39
 Last updated: 2026-06-23
 
 ## Purpose
@@ -172,6 +172,42 @@ Return: Team situation, Coordinator and decision owner, Branch/worktree rule, Ca
 Do not edit files, approve PRDs, activate beads, approve merge, mutate GitHub, deploy, run mutating commands, or treat team notes, PRs, branch status, or generated handoff packets as authority.
 ```
 
+### Small Team Collaboration Preview
+
+```text
+Use the Small Team Collaboration Lane preview.
+
+Run `python3 scripts/team-collaboration-check.py` for local read-only preview evidence. If I explicitly ask for GitHub evidence and `gh` is available, run `python3 scripts/team-collaboration-check.py --github`.
+
+Return the current branch/worktree, integration branch, active bead, one-active-bead status, files in play, owner-file impact candidates, re-entry risks, Team Merge And Re-entry Review Pack fields, teammate assignment packet fields, forbidden uses, and generated-report warning.
+
+Do not create branches or worktrees, push, pull, rebase, merge, create or approve pull requests, mutate GitHub, update owner files, approve PRDs, activate beads, accept implementation, approve merge, deploy, or treat generated preview output as authority.
+```
+
+### Session Friction Review
+
+```text
+Use Session Friction Review.
+
+Run `python3 scripts/session-friction-check.py` as a read-only advisory review of repeated tool failures, stale evidence, generated-refresh gaps, and memory/context pressure.
+
+Return findings with category, cited source refs, confidence, freshness, recommended destination, suggested next human review step, and generated-report warning.
+
+Do not create memory cards. Do not edit owner files. Do not approve commands, choose tasks, approve PRDs, activate beads, accept implementation, create wrappers, or treat `logs/session-friction-review.json` or checker output as proof or authority.
+```
+
+### Team Assignment Packet Prompts v2
+
+```text
+Use the Small Team Collaboration Lane.
+
+Prepare a teammate assignment packet for [teammate] on [branch/worktree]. Name the coordinator, product decision owner, teammate role, assigned bead, primary authority, files in play, checks, stop conditions, evidence to return, approval gates, and what must happen before merge/re-entry review.
+
+Use `can run in parallel` only to mean branch/worktree-isolated teammate work after coordinator approval.
+
+Use `scripts/team-collaboration-check.py` output only as generated preview evidence. Do not create the branch/worktree, activate the bead, choose work from GitHub, approve merge, or turn this packet into owner-file authority.
+```
+
 ### Teammate Startup In A Team Lane
 
 ```text
@@ -182,12 +218,12 @@ Load active memory, the team coordination notes, and the bead assigned to this b
 Do not rely on chat history, generated reports, PR status, or teammate notes as authority. Do not edit until the branch/worktree and bead boundary are clear.
 ```
 
-### Team Review And Merge Readiness
+### Team Merge And Re-entry Review Pack
 
 ```text
 Use the Small Team Collaboration Lane review path.
 
-Review this contributor branch or worktree for merge/re-entry readiness. Compare the assigned bead, primary authority, changed files, recorded checks, manual verification, owner-file impacts, conflicts with the integration branch, open questions, and follow-up bead candidates.
+Review this contributor branch or worktree for merge/re-entry readiness. Compare the assigned bead, primary authority, changed files, recorded checks, manual verification, owner-file impacts, conflicts with the integration branch, stale branch or stale evidence signals, open questions, and follow-up bead candidates. Use `python3 scripts/team-collaboration-check.py --integration-branch <branch>` when a read-only preview would clarify re-entry risk.
 
 Recommend only continue, review, split, block, or coordinator merge/re-entry review. Do not accept implementation, approve merge, activate another bead, mutate GitHub, deploy, or promote findings into owner files.
 ```
@@ -201,9 +237,21 @@ I need to know whether this idea is worth defining before PRD shaping.
 
 Load the Product Discovery Validation Protocol. Interview me one question at a time. Challenge assumptions supportively, especially if the audience is broad, the user problem is vague, the current workaround is missing, evidence is weak, demand is only imagined, or the first slice is too large.
 
-Return the Discovery Summary with the target user and situation, user problem, current alternatives or workarounds, strongest evidence, weakest assumption, evidence strength, assumption categories, demand or pricing signal, smallest non-code learning step, what would change our mind, sensitive surfaces, recommendation of proceed, pause, narrow, or kill, reason, recommended next Precode workflow, likely authority files, and the guardrail reminder.
+Return the Discovery Summary with the target user and situation, user problem, current alternatives or workarounds, primary hypothesis or learning target, strongest evidence, weakest assumption, evidence strength, assumption categories, demand or pricing signal, smallest non-code learning step, what would change our mind, sensitive surfaces, recommendation of proceed, pause, narrow, or kill, reason, recommended next Precode workflow, likely authority files, and the guardrail reminder.
 
 Treat the output as evidence only. Do not write a PRD, update PRODUCT.md, create or activate beads, choose tasks, run mutating commands, or code.
+```
+
+### Hypothesis Review / Learning Loop
+
+```text
+Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief.
+
+Tell me what was tested, what was learned, whether the hypothesis is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow.
+
+Return: review target, authority checked, hypothesis or learning target, evidence reviewed, learning status, learning outcome, stale or untested signals, recommended next Precode workflow, user approval needed, stop condition, and generated-report warning.
+
+Treat the output as evidence only. Do not approve product direction, rank candidates, create or activate beads, update owner files, choose tasks, require analytics, create a database, or code.
 ```
 
 ### Accessibility Advisor Fit Interview
@@ -260,6 +308,28 @@ Return: Review target, Authority checked, Evidence reviewed, Missing proof, Acce
 Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve the review decision, activate the next bead, create follow-up tasks, approve release, run mutating commands, or treat generated reports or confidence as proof.
 ```
 
+### Requirement-To-Proof Review
+
+```text
+Review the proof for this requirement, bug behavior, or acceptance criterion as a requirement-to-proof trace.
+Load the active bead, primary authority, recorded checks, manual verification, closeout evidence, and relevant PRD acceptance oracle when present.
+
+Return: Requirement, bug behavior, or acceptance criterion; Evidence lane; Recorded source; What this proves; What this does not prove; Remaining uncertainty; Missing proof; Acceptance question; Recommendation.
+
+Do not accept implementation, approve review, approve release, activate the next bead, create follow-up tasks, run mutating commands, or treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, generated reports, or confidence as proof by themselves.
+```
+
+### Build Attribution Review
+
+```text
+Review the Build Attribution Ledger for this bead or recent work.
+Load the active bead, Closeout Evidence, generated Build Attribution Ledger when available, bead build journal when needed, and any relevant small-team or GitHub evidence as evidence only.
+
+Return: human contributor, contributor role, agent/tool surface, attribution reviewer, attribution uncertainty, evidence confidence, missing attribution, Git-hint-only attribution, and the source that must be reviewed next.
+
+Do not choose tasks, accept implementation, approve review, approve merge, approve release, assign blame, score contributors, mutate GitHub, or treat generated ledger output as authority.
+```
+
 ### Review Lanes
 
 ```text
@@ -285,11 +355,11 @@ Help me research, explore, challenge, and narrow the idea before I create a PRD 
 
 Stage 1: Orientation. Confirm we are discussing one idea, name the user type if known, and remind me not to paste secrets, credentials, billing data, private customer records, raw transcripts, dashboard values, production config, or sensitive personal data.
 
-Stage 2: First Three Questions. Interview me one question at a time. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Stage 2: First Three Questions. Interview me one question at a time. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 Stage 3: Challenge And Clarity. Challenge me supportively but firmly when the audience is too broad, the painful moment is vague, the problem is framed as a solution, the current workaround is missing, evidence is weak, scope is too large, feature lists appear before user moments are clear, or sensitive surfaces appear. Force plain-English answers for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice. Do not debate endlessly; move non-blocking concerns to Not yet.
 
-Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the strongest evidence, weakest assumption, what would change our mind, and the smallest non-code learning step.
+Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, and the smallest non-code learning step.
 
 Stage 5: Candidate Capability Matrix. Translate possible features into candidate capabilities, not approved requirements:
 
@@ -300,7 +370,7 @@ Guide source-cited research when useful. For each source, include the link, date
 
 If worth-building uncertainty becomes the main question, route me to the Product Discovery Interview Skill / Product Discovery Validation instead of trying to turn weak evidence into a Conviction Packet.
 
-Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
+Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. If there are useful not-yet ideas, suggest Candidate Queue entries for my review instead of treating them as approved work. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
 ```
@@ -312,13 +382,13 @@ Use the Candidate Queue Protocol.
 
 Review `CANDIDATE-QUEUE.md` as parked intent, not task authority.
 
-Tell me: what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+Tell me: what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, which approved PRDs have candidate beads, and which reviewed candidates have product-value ratings, themes, or near-bead sketches.
 
 Also tell me what the Candidate Queue cannot answer: the active task, what the agent should build next, whether a PRD is approved, whether a bead is active, or whether a ranked item is authorized for implementation.
 
-Return: Current candidate, status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
+Return: Current candidate, status, evidence used, primary hypothesis or learning target, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
 
-Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, choose next work, or start coding.
+Do not update active memory, approve a PRD, activate a bead, reserve B### bead IDs, treat product-value rating as implementation priority, choose next work, or start coding.
 ```
 
 ### Add Candidate Queue Entry
@@ -326,9 +396,33 @@ Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, c
 ```text
 Add or draft a Candidate Queue entry for this intent.
 
-Use `CQ-###-short-name`, status, user intent, evidence or source pointers, open questions, evidence strength, weakest assumption, reviewed rank if I provide one, promotion target, blocked or stale reason, related PRDs, candidate bead visibility, next review trigger, and last reviewed date.
+Use `CQ-###-short-name`, status, user intent, evidence or source pointers, open questions, primary hypothesis or learning target, evidence strength, weakest assumption, reviewed rank if I provide one, promotion target, blocked or stale reason, related PRDs, candidate bead visibility, next review trigger, and last reviewed date.
 
-Ranking is review order only, not implementation priority. Do not create a PRD, create or activate beads, reserve bead IDs, update `tasks/todo.md`, or code.
+Ranking is review order only, not implementation priority. Product-value rating is product value only. Do not create a PRD, create or activate beads, reserve bead IDs, update `tasks/todo.md`, or code.
+```
+
+### Candidate Queue Shaping Proposal
+
+```text
+Use the Candidate Queue Protocol.
+
+Draft a JSON shaping proposal for this Candidate Queue ID.
+
+Include candidate_id, shaping_status, product_value_rating, product_value_rationale, themes, weakest_assumption, and near_bead_sketches. Use near-bead sketch IDs like CQ-001-short-name-S01.
+
+Treat P0/P1/P2/P3 as product value only, not implementation priority. Near-bead sketches are not bead files and must not use B### IDs.
+
+Do not approve a PRD, activate a bead, update tasks/todo.md, choose next work, or code.
+```
+
+### Candidate Queue Import Preview
+
+```text
+Use scripts/candidate-queue.py to preview importing this raw notes file into the Candidate Queue.
+
+Run python3 scripts/candidate-queue.py --preview-import <path>.
+
+Treat the output as preview evidence only: mutates_now: false. Do not apply anything unless I explicitly approve an action ID with --apply --approve-action.
 ```
 
 ### Precode Conviction Handoff
@@ -338,7 +432,7 @@ Use the Product Conviction Packet Skill handoff path.
 
 I am bringing a reviewed Conviction Packet into a Precode project. Treat the packet as evidence, not authority.
 
-First classify whether the packet is ready for Local Source Intake or should pause for Product Discovery Validation because the user, painful before moment, current workaround, strongest evidence, weakest assumption, MVP-ready first slice, or sensitive surfaces are unclear.
+First classify whether the packet is ready for Local Source Intake or should pause for Product Discovery Validation because the user, painful before moment, current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, or sensitive surfaces are unclear.
 
 If ready, use Local Source Intake on the packet. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, candidate PRD inputs, likely owner files, and recommended next safe workflow.
 
@@ -422,7 +516,7 @@ Review PRODUCT.md with me. Clarify product promise, users and jobs, strategy and
 ```text
 I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, not-yet list, smallest useful version, and next best question.
+Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 If the idea is still abstract or too large, use the workbook's optional learning/MVE framing to name the smallest complete useful payoff, visible iteration, and core workflow spine. Treat that framing as evidence only, not an implementation handoff.
 
@@ -444,19 +538,19 @@ Use the Idea To PRD Workflow to align this idea before planning. Ask one high-le
 ## Ubiquitous Language Review
 
 ```text
-Use the Ubiquitous Language Protocol. Identify the terms I introduced, their plain-English meanings, aliases, avoid or confusing terms, source pointers, freshness, and examples in UI/code/tests. Do not code or promote anything without approval.
+Use the Ubiquitous Language Protocol. Identify the terms I introduced, their plain-English meanings, aliases, avoid or confusing terms, source pointers, freshness, and examples in UI/code/tests/docs/support/user language. Do not code or promote anything without approval.
 ```
 
 ## Glossary Card Proposal
 
 ```text
-Turn these reviewed terms into a proposed project_glossary memory card. Include domain terms, aliases, avoid terms, examples, source pointers, freshness, and authority owner if promoted. Do not write the card until I approve.
+Turn these reviewed terms into a proposed project_glossary memory card. Include domain terms with plain-English meanings, aliases, avoid terms, source pointers for each useful term group, examples in UI/code/tests/docs/support/user language, freshness, and authority owner if promoted. Do not write the card until I approve, and do not treat the proposed card as authority.
 ```
 
 ## Domain Naming Review
 
 ```text
-Before naming modules, interfaces, tests, fixtures, routes, or UI labels, compare the proposed names to the PRD Domain Language and any reviewed project_glossary cards. Tell me which names match user language, which are confusing, and what should stay historical evidence only.
+Before naming modules, interfaces, tests, fixtures, routes, UI labels, docs, or support language, compare the proposed names to the PRD Domain Language, current code, owner files, and any reviewed project_glossary cards. Tell me which names match user language, which are acceptable technical translations, which are confusing or stale, and what needs owner-file promotion or a follow-up bead before broad renaming.
 ```
 
 ## Destination PRD Review
@@ -509,6 +603,18 @@ Route decision: current_bead | needs_evidence | recovery_repair | PRD/bead | rel
 Do not edit yet. If the owner file, route decision, or proof path is unclear, stop and ask for the missing information or checks first.
 
 Treat this spec as advisory only. It does not approve repair, accept implementation, approve a PRD, activate a bead, approve release, approve rollback, approve setup/update mutation, approve destructive commands, create implementation tasks, or become generated proof.
+```
+
+## Implemented Bead Reversal
+
+```text
+This already-implemented bead may need to be reversed or superseded.
+
+Load the active memory, the prior bead, its Closeout Evidence, recorded checks, the current owner file, and the Implemented Bead Reversal Workflow PRD or protocol if one exists.
+
+Tell me the superseded bead, reversal target, reversal reason, preserved behavior, likely files in play, checks needed, manual verification needed, approvals still required, and whether this should become a separate reversal bead.
+
+Do not reopen a done bead, delete evidence, rewrite transition logs, treat Git revert as proof, approve rollback, approve transition, mutate setup/update behavior, run destructive commands, mutate GitHub, mutate external systems, or start implementation until I approve the separate reversal bead path.
 ```
 
 ## Bead Decomposition
@@ -568,6 +674,20 @@ Is this simple enough to build directly, or does it need an adapter/facade, stat
 
 ```text
 Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, artifact to produce next, required authority source, user approval needed, stop condition, and generated-report warning before doing work.
+```
+
+## Plan Loop
+
+```text
+Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
+
+Then ask one targeted question at a time only when the answer could change the next workflow, risk, first slice, owner-file impact, or stop condition.
+
+End with a Plan Packet containing: source context used, feature angle or topic explored, current known facts, assumptions and weak spots, options considered, risks and sensitive surfaces, recommended next path, candidate first-slice shape only when stage-appropriate, stop conditions, and what not to do yet.
+
+Treat the Plan Packet as evidence only. Before PRD approval, do not propose beads. After an approved PRD, you may sketch a first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, you may challenge or refine the proposal, but do not update tasks/todo.md, activate work, approve a PRD, choose tasks, create backlog authority, authorize implementation, or code.
 ```
 
 ## Routing Check
@@ -672,6 +792,26 @@ Use the Intent Orchestration and Decomposition protocols to tell me whether this
 Show me the path from idea to evidence: source/input, PRD requirement IDs, bead, recorded checks or manual verification, and review decision. Treat generated reports as evidence only.
 ```
 
+## Make Acceptance Criteria Testable
+
+```text
+Review these acceptance criteria for vague or unverifiable behavior.
+
+Where it improves clarity, rewrite a criterion in optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
+
+Keep clear non-EARS criteria when they are already observable and testable. Do not require EARS syntax, reject valid non-EARS criteria, approve the PRD, accept implementation, activate a bead, create tasks, change schema, treat wording as proof, or code.
+```
+
+## Review Acceptance Criteria For Vague Behavior
+
+```text
+Use the PRD Protocol and ACCEPTANCE.md to review this PRD's Acceptance Oracle Matrix.
+
+For each vague expected behavior, suggest a clearer observable criterion. Use optional EARS-style wording only when it helps: WHEN [condition/event] THE SYSTEM SHALL [expected behavior].
+
+Return acceptance weaknesses, suggested rewrites, unresolved questions, and stop conditions. Do not approve the PRD, accept implementation, activate beads, mutate files, add a checker, treat generated HTML as authority, or code.
+```
+
 ## Classify Tool Call
 
 ```text
@@ -724,6 +864,22 @@ Checkpoint the session. Tell me whether we should continue, repair, split, pause
 
 ```text
 Review the completed bead against its done-when target, primary authority, files in play, checks, manual verification, and closeout evidence. Recommend accepted, revise, split, or blocked, and explain the smallest reason.
+```
+
+## Requirement-To-Proof Review
+
+```text
+Review the proof for this requirement, bug behavior, or acceptance criterion as a requirement-to-proof trace.
+Show requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; remaining uncertainty; missing proof; acceptance question; and recommendation.
+Do not accept implementation, approve review, approve release, activate the next bead, create follow-up tasks, run mutating commands, or treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, generated reports, or confidence as proof by themselves.
+```
+
+## Build Attribution Review
+
+```text
+Review the Build Attribution Ledger for this bead or recent work.
+Show human contributor, contributor role, agent/tool surface, attribution reviewer, attribution uncertainty, evidence confidence, missing attribution, Git-hint-only attribution, and the source that must be reviewed next.
+Do not choose tasks, accept implementation, approve review, approve merge, approve release, assign blame, score contributors, mutate GitHub, or treat generated ledger output as authority.
 ```
 
 ## Review Lane
@@ -866,6 +1022,10 @@ Read the generated learning diary and explain what I should understand from the 
 
 ```text
 Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.
+```
+
+```text
+Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, and do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
 ```
 
 ```text

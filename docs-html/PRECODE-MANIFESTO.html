@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,7 +243,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Manifesto</h1>
   <p class="lede">The Precode Answer</p>
@@ -194,7 +251,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </section>
 <section class="content layout">
   <article class="article">
-    <h2 id="the-precode-answer">The Precode Answer</h2>
+    <h2 id="the-precode-answer"><a class="heading-anchor" href="#the-precode-answer" aria-label="Link to The Precode Answer">#</a>The Precode Answer</h2>
 <p>Canonical site: <code>https://www.precodeos.org</code>.</p>
 <p>PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See <code>NOTICE</code> and <code>TRADEMARK.md</code> for license, attribution, and brand-use guidance.</p>
 <p>We believe AI coding does not need another autonomous agent as much as it needs a repo-owned control layer.</p>
@@ -206,9 +263,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Precode is not anti-AI. Precode is anti-AI-drift. This distinction is critical.</p>
 <p>It is not here to kill ambition. It is here to keep ambition oriented.</p>
 <p>It gives builders rails without taking away the wheel.</p>
-<h2 id="why-the-name">Why The Name</h2>
+<h2 id="why-the-name"><a class="heading-anchor" href="#why-the-name" aria-label="Link to Why The Name">#</a>Why The Name</h2>
 <p>“Precode” names the work that must happen before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means Precode is the small operating layer around the agent and the repo, not a replacement for the agent, the app, or the builder’s judgment.</p>
-<h2 id="builders-are-the-future">Builders Are The Future</h2>
+<h2 id="builders-are-the-future"><a class="heading-anchor" href="#builders-are-the-future" aria-label="Link to Builders Are The Future">#</a>Builders Are The Future</h2>
 <p>We believe non-traditional builders are the future.</p>
 <p>AI coding agents have changed who gets to build software. It&#x27;s a magical moment in history. People once locked-out of building by lack of experience, technical fluency, knowledge role, tooling, process, or budget can now turn ideas into working software.</p>
 <p>Founders. Operators. Creators. Domain Experts. Students. Curious beginners.</p>
@@ -217,7 +274,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>The shift is loud. The drift is quiet.</p>
 <p>The shift gives builders power. Quiet drift takes their bearings.</p>
 <p>Precode exists between the shift and the drift.</p>
-<h2 id="the-problem">The Problem</h2>
+<h2 id="the-problem"><a class="heading-anchor" href="#the-problem" aria-label="Link to The Problem">#</a>The Problem</h2>
 <p>We believe the core problem is not that AI coding agents cannot write good code. They can write excellent code.</p>
 <p>The core problem is that they can write code faster with less oversight than new builders can understand, verify, direct, and recover from it. The human problem is missing judgment. The agent problem is confident motion. The system problem is lost project truth.</p>
 <p>Intent drifts from implementation, scope drifts from the approved task, confidence drifts from evidence, and generated output drifts from human understanding.</p>
@@ -227,7 +284,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>The promise breaks when real projects start to scale and require product judgment, architecture choices, verification and security, deployment safety, recovery, and durable memory.</p>
 <p>&lt;u&gt;Vibe coding gives beginners acceleration and top speed before it gives them steering or brakes.&lt;/u&gt; It&#x27;s exhilirating. And dangerous.</p>
 <p>The builder still owns the product, but the project can outrun the builder. Precode exists to add the map, the steering, the brake, and the recovery system. Precode exists to close that gap.</p>
-<h2 id="code-is-not-understanding">Code Is Not Understanding</h2>
+<h2 id="code-is-not-understanding"><a class="heading-anchor" href="#code-is-not-understanding" aria-label="Link to Code Is Not Understanding">#</a>Code Is Not Understanding</h2>
 <p>We believe code is not understanding.</p>
 <p>AI can generate code faster than a beginner can build a mental map of what that code means.</p>
 <p>Code is a liability. Understanding is the asset.</p>
@@ -235,7 +292,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Precode stands in a long tradition that treats software as understanding made operational, not output made impressive.</p>
 <p>It lets agents inspect, draft, implement, explain, check, summarize, and propose, but the work must stay human-owned. The agent may move fast, but the project must remain understandable; the agent may generate code, but the builder must keep ownership of intent; the agent may sound confident, but the repo must preserve evidence.</p>
 <p>A project is not alive because it runs. It is alive because someone can still understand it, question it, change it, and recover it.</p>
-<h2 id="the-line-precode-holds">The Line Precode Holds</h2>
+<h2 id="the-line-precode-holds"><a class="heading-anchor" href="#the-line-precode-holds" aria-label="Link to The Line Precode Holds">#</a>The Line Precode Holds</h2>
 <p>We believe this is the line Precode holds: acceleration vs. steering, speed vs. judgment, motion vs. progress, easy vs. simple.</p>
 <p>Speed is a gift until it outruns direction. The easiest prompt can create the hardest system to understand, and code can change while the project loses its way.</p>
 <p>Capability vs. permission. Confidence vs. evidence. Output vs. understanding.</p>
@@ -246,7 +303,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Precode moderates speed to the conditions. Speed must answer to understanding, proof, risk, and recovery.</p>
 <p>Capability is not permission. Precode inserts judgment between ability and action by asking whether this is the active task, who owns the fact, what is out of scope, what evidence will prove it, what good looks like, what risk it touches, what needs human approval, and what happens if it goes wrong.</p>
 <p>These questions are not bureaucracy. They are the steering wheel.</p>
-<h2 id="core-values-and-principles">Core Values And Principles</h2>
+<h2 id="core-values-and-principles"><a class="heading-anchor" href="#core-values-and-principles" aria-label="Link to Core Values And Principles">#</a>Core Values And Principles</h2>
 <p>We believe five values should guide Precode without turning the manifesto into an operating rulebook.</p>
 <p>Human Agency: builders own intent, approval, and acceptance. Agents propose, explain, and implement. They do not own the product.</p>
 <p>Understanding: builders should not be reduced to approving code they cannot explain. Precode helps them build a mental map over time.</p>
@@ -255,13 +312,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Recoverability: drift, blockers, and mistakes will happen. A good system helps the builder recover without losing the thread.</p>
 <p>These principles turn AI coding from a burst of motion into a repeatable practice:</p>
 <ul><li>Active memory stays tiny.</li><li>The repo remembers what chat forgets.</li><li>One active bead at a time.</li><li>Every durable fact needs an owner file.</li><li>Generated reports are evidence, not authority.</li><li>Agents may propose; humans approve.</li><li>Confidence is not evidence.</li><li>Sensitive work gets stronger gates.</li><li>Stop conditions are a feature, not friction.</li><li>Recovery is part of the system.</li><li>Learning accumulates in reviewable files.</li></ul>
-<h2 id="what-precode-refuses-and-gives">What Precode Refuses And Gives</h2>
+<h2 id="what-precode-refuses-and-gives"><a class="heading-anchor" href="#what-precode-refuses-and-gives" aria-label="Link to What Precode Refuses And Gives">#</a>What Precode Refuses And Gives</h2>
 <p>We believe refusing the wrong things is part of protecting the builder.</p>
 <p>Precode refuses infinite context as a substitute for clarity, and gives builders tiny active memory. It refuses chat as project memory, and gives owner files for truth. It refuses confidence as proof, and gives recorded evidence.</p>
 <p>It refuses hidden product decisions inside implementation, and gives PRDs when ideas are fuzzy. It refuses uncontrolled next-task momentum, and gives beads, stop conditions, and human-approved transitions.</p>
 <p>It refuses generated reports as instructions, and gives generated reports without granting them authority. It refuses magic that leaves beginners blamed when the spell breaks, and gives them a diary, reviewed memory, better questions, recovery, and learning that survives the session.</p>
 <p>Most of all, it gives builders a way to keep building after the first magical demo becomes a real project.</p>
-<h2 id="the-call">The Call</h2>
+<h2 id="the-call"><a class="heading-anchor" href="#the-call" aria-label="Link to The Call">#</a>The Call</h2>
 <p>We believe the future of software should include the people who were never handed the map.</p>
 <p>The future of software should not belong only to people who already know how software teams work and products get built. Builders are the future. AI coding agents can widen the circle.</p>
 <p>That matters.</p>
@@ -273,11 +330,33 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Move at the speed the conditions can bear.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-PACKAGE-FILE-INVENTORY.html"><span>Previous</span>PrecodeOS Package File Inventory</a><span></span></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#the-precode-answer">The Precode Answer</a><a class="level-2" href="#why-the-name">Why The Name</a><a class="level-2" href="#builders-are-the-future">Builders Are The Future</a><a class="level-2" href="#the-problem">The Problem</a><a class="level-2" href="#code-is-not-understanding">Code Is Not Understanding</a><a class="level-2" href="#the-line-precode-holds">The Line Precode Holds</a><a class="level-2" href="#core-values-and-principles">Core Values And Principles</a><a class="level-2" href="#what-precode-refuses-and-gives">What Precode Refuses And Gives</a><a class="level-2" href="#the-call">The Call</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/PRECODE-MANIFESTO.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#the-precode-answer">The Precode Answer</a><a class="level-2" href="#why-the-name">Why The Name</a><a class="level-2" href="#builders-are-the-future">Builders Are The Future</a><a class="level-2" href="#the-problem">The Problem</a><a class="level-2" href="#code-is-not-understanding">Code Is Not Understanding</a><a class="level-2" href="#the-line-precode-holds">The Line Precode Holds</a><a class="level-2" href="#core-values-and-principles">Core Values And Principles</a><a class="level-2" href="#what-precode-refuses-and-gives">What Precode Refuses And Gives</a><a class="level-2" href="#the-call">The Call</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

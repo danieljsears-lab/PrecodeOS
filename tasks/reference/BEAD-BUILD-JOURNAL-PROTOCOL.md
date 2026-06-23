@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-21
+Document version: v0.1.3
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -26,6 +26,7 @@ The journal should answer:
 - What generated evidence was produced?
 - What checks or manual verification support the current state?
 - What Candidate Queue, PRD, requirement, or primary-authority provenance is available?
+- What reviewed build attribution is available, and what attribution uncertainty remains?
 - What still needs review, proof, acceptance, or user approval?
 
 ## Source Inputs
@@ -69,6 +70,8 @@ Capture:
 - evidence state based on recorded checks, closeout, review decision, and Git baseline, not confidence
 - build lane and active feature window when available
 - provenance from Candidate Queue IDs, parent PRD, requirement IDs, and primary authority when available
+- reversal or supersession provenance when the bead records a superseded bead, reversal target, reversal reason, preserved behavior, or reversal proof
+- build attribution when bead closeout records human contributor, contributor role, agent/tool surface, attribution reviewer, or attribution uncertainty
 - Git branch and baseline/end metadata when available
 - changed-path summary
 - implementation changes, separated from generated evidence changes
@@ -82,7 +85,11 @@ Do not provide percentage completion by default. Use evidence-based wording such
 
 Candidate Queue and PRD lineage is provenance only. It can explain where the work came from, but it must not make `CANDIDATE-QUEUE.md` responsible for implementation history, rank work, approve PRDs, activate beads, or authorize implementation.
 
+Build attribution is accountability evidence only. It can explain who contributed a bead and which agent/tool surface assisted, but it must not assign blame, score contributors, accept implementation, approve merge, approve release, choose tasks, or make generated ledger output authoritative.
+
 Session-close entries are path visibility, not acceptance. A journal entry may show work that is still in progress, missing checks, waiting for manual verification, or awaiting review.
+
+Reversal entries are path visibility too. When a reversal bead records supersession details, the journal may show which prior bead or behavior is being reversed and why, but it must not rewrite the prior bead's entry, delete earlier evidence, mutate transition logs, or treat the reversal as accepted.
 
 ## Daily Cockpit Surfacing Rule
 

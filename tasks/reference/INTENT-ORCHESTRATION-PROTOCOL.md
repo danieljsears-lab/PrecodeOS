@@ -31,7 +31,7 @@ Use these states when explaining where an idea is in the Precode loop:
 | State | Meaning | Typical owner |
 |---|---|---|
 | `raw` | A rough idea, note, issue, screenshot, or user request exists. | user/local source |
-| `candidate_queued` | The intent is parked with status, evidence pointers, review rank, and a promotion target, but no work is approved. | `CANDIDATE-QUEUE.md` |
+| `candidate_queued` | The intent is parked with status, evidence pointers, review rank, optional product-value rating, themes, near-bead sketches, and a promotion target, but no work is approved. | `CANDIDATE-QUEUE.md` |
 | `intake_summarized` | Source material has been summarized as evidence. | intake summary or PRD `Source Inputs` |
 | `goal_framed` | Durable intent has reviewed orientation for workflow selection, but no task is approved by default. | `PRODUCT.md`, PRD, bead, or `DECISIONS.md` |
 | `framed` | Problem, non-goals, before/after moment, risks, and verification path are understood enough to draft. | Idea-to-PRD workflow |
@@ -52,7 +52,7 @@ Generated reports may summarize these states. They do not own them.
 | Intent stage | Owns | Does not own |
 |---|---|---|
 | Local/source material | raw evidence and user-provided context | approved requirements or active work |
-| Candidate Queue | parked intent, evidence pointers, user-reviewed rank, status, promotion target, and next review trigger | active task selection, PRD approval, bead activation, implementation priority, or generated proof |
+| Candidate Queue | parked intent, evidence pointers, user-reviewed rank, product-value rating, themes, near-bead sketches, status, promotion target, and next review trigger | active task selection, PRD approval, bead activation, `B###` reservation, implementation priority, or generated proof |
 | Intake summary | stable facts, assumptions, conflicts, open questions, candidates | product decisions or implementation plan |
 | Goal Frame | durable goal orientation, success signal, out of scope, approval gates, reaffirmation trigger | task selection, backlog, roadmap, PRD approval, or bead activation |
 | PRD shard | product problem, goals, non-goals, requirements, acceptance oracle, risks, approval | active task selection |
@@ -78,7 +78,7 @@ Raw or imported intent becomes action only through one of these paths:
 
 Do not promote intent directly from generated reports, diary entries, audit output, GitHub issues, screenshots, chat summaries, or local notes into active work.
 
-Do not promote a Candidate Queue entry directly into active work. It can preserve intent and review order, but action still needs the normal intake, discovery, PRD, decision, authority update, decomposition, or user-approved bead path.
+Do not promote a Candidate Queue entry directly into active work. It can preserve intent, review order, product-value ratings, themes, and near-bead sketches, but action still needs the normal intake, discovery, PRD, decision, authority update, decomposition, or user-approved bead path.
 
 Do not promote a Goal Frame directly into active work. It can orient the next workflow after reaffirmation, but the chosen work still needs the normal PRD, decision, authority update, or user-approved bead path.
 

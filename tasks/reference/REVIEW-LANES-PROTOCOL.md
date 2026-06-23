@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-19
+Document version: v0.1.2
+Last updated: 2026-06-23
 
 ## Purpose
 
 Review Lanes help a builder ask specialist review questions without managing fake specialist personas.
 
 A lane attaches to one active bead and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, create work, replace Review mode, replace Release Readiness, replace Work Graph evidence, or override owner files.
+
+When a lane reviews proof quality, it may ask for a requirement-to-proof trace: requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; and remaining uncertainty. The trace is review input only. It must not treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, or generated reports as complete proof by themselves.
 
 ## When To Use Review Lanes
 
@@ -131,6 +133,8 @@ Focus on:
 Generated Work Graph reports are evidence only. If graph output is stale, misleading, or incomplete, repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated Work Graph reports as the source of truth.
 
 The Dependency Graph Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not choose tasks, approve transitions, accept implementation, approve parallel execution, create follow-up tasks, rewrite owner files, run tasks, mutate GitHub, mutate external systems, replace Decomposition Protocol, replace Team Collaboration Protocol, or treat Work Graph reports as authority.
+
+For any lane, `Missing proof` should name the requirement, bug behavior, acceptance criterion, or release risk that lacks a recorded source. Avoid vague findings such as "needs more tests" when the real gap is that no evidence is tied to the claim being accepted.
 
 ## Promotion Path
 

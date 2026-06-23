@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.13
-# Last updated: 2026-06-15
+# Version: v0.1.15
+# Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -167,6 +167,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "- `logs/file-inventory.json`",
         "- `logs/work-graph.json`",
         "- `logs/work-graph.md`",
+        "- `logs/build-attribution-ledger.json`",
+        "- `logs/build-attribution-ledger.md`",
+        "- `logs/team-collaboration-preview.json`",
+        "- `logs/session-friction-review.json`",
         "- `logs/local-hygiene-preview.json`",
         "- `logs/local-hygiene-preview.md`",
         "- `logs/os-events.jsonl`",
@@ -231,6 +235,12 @@ def render_markdown(payload: dict[str, Any]) -> str:
     work_graph_details = work_graph.get("details") or {}
     work_graph_node_counts = work_graph_details.get("node_counts") or {}
     work_graph_edge_counts = work_graph_details.get("edge_counts") or {}
+    build_attribution = payload.get("build_attribution") or {"status": "missing", "warnings": [], "details": {}}
+    attribution_warnings = build_attribution.get("warnings") or []
+    attribution_details = build_attribution.get("details") or {}
+    team = payload.get("team_collaboration") or {"status": "missing", "warnings": [], "details": {}}
+    team_warnings = team.get("warnings") or []
+    team_details = team.get("details") or {}
     doctor_dashboard = payload.get("doctor_dashboard") or {}
 
     return f"""# PrecodeOS -- OS Health Report
@@ -445,6 +455,31 @@ Generated at: `{payload['generated_at']}`
 - Advisory only: {work_graph_details.get('advisory_only', True)}
 
 {chr(10).join(f"- Warning: {warning}" for warning in work_graph_warnings) if work_graph_warnings else "- No first-pass work graph warnings."}
+
+## Build Attribution Ledger
+
+- Status: {build_attribution.get('status', 'missing')}
+- Entries: {attribution_details.get('entry_count', 0)}
+- Reviewed closeout entries: {attribution_details.get('reviewed_closeout_count', 0)}
+- Partial closeout entries: {attribution_details.get('partial_closeout_count', 0)}
+- Git-hint-only entries: {attribution_details.get('git_hint_only_count', 0)}
+- Missing attribution entries: {attribution_details.get('missing_attribution_count', 0)}
+- Advisory only: {attribution_details.get('advisory_only', True)}
+
+{chr(10).join(f"- Warning: {warning}" for warning in attribution_warnings) if attribution_warnings else "- No first-pass build attribution warnings."}
+
+## Team Collaboration Preview
+
+- Status: {team.get('status', 'missing')}
+- Current branch: `{team_details.get('current_branch', 'unknown')}`
+- Integration branch: `{team_details.get('integration_branch', 'not_configured')}`
+- Current bead: `{team_details.get('current_bead', 'missing')}`
+- One active bead per checkout: {team_details.get('one_active_bead_per_checkout', 'unknown')}
+- Owner-file impacts: {len(team_details.get('owner_file_impacts') or [])}
+- Re-entry risks: {len(team_details.get('re_entry_risks') or [])}
+- Advisory only: {team_details.get('advisory_only', True)}
+
+{chr(10).join(f"- Warning: {warning}" for warning in team_warnings) if team_warnings else "- No first-pass team collaboration warnings."}
 
 ## Tool Execution
 

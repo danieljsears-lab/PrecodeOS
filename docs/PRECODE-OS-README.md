@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.23
-Last updated: 2026-06-15
+Document version: v0.8.26
+Last updated: 2026-06-23
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -45,6 +45,7 @@ Precode gives the repo a small operating model:
 - optional discovery before PRD work
 - PRDs before feature implementation when intent is fuzzy or risky
 - explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product
+- Build Attribution Ledger evidence for reviewing who built what without blame, scoring, telemetry, or registry behavior
 - small journey beads for execution
 - recorded checks before acceptance
 - human approval at task transitions
@@ -137,11 +138,13 @@ Main surfaces:
 - Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
-Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
+Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
 
 Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
 
 Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: `proceed`, `pause`, `narrow`, or `kill`.
+
+Use the Plan Loop when the builder has already done intake or PRD shaping and explicitly wants to explore a feature angle before committing it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. It produces a Plan Packet as evidence only, not a PRD, backlog, bead, or implementation plan.
 
 Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.
 
@@ -162,6 +165,10 @@ A PRD is a destination document. It explains what should be true for the product
 A bead is an execution contract. It names one approved unit of work, one primary authority, files in play, checks, stop conditions, and proof needed.
 
 Small Team Collaboration Lane is explicit and built in, but not default-active. A coordinator invokes it, records accepted team agreement in shared owner files, and each teammate confirms the lane from repo state in their own branch or worktree. It does not create a module, optional pack, runtime toggle, GitHub task system, or multiple active beads in one checkout.
+
+`python3 scripts/team-collaboration-check.py` provides a read-only preview for small teams: branch/worktree state, active bead scope, owner-file impact candidates, stale re-entry risk, merge/re-entry packet fields, and optional `--github` evidence. It is generated evidence only, not task selection, bead activation, implementation acceptance, merge approval, GitHub mutation, or project-management behavior.
+
+`python3 scripts/build-attribution-ledger.py` provides a read-only who-built-what evidence view from bead closeout and supporting hints. It is generated evidence only, not implementation acceptance, merge approval, release approval, blame, contributor scoring, telemetry, GitHub mutation, registry behavior, or package-manager behavior.
 
 ### 4. Build
 
@@ -226,6 +233,7 @@ idea or source material
   -> optional Exploration Loop
   -> optional Product Discovery Validation
   -> Local Source Intake
+  -> optional Plan Loop when post-intake or post-PRD feature-angle uncertainty remains
   -> product constitution fit check
   -> alignment / grilling
   -> shared language
@@ -283,6 +291,8 @@ python3 scripts/bead-transition.py --approve
 ```
 
 The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.
+
+`python3 scripts/next-step.py` is the generated "what now?" router. Its JSON shape is regression-covered for stable categories, load plan, context footprint, and recovery prompt fields, but it remains guidance only and cannot approve work.
 
 The Doctor Dashboard inside `OS-HEALTH.md` is a generated diagnostic summary. It explains warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths, but `scripts/next-step.py` still owns the next human decision.
 
@@ -345,11 +355,12 @@ Start small:
 4. Use one starter bead to install or verify the kernel.
 5. Use the Exploration Loop when existing notes need sharper thinking before PRD commitment.
 6. Use Product Discovery Validation only when the idea's worth-building evidence is uncertain.
-7. Align/grill the first real product feature before writing the destination PRD.
-8. Clarify shared language when the feature has domain terms, labels, or naming risk.
-9. Split the destination into one small vertical journey bead.
-10. Record checks before accepting the bead.
-11. Add validators, audits, adapters, and integrations only when they solve a real repeated problem.
+7. Use the Plan Loop when post-intake or post-PRD feature-angle uncertainty needs focused thinking before bead commitment.
+8. Align/grill the first real product feature before writing the destination PRD.
+9. Clarify shared language when the feature has domain terms, labels, or naming risk.
+10. Split the destination into one small vertical journey bead.
+11. Record checks before accepting the bead.
+12. Add validators, audits, adapters, and integrations only when they solve a real repeated problem.
 
 Do not ask an agent to set up everything in one pass. Ask it to create or adapt the kernel first, explain the files in plain English, and stop for review.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-14
+Document version: v0.1.6
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -34,6 +34,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 | Bead frontmatter | machine-readable bead state | narrative explanation |
 | Bead sections | human execution contract and closeout | global product decisions |
 | Bead Run Contract | risk-triggered allowed actions, proof needed, approval gates, and expiration | active memory, automatic command approval, or broader scope than the bead |
+| Reversal bead fields | superseded bead, reversal target, reversal reason, preserved behavior, and reversal proof for a separate undo/supersession bead | reopening `done` beads, deleting evidence, rewriting logs, or creating a new state |
 | PRDs and `FEATURES.md` | approved product definition and requirement inventory | active task selection |
 | Goal Frames inside owner files | reviewed durable orientation for workflow selection | backlog, roadmap, implementation plan, approval, or active task |
 | Reference docs | durable protocols and ownership rules | active execution state |
@@ -47,6 +48,7 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when state drift involves
 - `tasks/todo.md` is the current pointer and current execution view.
 - Bead files are the durable execution contracts.
 - Bead Run Contract sections are canonical for risk-triggered execution policy when present.
+- Reversal or supersession details belong in the new reversal bead and its Closeout Evidence. The superseded bead remains historical evidence and should not be reopened to make history look cleaner.
 - JSON/JSONL logs are historical evidence.
 - Generated files are compiled snapshots only.
 - `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles, not authority.

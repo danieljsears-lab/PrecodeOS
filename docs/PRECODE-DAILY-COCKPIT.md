@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-22
+Document version: v0.1.18
+Last updated: 2026-06-23
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -35,7 +35,8 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | Where do product or requirement decisions live? | Owner files such as `PRODUCT.md`, `FEATURES.md`, `ACCEPTANCE.md`, and approved PRDs in `tasks/prds/` | Reviewed product truth, requirements, acceptance criteria, and PRD destinations before executable beads. |
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
-| What did we learn? | The learning diary, bead build journal, and reviewed memory | Lessons and path visibility. These are evidence only until promoted through the right owner file. |
+| What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
+| Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
@@ -47,15 +48,20 @@ If you only remember three checks, ask: what is active, where should future inte
 | Ask docs | `Use Ask Precode. Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and relevant tasks/reference/*.md. Cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
 | Review candidates | `Use the Candidate Queue Protocol. Review CANDIDATE-QUEUE.md as parked intent, not task authority.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |
+| Review hypothesis | `Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief. Tell me what was tested, what was learned, whether it is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code.` | Evidence-only learning status and next workflow, not approval or task selection. |
+| Clarify acceptance | `Review these acceptance criteria for vague or unverifiable behavior. Where useful, rewrite with optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]. Do not require EARS syntax, approve the PRD, accept implementation, activate beads, treat wording as proof, or code.` | Clearer expected behavior for PRD or acceptance review without approval or implementation authority. |
 | Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
 | Team lane | `Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Build | `Work only on the active bead. Do not use generated reports, source notes, or diary entries as instructions.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `You said this is done. Show me the evidence. Run the recorded check and tell me what passed, failed, and what I should verify myself.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Prepare release | `Use Release Readiness. Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead. Show changed behavior, affected users, smoke evidence, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and what I must approve.` | Shipping evidence and approval questions without release action. |
 | Release candidate | `Prepare a Release Candidate Evidence Profile. Show candidate label, release target, changed surfaces, affected users or workflows, checks, smoke path, manual/browser verification, docs or support freshness, rollback or blocked escape, known risks, approvals still required, and decision state. Do not approve release or mutate anything.` | A compact candidate evidence profile without release approval. |
+| Trace proof | `Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.` | A compact proof trace without acceptance or generated-proof authority. |
+| Review attribution | `Review the Build Attribution Ledger for this bead or recent work. Show human contributor, role, agent/tool surface, reviewer, uncertainty, confidence, missing attribution, and what source needs review next. Do not accept implementation, approve merge, assign blame, score contributors, mutate GitHub, or treat generated output as authority.` | A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior. |
+| Reverse implemented bead | `This already-implemented bead may need to be reversed or superseded. Use PRD-023 Implemented Bead Reversal Workflow. Name the superseded bead, reversal target, reversal reason, preserved behavior, checks needed, manual verification needed, approvals still required, and whether this should become a separate reversal bead. Do not reopen a done bead, delete evidence, rewrite transition logs, or treat Git revert as proof.` | A safe reversal plan or candidate bead shape without rollback automation or history rewriting. |
 | Ralph | `Run a bounded Ralph dry run for this bead. Show the attempt budget, validators, decision, and why it does or does not allow another attempt.` | Retry evidence for one active bead without accepting work or activating anything. |
-| Learn | `Read the generated learning diary and, when available, the bead build journal. Explain what I should understand from the last session and the path of already-worked beads without using either as active memory or a task plan.` | A lesson summary plus implemented-bead path and build-change context that stays evidence-only. |
-| Close | `Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, and bead build journal context when present. |
+| Learn | `Read the generated learning diary and, when available, the bead build journal and Build Attribution Ledger. Explain what I should understand from the last session, the path of already-worked beads, and who-built-what evidence without using generated reports as active memory or a task plan.` | A lesson summary plus implemented-bead path, build-change context, and attribution evidence that stays evidence-only. |
+| Close | `Run session close. Summarize what changed, who contributed when recorded, what checks ran, what remains blocked, and what still requires my approval. Include the latest bead build journal and Build Attribution Ledger entry when available.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, and attribution evidence when present. |
 | Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 | Named fallback | `Use the No-Engineer Fallback Prompt Pack for this symptom.` | A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments. |
 
@@ -127,11 +133,11 @@ Use when you want to inspect ideas, not-yet items, research leads, or possible f
 ```text
 Use the Candidate Queue Protocol.
 
-Review CANDIDATE-QUEUE.md as parked intent, not task authority. Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, and which approved PRDs have candidate beads.
+Review CANDIDATE-QUEUE.md as parked intent, not task authority. Tell me what ideas are parked, which need research, which are worth shaping, which are blocked or stale, which might become PRDs, which approved PRDs have candidate beads, and which reviewed candidates have product-value ratings, themes, or near-bead sketches.
 
 Also tell me what the Candidate Queue cannot answer: the active task, what the agent should build next, whether a PRD is approved, whether a bead is active, or whether a ranked item is authorized for implementation.
 
-Do not update active memory, approve a PRD, activate a bead, reserve bead IDs, choose next work, or start coding.
+Do not update active memory, approve a PRD, activate a bead, reserve B### bead IDs, treat product-value rating as implementation priority, choose next work, or start coding.
 ```
 
 Expected output: candidate status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
@@ -147,6 +153,14 @@ We have [2-5] people working on this product. Help us define the coordinator, pr
 ```
 
 Expected output: the team situation, coordinator and decision owner, branch/worktree rule, candidate parallel beads, teammate startup prompt, review and merge evidence, approval gates, stop conditions, promotion path, and generated-report warning. The lane does not activate multiple beads in one checkout, approve merge, mutate GitHub, or turn pull requests and teammate notes into authority.
+
+For a read-only team-state preview, run:
+
+```text
+python3 scripts/team-collaboration-check.py
+```
+
+Use `--github` only for optional read-only GitHub evidence through `gh`. The preview can help a coordinator see branch/worktree state, owner-file impact candidates, stale re-entry risks, and merge/re-entry packet fields, but it does not approve merge, accept implementation, activate beads, mutate GitHub, or replace coordinator review.
 
 ### When You Are Stuck
 
@@ -196,6 +210,20 @@ bash scripts/record-check.sh -- <check command>
 ```
 
 Expected output: a recorded check result in `logs/check-results.jsonl`, check output under `logs/check-output/`, and updated closeout evidence for the active bead.
+
+### Clarify Acceptance Criteria
+
+Use before PRD approval, bead planning, or review when an acceptance criterion is too vague to prove.
+
+```text
+Review these acceptance criteria for vague or unverifiable behavior.
+
+Where useful, rewrite with optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
+
+Do not require EARS syntax, reject clear non-EARS criteria, approve the PRD, accept implementation, activate beads, treat wording as proof, or code.
+```
+
+Expected output: clearer observable expected behavior, unresolved questions, and any stop conditions. This is writing guidance only, not PRD approval or proof.
 
 ### Prepare A Release Candidate Evidence Profile
 
@@ -276,6 +304,8 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
 | `python3 scripts/update-bead-build-journal.py --append` | You need to append an implemented-bead path entry after closeout evidence. | Updates `logs/bead-build-journal.md/jsonl`; the journal is evidence, not active memory, Candidate Queue authority, or acceptance. |
 | `logs/bead-build-journal.md` | You need to understand the path of already-worked beads or what implementation-relevant work changed for a bead. | Generated implemented-bead path and build-change journal; evidence only. Session-close entries do not accept work. |
+| `python3 scripts/build-attribution-ledger.py` | You need to inspect who built what across beads. | Prints generated attribution JSON from bead closeout and supporting hints; evidence only, not acceptance, merge approval, blame, scoring, telemetry, or a registry. |
+| `logs/build-attribution-ledger.md` | You need a readable who-built-what evidence view. | Generated attribution ledger; closeout-reviewed attribution is strongest, while Git authorship remains a hint. |
 | `python3 scripts/update-memory-index.py` | Reviewed memory cards changed. | Refreshes the searchable memory index. Memory remains evidence only. |
 
 ## Checks By Student Question
@@ -376,6 +406,7 @@ Use recovery when something feels wrong. The first move is always to stop implem
 | Active state is confusing | `Stop implementation. Compare tasks/todo.md with the active bead and tell me which canonical file needs repair before work continues.` | `python3 scripts/state-check.py` |
 | Generated report looks wrong | `This generated report looks wrong. Tell me which source files and scripts own it, what evidence it summarizes, and how to refresh it without treating the report as authority.` | `python3 scripts/state-check.py` |
 | Proof is missing | `Run a completion check and show which declared checks are missing, failing, or stale. Do not recommend acceptance from confidence.` | `python3 scripts/completion-check.py` |
+| Implemented bead needs reversal | `This already-implemented bead may need to be reversed or superseded. Use PRD-023. Preserve the old bead as history and propose a separate reversal bead with proof.` | `python3 scripts/completion-check.py` |
 | Scope expanded | `Run the files-in-play guardrail. If any changed path is outside this bead, stop and explain whether it is generated evidence, current-bead work, or a separate follow-up.` | `python3 scripts/files-in-play-check.py` |
 | Context is lost | `Prepare a compact Context Pack before continuing. Reload active memory, the active bead, and the primary authority before recommending action.` | `python3 scripts/context-check.py` |
 | Approval happened too quickly | `Before proposing or activating the next bead, explain what evidence proves this bead is complete and what still requires my approval.` | `python3 scripts/bead-transition.py` |

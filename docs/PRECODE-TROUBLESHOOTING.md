@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-17
+Document version: v0.1.15
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -67,6 +67,14 @@ Use the result as routing help only. `eligible_stable_fix` can continue inside t
 Before editing a repair that appears eligible, ask for the Bugfix Spec Lane. The agent should name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. If the owner file, route, or proof path is unclear, stop before editing.
 
 If you can name the symptom but not the repair path, use the No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md`. It covers agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments. These prompts route back to the Recovery Protocol and do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
+
+If repeated tool failures, stale closeout evidence, generated refresh gaps, or memory/context warnings keep recurring, ask for Session Friction Review:
+
+```text
+Run python3 scripts/session-friction-check.py. Show repeated tool failures, missing failure categories, stale evidence, generated-refresh gaps, memory/context pressure, and any no-safe-evidence result. Treat the output as generated evidence only.
+```
+
+Session Friction Review does not repair anything, approve commands, create memory cards, edit owner files, choose tasks, approve PRDs, activate beads, or accept implementation. Use it to decide whether a human should create a command-pattern note, reviewed memory candidate, or protocol follow-up.
 
 ## Symptom Lookup
 
@@ -348,6 +356,30 @@ Safe path:
 - use `revise`, `blocked`, or `manual_testing` when proof is missing
 
 Do not activate a next bead, rewrite history, or accept the bead just because Claude says the checkpoint passed. `bash scripts/checkpoint.sh` reports state; only explicit approval of `python3 scripts/bead-transition.py --approve` may promote the next bead.
+
+### Already-Implemented Bead Needs Reversal
+
+Likely causes:
+
+- the implemented behavior proved wrong, obsolete, or harmful after acceptance
+- a later owner-file decision superseded the old bead
+- the work needs a deliberate undo path, not casual cleanup
+
+First checks:
+
+```bash
+python3 scripts/completion-check.py
+git status --short
+```
+
+Safe path:
+
+- inspect the superseded bead, Closeout Evidence, recorded checks, and current owner file
+- name the reversal target, reversal reason, preserved behavior, checks, manual verification, and approvals still required
+- create or propose a separate reversal bead before implementation
+- record fresh proof and review before acceptance
+
+Do not reopen a `done` bead, delete evidence, rewrite transition logs, treat Git revert as proof, approve rollback, or mutate setup/update behavior. Git revert may be one implementation step inside an approved reversal bead, but it is not completion evidence by itself.
 
 ### Local App Will Not Start Or Loads Too Slowly
 

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-20
+Document version: v0.1.4
+Last updated: 2026-06-23
 
 ---
 memory_id: MEMORY-000
@@ -42,13 +42,14 @@ topics:
 
 Use this section only when `category: project_glossary`; otherwise write `Not applicable`.
 
-| Term | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Authority owner if promoted |
-|---|---|---|---|---|---|
-|  |  |  |  |  |  |
+| Term | Plain-English meaning | Aliases | Avoid/confusing terms | Source pointers | Examples | Freshness | Authority owner if promoted |
+|---|---|---|---|---|---|---|---|
+|  |  |  |  |  |  | current | none |
 
 ## Promotion Review
 
 - If this becomes a decision, requirement, architecture rule, security rule, acceptance rule, or task instruction, move it to the correct owner file after human review.
 - If `status` is `needs_promotion`, replace `authority_owner_if_promoted: none` with the proposed owner file or protocol. Search results may warn about promotion need, but they must not perform the promotion.
+- For `project_glossary`, use reviewed terms to orient future agents only. Do not override current code, active beads, approved PRDs, active memory, or owner files.
 - Keep `memory_space` as a retrieval label only. It does not create authority, task selection, access control, or optional-pack behavior.
 - If this card becomes stale, superseded, archived, or low-confidence, keep that state visible so memory search treats it as weak or historical context.

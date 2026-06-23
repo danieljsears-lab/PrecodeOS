@@ -18,7 +18,7 @@ A Goal Frame is reviewed orientation for a workflow arc.
 
 It helps a builder and agent remember what current work is in service of before choosing a workflow. It does not choose tasks, approve work, replace PRDs, activate beads, or expand active memory.
 
-Use `CANDIDATE-QUEUE.md` and `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs to park multiple candidate intents, review evidence, rank candidates for review, or decide what deserves promotion. A Goal Frame orients durable direction; the Candidate Queue preserves many possible intents without making them tasks.
+Use `CANDIDATE-QUEUE.md` and `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs to park multiple candidate intents, review evidence, rank candidates for review, assign product-value ratings, group themes, sketch near-beads, or decide what deserves promotion. A Goal Frame orients one durable direction; the Candidate Queue preserves many possible intents without making them tasks.
 
 Active memory remains exactly:
 

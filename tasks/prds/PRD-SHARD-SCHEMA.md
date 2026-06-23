@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-21
+Document version: v0.1.12
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -16,7 +16,7 @@ This folder holds product definition shards.
 
 A PRD shard is the durable destination document between an idea and implementation. It captures alignment/grilling results, domain language when terms matter, user problem, requirement IDs, acceptance oracles, risks, architecture-shaping evidence when risk-triggered, module/interface candidates, and journey bead proposals before an AI coding agent starts building.
 
-When a PRD starts from `CANDIDATE-QUEUE.md`, cite the originating Candidate Queue ID in `Source Inputs`. The queue ID preserves source traceability only; it does not approve the PRD, choose work, reserve bead IDs, or authorize implementation.
+When a PRD starts from `CANDIDATE-QUEUE.md`, cite the originating Candidate Queue ID in `Source Inputs`. If reviewed shaping mattered, also cite product-value rating, themes, and near-bead sketch IDs such as `CQ-001-short-name-S01`. Queue IDs and sketch IDs preserve source traceability only; a Candidate Queue citation does not approve the PRD, choose work, reserve bead IDs, or authorize implementation. Final bead IDs are assigned only when actual bead files are created.
 
 `PRODUCT.md` is the builder-facing product constitution. Use it during PRD creation, review, approval, and amendment to check product promise, users, strategy, non-goals, current bets, success signals, and design or voice. It does not replace PRD shards or approve features.
 
@@ -97,11 +97,13 @@ Use `PRD-000-template.md` when creating a new shard.
 - Every feature needs at least one PRD shard before coding begins.
 - Ceremony is adaptive by risk. A low-risk UI copy change can have a short shard; auth, payments, data, uploads, external tools, or ambiguous workflows need a fuller shard.
 - Alignment/grilling is expected for fuzzy, source-heavy, risky, or user-facing ideas before requirements are finalized.
-- Domain language is expected when terms, aliases, avoid words, UI labels, tests, or module/interface names affect the feature.
+- Domain language is expected when terms, aliases, avoid words, UI labels, tests, docs, support language, or module/interface names affect the feature. If the terms should survive beyond the PRD, propose a reviewed `project_glossary` card with source pointers, examples, freshness, and promotion owner when applicable; glossary memory remains evidence only.
 - Architecture Shaping evidence is expected before bead proposals when an approved PRD touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes. If skipped, record the low-risk reason in the PRD architecture-impact section or bead notes.
 - Frontmatter carries the structured PRD metadata; the section body carries the human-readable product definition.
 - Check `PRODUCT.md` when feature work may affect product promise, users, strategy, non-goals, current bets, success signals, or design and voice.
 - Requirement IDs are stable and granular. Use IDs such as `PRD-002-FR01`, `PRD-002-UX01`, `PRD-002-SEC01`, and `PRD-002-NFR01`.
+- Acceptance Oracle Matrix expected behavior may use optional EARS-style wording such as `WHEN [condition/event] THE SYSTEM SHALL [expected behavior]` when it improves clarity. This is writing guidance only, not required PRD structure, schema enforcement, generated proof, PRD approval, implementation acceptance, or a reason to reject clear non-EARS acceptance criteria.
+- Acceptance Oracle Matrix rows may include evidence lane, recorded source or evidence location, and what the proof does not cover when requirement-to-proof drift would matter. This is advisory traceability only; matrix text, generated tests, generated properties, screenshots, browser notes, AI critique, external status summaries, and generated reports are not proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 - `FEATURES.md` compiles approved PRD shards into feature inventory and functional requirements. It should not become the deep PRD itself.
 - `scripts/prd-html.py` may regenerate `tasks/prds-html/*.html` from PRD shards. Generated pages may export proposed Acceptance Oracle Matrix Markdown, but canonical source changes still happen manually in `tasks/prds/*.md`. Run `python3 scripts/prd-html.py --check` when PRD source or PRD review-surface behavior changes.
 - Beads cite the parent PRD and requirement IDs they implement. New bead proposals should include delegation mode, test strategy, and review context when relevant.

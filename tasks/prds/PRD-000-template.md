@@ -17,8 +17,8 @@ related_prds: []
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-06-21
+Document version: v0.1.10
+Last updated: 2026-06-23
 
 ## State
 
@@ -42,14 +42,23 @@ Raw inputs are evidence, not authority. Use `tasks/reference/LOCAL-SOURCE-INTAKE
 - Source references:
 - Candidate Queue ID:
 - Candidate Queue status:
+- Candidate Queue product-value rating:
+- Candidate Queue themes:
+- Candidate Queue near-bead sketch IDs:
 - Stable facts:
 - Assumptions:
+- Primary hypothesis / learning target:
+- Hypothesis review status: `untested | tested | narrowed | killed | promoted | stale | not applicable`
+- Learning outcome:
+- Stale or untested signals:
 - Conflicts or stale inputs:
 - Privacy or secrets redactions:
 - Candidate requirements:
 - Candidate non-goals:
 - Authority files likely affected:
 - Discarded or stale inputs:
+
+Candidate Queue IDs and near-bead sketch IDs are source traceability only. Do not reserve `B###` IDs from PRD source input, and do not treat a queue product-value rating as PRD approval, bead activation, or implementation priority.
 
 ## Product Brief
 
@@ -61,6 +70,7 @@ Use this for net-new, rough product ideas from non-technical builders. It is bui
 - Better after moment:
 - Current workaround or evidence:
 - Assumptions:
+- Primary hypothesis / learning target:
 - Not-yet list:
 - Smallest useful version:
 - Next best question:
@@ -72,6 +82,9 @@ Use when the idea was broad, risky, market-facing, paid, evidence-poor, solution
 - Discovery completed: `yes | no | skipped`
 - Reason skipped:
 - Evidence strength: `very weak | weak | medium | strong | strongest | not assessed`
+- Primary hypothesis / learning target:
+- Hypothesis review status: `untested | tested | narrowed | killed | promoted | stale | not applicable`
+- Learning outcome:
 - Riskiest assumption:
 - Discovery recommendation: `proceed | pause | narrow | kill | not assessed`
 - Discovery Summary reference:
@@ -215,9 +228,23 @@ Agent-facing translation from the builder-approved product story. Use stable IDs
 
 Agent-facing verification translation. The builder should be able to read the expected behavior and manual check in plain English, but the agent owns the check mapping.
 
-| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
-|---|---|---|---|---|---|
-| `PRD-000-FR01` |  |  |  |  | bead closeout |
+Optional EARS-style phrasing can make vague expected behavior easier to verify: `WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]`. Use it only when it clarifies the behavior. Clear non-EARS acceptance criteria remain valid when observable and testable; EARS wording is not required schema, proof by itself, PRD approval, implementation authority, or a reason to reject otherwise clear criteria.
+
+| Requirement ID | Expected behavior | Evidence lane | Automated check | Manual check | Fixture or data needed | Recorded source or evidence location | What this does not prove |
+|---|---|---|---|---|---|---|---|
+| `PRD-000-FR01` |  | `static | unit | integration | browser | manual | external` |  |  |  | bead closeout |  |
+
+For risky, bugfix, release-relevant, or easy-to-misread work, add a compact proof trace in the relevant bead or closeout:
+
+```text
+Requirement-to-proof trace:
+- Requirement, bug behavior, or acceptance criterion:
+- Evidence lane:
+- Recorded source:
+- What this proves:
+- What this does not prove:
+- Remaining uncertainty:
+```
 
 ## Risk And Permission Model
 

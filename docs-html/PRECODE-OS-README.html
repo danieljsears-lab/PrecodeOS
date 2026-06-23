@@ -19,6 +19,7 @@
   --accent-2: #b65332;
   --accent-3: #284f8f;
   --shadow: 0 18px 50px rgba(54, 43, 28, .10);
+  --measure: 78ch;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -31,6 +32,23 @@ body {
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 a { color: var(--accent); text-underline-offset: 3px; }
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 4px;
+  background: rgba(216, 223, 218, .7);
+}
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
 .shell { min-height: 100vh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
 .sidebar {
   position: sticky;
@@ -87,6 +105,21 @@ h1 { max-width: 850px; margin: 0; font-size: 48px; }
 h2 { margin-top: 42px; font-size: 28px; }
 h3 { margin-top: 30px; font-size: 21px; }
 h4 { margin-top: 24px; font-size: 17px; }
+h2, h3, h4, h5, h6 { scroll-margin-top: 22px; }
+.heading-anchor {
+  float: left;
+  width: 22px;
+  margin-left: -28px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
 .compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
 .lane, .doc-card, .page-nav a {
@@ -104,6 +137,7 @@ h4 { margin-top: 24px; font-size: 17px; }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
+.reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
   min-width: 0;
   border: 1px solid var(--line);
@@ -113,10 +147,12 @@ h4 { margin-top: 24px; font-size: 17px; }
   padding: 34px;
 }
 .article > :first-child { margin-top: 0; }
-.article p, .article li { max-width: 78ch; }
-.toc {
-  position: sticky;
-  top: 24px;
+.article p, .article li { max-width: var(--measure); }
+h2:target, h3:target, h4:target {
+  outline: 2px solid rgba(23, 108, 99, .25);
+  outline-offset: 4px;
+}
+.toc, .page-tools {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 253, 248, .88);
@@ -124,6 +160,18 @@ h4 { margin-top: 24px; font-size: 17px; }
 }
 .toc a { display: block; padding: 4px 0; text-decoration: none; font-size: 13px; }
 .toc .level-3 { padding-left: 12px; }
+.page-tools { display: grid; gap: 8px; }
+.page-tools .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+.tool-link {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.tool-link:hover { border-color: var(--accent); color: var(--accent); }
 code {
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -134,6 +182,7 @@ code {
 }
 pre {
   overflow: auto;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 16px;
@@ -148,7 +197,13 @@ blockquote {
   background: var(--wash-2);
   color: #314139;
 }
-.table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }
@@ -160,8 +215,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .shell { display: block; }
   .sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .layout { display: block; }
-  .toc { position: relative; top: auto; margin-top: 18px; }
+  .reader-aside { position: relative; top: auto; margin-top: 18px; }
   h1 { font-size: 36px; }
+  .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
   .hero, .content { padding: 30px 18px; }
@@ -171,6 +227,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
     
 <aside class="sidebar">
@@ -186,11 +243,11 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 
     <main>
       
-<section class="hero">
+<section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.23</span><span>Updated 2026-06-15</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.26</span><span>Updated 2026-06-23</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -202,71 +259,74 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.</p>
 <p>PrecodeOS is open source under Apache-2.0. <code>NOTICE</code> preserves creator attribution: Created by Dan Sears / Recode. Canonical site: <code>https://www.precodeos.org</code>.</p>
 <p>PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. All trademark and brand rights are reserved. See <code>TRADEMARK.md</code> for brand-use guidance.</p>
-<h2 id="the-short-version">The Short Version</h2>
+<h2 id="the-short-version"><a class="heading-anchor" href="#the-short-version" aria-label="Link to The Short Version">#</a>The Short Version</h2>
 <p>AI coding agents can produce code faster than a new builder can review, direct, and recover from it. That speed is useful only when the project still knows what is true, what is active, what is out of scope, and what evidence proves done.</p>
 <p>Precode gives the repo a small operating model:</p>
-<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
+<ul><li>tiny active memory</li><li>one current task</li><li>Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work</li><li>clear owner files for durable facts</li><li>optional discovery before PRD work</li><li>PRDs before feature implementation when intent is fuzzy or risky</li><li>explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product</li><li>Build Attribution Ledger evidence for reviewing who built what without blame, scoring, telemetry, or registry behavior</li><li>small journey beads for execution</li><li>recorded checks before acceptance</li><li>human approval at task transitions</li><li>recovery paths when state, proof, scope, or generated reports get confusing</li></ul>
 <p>The agent can inspect, draft, implement, explain, and propose. The builder still owns intent, approval, risk, and acceptance.</p>
-<h2 id="why-precodeos-matters">Why PrecodeOS Matters</h2>
+<h2 id="why-precodeos-matters"><a class="heading-anchor" href="#why-precodeos-matters" aria-label="Link to Why PrecodeOS Matters">#</a>Why PrecodeOS Matters</h2>
 <p>PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from. It keeps the project human-owned by making intent, scope, approval, proof, and recovery visible inside the repo.</p>
-<h2 id="the-line-precode-holds">The Line Precode Holds</h2>
+<h2 id="the-line-precode-holds"><a class="heading-anchor" href="#the-line-precode-holds" aria-label="Link to The Line Precode Holds">#</a>The Line Precode Holds</h2>
 <p>Vibe coding is tempting because it makes software development feel like a conversation. The risk is that the conversation moves faster than understanding.</p>
 <p>Precode does not try to make the agent autonomous. It makes the project legible:</p>
 <div class="table-wrap"><table><thead><tr><th>Risk</th><th>Precode response</th></tr></thead><tbody><tr><td>The agent follows stale chat or old notes.</td><td>Active memory stays tiny and current authority wins.</td></tr><tr><td>A rough idea becomes code too quickly.</td><td>Product Briefs, Conviction Packets, discovery, source intake, alignment, shared language, and PRDs clarify intent first.</td></tr><tr><td>Scope quietly grows.</td><td>One active bead, files in play, stop conditions, and files-in-play checks bound execution.</td></tr><tr><td>The agent says &quot;done&quot; without proof.</td><td>Checks are recorded and review decisions tie acceptance to evidence.</td></tr><tr><td>Generated summaries start driving work.</td><td>Generated reports are useful evidence, never authority.</td></tr><tr><td>The builder feels lost.</td><td>The <code>next-step</code> router, session start, recovery, user guide, and handoff surfaces explain what to do next.</td></tr></tbody></table></div>
 <p>Precode is for builders who want speed without giving up direction, evidence, or the ability to stop.</p>
-<h2 id="two-core-rules">Two Core Rules</h2>
-<h3 id="1-active-memory-stays-tiny">1. Active Memory Stays Tiny</h3>
+<h2 id="two-core-rules"><a class="heading-anchor" href="#two-core-rules" aria-label="Link to Two Core Rules">#</a>Two Core Rules</h2>
+<h3 id="1-active-memory-stays-tiny"><a class="heading-anchor" href="#1-active-memory-stays-tiny" aria-label="Link to 1. Active Memory Stays Tiny">#</a>1. Active Memory Stays Tiny</h3>
 <p>Only three files are active memory:</p>
 <div class="table-wrap"><table><thead><tr><th>File</th><th>Job</th><th>Current size</th></tr></thead><tbody><tr><td><code>AGENT.md</code></td><td>Tells the AI coding agent how to work in this repo.</td><td>96 lines / 4,582 bytes</td></tr><tr><td><code>DECISIONS.md</code></td><td>Records hard decisions, open questions, and superseded context.</td><td>37 lines / 1,982 bytes</td></tr><tr><td><code>tasks/todo.md</code></td><td>Points to the active bead and current execution view.</td><td>84 lines / 3,183 bytes</td></tr></tbody></table></div>
 <p>Everything else is reference, evidence, template, archive, adapter, or generated output. Load it only when the current work needs it.</p>
 <p>Do not add a fourth active-memory file.</p>
-<h3 id="2-generated-reports-are-evidence-not-authority">2. Generated Reports Are Evidence, Not Authority</h3>
+<h3 id="2-generated-reports-are-evidence-not-authority"><a class="heading-anchor" href="#2-generated-reports-are-evidence-not-authority" aria-label="Link to 2. Generated Reports Are Evidence, Not Authority">#</a>2. Generated Reports Are Evidence, Not Authority</h3>
 <p>Generated reports help humans see state, warnings, checks, work-graph relationships, learning, and handoff context. They do not choose tasks, approve PRDs, accept work, or activate the next bead.</p>
 <p>Examples:</p>
 <div class="table-wrap"><table><thead><tr><th>Generated surface</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td><code>PRECODE-HELP.md</code></td><td>Quick next-step, load plan, context-footprint, and warning snapshot.</td><td>Active memory, task selection, or transition approval.</td></tr><tr><td><code>OS-HEALTH.md</code></td><td>Health, Doctor Dashboard diagnostics, warnings, evidence quality, spend, and state snapshots.</td><td>Active memory, task selection, approval, or acceptance by itself.</td></tr><tr><td><code>PROGRESS.md</code></td><td>Generated progress summary.</td><td>Product decisions or current task authority.</td></tr><tr><td><code>logs/*.md</code>, <code>logs/*.json</code>, <code>logs/*.jsonl</code></td><td>Evidence, sidecars, handoff, diary, indexes, and check output.</td><td>Replacing owner files.</td></tr></tbody></table></div>
 <p>If a generated report looks wrong, repair the source state first and regenerate the report. Do not hand-edit generated Markdown as if it were truth.</p>
-<h2 id="why-the-precodeos-name">Why The PrecodeOS Name</h2>
+<h2 id="why-the-precodeos-name"><a class="heading-anchor" href="#why-the-precodeos-name" aria-label="Link to Why The PrecodeOS Name">#</a>Why The PrecodeOS Name</h2>
 <p>“Precode” names the work that must happen before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means Precode is the small operating layer around the agent and the repo, not a replacement for the agent, the app, or the builder’s judgment.</p>
-<h2 id="the-six-rooms-of-the-builder-os">The Six Rooms Of The Builder OS</h2>
+<h2 id="the-six-rooms-of-the-builder-os"><a class="heading-anchor" href="#the-six-rooms-of-the-builder-os" aria-label="Link to The Six Rooms Of The Builder OS">#</a>The Six Rooms Of The Builder OS</h2>
 <p>Precode has many files and checks, but a builder should not have to memorize the file tree. Think of the surface area as six rooms.</p>
-<h3 id="1-orient">1. Orient</h3>
+<h3 id="1-orient"><a class="heading-anchor" href="#1-orient" aria-label="Link to 1. Orient">#</a>1. Orient</h3>
 <p>Orient answers: &quot;Where am I, and what truth is current?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li><code>AGENT.md</code>, <code>DECISIONS.md</code>, and <code>tasks/todo.md</code> for active memory</li><li><code>PRODUCT.md</code> for product promise, users, strategy, current bets, success signals, design, voice, and durable Goal Frames</li><li><code>PROJECT-CONTEXT.md</code> for app directory, stack, checks, conventions, and integration boundaries</li><li>the user guide when the next kind of work is unclear</li></ul>
 <p>Plain-English posture: before asking the agent to build, make sure it can explain the current task, the owner file, the checks, and what needs approval.</p>
-<h3 id="2-decide">2. Decide</h3>
+<h3 id="2-decide"><a class="heading-anchor" href="#2-decide" aria-label="Link to 2. Decide">#</a>2. Decide</h3>
 <p>Decide answers: &quot;Is this idea ready to become planned work?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li><code>tasks/templates/PRODUCT-IDEATION-WORKBOOK.md</code> for rough early thinking</li><li>Ask Precode when the builder has a stable documentation question or needs to find the right guide</li><li>Product Conviction Packet guidance for first-time builders researching and exploring an idea before repo setup</li><li>Workflow Selection Skill when the builder is unsure which Precode workflow should come next</li><li>discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them</li></ul>
-<p>Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.</p>
+<p>Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.</p>
 <p>Use the workbook&#x27;s Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.</p>
 <p>Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: <code>proceed</code>, <code>pause</code>, <code>narrow</code>, or <code>kill</code>.</p>
+<p>Use the Plan Loop when the builder has already done intake or PRD shaping and explicitly wants to explore a feature angle before committing it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. It produces a Plan Packet as evidence only, not a PRD, backlog, bead, or implementation plan.</p>
 <p>Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.</p>
-<h3 id="3-plan">3. Plan</h3>
+<h3 id="3-plan"><a class="heading-anchor" href="#3-plan" aria-label="Link to 3. Plan">#</a>3. Plan</h3>
 <p>Plan answers: &quot;What exactly should be built, and what is the smallest safe slice?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li><code>tasks/prds/*.md</code> for destination PRD shards</li><li><code>FEATURES.md</code> for compiled approved feature inventory</li><li><code>tasks/beads/BEAD-SCHEMA.md</code> for bead shape, delegation mode, test strategy, review context, adaptive-depth fields, and closeout</li><li><code>tasks/reference/TEAM-COLLABORATION-PROTOCOL.md</code> when a small team needs coordinator roles, branch/worktree rules, candidate parallel beads, review gates, and merge/re-entry boundaries</li><li>PRD, decomposition, and system-design protocols when planning needs them</li></ul>
 <p>A PRD is a destination document. It explains what should be true for the product.</p>
 <p>A bead is an execution contract. It names one approved unit of work, one primary authority, files in play, checks, stop conditions, and proof needed.</p>
 <p>Small Team Collaboration Lane is explicit and built in, but not default-active. A coordinator invokes it, records accepted team agreement in shared owner files, and each teammate confirms the lane from repo state in their own branch or worktree. It does not create a module, optional pack, runtime toggle, GitHub task system, or multiple active beads in one checkout.</p>
-<h3 id="4-build">4. Build</h3>
+<p><code>python3 scripts/team-collaboration-check.py</code> provides a read-only preview for small teams: branch/worktree state, active bead scope, owner-file impact candidates, stale re-entry risk, merge/re-entry packet fields, and optional <code>--github</code> evidence. It is generated evidence only, not task selection, bead activation, implementation acceptance, merge approval, GitHub mutation, or project-management behavior.</p>
+<p><code>python3 scripts/build-attribution-ledger.py</code> provides a read-only who-built-what evidence view from bead closeout and supporting hints. It is generated evidence only, not implementation acceptance, merge approval, release approval, blame, contributor scoring, telemetry, GitHub mutation, registry behavior, or package-manager behavior.</p>
+<h3 id="4-build"><a class="heading-anchor" href="#4-build" aria-label="Link to 4. Build">#</a>4. Build</h3>
 <p>Build answers: &quot;What may the agent change right now?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
 <p>Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.</p>
-<h3 id="5-prove">5. Prove</h3>
+<h3 id="5-prove"><a class="heading-anchor" href="#5-prove" aria-label="Link to 5. Prove">#</a>5. Prove</h3>
 <p>Prove answers: &quot;What evidence says this is done?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li><code>bash scripts/record-check.sh -- &amp;lt;command&amp;gt;</code> to record checks as evidence</li><li><code>logs/ralph-attempts.jsonl</code> and <code>logs/ralph-summary.md</code> when a Ralph-enabled bead records bounded attempt history</li><li>verification and handoff protocols when the task needs risk-based proof, closeout, review decisions, or transition approval</li><li>Review / Acceptance Skill when a builder wants a structured evidence-based recommendation before accepting one active bead</li><li><code>scripts/*-check.py</code> advisory checks for state, context, workflow, decomposition, completion, long-horizon planning, memory, run contracts, and more</li><li>Closeout Evidence in the active bead</li></ul>
 <p>The review decision is one of:</p>
 <ul><li><code>accepted</code></li><li><code>revise</code></li><li><code>split</code></li><li><code>blocked</code></li></ul>
 <p>&quot;The agent sounds confident&quot; is not a review decision. Evidence is the review surface. The Review / Acceptance Skill can organize the questions, missing proof, and recommendation, but it cannot accept implementation or activate the next bead.</p>
-<h3 id="6-recover">6. Recover</h3>
+<h3 id="6-recover"><a class="heading-anchor" href="#6-recover" aria-label="Link to 6. Recover">#</a>6. Recover</h3>
 <p>Recover answers: &quot;What do I do when something feels broken or confusing?&quot;</p>
 <p>Main surfaces:</p>
 <ul><li>the recovery, state-management, context, local-hygiene, and memory protocols when the user guide or active state calls for them</li><li><code>bash scripts/handoff.sh [next-agent]</code> and generated handoff packets for continuity</li></ul>
 <p>Recovery starts by stopping. Identify the symptom, find the owner file, repair source state, validate, and resume only when the next bounded action is clear.</p>
-<h2 id="how-ideas-become-evidence">How Ideas Become Evidence</h2>
+<h2 id="how-ideas-become-evidence"><a class="heading-anchor" href="#how-ideas-become-evidence" aria-label="Link to How Ideas Become Evidence">#</a>How Ideas Become Evidence</h2>
 <p>Precode turns rough ideas into verified work through a repeatable path:</p>
 <pre><code class="language-text">idea or source material
   -&gt; optional product ideation workbook
@@ -276,6 +336,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   -&gt; optional Exploration Loop
   -&gt; optional Product Discovery Validation
   -&gt; Local Source Intake
+  -&gt; optional Plan Loop when post-intake or post-PRD feature-angle uncertainty remains
   -&gt; product constitution fit check
   -&gt; alignment / grilling
   -&gt; shared language
@@ -289,7 +350,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   -&gt; approved transition, handoff, or stop</code></pre>
 <p>That means:</p>
 <ul><li>notes, screenshots, GitHub issues, research, and chat summaries start as evidence, not instructions</li><li>raw project evidence belongs in root-level <code>project-evidence/</code>, not inside active memory or Precode authority folders</li><li>durable intent can become a reviewed Goal Frame, but it does not choose work or approve execution</li><li>PRDs propose work, but do not activate it</li><li>beads execute work, but only one bead may be <code>in_progress</code></li><li>checks and manual verification prove what happened</li><li>generated reports summarize state, but owner files and human approval govern action</li></ul>
-<h2 id="daily-loop">Daily Loop</h2>
+<h2 id="daily-loop"><a class="heading-anchor" href="#daily-loop" aria-label="Link to Daily Loop">#</a>Daily Loop</h2>
 <p>Use this loop for normal work:</p>
 <ol><li>Start the session.</li><li>Confirm active memory, the current bead, primary authority, files in play, checks, and stop conditions.</li><li>Choose the right workflow before coding.</li><li>Let the agent work only inside the active bead.</li><li>Run guardrails when scope, files, commands, or risk widen.</li><li>Record checks as evidence.</li><li>Review Closeout Evidence and decide <code>accepted</code>, <code>revise</code>, <code>split</code>, or <code>blocked</code>.</li><li>Approve the next bead only when you are ready.</li></ol>
 <p>Core commands:</p>
@@ -309,17 +370,18 @@ python3 scripts/files-in-play-check.py --edit-lock
 python3 scripts/run-contract-check.py
 python3 scripts/bead-transition.py --approve</code></pre>
 <p>The exact project checks depend on the app. The important habit is that checks are named before work starts and recorded before work is accepted.</p>
+<p><code>python3 scripts/next-step.py</code> is the generated &quot;what now?&quot; router. Its JSON shape is regression-covered for stable categories, load plan, context footprint, and recovery prompt fields, but it remains guidance only and cannot approve work.</p>
 <p>The Doctor Dashboard inside <code>OS-HEALTH.md</code> is a generated diagnostic summary. It explains warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths, but <code>scripts/next-step.py</code> still owns the next human decision.</p>
-<h2 id="when-to-stop-the-agent">When To Stop The Agent</h2>
+<h2 id="when-to-stop-the-agent"><a class="heading-anchor" href="#when-to-stop-the-agent" aria-label="Link to When To Stop The Agent">#</a>When To Stop The Agent</h2>
 <p>Stop or checkpoint when:</p>
 <ul><li>the agent cannot name the active bead</li><li>the next workflow is unclear</li><li>product definition starts during implementation</li><li>a task needs a second primary authority file</li><li>more files are changing than the bead allowed</li><li>a command classification says <code>approval needed</code> or <code>stop</code></li><li>checks are missing, vague, failing, or not tied to risk</li><li>discovery says <code>pause</code>, <code>narrow</code>, or <code>kill</code> and the agent keeps planning implementation</li><li>sensitive or bounded-AFK work lacks allowed actions, proof needed, approval gates, or rollback path</li><li>the work touches auth, payments, personal data, uploads, deployment, secrets, GitHub mutation, dashboard mutation, or destructive action without approval</li><li>generated reports, source notes, or old artifacts start acting like instructions</li><li>the next task starts before you approve a bead transition</li></ul>
 <p>Stopping is not failure. In Precode, stopping is how the builder keeps the project understandable.</p>
-<h2 id="how-to-use-this-map">How To Use This Map</h2>
+<h2 id="how-to-use-this-map"><a class="heading-anchor" href="#how-to-use-this-map" aria-label="Link to How To Use This Map">#</a>How To Use This Map</h2>
 <p>This explainer names the six rooms and the Builder OS mental model behind them. It is not the canonical document router and it is not the exhaustive file dictionary.</p>
 <ul><li>Use <code>README.md</code> when you need the public document compass.</li><li>Use <code>docs/PRECODE-USER-GUIDE.md</code> when you are operating a PrecodeOS repo.</li><li>Use <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> when you need every public package file, protocol, script, and relationship.</li></ul>
-<h2 id="where-to-go-next">Where To Go Next</h2>
+<h2 id="where-to-go-next"><a class="heading-anchor" href="#where-to-go-next" aria-label="Link to Where To Go Next">#</a>Where To Go Next</h2>
 <p>For the canonical document compass, use <code>README.md</code>. If you are already operating a PrecodeOS repo, use <code>docs/PRECODE-USER-GUIDE.md</code> as the day-to-day home base.</p>
-<h2 id="adapting-precode-to-your-project">Adapting Precode To Your Project</h2>
+<h2 id="adapting-precode-to-your-project"><a class="heading-anchor" href="#adapting-precode-to-your-project" aria-label="Link to Adapting Precode To Your Project">#</a>Adapting Precode To Your Project</h2>
 <p>For first-time setup, use <code>docs/PRECODE-GUIDED-SETUP.md</code>. It starts by pulling the public PrecodeOS repo from GitHub, then guides a manual, visible setup into a new or existing project without treating PrecodeOS as an app to run.</p>
 <p>Before copying anything, run Bootstrap Confidence from the PrecodeOS package checkout:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
@@ -328,24 +390,46 @@ python3 scripts/bead-transition.py --approve</code></pre>
 <pre><code class="language-bash">python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt;</code></pre>
 <p>Existing Repo Intake is read-only by default. It summarizes repo shape, likely app directories, stack, docs, likely checks, CI/deploy hints, generated and sensitive surfaces, owner-file gaps, conflicts, and stop conditions before setup mutation.</p>
 <p>Start small:</p>
-<ol><li>Keep the three active-memory files.</li><li>Fill in <code>PRODUCT.md</code> with your product promise, users, strategy, current bets, success signals, and design or voice pointers.</li><li>Fill in <code>PROJECT-CONTEXT.md</code> with your app directory, stack, conventions, checks, and integration boundaries.</li><li>Use one starter bead to install or verify the kernel.</li><li>Use the Exploration Loop when existing notes need sharper thinking before PRD commitment.</li><li>Use Product Discovery Validation only when the idea&#x27;s worth-building evidence is uncertain.</li><li>Align/grill the first real product feature before writing the destination PRD.</li><li>Clarify shared language when the feature has domain terms, labels, or naming risk.</li><li>Split the destination into one small vertical journey bead.</li><li>Record checks before accepting the bead.</li><li>Add validators, audits, adapters, and integrations only when they solve a real repeated problem.</li></ol>
+<ol><li>Keep the three active-memory files.</li><li>Fill in <code>PRODUCT.md</code> with your product promise, users, strategy, current bets, success signals, and design or voice pointers.</li><li>Fill in <code>PROJECT-CONTEXT.md</code> with your app directory, stack, conventions, checks, and integration boundaries.</li><li>Use one starter bead to install or verify the kernel.</li><li>Use the Exploration Loop when existing notes need sharper thinking before PRD commitment.</li><li>Use Product Discovery Validation only when the idea&#x27;s worth-building evidence is uncertain.</li><li>Use the Plan Loop when post-intake or post-PRD feature-angle uncertainty needs focused thinking before bead commitment.</li><li>Align/grill the first real product feature before writing the destination PRD.</li><li>Clarify shared language when the feature has domain terms, labels, or naming risk.</li><li>Split the destination into one small vertical journey bead.</li><li>Record checks before accepting the bead.</li><li>Add validators, audits, adapters, and integrations only when they solve a real repeated problem.</li></ol>
 <p>Do not ask an agent to set up everything in one pass. Ask it to create or adapt the kernel first, explain the files in plain English, and stop for review.</p>
 <p>Starter prompt:</p>
 <pre><code class="language-text">I want to adapt PrecodeOS to my project.
 Do not write application code yet.
 First confirm the active-memory files, the current bead, the app directory, the project checks, and the first safe setup step.
 Explain everything in plain English.</code></pre>
-<h2 id="deeper-architecture-and-maintainer-notes">Deeper Architecture And Maintainer Notes</h2>
+<h2 id="deeper-architecture-and-maintainer-notes"><a class="heading-anchor" href="#deeper-architecture-and-maintainer-notes" aria-label="Link to Deeper Architecture And Maintainer Notes">#</a>Deeper Architecture And Maintainer Notes</h2>
 <p>Use <code>docs/PRECODE-ARCHITECTURE-OVERVIEW.md</code> when you need:</p>
 <ul><li>the full layer-by-layer architecture</li><li>script and validator internals</li><li>generated sidecar and log taxonomy</li><li>trust boundaries and prompt-injection posture</li><li>maintainer procedures</li><li>public fork guidance</li><li>comparison landscape</li><li>limitations and adoption path</li></ul>
 <p>This explainer is the conceptual Builder OS map. <code>README.md</code> is the public document compass, and the architecture overview is the maintainer and reviewer companion.</p>
     <nav class="page-nav" aria-label="Previous and next docs"><a href="CANDIDATE-QUEUE.html"><span>Previous</span>PrecodeOS Candidate Queue</a><a href="PRECODE-USER-GUIDE.html"><span>Next</span>How To Use PrecodeOS</a></nav>
   </article>
-  <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#the-short-version">The Short Version</a><a class="level-2" href="#why-precodeos-matters">Why PrecodeOS Matters</a><a class="level-2" href="#the-line-precode-holds">The Line Precode Holds</a><a class="level-2" href="#two-core-rules">Two Core Rules</a><a class="level-3" href="#1-active-memory-stays-tiny">1. Active Memory Stays Tiny</a><a class="level-3" href="#2-generated-reports-are-evidence-not-authority">2. Generated Reports Are Evidence, Not Authority</a><a class="level-2" href="#why-the-precodeos-name">Why The PrecodeOS Name</a><a class="level-2" href="#the-six-rooms-of-the-builder-os">The Six Rooms Of The Builder OS</a><a class="level-3" href="#1-orient">1. Orient</a><a class="level-3" href="#2-decide">2. Decide</a><a class="level-3" href="#3-plan">3. Plan</a><a class="level-3" href="#4-build">4. Build</a><a class="level-3" href="#5-prove">5. Prove</a><a class="level-3" href="#6-recover">6. Recover</a><a class="level-2" href="#how-ideas-become-evidence">How Ideas Become Evidence</a><a class="level-2" href="#daily-loop">Daily Loop</a><a class="level-2" href="#when-to-stop-the-agent">When To Stop The Agent</a><a class="level-2" href="#how-to-use-this-map">How To Use This Map</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a><a class="level-2" href="#adapting-precode-to-your-project">Adapting Precode To Your Project</a><a class="level-2" href="#deeper-architecture-and-maintainer-notes">Deeper Architecture And Maintainer Notes</a></aside>
+  <div class="reader-aside">
+    <aside class="page-tools" aria-label="Reading tools">
+  <p class="nav-label">Reading Tools</p>
+  <a class="tool-link" href="../docs/PRECODE-OS-README.md">Source Markdown</a>
+  <a class="tool-link" href="#top">Back to top</a>
+  <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
+</aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#the-short-version">The Short Version</a><a class="level-2" href="#why-precodeos-matters">Why PrecodeOS Matters</a><a class="level-2" href="#the-line-precode-holds">The Line Precode Holds</a><a class="level-2" href="#two-core-rules">Two Core Rules</a><a class="level-3" href="#1-active-memory-stays-tiny">1. Active Memory Stays Tiny</a><a class="level-3" href="#2-generated-reports-are-evidence-not-authority">2. Generated Reports Are Evidence, Not Authority</a><a class="level-2" href="#why-the-precodeos-name">Why The PrecodeOS Name</a><a class="level-2" href="#the-six-rooms-of-the-builder-os">The Six Rooms Of The Builder OS</a><a class="level-3" href="#1-orient">1. Orient</a><a class="level-3" href="#2-decide">2. Decide</a><a class="level-3" href="#3-plan">3. Plan</a><a class="level-3" href="#4-build">4. Build</a><a class="level-3" href="#5-prove">5. Prove</a><a class="level-3" href="#6-recover">6. Recover</a><a class="level-2" href="#how-ideas-become-evidence">How Ideas Become Evidence</a><a class="level-2" href="#daily-loop">Daily Loop</a><a class="level-2" href="#when-to-stop-the-agent">When To Stop The Agent</a><a class="level-2" href="#how-to-use-this-map">How To Use This Map</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a><a class="level-2" href="#adapting-precode-to-your-project">Adapting Precode To Your Project</a><a class="level-2" href="#deeper-architecture-and-maintainer-notes">Deeper Architecture And Maintainer Notes</a></aside>
+  </div>
 </section>
 
       <footer>Generated from PrecodeOS Markdown docs. Markdown remains canonical.</footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+      const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    })();
+  </script>
 </body>
 </html>

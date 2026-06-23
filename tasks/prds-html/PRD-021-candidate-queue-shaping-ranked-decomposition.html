@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-021 -- Candidate Queue Shaping And Ranked Decomposition</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-021 -- Candidate Queue Shaping And Ranked Decomposition</h1>
+  <p class="muted">Static HTML generated from <code>PRD-021-candidate-queue-shaping-ranked-decomposition.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md#prd-021-candidate-queue-shaping-ranked-decomposition">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Candidate Queue Shaping And Ranked Decomposition</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for Candidate Queue shaping, product-value ratings, themes, near-bead sketches, and approval-gated queue writeback.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation priority, generated authority, project-board authority, automatic product judgment, LLM/API behavior, or permission to code.</p>
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-021-FR01</code></td><td>Candidate Queue must define a Global Theme Index and reviewed shaping fields.</td><td>P0</td><td>Public Markdown remains canonical.</td></tr><tr><td><code>PRD-021-FR02</code></td><td>Queue entries must support shaping status, product-value rating, product-value rationale, themes, raw source pointer, near-bead sketches, sketch status, dependencies, likely authority, likely verification, and weakest assumption.</td><td>P0</td><td>Fields may be blank until reviewed.</td></tr><tr><td><code>PRD-021-FR03</code></td><td>Product-value ratings <code>P0</code>/<code>P1</code>/<code>P2</code>/<code>P3</code> must mean product value only.</td><td>P0</td><td>Not review order, task priority, sprint order, or implementation permission.</td></tr><tr><td><code>PRD-021-FR04</code></td><td>Near-bead sketches must use IDs like <code>CQ-001-S01</code> and never <code>B###</code>.</td><td>P0</td><td>Final bead IDs are assigned only when bead files are created.</td></tr><tr><td><code>PRD-021-FR05</code></td><td><code>scripts/candidate-queue.py --preview-import &amp;lt;path&amp;gt;</code> must produce minimal queue-entry actions with IDs like <code>CQA-001</code>.</td><td>P0</td><td>Title, source pointer, short summary, open questions, privacy warning only.</td></tr><tr><td><code>PRD-021-FR06</code></td><td><code>scripts/candidate-queue.py --preview-shaping &amp;lt;path&amp;gt;</code> must validate agent-authored proposal JSON containing candidate ID, themes, product-value rating, rationale, and near-bead sketches.</td><td>P0</td><td>The script validates; it does not invent product judgment.</td></tr><tr><td><code>PRD-021-FR07</code></td><td><code>--apply --approve-action &amp;lt;ID&amp;gt;</code> must be required for writeback and must apply only approved action IDs to <code>CANDIDATE-QUEUE.md</code>.</td><td>P0</td><td>No direct writeback.</td></tr><tr><td><code>PRD-021-FR08</code></td><td>Script output must support <code>--json</code> and clearly state <code>mutates_now: false</code>, generated preview is not authority, apply requires <code>--approve-action</code>, ratings are not implementation priority, and sketches are not bead files.</td><td>P0</td><td>Plain and JSON output.</td></tr><tr><td><code>PRD-021-FR09</code></td><td>Self-test must cover parser, preview, apply refusal without approval, approved writeback, invalid P-ranks, forbidden <code>B###</code> IDs, unknown candidate IDs, and no <code>tasks/todo.md</code> mutation.</td><td>P0</td><td>No network or external mutation.</td></tr><tr><td><code>PRD-021-FR10</code></td><td>Related protocols, user docs, package inventory, <code>llms.txt</code>, generated docs, maintainer changelog, and roadmap surfaces must be updated.</td><td>P1</td><td>Public package follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-021-candidate-queue-shaping-ranked-decomposition.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-021-candidate-queue-shaping-ranked-decomposition.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-021-FR01`</textarea></td><td><textarea data-cockpit-cell>Queue and protocol define shaping fields and Global Theme Index.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Read Markdown.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-021-FR05`</textarea></td><td><textarea data-cockpit-cell>Raw-note preview proposes minimal capture and does not mutate.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/candidate-queue.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect preview output.</textarea></td><td><textarea data-cockpit-cell>Synthetic raw note</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-021-FR06`</textarea></td><td><textarea data-cockpit-cell>Shaping proposal validates candidate IDs, ratings, themes, and sketch IDs.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/candidate-queue.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect JSON proposal shape.</textarea></td><td><textarea data-cockpit-cell>Synthetic proposal</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-021-FR07`</textarea></td><td><textarea data-cockpit-cell>Apply refuses missing or unknown approved action IDs and writes only the queue when approved.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/candidate-queue.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Review script behavior.</textarea></td><td><textarea data-cockpit-cell>Temporary queue fixture</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-021-FR09`</textarea></td><td><textarea data-cockpit-cell>Invalid P-ranks, `B###`, unknown candidates, and `tasks/todo.md` mutation are blocked.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/candidate-queue.py --self-test` and `python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Synthetic fixtures</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-021-FR10`</textarea></td><td><textarea data-cockpit-cell>Docs and generated surfaces are current.</textarea></td><td><textarea data-cockpit-cell>inventory, docs HTML, PRD HTML, roadmap HTML checks</textarea></td><td><textarea data-cockpit-cell>Read docs.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-021-candidate-queue-shaping-ranked-decomposition">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-021-candidate-queue-shaping-ranked-decomposition" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-021-FR01` | Queue and protocol define shaping fields and Global Theme Index. | `python3 scripts/clarity-scenario-check.py` | Read Markdown. | Markdown source | check output |
+| `PRD-021-FR05` | Raw-note preview proposes minimal capture and does not mutate. | `python3 scripts/candidate-queue.py --self-test` | Inspect preview output. | Synthetic raw note | command output |
+| `PRD-021-FR06` | Shaping proposal validates candidate IDs, ratings, themes, and sketch IDs. | `python3 scripts/candidate-queue.py --self-test` | Inspect JSON proposal shape. | Synthetic proposal | command output |
+| `PRD-021-FR07` | Apply refuses missing or unknown approved action IDs and writes only the queue when approved. | `python3 scripts/candidate-queue.py --self-test` | Review script behavior. | Temporary queue fixture | command output |
+| `PRD-021-FR09` | Invalid P-ranks, `B###`, unknown candidates, and `tasks/todo.md` mutation are blocked. | `python3 scripts/candidate-queue.py --self-test` and `python3 scripts/clarity-scenario-check.py` | Boundary review. | Synthetic fixtures | check output |
+| `PRD-021-FR10` | Docs and generated surfaces are current. | inventory, docs HTML, PRD HTML, roadmap HTML checks | Read docs. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <ul><li>Approval required before queue writeback, PRD creation or approval, bead creation or activation, active-memory edits, <code>tasks/todo.md</code> edits, implementation, external mutation, deployment, release, or package-manager behavior.</li><li>Stop if source notes contain secrets or private raw material, if the candidate ID is unknown, if a proposal contains <code>B###</code>, if product-value rationale is missing, if likely authority is unclear, or if the next path would skip Local Source Intake, Product Discovery, PRD, decision, owner-file, or Decomposition Protocol gates.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></li><li>Owner protocol:</li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>CANDIDATE-QUEUE.md</code></li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/candidate-queue.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-021-candidate-queue-shaping-and-ranked-decomposition">PRD-021 -- Candidate Queue Shaping And Ranked Decomposition</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-021</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-23</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>Candidate Queue Shaping And Ranked Decomposition</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Originating Candidate Queue ID: none; originating maintainer roadmap candidate <code>#6</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap candidate | approved implementation plan | Candidate Queue protocol</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> candidate <code>#6</code>, <code>Candidate Queue Shaping And Ranked Decomposition</code></li><li><code>CANDIDATE-QUEUE.md</code></li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li>Stable facts:</li><li>The Candidate Queue is upstream of PRDs and beads.</li><li>Product-value ratings are product judgment only; they are not implementation priority, task selection, or authorization.</li><li>Near-bead sketches are candidate shaping notes; they do not reserve <code>B###</code> IDs and do not activate beads.</li><li>Raw-note import is minimal capture, not Local Source Intake replacement.</li><li>Script writeback must require explicit approved action IDs.</li><li>Assumptions:</li><li>V1 uses agent-authored structured proposals plus deterministic validation.</li><li>V1 does not call an LLM, API, network, or external service.</li><li>Structured Markdown remains the canonical user-facing Candidate Queue format.</li><li>Conflicts or stale inputs:</li><li>The term ranking can imply task priority. This PRD narrows P0/P1/P2/P3 to product value only.</li><li>Privacy or secrets redactions:</li><li>Raw import must not copy private notes wholesale and must warn users not to store secrets, credentials, private transcripts, billing values, dashboard values, or sensitive raw data in the queue.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>Users want one place to park feature ideas and see early shaping: themes, rough product value, open questions, and possible decomposition shape. Without a reviewed queue surface, ideas either disappear, become premature PRDs, or leak into active-task language.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A user has raw feature ideas and wants a visible path toward PRDs or bead candidates, but the only safe answer is manual notes.</li><li>After: The user can preview minimal queue capture from raw notes, review agent-authored shaping proposals, and apply only explicitly approved queue updates that preserve upstream boundaries.</li><li>Why now: Candidate Queue already exists as public parked-intent guidance, and the next useful slice is reviewed shaping without implementation authority.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: Candidate Queue can hold reviewed shaping fields, product-value ratings, themes, and near-bead sketches while staying upstream of PRDs and beads.</li><li>Definition of done:</li><li>PRD-021 exists and owns the semantic boundary.</li><li><code>CANDIDATE-QUEUE.md</code> and Candidate Queue Protocol define shaping fields, Global Theme Index, product-value rating boundaries, and sketch IDs.</li><li><code>scripts/candidate-queue.py</code> previews raw-note import and shaping proposals, applies only approved action IDs, refuses forbidden bead IDs, and never mutates <code>tasks/todo.md</code>.</li><li>Related protocols and user docs expose the workflow and boundaries.</li><li>Clarity scenarios and script self-test cover rating, activation, preview, apply, import, and generated-authority limits.</li><li>Generated docs, PRD HTML, package inventory, maintainer changelog, and roadmap HTML are refreshed.</li><li>First useful vertical slice: public docs, deterministic script, self-test, and text-contract scenarios only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Builder or maintainer parking feature ideas before deciding whether they deserve intake, discovery, PRD shaping, decision, decomposition review, defer, or kill.</li><li>Secondary user: AI agent drafting queue proposals for human review without creating task authority.</li><li>Excluded user: Project manager expecting a sprint backlog, automation expecting automatic priority, or coding agent expecting permission to implement.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Capture raw feature ideas with minimal, privacy-aware queue entries.</li><li>Goal 2: Let a human review product-value P0/P1/P2/P3 ratings, themes, and near-bead sketches.</li><li>Goal 3: Preserve the Candidate Queue as evidence and visibility only, not work authorization.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: product backlog, roadmap authority, sprint planning, generated priority, deterministic product judgment, LLM/API integration, direct task selection, PRD approval, bead activation, <code>B###</code> reservation, <code>tasks/todo.md</code> mutation, external mutation, package-manager behavior, or project-board behavior.</li><li>Deferred: richer thematic analytics, queue reports, visual queue UI, cross-repo queue import, and automatic stale-candidate detection.</li><li>Explicitly out of scope: treating P0 as &quot;build next&quot; or treating <code>CQ-001-S01</code> as a real bead ID.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-021-FR01</code></td><td>Candidate Queue must define a Global Theme Index and reviewed shaping fields.</td><td>P0</td><td>Public Markdown remains canonical.</td></tr><tr><td><code>PRD-021-FR02</code></td><td>Queue entries must support shaping status, product-value rating, product-value rationale, themes, raw source pointer, near-bead sketches, sketch status, dependencies, likely authority, likely verification, and weakest assumption.</td><td>P0</td><td>Fields may be blank until reviewed.</td></tr><tr><td><code>PRD-021-FR03</code></td><td>Product-value ratings <code>P0</code>/<code>P1</code>/<code>P2</code>/<code>P3</code> must mean product value only.</td><td>P0</td><td>Not review order, task priority, sprint order, or implementation permission.</td></tr><tr><td><code>PRD-021-FR04</code></td><td>Near-bead sketches must use IDs like <code>CQ-001-S01</code> and never <code>B###</code>.</td><td>P0</td><td>Final bead IDs are assigned only when bead files are created.</td></tr><tr><td><code>PRD-021-FR05</code></td><td><code>scripts/candidate-queue.py --preview-import &amp;lt;path&amp;gt;</code> must produce minimal queue-entry actions with IDs like <code>CQA-001</code>.</td><td>P0</td><td>Title, source pointer, short summary, open questions, privacy warning only.</td></tr><tr><td><code>PRD-021-FR06</code></td><td><code>scripts/candidate-queue.py --preview-shaping &amp;lt;path&amp;gt;</code> must validate agent-authored proposal JSON containing candidate ID, themes, product-value rating, rationale, and near-bead sketches.</td><td>P0</td><td>The script validates; it does not invent product judgment.</td></tr><tr><td><code>PRD-021-FR07</code></td><td><code>--apply --approve-action &amp;lt;ID&amp;gt;</code> must be required for writeback and must apply only approved action IDs to <code>CANDIDATE-QUEUE.md</code>.</td><td>P0</td><td>No direct writeback.</td></tr><tr><td><code>PRD-021-FR08</code></td><td>Script output must support <code>--json</code> and clearly state <code>mutates_now: false</code>, generated preview is not authority, apply requires <code>--approve-action</code>, ratings are not implementation priority, and sketches are not bead files.</td><td>P0</td><td>Plain and JSON output.</td></tr><tr><td><code>PRD-021-FR09</code></td><td>Self-test must cover parser, preview, apply refusal without approval, approved writeback, invalid P-ranks, forbidden <code>B###</code> IDs, unknown candidate IDs, and no <code>tasks/todo.md</code> mutation.</td><td>P0</td><td>No network or external mutation.</td></tr><tr><td><code>PRD-021-FR10</code></td><td>Related protocols, user docs, package inventory, <code>llms.txt</code>, generated docs, maintainer changelog, and roadmap surfaces must be updated.</td><td>P1</td><td>Public package follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-021-SEC01</code></td><td>Raw import must summarize and point to source files instead of copying raw notes wholesale.</td><td>P0</td><td>Avoid secret or private transcript spill.</td></tr><tr><td><code>PRD-021-SEC02</code></td><td>The script must not use network access, LLM/API calls, external systems, hidden model dependencies, or files outside the queue writeback target.</td><td>P0</td><td>Stdlib-only local behavior.</td></tr><tr><td><code>PRD-021-SEC03</code></td><td>Apply must refuse unknown actions, missing approvals, duplicate candidate IDs, malformed entries, and any action containing <code>B###</code>.</td><td>P0</td><td>Stops false authority and ID leakage.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-021-NFR01</code></td><td>User-facing language must stay beginner-readable and explicit about authority boundaries.</td><td>P0</td><td>Avoid backlog/sprint ambiguity.</td></tr><tr><td><code>PRD-021-NFR02</code></td><td>Script behavior must be deterministic, testable, and package-local.</td><td>P0</td><td>No dependencies beyond Python stdlib.</td></tr><tr><td><code>PRD-021-NFR03</code></td><td>Existing queue content must be preserved.</td><td>P0</td><td>Append/update targeted structured blocks only.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-021-FR01</code></td><td>Queue and protocol define shaping fields and Global Theme Index.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Read Markdown.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-021-FR05</code></td><td>Raw-note preview proposes minimal capture and does not mutate.</td><td><code>python3 scripts/candidate-queue.py --self-test</code></td><td>Inspect preview output.</td><td>Synthetic raw note</td><td>command output</td></tr><tr><td><code>PRD-021-FR06</code></td><td>Shaping proposal validates candidate IDs, ratings, themes, and sketch IDs.</td><td><code>python3 scripts/candidate-queue.py --self-test</code></td><td>Inspect JSON proposal shape.</td><td>Synthetic proposal</td><td>command output</td></tr><tr><td><code>PRD-021-FR07</code></td><td>Apply refuses missing or unknown approved action IDs and writes only the queue when approved.</td><td><code>python3 scripts/candidate-queue.py --self-test</code></td><td>Review script behavior.</td><td>Temporary queue fixture</td><td>command output</td></tr><tr><td><code>PRD-021-FR09</code></td><td>Invalid P-ranks, <code>B###</code>, unknown candidates, and <code>tasks/todo.md</code> mutation are blocked.</td><td><code>python3 scripts/candidate-queue.py --self-test</code> and <code>python3 scripts/clarity-scenario-check.py</code></td><td>Boundary review.</td><td>Synthetic fixtures</td><td>check output</td></tr><tr><td><code>PRD-021-FR10</code></td><td>Docs and generated surfaces are current.</td><td>inventory, docs HTML, PRD HTML, roadmap HTML checks</td><td>Read docs.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Approval required before queue writeback, PRD creation or approval, bead creation or activation, active-memory edits, <code>tasks/todo.md</code> edits, implementation, external mutation, deployment, release, or package-manager behavior.</li><li>Stop if source notes contain secrets or private raw material, if the candidate ID is unknown, if a proposal contains <code>B###</code>, if product-value rationale is missing, if likely authority is unclear, or if the next path would skip Local Source Intake, Product Discovery, PRD, decision, owner-file, or Decomposition Protocol gates.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>CANDIDATE-QUEUE.md</code></td><td>Human-maintained queue entries and shaping fields.</td><td>Stores parked intent, product-value ratings, themes, and near-bead sketches as guidance only.</td><td>Clarity scenario and manual review.</td><td><code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></td></tr><tr><td><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></td><td>Queue rules and promotion boundaries.</td><td>Defines ratings, sketch IDs, preview/apply gates, and forbidden uses.</td><td>Clarity scenario.</td><td><code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></td></tr><tr><td><code>scripts/candidate-queue.py</code></td><td>Preview/import/shaping/apply command.</td><td>Deterministic validation and approval-gated writeback to <code>CANDIDATE-QUEUE.md</code> only.</td><td><code>--self-test</code>.</td><td><code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></td></tr><tr><td>User docs and prompt patterns</td><td>Copyable user prompts.</td><td>Teach queue shaping without task authority.</td><td>Docs and clarity checks.</td><td><code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-021-candidate-queue-shaping-ranked-decomposition.md</code></li><li>Owner protocol:</li><li><code>tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>CANDIDATE-QUEUE.md</code></li><li><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></li><li><code>tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md</code></li><li><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/candidate-queue.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>docs-html/</code></li><li><code>tasks/prds-html/</code></li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

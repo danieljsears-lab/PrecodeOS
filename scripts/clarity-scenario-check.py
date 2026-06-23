@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.20
+# Version: v0.1.23
 # Last updated: 2026-06-23
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -19,13 +19,17 @@ from os_compiler import (
     BeadRecord,
     accessibility_advisory_gate_quality,
     bead_depth_quality,
+    build_attribution_ledger,
     command_classification,
     completion_session_freshness,
     next_step_guidance,
     reference_followthrough_quality,
     release_evidence_quality,
+    reversal_workflow_quality,
     run_contract_quality,
+    session_friction_review,
     stable_fix_eligibility,
+    team_collaboration_preview,
 )
 from precode_doctor import build_doctor_dashboard
 
@@ -40,6 +44,59 @@ STABLE_DECISIONS = {
     "approval needed",
     "stop",
     "ask for reaffirmation",
+}
+ROUTER_DECISION_CATEGORIES = {
+    "state-repair",
+    "scope-repair",
+    "transition-approval",
+    "review",
+    "closeout",
+    "unblock",
+    "execute",
+    "depth-review",
+    "run-contract-review",
+    "goal-reaffirmation",
+}
+ROUTER_TOP_LEVEL_KEYS = {
+    "status",
+    "warnings",
+    "stable_fix_eligibility",
+    "details",
+}
+ROUTER_DETAILS_KEYS = {
+    "current_bead",
+    "current_bead_status",
+    "recommended_action",
+    "action_category",
+    "plain_english_summary",
+    "user_decision",
+    "single_next_protocol",
+    "load_plan",
+    "context_footprint",
+    "stop_if",
+    "approval_prompt",
+    "needs_review",
+    "needs_transition",
+    "stable_fix_eligibility",
+    "recovery_flow",
+    "recovery_protocol",
+    "beginner_prompt",
+    "advisory_only",
+}
+ROUTER_LOAD_PLAN_KEYS = {
+    "required_first",
+    "then_load",
+    "single_next_protocol",
+    "router_owner",
+    "decision_category",
+}
+ROUTER_CONTEXT_FOOTPRINT_KEYS = {
+    "advisory_only",
+    "active_memory",
+    "required_context",
+    "conditional_references",
+    "generated_reports_touched",
+    "approx_document_lines",
 }
 RECOVERY_FIXTURE_FORBIDDEN_ACTIONS = [
     "edit",
@@ -156,18 +213,71 @@ def assert_recovery_flow(name: str, payload: dict[str, Any], expected: str, fail
         failures.append({"scenario": f"{name} prompt", "expected": "beginner prompt", "actual": prompt})
 
 
-def assert_router_contract(name: str, payload: dict[str, Any], failures: list[dict[str, str]]) -> None:
+def assert_required_keys(
+    name: str,
+    actual: dict[str, Any],
+    expected_keys: set[str],
+    failures: list[dict[str, str]],
+) -> None:
+    missing = sorted(key for key in expected_keys if key not in actual)
+    if missing:
+        failures.append({"scenario": name, "expected": f"required keys: {missing}", "actual": str(sorted(actual.keys()))})
+
+
+def assert_router_contract(
+    name: str,
+    payload: dict[str, Any],
+    failures: list[dict[str, str]],
+    expected_category: str | None = None,
+) -> None:
+    assert_required_keys(f"{name} top-level shape", payload, ROUTER_TOP_LEVEL_KEYS, failures)
+    if payload.get("status") not in {"pass", "warning"}:
+        failures.append({"scenario": f"{name} status", "expected": "pass or warning", "actual": str(payload.get("status"))})
+    if not isinstance(payload.get("warnings"), list):
+        failures.append({"scenario": f"{name} warnings", "expected": "list", "actual": str(type(payload.get("warnings")).__name__)})
     details = payload.get("details") or {}
+    assert_required_keys(f"{name} details shape", details, ROUTER_DETAILS_KEYS, failures)
+    category = str(details.get("action_category") or "")
+    if category not in ROUTER_DECISION_CATEGORIES:
+        failures.append({"scenario": f"{name} category", "expected": "stable router category", "actual": category})
+    if expected_category and category != expected_category:
+        failures.append({"scenario": f"{name} category", "expected": expected_category, "actual": category})
+    if details.get("advisory_only") is not True:
+        failures.append({"scenario": f"{name} details advisory", "expected": "advisory_only true", "actual": str(details.get("advisory_only"))})
+    if str(details.get("user_decision") or "") not in STABLE_DECISIONS:
+        failures.append({"scenario": f"{name} user decision", "expected": "stable decision value", "actual": str(details.get("user_decision"))})
+    if payload.get("stable_fix_eligibility") is None or details.get("stable_fix_eligibility") is None:
+        failures.append({"scenario": f"{name} stable fix shape", "expected": "top-level and details stable_fix_eligibility", "actual": str(payload)})
     if not details.get("single_next_protocol"):
         failures.append({"scenario": f"{name} single protocol", "expected": "single_next_protocol", "actual": "missing"})
     load_plan = details.get("load_plan") or {}
+    assert_required_keys(f"{name} load plan shape", load_plan, ROUTER_LOAD_PLAN_KEYS, failures)
     if load_plan.get("router_owner") != "scripts/next-step.py":
         failures.append({"scenario": f"{name} router owner", "expected": "scripts/next-step.py", "actual": str(load_plan.get("router_owner"))})
+    if load_plan.get("single_next_protocol") != details.get("single_next_protocol"):
+        failures.append({"scenario": f"{name} load plan protocol", "expected": str(details.get("single_next_protocol")), "actual": str(load_plan.get("single_next_protocol"))})
+    if load_plan.get("decision_category") != category:
+        failures.append({"scenario": f"{name} load plan category", "expected": category, "actual": str(load_plan.get("decision_category"))})
     footprint = details.get("context_footprint") or {}
+    assert_required_keys(f"{name} context footprint shape", footprint, ROUTER_CONTEXT_FOOTPRINT_KEYS, failures)
     if "AGENT.md" not in (footprint.get("active_memory") or []):
         failures.append({"scenario": f"{name} footprint", "expected": "active memory footprint", "actual": str(footprint)})
     if footprint.get("advisory_only") is not True:
         failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(footprint.get("advisory_only"))})
+    if "logs/next-step.json" not in (footprint.get("generated_reports_touched") or []):
+        failures.append({"scenario": f"{name} generated reports", "expected": "logs/next-step.json", "actual": str(footprint.get("generated_reports_touched"))})
+
+
+def assert_session_start_router_delegation(failures: list[dict[str, str]]) -> None:
+    text = Path("scripts/session-start.sh").read_text(encoding="utf-8")
+    router_label = text.find('echo "Router Decision:"')
+    next_step_call = text.find("python3 scripts/next-step.py")
+    if router_label == -1:
+        failures.append({"scenario": "session-start router display", "expected": "Router Decision label", "actual": "missing"})
+    if next_step_call == -1:
+        failures.append({"scenario": "session-start router delegation", "expected": "python3 scripts/next-step.py", "actual": "missing"})
+    elif router_label != -1 and next_step_call < router_label:
+        failures.append({"scenario": "session-start router delegation order", "expected": "next-step after Router Decision label", "actual": text[router_label:next_step_call]})
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -245,6 +355,12 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
             "Is this bead active?",
             "Is this ranked item authorized for implementation?",
             "Candidate ranking is review order only",
+            "Product-value ratings `P0`, `P1`, `P2`, and `P3` are product value only",
+            "Global Theme Index",
+            "Near-bead sketch IDs",
+            "CQ-001-owner-dashboard-S01",
+            "mutates_now: false",
+            "--approve-action",
             "Candidate IDs do not reserve PRD IDs or bead IDs",
             "Do not create `B###` bead IDs here",
         ],
@@ -254,6 +370,11 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
             "bead activation",
             "automatic ranking",
             "permission to code",
+            "Product-value ratings are separate from reviewed rank",
+            "Near-bead sketches are early decomposition notes",
+            "Raw-note import is minimal capture only",
+            "must not call an LLM/API",
+            "Apply must refuse missing approvals",
             "Local Source Intake",
             "Product Discovery Validation",
             "Decomposition Protocol",
@@ -273,11 +394,13 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
             "Candidate Queue entry",
+            "near-bead sketch IDs",
             "does not authorize bead creation or activation",
             "does not replace parent PRD",
         ],
         Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
             "Candidate Queue entries",
+            "minimal queue capture only",
             "stay queued",
             "Do not activate a bead or start coding",
         ],
@@ -288,21 +411,26 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("tasks/reference/PRD-PROTOCOL.md"): [
             "Candidate Queue",
+            "near-bead sketch IDs",
             "does not approve the PRD",
             "authorize beads",
         ],
         Path("tasks/prds/PRD-SHARD-SCHEMA.md"): [
             "Candidate Queue ID",
+            "near-bead sketch IDs",
             "does not approve the PRD",
             "final bead IDs are assigned only when actual bead files are created",
         ],
         Path("tasks/prds/PRD-000-template.md"): [
             "Candidate Queue ID",
+            "Candidate Queue product-value rating",
             "Do not reserve `B###` IDs",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Use The Candidate Queue For Parked Intent",
             "psychological benefit of a backlog",
+            "Product-value ratings `P0`, `P1`, `P2`, and `P3` are product value only",
+            "preview-shaping",
             "cannot answer",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
@@ -313,11 +441,15 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Candidate Queue Review",
             "Add Candidate Queue Entry",
+            "Candidate Queue Shaping Proposal",
+            "Candidate Queue Import Preview",
             "Ranking is review order only",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "CANDIDATE-QUEUE.md",
             "Candidate Queue states",
+            "scripts/candidate-queue.py",
+            "product-value ratings",
             "not active memory",
         ],
     }
@@ -326,6 +458,323 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"candidate queue contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_hypothesis_guidance_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md"): [
+            "Hypothesis Mechanics",
+            "Primary hypothesis / learning target",
+            "Hypothesis review status",
+            "experiment hypothesis",
+            "HYPOTHESIS-REVIEW-PROTOCOL.md",
+            "not PRD approval",
+            "task activation",
+        ],
+        Path("tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md"): [
+            "Hypothesis Review / Learning Loop",
+            "Discovery Summary",
+            "Candidate Queue entry",
+            "Local Source Intake summary",
+            "PRD Source Inputs section",
+            "Planning Brief",
+            "Learning status: untested | tested | narrowed | killed | promoted | stale | not applicable",
+            "Learning outcome:",
+            "Stale or untested signals:",
+            "Recommended next Precode workflow:",
+            "Generated-report warning:",
+            "does not approve product direction",
+            "rank candidates",
+            "activate beads",
+            "require analytics",
+            "experiment database",
+            "generated hypothesis status",
+        ],
+        Path("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md"): [
+            "Primary hypothesis / learning target",
+            "Hypothesis review status",
+            "Candidate Queue hypotheses are evidence",
+            "HYPOTHESIS-REVIEW-PROTOCOL.md",
+            "rank work",
+            "authorize implementation",
+        ],
+        Path("tasks/reference/PLANNING-PROTOCOL.md"): [
+            "experiment hypothesis",
+            "Learning Review",
+            "Hypothesis review status",
+            "Falsifier or what would change our mind",
+            "does not approve a PRD",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "Primary hypothesis / learning target",
+            "Hypothesis review status",
+            "Learning outcome",
+            "testable hypothesis",
+            "Product Discovery Validation",
+            "HYPOTHESIS-REVIEW-PROTOCOL.md",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "Primary hypothesis / learning target",
+            "Hypothesis review status",
+            "implementation permission",
+        ],
+        Path("tasks/prds/PRD-022-hypothesis-review-learning-loop.md"): [
+            "Hypothesis Review And Learning Loop v2",
+            "PRD-022-FR01",
+            "PRD-022-FR07",
+            "untested",
+            "tested",
+            "narrowed",
+            "killed",
+            "promoted",
+            "stale",
+            "not applicable",
+            "generated status authority",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Hypothesis Review / Learning Loop",
+            "primary hypothesis or learning target",
+            "Candidate Queue Review",
+            "require analytics",
+            "create a database",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Review What A Hypothesis Taught You",
+            "Hypothesis Review / Learning Loop",
+            "require analytics",
+            "create a database",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Review hypothesis",
+            "Hypothesis Review / Learning Loop",
+            "not applicable",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/hypothesis-check.py",
+            "Hypothesis Guidance",
+            "Hypothesis Review / Learning Loop",
+            "HYPOTHESIS-REVIEW-PROTOCOL.md",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"hypothesis guidance contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_ears_acceptance_guidance_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("ACCEPTANCE.md"): [
+            "Optional EARS-Style Pattern",
+            "WHEN [condition or event] THE SYSTEM SHALL [observable expected behavior]",
+            "Clear non-EARS acceptance criteria remain valid",
+            "not required schema",
+            "proof by itself",
+            "implementation authority",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "optional EARS-style wording",
+            "WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]",
+            "Do not require EARS syntax",
+            "reject clear non-EARS acceptance criteria",
+            "treat the wording as proof",
+            "PRD approval",
+            "implementation authority",
+        ],
+        Path("tasks/prds/PRD-000-template.md"): [
+            "Optional EARS-style phrasing",
+            "WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]",
+            "Clear non-EARS acceptance criteria remain valid",
+            "not required schema",
+            "proof by itself",
+        ],
+        Path("tasks/prds/PRD-SHARD-SCHEMA.md"): [
+            "optional EARS-style wording",
+            "not required PRD structure",
+            "schema enforcement",
+            "generated proof",
+            "implementation acceptance",
+        ],
+        Path("tasks/prds/PRD-026-ears-acceptance-guidance.md"): [
+            "EARS-Style Acceptance Criteria Guidance",
+            "PRD-026-FR01",
+            "PRD-026-FR04",
+            "optional EARS-style acceptance guidance",
+            "not required syntax",
+            "dedicated EARS checker",
+            "generated report field",
+            "Kiro integration",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Make Acceptance Criteria Testable",
+            "Review Acceptance Criteria For Vague Behavior",
+            "optional EARS-style wording",
+            "Keep clear non-EARS criteria",
+            "Do not require EARS syntax",
+            "treat wording as proof",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Make Acceptance Criteria Testable",
+            "optional EARS-style wording",
+            "Keep clear non-EARS criteria",
+            "EARS-style wording is a clarity aid",
+            "not required syntax",
+            "permission to build",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Clarify acceptance",
+            "optional EARS-style wording",
+            "Do not require EARS syntax",
+            "treat wording as proof",
+            "writing guidance only",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "optional EARS-style writing guidance",
+            "optional EARS-style acceptance-oracle guidance",
+            "PRD-026",
+            "not required syntax",
+            "schema enforcement",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"ears acceptance guidance contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_ubiquitous_language_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md"): [
+            "Glossary Review Workflow",
+            "source pointers",
+            "examples",
+            "freshness",
+            "authority owner",
+            "does not approve PRDs",
+            "Naming Review",
+            "demoted signals",
+        ],
+        Path("tasks/reference/MEMORY-PROTOCOL.md"): [
+            "Project Glossary Cards",
+            "Source pointers",
+            "Examples",
+            "Authority owner if promoted",
+            "evidence rather than authority",
+        ],
+        Path("memory/cards/MEMORY-CARD-FORMAT.md"): [
+            "Project Glossary Guidance",
+            "Source pointers",
+            "Examples",
+            "Freshness",
+            "evidence only",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Glossary Card Proposal",
+            "source pointers for each useful term group",
+            "do not treat the proposed card as authority",
+            "Domain Naming Review",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "What is a project glossary?",
+            "source pointers",
+            "Search results can help naming review",
+            "do not rename code",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "glossary-card excerpts",
+            "generated memory indexes",
+            "glossary memory creation while preserving glossary cards as evidence only",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"ubiquitous language contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Plan Loop",
+            "Plan Packet",
+            "user explicitly asks",
+            "evidence only",
+            "must not approve a PRD",
+            "create or activate beads",
+            "choose tasks",
+            "backlog authority",
+            "authorize implementation",
+        ],
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "Plan Loop",
+            "Plan Packet",
+            "Local Source Intake",
+            "no bead proposal",
+            "Decomposition must create any candidate bead proposal",
+            "must not update `tasks/todo.md`",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "Plan Packet",
+            "evidence only",
+            "does not approve the PRD",
+            "create beads",
+            "authorize implementation",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "Plan Packet",
+            "evidence only",
+            "does not create candidate beads",
+            "Bead Decomposition Test",
+            "not a bead yet",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Use the Plan Loop on this feature angle",
+            "Plan Packet",
+            "source context used",
+            "feature angle or topic explored",
+            "Treat the Plan Packet as evidence only",
+            "do not update tasks/todo.md",
+            "approve a PRD",
+            "choose tasks",
+            "backlog authority",
+            "authorize implementation",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use The Plan Loop Before Bead Commitment",
+            "Plan Packet",
+            "Exploration Loop is for pre-PRD thinking",
+            "post-intake or post-PRD",
+            "evidence only",
+            "Do not approve a PRD",
+            "create or activate beads",
+            "choose tasks",
+            "backlog authority",
+            "authorize implementation",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Plan Loop",
+            "Plan Packet",
+            "post-intake or post-PRD feature-angle exploration",
+            "evidence only",
+            "does not approve PRDs",
+            "create or activate beads",
+            "choose tasks",
+            "backlog authority",
+            "authorize implementation",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"plan loop contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
 
 
@@ -558,6 +1007,347 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
             failures.append({"scenario": "review lanes bead schema", "expected": term, "actual": "missing"})
 
 
+def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-025-small-team-product-build-support-v2.md"): [
+            "Small Team Product Build Support V2 Preview",
+            "scripts/team-collaboration-check.py",
+            "read-only local and optional GitHub evidence previews",
+            "not merge automation",
+            "generated preview JSON",
+        ],
+        Path("tasks/reference/TEAM-COLLABORATION-PROTOCOL.md"): [
+            "V2 Read-Only Preview",
+            "python3 scripts/team-collaboration-check.py --github",
+            "Team Merge And Re-entry Review Pack",
+            "Team Owner-File Conflict Preview",
+            "one-active-bead-per-checkout",
+            "generated evidence only",
+            "must not choose work",
+            "approve merge",
+        ],
+        Path("tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md"): [
+            "scripts/team-collaboration-check.py --github",
+            "read-only aggregation path",
+            "not_configured",
+            "must not silently infer GitHub state",
+            "must not mutate issues",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "scripts/team-collaboration-check.py",
+            "branch/worktree state",
+            "owner-file impacts",
+            "does not approve parallel work",
+        ],
+        Path("tasks/beads/BEAD-SCHEMA.md"): [
+            "scripts/team-collaboration-check.py",
+            "owner-file impacts",
+            "stale re-entry risk",
+            "does not approve parallel work",
+            "Team preview output is generated evidence only",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "stale re-entry risks",
+            "scripts/team-collaboration-check.py",
+            "generated preview output is not acceptance",
+            "team collaboration preview output",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "scripts/team-collaboration-check.py",
+            "logs/team-collaboration-preview.json",
+            "generated evidence only",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Small Team Collaboration Preview",
+            "Team Assignment Packet Prompts v2",
+            "Team Merge And Re-entry Review Pack",
+            "Do not create branches or worktrees",
+            "treat generated preview output as authority",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "logs/team-collaboration-preview.json",
+            "must not choose work",
+            "approve merge",
+            "mutate GitHub",
+            "package-manager behavior",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Small Team Collaboration Lane preview",
+            "python3 scripts/team-collaboration-check.py",
+            "generated preview output is evidence only",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Coordinate A Small Team",
+            "team-collaboration-check.py",
+            "does not approve merge",
+        ],
+        Path("docs/PRECODE-OS-README.md"): [
+            "Small Team Collaboration Lane",
+            "team-collaboration-check.py",
+            "read-only preview",
+        ],
+        Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
+            "Team Collaboration Preview",
+            "logs/team-collaboration-preview.json",
+            "not a project-management system",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/team-collaboration-check.py",
+            "logs/team-collaboration-preview.json",
+            "PRD-025",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"team collaboration preview contract: {path}", "expected": term, "actual": "missing"})
+
+    preview = team_collaboration_preview(
+        Path("."),
+        {"current_state": "in_progress", "current_bead": "tasks/beads/B999-team-fixture.md"},
+        bead(
+            rel_path="tasks/beads/B999-team-fixture.md",
+            primary_authority="PROJECT-CONTEXT.md",
+            files_in_play=["PROJECT-CONTEXT.md", "src/team.ts"],
+        ),
+        [
+            bead(
+                rel_path="tasks/beads/B999-team-fixture.md",
+                primary_authority="PROJECT-CONTEXT.md",
+                files_in_play=["PROJECT-CONTEXT.md", "src/team.ts"],
+            )
+        ],
+        integration_branch="main",
+    )
+    details = preview.get("details") or {}
+    required_fields = [
+        "owner_protocol",
+        "github_protocol",
+        "current_branch",
+        "integration_branch",
+        "current_bead",
+        "one_active_bead_per_checkout",
+        "owner_file_impacts",
+        "re_entry_risks",
+        "merge_review_packet_fields",
+        "assignment_packet_fields",
+        "github_evidence",
+        "forbidden_uses",
+        "next_safe_action",
+    ]
+    for field in required_fields:
+        if field not in details:
+            failures.append({"scenario": "team preview payload field", "expected": field, "actual": "missing"})
+    if details.get("advisory_only") is not True:
+        failures.append({"scenario": "team preview advisory", "expected": "advisory_only true", "actual": str(details.get("advisory_only"))})
+    if "generated evidence only" not in str(preview.get("generated_report_warning")):
+        failures.append({"scenario": "team preview generated warning", "expected": "generated evidence only", "actual": str(preview.get("generated_report_warning"))})
+    forbidden = " ".join(details.get("forbidden_uses") or [])
+    for term in ["task selection", "merge approval", "GitHub mutation"]:
+        if term not in forbidden:
+            failures.append({"scenario": "team preview forbidden use", "expected": term, "actual": forbidden})
+    return len(required_terms_by_path) + 1
+
+
+def assert_session_friction_review_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-027-session-friction-review.md"): [
+            "Session Friction Review",
+            "scripts/session-friction-check.py",
+            "cited failure-pattern findings",
+            "generated-evidence boundaries",
+            "no safe evidence found",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "python3 scripts/session-friction-check.py",
+            "repeated failure categories",
+            "generated evidence only",
+            "must not auto-edit active memory",
+            "must not approve commands",
+        ],
+        Path("tasks/reference/MEMORY-PROTOCOL.md"): [
+            "Session Friction Review",
+            "manual promotion",
+            "must cite the source evidence",
+            "must not create memory cards",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "session-friction findings",
+            "review input only",
+            "do not promote memory",
+            "do not approve commands",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "logs/session-friction-review.json",
+            "read-only audit",
+            "must not choose work",
+            "package-manager behavior",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Session Friction Review",
+            "python3 scripts/session-friction-check.py",
+            "Do not create memory cards",
+            "Do not edit owner files",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Session Friction Review",
+            "python3 scripts/session-friction-check.py",
+            "generated evidence only",
+        ],
+        Path("docs/PRECODE-TROUBLESHOOTING.md"): [
+            "Session Friction Review",
+            "repeated tool failures",
+            "does not repair anything",
+        ],
+        Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
+            "Session Friction Review",
+            "logs/session-friction-review.json",
+            "manual promotion",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/session-friction-check.py",
+            "logs/session-friction-review.json",
+            "PRD-027",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"session friction review contract: {path}", "expected": term, "actual": "missing"})
+
+    preview = session_friction_review(
+        Path("."),
+        [
+            {"timestamp": "fixture-1", "status": "fail", "command": "missing-a", "failure_category": "unavailable_command"},
+            {"timestamp": "fixture-2", "status": "blocked", "command": "sandbox", "failure_category": "permission_or_sandbox_blocked"},
+            {"timestamp": "fixture-3", "status": "fail", "command": "missing-b", "failure_category": "unavailable_command"},
+            {"timestamp": "fixture-4", "status": "fail", "command": "unknown"},
+        ],
+        [],
+        [],
+        {"warnings": ["generated reports were refreshed for active work but no verification evidence exists"]},
+        {"warnings": ["session close evidence is stale"]},
+        {"warnings": ["reviewed memory card has token pressure"], "details": {}},
+    )
+    details = preview.get("details") or {}
+    findings = details.get("findings") if isinstance(details.get("findings"), list) else []
+    categories = {finding.get("category") for finding in findings}
+    for category in [
+        "repeated_failure_category",
+        "missing_failure_category",
+        "unavailable_command_or_dependency",
+        "sandbox_or_approval_block",
+        "stale_check_or_closeout_evidence",
+        "generated_refresh_without_verification",
+        "over_broad_context_or_memory_pressure",
+    ]:
+        if category not in categories:
+            failures.append({"scenario": "session friction category", "expected": category, "actual": str(sorted(categories))})
+    if details.get("advisory_only") is not True:
+        failures.append({"scenario": "session friction advisory", "expected": "advisory_only true", "actual": str(details.get("advisory_only"))})
+    if "generated evidence only" not in str(preview.get("generated_report_warning")):
+        failures.append({"scenario": "session friction generated warning", "expected": "generated evidence only", "actual": str(preview.get("generated_report_warning"))})
+    forbidden = " ".join((findings[0].get("forbidden_uses") if findings else []) or [])
+    for term in ["task selection", "memory promotion", "owner-file edits", "command approval"]:
+        if term not in forbidden:
+            failures.append({"scenario": "session friction forbidden use", "expected": term, "actual": forbidden})
+    return len(required_terms_by_path) + 1
+
+
+def assert_build_attribution_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-028-build-attribution-ledger.md"): [
+            "Build Attribution Ledger",
+            "scripts/build-attribution-ledger.py",
+            "human contributor",
+            "agent/tool surface",
+            "No contributor scoring",
+        ],
+        Path("tasks/beads/BEAD-SCHEMA.md"): [
+            "Human contributor",
+            "Agent/tool surface",
+            "Attribution uncertainty",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "Build attribution closeout",
+            "scripts/build-attribution-ledger.py",
+            "contributor scoring",
+        ],
+        Path("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md"): [
+            "Build attribution",
+            "must not assign blame",
+            "score contributors",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "logs/build-attribution-ledger.json",
+            "assign blame",
+            "registry",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Build Attribution Review",
+            "human contributor",
+            "score contributors",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Build Attribution Ledger",
+            "Review attribution",
+            "who-built-what",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Review Who Built What",
+            "python3 scripts/build-attribution-ledger.py",
+            "not a people registry",
+        ],
+        Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
+            "build attribution",
+            "logs/build-attribution-ledger.md/json",
+            "score contributors",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "PRD-028",
+            "scripts/build-attribution-ledger.py",
+            "logs/build-attribution-ledger.md/json",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"build attribution contract: {path}", "expected": term, "actual": "missing"})
+
+    payload = build_attribution_ledger(
+        Path("."),
+        [
+            bead(
+                rel_path="tasks/beads/B997-reviewed-attribution.md",
+                bead_id="B997",
+                closeout={
+                    "human_contributor": "Dan Sears",
+                    "contributor_role": "Coordinator",
+                    "agent_tool_surface": "Codex",
+                    "attribution_reviewed_by": "Dan Sears",
+                    "attribution_uncertainty": "none recorded",
+                },
+            ),
+            bead(rel_path="tasks/beads/B996-missing-attribution.md", bead_id="B996", closeout={}),
+        ],
+    )
+    details = payload.get("details") or {}
+    forbidden = " ".join(details.get("forbidden_uses") or [])
+    for term in ["task selection", "implementation acceptance", "merge approval", "contributor scoring", "registry behavior"]:
+        if term not in forbidden:
+            failures.append({"scenario": "build attribution forbidden use", "expected": term, "actual": forbidden})
+    if details.get("reviewed_closeout_count") != 1:
+        failures.append({"scenario": "build attribution reviewed count", "expected": "1", "actual": str(details.get("reviewed_closeout_count"))})
+    if details.get("missing_attribution_count") != 1:
+        failures.append({"scenario": "build attribution missing count", "expected": "1", "actual": str(details.get("missing_attribution_count"))})
+    if "generated evidence only" not in str(payload.get("generated_report_warning")):
+        failures.append({"scenario": "build attribution generated warning", "expected": "generated evidence only", "actual": str(payload.get("generated_report_warning"))})
+    return len(required_terms_by_path) + 1
+
+
 def release_evidence_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
     closeout = overrides.pop(
         "closeout",
@@ -710,6 +1500,204 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
         failures.append({"scenario": "release requirement proof trace warning", "expected": "does not trace warning", "actual": str(no_trace_payload)})
 
     return 4
+
+
+def assert_requirement_to_proof_contract(failures: list[dict[str, str]]) -> int:
+    sources = {
+        "verification": Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower(),
+        "completion": Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md").read_text(encoding="utf-8").lower(),
+        "prd": Path("tasks/reference/PRD-PROTOCOL.md").read_text(encoding="utf-8").lower(),
+        "template": Path("tasks/prds/PRD-000-template.md").read_text(encoding="utf-8").lower(),
+        "bead": Path("tasks/beads/BEAD-SCHEMA.md").read_text(encoding="utf-8").lower(),
+        "review": Path("tasks/reference/REVIEW-LANES-PROTOCOL.md").read_text(encoding="utf-8").lower(),
+        "prompts": Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower(),
+        "guide": Path("docs/PRECODE-USER-GUIDE.md").read_text(encoding="utf-8").lower(),
+    }
+    required_terms = [
+        "requirement-to-proof trace",
+        "requirement, bug behavior, or acceptance criterion",
+        "evidence lane",
+        "recorded source",
+        "what this proves",
+        "what this does not prove",
+        "remaining uncertainty",
+    ]
+    for name, text in sources.items():
+        for term in required_terms[:3]:
+            if term not in text:
+                failures.append({"scenario": f"requirement-to-proof {name}", "expected": term, "actual": "missing"})
+
+    demotion_terms = [
+        "generated test",
+        "generated propert",
+        "trace table",
+        "screenshot",
+        "browser note",
+        "ai critique",
+        "generated report",
+        "not complete proof",
+    ]
+    demotion_text = "\n".join(sources.values())
+    for term in demotion_terms:
+        if term not in demotion_text:
+            failures.append({"scenario": "requirement-to-proof demotion", "expected": term, "actual": "missing"})
+
+    prompt_text = sources["prompts"] + "\n" + sources["guide"]
+    for term in ["do not accept implementation", "approve review", "activate the next bead", "proof by themselves"]:
+        if term not in prompt_text:
+            failures.append({"scenario": "requirement-to-proof prompt boundaries", "expected": term, "actual": "missing"})
+
+    return 3
+
+
+def reversal_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
+    closeout = overrides.pop(
+        "closeout",
+        {
+            "manual_verification": "Who checked: fixture. What was checked: reversal proof and preserved behavior. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+            "review_decision": "accepted",
+        },
+    )
+    return bead(
+        title="B023 - Implemented Bead Reversal Workflow Fixture",
+        primary_authority="tasks/prds/PRD-023-implemented-bead-reversal-workflow.md",
+        parent_prd="tasks/prds/PRD-023-implemented-bead-reversal-workflow.md",
+        requirement_ids=["PRD-023-FR05"],
+        files_in_play=["tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"],
+        checks=["python3 scripts/clarity-scenario-check.py"],
+        verification_type=["static"],
+        closeout=closeout,
+        sections={
+            "Objective": "Review implemented bead reversal workflow.",
+            "Done When": "Reversal workflow warnings are stable.",
+            "Stop If": "Reversal becomes history mutation or rollback automation.",
+            "Closeout Evidence": "\n".join(closeout_lines),
+        },
+        **overrides,
+    )
+
+
+def assert_implemented_bead_reversal_contract(failures: list[dict[str, str]]) -> int:
+    prd_text = Path("tasks/prds/PRD-023-implemented-bead-reversal-workflow.md").read_text(encoding="utf-8").lower()
+    bead_schema = Path("tasks/beads/BEAD-SCHEMA.md").read_text(encoding="utf-8").lower()
+    completion_protocol = Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    recovery_protocol = Path("tasks/reference/RECOVERY-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    verification_protocol = Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    journal_protocol = Path("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md").read_text(encoding="utf-8").lower()
+    prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
+
+    for term in (
+        "reversal bead",
+        "superseded bead",
+        "reversal target",
+        "reversal reason",
+        "preserved behavior",
+        "git revert",
+        "not proof",
+        "do not reopen",
+        "delete evidence",
+        "rewrite transition logs",
+        "no runtime reversal command",
+    ):
+        if term not in prd_text:
+            failures.append({"scenario": "implemented bead reversal PRD contract", "expected": term, "actual": "missing"})
+
+    for path_name, text in (
+        ("bead schema", bead_schema),
+        ("completion protocol", completion_protocol),
+        ("recovery protocol", recovery_protocol),
+        ("verification protocol", verification_protocol),
+        ("journal protocol", journal_protocol),
+        ("prompt pattern", prompt_text),
+    ):
+        for term in ("superseded bead", "reversal target", "reversal reason", "preserved behavior"):
+            if term not in text:
+                failures.append({"scenario": f"implemented bead reversal {path_name}", "expected": term, "actual": "missing"})
+
+    complete = reversal_fixture(
+        [
+            "Reversal workflow:",
+            "- Superseded bead: tasks/beads/B123-old-work.md",
+            "- Reversal target: Remove the obsolete generated-output rule.",
+            "- Reversal reason: The prior behavior conflicts with current authority.",
+            "- Preserved behavior: Existing evidence and transition logs remain unchanged.",
+            "- Reversal proof: clarity scenario pass and manual review.",
+            "- Approvals still required: none for fixture after review.",
+        ]
+    )
+    complete_payload = reversal_workflow_quality(complete, list(passing_checks(complete).values()))
+    if complete_payload.get("status") != "pass":
+        failures.append({"scenario": "implemented bead reversal complete pass", "expected": "pass", "actual": str(complete_payload)})
+
+    missing = reversal_fixture(["Reversal workflow:", "- Superseded bead: tasks/beads/B123-old-work.md"])
+    missing_payload = reversal_workflow_quality(missing, [])
+    if missing_payload.get("status") != "warning":
+        failures.append({"scenario": "implemented bead reversal missing warning", "expected": "warning", "actual": str(missing_payload)})
+    if not any("missing required fields" in warning.lower() for warning in missing_payload.get("warnings") or []):
+        failures.append({"scenario": "implemented bead reversal missing fields", "expected": "missing required fields", "actual": str(missing_payload)})
+
+    git_only = reversal_fixture(
+        [
+            "Reversal workflow:",
+            "- Superseded bead: tasks/beads/B123-old-work.md",
+            "- Reversal target: Git revert only.",
+            "- Reversal reason: Prior behavior was wrong.",
+            "- Preserved behavior: pending",
+            "- Approvals still required: pending",
+            "Used git revert and considered it done.",
+        ],
+        closeout={"manual_verification": "pending", "review_decision": "revise"},
+    )
+    git_payload = reversal_workflow_quality(git_only, [])
+    if not any("git revert" in warning.lower() for warning in git_payload.get("warnings") or []):
+        failures.append({"scenario": "implemented bead reversal git-only warning", "expected": "git revert warning", "actual": str(git_payload)})
+
+    forbidden = reversal_fixture(
+        [
+            "Reversal workflow:",
+            "- Superseded bead: tasks/beads/B123-old-work.md",
+            "- Reversal target: Reopen done bead and rewrite transition logs.",
+            "- Reversal reason: Hide mistake.",
+            "- Preserved behavior: none.",
+            "- Reversal proof: none.",
+            "- Approvals still required: none.",
+            "Delete evidence and rewrite transition log.",
+        ]
+    )
+    forbidden_payload = reversal_workflow_quality(forbidden, list(passing_checks(forbidden).values()))
+    forbidden_markers = (forbidden_payload.get("details") or {}).get("forbidden_history_mutation_markers") or []
+    for expected in ("delete_evidence", "rewrite_transition_log"):
+        if expected not in forbidden_markers:
+            failures.append({"scenario": "implemented bead reversal forbidden marker", "expected": expected, "actual": str(forbidden_payload)})
+
+    journal = load_script_module("bead_build_journal_fixture", "update-bead-build-journal.py")
+    rendered = journal.render_entry(
+        {
+            "timestamp": "2026-06-23T00:00:00+00:00",
+            "plain_outcome": "Reversed obsolete behavior.",
+            "evidence_state": "ready for review",
+            "bead": complete.rel_path,
+            "bead_status": "review",
+            "checks": {"summary": "1 recorded check(s); latest `python3 scripts/clarity-scenario-check.py` -> pass (exit 0)."},
+            "manual_verification": complete.closeout["manual_verification"],
+            "review_decision": "accepted",
+            "changes": {"implementation": [], "generated_evidence": []},
+            "provenance": {"parent_prd": "tasks/prds/PRD-023-implemented-bead-reversal-workflow.md", "requirement_ids": ["PRD-023-FR06"]},
+            "reversal": {
+                "superseded_bead": "tasks/beads/B123-old-work.md",
+                "reversal_target": "obsolete rule",
+                "reversal_reason": "wrong behavior",
+                "preserved_behavior": "evidence remains",
+                "reversal_proof": "clarity scenario pass",
+            },
+            "remaining_uncertainty": [],
+            "git": {},
+        }
+    )
+    if "Reversal/supersession" not in rendered or "Superseded bead" not in rendered:
+        failures.append({"scenario": "implemented bead reversal journal rendering", "expected": "reversal provenance", "actual": rendered})
+
+    return 7
 
 
 def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> int:
@@ -1144,6 +2132,68 @@ def main() -> int:
     for name, actual, expected in next_scenarios:
         assert_decision(f"next-step: {name}", str(actual), expected, failures)
 
+    active_goal = {
+        "path": "PRODUCT.md",
+        "status": "active",
+        "horizon": "product",
+        "workflow_guidance": "PRD",
+        "goal": "Keep the product direction legible before PRD shaping.",
+        "requires_reaffirmation": False,
+    }
+    router_contract_scenarios = [
+        ("state repair", next_payload(None), "state-repair"),
+        ("scope repair", next_payload(bead(), guardrail={"status": "warning", "warnings": [], "details": {"out_of_scope_paths": ["app/page.tsx"]}}), "scope-repair"),
+        (
+            "transition approval",
+            next_payload(
+                bead(status="review"),
+                promotion={"eligible": True, "blockers": [], "next_bead": "tasks/beads/B998-next.md"},
+            ),
+            "transition-approval",
+        ),
+        ("review", next_payload(bead(status="review"), promotion={"eligible": False, "blockers": ["review evidence is unclear"], "next_bead": "not recorded"}), "review"),
+        ("closeout", next_payload(bead(), closeout_blockers=["manual verification is missing"]), "closeout"),
+        ("unblock", next_payload(bead(status="needs_info")), "unblock"),
+        ("execute", next_payload(bead()), "execute"),
+        (
+            "depth review",
+            next_payload(bead(), depth={"status": "warning", "warnings": ["bead scope needs stronger proof"], "details": {}}),
+            "depth-review",
+        ),
+        (
+            "run contract review",
+            next_payload(
+                bead(),
+                run_contract={
+                    "status": "warning",
+                    "warnings": ["run contract is required for this bead's risk"],
+                    "details": {
+                        "user_decision": "ask for proof",
+                        "plain_english_summary": "Clarify the run contract before risky work.",
+                        "stop_if": "Stop if allowed actions are unclear.",
+                        "approval_prompt": "Ask the user before risky work.",
+                    },
+                },
+            ),
+            "run-contract-review",
+        ),
+        (
+            "goal reaffirmation",
+            next_payload(
+                bead(),
+                goal_frame={
+                    "status": "warning",
+                    "warnings": ["PRODUCT.md Goal Frame requires user reaffirmation before guiding workflow"],
+                    "details": {"current": {**active_goal, "status": "reaffirm_needed", "requires_reaffirmation": True}},
+                },
+            ),
+            "goal-reaffirmation",
+        ),
+    ]
+    for name, payload, expected_category in router_contract_scenarios:
+        assert_router_contract(f"router contract: {name}", payload, failures, expected_category)
+    assert_session_start_router_delegation(failures)
+
     review_trigger_terms = [
         "do you accept these changes",
         "review request",
@@ -1160,14 +2210,6 @@ def main() -> int:
         if term not in review_trigger_sources:
             failures.append({"scenario": "review trigger text contract", "expected": term, "actual": "missing"})
 
-    active_goal = {
-        "path": "PRODUCT.md",
-        "status": "active",
-        "horizon": "product",
-        "workflow_guidance": "PRD",
-        "goal": "Keep the product direction legible before PRD shaping.",
-        "requires_reaffirmation": False,
-    }
     goal_frame_scenarios = [
         (
             "active current frame",
@@ -1285,10 +2327,19 @@ def main() -> int:
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
+    hypothesis_guidance_scenario_count = assert_hypothesis_guidance_contract(failures)
+    ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
+    ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
+    plan_loop_scenario_count = assert_plan_loop_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
     assert_review_lanes_contract(failures)
+    team_collaboration_scenario_count = assert_team_collaboration_preview_contract(failures)
+    session_friction_scenario_count = assert_session_friction_review_contract(failures)
+    build_attribution_scenario_count = assert_build_attribution_contract(failures)
     release_evidence_scenario_count = assert_verification_release_evidence_contract(failures)
+    requirement_to_proof_scenario_count = assert_requirement_to_proof_contract(failures)
+    reversal_scenario_count = assert_implemented_bead_reversal_contract(failures)
 
     doctor_clear_payload = {
         "next_step": next_payload(bead()),
@@ -1301,6 +2352,7 @@ def main() -> int:
         "local_hygiene": {"status": "pass", "warnings": [], "details": {"next_safe_action": "review candidates only"}},
         "work_graph": {"status": "pass", "warnings": [], "details": {}},
         "tool_execution": {"status": "pass", "warnings": [], "details": {"approval_gap_count": 0, "destructive_count": 0}},
+        "session_friction_review": {"status": "pass", "warnings": [], "details": {"findings": []}},
     }
     doctor_review_payload = {
         **doctor_clear_payload,
@@ -1783,10 +2835,16 @@ def main() -> int:
         "tool": "clarity-scenario-check",
         "status": "pass" if not failures else "fail",
         "scenario_count": len(next_scenarios)
+        + len(router_contract_scenarios)
+        + 1
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
         + candidate_queue_scenario_count
+        + hypothesis_guidance_scenario_count
+        + ears_acceptance_scenario_count
+        + ubiquitous_language_scenario_count
+        + plan_loop_scenario_count
         + 1
         + 2
         + 1
@@ -1795,6 +2853,11 @@ def main() -> int:
         + len(run_contract_scenarios)
         + len(command_scenarios)
         + release_evidence_scenario_count
+        + requirement_to_proof_scenario_count
+        + reversal_scenario_count
+        + team_collaboration_scenario_count
+        + session_friction_scenario_count
+        + build_attribution_scenario_count
         + boundary_scenario_count
         + len(freshness_scenarios)
         + len(loop_scenarios),

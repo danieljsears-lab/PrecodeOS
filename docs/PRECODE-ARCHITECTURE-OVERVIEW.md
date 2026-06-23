@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.28
-Last updated: 2026-06-19
+Document version: v0.3.32
+Last updated: 2026-06-23
 
 ## Executive Summary
 
@@ -49,8 +49,8 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Scope widening | The agent adds adjacent features or refactors while implementing one request. | One active bead, files in play, one primary authority, explicit stop conditions, and advisory files-in-play guardrails. |
 | Stale context | Old notes, chat summaries, generated reports, completed PRDs, closed issues, or previous journey notes override the current task. | Tiny active memory and a context loading order that demotes generated, source, and stale historical material. |
 | False done | The agent says work is complete without evidence strong enough for the risk. | Recorded checks, closeout evidence, manual verification, and review decisions. |
-| Vague product intent | A rough idea becomes code before the user, painful before moment, current workaround, strongest evidence, weakest assumption, product fit, non-goals, and acceptance oracles are stable. | Product Ideation Workbook, Product Brief, Conviction Packet, optional Product Discovery Validation, `PRODUCT.md`, alignment/grilling, Goal Frames when durable intent needs review, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
-| Language drift | Product docs, UI labels, tests, module names, and old artifacts use different words for the same concept. | Ubiquitous language protocol, PRD domain-language sections, reviewed glossary memory, and stale-vocabulary demotion. |
+| Vague product intent | A rough idea becomes code before the user, painful before moment, current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, product fit, non-goals, and acceptance oracles are stable. | Product Ideation Workbook, Product Brief, Conviction Packet, optional Product Discovery Validation, `PRODUCT.md`, alignment/grilling, Goal Frames when durable intent needs review, Product Definition Gate, destination PRD shards, requirement IDs, and PRD-to-bead compilation. |
+| Language drift | Product docs, UI labels, tests, module names, support language, and old artifacts use different words for the same concept. | Ubiquitous language protocol, PRD domain-language sections, reviewed glossary memory with source pointers/examples/freshness, naming review, and stale-vocabulary demotion. |
 | Authority confusion | Product, architecture, schema, security, and acceptance facts are duplicated across docs. | Authority contracts and one owner per fact. |
 | Generated summaries become instructions | Status reports or imported evidence start choosing next work. | Generated-output demotion and promotion paths into owned docs. |
 | Uncontrolled momentum | The agent finishes one task and rolls into the next. | Review decisions and user-approved bead transitions. |
@@ -59,6 +59,7 @@ That category matters because vibe coding has a characteristic failure pattern: 
 | Hidden sensitive work | Auth, payments, secrets, external systems, or destructive operations get folded into normal implementation. | Sensitive-surface stop conditions, approval gates, and tool-execution classification. |
 | Unsafe cleanup | Broad cleanup treats authority, evidence, caches, generated files, private-local material, and public-package boundaries as the same kind of clutter. | Local Hygiene categorization, public-repo hygiene checks, advisory checks, dry-run previews, protected generated evidence, v2 preview classifications, and no cleanup mutation. |
 | OS-owned file damage | Active memory, protocols, scripts, hooks, adapters, or public/private package boundaries are edited without a pre-mutation recovery point. | OS Integrity protocol, protected-source surface classes, strict staged checkpoint checks, and explicit scoped checkpoint restore. |
+| Bad implemented work | A completed bead later proves wrong and the agent tries to hide it with cleanup, log edits, or Git-only rollback. | Implemented Bead Reversal Workflow: keep the old bead as `done` evidence, create a separate reversal bead, record fresh proof, and do not rewrite history. |
 
 Precode does not claim to eliminate these risks. It makes them visible early and gives the repo a repeatable recovery path.
 
@@ -160,7 +161,9 @@ This architectural layer model explains how PrecodeOS fits together. For operati
 | Discovery validation layer | Test worth-building uncertainty before product definition hardens into tasks. | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, Discovery Summary, proceed/pause/narrow/kill recommendation. |
 | Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |
-| Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`. |
+| Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test/doc/support names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`, and generated memory-index glossary excerpts as evidence only. |
+| Reviewed-memory recall layer | Preserve durable lessons as reviewed plain files while keeping context loading selective and cited. | `memory/cards/`, `logs/memory-index.md/json`, `scripts/memory-check.py --recall`, and `scripts/memory-check.py --retrieval-review`; retrieval review is generated evidence only and does not approve semantic search or a shared backend. |
+| Session Friction Review layer | Review repeated tool failures, stale evidence, generated-refresh gaps, and memory/context pressure without turning them into automatic learning. | `scripts/session-friction-check.py` and `logs/session-friction-review.json`; findings require citations, confidence, freshness, proposed destination, and manual promotion. |
 | Workflow-selection layer | Route rough ideas, source intake, PRDs, architecture shaping, review, repair, and closeout to the right protocol before work starts. | `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`, `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md`, `tasks/reference/PLANNING-PROTOCOL.md`. |
 | Setup-intake layer | Keep first-run confidence and existing-repo intake read-only until a user explicitly chooses a setup path. | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md`, `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md`, `scripts/bootstrap-check.py`, `scripts/existing-repo-intake.py`. |
 | Architecture-shaping layer | Make auth, data, API, integration, dependency, migration, workflow, or multi-system risk visible before beads are derived. | `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md`, `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md`. |
@@ -178,7 +181,7 @@ This architectural layer model explains how PrecodeOS fits together. For operati
 | Next-step layer | Give humans the canonical generated "what now?" decision without choosing work for them. | `scripts/next-step.py`, `logs/next-step.json`, `PRECODE-HELP.md`, `user_decision`, `single_next_protocol`, `load_plan`, and `context_footprint`. |
 | Completion and handoff layer | Keep closeout, review posture, and next-session context explicit. | `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, `completion-check.py`, `session-close.sh`, `handoff.sh`. |
 | Evidence layer | Preserve what happened without making it authority. | `logs/*.json`, `logs/*.jsonl`, generated reports. |
-| Public docs layer | Provide committed reader-facing HTML without replacing canonical Markdown. | `docs/*.md`, `docs-html/*.html`, maintainer-only docs generation. |
+| Public docs layer | Provide committed reader-facing HTML with static reading aids without replacing canonical Markdown. | `docs/*.md`, `docs-html/*.html`, maintainer-only docs generation. |
 | Provenance layer | Keep open-source use permissive while preserving clear creator attribution, canonical site, governance, contribution policy, and trademark/brand boundaries. | `LICENSE`, `NOTICE`, `GOVERNANCE.md`, `CONTRIBUTING.md`, `TRADEMARK.md`, `https://www.precodeos.org`, Markdown provenance metadata, SPDX headers in core scripts. |
 | Public-package hygiene layer | Keep private local material out of the reusable public package. | `.gitignore`, `scripts/public-repo-check.py`, package inventory checks. |
 | Local hygiene layer | Classify local clutter without deleting evidence or project truth. | `tasks/reference/LOCAL-HYGIENE-PROTOCOL.md`, `scripts/local-hygiene-check.py`, `scripts/local-hygiene-dry-run.py`, and protected generated evidence handling for `logs/os-checkpoints/*`. |
@@ -246,7 +249,7 @@ Generated sidecars such as `logs/readiness.json`, `logs/next-step.json`, `logs/a
 
 Ralph attempt outputs such as `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` are generated evidence in the same trust boundary. They can show what was tried, what validators said, and whether another attempt is allowed, but they cannot accept work, approve commands, choose the next bead, or replace human review.
 
-`next-step.py` is the canonical generated router for the next human decision. `session-start.sh` displays the same decision inside the session Context Pack so the first command and the standalone router do not compete.
+`next-step.py` is the canonical generated router for the next human decision. `session-start.sh` displays the same decision inside the session Context Pack so the first command and the standalone router do not compete. `scripts/clarity-scenario-check.py` protects router decision categories, JSON key presence, load plan shape, context footprint shape, recovery prompt fields, and session-start delegation without freezing exact human wording.
 
 `PRECODE-HELP.md` is the human-readable generated next-step snapshot. It can explain blockers, adaptive-depth warnings, files-in-play warnings, the one next protocol to load, and rough context footprint, but it cannot select work, approve review, or activate a bead.
 
@@ -389,11 +392,21 @@ Precode evidence has a hierarchy:
 
 Only the first three should drive acceptance. Ralph attempt evidence, generated reports, review inputs, and history help review, but they do not prove completion by themselves.
 
+For reversal beads, Git history and the bead build journal are context. Acceptance still depends on recorded checks, manual verification, Closeout Evidence, and review for the separate reversal bead.
+
+For build attribution, Closeout Evidence is the reviewed source for human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty. `scripts/build-attribution-ledger.py` and `logs/build-attribution-ledger.md/json` summarize who-built-what evidence, but they do not accept implementation, approve merge, approve release, assign blame, score contributors, create telemetry, mutate GitHub, or create registry behavior.
+
 ### Handoff And Interoperability Model
 
 Precode treats coding agents as replaceable execution surfaces. The repo contract persists across tools. Compatibility shims and adapters should point back to the shared operating model instead of becoming separate tool-specific memories.
 
 For small teams, interoperability extends to people as well as agents: each contributor works from the shared repo contract in a branch or worktree, returns recorded evidence, and re-enters through coordinator review. The integration branch still preserves one active bead and one authority chain.
+
+### Team Collaboration Preview
+
+`scripts/team-collaboration-check.py` and `logs/team-collaboration-preview.json` are read-only inspection surfaces for Small Team Collaboration Lane. They summarize branch/worktree state, active bead scope, owner-file impact candidates, stale re-entry risks, merge/re-entry packet fields, and optional GitHub evidence.
+
+The preview is not a project-management system, not a scheduler, and not an approval engine. It does not choose tasks, activate beads, accept implementation, approve merge, mutate GitHub, create modules, install packs, or replace coordinator review.
 
 ### Router-First Modularity
 

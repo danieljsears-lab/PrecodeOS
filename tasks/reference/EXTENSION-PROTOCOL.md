@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-20
+Document version: v0.1.21
+Last updated: 2026-06-23
 
 ## Purpose
 
@@ -42,7 +42,7 @@ Future host shims and native rule-directory surfaces must start as advisory comp
 
 Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
 
-Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior.
+Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, embedding layer, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior. `memory-check.py --retrieval-review` is a readiness review only: it may show token pressure, card hygiene, and query miss evidence, but it does not approve a backend.
 
 ## Extension Types
 
@@ -52,7 +52,8 @@ Future retrieval-backed memory is governed by this protocol before any database,
 | Protocol | Workflow rules for a repeatable Precode process | `tasks/reference/*.md` |
 | Skill playbook | Read-only host-agent invocation guidance for stable docs help, an existing Precode workflow, or extension review | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` plus the owner protocol, canonical docs, or adapter |
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
-| Audit | Reads project or external status and reports findings | `scripts/*-audit.py` |
+| Approval-gated local queue helper | Previews Candidate Queue import or shaping actions and applies only explicit approved action IDs | `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` plus `scripts/candidate-queue.py` |
+| Audit | Reads project or external status and reports findings | `scripts/*-audit.py` or read-only preview scripts such as `scripts/team-collaboration-check.py` and `scripts/session-friction-check.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | AI-readable navigation index | Compact stable-docs index for AI assistants and documentation tools | `llms.txt` plus canonical Markdown owner files |
@@ -80,7 +81,7 @@ Every extension must preserve these boundaries:
 - Keep host compatibility advisory-first until a repeated, validated gap warrants a shipped adapter or shim.
 - Keep future optional packs explicit, reviewable, and non-installable until separate approved package work defines distribution behavior.
 - Keep AI-readable navigation indexes as indexes only: they may point to canonical docs and protocols, but they must not summarize away source evidence, select work, approve commands, define runtime integration behavior, or replace owner files.
-- Keep retrieval-backed memory optional and reviewed: no required Postgres, pgvector, Docker, MCP server, REST API, dashboard, shared backend, semantic index, automatic agent write access, external mutation, or cross-machine memory dependency may be added without a separate approved extension.
+- Keep retrieval-backed memory optional and reviewed: no required Postgres, pgvector, Docker, MCP server, REST API, dashboard, shared backend, semantic index, embedding layer, automatic agent write access, external mutation, or cross-machine memory dependency may be added without a separate approved extension after readiness evidence shows plain-file recall is insufficient.
 
 ## Future Pack Boundary Spec
 
@@ -149,9 +150,15 @@ Generated reports, sidecars, and public generated HTML added by an extension sho
 
 `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
 
-`logs/next-step.json` may include generated router fields such as `load_plan`, `single_next_protocol`, and `context_footprint`. These fields are advisory evidence for context loading and user decisions, not command approval, bead activation, or active memory.
+`logs/next-step.json` may include generated router fields such as `load_plan`, `single_next_protocol`, `context_footprint`, recovery prompt fields, stable-fix eligibility, and advisory-only flags. These fields are advisory evidence for context loading and user decisions, not command approval, bead activation, or active memory. `scripts/clarity-scenario-check.py` protects key presence and category shape so future wrappers can rely on the generated interface without treating it as authority.
 
 `logs/work-graph.json` and `logs/work-graph.md` may expose bead, PRD, owner-file, check, blocker, follow-up, and transition relationships compiled from existing Precode surfaces. They are inspection evidence only; they must not become a second task tracker, choose work, approve transitions, rewrite beads, or replace markdown authority.
+
+`logs/build-attribution-ledger.json` and `logs/build-attribution-ledger.md` may expose reviewed human contributor, contributor role, agent/tool surface, attribution reviewer, uncertainty, Git author hints, and bead-level attribution gaps compiled from closeout and generated journal evidence. They are inspection evidence only; they must not choose work, accept implementation, approve merge, approve release, assign blame, score contributors, create telemetry, mutate GitHub, create a command wrapper, or create registry, optional-pack, install/update, or package-manager behavior.
+
+`logs/team-collaboration-preview.json` may expose Small Team Collaboration Lane branch/worktree state, active bead scope, owner-file impact candidates, re-entry risks, and optional GitHub evidence compiled from local repo state and read-only `gh` calls. It is inspection evidence only; it must not choose work, activate beads, approve merge, mutate GitHub, create a project-management layer, create a command wrapper, or create module, registry, runtime-toggle, optional-pack, installer, update-channel, or package-manager behavior.
+
+`logs/session-friction-review.json` may expose Session Friction Review findings compiled from tool-run, check, loop, completion/handoff, and reviewed-memory summary evidence. It is a read-only audit and generated evidence only; it must not choose work, approve commands, promote memory, edit owner files, accept review, mutate generated reports directly, create telemetry, create runtime compression, add a command wrapper, create a registry, create optional-pack behavior, or create package-manager behavior.
 
 The Doctor Dashboard inside `OS-HEALTH.md` and `logs/os-health.json` is a generated report extension. It may summarize warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, owner protocols, severity, and shortest repair paths from existing compiled state. It must not become a standalone router, approve transitions, approve commands, approve repair, approve cleanup, select tasks, mutate files, or replace `scripts/next-step.py`.
 
@@ -170,6 +177,8 @@ Mutation requires all of these:
 - the user performs or explicitly approves the manual gate
 
 Scheduled audits, importers, generated reports, and source-intake helpers must remain read-only unless a separate approved execution bead explicitly says otherwise.
+
+Candidate Queue helpers are a narrow exception only when their owning protocol defines preview/apply behavior. `scripts/candidate-queue.py` may write only approved action IDs to `CANDIDATE-QUEUE.md`; preview output remains non-authority and must not approve PRDs, activate beads, mutate `tasks/todo.md`, reserve `B###` IDs, choose work, or authorize implementation.
 
 Bounded local engines such as Ralph may run explicit local attempt commands only inside the active bead boundary. They must stop before approval-required, destructive, secret-bearing, or external mutation actions unless the active bead and user approval gate allow the exact action.
 

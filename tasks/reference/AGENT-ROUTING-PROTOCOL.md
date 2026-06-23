@@ -106,7 +106,7 @@ Use this default order when it fits the task:
 
 If a repeated tool pattern becomes durable and useful, propose a reusable command, script, skill playbook, or adapter improvement through the Extension Protocol and Skill Playbook Protocol. Do not create hidden automation from a one-off workaround.
 
-`python3 scripts/next-step.py` owns generated routing output. It may expose `single_next_protocol`, `load_plan`, and `context_footprint` so the agent can choose the smallest useful context before reaching for heavier tools.
+`python3 scripts/next-step.py` owns generated routing output. It may expose `single_next_protocol`, `load_plan`, and `context_footprint` so the agent can choose the smallest useful context before reaching for heavier tools. `scripts/clarity-scenario-check.py` protects the advisory JSON shape and session-start delegation contract without freezing exact stdout prose.
 
 A future `precode doctor` or installable `precode` CLI should wrap proven commands only after the router and bootstrap surfaces have stabilized; do not make them prerequisites for normal repo use.
 
