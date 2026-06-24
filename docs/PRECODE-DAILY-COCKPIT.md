@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-23
+Document version: v0.1.19
+Last updated: 2026-06-24
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -49,6 +49,7 @@ If you only remember three checks, ask: what is active, where should future inte
 | Choose path | `Use the Workflow Selection Protocol. Tell me the current situation, recommended workflow, next artifact, authority source, approval needed, stop condition, and generated-report warning.` | A workflow recommendation without coding or task activation. |
 | Review candidates | `Use the Candidate Queue Protocol. Review CANDIDATE-QUEUE.md as parked intent, not task authority.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |
 | Review hypothesis | `Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief. Tell me what was tested, what was learned, whether it is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code.` | Evidence-only learning status and next workflow, not approval or task selection. |
+| Build-react-learn | `Use Build-React-Learn for an exploratory prototype bead. Build one tiny reversible option, react to what worked or failed, and learn whether to keep, revise, rebuild, discard, split, amend the PRD, use Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead. Do not treat the prototype as approval or permission to activate another bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
 | Clarify acceptance | `Review these acceptance criteria for vague or unverifiable behavior. Where useful, rewrite with optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior]. Do not require EARS syntax, approve the PRD, accept implementation, activate beads, treat wording as proof, or code.` | Clearer expected behavior for PRD or acceptance review without approval or implementation authority. |
 | Confirm | `Before editing, confirm the active bead, primary authority, files in play, first check, and what would make you stop or ask me.` | A bounded task explanation before implementation begins. |
 | Team lane | `Use the Small Team Collaboration Lane. Define coordinator, decision owner, branch/worktree rule, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |

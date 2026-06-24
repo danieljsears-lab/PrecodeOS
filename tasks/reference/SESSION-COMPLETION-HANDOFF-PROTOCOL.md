@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-23
+Document version: v0.1.16
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -51,6 +51,7 @@ Closeout Evidence should include:
 - review decision
 - drift observed
 - lesson to promote
+- prototype decision when the bead is exploratory: keep, revise, rebuild, discard, split, or promote learning to PRD/decision
 - follow-up bead needed
 - blocked escape
 - evidence source
@@ -85,6 +86,8 @@ Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTO
 Build attribution closeout should name who contributed the work, their role, which agent/tool surface assisted when known, who reviewed the attribution, and what uncertainty remains. `python3 scripts/build-attribution-ledger.py` and `logs/build-attribution-ledger.md/json` may summarize this evidence, but the generated ledger is not task authority, implementation acceptance, merge approval, release approval, contributor scoring, blame assignment, telemetry, or a registry.
 
 Follow-up candidates from closeout should be routed to one of: `CANDIDATE-QUEUE.md`, PRD amendment, `DECISIONS.md`, authority-file update, explicit defer/kill note, or a candidate bead proposal after decomposition review. Do not hide follow-up work in `tasks/todo.md`, and do not treat a Candidate Queue entry as the next active bead.
+
+For exploratory prototype beads, closeout must separate what the prototype demonstrated from what remains unproven. Record the prototype decision as `keep`, `revise`, `rebuild`, `discard`, `split`, or `promote learning to PRD/decision`, with the shortest useful reason. Keeping the prototype still needs review and acceptance; discarding or rebuilding it should preserve the learning and route follow-up through PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or candidate-bead decomposition.
 
 When completed work later needs to be undone or superseded, use the Implemented Bead Reversal Workflow in `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md`. The original bead remains `done` historical evidence. The reversal work must be a separate normal bead with its own primary authority, files in play, checks, manual verification, closeout, review decision, and generated journal entry.
 

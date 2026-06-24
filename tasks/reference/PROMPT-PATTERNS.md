@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.39
-Last updated: 2026-06-23
+Document version: v0.1.40
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -413,6 +413,28 @@ Include candidate_id, shaping_status, product_value_rating, product_value_ration
 Treat P0/P1/P2/P3 as product value only, not implementation priority. Near-bead sketches are not bead files and must not use B### IDs.
 
 Do not approve a PRD, activate a bead, update tasks/todo.md, choose next work, or code.
+```
+
+### Build-React-Learn Exploratory Prototype Bead
+
+```text
+Use Build-React-Learn for an exploratory prototype bead.
+
+Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
+React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
+Learn: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead.
+
+Use normal Precode bead rules: one active bead, explicit files in play, checks, stop conditions, closeout evidence, and user approval before any transition. Do not create a new bead-kind enum, treat the prototype as product approval, accept implementation, approve a PRD, choose the next task, or activate another bead.
+```
+
+Closeout prompt:
+
+```text
+For this exploratory prototype bead, show the prototype decision: keep, revise, rebuild, discard, split, or promote learning to PRD/decision.
+
+Explain what the prototype proved, what it did not prove, what evidence or checks support that conclusion, and the next safe Precode workflow.
+
+Do not treat a working prototype as validation, acceptance, PRD approval, or transition approval.
 ```
 
 ### Candidate Queue Import Preview

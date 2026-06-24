@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.19
-Last updated: 2026-06-23
+Document version: v0.1.20
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -51,6 +51,8 @@ Use these user-facing labels when explaining bead options, and prefer the mapped
 | Review | `review` | Reviewing evidence, acceptance, release/docs freshness, security, dependency relationships, or transition safety for one active bead. |
 
 Do not create new bead-kind values just to make a menu feel complete. If a label is not recognized by current scripts, use it as plain-language explanation and set `bead_kind` to the closest existing value. `complexity`, `required_planning_depth`, `autonomy_level`, `verification_type`, and the Run Contract carry risk and ceremony; do not overload `bead_kind` with those decisions.
+
+Exploratory prototype beads use this same menu. Do not add a new `prototype` bead kind for Build-React-Learn work. Use the closest existing value, usually `implementation`, `feature`, or `planning`, and describe "exploratory prototype" in the bead objective, notes, stop conditions, and closeout.
 
 ## Recommended Frontmatter Keys
 
@@ -144,6 +146,20 @@ Use `python3 scripts/run-contract-check.py` when a bead has or should have a ris
 - `Run Contract` when the bead is sensitive, external, destructive, or `bounded-afk`
 - `Closeout Evidence`
 - `Handback`
+
+## Exploratory Prototype Beads
+
+Use an exploratory prototype bead when a student needs to build a tiny reversible option or vertical slice in the real repo before deciding whether that path should be kept, revised, rebuilt, discarded, split, or promoted into product direction.
+
+This is a bead pattern, not a new mode, schema enum, approval path, or permission to code. The bead still needs normal activation, one active bead, one primary authority, bounded files in play, checks, stop conditions, and Closeout Evidence.
+
+Build-React-Learn means:
+
+- Build: implement one tiny reversible prototype option inside the current PRD, PRD draft, Plan Packet, or approved exploratory scope.
+- React: review what the student or user saw, what worked, what failed, what changed their mind, what evidence exists, and what the prototype does not prove.
+- Learn: decide whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review / Learning Loop, park a Candidate Queue item, or propose the next candidate bead.
+
+Closeout Evidence for an exploratory prototype bead should include `Prototype decision: keep | revise | rebuild | discard | split | promote learning to PRD/decision`, plus a short reason and the next safe Precode workflow. A working prototype proves only that the prototype can work; it does not approve product direction, accept implementation, or activate another bead.
 
 ## Run Contract
 
@@ -239,6 +255,7 @@ Every template still needs the required frontmatter, required sections, one prim
 | Release readiness bead | Preparing shipping evidence, smoke checks, docs freshness, rollback or blocked escape, and approval questions before user-project release | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 | Release candidate evidence bead | Preparing or reviewing a compact candidate profile for nearly shippable user-project work before a human release decision | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 | Review lane bead | Preparing or reviewing optional Security or Release / Docs Freshness findings for one active bead | `tasks/reference/REVIEW-LANES-PROTOCOL.md` |
+| Exploratory prototype bead | Building one tiny reversible option to learn whether to keep, revise, rebuild, discard, split, or promote the learning | PRD, PRD draft, Plan Packet, or approved exploratory scope |
 | Planning bead | Shaping an uncertain product bet before implementation | `tasks/reference/PLANNING-PROTOCOL.md` or PRD protocol |
 | PRFAQ/challenge planning bead | Hardening rough, risky, or source-heavy ideas before PRD approval | `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` or `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` |
 | External integration bead | Adding or changing third-party service behavior | Integration authority plus security/payment docs when relevant |

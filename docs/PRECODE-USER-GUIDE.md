@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.58
-Last updated: 2026-06-23
+Document version: v0.7.59
+Last updated: 2026-06-24
 
 
 
@@ -197,6 +197,32 @@ Good Plan Packet output includes:
 - do not do yet
 
 Before PRD approval, the packet may recommend discovery, PRD draft or amendment, Candidate Queue, owner-file update, or stop, but it should not propose beads. After an approved PRD, it may sketch a first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, it may challenge or refine the proposal, but it must not update `tasks/todo.md` or activate work.
+
+## Use Build-React-Learn For Exploratory Prototype Beads
+
+Use Build-React-Learn when a student needs to try a small product option in the real repo before deciding whether that approach is the right path.
+
+This is not a new mode. It is a normal exploratory prototype bead with normal activation, one active bead, files in play, checks, stop conditions, and Closeout Evidence. Use it only when the prototype is tiny, reversible, and reviewable.
+
+Say this:
+
+```text
+Use Build-React-Learn for an exploratory prototype bead.
+
+Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
+React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
+Learn: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead.
+
+Do not treat the prototype as product approval, implementation acceptance, PRD approval, or permission to activate another bead.
+```
+
+At closeout, ask for the prototype decision:
+
+```text
+For this exploratory prototype bead, show the prototype decision: keep, revise, rebuild, discard, split, or promote learning to PRD/decision. Explain what the prototype proved, what it did not prove, and the next safe Precode workflow.
+```
+
+Keeping the prototype means it still needs normal review and acceptance. Rebuilding or discarding the prototype is not failure; preserve the learning and route it through PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or a new candidate bead.
 
 ## Validate Product Discovery Before PRD Shaping
 
@@ -704,6 +730,7 @@ Use this table when you are unsure what kind of request to make.
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
 | Post-intake or post-PRD feature angle needs thinking before bead commitment | Plan Loop | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Ask only targeted questions that could change the next workflow, risk, first slice, owner-file impact, or stop condition, then produce a Plan Packet. Treat it as evidence only.` |
+| Student needs to try a small reversible option in the real repo before choosing the path | Build-React-Learn exploratory prototype bead | `Use Build-React-Learn for an exploratory prototype bead. Build one tiny reversible option, react to what worked or failed, and learn whether to keep, revise, rebuild, discard, split, amend the PRD, use Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead. Do not treat the prototype as approval or permission to activate another bead.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
 | Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Interview Skill / Product Discovery Validation | `Use the Product Discovery Interview Skill. Name the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | Existing hypothesis or learning target needs review | Hypothesis Review / Learning Loop | `Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief. Tell me what was tested, what was learned, whether it is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code.` |

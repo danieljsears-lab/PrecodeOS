@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.2
-Last updated: 2026-06-23
+Document version: v0.2.3
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -23,6 +23,8 @@ Idea -> Guided interview -> Product Brief -> Challenge And Clarity -> Evidence c
 ```
 
 Important rule: this workbook is evidence, not authority. Nothing in it becomes true for the project until you review it and Precode promotes stable conclusions into the right owner file through Local Source Intake, PRD shaping, `PRODUCT.md`, `DECISIONS.md`, or another owner file.
+
+Build-React-Learn happens later, after the workbook has been reviewed, the packet has gone through Local Source Intake, and Precode has enough PRD or approved exploratory scope to create a normal bead. In this workbook, use sketches, visible iteration, and non-code learning to prepare the path; do not treat workbook output as an exploratory prototype bead or permission to code.
 
 Bypass this workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
 

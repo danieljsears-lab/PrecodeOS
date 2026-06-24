@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-23
+Document version: v0.1.13
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -25,6 +25,8 @@ Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the source is a Candidate
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when the right next workflow is still unclear.
 
 Use Plan Loop before decomposition when the user explicitly asks to explore a feature angle, option, risk, or first-slice question before committing it to a bead proposal. A Plan Packet is evidence only; it can inform Decomposition, but it does not create candidate beads or authorize activation.
+
+Use an exploratory prototype bead when a student needs Build-React-Learn in the real repo: one tiny reversible option or vertical slice, normal activation, bounded files in play, checks, stop conditions, and closeout that decides whether to keep, revise, rebuild, discard, split, or promote learning. This is a bead pattern, not a new mode, bead-kind enum, task selector, or approval path.
 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when candidate beads, dependencies, blocked work, or deferred slices need long-horizon review before activation.
 
@@ -92,6 +94,7 @@ Use the slice that best reduces risk:
 | Vertical slice | One narrow user behavior needs UI, API, and data together |
 | Walking skeleton | The system needs the smallest end-to-end path before feature depth |
 | Risk-first slice | One unknown can invalidate the rest of the plan |
+| Exploratory prototype slice | The student needs a small reversible build to compare approaches before committing the product path |
 | Shell-first slice | Structure or navigation must exist before behavior |
 | Cleanup slice | Refactor or remove clutter without changing product behavior |
 | Review slice | Evidence, acceptance, or transition safety needs review before more work |
@@ -151,6 +154,8 @@ Execution beads may produce:
 - closeout notes
 
 Execution beads should not reshape product definition. If new product scope appears, stop and promote it through PRD or decision ownership.
+
+Exploratory prototype beads may edit app code, but their purpose is learning. They must state what option is being tested, what evidence would make the student keep or discard it, and what should happen after review. Keeping the prototype as retained product work requires normal evidence and review. Rebuilding or discarding it is not failure; route the learning to PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or a new candidate bead.
 
 When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. A Candidate Queue ID may explain where the intent came from, and near-bead sketch IDs like `CQ-001-short-name-S01` may explain early shaping, but the queue does not replace parent PRD, requirement IDs, primary authority, checks, stop conditions, or final bead IDs. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
 
