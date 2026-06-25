@@ -1,0 +1,74 @@
+name: PrecodeOS package bug
+description: Report a bug in PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helpers.
+title: "[Package bug]: "
+labels: ["bug", "source-intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for PrecodeOS package bugs, not bugs in an app you are building with PrecodeOS.
+
+        This issue is source evidence only. It does not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, or authorize GitHub mutation.
+
+        Do not include secrets, tokens, credentials, private dashboard values, customer records, or sensitive personal data.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Package surface
+      options:
+        - Docs
+        - Scripts
+        - Protocols
+        - Generated-surface expectations
+        - Setup or copy helpers
+        - CI
+        - GitHub helper behavior
+        - Other package surface
+    validations:
+      required: true
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current behavior
+      description: What happened? Include exact file paths, commands, or prompt surfaces when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: What should PrecodeOS have done or said instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction or context
+      description: Provide the shortest safe steps, command output summary, or context needed to inspect the bug.
+      placeholder: 1. Run ... 2. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Checks tried
+      description: List relevant checks and whether they passed, failed, or were not run.
+      placeholder: bash scripts/validate-memory.sh, python3 scripts/file-inventory.py --check, etc.
+    validations:
+      required: false
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Explain whether this blocks setup, validation, docs comprehension, release confidence, or normal Precode operation.
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: I removed secrets, tokens, credentials, private dashboard values, and sensitive personal data.
+          required: true
+        - label: I understand this issue is source evidence until the maintainer reviews and promotes any stable conclusion into a Precode owner file, PRD, decision, protocol, or candidate bead.
+          required: true

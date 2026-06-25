@@ -1,0 +1,64 @@
+name: PrecodeOS feedback
+description: Share adoption friction, confusing docs, setup friction, or workflow questions.
+title: "[Feedback]: "
+labels: ["feedback", "source-intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve PrecodeOS.
+
+        This issue is source evidence only. It does not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, or replace maintainer review.
+
+        Do not include secrets, tokens, credentials, private dashboard values, customer records, or sensitive personal data.
+  - type: dropdown
+    id: feedback_type
+    attributes:
+      label: Feedback type
+      options:
+        - Adoption friction
+        - Confusing docs
+        - Setup friction
+        - Workflow question
+        - Other package feedback
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: What happened?
+      description: Describe the moment, document, command, prompt, or workflow that caused friction.
+      placeholder: I was trying to...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+      description: Name the clearer, safer, or more useful behavior you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: What did you try?
+      description: List docs read, commands run, prompts used, or checks tried. Mark anything uncertain.
+      placeholder: README.md, docs/PRECODE-GUIDED-SETUP.md, bash scripts/validate-memory.sh, etc.
+    validations:
+      required: false
+  - type: textarea
+    id: source_evidence
+    attributes:
+      label: Evidence or examples
+      description: Add short excerpts, screenshots, or links only if they are safe to share publicly.
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundary checks
+      options:
+        - label: I removed secrets, tokens, credentials, private dashboard values, and sensitive personal data.
+          required: true
+        - label: I understand this issue is source evidence until the maintainer reviews and promotes any stable conclusion into a Precode owner file.
+          required: true

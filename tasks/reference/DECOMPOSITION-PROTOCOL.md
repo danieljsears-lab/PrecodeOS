@@ -32,6 +32,8 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when candidate beads, de
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before decomposition when an approved PRD needs `PRD+architecture` or `PRD+architecture+test-plan` planning depth, or when it touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
 
+Use `scripts/prd-handoff-readiness.py --prd <path> --target decomposition` when an approved PRD looks ready but the handoff into candidate beads is unclear. Unresolved PRD handoff blockers must route back to PRD amendment, Architecture Shaping, or unblocker planning before any bead activation. The packet is generated evidence only; it does not create candidate beads, choose their order, approve the PRD, or authorize implementation.
+
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` after or alongside Architecture Shaping when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, deep module boundary, or direct-versus-pattern decision.
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when decomposition affects model tier, subagent delegation, long-horizon execution, or context-budget decisions.

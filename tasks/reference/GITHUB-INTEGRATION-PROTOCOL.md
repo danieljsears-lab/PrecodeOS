@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-23
+Document version: v0.1.7
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -59,9 +59,9 @@ Use the hybrid maintainer workflow while Dan Sears / Recode remains the only mai
 
 - use branches and pull requests for package-facing or trust-affecting changes
 - allow direct-to-main commits only for tiny corrections that do not change public meaning
-- keep public GitHub Issues closed unless the maintainer explicitly changes the issue-tracker policy
+- keep public GitHub Issues limited to feedback and package-bug intake unless the maintainer explicitly changes the issue-tracker policy
 - use GitHub Releases for public package checkpoints
-- keep broader contributor collaboration workflow design in future roadmap planning until it is promoted into approved work
+- keep broader contributor collaboration workflow design, project boards, and GitHub mutation automation out of scope until promoted into approved work
 
 Create a branch and pull request for changes touching active memory, package authority, public docs, setup, bootstrap, install, update, generated-output policy, validation, release, public positioning, GitHub Actions, scripts, hooks, workflow semantics, beginner-facing safety language, or package boundaries.
 
@@ -80,6 +80,49 @@ Direct-to-main is acceptable only when all are true:
 - the change would not confuse a future adopter if shipped immediately
 
 Examples include typo fixes, broken internal link fixes, formatting cleanup, private-local note updates, and non-semantic metadata corrections.
+
+## Collaboration Hub Intake Path
+
+Public GitHub Issues are a narrow intake surface for PrecodeOS feedback and package bugs.
+
+Allowed issue intake:
+
+- adoption friction
+- confusing docs
+- setup friction
+- workflow questions
+- package bugs in docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior
+
+Recommended issue labels are evidence labels only:
+
+- `feedback`
+- `bug`
+- `source-intake`
+- `docs`
+- `scripts`
+- `protocol`
+- `setup`
+- `ci`
+
+Labels do not choose work, approve priority, approve PRDs, activate beads, accept implementation, approve merge, approve release, or grant contributor rights.
+
+Issue templates should ask for:
+
+- the affected package surface or feedback type
+- current behavior or friction
+- expected behavior
+- reproduction steps or context
+- checks tried, when relevant
+- safe public evidence or examples
+- confirmation that secrets, tokens, credentials, private dashboard values, customer records, and sensitive personal data were removed
+
+Blank issues should stay disabled for the first Collaboration Hub slice. Security reports should route through `SECURITY.md`, not public issue templates.
+
+GitHub Issues, comments, labels, pull requests, reviews, checks, and project boards are source evidence until reviewed. Promote stable conclusions through the Local Source Intake Protocol into PRDs, `FEATURES.md`, `DECISIONS.md`, architecture/security/API/schema docs, package docs, protocols, or candidate beads.
+
+Project boards are not active project-management authority by default. A board may be used only as external evidence after the maintainer explicitly defines a reviewed workflow. Board columns, cards, and statuses must not choose tasks, approve roadmap direction, activate beads, approve merge, approve package release, or replace owner files.
+
+Creating, editing, labeling, assigning, commenting on, closing, transferring, pinning, or locking issues; changing issue templates or repository settings; creating labels; adding project boards; or changing board status is GitHub mutation. Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` and require explicit maintainer approval before any such action.
 
 ## Audit Path
 

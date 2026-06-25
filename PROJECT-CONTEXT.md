@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.9
-Last updated: 2026-06-02
+Document version: v0.2.10
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -88,7 +88,7 @@ Current project integrations:
 - External APIs: optional read-only GitHub access through `gh` for audit/import scripts when configured.
 - Repository host: GitHub.
 - CI provider: GitHub Actions via `.github/workflows/precode-validate.yml`.
-- Issue tracker: public GitHub Issues are closed or unavailable for now; contributor collaboration workflow remains future roadmap work.
+- Issue tracker: public GitHub Issues are open for narrow feedback and package-bug intake only. Issues, labels, comments, pull requests, reviews, checks, and project boards are evidence until reviewed and promoted into Precode owner files or maintainer decisions.
 - Deployment provider: none for an app runtime.
 - Monitoring or error tracking: none configured.
 - Safe health URLs for read-only uptime checks: none.
@@ -118,7 +118,7 @@ Scheduled audits are opt-in read-only checks. They may report external system st
 - GitHub default branch: not fixed in B000; derive from the repository when available.
 - GitHub pull request branch naming convention: `codex/<short-change-name>` for package-facing or trust-affecting maintainer work.
 - GitHub primary workflow names: `Precode Validate`.
-- GitHub issue tracker mode: closed or unavailable for now; do not treat GitHub Issues as an active collaboration or roadmap authority surface.
+- GitHub issue tracker mode: feedback and package-bug intake only; do not treat GitHub Issues, labels, comments, pull requests, reviews, checks, or project boards as active task, roadmap, merge, release, or package authority.
 - GitHub linked project board: none required for B000.
 - GitHub safe read-only status checks: repository metadata, open pull requests/issues, and GitHub Actions status through read-only commands.
 - CI audit configured: yes, through GitHub Actions validation and read-only audit scripts.

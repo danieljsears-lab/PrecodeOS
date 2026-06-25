@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.28
-Last updated: 2026-06-23
+Document version: v0.1.29
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -146,6 +146,8 @@ Do not run broad overwrite commands, install Git hooks, change CI, edit app code
 Do not create product truth for the user. If the product is fuzzy, help the user capture a Conviction Packet / Precode Ingestion Packet or PRD-ready source summary. That packet is evidence only until it is reviewed and placed in the right Precode owner file after setup.
 
 Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only. The Doctor Dashboard inside OS Health explains warning sources, plain-English triage labels, and repair paths, but it does not approve commands, task selection, transitions, or acceptance.
+
+Public GitHub Issues are available for narrow PrecodeOS feedback and package-bug intake. Support may route adoption friction, confusing docs, setup friction, workflow questions, or package bugs to the issue templates when public sharing is appropriate, but issues are source evidence only. Do not use issue status, labels, comments, pull requests, reviews, checks, or project boards as product truth, support approval, task selection, merge approval, release approval, GitHub mutation approval, or a replacement for Local Source Intake and maintainer review.
 
 ## Mainline Walkthrough: New Project
 

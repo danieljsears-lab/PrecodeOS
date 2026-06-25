@@ -348,7 +348,7 @@ Use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) for daily work a
 
 ## Beta
 
-PrecodeOS is early. Expect sharp edges, review source before execution, and use the maintainer's currently enabled feedback channel when something feels clumsy or underpowered. Public GitHub Issues may be closed until the collaboration workflow is intentionally opened.
+PrecodeOS is early. Expect sharp edges, review source before execution, and use public GitHub Issues for narrow feedback or package-bug intake when something feels clumsy or underpowered. Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only until reviewed and promoted into Precode owner files or maintainer decisions; they do not choose tasks, approve PRDs, activate beads, approve merge, approve release, or replace maintainer review.
 
 ## License, Trademark, And Provenance
 

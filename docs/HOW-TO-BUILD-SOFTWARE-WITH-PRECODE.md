@@ -55,6 +55,8 @@ This first step is about product thinking. Before a PRD exists, the builder is t
 
 After at most three high-level product or business questions, ask for a Product Brief. That gives you visible progress before the agent moves into deeper discovery or PRD shaping.
 
+Use First PRD Walkthrough when you want the shortest safe route from rough idea to PRD readiness. It is the same evidence-first path in plain language: Product Ideation Workbook or Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, then PRD shaping. It does not approve a PRD, create beads, update owner files, create a roadmap or backlog, or authorize coding.
+
 Use this path when you are still asking, "What am I really trying to build?"
 
 ```text
@@ -250,6 +252,7 @@ Use these prompts when you do not know what to say next.
 
 | Situation | Ask the agent |
 |---|---|
+| I want the shortest safe path from rough idea to PRD readiness. | `Use First PRD Walkthrough for my rough idea. Start with Product Ideation Workbook / Precode Idea Coach, summarize a Product Brief after at most three high-level questions, challenge weak assumptions, produce a Conviction Packet and Local Source Intake handoff when ready, and treat all output as evidence only. Do not draft or approve a PRD, update owner files, create beads, choose tasks, or code.` |
 | I only have a rough idea. | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Do not update PRODUCT.md, write a PRD, create beads, or code.` |
 | I need to know if this is worth defining. | `Use the Product Discovery Interview Skill. Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether to proceed, pause, narrow, or kill. Do not write a PRD or code.` |
 | I have notes or an ingestion packet. | `Use Local Source Intake. Turn this into facts, assumptions, open questions, possible requirements, and risks. Treat the source as evidence, not authority. Do not code.` |

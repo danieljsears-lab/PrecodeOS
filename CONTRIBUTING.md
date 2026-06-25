@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-14
+Document version: v0.1.4
+Last updated: 2026-06-24
 
 ## Contribution Policy
 
@@ -73,7 +73,11 @@ Pull requests should explain:
 
 Direct-to-main is acceptable only for tiny corrections that do not change public meaning, do not affect install/setup/release behavior, do not touch active memory or core workflow semantics, and would not confuse a future adopter if shipped immediately.
 
-Public GitHub Issues are not the primary collaboration path yet. Until the maintainer explicitly changes that policy, issues are closed or treated as unavailable; roadmap, contributor-intake, label, template, and project-board design remains future roadmap work.
+Public GitHub Issues are open for narrow feedback and package-bug intake. Use the feedback template for adoption friction, confusing docs, setup friction, or workflow questions. Use the package-bug template for PrecodeOS package bugs in docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
+
+Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only until the maintainer reviews and promotes stable conclusions into a Precode owner file, PRD, decision, protocol, package doc, or candidate bead. They do not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, approve release, grant contributor governance rights, or authorize GitHub mutation.
+
+Project boards are not active project-management authority for PrecodeOS unless the maintainer explicitly defines a separate reviewed workflow. Creating labels, assigning issues, commenting, closing issues, changing issue settings, or adding project boards is GitHub mutation and requires explicit maintainer approval.
 
 GitHub Releases are the public checkpoint surface for package baselines and release candidates. Release notes should include what changed, validation evidence, known risks, install/update cautions, and whether the release is install-ready, preview-only, or maintainer-only.
 

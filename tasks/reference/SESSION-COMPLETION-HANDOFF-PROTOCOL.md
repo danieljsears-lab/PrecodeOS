@@ -128,6 +128,8 @@ A handoff should be able to explain:
 
 The handoff packet is orientation only. The next agent still starts from active memory, the active bead, and the primary authority file.
 
+PRD handoff readiness is a separate advisory review of one Markdown PRD shard before decomposition, design handoff, engineering handoff, or PRD review. `python3 scripts/prd-handoff-readiness.py --prd <path>` may summarize PRD status, requirement IDs, open questions, Acceptance Oracle coverage, candidate bead readiness, proof expectations, risks, owner protocols, blockers, and next safe action. It is not the active-session Context Pack, not active memory, not PRD approval, not bead activation, not task selection, and not implementation acceptance.
+
 For teammate handoff, generated handoff packets, team collaboration preview output, PR notes, branch status, and chat summaries remain orientation evidence. They do not approve merge, accept work, activate another bead, or promote teammate findings into owner files.
 
 ## Decision Outcomes

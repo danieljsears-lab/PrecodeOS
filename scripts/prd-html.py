@@ -459,6 +459,63 @@ def next_safe_decision(prd: Prd) -> str:
     return "Check the Markdown PRD state before deciding the next action."
 
 
+def requirement_ids(markdown: str) -> list[str]:
+    return sorted(set(re.findall(r"\bPRD-\d{3}-[A-Z]+[0-9]+\b", markdown)))
+
+
+def prd_handoff_readiness(prd: Prd) -> dict[str, Any]:
+    status = str(prd.frontmatter.get("status") or "unknown")
+    ids = requirement_ids(section(prd, "Requirements"))
+    acceptance = section(prd, "Acceptance Oracle Matrix")
+    table = first_markdown_table(acceptance)
+    covered_ids = requirement_ids(markdown_table(table) if table else "")
+    missing_ids = [req_id for req_id in ids if req_id not in covered_ids]
+    open_questions = section(prd, "Open Questions").lower()
+    blockers: list[str] = []
+    if status.lower() != "approved":
+        blockers.append(f"PRD status is {status}")
+    if not ids:
+        blockers.append("no requirement IDs found")
+    if table is None:
+        blockers.append("Acceptance Oracle Matrix is missing or not parseable")
+    elif missing_ids:
+        blockers.append("acceptance oracle missing IDs: " + ", ".join(missing_ids[:8]))
+    if "| yes |" in open_questions or "implementation-changing" in open_questions or "must decide" in open_questions or "needs decision" in open_questions:
+        blockers.append("open questions may still block handoff")
+    if not section(prd, "Risk And Permission Model").strip():
+        blockers.append("Risk And Permission Model is missing")
+    if not section(prd, "Agent Context Contract").strip():
+        blockers.append("Agent Context Contract is missing")
+    if blockers:
+        action = "Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation."
+    else:
+        action = "Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation."
+    return {
+        "status": "warning" if blockers else "pass",
+        "blockers": blockers,
+        "requirement_count": len(ids),
+        "acceptance_row_count": len(table.rows) if table else 0,
+        "next_safe_action": action,
+    }
+
+
+def prd_handoff_readiness_cue(prd: Prd) -> str:
+    payload = prd_handoff_readiness(prd)
+    blockers = payload["blockers"]
+    blocker_html = "".join(f"<li>{h(blocker)}</li>" for blocker in blockers) if blockers else "<li>No first-pass PRD handoff blockers found.</li>"
+    return f"""
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status {h(status_class(payload['status']))}">{h(payload['status'])}</span></p>
+      <p><strong>Requirements found:</strong> {h(payload['requirement_count'])}</p>
+      <p><strong>Acceptance rows found:</strong> {h(payload['acceptance_row_count'])}</p>
+      <p><strong>Next safe action:</strong> {h(payload['next_safe_action'])}</p>
+      <ul>{blocker_html}</ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+    """
+
+
 def guardrail_text() -> str:
     return (
         "This HTML is a generated review convenience. It cannot approve PRDs, activate beads, "
@@ -518,6 +575,8 @@ def style() -> str:
     .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
     .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
     .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
     .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
     .status.superseded { background: #e5e7eb; color: #4b5563; }
     .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
@@ -651,19 +710,21 @@ def render_index(prds: list[Prd]) -> str:
     rows = []
     for prd in prds:
         status = display_value(prd.frontmatter.get("status"))
+        readiness = prd_handoff_readiness(prd)
         rows.append(
             "<tr>"
             f'<td><a href="{h(prd.html_name)}">{h(prd.title)}</a></td>'
             f'<td><span class="status {h(status_class(status))}">{h(status)}</span></td>'
             f"<td>{h(display_value(prd.frontmatter.get('risk_level')))}</td>"
             f"<td>{h(display_value(prd.frontmatter.get('feature_link')))}</td>"
+            f'<td><span class="status {h(status_class(readiness["status"]))}">{h(readiness["status"])}</span></td>'
             f'<td><a href="{h(source_href(prd, prd.anchor))}">{h(prd.filename)}</a></td>'
             f"<td>{h(next_safe_decision(prd))}</td>"
             "</tr>"
         )
     table = (
         '<div class="table-wrap"><table><thead><tr>'
-        "<th>PRD</th><th>Status</th><th>Risk</th><th>Feature</th><th>Markdown source</th><th>Next safe review decision</th>"
+        "<th>PRD</th><th>Status</th><th>Risk</th><th>Feature</th><th>Handoff readiness</th><th>Markdown source</th><th>Next safe review decision</th>"
         "</tr></thead><tbody>"
         + "".join(rows)
         + "</tbody></table></div>"
@@ -726,6 +787,7 @@ def render_prd_page(prd: Prd) -> str:
     <p><strong>Next safe review decision:</strong> {h(next_safe_decision(prd))}</p>
     <p><strong>Authority:</strong> {h(prd.authority or "See Markdown source.")}</p>
     <p><strong>Not authority:</strong> {h(prd.not_authority or "Generated HTML is not authority.")}</p>
+    {prd_handoff_readiness_cue(prd)}
     <h3>Unresolved blockers and questions</h3>
     {table_preview(section(prd, "Open Questions"), max_rows=8)}
     <h3>Requirements</h3>

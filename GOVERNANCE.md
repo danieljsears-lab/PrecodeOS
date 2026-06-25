@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-14
+Document version: v0.1.6
+Last updated: 2026-06-24
 
 ## Governance Model
 
@@ -22,7 +22,9 @@ Private roadmap planning may exist in local files outside the public repo; offic
 
 ## Contribution Authority
 
-Contributors may propose documentation, code, tests, examples, workflows, protocols, or issues when the maintainer has enabled an issue-intake path. Contribution does not create governance rights, trademark rights, roadmap authority, maintainer status, or authority to represent official PrecodeOS.
+Contributors may propose documentation, code, tests, examples, workflows, protocols, feedback issues, or package-bug issues when the maintainer has enabled an issue-intake path. Contribution and issue participation do not create governance rights, trademark rights, roadmap authority, maintainer status, merge rights, release authority, support obligations, or authority to represent official PrecodeOS.
+
+GitHub Issues, labels, comments, pull requests, reviews, checks, and project boards are evidence until reviewed and promoted through the appropriate Precode owner file or maintainer decision. They do not approve PRDs, activate beads, choose roadmap direction, accept implementation, approve merge, approve package release, or replace maintainer review.
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. All trademark and brand rights are reserved under the project policy in `TRADEMARK.md`.
 

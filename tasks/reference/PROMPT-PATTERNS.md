@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.40
+Document version: v0.1.42
 Last updated: 2026-06-24
 
 ## Purpose
@@ -147,6 +147,20 @@ Answer my stable PrecodeOS documentation question from README.md, docs/*.md, and
 If my question depends on current project state, active memory, generated reports, local errors, private maintainer context, or what to do next, stop and route me to the right Precode workflow instead.
 
 Return: Short answer, Sources, What this does not decide, and Next safe prompt.
+```
+
+### Triage GitHub Feedback Or Package Bug
+
+```text
+Use the GitHub Collaboration Hub intake path.
+
+Review this public GitHub feedback or package-bug issue as source evidence. Load the GitHub Integration Protocol, Local Source Intake Protocol, and the minimum package docs or protocols needed to classify it.
+
+Return: issue type, stable facts, assumptions, missing reproduction or context, privacy or secrets redactions needed, likely owner files, recommended destination, and next safe maintainer action.
+
+Recommended destination must be one of: Local Source Intake summary, PRD draft or amendment, `DECISIONS.md` update, protocol update, package-doc update, package-bug bead proposal, defer, close with explanation, or ask for more evidence.
+
+Do not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, create labels, comment, close the issue, assign the issue, update project boards, or treat issue labels/comments/board status as authority.
 ```
 
 ### Workflow Selection Skill
@@ -333,15 +347,15 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 ### Review Lanes
 
 ```text
-Use the Review Lanes Protocol for this active bead.
+Use the Review Lanes Protocol for this active bead or draft PRD.
 
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, or Dependency Graph Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
 
-Load the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification, closeout evidence, Work Graph evidence when dependency relationships are being reviewed, and only the owner files needed for this lane.
+Load the active bead or draft PRD, primary authority, files in play or changed-file summary when relevant, recorded checks or source evidence when relevant, manual verification when relevant, closeout evidence when relevant, Work Graph evidence when dependency relationships are being reviewed, PRD Protocol when PRD quality is being reviewed, and only the owner files needed for this lane.
 
 Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
 
-Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve release, approve transitions, approve parallel execution, certify security or compliance, create follow-up tasks, rewrite owner files, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, or confidence as proof.
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
 ```
 
 ### Precode Idea Coach
@@ -373,6 +387,22 @@ If worth-building uncertainty becomes the main question, route me to the Product
 Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. If there are useful not-yet ideas, suggest Candidate Queue entries for my review instead of treating them as approved work. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
+```
+
+### First PRD Walkthrough
+
+```text
+Use First PRD Walkthrough for my rough idea.
+
+I am a first-time non-technical builder trying to get from a rough idea to PRD readiness without jumping into code.
+
+Start with the Product Ideation Workbook / Precode Idea Coach path. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
+
+Then run Challenge And Clarity. Push back on broad users, vague pain, solution-first framing, missing workaround, weak evidence, oversized first slice, premature feature piles, or sensitive surfaces. Move non-blocking concerns to Not yet.
+
+When the idea is clear enough, produce a Conviction Packet and Local Source Intake handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
+
+When I bring the reviewed packet into a Precode repo, use Local Source Intake before PRD shaping. Human PRD approval is still required before FEATURES.md compilation, decomposition, bead activation, or implementation.
 ```
 
 ### Candidate Queue Review
@@ -581,6 +611,16 @@ Before naming modules, interfaces, tests, fixtures, routes, UI labels, docs, or 
 Review this PRD as a destination document. Confirm the user problem, domain language, non-goals, before/after moment, plain-English acceptance checks, stale source inputs, agent-facing technical translation, and smallest first vertical slice. Do not activate any bead.
 ```
 
+## PRD Handoff Readiness Packet
+
+```text
+Run python3 scripts/prd-handoff-readiness.py --prd <path> --target general.
+
+Summarize whether this PRD is ready for decomposition, design handoff, engineering handoff, or PRD review. Include the generated `details.packet` fields for PRD status, requirement IDs, open questions, Acceptance Oracle coverage, candidate bead or decomposition readiness, proof expectations, risks and permissions, owner protocols, blockers, and recommended next safe action.
+
+Treat the packet as generated evidence only. Do not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, create optional packs, imply package-manager behavior, or code.
+```
+
 ## Requirements Gap And Conflict Review
 
 ```text
@@ -660,6 +700,23 @@ Focus on blocked work, missing or non-done dependencies, duplicate or out-of-ord
 If Work Graph evidence is stale or misleading, tell me which owner files, beads, PRDs, closeout notes, or recorded evidence need repair before regenerating the graph. Do not edit generated reports as source truth.
 
 Recommend only accepted, revise, split, blocked, or stop. Do not choose tasks, approve transitions, accept implementation, approve parallel execution, create follow-up tasks, rewrite owner files, run tasks, mutate GitHub, mutate external systems, or treat Work Graph reports or confidence as proof.
+```
+
+## PRD Quality Review Lane
+
+```text
+Use the Review Lanes Protocol for this draft PRD.
+Run exactly one lane: PRD Quality Review Lane.
+
+Load the draft PRD, PRD Protocol, relevant source inputs, acceptance oracles, open questions, proof expectations, handoff context when present, and only the owner files needed to understand authority.
+
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Focus on user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, and smallest first slice.
+
+Tell me whether any finding belongs in the PRD, an owner-file update, PRD amendment, Architecture Shaping, Requirements Gap And Conflict Review, Decomposition, or a parked follow-up.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not approve the PRD, certify quality, rewrite the PRD, rewrite owner files, create implementation tasks, activate beads, approve handoff, create scorecard authority, create checker authority, create generated proof, mutate GitHub, mutate external systems, or treat review output or confidence as proof.
 ```
 
 ## Vertical-Slice Decomposition
@@ -907,10 +964,10 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 ## Review Lane
 
 ```text
-Use the Review Lanes Protocol for this active bead.
-Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane.
+Use the Review Lanes Protocol for this active bead or draft PRD.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve release, certify security or compliance, create follow-up tasks, rewrite owner files, mutate GitHub, mutate external systems, or treat generated reports or confidence as proof.
+Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, mutate GitHub, mutate external systems, or treat generated reports, review output, or confidence as proof.
 ```
 
 ## Release Candidate Evidence Profile

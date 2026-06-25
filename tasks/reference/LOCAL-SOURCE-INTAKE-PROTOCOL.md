@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-23
+Document version: v0.1.14
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -46,7 +46,7 @@ Supported source types include:
 - text files and manual drafts
 - screenshots, wireframes, design images, frontend design files, Figma exports, and design-system notes
 - chat transcript summaries
-- GitHub, Linear, or issue-tracker exports
+- public GitHub feedback issues, package-bug issues, pull requests, Linear items, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
 - Product Ideation Workbook Conviction Packets / Precode Ingestion Packets, including guided Precode Idea Coach outputs, builder lens notes, Challenge And Clarity findings, evidence-strength review, optional visible-iteration/MVE framing, Local Source Intake readiness, and Candidate Goal Frames
 - user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
@@ -70,6 +70,8 @@ Unsupported as durable source facts:
 Source inputs are evidence, not authority.
 
 Do not let local notes, screenshots, exports, or generated summaries drive active task selection directly. Promote only stable conclusions into the owning Precode file.
+
+Public GitHub feedback issues, package-bug issues, comments, labels, pull requests, reviews, checks, and project-board status are source evidence. They may inform intake, bug triage, PRD amendment, protocol updates, package docs, decisions, or candidate beads only after review. They must not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, approve package release, authorize GitHub mutation, or replace maintainer review.
 
 If raw source material conflicts with `PRODUCT.md`, `DECISIONS.md`, an approved PRD, the active bead, or another owner file, current owner files win until the user reviews and approves an amendment.
 

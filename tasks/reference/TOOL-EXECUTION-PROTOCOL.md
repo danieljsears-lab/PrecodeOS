@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-23
+Document version: v0.1.13
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -130,6 +130,8 @@ External mutations require all of these:
 - the rollback or undo path is named, or the reason rollback is impossible is recorded
 - the user approves the manual gate
 - post-action evidence is recorded
+
+For GitHub Collaboration Hub work, external mutation includes enabling or disabling Issues, changing issue templates in the live repository outside a normal code change, creating or editing labels, creating or editing project boards, assigning issues, commenting on issues or pull requests, closing issues, transferring issues, pinning or locking issues, approving pull requests, rerunning workflows, and changing repository settings. Public issue intake is source evidence; it is not approval for any of those actions.
 
 Scheduled audits, importers, generated reports, and advisory checks must remain read-only.
 

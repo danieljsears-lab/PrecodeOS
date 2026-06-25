@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.59
+Document version: v0.7.61
 Last updated: 2026-06-24
 
 
@@ -42,6 +42,8 @@ If you only have messy notes or a first product hunch, you can use Claude Cowork
 
 The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.
 
+If you want the shortest safe path from rough idea to PRD readiness, ask for First PRD Walkthrough. It is the beginner-facing route through the Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. It is not a PRD approval shortcut and it does not authorize coding.
+
 Say this:
 
 ```text
@@ -58,6 +60,16 @@ Treat research as weak evidence unless it shows real user behavior, a current wo
 When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
+```
+
+Or use the shorter walkthrough request:
+
+```text
+Use First PRD Walkthrough for my rough idea.
+
+Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief. Then challenge the idea for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, first useful slice, not-yet scope, and sensitive surfaces.
+
+When ready, produce a Conviction Packet and Local Source Intake handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
 ```
 
 When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
@@ -321,6 +333,16 @@ Review the Build Attribution Ledger for this bead or recent work. Show human con
 ```
 
 The ledger is evidence only. It is not a people registry, package registry, task tracker, telemetry system, blame report, contributor score, implementation acceptance, merge approval, or release approval.
+
+## Share Feedback Or Package Bugs
+
+Use public GitHub Issues only for narrow PrecodeOS feedback and package-bug intake.
+
+- Use feedback issues for adoption friction, confusing docs, setup friction, or workflow questions.
+- Use package-bug issues for PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
+- Use `SECURITY.md` instead of public issues for sensitive security concerns.
+
+Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
 
 ## Before You Start
 
@@ -726,6 +748,7 @@ Use this table when you are unsure what kind of request to make.
 
 | Situation | Ask for | Copyable request |
 |---|---|---|
+| I want the shortest safe path from rough idea to PRD readiness | First PRD Walkthrough | `Use First PRD Walkthrough for my rough idea. Start with Product Ideation Workbook / Precode Idea Coach, summarize a Product Brief after at most three high-level questions, challenge weak assumptions, produce a Conviction Packet and Local Source Intake handoff when ready, and treat all output as evidence only. Do not draft or approve a PRD, update owner files, create beads, choose tasks, or code.` |
 | Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.` |
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
@@ -740,13 +763,14 @@ Use this table when you are unsure what kind of request to make.
 | Terms, labels, or names are confusing | Shared-language review | `Use the Ubiquitous Language Protocol. List the terms I am using, what each means, aliases, avoid terms, source pointers, and UI/code/test examples. Do not code.` |
 | Durable intent needs to guide the next workflow | Goal Frame proposal or reaffirmation | `Draft or reaffirm a Goal Frame for my review. Use it only as advisory workflow context. Do not create tasks, activate beads, or code.` |
 | Product direction is clear enough | Destination PRD | `Turn the aligned idea into a destination PRD with problem, non-goals, before/after moment, risks, acceptance checks, agent-facing technical translation, and smallest first vertical slice. Do not code.` |
+| Approved PRD may need handoff | PRD Handoff Readiness Packet | `Run python3 scripts/prd-handoff-readiness.py --prd <path> --target general and summarize whether this PRD is ready for decomposition, design, engineering, or review handoff. Include status, requirement IDs, open questions, acceptance coverage, candidate bead readiness, proof expectations, risks, owner protocols, blockers, and next safe action. Treat the packet as generated evidence only. Do not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, or code.` |
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
 | Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
-| Security, release, or docs freshness needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane or Release / Docs Freshness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, release, security, compliance, or create tasks.` |
+| Security, release, docs freshness, dependency, or draft-PRD quality needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, transitions, parallel execution, or create tasks.` |
 | A requirement, bug behavior, or acceptance criterion has unclear proof | Requirement-to-proof review | `Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.` |
 | Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
@@ -825,7 +849,7 @@ Why this matters: In Precode, done means proved and reviewed, not merely plausib
 
 ## Use A Review Lane
 
-Use a Review Lane when one active bead needs a named specialist review question without turning that specialist into a fake teammate or approval authority.
+Use a Review Lane when one active bead or one draft PRD needs a named specialist review question without turning that specialist into a fake teammate, product approver, or approval authority.
 
 Use Security Review Lane for auth, permissions, secrets, personal data, uploads, payments, admin, destructive actions, dependency risk, or other sensitive surfaces.
 
@@ -833,18 +857,22 @@ Use Release / Docs Freshness Review Lane for user-facing behavior, setup, suppor
 
 Use Dependency Graph Review Lane for dependency, blocker, follow-up, transition, owner-file overlap, broad files-in-play, stale Work Graph, or unsafe parallel-work questions.
 
+Use PRD Quality Review Lane for a draft PRD before approval when user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, or smallest first slice need review.
+
 Say this:
 
 ```text
-Use the Review Lanes Protocol for this active bead.
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, or Dependency Graph Review Lane.
+Use the Review Lanes Protocol for this active bead or draft PRD.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve release, approve transition, certify security or compliance, create follow-up tasks, rewrite owner files, approve parallel execution, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, or confidence as proof.
+Do not accept implementation, approve review, approve PRDs, approve release, approve transition, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, approve parallel execution, create scorecard authority, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, review output, or confidence as proof.
 ```
 
 For dependency graph review, stale or misleading Work Graph output means repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated graph reports as the source of truth.
 
-Stop if: the agent treats the lane as acceptance, release approval, security sign-off, compliance approval, transition approval, parallel execution approval, Work Graph authority, or a task creator.
+For PRD quality review, the lane complements Requirements Gap And Conflict Review. It reviews product quality and handoff readiness; it does not approve the PRD, rewrite the PRD, generate implementation tasks, activate beads, certify quality, create scorecard authority, or replace the normal PRD approval rules.
+
+Stop if: the agent treats the lane as acceptance, PRD approval, PRD rewrite permission, release approval, security sign-off, compliance approval, transition approval, parallel execution approval, Work Graph authority, scorecard authority, generated proof, or a task creator.
 
 Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.
 

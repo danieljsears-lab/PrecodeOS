@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-06-23
+Document version: v0.1.18
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -22,11 +22,13 @@ It sits between the product reference layer and the execution bead layer:
 workbook, Candidate Queue, or local material -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
 ```
 
+For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
+
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
 
 Execution beads are journey units derived from that destination. `tasks/todo.md` points to the active journey unit; the PRD may propose beads but must not activate them.
 
-Generated PRD HTML under `tasks/prds-html/` is a committed review convenience generated from `tasks/prds/*.md`. It can make PRD status, requirements, risks, blockers, bead proposals, approval state, and Acceptance Oracle Matrix review easier to inspect. Generated PRD pages may export a proposed Acceptance Oracle Matrix Markdown replacement block for manual application, but Markdown PRD shards remain canonical. Generated PRD HTML cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, persist browser edits, or replace PRD shards.
+Generated PRD HTML under `tasks/prds-html/` is a committed review convenience generated from `tasks/prds/*.md`. It can make PRD status, requirements, risks, blockers, bead proposals, approval state, PRD handoff readiness, and Acceptance Oracle Matrix review easier to inspect. Generated PRD pages may export a proposed Acceptance Oracle Matrix Markdown replacement block for manual application, but Markdown PRD shards remain canonical. Generated PRD HTML cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, persist browser edits, or replace PRD shards.
 
 Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD amendment, or product drift checks. `PRODUCT.md` orients the product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. It does not approve features, activate beads, or replace PRD shards.
 
@@ -39,6 +41,8 @@ Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a 
 Use `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` when the idea is rough, ambiguous, customer-facing, or still needs guided framing.
 
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` before deriving candidate beads or splitting approved feature work.
+
+Use `scripts/prd-handoff-readiness.py --prd <path>` when an approved PRD needs an advisory readiness packet before decomposition, design handoff, engineering handoff, or PRD review. The packet may summarize PRD status, requirement IDs, open questions, Acceptance Oracle coverage, candidate bead readiness, proof expectations, risks, owner protocols, blockers, and next safe action. It is generated evidence only: it does not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, create optional packs, or imply package-manager behavior.
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when tracing source intent through PRD requirements, bead proposals, recorded evidence, and review decisions.
 
@@ -85,6 +89,8 @@ Discovery may be skipped only with an explicit reason, such as low risk, clear u
 ## Founder-Friendly Ramp
 
 For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions. If the builder is still before repo setup or still building product confidence, produce a Conviction Packet before Local Source Intake instead of drafting a PRD.
+
+Use "First PRD Walkthrough" as the plain-language request for this ramp when the builder wants the shortest safe route from rough idea to PRD readiness. If the walkthrough produces a Conviction Packet, workbook output, notes, research, screenshots, or other source material, route that material through Local Source Intake before drafting the PRD. Human PRD approval remains required before feature compilation, decomposition, bead activation, or coding.
 
 The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
@@ -259,7 +265,15 @@ Recommendation: revise | clarify | split | ready-for-human-approval-review | sto
 
 Resolve implementation-changing findings before approval. Non-blocking concerns may remain only when they are explicitly named as non-blocking, moved to not-yet scope, or routed to a follow-up PRD amendment, owner-file update, architecture-shaping pass, review bead, or candidate bead.
 
-### 6a. Map Requirements To Proof
+### 6a. Run PRD Quality Review Lane When The Draft Needs A Product-Quality Lens
+
+Use the PRD Quality Review Lane when a draft PRD looks structurally complete but still needs pre-approval review for user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, or smallest first slice.
+
+The lane complements Requirements Gap And Conflict Review. Requirements Gap And Conflict Review catches requirement gaps, conflicts, missing edge cases, unstated assumptions, stale source inputs, weak acceptance oracles, and owner-file follow-ups. PRD Quality Review Lane reviews the draft PRD as a product-quality and handoff-readiness artifact.
+
+The lane output is advisory review input only. It must not approve the PRD, rewrite the PRD or owner files, create implementation tasks, activate beads, approve handoff, create scorecard authority, create checker authority, create generated proof, or replace human PRD approval.
+
+### 6b. Map Requirements To Proof
 
 Use the Acceptance Oracle Matrix to make proof expectations inspectable before bead work begins. Each important requirement should have an expected behavior, the narrowest useful automated or manual check, and the likely evidence location.
 

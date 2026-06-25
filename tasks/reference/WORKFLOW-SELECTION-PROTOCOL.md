@@ -42,7 +42,7 @@ Choose the workflow that matches the current situation:
 |---|---|---|
 | User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
 | User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, candidate ranking, product-value rating, theme grouping, or near-bead sketching without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry, Candidate Queue review, or approved `scripts/candidate-queue.py` preview/apply action |
-| First-time non-technical builder has a rough idea before repo setup | Product Ideation Workbook or Product Conviction Packet Skill | Product Brief, then Conviction Packet evidence |
+| First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | Product Ideation Workbook or Product Conviction Packet Skill, then Local Source Intake when entering a Precode repo | Product Brief, then Conviction Packet evidence, then reviewed intake summary before PRD shaping |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Interview Skill / Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
@@ -66,6 +66,8 @@ If the workflow involves sensitive, external, destructive, or `bounded-afk` exec
 Use Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the main uncertainty is whether the user problem, current workaround, demand signal, alternative, or smallest learning step is real enough to justify product definition. Its Discovery Summary is evidence only; it may recommend `proceed`, `pause`, `narrow`, or `kill`, but it does not approve a PRD, activate beads, choose work, or rewrite owner files.
 
 Do not route a Conviction Packet directly to PRD drafting unless Local Source Intake has summarized the packet and the builder has reviewed the intake. The packet is pre-PRD evidence, not approval to define requirements or code.
+
+First PRD Walkthrough is the beginner-facing name for this rough-idea-to-PRD-readiness route. It does not create a new workflow authority, approve PRDs, compile features, create or activate beads, choose tasks, create a roadmap or backlog, mutate owner files, or authorize implementation.
 
 Use `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` after Bootstrap Confidence and before setup mutation when adopting PrecodeOS into an existing app. Its report is evidence only; it does not approve copying, owner-file adaptation, check execution, PRD approval, bead activation, or app-code edits.
 

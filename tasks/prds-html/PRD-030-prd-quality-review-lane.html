@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-030 -- PRD Quality Review Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-030 -- PRD Quality Review Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-030-prd-quality-review-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-030-prd-quality-review-lane.md#prd-030-prd-quality-review-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>PRD Quality Review Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-24</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for the advisory PRD Quality Review Lane.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, review acceptance, implementation acceptance, generated proof, scorecard authority, checker gate, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, SaaS workspace behavior, export automation, MCP mutation, package-manager behavior, or a persona system.</p>
+    
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 14</p>
+      <p><strong>Acceptance rows found:</strong> 6</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>acceptance oracle missing IDs: PRD-030-FR02, PRD-030-FR07, PRD-030-FR08, PRD-030-NFR01, PRD-030-NFR02, PRD-030-NFR03, PRD-030-SEC01, PRD-030-SEC02</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+    
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-030-FR01</code></td><td>Add PRD Quality Review Lane to Review Lanes Protocol as an optional advisory lane for draft PRDs before approval.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-030-FR02</code></td><td>Lane input guidance must include the draft PRD, PRD Protocol, relevant source inputs, authority files when needed, acceptance oracles, open questions, proof expectations, and handoff context when present.</td><td>P0</td><td>Keeps findings grounded.</td></tr><tr><td><code>PRD-030-FR03</code></td><td>Lane output must use the existing Review Lanes output fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-030-FR04</code></td><td>Lane focus must include user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, and smallest first slice.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-030-FR05</code></td><td>Prompt Patterns and User Guide must include copyable PRD Quality Review Lane guidance.</td><td>P0</td><td>User-facing invocation.</td></tr><tr><td><code>PRD-030-FR06</code></td><td>PRD Protocol must reference the lane as optional PRD-quality review without replacing Requirements Gap And Conflict Review.</td><td>P1</td><td>Workflow fit.</td></tr><tr><td><code>PRD-030-FR07</code></td><td>Package inventory must list PRD-030 and the expanded Review Lanes Protocol behavior.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-030-FR08</code></td><td>Clarity scenario coverage must check lane name, output fields, PRD-approval boundary, no task creation, no owner-file rewrite, no scorecard authority, and no generated proof.</td><td>P1</td><td>Text contract only.</td></tr><tr><td><code>PRD-030-FR09</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-030-prd-quality-review-lane.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-030-prd-quality-review-lane.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-030-FR01`</textarea></td><td><textarea data-cockpit-cell>Review Lanes Protocol defines PRD Quality Review Lane.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Read protocol.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-030-FR03`</textarea></td><td><textarea data-cockpit-cell>Lane output uses existing Review Lanes fields and recommendation values.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Review copyable prompt shape.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-030-FR04`</textarea></td><td><textarea data-cockpit-cell>Protocol names product clarity, assumptions, acceptance quality, proof readiness, handoff readiness, and smallest first slice.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Confirm focus stays advisory.</textarea></td><td><textarea data-cockpit-cell>Markdown source</textarea></td><td><textarea data-cockpit-cell>check output</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-030-FR05`</textarea></td><td><textarea data-cockpit-cell>Prompt Patterns and User Guide include copyable lane guidance.</textarea></td><td><textarea data-cockpit-cell>docs HTML freshness check</textarea></td><td><textarea data-cockpit-cell>Read prompts for boundary wording.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated docs HTML</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-030-FR06`</textarea></td><td><textarea data-cockpit-cell>PRD Protocol references optional PRD Quality Review Lane without replacing Requirements Gap And Conflict Review.</textarea></td><td><textarea data-cockpit-cell>source inspection</textarea></td><td><textarea data-cockpit-cell>Confirm both reviews remain distinct.</textarea></td><td><textarea data-cockpit-cell>PRD Protocol</textarea></td><td><textarea data-cockpit-cell>manual review</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-030-FR09`</textarea></td><td><textarea data-cockpit-cell>Inventory, roadmap, journal, changelog, and generated surfaces are current.</textarea></td><td><textarea data-cockpit-cell>inventory, docs, PRD HTML, and roadmap checks</textarea></td><td><textarea data-cockpit-cell>Boundary review.</textarea></td><td><textarea data-cockpit-cell>Markdown docs</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-030-prd-quality-review-lane">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-030-prd-quality-review-lane" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Automated check | Manual check | Fixture or data needed | Evidence location |
+| --- | --- | --- | --- | --- | --- |
+| `PRD-030-FR01` | Review Lanes Protocol defines PRD Quality Review Lane. | `python3 scripts/clarity-scenario-check.py` | Read protocol. | Markdown source | check output |
+| `PRD-030-FR03` | Lane output uses existing Review Lanes fields and recommendation values. | `python3 scripts/clarity-scenario-check.py` | Review copyable prompt shape. | Markdown source | check output |
+| `PRD-030-FR04` | Protocol names product clarity, assumptions, acceptance quality, proof readiness, handoff readiness, and smallest first slice. | `python3 scripts/clarity-scenario-check.py` | Confirm focus stays advisory. | Markdown source | check output |
+| `PRD-030-FR05` | Prompt Patterns and User Guide include copyable lane guidance. | docs HTML freshness check | Read prompts for boundary wording. | Markdown docs | generated docs HTML |
+| `PRD-030-FR06` | PRD Protocol references optional PRD Quality Review Lane without replacing Requirements Gap And Conflict Review. | source inspection | Confirm both reviews remain distinct. | PRD Protocol | manual review |
+| `PRD-030-FR09` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+    
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Public protocols and docs: changed to expose the lane.</li><li>PRD shard: added as destination authority for this package capability.</li><li>Generated HTML: regenerated as reading/review surfaces only.</li><li>PRD approval: explicitly unchanged and still human-owned.</li><li>External systems: not touched.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>The user still owns PRD approval, owner-file updates, PRD amendments, Architecture Shaping decisions, Decomposition, bead activation, implementation, GitHub mutation, external mutation, merge, migration, rollback, and sensitive-surface approval.</li><li>Lane findings may recommend accepted, revise, split, blocked, or stop, but they cannot approve that recommendation.</li></ul>
+<h3 id="forbidden-actions">Forbidden Actions</h3>
+<ul><li>Do not treat PRD Quality Review Lane as PRD approval, task selection, bead activation, review approval, implementation acceptance, generated proof, scorecard authority, checker authority, follow-up task creation, owner-file rewrite, command approval, external mutation, GitHub mutation, registry behavior, optional-pack behavior, SaaS workspace behavior, export automation, MCP mutation, package-manager behavior, release-channel behavior, or a persona system.</li><li>Do not include secrets, credentials, private data, provider configuration, dashboard values, customer records, or sensitive production details in lane output.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></li><li>Owner protocol: <code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></li><li><code>tasks/prds/PRD-026-ears-acceptance-guidance.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>generated PRD rewrite behavior</li><li>generated evidence reports except generated docs/PRD/roadmap HTML</li><li>PRD HTML feature changes</li><li>checker behavior beyond text-contract coverage</li><li>GitHub, deployment, provider dashboards, secrets, or environment files</li><li>Required checks:</li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm the lane cannot be mistaken for PRD approval, owner-file rewrite, implementation permission, task creation, scorecard authority, checker gate, or generated proof.</li><li>Confirm the lane complements Requirements Gap And Conflict Review instead of replacing or duplicating it.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B030-prd-quality-review-lane</code></td><td><code>PRD-030-FR01</code> through <code>PRD-030-FR09</code>, <code>PRD-030-SEC01</code> through <code>PRD-030-SEC02</code>, <code>PRD-030-NFR01</code> through <code>PRD-030-NFR03</code></td><td>PRD shard, review-lane protocol, prompt/user/PRD guidance, package inventory, clarity scenario coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td><td>clarity scenario plus package/docs/roadmap checks</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-030-prd-quality-review-lane">PRD-030 -- PRD Quality Review Lane</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-030</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-06-24</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: <code>PRD Quality Review Lane</code></li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-018</code>, <code>PRD-024</code>, <code>PRD-026</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap evidence | approved implementation plan | shipped PRD and Review Lanes guidance</code></li><li>Source references:</li><li><code>_maintainer/PRECODE-ROADMAP.md</code> ranked item, <code>PRD Quality Review Lane</code></li><li><code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></li><li><code>tasks/prds/PRD-026-ears-acceptance-guidance.md</code></li><li>Stable facts:</li><li>Review Lanes already provide advisory output fields without acceptance, release, security, graph, task, or approval authority.</li><li>PRD Protocol already requires clear goals, non-goals, user moments, acceptance oracles, risk gates, architecture impact, and decomposition readiness before approval.</li><li>Requirements Gap And Conflict Review already catches ambiguous requirements, conflicts, missing edge cases, unstated assumptions, stale source inputs, weak acceptance oracles, and owner-file follow-ups.</li><li>Requirement-To-Proof Traceability and EARS-style guidance already help make acceptance and proof expectations inspectable without making syntax or generated output authoritative.</li><li>Assumptions:</li><li>The first useful slice should be protocol, prompt, and user guidance only.</li><li>The lane should complement Requirements Gap And Conflict Review by reviewing product-quality and handoff readiness, not by duplicating the requirement gap/conflict contract.</li><li>Text-contract checks are enough for v1.</li><li>Conflicts or stale inputs:</li><li>&quot;PRD quality&quot; can sound like an approval score, generated PRD rewrite, or implementation-readiness certification. V1 must explicitly refuse those interpretations.</li><li>ChatPRD-inspired workflow pressure should be adopted as a low-authority review pattern only, not as SaaS workspace, export, MCP-mutation, or automatic PRD-generation behavior.</li><li>Privacy or secrets redactions:</li><li>The lane must not require secrets, credentials, private data, dashboard values, provider configuration, production details, customer records, or external-system access.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>PRD drafts can look complete while still hiding vague user moments, weak strategy fit, missing assumptions, incomplete acceptance, unresolved open questions, or weak handoff readiness.</p>
+<p>PrecodeOS needs a small advisory review lane that helps users inspect a draft PRD before approval without turning review output into PRD approval, implementation permission, task creation, or owner-file mutation.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: A builder or agent has a draft PRD and guesses whether it is clear enough to approve, decompose, or hand off.</li><li>After: The review names product-quality and handoff-readiness findings, missing proof, acceptance questions, approval still required, and promotion path without approving the PRD or creating work.</li><li>Why now: PRD Protocol, Requirements Gap And Conflict Review, Review Lanes, Requirement-To-Proof Traceability, and optional EARS-style acceptance guidance are mature enough to support a narrow PRD-quality lens without new automation.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS exposes a PRD Quality Review Lane for draft PRDs before approval, preserving owner-file authority and human PRD approval.</li><li>Definition of done:</li><li>PRD-030 exists as the destination shard.</li><li>Review Lanes Protocol includes PRD Quality Review Lane as an optional advisory lane for draft PRDs.</li><li>Prompt Patterns and User Guide include copyable lane guidance.</li><li>PRD Protocol points to the lane without replacing Requirements Gap And Conflict Review.</li><li>Package inventory lists PRD-030 and the expanded Review Lanes behavior.</li><li>Clarity scenario coverage checks lane name, output fields, PRD-approval boundary, no task creation, no owner-file rewrite, no scorecard authority, and no generated proof.</li><li>Maintainer changelog, roadmap implemented history, roadmap journal, public docs HTML, PRD HTML, and roadmap HTML are refreshed.</li><li>First useful vertical slice: protocol/prompt guidance and text-contract checks only.</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: Non-technical builder or maintainer reviewing whether a draft PRD is clear enough for human approval review.</li><li>Secondary user: AI coding agent or support helper preparing product-quality and handoff-readiness questions without mutating the repo.</li><li>Excluded user: Hosted PRD workspace, automated PRD generator, product-management scorecard, task planner, design or engineering handoff bot, or agent platform expecting review output to approve PRDs or create work.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make draft PRD quality easier to review before approval.</li><li>Goal 2: Keep findings tied to product clarity, proof expectations, open questions, handoff readiness, and acceptance questions.</li><li>Goal 3: Preserve human PRD approval, owner-file authority, and separate bead activation.</li><li>Goal 4: Avoid checker gates, scorecards, generated reports, generated PRD rewrites, PRD HTML behavior, task creation, or SaaS/import/export semantics in v1.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: new command, checker, scorecard, generated report, generated PRD rewrite, PRD HTML behavior, PRD approval, implementation permission, bead activation, task creation, owner-file rewrite, implementation acceptance, design or engineering handoff approval, SaaS workspace, export automation, MCP mutation, registry, optional pack, package-manager behavior, or release-channel behavior.</li><li>Deferred: richer PRD HTML review cues, generated diff artifacts, stricter acceptance-oracle review, handoff readiness packets, score-like summaries, and any checker behavior after real PRD review examples justify it.</li><li>Explicitly out of scope: replacing Requirements Gap And Conflict Review, PRD approval, Architecture Shaping, Decomposition Protocol, Review mode, or human approval.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-030-FR01</code></td><td>Add PRD Quality Review Lane to Review Lanes Protocol as an optional advisory lane for draft PRDs before approval.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-030-FR02</code></td><td>Lane input guidance must include the draft PRD, PRD Protocol, relevant source inputs, authority files when needed, acceptance oracles, open questions, proof expectations, and handoff context when present.</td><td>P0</td><td>Keeps findings grounded.</td></tr><tr><td><code>PRD-030-FR03</code></td><td>Lane output must use the existing Review Lanes output fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-030-FR04</code></td><td>Lane focus must include user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, and smallest first slice.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-030-FR05</code></td><td>Prompt Patterns and User Guide must include copyable PRD Quality Review Lane guidance.</td><td>P0</td><td>User-facing invocation.</td></tr><tr><td><code>PRD-030-FR06</code></td><td>PRD Protocol must reference the lane as optional PRD-quality review without replacing Requirements Gap And Conflict Review.</td><td>P1</td><td>Workflow fit.</td></tr><tr><td><code>PRD-030-FR07</code></td><td>Package inventory must list PRD-030 and the expanded Review Lanes Protocol behavior.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-030-FR08</code></td><td>Clarity scenario coverage must check lane name, output fields, PRD-approval boundary, no task creation, no owner-file rewrite, no scorecard authority, and no generated proof.</td><td>P1</td><td>Text contract only.</td></tr><tr><td><code>PRD-030-FR09</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-030-SEC01</code></td><td>The lane must not require or expose secrets, credentials, private data, dashboard values, provider configuration, production details, customer records, or external-system access.</td><td>P0</td><td>Sensitive-surface safety.</td></tr><tr><td><code>PRD-030-SEC02</code></td><td>The lane must not approve PRDs, edits, beads, review decisions, implementation, handoff, GitHub mutation, external mutation, or follow-up task creation.</td><td>P0</td><td>Approval boundaries.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-030-NFR01</code></td><td>Lane wording must remain understandable without product-management jargon.</td><td>P0</td><td>Beginner value.</td></tr><tr><td><code>PRD-030-NFR02</code></td><td>The protocol must stay independent of private maintainer files.</td><td>P0</td><td>Public package completeness.</td></tr><tr><td><code>PRD-030-NFR03</code></td><td>V1 must not add new generated report fields, PRD HTML behavior, scorecards, or checker categories.</td><td>P0</td><td>Scope control.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Evidence location</th></tr></thead><tbody><tr><td><code>PRD-030-FR01</code></td><td>Review Lanes Protocol defines PRD Quality Review Lane.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Read protocol.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-030-FR03</code></td><td>Lane output uses existing Review Lanes fields and recommendation values.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Review copyable prompt shape.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-030-FR04</code></td><td>Protocol names product clarity, assumptions, acceptance quality, proof readiness, handoff readiness, and smallest first slice.</td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Confirm focus stays advisory.</td><td>Markdown source</td><td>check output</td></tr><tr><td><code>PRD-030-FR05</code></td><td>Prompt Patterns and User Guide include copyable lane guidance.</td><td>docs HTML freshness check</td><td>Read prompts for boundary wording.</td><td>Markdown docs</td><td>generated docs HTML</td></tr><tr><td><code>PRD-030-FR06</code></td><td>PRD Protocol references optional PRD Quality Review Lane without replacing Requirements Gap And Conflict Review.</td><td>source inspection</td><td>Confirm both reviews remain distinct.</td><td>PRD Protocol</td><td>manual review</td></tr><tr><td><code>PRD-030-FR09</code></td><td>Inventory, roadmap, journal, changelog, and generated surfaces are current.</td><td>inventory, docs, PRD HTML, and roadmap checks</td><td>Boundary review.</td><td>Markdown docs</td><td>generated surfaces</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Public protocols and docs: changed to expose the lane.</li><li>PRD shard: added as destination authority for this package capability.</li><li>Generated HTML: regenerated as reading/review surfaces only.</li><li>PRD approval: explicitly unchanged and still human-owned.</li><li>External systems: not touched.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>The user still owns PRD approval, owner-file updates, PRD amendments, Architecture Shaping decisions, Decomposition, bead activation, implementation, GitHub mutation, external mutation, merge, migration, rollback, and sensitive-surface approval.</li><li>Lane findings may recommend accepted, revise, split, blocked, or stop, but they cannot approve that recommendation.</li></ul>
+<h3 id="forbidden-actions">Forbidden Actions</h3>
+<ul><li>Do not treat PRD Quality Review Lane as PRD approval, task selection, bead activation, review approval, implementation acceptance, generated proof, scorecard authority, checker authority, follow-up task creation, owner-file rewrite, command approval, external mutation, GitHub mutation, registry behavior, optional-pack behavior, SaaS workspace behavior, export automation, MCP mutation, package-manager behavior, release-channel behavior, or a persona system.</li><li>Do not include secrets, credentials, private data, provider configuration, dashboard values, customer records, or sensitive production details in lane output.</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>No app architecture impact.</li><li>No active-memory change.</li><li>No new command, generated report field, compiler warning, PRD HTML behavior, scorecard, checker gate, registry, optional pack, package-manager behavior, adapter behavior, or runtime behavior.</li><li><code>scripts/clarity-scenario-check.py</code> gains text-contract checks only.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></td><td>Optional PRD Quality Review Lane shape.</td><td>Produces advisory findings and acceptance questions only.</td><td>Text-contract and manual review.</td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td></tr><tr><td><code>tasks/reference/PROMPT-PATTERNS.md</code> and <code>docs/PRECODE-USER-GUIDE.md</code></td><td>Copyable lane prompt.</td><td>Invokes draft-PRD quality review without approval, rewrite, task creation, or mutation.</td><td>Text-contract and manual review.</td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td></tr><tr><td><code>tasks/reference/PRD-PROTOCOL.md</code></td><td>Optional pre-approval review routing.</td><td>Preserves Requirements Gap And Conflict Review and human PRD approval.</td><td>Source inspection.</td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td></tr><tr><td><code>scripts/clarity-scenario-check.py</code></td><td>Deterministic text-contract check.</td><td>Checks wording presence only.</td><td>Script run.</td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></li><li>Owner protocol: <code>tasks/reference/REVIEW-LANES-PROTOCOL.md</code></li><li>Secondary reference files:</li><li><code>tasks/reference/PRD-PROTOCOL.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>tasks/prds/PRD-024-requirement-to-proof-traceability.md</code></li><li><code>tasks/prds/PRD-026-ears-acceptance-guidance.md</code></li><li>Files or folders likely in play:</li><li>listed above</li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li><code>AGENT.md</code></li><li><code>DECISIONS.md</code></li><li><code>tasks/todo.md</code></li><li>target app code</li><li>generated PRD rewrite behavior</li><li>generated evidence reports except generated docs/PRD/roadmap HTML</li><li>PRD HTML feature changes</li><li>checker behavior beyond text-contract coverage</li><li>GitHub, deployment, provider dashboards, secrets, or environment files</li><li>Required checks:</li><li><code>python3 scripts/version-check.py</code></li><li><code>python3 scripts/file-inventory.py --check</code></li><li><code>python3 scripts/public-repo-check.py</code></li><li><code>python3 scripts/clarity-scenario-check.py</code></li><li><code>python3 scripts/prd-html.py --check</code></li><li><code>python3 scripts/docs-html.py --check</code></li><li><code>python3 _maintainer/scripts/roadmap-html.py --check</code></li><li>Manual verification:</li><li>Confirm the lane cannot be mistaken for PRD approval, owner-file rewrite, implementation permission, task creation, scorecard authority, checker gate, or generated proof.</li><li>Confirm the lane complements Requirements Gap And Conflict Review instead of replacing or duplicating it.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If the lane output approves the PRD, it violates the PRD.</li><li>If the lane rewrites the PRD or owner files from review output, it violates the PRD.</li><li>If the lane creates implementation tasks or activates beads, it violates the PRD.</li><li>If a score, grade, generated report, PRD HTML cue, or AI confidence becomes quality authority, it violates the PRD.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B030-prd-quality-review-lane</code></td><td><code>PRD-030-FR01</code> through <code>PRD-030-FR09</code>, <code>PRD-030-SEC01</code> through <code>PRD-030-SEC02</code>, <code>PRD-030-NFR01</code> through <code>PRD-030-NFR03</code></td><td>PRD shard, review-lane protocol, prompt/user/PRD guidance, package inventory, clarity scenario coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-030-prd-quality-review-lane.md</code></td><td>clarity scenario plus package/docs/roadmap checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li><code>FEATURES.md</code> is not updated in this slice.</li><li>V1 is a public package workflow contract, not a runtime capability.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<ul><li>None for v1.</li></ul>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-06-24.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-3" href="#forbidden-actions">Forbidden Actions</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

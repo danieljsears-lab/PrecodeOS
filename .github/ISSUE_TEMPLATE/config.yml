@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contribution policy
+    url: https://github.com/danieljsears-lab/PrecodeOS/blob/main/CONTRIBUTING.md
+    about: Read contribution rules, review expectations, and GitHub intake boundaries.
+  - name: Security policy
+    url: https://github.com/danieljsears-lab/PrecodeOS/blob/main/SECURITY.md
+    about: Report sensitive security concerns through the security policy instead of a public issue.
+  - name: Support runbook
+    url: https://github.com/danieljsears-lab/PrecodeOS/blob/main/docs/PRECODE-SUPPORT-RUNBOOK.md
+    about: Use public support guidance for setup, first-use, and recovery questions.

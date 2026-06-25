@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.23
-# Last updated: 2026-06-23
+# Version: v0.1.25
+# Last updated: 2026-06-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -32,6 +32,16 @@ from os_compiler import (
     team_collaboration_preview,
 )
 from precode_doctor import build_doctor_dashboard
+
+
+def load_prd_handoff_module() -> Any:
+    path = Path(__file__).resolve().parent / "prd-handoff-readiness.py"
+    spec = importlib.util.spec_from_file_location("prd_handoff_readiness", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Could not load prd-handoff-readiness.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 STABLE_DECISIONS = {
@@ -778,6 +788,98 @@ def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
     return len(required_terms_by_path)
 
 
+def assert_first_prd_walkthrough_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "First PRD Walkthrough",
+            "Product Brief",
+            "Conviction Packet",
+            "evidence only",
+            "Local Source Intake",
+            "before PRD shaping",
+            "Human PRD approval",
+            "before `FEATURES.md` compilation",
+            "bead activation",
+            "authorize coding",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "First PRD Walkthrough",
+            "Product Ideation Workbook",
+            "Precode Idea Coach",
+            "does not draft or approve PRDs",
+            "Product Briefs",
+            "Conviction Packets",
+            "evidence only",
+            "Local Source Intake",
+            "Human PRD approval",
+            "before feature compilation",
+            "bead activation",
+            "coding",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "First PRD Walkthrough",
+            "Local Source Intake",
+            "reviewed intake summary before PRD shaping",
+            "does not create a new workflow authority",
+            "approve PRDs",
+            "create or activate beads",
+            "choose tasks",
+            "create a roadmap or backlog",
+            "authorize implementation",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Use First PRD Walkthrough for my rough idea",
+            "Product Brief",
+            "Challenge And Clarity",
+            "Conviction Packet",
+            "Local Source Intake handoff prompt",
+            "evidence only",
+            "Do not draft or approve a PRD",
+            "create a roadmap or backlog",
+            "create or activate beads",
+            "choose tasks",
+            "Human PRD approval",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "First PRD Walkthrough",
+            "shortest safe path from rough idea to PRD readiness",
+            "Product Ideation Workbook",
+            "Conviction Packet",
+            "Local Source Intake",
+            "not a PRD approval shortcut",
+            "does not authorize coding",
+            "evidence only",
+            "Do not draft or approve a PRD",
+            "create or activate beads",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "First PRD walkthrough",
+            "Use First PRD Walkthrough for my rough idea",
+            "Product Brief",
+            "Conviction Packet",
+            "Local Source Intake handoff",
+            "evidence only",
+            "human PRD approval",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "First PRD Walkthrough",
+            "shortest safe route from rough idea to PRD readiness",
+            "Product Ideation Workbook",
+            "Precode Idea Coach",
+            "Local Source Intake",
+            "does not approve a PRD",
+            "create beads",
+            "authorize coding",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"first PRD walkthrough contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
 def assert_bugfix_spec_lane_contract(failures: list[dict[str, str]]) -> None:
     recovery_text = Path("tasks/reference/RECOVERY-PROTOCOL.md").read_text(encoding="utf-8").lower()
     prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
@@ -940,6 +1042,7 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "security review lane",
         "release / docs freshness review lane",
         "dependency graph review lane",
+        "prd quality review lane",
         "lane:",
         "review target:",
         "authority checked:",
@@ -951,9 +1054,14 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "approval still required:",
         "promotion path:",
         "does not approve work",
+        "approve prds",
+        "human prd approval",
         "security certification",
         "compliance approval",
         "create follow-up tasks",
+        "create implementation tasks",
+        "rewrite prds",
+        "scorecard authority",
         "work graph reports are evidence only",
         "repair the markdown owner files",
         "approve parallel execution",
@@ -962,24 +1070,37 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "mutate github",
         "mutate external systems",
         "persona system",
+        "product-quality and handoff-readiness artifact",
+        "requirement-to-proof readiness",
+        "smallest first slice",
+        "requirements gap and conflict review",
     ]
     for term in required_terms:
         if term not in protocol_text:
             failures.append({"scenario": "review lanes protocol contract", "expected": term, "actual": "missing"})
 
     prompt_terms = [
-        "use the review lanes protocol for this active bead",
-        "run exactly one lane: security review lane, release / docs freshness review lane, or dependency graph review lane",
+        "use the review lanes protocol for this active bead or draft prd",
+        "run exactly one lane: security review lane, release / docs freshness review lane, dependency graph review lane, or prd quality review lane",
         "run exactly one lane: dependency graph review lane",
+        "run exactly one lane: prd quality review lane",
         "findings, missing proof, acceptance questions",
         "missing or non-done dependencies",
         "ambiguous follow-up destination",
         "stale generated graph evidence",
+        "user problem clarity",
+        "handoff readiness",
+        "requirement-to-proof readiness",
+        "smallest first slice",
         "do not accept implementation",
+        "approve prds",
         "approve transitions",
         "approve parallel execution",
         "certify security or compliance",
         "create follow-up tasks",
+        "create implementation tasks",
+        "rewrite prds",
+        "scorecard authority",
         "treat work graph reports or confidence as proof",
         "mutate github",
         "mutate external systems",
@@ -993,10 +1114,14 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "security review lane",
         "release / docs freshness review lane",
         "dependency graph review lane",
+        "prd quality review lane",
         "stale or misleading work graph output",
+        "product quality and handoff readiness",
         "transition approval",
         "parallel execution approval",
         "work graph authority",
+        "prd approval",
+        "scorecard authority",
         "security sign-off",
     ):
         if term not in user_guide_text:
@@ -1147,6 +1272,126 @@ def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -
     for term in ["task selection", "merge approval", "GitHub mutation"]:
         if term not in forbidden:
             failures.append({"scenario": "team preview forbidden use", "expected": term, "actual": forbidden})
+    return len(required_terms_by_path) + 1
+
+
+def assert_github_collaboration_hub_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path(".github/ISSUE_TEMPLATE/feedback.yml"): [
+            "PrecodeOS feedback",
+            "adoption friction",
+            "confusing docs",
+            "setup friction",
+            "workflow questions",
+            "source evidence only",
+            "does not choose roadmap direction",
+            "approve PRDs",
+            "activate beads",
+            "approve merge",
+            "sensitive personal data",
+        ],
+        Path(".github/ISSUE_TEMPLATE/package-bug.yml"): [
+            "PrecodeOS package bug",
+            "docs, scripts, protocols",
+            "setup/copy helpers",
+            "GitHub helper behavior",
+            "source evidence only",
+            "approve release",
+            "authorize GitHub mutation",
+            "Reproduction or context",
+            "Checks tried",
+            "sensitive personal data",
+        ],
+        Path(".github/ISSUE_TEMPLATE/config.yml"): [
+            "blank_issues_enabled: false",
+            "CONTRIBUTING.md",
+            "SECURITY.md",
+            "PRECODE-SUPPORT-RUNBOOK.md",
+        ],
+        Path("tasks/prds/PRD-032-github-collaboration-hub.md"): [
+            "GitHub Collaboration Hub",
+            "feedback and package-bug intake",
+            "source evidence",
+            "No automatic issue creation",
+            "No GitHub workflow, bot, labeler",
+            "external mutation",
+            "PRD-032-FR06",
+        ],
+        Path("tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md"): [
+            "Collaboration Hub Intake Path",
+            "feedback and package-bug intake",
+            "Labels do not choose work",
+            "Project boards are not active project-management authority",
+            "Creating, editing, labeling, assigning, commenting on, closing",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "Public GitHub feedback issues",
+            "package-bug issues",
+            "source evidence",
+            "approve package release",
+            "authorize GitHub mutation",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "For GitHub Collaboration Hub work",
+            "external mutation includes",
+            "creating or editing labels",
+            "changing repository settings",
+            "source evidence",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Triage GitHub Feedback Or Package Bug",
+            "GitHub Collaboration Hub intake path",
+            "Recommended destination",
+            "Do not choose roadmap direction",
+            "mutate GitHub",
+        ],
+        Path("CONTRIBUTING.md"): [
+            "Public GitHub Issues are open for narrow feedback and package-bug intake",
+            "source evidence only",
+            "Project boards are not active project-management authority",
+            "requires explicit maintainer approval",
+        ],
+        Path("GOVERNANCE.md"): [
+            "issue participation",
+            "do not create governance rights",
+            "GitHub Issues, labels, comments",
+            "approve package release",
+        ],
+        Path("PROJECT-CONTEXT.md"): [
+            "feedback and package-bug intake only",
+            "do not treat GitHub Issues",
+            "roadmap, merge, release, or package authority",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Share Feedback Or Package Bugs",
+            "Use public GitHub Issues only for narrow PrecodeOS feedback",
+            "source evidence only",
+            "Stable conclusions must be reviewed",
+        ],
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "Public GitHub Issues are available for narrow PrecodeOS feedback",
+            "source evidence only",
+            "support approval",
+            "Local Source Intake and maintainer review",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            ".github/ISSUE_TEMPLATE/*.yml",
+            "PRD-032-github-collaboration-hub.md",
+            "feedback and package-bug intake",
+            "mutate GitHub",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"github collaboration hub contract: {path}", "expected": term, "actual": "missing"})
+
+    workflow_text = Path(".github/workflows/precode-validate.yml").read_text(encoding="utf-8")
+    for term in ("issues: write", "pull-requests: write", "contents: write"):
+        if term in workflow_text:
+            failures.append({"scenario": "github collaboration hub workflow permissions", "expected": f"no {term}", "actual": "found"})
+
     return len(required_terms_by_path) + 1
 
 
@@ -1346,6 +1591,87 @@ def assert_build_attribution_contract(failures: list[dict[str, str]]) -> int:
     if "generated evidence only" not in str(payload.get("generated_report_warning")):
         failures.append({"scenario": "build attribution generated warning", "expected": "generated evidence only", "actual": str(payload.get("generated_report_warning"))})
     return len(required_terms_by_path) + 1
+
+
+def assert_prd_handoff_readiness_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-029-prd-handoff-readiness-packet.md"): [
+            "PRD Handoff Readiness Packet",
+            "scripts/prd-handoff-readiness.py",
+            "details.packet",
+            "MCP behavior",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "scripts/prd-handoff-readiness.py --prd <path>",
+            "PRD handoff readiness",
+            "generated evidence only",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "--target decomposition",
+            "PRD handoff blockers",
+            "before any bead activation",
+        ],
+        Path("tasks/reference/REVIEW-LANES-PROTOCOL.md"): [
+            "--target review",
+            "PRD-review evidence",
+            "does not approve the PRD",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "PRD handoff readiness is a separate advisory review",
+            "not the active-session Context Pack",
+            "not implementation acceptance",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "PRD Handoff Readiness Packet",
+            "details.packet",
+            "Do not approve the PRD",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "PRD Handoff Readiness Packet",
+            "python3 scripts/prd-handoff-readiness.py",
+            "Treat the packet as generated evidence only",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "PRD-029",
+            "scripts/prd-handoff-readiness.py",
+            "PRD handoff readiness cues",
+        ],
+        Path("llms.txt"): [
+            "scripts/prd-handoff-readiness.py",
+            "PRD Handoff Readiness Packet",
+            "do not approve PRDs",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"prd handoff readiness contract: {path}", "expected": term, "actual": "missing"})
+
+    module = load_prd_handoff_module()
+    self_test = module.self_test()
+    if self_test.get("status") != "pass":
+        failures.append({"scenario": "prd handoff readiness self-test", "expected": "pass", "actual": str(self_test.get("failures"))})
+    payload = module.build_payload(Path("tasks/prds/PRD-029-prd-handoff-readiness-packet.md"), "decomposition")
+    packet = (payload.get("details") or {}).get("packet") or {}
+    for key in [
+        "prd_status",
+        "requirement_ids",
+        "acceptance_oracle_coverage",
+        "candidate_bead_or_decomposition_readiness",
+        "proof_expectations",
+        "blockers",
+        "recommended_next_safe_action",
+    ]:
+        if key not in packet:
+            failures.append({"scenario": "prd handoff packet key", "expected": key, "actual": "missing"})
+    forbidden = " ".join(packet.get("forbidden_uses") or [])
+    for term in ["PRD approval", "bead activation", "implementation acceptance", "MCP behavior", "package-manager behavior"]:
+        if term not in forbidden:
+            failures.append({"scenario": "prd handoff forbidden use", "expected": term, "actual": forbidden})
+    if "generated evidence only" not in str(payload.get("generated_report_warning")):
+        failures.append({"scenario": "prd handoff generated warning", "expected": "generated evidence only", "actual": str(payload.get("generated_report_warning"))})
+    return len(required_terms_by_path) + 2
 
 
 def release_evidence_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
@@ -2331,12 +2657,15 @@ def main() -> int:
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
+    first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
     assert_review_lanes_contract(failures)
     team_collaboration_scenario_count = assert_team_collaboration_preview_contract(failures)
+    github_collaboration_scenario_count = assert_github_collaboration_hub_contract(failures)
     session_friction_scenario_count = assert_session_friction_review_contract(failures)
     build_attribution_scenario_count = assert_build_attribution_contract(failures)
+    prd_handoff_scenario_count = assert_prd_handoff_readiness_contract(failures)
     release_evidence_scenario_count = assert_verification_release_evidence_contract(failures)
     requirement_to_proof_scenario_count = assert_requirement_to_proof_contract(failures)
     reversal_scenario_count = assert_implemented_bead_reversal_contract(failures)
@@ -2845,6 +3174,7 @@ def main() -> int:
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
         + plan_loop_scenario_count
+        + first_prd_walkthrough_scenario_count
         + 1
         + 2
         + 1
@@ -2856,8 +3186,10 @@ def main() -> int:
         + requirement_to_proof_scenario_count
         + reversal_scenario_count
         + team_collaboration_scenario_count
+        + github_collaboration_scenario_count
         + session_friction_scenario_count
         + build_attribution_scenario_count
+        + prd_handoff_scenario_count
         + boundary_scenario_count
         + len(freshness_scenarios)
         + len(loop_scenarios),

@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-23
+Document version: v0.1.6
+Last updated: 2026-06-24
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -60,7 +60,8 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `scripts/candidate-queue.py`: local Candidate Queue preview/apply helper; preview is non-authority and apply requires explicit `--approve-action`.
 - `scripts/session-friction-check.py`: read-only Session Friction Review diagnostic; findings are generated evidence only and require manual promotion.
 - `scripts/build-attribution-ledger.py`: read-only Build Attribution Ledger diagnostic; who-built-what findings are generated evidence only and require closeout review.
-- `tasks/prds-html/*.html`: generated PRD review surface; Markdown PRDs remain canonical.
+- `scripts/prd-handoff-readiness.py`: read-only PRD Handoff Readiness Packet diagnostic; readiness packets are generated evidence only and do not approve PRDs or activate beads.
+- `tasks/prds-html/*.html`: generated PRD review surface with PRD handoff readiness cues and Acceptance Oracle export controls; Markdown PRDs remain canonical.
 - `OS-HEALTH.md`, `PROGRESS.md`, and `logs/*`: generated evidence only, not authority.
 
 ## Maintainer Context

@@ -55,6 +55,8 @@
     .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
     .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
     .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
     .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
     .status.superseded { background: #e5e7eb; color: #4b5563; }
     .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
@@ -144,6 +146,17 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for Local Hygiene v2 preview classification, protected generated evidence handling, and explicit no-mutation cleanup boundaries.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, cleanup approval, archive approval, delete approval, file mutation, evidence rewrite approval, generated report truth, implementation acceptance, or future cleanup-apply permission.</p>
+    
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 8</p>
+      <p><strong>Acceptance rows found:</strong> 5</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>acceptance oracle missing IDs: PRD-011-FR05, PRD-011-NFR01, PRD-011-SEC01</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+    
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>

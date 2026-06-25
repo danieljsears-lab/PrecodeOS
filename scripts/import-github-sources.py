@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-06-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -179,14 +179,113 @@ def append_jsonl(path: Path, entries: list[dict[str, Any]]) -> None:
             handle.write(json.dumps(entry, separators=(",", ":")) + "\n")
 
 
+def self_test() -> dict[str, Any]:
+    fixtures = [
+        {
+            "_source_kind": "issue",
+            "number": 101,
+            "title": "Feedback: setup docs were confusing",
+            "url": "https://github.example/precode/issues/101",
+            "state": "OPEN",
+            "author": {"login": "builder"},
+            "labels": [{"name": "feedback"}, {"name": "source-intake"}],
+            "body": "\n".join(
+                [
+                    "I need clearer setup docs for existing projects.",
+                    "Question: should I run Existing Repo Intake first?",
+                    "Success would mean the guide tells me what to check.",
+                ]
+            ),
+            "comments": [{"body": "This should stay source evidence until reviewed."}],
+            "createdAt": "2026-06-24T00:00:00Z",
+            "updatedAt": "2026-06-24T00:00:00Z",
+        },
+        {
+            "_source_kind": "issue",
+            "number": 102,
+            "title": "Package bug: validation message is misleading",
+            "url": "https://github.example/precode/issues/102",
+            "state": "OPEN",
+            "author": {"login": "maintainer"},
+            "labels": [{"name": "bug"}, {"name": "source-intake"}],
+            "body": "\n".join(
+                [
+                    "The package script should explain missing active bead state.",
+                    "Need reproduction steps and checks tried.",
+                    "Prevent this from approving repair automatically.",
+                ]
+            ),
+            "comments": [],
+            "createdAt": "2026-06-24T00:00:00Z",
+            "updatedAt": "2026-06-24T00:00:00Z",
+        },
+        {
+            "_source_kind": "pull_request",
+            "number": 103,
+            "title": "Docs: clarify GitHub intake",
+            "url": "https://github.example/precode/pull/103",
+            "state": "OPEN",
+            "author": {"login": "contributor"},
+            "labels": [{"name": "docs"}],
+            "body": "Done when docs explain that labels do not approve merge.",
+            "comments": [{"body": "Reviewer question: where is the promotion path?"}],
+            "reviewDecision": "REVIEW_REQUIRED",
+            "createdAt": "2026-06-24T00:00:00Z",
+            "updatedAt": "2026-06-24T00:00:00Z",
+        },
+    ]
+    entries = [normalize(fixture, f"fixture:{fixture['number']}") for fixture in fixtures]
+    markdown = render_markdown(entries)
+
+    failures: list[str] = []
+    expected_source_types = ["github_issue", "github_issue", "github_pull_request"]
+    actual_source_types = [entry.get("source_type") for entry in entries]
+    if actual_source_types != expected_source_types:
+        failures.append(f"source types mismatch: {actual_source_types}")
+    for expected_label in ("feedback", "bug", "source-intake", "docs"):
+        if not any(expected_label in (entry.get("labels") or []) for entry in entries):
+            failures.append(f"missing label: {expected_label}")
+    for entry in entries:
+        rule = str(entry.get("promotion_rule") or "")
+        if "evidence only" not in rule or "Local Source Intake Protocol" not in rule:
+            failures.append(f"bad promotion rule for #{entry.get('number')}")
+    for term in (
+        "These summaries are evidence only",
+        "must promote stable conclusions",
+        "Feedback: setup docs were confusing",
+        "Package bug: validation message is misleading",
+        "Docs: clarify GitHub intake",
+    ):
+        if term not in markdown:
+            failures.append(f"markdown missing: {term}")
+
+    return {
+        "tool": "import-github-sources",
+        "mode": "self-test",
+        "status": "pass" if not failures else "fail",
+        "fixture_count": len(fixtures),
+        "entry_count": len(entries),
+        "failures": failures,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Import GitHub issues or pull requests as generated source-intake evidence.")
-    group = parser.add_mutually_exclusive_group(required=True)
+    parser.add_argument("--self-test", action="store_true", help="run deterministic importer fixtures without network or writes")
+    group = parser.add_mutually_exclusive_group()
     group.add_argument("--issue", help="GitHub issue number to read with gh")
     group.add_argument("--pr", help="GitHub pull request number to read with gh")
     group.add_argument("--source", help="Local JSON export from gh issue/pr view")
     parser.add_argument("--dry-run", action="store_true", help="print normalized intake without writing logs")
     args = parser.parse_args()
+
+    if args.self_test:
+        payload = self_test()
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0 if payload["status"] == "pass" else 1
+
+    if not (args.issue or args.pr or args.source):
+        parser.error("one of --issue, --pr, --source, or --self-test is required")
 
     root = repo_root()
     if args.source:
