@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.3
+Document version: v0.2.4
 Last updated: 2026-06-24
 
 ## Purpose
 
 Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, create beads, or implement a net-new rough product idea.
 
-This workbook is the default PrecodeOS beginner idea path. It consolidates the older experimental Student Idea To MVE path into one clearer workbook:
+This workbook is the default PrecodeOS beginner idea path. It can be invoked directly, through Precode Idea Coach, or as the start of First PRD Walkthrough. First PRD Walkthrough is a plain-language entrypoint, not a new protocol, PRD shortcut, backlog, bead approval, or coding permission.
+
+The path is:
 
 ```text
 Idea -> Guided interview -> Product Brief -> Challenge And Clarity -> Evidence check -> optional learning/MVE framing -> Conviction Packet -> Local Source Intake
@@ -101,13 +103,7 @@ Stop the interview when the idea is clear enough for the next Precode step. Move
 
 ## Stop Before You Paste Sensitive Information
 
-Do not paste:
-
-- secrets, tokens, passwords, API keys, or credentials
-- dashboard values, billing details, payment data, or private customer data
-- private raw transcripts unless you are comfortable sharing them
-- sensitive personal data
-- production configuration values
+Do not paste secrets, credentials, billing or dashboard values, private customer records, raw private transcripts, sensitive personal data, or production configuration values.
 
 If something sensitive matters, use a safe placeholder:
 
@@ -120,40 +116,27 @@ The app will use a payment provider, but I am not pasting keys or dashboard valu
 ```text
 Act as my guided PrecodeOS product coach for the Product Ideation Workbook. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
 
-Help me research, ideate, challenge, and refine one product idea. Interview me one question at a time. Give me a recommended answer when useful, but do not decide for me. Use plain language, not product-management jargon. If you use a product-management term, define it in one sentence. Separate what I know, what I think, and what I need help deciding.
+Help me research, ideate, challenge, and refine one product idea. Interview me one question at a time. Give me a recommended answer when useful, but do not decide for me. Use plain language, not product-management jargon. Separate what I know, what I think, and what I need help deciding.
 
 First ask me to choose the builder lens that best fits this session:
 - Problem-rich operator or PM
 - Solo B2B founder
 - AI-curious creator or broad builder
 
-Stage 1: Orientation. Confirm we are discussing one idea, name the likely user type if known, and remind me not to paste secrets, credentials, billing data, private customer records, raw transcripts, dashboard values, production config, or sensitive personal data.
+Follow the workbook stages: Orientation, First Three Questions, Challenge And Clarity, Evidence And Assumption Check, optional Learning/MVE Framing, Candidate Capability Matrix, and Handoff.
 
-Stage 2: First Three Questions. Ask only high-level product or business questions at first. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
+After at most three high-level product or business questions, summarize progress using the Product Brief fields in this workbook. Challenge broad users, vague pain, missing current workaround, weak evidence, solution-first framing, feature piles, oversized MVP slices, and sensitive surfaces. Rate evidence strength as very weak, weak, medium, strong, or strongest. Treat online research as weak evidence unless it is paired with behavior, a current workaround, spend, switching effort, prototype use, payment, return visits, or another costly action.
 
-Stage 3: Challenge And Clarity. Challenge me supportively but firmly when my idea is vague, too broad, unsupported, solution-first, feature-first, risky, or too large. Force clear plain-English answers for the intended user, painful before moment, better after moment, current workaround or evidence, weakest assumption, and first useful slice.
+When the idea is clear enough, produce a Conviction Packet, Local Source Intake readiness, and Local Source Intake handoff prompt. If worth-building uncertainty is the main issue, recommend Product Discovery Validation instead of forcing a Conviction Packet.
 
-Stage 4: Evidence And Assumption Check. Rate evidence strength as very weak, weak, medium, strong, or strongest. Name the primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, and smallest non-code learning step. Treat online research as weak evidence unless it is paired with behavior, a current workaround, spend, switching effort, prototype use, payment, return visits, or another costly action.
-
-Stage 5: Optional Learning/MVE Framing. If the idea is still too abstract, help me define the smallest complete useful payoff, a visible iteration, and a core workflow spine. Keep this as evidence only, not implementation approval.
-
-Stage 6: Candidate Capability Matrix. Translate possible features into candidate capabilities, not approved requirements, with this matrix:
-
-| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
-|---|---|---|---|---|---|---|
-
-Stage 7: Handoff. When the idea is clear enough, produce a Conviction Packet, Local Source Intake readiness, and Local Source Intake handoff prompt. If worth-building uncertainty is the main issue, recommend Product Discovery Validation instead of forcing a Conviction Packet.
-
-Do not write code. Do not create a PRD. Do not create beads. Do not update PRODUCT.md. Do not create a roadmap or backlog. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
+Evidence only; no PRD, beads, owner-file edits, roadmap or backlog, or code.
 
 Start by asking me to describe the product idea in plain English and choose the closest builder lens.
 ```
 
 ## Product Brief
 
-After at most three high-level questions, ask the agent to summarize progress.
-
-The Product Brief is evidence only. It does not approve a PRD, create beads, update `PRODUCT.md`, or permit coding.
+After at most three high-level questions, ask the agent to summarize progress. Evidence only; no PRD, beads, owner-file edits, or code.
 
 Product Brief:
 
@@ -391,8 +374,6 @@ Self-check: continue when this names one user, one complete value moment, explic
 
 Use this when you already have material and want the agent to think with it before you commit to PRD shaping. The loop can use Product Briefs, workbook notes, rough feature lists, research snippets, user quotes, chat summaries, screenshots, sketches, Candidate Goal Frames, and prior not-yet ideas.
 
-The agent should summarize the current shape, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.
-
 ```text
 Use the Exploration Loop on the content I already have.
 
@@ -404,12 +385,12 @@ Translate user moments into capability candidates, not approved features. Sort c
 
 End with an Exploration Evidence Packet and a compact capability-candidate matrix.
 
-Treat the output as evidence only. Do not call it a feature list, roadmap, backlog, requirements, or PRD. If useful not-yet ideas should not be lost, propose Candidate Queue entries for later review. Do not write a PRD, create beads, update PRODUCT.md, or code.
+Evidence only; no feature list, roadmap, backlog, requirements, PRD, beads, owner-file edits, or code.
 ```
 
 ## Candidate Capability Matrix
 
-These are candidate capabilities, not approved features, a backlog, requirements, or permission to code. After Local Source Intake, some may become Candidate Queue entries if the user wants to park them for research, ranking, or future promotion review.
+These are candidate capabilities, not approved features, a backlog, requirements, or permission to code. Reviewed not-yet ideas or capability candidates may become Candidate Queue entries later, but the queue is not task authority.
 
 | Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
 |---|---|---|---|---|---|---|
@@ -446,64 +427,86 @@ Create a concise Conviction Packet / Precode Ingestion Packet from this workbook
 Treat the workbook as evidence, not authority. Do not draft PRODUCT.md. Do not create a PRD. Do not propose active work. Summarize only the stable and decision-relevant material, using PRD-ready context to find gaps without expanding the packet.
 
 Use this format:
-- Product idea summary:
-- Builder lens:
-- Intended user and job:
-- Painful before moment:
-- Better after moment:
-- Current alternatives or workarounds:
-- Problem or pain evidence:
-- Evidence strength:
-- Primary hypothesis / learning target:
-- Strongest evidence:
-- Weakest assumption:
-- What would change my mind:
-- Demand or pricing signal:
-- Source-cited research summary:
-- Optional visible iteration summary:
-- Optional core workflow spine:
-- Smallest complete useful payoff:
-- MVP-ready first slice:
-- Smallest non-code learning step:
-- Local Source Intake readiness:
-- Capability candidates:
-- Stable facts:
-- Assumptions:
-- Open questions:
-- Candidate product constitution updates:
-- Candidate feature or PRD ideas:
-- Candidate non-goals:
-- Not-yet list:
-- Success signals:
-- Risks and sensitive surfaces:
-- Candidate Goal Frame For Precode Review, only if durable intent is clear:
-  - Goal:
-  - Why now:
-  - Success signal:
-  - Out of scope:
-  - Approval gates:
-  - Reaffirmation trigger:
-  - Suggested owner file:
-- PRD-ready context notes:
-- Likely owner files:
-- Recommended Precode next step:
-- Local Source Intake handoff prompt:
+- Idea:
+  - Product idea summary:
+  - Builder lens:
+- User / problem:
+  - Intended user and job:
+  - Painful before moment:
+  - Better after moment:
+  - Current alternatives or workarounds:
+- Evidence:
+  - Problem or pain evidence:
+  - Evidence strength:
+  - Primary hypothesis / learning target:
+  - Hypothesis review status, only if already reviewed:
+  - Strongest evidence:
+  - Weakest assumption:
+  - What would change my mind:
+  - Demand or pricing signal:
+  - Source-cited research summary:
+- Scope:
+  - Optional visible iteration summary:
+  - Optional core workflow spine:
+  - Smallest complete useful payoff:
+  - MVP-ready first slice:
+  - Smallest non-code learning step:
+  - Capability candidates:
+  - Not-yet list:
+- Risks:
+  - Assumptions:
+  - Open questions:
+  - Risks and sensitive surfaces:
+- Promotion candidates:
+  - Stable facts:
+  - Candidate product constitution updates:
+  - Candidate feature or PRD ideas:
+  - Candidate non-goals:
+  - Success signals:
+  - Candidate Goal Frame For Precode Review, only if durable intent is clear:
+    - Goal:
+    - Why now:
+    - Success signal:
+    - Out of scope:
+    - Approval gates:
+    - Reaffirmation trigger:
+    - Suggested owner file:
+- Next Precode step:
+  - Local Source Intake readiness:
+  - PRD-ready context notes:
+  - Likely owner files:
+  - Recommended Precode next step:
+  - Local Source Intake handoff prompt:
 
-End with: "This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. Not-yet ideas may be proposed as Candidate Queue entries after review, but the queue is not task authority. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
+End with: "This Conviction Packet is evidence only. It is not a PRD, not a backlog, not product approval, not a bead, and not permission to code. Candidate Queue entries and Hypothesis Review status are evidence and review mechanics only; they do not rank work, approve product direction, or authorize implementation. The Candidate Goal Frame is evidence only. It is not a Goal Frame yet, not a plan, not a task list, and not permission to update PRODUCT.md. Do not edit PRODUCT.md or create a PRD until the user reviews this intake summary."
 ```
+
+## Recommended Next Precode Step
+
+Use this chooser after the Conviction Packet:
+
+| If the packet shows... | Recommend... |
+|---|---|
+| Reviewed packet with enough stable source material | Local Source Intake |
+| Weak, broad, paid, market-facing, evidence-poor, or solution-first idea | Product Discovery Validation |
+| Useful not-yet idea or capability that should not be lost | Candidate Queue proposal after review |
+| Post-intake or post-PRD feature-angle uncertainty | Plan Loop |
+| Need to learn from a tiny real-repo prototype | Build-React-Learn later, through a normal approved bead |
+
+Do not route directly from the workbook to PRD approval, feature compilation, bead activation, `tasks/todo.md`, or code.
 
 ## Product Discovery Validation Fallback
 
 If worth-building uncertainty is the main issue, do not force a Conviction Packet. Run Product Discovery Validation first.
 
-Use Product Discovery Validation when the idea is broad, risky, market-facing, paid, evidence-poor, solution-first, lacks a named current workaround, touches sensitive trust surfaces, or has a first slice too large to throw away.
+Use Product Discovery Validation when the idea is broad, risky, market-facing, paid, evidence-poor, solution-first, lacks a named current workaround, touches sensitive trust surfaces, or has a first slice too large to throw away. The detailed rules live in `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`.
 
 ```text
 Use Product Discovery Validation on this idea.
 
 Interview me one question at a time. Challenge assumptions supportively. Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
 
-Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
+Evidence only; no PRD, beads, owner-file edits, or code.
 ```
 
 ## Local Source Intake Handoff
@@ -513,7 +516,7 @@ When the packet is ready, bring only the reviewed packet into Precode with this 
 ```text
 Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat the packet as source evidence only. Summarize stable conclusions, assumptions, primary hypothesis or learning target, open questions, risks, Local Source Intake readiness, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
+Treat the packet as source evidence only. Summarize stable conclusions, assumptions, primary hypothesis or learning target, Hypothesis review status if already reviewed, open questions, risks, Local Source Intake readiness, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
 ```
 
 ## Close-The-Loop Prompt
@@ -525,5 +528,5 @@ Stop challenging and produce the requested output now.
 
 Only ask another question if the answer would prevent an unsafe, impossible, misleading, or implementation-changing output. Move all non-blocking concerns to Defer / Not yet. Keep the output beginner-safe, concrete, and scoped to the first useful version.
 
-Remember: this workbook is evidence, not authority. Do not edit PRODUCT.md, create a PRD, create beads, or write code.
+Evidence only; no PRD, beads, owner-file edits, or code.
 ```
