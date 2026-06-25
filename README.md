@@ -19,7 +19,7 @@ PrecodeOS brings proven engineering discipline, practices and patterns to AI-ass
 
 It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. 
 
-PrecodeOS keeps its active AI-agent context to 219 lines across three files.
+PrecodeOS keeps its active AI-agent context to 219 lines across three files. Yep, it's super tiny.
 
 PrecodeOS cares about:
 
@@ -40,13 +40,13 @@ It uses build loops, bead contracts, recorded checks, advisory loop health, clos
 
 It lives inside a repository as Markdown owner files, execution contracts, validation scripts, compilers, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents, and it does not run the agent; you run the agent.
 
-Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel under fast AI workflows. It keeps software work human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces instead of hidden chat assumptions.
+Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps software work human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces instead of hidden chat assumptions.
 
 ## Who It's For
 
 PrecodeOS is for solo builders who want the speed and capability of AI coding agents without relinquishing control of the project to the agent.
 
-It helps builders, especially non-technical builders, create production-grade software by preserving project truth: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the thread gets lost. 
+It helps builders, especially non-technical builders, create production-grade software by preserving project truth: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the thread gets lost through structured context and persistent artifacts.
 
 Its core differentiators are tiny active memory, explicit authority ownership, one current execution unit, recorded evidence, advisory next-step guidance, file-scope guardrails, and human-gated transitions.
 

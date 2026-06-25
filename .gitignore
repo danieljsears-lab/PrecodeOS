@@ -19,6 +19,8 @@ logs/*.yaml
 
 # Local agent, editor, and IDE state
 .agent-state/
+.hatch/
+.hatch-pet-runs/
 .claude/
 .codex/
 .cursor/

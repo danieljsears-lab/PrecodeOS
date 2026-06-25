@@ -1,9 +1,0 @@
-{
-  "ok": true,
-  "run_dir": "/Users/danielsears/Projects/precode-os/.hatch-pet-runs/scout",
-  "spritesheet": "/Users/danielsears/Projects/precode-os/.hatch-pet-runs/scout/final/spritesheet.webp",
-  "validation": "/Users/danielsears/Projects/precode-os/.hatch-pet-runs/scout/final/validation.json",
-  "contact_sheet": "/Users/danielsears/Projects/precode-os/.hatch-pet-runs/scout/qa/contact-sheet.png",
-  "review": "/Users/danielsears/Projects/precode-os/.hatch-pet-runs/scout/qa/review.json",
-  "package": "/Users/danielsears/.codex/pets/scout"
-}
