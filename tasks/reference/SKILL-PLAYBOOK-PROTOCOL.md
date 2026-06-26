@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-23
+Document version: v0.1.16
+Last updated: 2026-06-26
 
 ## Purpose
 
@@ -42,6 +42,12 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when de
 | Optional pack | Defer | Useful only after the kernel, setup path, manifest, and update boundaries are quieter. |
 
 A prompt playbook may tell an agent to inspect files and summarize. It must not tell an agent to edit files, write generated evidence, approve transitions, run installers, mutate external systems, or treat command output as authority.
+
+## Daily Prompt Alias Boundary
+
+Daily prompt aliases are a compact invocation layer for students using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Choose, Confirm, Build, Prove, Close, Recover, and Fallback, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
+
+Aliases are not command wrappers, packaged skills, optional packs, registries, active memory, generated evidence, approval surfaces, or task-selection surfaces. They do not reduce the Skill Surface Model: v1 remains prompt playbook first, with read-only command wrappers deferred until a separate package decision.
 
 ## Implemented Prompt Playbooks
 

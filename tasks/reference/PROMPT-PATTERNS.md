@@ -9,14 +9,49 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.42
-Last updated: 2026-06-24
+Document version: v0.1.43
+Last updated: 2026-06-26
 
 ## Purpose
 
 These prompts help a non-technical builder operate Precode without memorizing every protocol.
 
 They are prompts, not authority. The agent must still follow active memory, the active bead, the primary authority file, and the relevant Precode protocol.
+
+## Daily Prompt Aliases
+
+These aliases are the lean student-facing layer for `docs/PRECODE-DAILY-COCKPIT.md`. They are shorthand for the expanded prompts in this catalog and the owner protocols. They must not become command-wrapper behavior, active memory, task authority, generated proof, PRD approval, bead activation, review acceptance, transition approval, release approval, setup/update permission, rollback permission, or external mutation permission.
+
+Alias guardrail floor:
+
+- Load active memory, the active bead, the primary authority file, and only the references whose `LOAD_WHEN` applies before current-state work.
+- Treat generated reports, logs, source notes, screenshots, transcripts, imported issues, handoffs, journals, ledgers, and previews as evidence only.
+- Stop and ask before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
+- Use the expanded prompt below when the moment is setup, recovery, release, review, team coordination, reversal, or any sensitive surface.
+
+| Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
+|---|---|---|
+| Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Start The Session |
+| Ask Precode | `Ask Precode: answer my stable docs question and cite the source files.` | Ask A Stable Docs Question |
+| Choose | `Choose: use Workflow Selection before work starts.` | Choose The Right Workflow |
+| First PRD | `First PRD: use First PRD Walkthrough for my rough idea.` | First PRD Walkthrough |
+| Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
+| Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
+| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
+| Acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clarify Acceptance Criteria / Make Acceptance Criteria Testable |
+| Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | Confirm The Task Before Editing |
+| Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
+| Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
+| Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
+| Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
+| Trace | `Trace: map this requirement or bug behavior to proof.` | Requirement-To-Proof Review |
+| Attribution | `Attribution: review who-built-what evidence.` | Build Attribution Review |
+| Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | Implemented Bead Reversal Workflow |
+| Ralph | `Ralph: run a bounded dry run only.` | Run A Bounded Ralph Attempt |
+| Learn | `Learn: explain the learning diary, bead journal, and attribution evidence.` | Daily Learning Loop |
+| Close | `Close: run session close and summarize changes, checks, blockers, and approvals.` | Close The Session |
+| Recover | `I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
+| Fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | No-Engineer Fallback Prompt Pack |
 
 ## Safe Prompt Pack
 

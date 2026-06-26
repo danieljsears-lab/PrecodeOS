@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.25
-# Last updated: 2026-06-24
+# Version: v0.1.26
+# Last updated: 2026-06-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -288,6 +288,55 @@ def assert_session_start_router_delegation(failures: list[dict[str, str]]) -> No
         failures.append({"scenario": "session-start router delegation", "expected": "python3 scripts/next-step.py", "actual": "missing"})
     elif router_label != -1 and next_step_call < router_label:
         failures.append({"scenario": "session-start router delegation order", "expected": "next-step after Router Decision label", "actual": text[router_label:next_step_call]})
+
+
+def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Quick Daily Loop",
+            "Lean prompt alias",
+            "active memory and owner files stay authoritative",
+            "generated reports stay evidence only",
+            "explicit approval is still required",
+            "Start: run the Precode session start",
+            "Choose: use Workflow Selection",
+            "Confirm: name the active bead",
+            "Build: work only on the active bead",
+            "Prove: show recorded evidence",
+            "Close: run session close",
+            "I am stuck, help me.",
+            "Fallback: use the No-Engineer Fallback Prompt Pack",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Daily Prompt Aliases",
+            "Alias guardrail floor",
+            "must not become command-wrapper behavior",
+            "Treat generated reports, logs, source notes, screenshots, transcripts, imported issues, handoffs, journals, ledgers, and previews as evidence only",
+            "Start: run the Precode session start",
+            "Choose: use Workflow Selection",
+            "Build: work only on the active bead",
+            "Close: run session close",
+            "No-Engineer Fallback Prompt Pack",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Daily Prompt Alias Boundary",
+            "Start, Choose, Confirm, Build, Prove, Close, Recover, and Fallback",
+            "not command wrappers",
+            "v1 remains prompt playbook first",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Daily Prompt Alias Boundary",
+            "Daily Prompt Aliases",
+            "compact invocation shorthand",
+            "expanded backing catalog",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"daily prompt alias contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -2650,6 +2699,7 @@ def main() -> int:
 
     recovery_fixture_scenarios = recovery_scenario_fixtures()
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
+    daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3166,6 +3216,7 @@ def main() -> int:
         "scenario_count": len(next_scenarios)
         + len(router_contract_scenarios)
         + 1
+        + daily_prompt_alias_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
