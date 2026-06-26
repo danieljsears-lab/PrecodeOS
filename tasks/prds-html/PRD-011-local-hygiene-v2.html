@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for Local Hygiene v2 preview classification, protected generated evidence handling, and explicit no-mutation cleanup boundaries.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, cleanup approval, archive approval, delete approval, file mutation, evidence rewrite approval, generated report truth, implementation acceptance, or future cleanup-apply permission.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-011-FR05, PRD-011-NFR01, PRD-011-SEC01</li><li>Agent Context Contract is missing</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-011-FR01</code></td><td>Local Hygiene must classify preview rows as <code>candidate</code>, <code>protected</code>, <code>unexpected_review</code>, or <code>not_candidate</code>.</td><td>P0</td><td>Stable JSON fields required.</td></tr><tr><td><code>PRD-011-FR02</code></td><td>Preview rows must include <code>candidate_id</code>, <code>classification</code>, <code>action</code>, <code>path</code>, <code>mutates_now: false</code>, <code>approval_required</code>, reason fields, and rollback notes.</td><td>P0</td><td>Generated evidence only.</td></tr><tr><td><code>PRD-011-FR03</code></td><td><code>logs/os-checkpoints/*</code> must be treated as protected generated evidence, not unexpected clutter.</td><td>P0</td><td>OS checkpoints remain evidence.</td></tr><tr><td><code>PRD-011-FR04</code></td><td>Local Hygiene commands must keep stable public names and remain non-mutating.</td><td>P0</td><td>No cleanup/apply flag in this slice.</td></tr><tr><td><code>PRD-011-FR05</code></td><td><code>scripts/local-hygiene-dry-run.py --self-test</code> must cover representative v2 classifications.</td><td>P1</td><td>Fast deterministic check.</td></tr><tr><td><code>PRD-011-FR06</code></td><td>Public docs, package inventory, roadmap, roadmap journal, generated surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-011-local-hygiene-v2.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-011-FR06` | Docs and generated reading surfaces are fresh. | docs, PRD HTML, roadmap HTML, inventory, and version checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Destructive actions: explicitly out of scope.</li><li>Generated evidence: protected from cleanup mutation.</li><li>Tool/session state: never cleared by Local Hygiene.</li><li>Private local state: not a cleanup target.</li></ul>

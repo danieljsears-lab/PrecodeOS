@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.61
-Last updated: 2026-06-24
+Document version: v0.7.62
+Last updated: 2026-06-26
 
 
 
@@ -35,6 +35,18 @@ Put raw reference material for the project in root-level `project-evidence/`: no
 If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBOOK.md`. If setup, active state, validation, or generated reports feel wrong, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
+
+## Choose The Right Artifact
+
+If you know the kind of moment you are in but do not know which Precode prompt or artifact to use, start with the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md`.
+
+Use it as an index, not as task approval. Rough ideas go to First PRD Walkthrough or Precode Idea Coach. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
+
+If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.
+
+```text
+Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me. Do not create tasks, approve a PRD, activate a bead, accept implementation, approve release, or code.
+```
 
 ## Before Your Repo Exists
 

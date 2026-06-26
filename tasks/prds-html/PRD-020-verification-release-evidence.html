@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for advisory verification-to-release evidence traceability in PrecodeOS.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, review acceptance, implementation acceptance, release approval, deployment approval, generated proof, package release management, provider checklist, external mutation, GitHub mutation, package-manager behavior, release-channel behavior, or evidence-report authority.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-020-FR02, PRD-020-FR03, PRD-020-FR07, PRD-020-NFR01, PRD-020-NFR02, PRD-020-NFR03, PRD-020-SEC01, PRD-020-SEC02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-020-FR01</code></td><td>Add verification and release evidence review guidance to Release Readiness Protocol.</td><td>P0</td><td>Human-authored traceability fields only.</td></tr><tr><td><code>PRD-020-FR02</code></td><td>Release evidence should name requirement or behavior proven, evidence lane, recorded check or manual source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, and decision state.</td><td>P0</td><td>Uses existing tier names.</td></tr><tr><td><code>PRD-020-FR03</code></td><td>Verification Guardrail and Session Completion/Handoff protocols must route release-relevant closeout to this proof path when release confidence depends on it.</td><td>P0</td><td>Does not weaken sensitive-surface gates.</td></tr><tr><td><code>PRD-020-FR04</code></td><td><code>completion-check.py</code> must expose advisory release-evidence details through compiled completion/handoff output.</td><td>P0</td><td>No new command or report.</td></tr><tr><td><code>PRD-020-FR05</code></td><td>Advisory warnings must cover missing release profile fields, missing release-readiness fields, review-input-only evidence claims, and missing requirement/behavior-to-proof trace.</td><td>P0</td><td>Warning only.</td></tr><tr><td><code>PRD-020-FR06</code></td><td>Prompt Patterns, User Guide, Bead Schema, and package inventory must expose copyable guidance and public package ownership.</td><td>P1</td><td>User-facing discoverability.</td></tr><tr><td><code>PRD-020-FR07</code></td><td>Clarity scenarios must pin complete, incomplete, review-input-only, and non-approval behavior.</td><td>P1</td><td>Deterministic local regression.</td></tr><tr><td><code>PRD-020-FR08</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-020-verification-release-evidence.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-020-FR08` | Roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, GitHub mutation, external-service mutation, production configuration change, or package release action.</li><li>Stop if the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, decision state, approval owner, or remaining uncertainty is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

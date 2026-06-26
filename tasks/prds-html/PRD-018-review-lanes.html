@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for optional advisory review lanes attached to active beads.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, command approval, follow-up task creation, external mutation, GitHub mutation, package-manager behavior, or a persona system.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-018-FR06, PRD-018-FR07, PRD-018-NFR01, PRD-018-NFR02, PRD-018-NFR03, PRD-018-SEC01, PRD-018-SEC02, PRD-018-SEC03</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-018-FR01</code></td><td>Add a Review Lanes Protocol that defines advisory lane use, required inputs, output fields, lane templates, promotion paths, and forbidden actions.</td><td>P0</td><td>Owner protocol.</td></tr><tr><td><code>PRD-018-FR02</code></td><td>V1 must include exactly two lane templates: Security Review Lane and Release / Docs Freshness Review Lane.</td><td>P0</td><td>Avoid lane sprawl.</td></tr><tr><td><code>PRD-018-FR03</code></td><td>Lane output must include lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-018-FR04</code></td><td>Bead Schema must describe Review Lanes as optional bead-body or closeout guidance only, not required frontmatter.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-018-FR05</code></td><td>Prompt Patterns and User Guide must include copyable prompts for invoking and reviewing the two lanes.</td><td>P0</td><td>User-facing invocation.</td></tr><tr><td><code>PRD-018-FR06</code></td><td>Package inventory must list the new PRD and protocol as public package surfaces.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-018-FR07</code></td><td>Clarity scenario coverage must check lane names, output fields, and forbidden actions.</td><td>P1</td><td>Text contract only.</td></tr><tr><td><code>PRD-018-FR08</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-018-review-lanes.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-018-FR08` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Public protocols and docs: changed to expose the lane.</li><li>PRD shard: added as destination authority for this package capability.</li><li>Generated HTML: regenerated as reading/review surfaces only.</li><li>Existing review, release-readiness, and verification behavior: not replaced.</li><li>External systems: not touched.</li></ul>

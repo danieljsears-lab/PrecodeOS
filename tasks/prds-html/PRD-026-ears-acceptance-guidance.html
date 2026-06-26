@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Public requirements for optional EARS-style acceptance-writing guidance across acceptance, PRD, prompt, and user docs.</p>
     <p><strong>Not authority:</strong> Active memory, product decisions, PRD approval, bead activation, implementation acceptance, generated proof, required PRD schema, required acceptance syntax, checker gate, command wrapper, registry, optional pack, package-manager behavior, route structure, schema definitions, or implementation status.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-026-NFR01, PRD-026-NFR02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-026-FR01</code></td><td><code>ACCEPTANCE.md</code> must define the optional <code>WHEN [condition/event] THE SYSTEM SHALL [expected behavior]</code> pattern with plain examples.</td><td>P0</td><td>Acceptance owner surface.</td></tr><tr><td><code>PRD-026-FR02</code></td><td>PRD protocol/template/schema guidance must mention optional EARS-style phrasing near acceptance oracles without changing table shape.</td><td>P0</td><td>No schema change.</td></tr><tr><td><code>PRD-026-FR03</code></td><td>Prompt Patterns, User Guide, and Daily Cockpit must include copyable guidance for clarifying vague acceptance criteria.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-026-FR04</code></td><td>Clarity scenario coverage must protect optionality, non-enforcement, no checker, no generated proof, no PRD approval, and no implementation authority.</td><td>P0</td><td>Text-contract fixture only.</td></tr><tr><td><code>PRD-026-FR05</code></td><td>Package inventory, README or AI navigation, maintainer changelog, roadmap, roadmap journal, generated docs, generated PRD HTML, and generated roadmap HTML must be updated as needed.</td><td>P1</td><td>Package-maintenance follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-026-ears-acceptance-guidance.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-026-FR05` | WHEN generated surfaces are checked THE SYSTEM SHALL keep docs, PRD HTML, and roadmap HTML fresh from canonical Markdown. | docs/PRD/roadmap checks | Read generated surfaces. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before PRD approval, owner-file updates, bead creation or activation, implementation, review acceptance, generated surface promotion, external mutation, or any new checker/command behavior beyond the approved text-contract fixture.</li><li>Stop if guidance starts requiring EARS syntax, rejecting clear non-EARS criteria, changing PRD table schema, treating wording as proof, or implying Kiro import/runtime behavior.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

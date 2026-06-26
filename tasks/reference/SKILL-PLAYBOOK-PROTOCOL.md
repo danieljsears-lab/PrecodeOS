@@ -49,6 +49,12 @@ Daily prompt aliases are a compact invocation layer for students using `docs/PRE
 
 Aliases are not command wrappers, packaged skills, optional packs, registries, active memory, generated evidence, approval surfaces, or task-selection surfaces. They do not reduce the Skill Surface Model: v1 remains prompt playbook first, with read-only command wrappers deferred until a separate package decision.
 
+## Artifact Chooser Boundary
+
+The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is a prompt-catalog index over existing Precode artifacts. It may help a user map a moment to a prompt, artifact, required owner source, and stop condition, but it must route current-state decisions to Workflow Selection.
+
+The chooser is not a skill playbook, command wrapper, template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, active memory, generated evidence, approval surface, or implementation surface. It does not approve PRDs, activate beads, accept review, approve release, choose work, or promote generated prompt output into authority.
+
 ## Implemented Prompt Playbooks
 
 ### Ask Precode Docs Skill

@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Public requirements for Candidate Queue shaping, product-value ratings, themes, near-bead sketches, and approval-gated queue writeback.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation priority, generated authority, project-board authority, automatic product judgment, LLM/API behavior, or permission to code.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-021-FR02, PRD-021-FR03, PRD-021-FR04, PRD-021-FR08, PRD-021-NFR01, PRD-021-NFR02, PRD-021-NFR03, PRD-021-SEC01</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-021-FR01</code></td><td>Candidate Queue must define a Global Theme Index and reviewed shaping fields.</td><td>P0</td><td>Public Markdown remains canonical.</td></tr><tr><td><code>PRD-021-FR02</code></td><td>Queue entries must support shaping status, product-value rating, product-value rationale, themes, raw source pointer, near-bead sketches, sketch status, dependencies, likely authority, likely verification, and weakest assumption.</td><td>P0</td><td>Fields may be blank until reviewed.</td></tr><tr><td><code>PRD-021-FR03</code></td><td>Product-value ratings <code>P0</code>/<code>P1</code>/<code>P2</code>/<code>P3</code> must mean product value only.</td><td>P0</td><td>Not review order, task priority, sprint order, or implementation permission.</td></tr><tr><td><code>PRD-021-FR04</code></td><td>Near-bead sketches must use IDs like <code>CQ-001-S01</code> and never <code>B###</code>.</td><td>P0</td><td>Final bead IDs are assigned only when bead files are created.</td></tr><tr><td><code>PRD-021-FR05</code></td><td><code>scripts/candidate-queue.py --preview-import &amp;lt;path&amp;gt;</code> must produce minimal queue-entry actions with IDs like <code>CQA-001</code>.</td><td>P0</td><td>Title, source pointer, short summary, open questions, privacy warning only.</td></tr><tr><td><code>PRD-021-FR06</code></td><td><code>scripts/candidate-queue.py --preview-shaping &amp;lt;path&amp;gt;</code> must validate agent-authored proposal JSON containing candidate ID, themes, product-value rating, rationale, and near-bead sketches.</td><td>P0</td><td>The script validates; it does not invent product judgment.</td></tr><tr><td><code>PRD-021-FR07</code></td><td><code>--apply --approve-action &amp;lt;ID&amp;gt;</code> must be required for writeback and must apply only approved action IDs to <code>CANDIDATE-QUEUE.md</code>.</td><td>P0</td><td>No direct writeback.</td></tr><tr><td><code>PRD-021-FR08</code></td><td>Script output must support <code>--json</code> and clearly state <code>mutates_now: false</code>, generated preview is not authority, apply requires <code>--approve-action</code>, ratings are not implementation priority, and sketches are not bead files.</td><td>P0</td><td>Plain and JSON output.</td></tr><tr><td><code>PRD-021-FR09</code></td><td>Self-test must cover parser, preview, apply refusal without approval, approved writeback, invalid P-ranks, forbidden <code>B###</code> IDs, unknown candidate IDs, and no <code>tasks/todo.md</code> mutation.</td><td>P0</td><td>No network or external mutation.</td></tr><tr><td><code>PRD-021-FR10</code></td><td>Related protocols, user docs, package inventory, <code>llms.txt</code>, generated docs, maintainer changelog, and roadmap surfaces must be updated.</td><td>P1</td><td>Public package follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-021-candidate-queue-shaping-ranked-decomposition.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-021-FR10` | Docs and generated surfaces are current. | inventory, docs HTML, PRD HTML, roadmap HTML checks | Read docs. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before queue writeback, PRD creation or approval, bead creation or activation, active-memory edits, <code>tasks/todo.md</code> edits, implementation, external mutation, deployment, release, or package-manager behavior.</li><li>Stop if source notes contain secrets or private raw material, if the candidate ID is unknown, if a proposal contains <code>B###</code>, if product-value rationale is missing, if likely authority is unclear, or if the next path would skip Local Source Intake, Product Discovery, PRD, decision, owner-file, or Decomposition Protocol gates.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

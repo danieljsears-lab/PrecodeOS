@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.21
-Last updated: 2026-06-23
+Document version: v0.1.22
+Last updated: 2026-06-26
 
 ## Purpose
 
@@ -41,6 +41,8 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when an
 Future host shims and native rule-directory surfaces must start as advisory compatibility notes in `adapters/ADAPTER-INDEX.md` or a specific adapter, then pass extension review before they become shipped Precode surfaces. Do not add broad host support promises from speculative model, IDE, agent, pricing, quota, or cloud-runner behavior.
 
 Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
+
+The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over existing prompts and artifacts, not an extension type. Do not treat it as a template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, skill playbook, command wrapper, or approval surface. If artifact selection depends on active state, route through Workflow Selection or the owning protocol.
 
 Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, embedding layer, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior. `memory-check.py --retrieval-review` is a readiness review only: it may show token pressure, card hygiene, and query miss evidence, but it does not approve a backend.
 

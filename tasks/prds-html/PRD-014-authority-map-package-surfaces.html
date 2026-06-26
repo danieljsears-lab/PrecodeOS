@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for generated package-surface authority-map refinements.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, implementation acceptance, generated evidence truth, private maintainer authority, package-manager behavior, install/update behavior, command-wrapper behavior, registry behavior, optional-pack behavior, or release approval.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-014-NFR01, PRD-014-NFR02, PRD-014-SEC01, PRD-014-SEC02</li><li>Agent Context Contract is missing</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-014-FR01</code></td><td><code>logs/authority-map.json</code> must include <code>surface_classes</code> with class-level authority and non-authority boundaries.</td><td>P0</td><td>Covers active memory, owner/reference docs, protocols, PRDs, beads, templates, adapters, shims, generated public HTML, generated reports/sidecars, scripts, workflows, and maintainer-private surfaces.</td></tr><tr><td><code>PRD-014-FR02</code></td><td><code>logs/authority-map.json</code> must include <code>docs_by_surface</code> grouped from parsed authority contracts.</td><td>P0</td><td>Preserve current parsed-document source.</td></tr><tr><td><code>PRD-014-FR03</code></td><td>The existing flat <code>docs</code> array must remain available.</td><td>P0</td><td>Avoid breaking current readers.</td></tr><tr><td><code>PRD-014-FR04</code></td><td>The generated map must state that generated output is not authority and that private maintainer surfaces are excluded from public generated detail.</td><td>P0</td><td>Boundary flags are explicit.</td></tr><tr><td><code>PRD-014-FR05</code></td><td>Public inventory and relevant protocols must document the refined map without making it an approval surface.</td><td>P1</td><td>Inventory owns public package orientation.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-014-authority-map-package-surfaces.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-014-FR05` | Inventory and protocols describe the map and boundaries. | docs HTML and inventory checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Active memory: unchanged.</li><li>Authority model: clarified through generated evidence and public docs, not changed by generated output.</li><li>Private maintainer material: named as a class boundary but not exposed as public generated detail.</li><li>Generated evidence: remains evidence only.</li><li>External systems: not touched.</li></ul>

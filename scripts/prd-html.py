@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.0
-# Last updated: 2026-06-14
+# Version: v0.2.1
+# Last updated: 2026-06-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -64,7 +64,8 @@ def read_text(path: Path) -> str:
 
 def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    normalized = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
+    path.write_text(normalized, encoding="utf-8")
 
 
 def h(value: Any) -> str:

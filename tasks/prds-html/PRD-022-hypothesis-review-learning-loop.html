@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Public requirements for the Hypothesis Review / Learning Loop advisory protocol and checker coverage across discovery, source intake, Candidate Queue, PRD source inputs, and Planning Briefs.</p>
     <p><strong>Not authority:</strong> Active memory, product decisions, PRD approval, Candidate Queue ranking, task selection, bead activation, implementation priority, generated proof, analytics requirements, experiment database, dashboard, command wrapper, registry, optional pack, package-manager behavior, route structure, schema definitions, or implementation status.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-022-FR04, PRD-022-FR07, PRD-022-NFR01, PRD-022-NFR02, PRD-022-SEC01, PRD-022-SEC02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-022-FR01</code></td><td>Add a Hypothesis Review / Learning Loop Protocol with pre-PRD and post-planning load conditions.</td><td>P0</td><td>Must not require one active bead.</td></tr><tr><td><code>PRD-022-FR02</code></td><td>Protocol output must include review target, authority checked, hypothesis or learning target, evidence reviewed, learning status, learning outcome, stale or untested signals, recommended next workflow, user approval needed, stop condition, and generated-report warning.</td><td>P0</td><td>Stable copyable output shape.</td></tr><tr><td><code>PRD-022-FR03</code></td><td>Review status vocabulary must be <code>untested</code>, <code>tested</code>, <code>narrowed</code>, <code>killed</code>, <code>promoted</code>, <code>stale</code>, and <code>not applicable</code>.</td><td>P0</td><td>Review labels only.</td></tr><tr><td><code>PRD-022-FR04</code></td><td>Discovery, Local Source Intake, Candidate Queue, PRD, and Planning guidance must carry the source fields needed for review.</td><td>P0</td><td>Avoid duplicate workflow machinery.</td></tr><tr><td><code>PRD-022-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, and Package File Inventory must expose the loop and boundaries.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-022-FR06</code></td><td><code>scripts/hypothesis-check.py</code> must check v1 guidance and v2 review-loop contract coverage without writing files.</td><td>P0</td><td>Deterministic advisory checker.</td></tr><tr><td><code>PRD-022-FR07</code></td><td>Clarity scenario coverage must protect evidence-only, no ranking, no PRD approval, no bead activation, no analytics requirement, no database, no generated status authority, and pre-PRD usability.</td><td>P1</td><td>Text-contract regression.</td></tr><tr><td><code>PRD-022-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, generated docs, generated PRD HTML, and generated roadmap HTML must be updated.</td><td>P1</td><td>Package-maintenance follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-022-hypothesis-review-learning-loop.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-022-FR08` | PRD HTML, docs HTML, roadmap HTML, changelog, and journal are current. | PRD/docs/roadmap checks | Read generated surfaces. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before owner-file updates, PRD creation or amendment, PRD approval, Candidate Queue writeback, <code>DECISIONS.md</code> updates, bead creation or activation, active-memory edits, implementation, external mutation, release, or package-manager behavior.</li><li>Stop if the source material is missing, the hypothesis or learning target is unclear, learning evidence cannot be inspected, current owner files conflict, or review would require secrets, raw private data, dashboards, production analytics, or external mutation.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the advisory Dependency Graph Review Lane.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, generated proof, Work Graph authority, parallel execution approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, or a task-runner system.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-019-FR02, PRD-019-FR06, PRD-019-FR07, PRD-019-NFR01, PRD-019-NFR02, PRD-019-NFR03, PRD-019-SEC01, PRD-019-SEC02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-019-FR01</code></td><td>Add Dependency Graph Review Lane to Review Lanes Protocol as an optional advisory lane for one active bead.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-019-FR02</code></td><td>Lane input guidance must include active bead, primary authority, changed-file summary or files in play, Work Graph evidence when available, relevant PRD/bead references, and recorded checks.</td><td>P0</td><td>Keeps findings grounded.</td></tr><tr><td><code>PRD-019-FR03</code></td><td>Lane output must use the existing Review Lanes output fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-019-FR04</code></td><td>Lane focus must include blocked work, missing or non-done dependencies, duplicate or out-of-order work, broad files in play, unsafe parallel assumptions, ambiguous follow-up destination, owner-file overlap, and stale generated graph evidence.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-019-FR05</code></td><td>Prompt Patterns and User Guide must include copyable Dependency Graph Review Lane guidance.</td><td>P0</td><td>User-facing invocation.</td></tr><tr><td><code>PRD-019-FR06</code></td><td>Package inventory must list PRD-019 and the expanded Review Lanes Protocol behavior.</td><td>P1</td><td>Discoverability.</td></tr><tr><td><code>PRD-019-FR07</code></td><td>Clarity scenario coverage must check lane name, output fields, evidence-only Work Graph boundary, recommendation values, and forbidden actions.</td><td>P1</td><td>Text contract only.</td></tr><tr><td><code>PRD-019-FR08</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-019-advisory-dependency-graph-review.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-019-FR08` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Public protocols and docs: changed to expose the lane.</li><li>PRD shard: added as destination authority for this package capability.</li><li>Generated HTML: regenerated as reading/review surfaces only.</li><li>Work Graph evidence: referenced as generated evidence only; not changed in v1.</li><li>External systems: not touched.</li></ul>

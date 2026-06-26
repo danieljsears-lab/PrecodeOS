@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the user-project release-candidate evidence profile within the Release Readiness lane.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, deployment approval, release approval, provider configuration, external mutation, rollback execution, implementation acceptance, generated report truth, package release management, or release-channel behavior.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-009-FR02, PRD-009-FR04, PRD-009-FR06, PRD-009-FR07</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a future helper compile a release-candidate profile from Closeout Evidence?</td><td>Follow-up automation scope</td><td>no</td></tr><tr><td>Should provider-specific release checklists exist after the profile proves useful?</td><td>Follow-up release evidence scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-009-FR01</code></td><td>Define a Release Candidate Evidence Profile inside the Release Readiness Protocol.</td><td>P0</td><td>Human-authored profile only.</td></tr><tr><td><code>PRD-009-FR02</code></td><td>Include fields for candidate label, release target, changed surfaces, affected users/workflows, checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, remaining uncertainty, and approvals still required.</td><td>P0</td><td>Mirrors the approved plan.</td></tr><tr><td><code>PRD-009-FR03</code></td><td>Define decision states: <code>candidate</code>, <code>needs evidence</code>, <code>blocked</code>, and <code>ready for human release decision</code>.</td><td>P0</td><td>These are framing states, not release approval.</td></tr><tr><td><code>PRD-009-FR04</code></td><td>Add optional bead-schema guidance for release-candidate evidence on release-relevant beads.</td><td>P0</td><td>No new required field for ordinary beads.</td></tr><tr><td><code>PRD-009-FR05</code></td><td>Add copyable prepare/review prompts to prompt and user docs.</td><td>P0</td><td>Prompts must prepare/review evidence, not approve release.</td></tr><tr><td><code>PRD-009-FR06</code></td><td>Update package inventory and generated public docs/PRD review surfaces.</td><td>P0</td><td>Markdown remains canonical.</td></tr><tr><td><code>PRD-009-FR07</code></td><td>Record roadmap implemented history, roadmap journal card, and maintainer changelog follow-through.</td><td>P0</td><td>Private maintainer history only.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-009-release-candidate-evidence-lane.md">
       <div class="cockpit-header">
         <div>
@@ -187,7 +187,7 @@
 | `PRD-009-FR05` | User-facing prompts prepare or review evidence without granting release authority. | docs HTML freshness check | Confirm prompts say prepare/review evidence and preserve explicit approval gates. | User docs and Prompt Patterns | manual boundary review |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before deployment, promotion, rollback, merge, migration, dashboard update, secret change, billing/auth/payment/private-data change, GitHub mutation, external-service mutation, production configuration change, or post-release owner action.</li><li>Stop if the release target, affected users, changed surfaces, recorded checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, known risks, approval owner, or post-release follow-up is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

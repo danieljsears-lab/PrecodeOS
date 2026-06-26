@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Public requirements for the Session Friction Review read-only advisory checker, cited failure-pattern findings, proposed destinations, and generated-evidence boundaries.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, command approval, review acceptance, memory promotion, owner-file edits, generated proof, telemetry, runtime compression, command-wrapper behavior, registry behavior, optional-pack behavior, install/update behavior, package-manager behavior, or implementation status.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-027-FR02, PRD-027-FR03, PRD-027-FR05, PRD-027-SEC01, PRD-027-SEC02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-027-FR01</code></td><td>Add <code>scripts/session-friction-check.py</code> as a read-only advisory checker.</td><td>P0</td><td>Default command writes nothing.</td></tr><tr><td><code>PRD-027-FR02</code></td><td>Output must include <code>status</code>, <code>warnings</code>, <code>generated_report_warning</code>, and <code>details.findings</code>.</td><td>P0</td><td>JSON stdout.</td></tr><tr><td><code>PRD-027-FR03</code></td><td>Each finding must include <code>category</code>, <code>source_refs</code>, <code>confidence</code>, <code>freshness</code>, <code>recommended_destination</code>, <code>suggested_next_step</code>, and <code>forbidden_uses</code>.</td><td>P0</td><td>Findings are review input only.</td></tr><tr><td><code>PRD-027-FR04</code></td><td>V1 categories must cover repeated failure category, missing failure category, unavailable command/dependency, sandbox or approval block, stale check/closeout evidence, generated refresh without verification, memory/context pressure, and no safe evidence found.</td><td>P0</td><td>No inferred memory-search friction without source evidence.</td></tr><tr><td><code>PRD-027-FR05</code></td><td><code>--self-test</code> must cover deterministic fixture categories and boundary fields.</td><td>P0</td><td>No external dependencies.</td></tr><tr><td><code>PRD-027-FR06</code></td><td><code>scripts/os_compiler.py</code>, OS Health, and generated sidecars must expose <code>session_friction_review</code> as generated evidence only.</td><td>P1</td><td>No <code>next-step.py</code> routing or command facade.</td></tr><tr><td><code>PRD-027-FR07</code></td><td>Protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-027-session-friction-review.md">
       <div class="cockpit-header">
         <div>
@@ -188,7 +188,7 @@
 | `PRD-027-FR07` | Docs, protocols, inventory, roadmap, changelog, and generated surfaces are current. | docs, PRD, inventory, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before memory-card creation, owner-file promotion, protocol edits outside an approved bead, PRD approval, bead activation, command approval, review acceptance, external mutation, destructive action, install/update behavior, or package-manager behavior.</li><li>Stop if a finding lacks source evidence, includes sensitive raw output, implies automatic promotion, or tries to use generated friction output as proof.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: <code>logs/session-friction-review.json</code> through existing sidecar generation only.</li></ul>
     <h3>Agent context</h3>

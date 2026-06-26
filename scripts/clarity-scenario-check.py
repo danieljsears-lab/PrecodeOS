@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.26
+# Version: v0.1.27
 # Last updated: 2026-06-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -336,6 +336,61 @@ def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"daily prompt alias contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_artifact_chooser_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Artifact Chooser",
+            "Use this chooser when the user knows the kind of moment they are in",
+            "If the next step depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, use Workflow Selection before choosing an artifact.",
+            "First PRD Walkthrough or Precode Idea Coach",
+            "Local Source Intake",
+            "PRD Shaping",
+            "Candidate Queue",
+            "Bugfix Spec Lane",
+            "Review Lanes",
+            "PRD Handoff Readiness Packet",
+            "Release Candidate Evidence Profile",
+            "Small Team Collaboration Lane",
+            "Recovery Protocol or No-Engineer Fallback Prompt Pack",
+            "Do not create a template registry, marketplace, optional pack, package-manager behavior, hidden task selector, automatic artifact generator",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Choose The Right Artifact",
+            "start with the Artifact Chooser",
+            "Use it as an index, not as task approval.",
+            "If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Which artifact or prompt do I need?",
+            "Choose artifact",
+            "Use the Precode Artifact Chooser",
+            "Artifact or prompt routing without task approval, artifact generation, PRD approval, bead activation, or implementation permission.",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Artifact Chooser Boundary",
+            "prompt-catalog index",
+            "not a skill playbook, command wrapper, template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator",
+            "does not approve PRDs, activate beads, accept review, approve release, choose work, or promote generated prompt output into authority",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over existing prompts and artifacts, not an extension type.",
+            "Do not treat it as a template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, skill playbook, command wrapper, or approval surface.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Artifact Chooser Boundary",
+            "Product Artifact Template / Prompt Catalog requirements",
+            "prompt-catalog navigation",
+            "does not choose tasks, approve PRDs, activate beads, accept implementation, generate artifacts automatically, create a template registry or marketplace, install optional packs, or imply package-manager behavior",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"artifact chooser contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
 
 
@@ -2700,6 +2755,7 @@ def main() -> int:
     recovery_fixture_scenarios = recovery_scenario_fixtures()
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
+    artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3217,6 +3273,7 @@ def main() -> int:
         + len(router_contract_scenarios)
         + 1
         + daily_prompt_alias_scenario_count
+        + artifact_chooser_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)

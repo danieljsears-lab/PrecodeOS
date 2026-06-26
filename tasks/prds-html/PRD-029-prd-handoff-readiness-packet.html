@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Public requirements for advisory PRD handoff readiness packets, PRD-to-decomposition/design/engineering/review handoff cues, and generated-evidence boundaries.</p>
     <p><strong>Not authority:</strong> Active memory, PRD approval, bead activation, task selection, implementation acceptance, external mutation, export automation, MCP behavior, registry behavior, optional-pack behavior, package-manager behavior, generated proof, or implementation status.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status pass">pass</span></p>
@@ -156,13 +156,13 @@
       <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-029-FR01</code></td><td>Add <code>scripts/prd-handoff-readiness.py</code> as a read-only advisory checker.</td><td>P0</td><td>Default command writes nothing.</td></tr><tr><td><code>PRD-029-FR02</code></td><td>The script must require <code>--prd</code> unless <code>--self-test</code> is used.</td><td>P0</td><td>PRD path points to canonical Markdown.</td></tr><tr><td><code>PRD-029-FR03</code></td><td>The script must support `--target general</td><td>decomposition</td><td>design</td><td>engineering</td><td>review<code>, defaulting to </code>general`.</td><td>P0</td><td>Target changes recommendation language only.</td></tr><tr><td><code>PRD-029-FR04</code></td><td>Output must include <code>status</code>, <code>warnings</code>, <code>details.packet</code>, and <code>generated_report_warning</code>.</td><td>P0</td><td>JSON stdout.</td></tr><tr><td><code>PRD-029-FR05</code></td><td>Packet fields must cover PRD status, requirement IDs, open questions, acceptance oracle coverage, candidate bead/decomposition readiness, proof expectations, risks/permissions, owner protocols, blockers, and recommended next safe action.</td><td>P0</td><td>Generated evidence only.</td></tr><tr><td><code>PRD-029-FR06</code></td><td><code>--self-test</code> must cover ready PRD, unapproved PRD, missing acceptance oracle, unresolved implementation-changing questions, missing proof expectations, and forbidden authority wording.</td><td>P0</td><td>No external dependencies.</td></tr><tr><td><code>PRD-029-FR07</code></td><td>Generated PRD HTML must include a compact handoff readiness cue from existing Markdown PRD content.</td><td>P1</td><td>Static review cue only.</td></tr><tr><td><code>PRD-029-FR08</code></td><td>Protocols, prompts, user docs, package inventory, AI navigation, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-029-prd-handoff-readiness-packet.md">
       <div class="cockpit-header">
         <div>
@@ -193,7 +193,7 @@
 | `PRD-029-NFR01` / `PRD-029-NFR02` / `PRD-029-NFR03` | Output remains compact, advisory, and public-package complete. | `python3 scripts/clarity-scenario-check.py` | Review packet and docs wording. | Markdown docs and fixtures | check output |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before PRD approval, PRD amendment, bead creation, bead activation, implementation, review acceptance, transition approval, design-tool mutation, GitHub mutation, external mutation, generated-source promotion, or package-maintenance history claims.</li><li>Stop if PRD status, requirement IDs, open questions, acceptance coverage, proof expectations, risk gates, owner protocols, or next safe action are unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

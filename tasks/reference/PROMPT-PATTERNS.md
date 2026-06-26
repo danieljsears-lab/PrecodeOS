@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.43
+Document version: v0.1.44
 Last updated: 2026-06-26
 
 ## Purpose
@@ -17,6 +17,37 @@ Last updated: 2026-06-26
 These prompts help a non-technical builder operate Precode without memorizing every protocol.
 
 They are prompts, not authority. The agent must still follow active memory, the active bead, the primary authority file, and the relevant Precode protocol.
+
+## Artifact Chooser
+
+Use this chooser when the user knows the kind of moment they are in but does not know which Precode artifact or prompt to use first. It is a prompt index only. It does not choose tasks, approve PRDs, activate beads, accept implementation, generate artifacts automatically, create a template registry, create a marketplace, install optional packs, or create package-manager behavior.
+
+If the next step depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, use Workflow Selection before choosing an artifact.
+
+| User moment | Use first | Artifact to produce or inspect | Required owner source | Stop condition |
+|---|---|---|---|---|
+| Rough idea before a repo exists | First PRD Walkthrough or Precode Idea Coach | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook and Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
+| Unsure what to do next | Workflow Selection Skill | Workflow recommendation and next artifact | Workflow Selection Protocol plus active memory when a repo exists | Multiple workflows remain plausible or authority is missing. |
+| New notes, research, issue, handoff, or source material | Local Source Intake | Stable facts, assumptions, conflicts, open questions, candidate requirements, and possible beads | Local Source Intake Protocol | Source material is being treated as authority or includes sensitive data. |
+| Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |
+| Future idea not ready for PRD or bead | Candidate Queue | Candidate Queue entry or shaping proposal | Candidate Queue Protocol | Ranking is treated as implementation priority or task authority. |
+| Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
+| Active bead or draft PRD needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, or task creation. |
+| PRD needs handoff readiness review | PRD Handoff Readiness Packet | Read-only PRD handoff packet | PRD Protocol, Decomposition Protocol, and Review Lanes Protocol | Readiness output is treated as PRD approval or bead activation. |
+| Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, or external mutation is being implied. |
+| Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
+| Something feels broken or confusing | Recovery Protocol or No-Engineer Fallback Prompt Pack | Symptom, first safe move, owner surface, and next safe action | Recovery Protocol | Repair, rollback, overwrite, setup mutation, or app-code change is being requested without approval. |
+| Stable docs question | Ask Precode | Cited docs/protocol answer | README, public docs, and relevant reference protocols | The question depends on current state or what to do next. |
+
+Copyable prompt:
+
+```text
+Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition.
+
+If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me.
+
+Do not create a template registry, marketplace, optional pack, package-manager behavior, hidden task selector, automatic artifact generator, PRD approval, bead activation, review acceptance, release approval, transition approval, or implementation permission.
+```
 
 ## Daily Prompt Aliases
 

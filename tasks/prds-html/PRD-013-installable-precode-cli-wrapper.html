@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the local `precode` command facade over trusted PrecodeOS repo commands.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, transition approval, command approval, generated report truth, implementation acceptance, setup approval, package publishing, package updates, release-channel behavior, broad installer behavior, registry behavior, external mutation, or a second Precode operating model.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-013-NFR01, PRD-013-NFR02, PRD-013-NFR03, PRD-013-SEC01, PRD-013-SEC02</li><li>Agent Context Contract is missing</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-013-FR01</code></td><td>The CLI must expose <code>start</code>, <code>next</code>, <code>health</code>, <code>validate</code>, <code>check</code>, and <code>bootstrap-check</code> aliases.</td><td>P0</td><td>Curated facade only.</td></tr><tr><td><code>PRD-013-FR02</code></td><td>Every alias must print the exact underlying command before running it.</td><td>P0</td><td>No hidden command path.</td></tr><tr><td><code>PRD-013-FR03</code></td><td>The CLI must detect a PrecodeOS repo root or fail clearly.</td><td>P0</td><td>Requires active-memory files and <code>scripts/next-step.py</code>.</td></tr><tr><td><code>PRD-013-FR04</code></td><td>The CLI must preserve underlying command exit codes.</td><td>P0</td><td>Useful for local scripts and CI-like checks.</td></tr><tr><td><code>PRD-013-FR05</code></td><td><code>bootstrap-check</code> passthrough must expose only curated setup flags and require <code>--approve-action</code> for <code>--apply-supervised-setup</code>.</td><td>P0</td><td>Preserves existing setup apply gate.</td></tr><tr><td><code>PRD-013-FR06</code></td><td>Local packaging must define a <code>precode</code> console entrypoint without adding runtime dependencies.</td><td>P1</td><td>Local editable install only.</td></tr><tr><td><code>PRD-013-FR07</code></td><td>Public docs, package inventory, Extension Protocol, Tool Execution Protocol, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-013-installable-precode-cli-wrapper.md">
       <div class="cockpit-header">
         <div>
@@ -191,7 +191,7 @@
 | `PRD-013-FR07` | Docs, generated surfaces, roadmap, and changelog are current. | docs, PRD HTML, roadmap HTML, and roadmap maintenance checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Active memory: unchanged.</li><li>Command execution: wrapper prints and delegates to existing commands.</li><li>Setup mutation: only existing supervised setup apply may mutate, and only with explicit <code>--approve-action</code> IDs.</li><li>Generated evidence: remains evidence only.</li><li>External systems: not touched.</li></ul>

@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for reversing or superseding already-implemented Precode beads through a separate normal bead.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, transition approval, implementation acceptance, Git history truth, rollback automation, evidence deletion, transition-log mutation, generated-output authority, package-manager behavior, release-channel behavior, or a runtime reversal command.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-023-FR02, PRD-023-FR03, PRD-023-FR08, PRD-023-NFR01, PRD-023-NFR02, PRD-023-SEC01, PRD-023-SEC02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-023-FR01</code></td><td>A reversal must be represented as a separate normal bead, not by reopening the prior <code>done</code> bead.</td><td>P0</td><td>Existing bead states stay unchanged.</td></tr><tr><td><code>PRD-023-FR02</code></td><td>The reversal bead must name the superseded bead, reversal target, reversal reason, preserved behavior, checks, manual verification, and approvals still required.</td><td>P0</td><td>Human-readable fields may live in bead body or Closeout Evidence.</td></tr><tr><td><code>PRD-023-FR03</code></td><td>Completion/Handoff and Recovery guidance must route bad implemented work into diagnosis followed by a new reversal bead.</td><td>P0</td><td>No destructive repair by default.</td></tr><tr><td><code>PRD-023-FR04</code></td><td>Verification guidance must state that Git revert alone is review input, not proof.</td><td>P0</td><td>Fresh recorded checks are required.</td></tr><tr><td><code>PRD-023-FR05</code></td><td><code>completion-check.py</code> must expose advisory reversal-workflow details through existing compiled completion/handoff output.</td><td>P1</td><td>No new command or report.</td></tr><tr><td><code>PRD-023-FR06</code></td><td>The bead build journal must render reversal/supersession provenance when recorded by a reversal bead.</td><td>P1</td><td>Generated evidence only.</td></tr><tr><td><code>PRD-023-FR07</code></td><td>Public user, troubleshooting, support, daily cockpit, inventory, and log-taxonomy guidance must expose the reversal path.</td><td>P1</td><td>Discoverable without maintainer files.</td></tr><tr><td><code>PRD-023-FR08</code></td><td>Clarity scenarios must pin advisory-only and forbidden-action boundaries.</td><td>P1</td><td>Deterministic local regression.</td></tr><tr><td><code>PRD-023-FR09</code></td><td>Roadmap, roadmap journal, maintainer changelog, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-023-implemented-bead-reversal-workflow.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-023-FR09` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before destructive local commands, GitHub mutation, external mutation, deployment, migration, setup/update mutation, evidence deletion, transition-log editing, or package release action.</li><li>Stop if the superseded bead, reversal target, reversal reason, preserved behavior, proof path, manual verification, or approval owner is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

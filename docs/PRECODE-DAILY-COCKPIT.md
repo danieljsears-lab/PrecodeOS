@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.20
+Document version: v0.1.21
 Last updated: 2026-06-26
 
 Use this cockpit while you work with an AI coding agent.
@@ -37,6 +37,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
+| Which artifact or prompt do I need? | Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` | A mapped prompt/artifact, owner source, and stop condition. It is an index only; use Workflow Selection when the answer depends on current state. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
@@ -48,6 +49,7 @@ These prompt aliases are the lean daily surface. The expanded prompt wording liv
 |---|---|---|
 | Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning. |
 | Ask docs | `Ask Precode: answer my stable docs question and cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
+| Choose artifact | `Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead.` | Artifact or prompt routing without task approval, artifact generation, PRD approval, bead activation, or implementation permission. |
 | Choose path | `Choose: use Workflow Selection before work starts.` | A workflow recommendation without coding or task activation. |
 | First PRD walkthrough | `First PRD: use First PRD Walkthrough for my rough idea.` | A beginner path from rough idea to PRD readiness; the expanded prompt says `Use First PRD Walkthrough for my rough idea`, summarizes a Product Brief, produces a Conviction Packet, and prepares a Local Source Intake handoff. Evidence only until Local Source Intake and later human PRD approval. |
 | Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |

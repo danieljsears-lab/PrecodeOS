@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the read-only Existing Repo Intake branch at the first PrecodeOS adoption fork.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, mutating installer behavior, target-project truth, product decisions, implementation acceptance, generated evidence truth, or release status.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-003-NFR01, PRD-003-NFR02, PRD-003-NFR03, PRD-003-SEC01, PRD-003-SEC02, PRD-003-UX01, PRD-003-UX02, PRD-003-UX03</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future setup support allow a mutating owner-file adaptation preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the helper integrate with future install/update manifest semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-003-FR01</code></td><td>Add an Existing Repo Intake reference protocol with first-fork scope, command contract, output fields, promotion path, stop conditions, and guardrails.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-003-FR02</code></td><td>Add <code>scripts/existing-repo-intake.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, <code>--write-evidence</code>, and <code>--self-test</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-003-FR03</code></td><td>The helper identifies repo topology, likely app directories, package managers, frameworks, runtimes, build tools, docs, CI/deploy hints, generated/ignored surfaces, sensitive path patterns, owner-file gaps, likely checks, conflicts, stop conditions, and recommended next step.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-003-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/existing-repo-intake.json</code> and <code>logs/existing-repo-intake.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-003-FR05</code></td><td>Update setup, support, intake, workflow, prompt, troubleshooting, user, and inventory docs to route existing apps through the first adoption fork.</td><td>P0</td><td>Beginner and support-facing.</td></tr><tr><td><code>PRD-003-FR06</code></td><td>Add fixture-style self-tests for v1 inspection, redaction, JSON shape, and no-write behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-003-existing-repo-intake.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-003-FR06` | Fixture scenarios pass. | `python3 scripts/existing-repo-intake.py --self-test` | none | temp fixtures | check output |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Auth: may be detected by path/config hints only</li><li>Payments: may be detected by path/config hints only</li><li>User data: target repos may contain private files; helper must inspect paths and selected non-secret metadata only</li><li>Uploads: path/config hints only</li><li>External services: CI/deploy/config hints only</li><li>Secrets: path patterns are named as sensitive; contents are not read</li><li>Destructive actions: none</li></ul>

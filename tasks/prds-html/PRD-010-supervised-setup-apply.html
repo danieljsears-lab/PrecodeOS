@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the narrowly mutating, approval-gated setup apply slice of the PrecodeOS Installer / Bootstrap Experience.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, existing-repo mutation, owner-file adaptation approval, hook installation, CI mutation, app-code edits, release channels, package-manager behavior, rollback automation, implementation acceptance, or generated evidence truth.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-010-FR01, PRD-010-FR06</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should a later command approve file groups instead of action IDs?</td><td>Follow-up ergonomics</td><td>no</td></tr><tr><td>Should existing-repo owner-file adaptation get its own separate apply protocol?</td><td>Follow-up existing-project setup</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-010-FR01</code></td><td>Add <code>tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md</code>.</td><td>P0</td><td>Owns mutation boundary.</td></tr><tr><td><code>PRD-010-FR02</code></td><td>Add <code>--apply-supervised-setup</code> and repeatable <code>--approve-action</code> to <code>scripts/bootstrap-check.py</code>.</td><td>P0</td><td>Requires <code>--supervised-setup-plan</code>.</td></tr><tr><td><code>PRD-010-FR03</code></td><td>Apply only approved <code>review_copy_candidate</code> actions for <code>empty</code> or <code>nearly_empty</code> targets.</td><td>P0</td><td>No owner-file adaptation.</td></tr><tr><td><code>PRD-010-FR04</code></td><td>Refuse blockers, unknown IDs, non-copy actions, existing targets, existing projects, existing Precode targets, same source/target, hooks, CI, app code, excluded paths, generated evidence, local state, and secrets.</td><td>P0</td><td>No silent fallback.</td></tr><tr><td><code>PRD-010-FR05</code></td><td>Preserve non-mutating behavior for default, JSON, preview, plan, and source-side evidence modes unless apply is explicitly requested.</td><td>P0</td><td>Backward compatibility.</td></tr><tr><td><code>PRD-010-FR06</code></td><td>Output copied, skipped, blocked, and validation next-step fields in plain text and JSON.</td><td>P0</td><td>Inspectable result.</td></tr><tr><td><code>PRD-010-FR07</code></td><td>Update setup docs, protocols, prompt patterns, package inventory, README, maintainer changelog, roadmap history, roadmap journal, and generated HTML surfaces.</td><td>P0</td><td>Follow-through required.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-010-supervised-setup-apply.md">
       <div class="cockpit-header">
         <div>
@@ -189,7 +189,7 @@
 | `PRD-010-FR07` | Docs, inventory, roadmap, and generated HTML stay fresh. | docs/roadmap/html checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <ul><li>Approval required before any setup apply action, owner-file adaptation, overwrite, hook installation, CI change, active-memory edit, app command, app-code edit, package update, rollback, release-channel change, or CLI installation.</li><li>Stop if source, target, target kind, action ID, path safety, existing target material, excluded-path boundary, or validation next step is unclear.</li><li>Network needs: none.</li><li>Dependency changes: none.</li><li>External systems touched: none.</li><li>Generated reports added: none.</li></ul>
     <h3>Agent context</h3>

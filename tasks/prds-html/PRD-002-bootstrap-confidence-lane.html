@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the read-only First-Run Confidence and Bootstrap v1 lane for adopting PrecodeOS into new or existing repositories.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, bead activation, mutating installer behavior, package-manager release channels, generated evidence truth, external publishing, or implementation acceptance.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-002-NFR01, PRD-002-NFR02, PRD-002-NFR03, PRD-002-SEC01, PRD-002-SEC02, PRD-002-UX01, PRD-002-UX02</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should v2 introduce a mutating copy flow after preview?</td><td>Follow-up scope</td><td>no</td></tr><tr><td>Should the thin manifest grow into install/update channel semantics?</td><td>P1 manifest scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-002-FR01</code></td><td>Add a Bootstrap Confidence reference protocol with v1 scope, inputs, output fields, stop conditions, evidence rules, and deferred installer boundaries.</td><td>P0</td><td>Protocol is the primary artifact.</td></tr><tr><td><code>PRD-002-FR02</code></td><td>Add <code>scripts/bootstrap-check.py</code> with <code>--source</code>, <code>--target</code>, <code>--json</code>, and <code>--write-evidence</code>.</td><td>P0</td><td>Read-only by default.</td></tr><tr><td><code>PRD-002-FR03</code></td><td>The checker identifies source validity, target validity, target kind, public file groups, excluded paths, conflicts, missing dependencies, recommended next step, and stop conditions.</td><td>P0</td><td>Plain output and JSON.</td></tr><tr><td><code>PRD-002-FR04</code></td><td><code>--write-evidence</code> writes only <code>logs/bootstrap-check.json</code> and <code>logs/bootstrap-check.md</code> in the source Precode workspace.</td><td>P0</td><td>No target writes.</td></tr><tr><td><code>PRD-002-FR05</code></td><td>Update guided setup, support runbook, troubleshooting, OS README, and file inventory to route first-time setup through the helper.</td><td>P0</td><td>Beginner-facing docs.</td></tr><tr><td><code>PRD-002-FR06</code></td><td>Add fixture-style checks for the v1 inspection cases and no-write/default behavior.</td><td>P0</td><td>Implemented as script self-test fixtures.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-002-bootstrap-confidence-lane.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-002-FR06` | Fixture scenarios pass. | `python3 scripts/bootstrap-check.py --self-test` | none | temp fixtures | check output |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Auth: none</li><li>Payments: none</li><li>User data: target projects may contain private files; checker must inspect paths only</li><li>Uploads: none</li><li>External services: none</li><li>Secrets: path patterns are named as exclusions; contents are not read</li><li>Destructive actions: none</li></ul>

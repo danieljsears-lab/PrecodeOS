@@ -146,7 +146,7 @@
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
     <p><strong>Authority:</strong> Destination shard for the exact beginner stuck-trigger recovery path.</p>
     <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, implementation acceptance, destructive repair approval, generated evidence truth, automatic rollback policy, setup/update mutation, command-wrapper behavior, package-manager behavior, or support-bot authority.</p>
-    
+
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
       <p><strong>Status:</strong> <span class="status warning">warning</span></p>
@@ -156,13 +156,13 @@
       <ul><li>acceptance oracle missing IDs: PRD-015-FR05, PRD-015-NFR01, PRD-015-NFR02, PRD-015-SEC01, PRD-015-SEC02</li><li>Agent Context Contract is missing</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
-    
+
     <h3>Unresolved blockers and questions</h3>
     <p class="empty">None recorded.</p>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-015-FR01</code></td><td><code>AGENT.md</code> must treat <code>I am stuck</code>, <code>I am stuck, help me</code>, and equivalent stuck/confused/help-me phrases as a stop-and-diagnose trigger.</td><td>P0</td><td>Active agent behavior.</td></tr><tr><td><code>PRD-015-FR02</code></td><td>The required response must restate the symptom, name stop-and-diagnose as the first safe move, name the likely owner surface or unknown owner, include up to three read-only/advisory checks, give the next safe prompt/action, and list forbidden actions.</td><td>P0</td><td>Prescriptive guidance.</td></tr><tr><td><code>PRD-015-FR03</code></td><td>Daily Cockpit, Troubleshooting, Recovery Protocol, Support Runbook, and Prompt Patterns must expose the same exact phrase and response contract.</td><td>P0</td><td>Public guidance consistency.</td></tr><tr><td><code>PRD-015-FR04</code></td><td>OS Health, Doctor Dashboard, <code>next-step.py</code>, and stable-fix eligibility must remain diagnostic only and must not approve repair.</td><td>P0</td><td>No second router or auto-repair.</td></tr><tr><td><code>PRD-015-FR05</code></td><td>Clarity scenario coverage must verify the stuck phrase and response contract in the owner surfaces.</td><td>P1</td><td>Existing harness only.</td></tr><tr><td><code>PRD-015-FR06</code></td><td>Prompt Patterns must expose six copyable fallback prompts: agent is lost, checks failed, app will not start, approved too much, copied wrong files, and deciding whether to stop.</td><td>P1</td><td>Prompt pack only; no new skill or command.</td></tr><tr><td><code>PRD-015-FR07</code></td><td>Package inventory, roadmap, roadmap journal, generated docs/PRD/roadmap surfaces, and maintainer changelog must be updated.</td><td>P1</td><td>Required maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    
+
     <section class="cockpit" data-acceptance-cockpit data-source="PRD-015-beginner-self-recovery-path.md">
       <div class="cockpit-header">
         <div>
@@ -190,7 +190,7 @@
 | `PRD-015-FR07` | Inventory, roadmap, journal, changelog, and generated surfaces are current. | inventory, docs, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |</textarea>
       <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
     </section>
-    
+
     <h3>Risk and permission model</h3>
     <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
 <ul><li>Active memory: changed narrowly to add the stuck trigger.</li><li>Public docs and protocols: changed to expose the same user phrase and response contract.</li><li>Generated evidence: remains evidence only.</li><li>Doctor Dashboard: diagnostic only; not a repair authority.</li><li>External systems: not touched.</li></ul>
