@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-24
+Document version: v0.1.17
+Last updated: 2026-06-27
 
 ## Purpose
 
@@ -80,6 +80,13 @@ When non-release acceptance confidence depends on a specific requirement ID, bug
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Reference follow-through closeout is required when public package source changes may affect docs, protocols, package inventory, navigation indexes, generated HTML freshness, or maintainer-local public-package history. Record `Reference follow-through: resolved`, `deferred`, or `not applicable`, followed by the shortest useful reason. Public package source changes should review `_maintainer/CHANGELOG.md`; maintainer roadmap and roadmap-journal review is expected only when the bead, PRD, or closeout names roadmap or roadmap-candidate work. Generated HTML should be refreshed or checked from canonical Markdown; do not hand-edit generated reading surfaces as authority.
+
+Session-close handback should end with an explicit `Close State` line:
+
+- `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.`
+- `Close State: Do not close yet. I still need your approval/input for <specific item>.`
+
+Use `Safe to close` only when the session close ran, the closeout state has been summarized, and no immediate user action is needed to preserve or clarify Precode session state. The Close State line is human-facing guidance only. It does not approve review, promote a bead, activate the next bead, commit, push, deploy, release, rollback, certify external sync, or create host-specific tab-management behavior.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, stale re-entry risks, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review. `python3 scripts/team-collaboration-check.py` may provide preview evidence for these fields, but generated preview output is not acceptance, merge approval, or owner-file promotion.
 

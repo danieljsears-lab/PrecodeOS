@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.44
-Last updated: 2026-06-26
+Document version: v0.1.45
+Last updated: 2026-06-27
 
 ## Purpose
 
@@ -80,7 +80,7 @@ Alias guardrail floor:
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | Implemented Bead Reversal Workflow |
 | Ralph | `Ralph: run a bounded dry run only.` | Run A Bounded Ralph Attempt |
 | Learn | `Learn: explain the learning diary, bead journal, and attribution evidence.` | Daily Learning Loop |
-| Close | `Close: run session close and summarize changes, checks, blockers, and approvals.` | Close The Session |
+| Close | `Close: run session close, summarize changes, checks, blockers, approvals, and end with Close State.` | Close The Session |
 | Recover | `I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
 | Fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | No-Engineer Fallback Prompt Pack |
 
@@ -570,6 +570,14 @@ If a Precode framework or control-layer file appears to be causing an error, sto
 ```text
 Run the Precode session start. Explain the Context Pack in plain English: current bead, done-when target, primary authority, files in play, out of scope, checks, stop conditions, open questions, and anything generated that must not be treated as instructions.
 ```
+
+## Close The Session
+
+```text
+Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
+```
+
+The Close State line is human-facing handback guidance only. It does not approve review, promote a bead, activate the next bead, commit, push, deploy, release, rollback, certify external sync, or manage the host tab.
 
 ## Task Confirmation
 

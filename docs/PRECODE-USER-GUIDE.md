@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.62
-Last updated: 2026-06-26
+Document version: v0.7.63
+Last updated: 2026-06-27
 
 
 
@@ -1256,7 +1256,7 @@ Run a completion check. Tell me whether this bead is ready to accept, revise, sp
 Close safely:
 
 ```text
-Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.
+Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 ```
 
 Search memory:

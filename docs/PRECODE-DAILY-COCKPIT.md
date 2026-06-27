@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.21
-Last updated: 2026-06-26
+Document version: v0.1.22
+Last updated: 2026-06-27
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -66,7 +66,7 @@ These prompt aliases are the lean daily surface. The expanded prompt wording liv
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | A safe reversal plan or candidate bead shape without rollback automation or history rewriting. |
 | Ralph | `Ralph: run a bounded dry run only.` | Retry evidence for one active bead without accepting work or activating anything. |
 | Learn | `Learn: explain the learning diary, bead journal, and attribution evidence.` | A lesson summary plus implemented-bead path, build-change context, and attribution evidence that stays evidence-only. |
-| Close | `Close: run session close and summarize changes, checks, blockers, and approvals.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, and attribution evidence when present. |
+| Close | `Close: run session close, summarize changes, checks, blockers, approvals, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
 | Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 | Named fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments. |
 
@@ -280,7 +280,7 @@ Expected output: current bead state, done-when target, files in play, blockers, 
 Use when work is done for now or you need a clean stop.
 
 ```text
-Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval.
+Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 ```
 
 Command:
@@ -289,7 +289,7 @@ Command:
 bash scripts/session-close.sh
 ```
 
-Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, learning diary update, and bead build journal update when that generated report is available.
+Expected output: closeout refresh, recorded validation, OS Health refresh, transition readiness, completion or handoff warnings, learning diary update, bead build journal update when that generated report is available, and a final `Close State` line. `Safe to close` means Precode session state is recorded and no immediate user action is needed to preserve or clarify it; it does not approve review, transition, commit, push, deploy, release, rollback, external sync, or any other gated action.
 
 ## Runnable Reports
 
