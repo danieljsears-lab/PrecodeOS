@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-26">
+  <meta name="generated-at" content="2026-06-27">
   <title>PrecodeOS Troubleshooting · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Troubleshooting</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-TROUBLESHOOTING.md">Source Markdown</a><span>v0.1.15</span><span>Updated 2026-06-23</span></p>
+  <p class="meta"><a href="../docs/PRECODE-TROUBLESHOOTING.md">Source Markdown</a><span>v0.1.16</span><span>Updated 2026-06-27</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -332,11 +332,12 @@ bash scripts/validate-memory.sh</code></pre>
 <p>Do not delete files, rewrite history, or overwrite conflicts just to make the inventory quiet.</p>
 <h3 id="validate-memory-fails"><a class="heading-anchor" href="#validate-memory-fails" aria-label="Link to validate memory Fails">#</a><code>validate-memory</code> Fails</h3>
 <p>Likely causes:</p>
-<ul><li>missing active memory file</li><li>broken bead pointer</li><li>malformed bead or active work metadata</li><li>copied stale state from another repo</li></ul>
+<ul><li>missing active memory file</li><li>broken bead pointer</li><li>malformed bead or active work metadata</li><li>duplicate or mismatched <code>prd_id</code> / <code>bead_id</code></li><li>copied stale state from another repo</li></ul>
 <p>First check:</p>
 <pre><code class="language-bash">bash scripts/validate-memory.sh</code></pre>
 <p>Safe path:</p>
-<ul><li>read the failure message</li><li>identify the owner file named by the failure</li><li>repair the source file with the smallest safe edit</li><li>re-run validation</li></ul>
+<ul><li>read the failure message</li><li>identify the owner file named by the failure</li><li>when the failure is a duplicate PRD or bead ID, run <code>python3 scripts/next-id.py prd</code> or <code>python3 scripts/next-id.py bead</code> to see the next monotonic free ID</li><li>repair the source file with the smallest safe edit</li><li>re-run validation</li></ul>
+<p><code>scripts/next-id.py</code> suggests only. It does not reserve an ID, rename files, update references, approve PRDs, activate beads, or mutate the repo.</p>
 <p>Do not patch generated reports as a substitute for fixing active memory.</p>
 <h3 id="file-inventory-check-fails-or-warns"><a class="heading-anchor" href="#file-inventory-check-fails-or-warns" aria-label="Link to file inventory check Fails Or Warns">#</a><code>file-inventory --check</code> Fails Or Warns</h3>
 <p>Likely causes:</p>

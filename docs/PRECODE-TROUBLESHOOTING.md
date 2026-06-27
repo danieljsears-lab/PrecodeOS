@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-23
+Document version: v0.1.16
+Last updated: 2026-06-27
 
 ## Purpose
 
@@ -235,6 +235,7 @@ Likely causes:
 - missing active memory file
 - broken bead pointer
 - malformed bead or active work metadata
+- duplicate or mismatched `prd_id` / `bead_id`
 - copied stale state from another repo
 
 First check:
@@ -247,8 +248,11 @@ Safe path:
 
 - read the failure message
 - identify the owner file named by the failure
+- when the failure is a duplicate PRD or bead ID, run `python3 scripts/next-id.py prd` or `python3 scripts/next-id.py bead` to see the next monotonic free ID
 - repair the source file with the smallest safe edit
 - re-run validation
+
+`scripts/next-id.py` suggests only. It does not reserve an ID, rename files, update references, approve PRDs, activate beads, or mutate the repo.
 
 Do not patch generated reports as a substitute for fixing active memory.
 

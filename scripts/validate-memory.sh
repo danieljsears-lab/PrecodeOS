@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.7
-# Last updated: 2026-06-14
+# Version: v0.1.8
+# Last updated: 2026-06-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -104,6 +104,43 @@ def h2s(text: str) -> set[str]:
     return {m.group(1).strip() for m in re.finditer(r"^##\s+(.+)$", text, re.MULTILINE)}
 
 
+def validate_unique_ids(
+    *,
+    directory: str,
+    pattern: str,
+    skip_names: set[str],
+    field: str,
+    prefix: str,
+    helper_kind: str,
+) -> None:
+    seen: dict[str, list[str]] = {}
+    expected_pattern = re.compile(rf"^({prefix}-\d{{3}})-.+\.md$")
+    for item_path in sorted((root / directory).glob(pattern)):
+        if item_path.name in skip_names:
+            continue
+        if not item_path.is_file():
+            continue
+        path = rel(item_path)
+        text = item_path.read_text(encoding="utf-8")
+        fm = frontmatter(text)
+        item_id = (fm.get(field) or "").strip()
+        if not item_id:
+            add(path, 1, f"{field} is required for {prefix} identity validation")
+            continue
+        seen.setdefault(item_id, []).append(path)
+        match = expected_pattern.match(item_path.name)
+        if match and item_id != match.group(1):
+            add(path, 1, f"{field} must match filename ID {match.group(1)}")
+    for item_id, paths in sorted(seen.items()):
+        if len(paths) > 1:
+            joined = ", ".join(paths)
+            add(
+                paths[0],
+                1,
+                f"duplicate {field} {item_id} declared in {joined}; run `python3 scripts/next-id.py {helper_kind}` for the next free {prefix} ID",
+            )
+
+
 expected_anchors = {
     "AGENT.md": "agent",
     "AGENTS.md": "agents-shim",
@@ -170,6 +207,24 @@ todo_fm = frontmatter(todo_text)
 for key in ("current_bead", "current_state", "build_lane", "active_feature_window", "primary_authority"):
     if key not in todo_fm:
         add("tasks/todo.md", 1, f"todo frontmatter missing required key: {key}")
+
+validate_unique_ids(
+    directory="tasks/prds",
+    pattern="*.md",
+    skip_names={"PRD-000-template.md", "PRD-SHARD-SCHEMA.md"},
+    field="prd_id",
+    prefix="PRD",
+    helper_kind="prd",
+)
+
+validate_unique_ids(
+    directory="tasks/beads",
+    pattern="*.md",
+    skip_names={"BEAD-SCHEMA.md"},
+    field="bead_id",
+    prefix="B",
+    helper_kind="bead",
+)
 
 bead_required = {
     "State",

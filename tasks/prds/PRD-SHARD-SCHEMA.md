@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.12
-Last updated: 2026-06-23
+Document version: v0.1.13
+Last updated: 2026-06-27
 
 ## Purpose
 
@@ -40,7 +40,9 @@ PRD-002-race-discovery-search.md
 PRD-003-registration-flow.md
 ```
 
-Keep IDs stable. Do not renumber PRDs after beads or feature requirements reference them.
+Keep IDs stable. PRD IDs are unique, never reused, monotonic, and gap-tolerant. A skipped number is acceptable; a duplicate is not. Use `python3 scripts/next-id.py prd` to suggest the next free PRD ID before creating or repairing a shard.
+
+Do not renumber PRDs after beads or feature requirements reference them unless the change is a deliberate collision repair. Collision repairs must update the filename, `prd_id`, requirement IDs, anchors or headings that embed the old ID, and cross-references in the same reviewed change.
 
 ## PRD States
 
@@ -95,6 +97,7 @@ Use `PRD-000-template.md` when creating a new shard.
 ## Operating Rules
 
 - Every feature needs at least one PRD shard before coding begins.
+- `prd_id` must be unique across non-template PRD shards and must match the `PRD-###` prefix in the shard filename. `bash scripts/validate-memory.sh` fails on duplicates or filename/frontmatter mismatch.
 - Ceremony is adaptive by risk. A low-risk UI copy change can have a short shard; auth, payments, data, uploads, external tools, or ambiguous workflows need a fuller shard.
 - Alignment/grilling is expected for fuzzy, source-heavy, risky, or user-facing ideas before requirements are finalized.
 - Domain language is expected when terms, aliases, avoid words, UI labels, tests, docs, support language, or module/interface names affect the feature. If the terms should survive beyond the PRD, propose a reviewed `project_glossary` card with source pointers, examples, freshness, and promotion owner when applicable; glossary memory remains evidence only.

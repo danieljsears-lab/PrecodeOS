@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-06-24
+Document version: v0.1.21
+Last updated: 2026-06-27
 
 ## Purpose
 
@@ -32,6 +32,8 @@ For small team work, the one-active-bead rule still applies inside each checkout
 - `files_in_play`
 - `checks`
 - `verification_type`
+
+`bead_id` values are unique, never reused, monotonic, and gap-tolerant. A skipped number is acceptable; a duplicate is not. Use `python3 scripts/next-id.py bead` to suggest the next free bead ID before creating or repairing a bead. The helper is read-only: it does not reserve IDs, rename files, approve beads, activate work, or update references.
 
 ## Recommended Bead Kind Menu
 
@@ -209,6 +211,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 ## Operating Rules
 
 - Only one bead may be `in_progress` at a time.
+- `bead_id` must be unique across bead files and must match the `B###` prefix in the bead filename. `bash scripts/validate-memory.sh` fails on duplicates or filename/frontmatter mismatch.
 - In small team work, only one bead may be `in_progress` per checkout; parallel beads must use separate branches or worktrees and return through coordinator review before integration. Team preview output is generated evidence only.
 - Every bead must name exactly one primary authority file.
 - `tasks/todo.md` and the bead frontmatter should agree on the active bead and its current state.
