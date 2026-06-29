@@ -9,10 +9,10 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.24
+Document version: v0.1.26
 Last updated: 2026-06-29
 
-Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo.
+Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
 
@@ -23,6 +23,27 @@ If the optional local `precode` console command is installed, treat it as a shor
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
 Document roles are intentionally narrow: `../README.md` is the public package compass, this cockpit is the beginner-facing operating home base, `PRECODE-OS-README.md` is the conceptual Builder OS explainer, and `PRECODE-USER-GUIDE.md` is the deeper operating manual. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+
+## Beginner Path
+
+Use this path before opening more documents:
+
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+- Idea: rough idea or messy notes.
+- Brief: Product Brief after at most three high-level questions.
+- Packet: reviewed Conviction Packet / Precode Ingestion Packet.
+- Intake: Local Source Intake summary.
+- PRD: human-reviewed PRD shaping and approval.
+- Bead: candidate decomposition, then approved active bead.
+- Proof: recorded checks and manual evidence.
+- Review: human review, with advisory lanes only when needed.
+- Close: closeout evidence and explicit Close State.
+
+1. If PrecodeOS is not in the project yet, stop here and use `PRECODE-GUIDED-SETUP.md`.
+2. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps in that path, not separate commands to choose between.
+3. If PrecodeOS is set up and work exists, run Start, confirm the active bead, then use Build, Prove, Review, Close, or Recover from the loop below.
+4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
 ## Where Your Work Lives
 

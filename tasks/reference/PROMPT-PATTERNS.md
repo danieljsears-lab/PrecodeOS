@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.47
+Document version: v0.1.49
 Last updated: 2026-06-29
 
 ## Purpose
@@ -17,6 +17,20 @@ Last updated: 2026-06-29
 These prompts help a non-technical builder operate Precode without memorizing every protocol.
 
 They are prompts, not authority. The agent must still follow active memory, the active bead, the primary authority file, and the relevant Precode protocol.
+
+For rough ideas, use one user-facing invocation: `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
+
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+- Idea: rough idea or messy notes.
+- Brief: Product Brief after at most three high-level questions.
+- Packet: reviewed Conviction Packet / Precode Ingestion Packet.
+- Intake: Local Source Intake summary.
+- PRD: human-reviewed PRD shaping and approval.
+- Bead: candidate decomposition, then approved active bead.
+- Proof: recorded checks and manual evidence.
+- Review: human review, with advisory lanes only when needed.
+- Close: closeout evidence and explicit Close State.
 
 ## Artifact Chooser
 
@@ -26,7 +40,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 
 | User moment | Use first | Artifact to produce or inspect | Required owner source | Stop condition |
 |---|---|---|---|---|
-| Rough idea before a repo exists | First PRD Walkthrough | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook and Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
+| Rough idea before a repo exists | First PRD Walkthrough | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook as a step inside First PRD Walkthrough, plus Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
 | Unsure what to do next | Workflow Selection Skill | Workflow recommendation and next artifact | Workflow Selection Protocol plus active memory when a repo exists | Multiple workflows remain plausible or authority is missing. |
 | New notes, research, issue, handoff, or source material | Local Source Intake | Stable facts, assumptions, conflicts, open questions, candidate requirements, and possible beads | Local Source Intake Protocol | Source material is being treated as authority or includes sensitive data. |
 | Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |

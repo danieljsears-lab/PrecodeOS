@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-27
+Document version: v0.1.17
+Last updated: 2026-06-29
 
 ## Purpose
 
 Use this guide when PrecodeOS feels confusing or broken.
+
+This guide is the symptom lookup. The Recovery Protocol owns the full recovery contract, and the Support Runbook is for someone helping another user. Do not read all three as competing recovery authorities.
 
 The safe troubleshooting posture is:
 

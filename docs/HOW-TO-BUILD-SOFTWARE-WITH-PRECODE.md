@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.33
+Document version: v0.1.35
 Last updated: 2026-06-29
 
 ## Start Here: You Are Not Just Prompting
@@ -47,7 +47,7 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 ### If You Only Have An Idea, Start With Research And Exploration
 
-If you are a non-technical builder starting with a net-new rough idea, use `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+If you are a non-technical builder starting with a net-new rough idea, use First PRD Walkthrough before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code. The Product Ideation Workbook is the first worksheet inside that path, not a separate entry point.
 
 The workbook is a thinking space. You can use Claude Cowork, Claude, Claude Code, Codex, or another agent as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a concise Conviction Packet that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.
 
@@ -57,10 +57,14 @@ After at most three high-level product or business questions, ask for a Product 
 
 Use First PRD Walkthrough when you want the shortest safe route from rough idea to PRD readiness. It is the same evidence-first path in plain language: Product Ideation Workbook and Precode Idea Coach as ordered steps, then Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. It does not approve a PRD, create beads, update owner files, create a roadmap or backlog, or authorize coding.
 
+The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+That means rough idea or messy notes become a Product Brief, then a reviewed packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State.
+
 Use this path when you are still asking, "What am I really trying to build?"
 
 ```text
-Use the Product Ideation Workbook path first. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question. Then help me produce a Conviction Packet before Precode Local Source Intake. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
+Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question. Then help me produce a Conviction Packet before Precode Local Source Intake. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
 ```
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
@@ -119,7 +123,7 @@ Not every software idea needs the same process. Precode is safest when you choos
 
 | Project type | What usually matters most | Early risks | Start with |
 |---|---|---|---|
-| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | Product Ideation Workbook, Product Brief after at most three high-level questions, guided research/challenge, Conviction Packet, then Local Source Intake. |
+| Rough idea with no product shape yet | Learning, narrowing, research, and confidence. | The agent turns excitement into code before the problem, user, evidence, current workaround, or smallest useful version is clear. | First PRD Walkthrough, with Product Ideation Workbook, Product Brief after at most three high-level questions, guided research/challenge, Conviction Packet, then Local Source Intake. |
 | Durable intent, but no workflow chosen yet | Keeping direction visible without turning it into a task list. | A broad goal silently becomes backlog, roadmap, or implementation plan. | Goal Frame proposal or reaffirmation, then workflow selection. |
 | Personal tool | Speed, usefulness, simple data, low ceremony. | The tool grows into a product before privacy, data, or deployment choices are understood. | Local Source Intake or a small implementation bead. |
 | Small SaaS app | Accounts, permissions, database, reliability, support, deployment. | Auth, personal data, billing, emails, and production setup appear quickly. | Idea-to-PRD, then decomposition into small beads. |
@@ -188,7 +192,8 @@ Precode turns rough intent into verified work through a file-based path.
 
 ```text
 idea or notes
-  -> Product Ideation Workbook for net-new rough product ideas
+  -> First PRD Walkthrough for net-new rough product ideas
+  -> Product Ideation Workbook as the first worksheet inside that path
   -> Product Brief after at most three high-level questions
   -> guided research/challenge
   -> Conviction Packet / Precode Ingestion Packet
@@ -218,7 +223,8 @@ idea or notes
 | Step | Plain-English meaning | What to ask |
 |---|---|---|
 | Idea or notes | You have something fuzzy, incomplete, or scattered. | "Summarize what is known, unknown, and risky." |
-| Product Ideation Workbook | You think through one product idea before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
+| First PRD Walkthrough | The single beginner-facing route from rough idea to PRD readiness. | "Use First PRD Walkthrough for my rough idea." |
+| Product Ideation Workbook | You think through one product idea as a worksheet step inside First PRD Walkthrough before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
 | Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question." |
 | Conviction Packet / Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review, including primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. | "Treat this as evidence, not authority." |
 | Design Canvas Input Prompt | A short prompt inside the Student Experience Ingestion Packet that turns approved product input, references, workflow examples, and not-yet boundaries into a design-tool brief. | "Focus the design canvas on the minimum workflow that gives the target user value." |

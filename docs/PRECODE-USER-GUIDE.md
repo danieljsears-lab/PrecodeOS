@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.65
+Document version: v0.7.67
 Last updated: 2026-06-29
 
 
@@ -26,7 +26,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like.
+For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts.
 
@@ -40,7 +40,7 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 
 If you know the kind of moment you are in but do not know which Precode prompt or artifact to use, start with the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md`.
 
-Use it as an index, not as task approval. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Conviction Packet, and Local Source Intake are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
+Use it as an index, not as task approval. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
 
 If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.
 
@@ -86,9 +86,13 @@ When ready, produce a Conviction Packet and Local Source Intake handoff prompt. 
 
 When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
 
-## Use The Product Ideation Workbook Before Precode
+## Use First PRD Walkthrough For Rough Ideas
 
-If you are a non-technical builder with a net-new, rough product idea, start with `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+If you are a non-technical builder with a net-new, rough product idea, start with First PRD Walkthrough. `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` is the workbook step inside that path, before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+
+The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+Read it this way: Idea is the rough idea or messy notes; Brief is the Product Brief after at most three high-level questions; Packet is the reviewed Conviction Packet / Precode Ingestion Packet; Intake is the Local Source Intake summary; PRD is human-reviewed PRD shaping and approval; Bead is candidate decomposition followed by an approved active bead; Proof is recorded checks and manual evidence; Review is human review with advisory lanes only when needed; Close is closeout evidence and an explicit Close State.
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 
@@ -107,7 +111,7 @@ Say this:
 ```text
 I am a non-technical founder with a rough product idea.
 
-Use the Product Ideation Workbook path as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
+Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook step as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
 
@@ -454,7 +458,7 @@ Why this matters: failed attempts should become evidence instead of disappearing
 
 Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.
 
-If you started in the Product Ideation Workbook, the safe sequence is:
+If you started in First PRD Walkthrough, the safe sequence is:
 
 ```text
 Initial Direction -> workbook refinement -> Candidate Goal Frame -> Local Source Intake -> reaffirmation -> PRODUCT.md Goal Frame
@@ -784,7 +788,7 @@ Use this table when you are unsure what kind of request to make.
 | Situation | Ask for | Copyable request |
 |---|---|---|
 | I want the shortest safe path from rough idea to PRD readiness | First PRD Walkthrough | `Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps, summarize a Product Brief after at most three high-level questions, challenge weak assumptions, produce a Conviction Packet and Local Source Intake handoff when ready, and treat all output as evidence only. Do not draft or approve a PRD, update owner files, create beads, choose tasks, or code.` |
-| Net-new rough product idea from a non-technical founder | Product Ideation Workbook plus Product Brief | `Use the Product Ideation Workbook path first. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.` |
+| Net-new rough product idea from a non-technical founder | First PRD Walkthrough | `Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.` |
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
 | Post-intake or post-PRD feature angle needs thinking before bead commitment | Plan Loop | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Ask only targeted questions that could change the next workflow, risk, first slice, owner-file impact, or stop condition, then produce a Plan Packet. Treat it as evidence only.` |

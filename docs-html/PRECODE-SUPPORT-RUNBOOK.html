@@ -247,12 +247,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.30</span><span>Updated 2026-06-29</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.32</span><span>Updated 2026-06-29</span></p>
 </section>
 <section class="content layout">
   <article class="article">
     <h2 id="purpose"><a class="heading-anchor" href="#purpose" aria-label="Link to Purpose">#</a>Purpose</h2>
 <p>Use this runbook when you are helping someone else adopt PrecodeOS.</p>
+<p>This runbook is helper-facing. It does not replace Guided Setup for setup, Daily Cockpit for normal operation, Troubleshooting for symptom lookup, or the Recovery Protocol for the recovery contract.</p>
 <p>The support posture is:</p>
 <ul><li>the user owns product facts, approvals, and risk decisions</li><li>support asks, reflects, challenges, and routes</li><li>the agent may inspect, summarize, propose, and validate</li><li>durable state belongs in Precode owner files, beads, recorded checks, and generated evidence</li><li>no separate support handoff artifact is required</li></ul>
 <p>PrecodeOS is not an app to launch. It is a repo-native operating layer: Markdown authority files, task contracts, adapters, scripts, and generated-evidence rules that live inside a project folder.</p>
@@ -515,6 +516,8 @@ Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, 
 <p>Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.</p>
 <h3 id="beginner-discovery-routing"><a class="heading-anchor" href="#beginner-discovery-routing" aria-label="Link to Beginner Discovery Routing">#</a>Beginner Discovery Routing</h3>
 <p>Use this routing when a student arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.</p>
+<p>First-product spine: <code>Idea -&amp;gt; Brief -&amp;gt; Packet -&amp;gt; Intake -&amp;gt; PRD -&amp;gt; Bead -&amp;gt; Proof -&amp;gt; Review -&amp;gt; Close</code>.</p>
+<p>Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.</p>
 <div class="table-wrap"><table><thead><tr><th>Student state</th><th>Support response</th><th>Do not do yet</th></tr></thead><tbody><tr><td>Messy idea or scattered notes</td><td>Route to First PRD Walkthrough. Use the Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path.</td><td>Do not create a PRD, bead, or code.</td></tr><tr><td>Product Brief exists but evidence is weak</td><td>Ask the student/instructor to name current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill.</td><td>Do not treat excitement or online research as validation.</td></tr><tr><td>Conviction Packet exists</td><td>Bring the reviewed packet into Local Source Intake as evidence.</td><td>Do not route directly to PRD drafting or Claude Code implementation.</td></tr><tr><td>Approved PRD-like input plus Experience artifacts exist</td><td>Use <code>tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md</code> before Claude Code creates one bounded bead.</td><td>Do not let raw discovery notes substitute for approved PRD-like input.</td></tr></tbody></table></div>
 <p>Conviction means MVP-ready clarity, not validated demand. A good packet names intended user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and sensitive surfaces.</p>
 <p>Instructors own the learning and product-thinking layer:</p>

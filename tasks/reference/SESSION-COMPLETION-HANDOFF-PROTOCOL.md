@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-06-27
+Document version: v0.1.18
+Last updated: 2026-06-29
 
 ## Purpose
 
 Completion and handoff keep the end of a session as structured as the start.
 
 This protocol distinguishes orientation, evidence, review, and activation so a finished-sounding agent response does not become automatic task completion.
+
+In the first-product spine, the end of the path is still three separate gates: Proof, Review, and Close. `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close` means recorded checks and manual evidence come before human review, and closeout with explicit Close State comes after review/handback. Closeout does not accept work, approve transition, or activate another bead by itself.
 
 Active memory remains exactly:
 

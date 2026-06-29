@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-24
+Document version: v0.1.15
+Last updated: 2026-06-29
 
 ## Purpose
 
 Local Source Intake helps a solo builder turn messy project material into trusted Precode artifacts without treating the raw material as authority.
+
+In the first-product spine, intake sits after the reviewed packet and before PRD shaping: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. A Conviction Packet / Precode Ingestion Packet can feed intake, but intake output still requires user review before PRD shaping, owner-file promotion, decomposition, bead activation, or coding.
 
 The intake output is not the plan. It is a short, inspectable evidence summary that can feed:
 

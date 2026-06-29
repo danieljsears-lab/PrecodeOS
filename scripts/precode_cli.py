@@ -47,7 +47,7 @@ def run_commands(commands: list[list[str]], *, root: Path, dry_run: bool = False
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="precode",
-        description="Local facade over trusted PrecodeOS repo commands.",
+        description="Optional local shortcut over trusted PrecodeOS repo commands; start normal work in the Daily Cockpit.",
         epilog=(
             "This wrapper does not approve tasks, transitions, releases, setup mutation, "
             "external mutation, package updates, or generated evidence as authority."
@@ -69,10 +69,10 @@ def build_parser() -> argparse.ArgumentParser:
         )
         return subparser
 
-    add_dry_run(subparsers.add_parser("start", help="run bash scripts/session-start.sh"))
-    add_dry_run(subparsers.add_parser("next", help="run python3 scripts/next-step.py"))
-    add_dry_run(subparsers.add_parser("health", help="run python3 scripts/os-health.py"))
-    add_dry_run(subparsers.add_parser("validate", help="run bash scripts/validate-memory.sh"))
+    add_dry_run(subparsers.add_parser("start", help="run the Daily Cockpit session-start command"))
+    add_dry_run(subparsers.add_parser("next", help="show advisory next-step guidance; does not choose work"))
+    add_dry_run(subparsers.add_parser("health", help="show generated OS Health evidence; not authority"))
+    add_dry_run(subparsers.add_parser("validate", help="validate active memory and package state"))
     add_dry_run(subparsers.add_parser("check", help="run the local package validation summary"))
 
     bootstrap = add_dry_run(subparsers.add_parser(

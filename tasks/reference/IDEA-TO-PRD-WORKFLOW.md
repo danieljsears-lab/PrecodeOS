@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
+Document version: v0.1.16
 Last updated: 2026-06-29
 
 ## Purpose
@@ -28,7 +28,7 @@ For a net-new, rough product idea from a non-technical builder, the default path
 First PRD Walkthrough -> Product Ideation Workbook step -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> optional Plan Loop when the user wants pre-commitment exploration -> Architecture Shaping when risk-triggered -> bead proposals
 ```
 
-The First PRD Walkthrough is a named beginner entrypoint, not a new protocol or shortcut. Product Briefs, Conviction Packets, workbook notes, research, and source summaries are evidence only. They must not approve PRDs, create a roadmap or backlog, update owner files, create or activate beads, or authorize coding. When the builder brings a reviewed Conviction Packet or other source material into a Precode repo, Local Source Intake must summarize it before PRD shaping. Human PRD approval is still required before `FEATURES.md` compilation, decomposition, bead activation, or implementation.
+The First PRD Walkthrough is the named beginner route, not a new protocol or shortcut. Product Briefs, Conviction Packets, workbook notes, research, and source summaries are evidence only. They must not approve PRDs, create a roadmap or backlog, update owner files, create or activate beads, or authorize coding. When the builder brings a reviewed Conviction Packet or other source material into a Precode repo, Local Source Intake must summarize it before PRD shaping. Human PRD approval is still required before `FEATURES.md` compilation, decomposition, bead activation, or implementation.
 
 Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the product problem and scope are already clear.
 
@@ -150,7 +150,7 @@ Before starting fresh, update the durable artifact and run the appropriate valid
 
 Capture the request in the builder's words before turning it into implementation.
 
-For net-new, rough product ideas from a non-technical builder, route the builder to `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat the workbook as a thinking space, not authority. If the builder is working before repo setup, Precode Idea Coach may run as a guided product-coach interview inside Claude Code, Claude, Codex, or another equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. The workbook may use builder lenses, visible iteration, core workflow spine, and smallest complete useful payoff framing to clarify the idea, but these are evidence only and do not create a separate student workflow or implementation handoff. Local Source Intake is still required before promotion.
+For net-new, rough product ideas from a non-technical builder, route the builder to First PRD Walkthrough before asking Precode to update `PRODUCT.md`, draft a PRD, propose beads, or code. Treat `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` as the workbook step inside that path and as a thinking space, not authority. If the builder is working before repo setup, Precode Idea Coach may run as a guided product-coach interview inside Claude Code, Claude, Codex, or another equivalent agent surface. Use Claude Code Plan Mode or an equivalent planning mode when available. The workbook may use builder lenses, visible iteration, core workflow spine, and smallest complete useful payoff framing to clarify the idea, but these are evidence only and do not create a separate student workflow or implementation handoff. Local Source Intake is still required before promotion.
 
 Use a founder-friendly question budget during early intake: after at most three high-level product or business questions, produce a short `Product Brief` and one next best question. The Product Brief is evidence only and should include:
 

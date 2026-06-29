@@ -189,12 +189,14 @@ Do not add more active-memory files. If a topic needs durable detail, give it a 
 
 This README is the public package compass: use it to decide whether PrecodeOS fits, how to adopt it, and which canonical document to open next. It is not the daily operating surface once work has started.
 
-Use this order:
+Use this order and stop at the first surface that matches your situation:
 
 1. For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
 2. Once PrecodeOS is installed or you are already working in a PrecodeOS repo, use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface.
 3. When the Daily Cockpit points you deeper, use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) as the detailed operating manual.
 4. When you want the conceptual Builder OS explanation, use [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md).
+
+Do not read all four as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, and OS README is the concept explainer.
 
 If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
 
@@ -204,7 +206,7 @@ For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CAN
 
 For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
-Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
+Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
 

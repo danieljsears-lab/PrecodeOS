@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
+Document version: v0.1.18
 Last updated: 2026-06-29
 
 ## Purpose
@@ -17,6 +17,10 @@ Last updated: 2026-06-29
 Workflow selection helps a user or agent choose the right Precode path before starting work.
 
 Use this protocol when the next step is unclear, when too many protocols could apply, or when an agent may be jumping from idea to implementation too quickly.
+
+For a rough idea, do not present Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers. The user-facing route is First PRD Walkthrough. Use Product Discovery Validation only when worth-building uncertainty is the specific blocker, and use the workbook, coach, Product Brief, Conviction Packet, Local Source Intake, and PRD shaping as ordered steps inside the rough-idea path.
+
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Workflow selection should preserve the order: Local Source Intake before PRD shaping, human PRD approval before decomposition or bead activation, recorded proof before review, and review before closeout or transition approval.
 
 If the user asks for the Workflow Selection Skill, a "Precode skill", or a "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. Stable documentation questions should route to Ask Precode. Current-state or next-work questions should route through Workflow Selection, Session Start, Troubleshooting, or the relevant owner workflow.
 
@@ -45,8 +49,8 @@ Choose the workflow that matches the current situation:
 | First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | First PRD Walkthrough | Product Brief, then Conviction Packet evidence, then reviewed intake summary before PRD shaping |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
-| Broad, risky, market-facing, paid, evidence-poor, or solution-first product idea where worth-building is uncertain | Product Discovery Interview Skill / Product Discovery Validation | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
-| Rough idea, scattered notes, screenshots, research, chat summary, or issue export | Local Source Intake | reviewed source summary |
+| Broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty blocks the First PRD path | Product Discovery Validation inside or before First PRD Walkthrough | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
+| Scattered notes, screenshots, research, chat summary, or issue export for an existing Precode project | Local Source Intake | reviewed source summary |
 | User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop | Plan Packet |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
 | Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |

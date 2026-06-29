@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.30
+Document version: v0.1.32
 Last updated: 2026-06-29
 
 ## Purpose
 
 Use this runbook when you are helping someone else adopt PrecodeOS.
+
+This runbook is helper-facing. It does not replace Guided Setup for setup, Daily Cockpit for normal operation, Troubleshooting for symptom lookup, or the Recovery Protocol for the recovery contract.
 
 The support posture is:
 
@@ -601,6 +603,10 @@ Use this section when PrecodeOS adoption is happening inside a guided bootcamp, 
 ### Beginner Discovery Routing
 
 Use this routing when a student arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.
+
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.
 
 | Student state | Support response | Do not do yet |
 |---|---|---|

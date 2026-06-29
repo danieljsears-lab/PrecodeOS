@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-21
+Document version: v0.1.15
+Last updated: 2026-06-29
 
 ## What This Guide Is For
 
 Use this guide when you want to put PrecodeOS into a project for the first time.
 
 PrecodeOS is not an app you launch. It is a small repo-native operating layer for AI coding work: Markdown authority files, task contracts, adapter notes, validation scripts, and generated evidence rules that live inside a project folder.
+
+This guide owns setup only. If PrecodeOS is already installed, stop using this as the operating manual and go to `docs/PRECODE-DAILY-COCKPIT.md`. If the issue is a rough product idea, use First PRD Walkthrough from the Daily Cockpit; the Product Ideation Workbook is a step inside that rough-idea path, not a second setup guide.
 
 If you are helping someone else through setup, use `docs/PRECODE-SUPPORT-RUNBOOK.md` alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 
@@ -29,6 +31,8 @@ The safest setup path is manual and visible:
 5. Adapt product and project owner files in plain English.
 6. Validate memory before letting an agent build.
 7. Stop for human review.
+
+After setup validates, stop here. Start normal work from `docs/PRECODE-DAILY-COCKPIT.md`.
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
 

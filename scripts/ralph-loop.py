@@ -222,7 +222,7 @@ def decide(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run a bounded Ralph attempt loop for one active Precode bead.")
+    parser = argparse.ArgumentParser(description="Run one bounded Ralph retry attempt for one active Precode bead.")
     parser.add_argument("--attempt-command", default="", help="explicit command to run as the attempt before validators")
     parser.add_argument("--validator", action="append", default=[], help="validator command; repeat to override the default set")
     parser.add_argument("--max-attempts", type=int, default=0, help="override active bead Ralph max attempts")

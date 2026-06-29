@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.17
+Document version: v0.1.18
 Last updated: 2026-06-29
 
 ## Purpose
@@ -29,6 +29,8 @@ Active memory remains exactly:
 Skills should make Precode easier to invoke, not bigger to trust.
 
 The benefit of skills is adoption and reliability: beginners can ask for a named workflow, and agents get a bounded playbook that says what to load, what to return, and when to stop. The main risk is hidden authority, so every skill playbook must point back to Precode owner files instead of becoming the source of truth.
+
+Do not create new beginner-facing skill names for the same rough-idea job. `First PRD Walkthrough` is the user-facing invocation; Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, workbook, Product Brief, Challenge And Clarity, Local Source Intake, and PRD shaping remain bounded steps or specialist checks inside that path.
 
 Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when designing or reviewing a skill playbook. A skill playbook is an invocation layer: it may point to active memory, owner protocols, source evidence, generated reports, or maintainer context when allowed, but it must not merge those layers or become an authority source itself.
 

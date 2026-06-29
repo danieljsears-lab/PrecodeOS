@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-06-29
 
 ## Purpose
@@ -19,10 +19,10 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-First PRD Walkthrough for rough ideas -> Product Ideation Workbook step -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
+Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close
 ```
 
-For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
+For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. Brief means Product Brief after at most three high-level questions; Packet means reviewed Conviction Packet / Precode Ingestion Packet; Intake means Local Source Intake before PRD shaping. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
 
 The PRD is not active memory. It is a destination document loaded only when defining or implementing the feature it owns.
 

@@ -14,9 +14,9 @@ Last updated: 2026-06-19
 
 ## Purpose
 
-Ralph is Precode's bounded bead-attempt engine.
+Ralph is Precode's bounded retry attempt for one active bead.
 
-It helps an agent and builder iterate against reality without turning retries into hidden authority. Ralph may run one explicit attempt command, run a validator set, classify the result, record generated evidence, and recommend the next move for the active bead.
+In plain English: use Ralph only when there is already one active bead and you want one controlled attempt plus checks, not a new task. It helps an agent and builder iterate against reality without turning retries into hidden authority. Ralph may run one explicit attempt command, run a validator set, classify the result, record generated evidence, and recommend the next move for the active bead.
 
 Ralph must not choose a task, activate another bead, accept review, approve a transition, widen scope, rewrite owner files, or mutate external systems without the normal Precode approval gates.
 

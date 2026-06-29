@@ -9,10 +9,12 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.27
+Document version: v0.8.28
 Last updated: 2026-06-29
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
+
+This document explains the model. It is not the daily start page: use `../README.md` as the public compass, `PRECODE-GUIDED-SETUP.md` for setup, and `PRECODE-DAILY-COCKPIT.md` as the first working surface after setup.
 
 It helps a non-technical builder answer five questions before the project runs away:
 
@@ -138,7 +140,7 @@ Main surfaces:
 - Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
-Use First PRD Walkthrough when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. The path produces a Conviction Packet that should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
+Use First PRD Walkthrough when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. Treat it as the only user-facing rough-idea route. The Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps inside that route. The path produces a Conviction Packet that should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
 
 Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
 

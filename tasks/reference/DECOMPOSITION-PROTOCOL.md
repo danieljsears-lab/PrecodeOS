@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-24
+Document version: v0.1.14
+Last updated: 2026-06-29
 
 ## Purpose
 
 Decomposition turns a shaped destination into journey units small enough to verify.
 
 This protocol helps Precode avoid premature implementation, overbroad beads, hidden dependencies, and mixed planning plus coding.
+
+In the first-product spine, decomposition starts only after human-reviewed PRD shaping and approval: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Decomposition may propose candidate beads, but it does not activate them; proof, review, and closeout remain separate later gates.
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when a candidate bead comes from changed, superseded, deferred, queued, or source-heavy intent and needs a clear promotion path before activation.
 

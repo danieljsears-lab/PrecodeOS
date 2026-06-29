@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.28
+# Version: v0.1.29
 # Last updated: 2026-06-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -410,17 +410,19 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "These are steps in the path, not competing commands.",
         ],
         Path("docs/PRECODE-OS-README.md"): [
-            "not the public package compass, the daily operating surface, or the exhaustive file dictionary",
-            "Use `docs/PRECODE-DAILY-COCKPIT.md` first when you are operating or resuming work in a PrecodeOS repo.",
+            "This document explains the model.",
+            "It is not the daily start page",
+            "use `../README.md` as the public compass, `PRECODE-GUIDED-SETUP.md` for setup, and `PRECODE-DAILY-COCKPIT.md` as the first working surface after setup.",
             "First PRD Walkthrough for rough idea to PRD readiness",
-            "This explainer is the conceptual Builder OS map.",
+            "Treat it as the only user-facing rough-idea route.",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`.",
             "This guide is the deeper operating manual",
+            "Do not treat this guide as a second start page.",
             "Rough ideas go to First PRD Walkthrough.",
             "ordered steps, not competing commands",
-            "Start with the Product Ideation Workbook and Precode Idea Coach steps",
+            "start with First PRD Walkthrough",
         ],
         Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
             "Use First PRD Walkthrough when you want the shortest safe route from rough idea to PRD readiness.",
@@ -438,13 +440,13 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "Use the Product Ideation Workbook and Precode Idea Coach as ordered steps inside that path.",
         ],
         Path("tasks/reference/PRD-PROTOCOL.md"): [
-            "First PRD Walkthrough for rough ideas -> Product Ideation Workbook step -> Product Brief",
+            "Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close",
             "Start with First PRD Walkthrough, using Product Ideation Workbook and Precode Idea Coach as ordered steps",
             "Use \"First PRD Walkthrough\" as the plain-language request for this ramp",
         ],
         Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
             "First PRD Walkthrough -> Product Ideation Workbook step -> Precode Idea Coach guided interview",
-            "The First PRD Walkthrough is a named beginner entrypoint, not a new protocol or shortcut.",
+            "The First PRD Walkthrough is the named beginner route, not a new protocol or shortcut.",
             "Use First PRD Walkthrough, with Product Ideation Workbook and Precode Idea Coach as ordered steps",
         ],
         Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
@@ -456,12 +458,13 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "beginner-facing operating home base",
             "Deeper hands-on operating manual",
             "First PRD Walkthrough when a first-time rough idea needs pre-repo product thinking",
-            "Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path",
+            "Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping as ordered support inside that path",
         ],
         Path("llms.txt"): [
-            "beginner-facing operating home base and safe next prompts",
+            "beginner-facing operating home base, rough-idea entry prompt, first-product spine, and safe next prompts",
             "conceptual Builder OS explainer",
             "deeper operating manual behind the Daily Cockpit",
+            "setup-only adoption path before normal work starts",
         ],
     }
     for path, required_terms in required_terms_by_path.items():
@@ -510,6 +513,129 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
                 failures.append({"scenario": f"onboarding authority consolidation forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
 
     return len(required_terms_by_path) + 1 + len(forbidden_terms_by_path)
+
+
+def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
+    spine = "Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close"
+    required_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            f"First-product spine: `{spine}`",
+            "Brief: Product Brief after at most three high-level questions.",
+            "Packet: reviewed Conviction Packet / Precode Ingestion Packet.",
+            "Intake: Local Source Intake summary.",
+            "PRD: human-reviewed PRD shaping and approval.",
+            "Bead: candidate decomposition, then approved active bead.",
+            "Proof: recorded checks and manual evidence.",
+            "Review: human review, with advisory lanes only when needed.",
+            "Close: closeout evidence and explicit Close State.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            f"The first-product spine is: `{spine}`.",
+            "Intake is the Local Source Intake summary",
+            "PRD is human-reviewed PRD shaping and approval",
+            "Bead is candidate decomposition followed by an approved active bead",
+            "Proof is recorded checks and manual evidence",
+            "Review is human review with advisory lanes only when needed",
+            "Close is closeout evidence and an explicit Close State",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            f"The first-product spine is: `{spine}`.",
+            "rough idea or messy notes become a Product Brief",
+            "then Local Source Intake",
+            "then human-reviewed PRD shaping and approval",
+            "then candidate decomposition and one approved active bead",
+            "then recorded proof, human review, and closeout with explicit Close State",
+        ],
+        Path("docs/CLAUDE-CODE-FIELD-GUIDE.md"): [
+            f"First-product spine: `{spine}`.",
+            "Product Ideation Workbook and Precode Idea Coach are steps inside that route, not separate commands to choose between.",
+            "Bring it through Local Source Intake before PRD shaping",
+            "human PRD approval is required before decomposition, bead activation, or implementation",
+        ],
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            f"First-product spine: `{spine}`.",
+            "Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.",
+            "then Local Source Intake",
+            "then human-reviewed PRD shaping and approval",
+            "then candidate decomposition and one approved active bead",
+            "then recorded proof, human review, and closeout with explicit Close State",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            f"First-product spine: `{spine}`.",
+            "Brief: Product Brief after at most three high-level questions.",
+            "Packet: reviewed Conviction Packet / Precode Ingestion Packet.",
+            "Intake: Local Source Intake summary.",
+            "PRD: human-reviewed PRD shaping and approval.",
+            "Bead: candidate decomposition, then approved active bead.",
+            "Proof: recorded checks and manual evidence.",
+            "Review: human review, with advisory lanes only when needed.",
+            "Close: closeout evidence and explicit Close State.",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            f"First-product spine: `{spine}`.",
+            "Local Source Intake before PRD shaping",
+            "human PRD approval before decomposition or bead activation",
+            "recorded proof before review",
+            "review before closeout or transition approval",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            spine,
+            "Brief means Product Brief after at most three high-level questions",
+            "Packet means reviewed Conviction Packet / Precode Ingestion Packet",
+            "Intake means Local Source Intake before PRD shaping",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            f"`{spine}`",
+            "A Conviction Packet / Precode Ingestion Packet can feed intake",
+            "requires user review before PRD shaping, owner-file promotion, decomposition, bead activation, or coding",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            f"`{spine}`",
+            "after human-reviewed PRD shaping and approval",
+            "does not activate them",
+            "proof, review, and closeout remain separate later gates",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            f"`{spine}`",
+            "Proof, Review, and Close",
+            "recorded checks and manual evidence come before human review",
+            "closeout with explicit Close State comes after review/handback",
+            "Closeout does not accept work, approve transition, or activate another bead by itself.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            spine,
+            "compressed first-product spine",
+            "remain steps inside",
+        ],
+        Path("llms.txt"): [
+            spine,
+            "visible first-product spine",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"first-product spine contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_peer_phrases = {
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "Product Ideation Workbook, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Product Ideation Workbook or First PRD Walkthrough",
+            "Precode Idea Coach or First PRD Walkthrough",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers.",
+        ],
+    }
+    for path, phrases in forbidden_peer_phrases.items():
+        text = path.read_text(encoding="utf-8")
+        for phrase in phrases:
+            if phrase in text and "do not present" not in text.lower() and "Do not expose" not in text:
+                failures.append({"scenario": f"first-product spine forbidden peer phrasing: {path}", "expected": f"remove {phrase}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_peer_phrases)
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -2875,6 +3001,7 @@ def main() -> int:
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
     onboarding_authority_scenario_count = assert_onboarding_authority_consolidation_contract(failures)
+    first_product_spine_scenario_count = assert_first_product_spine_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3394,6 +3521,7 @@ def main() -> int:
         + daily_prompt_alias_scenario_count
         + artifact_chooser_scenario_count
         + onboarding_authority_scenario_count
+        + first_product_spine_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)

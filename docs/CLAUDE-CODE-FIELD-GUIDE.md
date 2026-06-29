@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-23
+Document version: v0.1.17
+Last updated: 2026-06-29
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -23,7 +23,11 @@ Read it once, front to back, before your first session. After that, keep it open
 
 This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another school-provided surface. If you cannot find Claude Code or open your project folder, ask your instructor or engineer before starting.
 
-If you are still exploring an idea before the project exists, use Claude Cowork, Claude, or the Product Ideation Workbook as a thinking coach first. The pre-repo goal is a Conviction Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only.
+If you are still exploring an idea before the project exists, use First PRD Walkthrough in Claude Cowork, Claude, or an equivalent planning surface. Product Ideation Workbook and Precode Idea Coach are steps inside that route, not separate commands to choose between.
+
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packet / Precode Ingestion Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only. Bring it through Local Source Intake before PRD shaping; human PRD approval is required before decomposition, bead activation, or implementation.
 
 ---
 
