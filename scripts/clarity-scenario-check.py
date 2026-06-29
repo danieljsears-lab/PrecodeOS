@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.34
+# Version: v0.1.36
 # Last updated: 2026-06-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -970,6 +970,92 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
             if term in text:
                 failures.append({"scenario": f"command surface triage forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md"): [
+            "Engineering Quality Text-Contract Checker",
+            "python3 scripts/engineering-quality-check.py --check",
+            "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
+            "does not inspect app code",
+            "does not approve implementation",
+            "does not create a scorecard",
+            "Standards Taxonomy remains deferred",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Engineering Quality Text-Contract Checker",
+            "python3 scripts/engineering-quality-check.py --check",
+            "advisory only",
+            "does not approve implementation",
+            "does not create proof",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Check quality text contract",
+            "python3 scripts/engineering-quality-check.py --check",
+            "advisory only",
+            "does not approve coding, review, release, or generated proof",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Check The Engineering Quality Text Contract",
+            "python3 scripts/engineering-quality-check.py --check",
+            "advisory only",
+            "does not inspect app code",
+            "does not approve implementation",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/engineering-quality-check.py",
+            "Engineering Quality Text-Contract Checker",
+            "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
+            "no app-code parsing",
+            "no scorecard",
+        ],
+        Path("llms.txt"): [
+            "scripts/engineering-quality-check.py",
+            "Engineering Quality Text-Contract Checker",
+            "advisory only",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"engineering quality text contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md"): [
+            "the checker approves implementation",
+            "the checker creates proof",
+            "the checker scores code quality",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "passing result grants permission to build",
+            "Engineering Quality Standards Taxonomy is implemented",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "checker approval",
+            "quality score",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "passing result grants permission to build",
+            "certifies production readiness",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"engineering quality forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+
+    module = load_script_module("engineering_quality_check", "engineering-quality-check.py")
+    payload = module.self_test()
+    if payload.get("status") != "pass":
+        failures.append({"scenario": "engineering quality checker self-test", "expected": "pass", "actual": json.dumps(payload, sort_keys=True)})
+    if payload.get("advisory_only") is not True:
+        failures.append({"scenario": "engineering quality checker advisory", "expected": "advisory_only true", "actual": str(payload.get("advisory_only"))})
+    if payload.get("scenario_count") != 6:
+        failures.append({"scenario": "engineering quality checker scenario count", "expected": "6", "actual": str(payload.get("scenario_count"))})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 6
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -3340,6 +3426,7 @@ def main() -> int:
     many_bead_rhythm_scenario_count = assert_many_bead_operating_rhythm_contract(failures)
     student_journey_authority_scenario_count = assert_student_journey_authority_consolidation_contract(failures)
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
+    engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3597,6 +3684,23 @@ def main() -> int:
             "ask for proof",
         ),
         (
+            "bounded afk fresh re-entry ready",
+            bead_depth_quality(
+                bead(
+                    autonomy_level="bounded-afk",
+                    review_context="fresh_context_recommended",
+                    test_strategy="static_only",
+                    checks=["python3 scripts/version-check.py"],
+                    sections={
+                        "Objective": "Run bounded work.",
+                        "Done When": "The bounded change is proven.",
+                        "Stop If": "Scope, proof, or approval becomes unclear.",
+                    },
+                )
+            )["details"].get("user_decision"),
+            "continue",
+        ),
+        (
             "human only missing gate",
             bead_depth_quality(bead(autonomy_level="human-only", sections={"Objective": "Run work.", "Stop If": "none"}))[
                 "details"
@@ -3609,6 +3713,11 @@ def main() -> int:
 
     run_contract_scenarios = [
         ("low risk omitted", run_contract_quality(bead(), [])["details"].get("user_decision"), "continue"),
+        (
+            "afk candidate metadata only",
+            run_contract_quality(bead(delegation_mode="afk_candidate"), [])["details"].get("user_decision"),
+            "continue",
+        ),
         (
             "bounded afk missing",
             run_contract_quality(bead(autonomy_level="bounded-afk"), [])["details"].get("user_decision"),
@@ -3864,6 +3973,7 @@ def main() -> int:
         + many_bead_rhythm_scenario_count
         + student_journey_authority_scenario_count
         + command_surface_triage_scenario_count
+        + engineering_quality_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)

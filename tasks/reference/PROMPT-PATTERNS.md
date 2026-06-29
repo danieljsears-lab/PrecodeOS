@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.54
+Document version: v0.1.56
 Last updated: 2026-06-29
 
 ## Purpose
@@ -644,6 +644,14 @@ Use the Engineering Quality Standards Protocol as a thin quality floor, not a ne
 If the answer reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.
 ```
 
+Check the text contract when the quality-floor answer seems hand-wavy or riskier than claimed:
+
+```text
+Run the Engineering Quality Text-Contract Checker with `python3 scripts/engineering-quality-check.py --check`. Treat it as advisory only. Use it to find missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals, and do not treat the result as proof, implementation approval, review acceptance, code-quality score, or a checker gate.
+```
+
+The checker does not approve implementation, does not create proof, does not inspect app code, and does not make Standards Taxonomy implemented. It only helps decide whether the quality-floor text is complete enough to continue or whether an owner protocol should be loaded first.
+
 ## Local Source Intake
 
 ```text
@@ -861,7 +869,17 @@ Use the Decomposition Protocol to propose journey beads from this destination PR
 ## AFK-Candidate Review
 
 ```text
-Before marking a bead afk_candidate, verify that it has bounded files in play, explicit checks, stop conditions, a test_strategy, review_context, and no hidden approval gate. Confirm this does not activate parallel execution or bypass human review.
+Before marking a bead afk_candidate, verify that it has bounded files in play, explicit checks, stop conditions, a test_strategy, review_context, and no hidden approval gate. Confirm this does not activate parallel execution, approve commands, accept review, or bypass human review.
+```
+
+## Bounded-AFK Re-Entry
+
+```text
+Before I step away, confirm whether this bead is afk_candidate or bounded-afk. Show allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. Do not treat AFK metadata as autonomous execution approval.
+```
+
+```text
+I am back. Re-enter this bead safely: reload active memory, the active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block. Do not accept implementation, approve commands, activate another bead, or approve small-team merge/re-entry.
 ```
 
 ## Architecture Shaping

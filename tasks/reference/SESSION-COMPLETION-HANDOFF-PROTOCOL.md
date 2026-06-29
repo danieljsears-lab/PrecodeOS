@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-06-29
 
 ## Purpose
@@ -62,6 +62,7 @@ Closeout Evidence should include:
 - blocked escape
 - evidence source
 - allowed actions and proof needed when the bead has a Run Contract
+- AFK or bounded-AFK re-entry evidence when the builder stepped away: elapsed context, changed files, recorded checks, proof still missing, stop conditions hit or not hit, approval still required, and the next action as continue, review, split, or block
 - release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
 - accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
@@ -94,6 +95,8 @@ Session-close handback should end with an explicit `Close State` line:
 - `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 
 Use `Safe to close` only when the session close ran, the closeout state has been summarized, and no immediate user action is needed to preserve or clarify Precode session state. The Close State line is human-facing guidance only. It does not approve review, promote a bead, activate the next bead, commit, push, deploy, release, rollback, certify external sync, or create host-specific tab-management behavior.
+
+When returning from solo AFK or bounded-AFK work, treat the return as re-entry review before continuing. The agent should name what changed while the builder was away, which checks ran, whether any Run Contract limit or stop condition was hit, what proof is still missing, and what still needs human approval. A clean re-entry summary does not accept implementation, approve commands, or activate another bead.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, stale re-entry risks, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review. `python3 scripts/team-collaboration-check.py` may provide preview evidence for these fields, but generated preview output is not acceptance, merge approval, or owner-file promotion.
 
@@ -128,6 +131,7 @@ A handoff should be able to explain:
 - out of scope
 - checks
 - allowed actions and proof needed when the bead has a Run Contract
+- AFK or bounded-AFK re-entry evidence when the builder stepped away
 - stop conditions
 - open questions
 - latest evidence

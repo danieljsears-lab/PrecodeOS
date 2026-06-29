@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.1
+Document version: v0.2.2
 Last updated: 2026-06-23
 
 ## Purpose
@@ -207,9 +207,13 @@ When a teammate returns after another contributor or coordinator changed integra
 - whether the assigned bead still has one outcome and one primary authority
 - whether files in play conflict with merged work
 - whether checks or manual verification are stale
+- whether any teammate AFK or delegated-agent work changed files beyond the assigned bead
+- whether recorded evidence is enough for coordinator review without relying on chat history
 - whether the next action is continue, rebase/update, review, split, block, or handoff
 
 If re-entry changes the product decision, PRD, owner-file scope, files in play, or verification strategy, stop and ask the coordinator before editing.
+
+Small-team re-entry is not the same as solo `afk_candidate` work. Team parallelism always requires branch/worktree isolation, coordinator review, and merge/re-entry evidence; AFK metadata on one bead does not approve multiple active beads or merge work back into the integration branch.
 
 ## Stop Conditions
 
@@ -220,6 +224,7 @@ Stop before work continues when:
 - a teammate cannot name their branch/worktree, bead, primary authority, files in play, or checks
 - two contributors need the same files and no conflict plan exists
 - a PR or issue is being treated as authority
+- AFK or delegated-agent output is being treated as acceptance, merge approval, or permission to widen the assigned bead
 - a merge, deploy, release, external mutation, or sensitive action is requested without explicit approval
 - generated reports, teammate notes, or handoff packets are being used as instructions
 - the work requires multiple active beads in one checkout

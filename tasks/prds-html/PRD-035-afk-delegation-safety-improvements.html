@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-035 -- AFK / Delegation Safety Improvements</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-035 -- AFK / Delegation Safety Improvements</h1>
+  <p class="muted">Static HTML generated from <code>PRD-035-afk-delegation-safety-improvements.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-035-afk-delegation-safety-improvements.md#prd-035-afk-delegation-safety-improvements">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>AFK / Delegation Safety Improvements</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-29</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for bounded AFK and delegation safety guidance in PrecodeOS.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, command approval, autonomous execution approval, parallel execution approval, review acceptance, merge approval, generated proof, command-wrapper behavior, registry behavior, optional-pack behavior, install/update behavior, or package-manager behavior.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 8</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition guidance must define the criteria for marking a bead <code>afk_candidate</code> and when <code>bounded-afk</code> is the stronger autonomy level.</td><td>P0</td><td>Primary planning surface.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent routing and tool-execution guidance must state that delegated work returns evidence to the parent/user and does not approve commands or widen scope.</td><td>P0</td><td>Delegation boundary.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Session completion and small-team guidance must name re-entry evidence for solo AFK return and branch/worktree teammate return.</td><td>P0</td><td>Return path.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>User-facing docs and prompts must provide copyable AFK-safety and re-entry prompts without implying autonomous execution approval.</td><td>P1</td><td>Beginner clarity.</td></tr><tr><td><code>PRD-035-FR05</code></td><td>Existing advisory checks must warn on weak AFK/delegation metadata: broad files, missing checks, missing stop conditions, missing <code>test_strategy</code>, missing <code>review_context</code>, missing proof, or missing approval gate.</td><td>P1</td><td>No new command.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and AI-readable navigation must describe affected surfaces only where ownership or navigation changes.</td><td>P1</td><td>Reference follow-through.</td></tr><tr><td><code>PRD-035-FR07</code></td><td>Clarity scenario coverage must protect solo AFK, bounded-AFK Run Contract warnings, small-team re-entry, and the boundary that AFK metadata is not approval.</td><td>P1</td><td>Regression coverage.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, docs HTML, PRD HTML, and roadmap HTML must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-035-afk-delegation-safety-improvements">PRD-035 -- AFK / Delegation Safety Improvements</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS should let a builder step away from a scoped agent task without turning AFK metadata into autonomous execution permission.</p>
+<p>This slice clarifies the difference between <code>afk_candidate</code>, <code>bounded-afk</code>, and small-team parallel work. It strengthens existing advisory checks, prompt language, handoff guidance, and re-entry evidence. It does not add a new command, dashboard, registry, delegation runtime, optional pack, or approval path.</p>
+<h2 id="problem">Problem</h2>
+<p>Unattended or delegated agent work can drift in scope, proof, or ownership. Existing PrecodeOS surfaces already name <code>afk_candidate</code>, <code>bounded-afk</code>, Run Contracts, Context Packs, and small-team re-entry review, but the safety expectations are spread across protocols and can be mistaken for permission to let agents continue autonomously.</p>
+<p>The package needs clearer criteria before work is delegated and clearer evidence when the builder or coordinator returns.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Clarify that <code>afk_candidate</code> means a scoped bead may be safe to hand to an agent after context is loaded.</li><li>Clarify that <code>bounded-afk</code> needs tighter advisory Run Contract review before delegation.</li><li>Make solo AFK re-entry and small-team branch/worktree re-entry visibly distinct.</li><li>Strengthen existing advisory checks for missing files-in-play bounds, checks, stop conditions, test strategy, review context, proof, approval gates, and re-entry evidence.</li><li>Preserve human review, recorded proof, and existing approval gates.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No new delegation safety command, dashboard, generated report, registry, command wrapper, optional pack, install/update behavior, package-manager behavior, or autonomous execution lane.</li><li>No automatic activation of parallel work, subagents, branches, worktrees, review acceptance, merge, transition approval, external mutation, or task selection.</li><li>No hard validator block for AFK metadata in v1; warnings remain advisory and require human judgment.</li><li>No change to the one-active-bead rule in a checkout.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition guidance must define the criteria for marking a bead <code>afk_candidate</code> and when <code>bounded-afk</code> is the stronger autonomy level.</td><td>P0</td><td>Primary planning surface.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent routing and tool-execution guidance must state that delegated work returns evidence to the parent/user and does not approve commands or widen scope.</td><td>P0</td><td>Delegation boundary.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Session completion and small-team guidance must name re-entry evidence for solo AFK return and branch/worktree teammate return.</td><td>P0</td><td>Return path.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>User-facing docs and prompts must provide copyable AFK-safety and re-entry prompts without implying autonomous execution approval.</td><td>P1</td><td>Beginner clarity.</td></tr><tr><td><code>PRD-035-FR05</code></td><td>Existing advisory checks must warn on weak AFK/delegation metadata: broad files, missing checks, missing stop conditions, missing <code>test_strategy</code>, missing <code>review_context</code>, missing proof, or missing approval gate.</td><td>P1</td><td>No new command.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and AI-readable navigation must describe affected surfaces only where ownership or navigation changes.</td><td>P1</td><td>Reference follow-through.</td></tr><tr><td><code>PRD-035-FR07</code></td><td>Clarity scenario coverage must protect solo AFK, bounded-AFK Run Contract warnings, small-team re-entry, and the boundary that AFK metadata is not approval.</td><td>P1</td><td>Regression coverage.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, docs HTML, PRD HTML, and roadmap HTML must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition Protocol distinguishes <code>afk_candidate</code>, <code>bounded-afk</code>, and <code>can run in parallel</code> without changing activation rules.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent Routing and Tool Execution preserve Run Contract advisory boundaries and return-to-parent evidence language.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Completion/Handoff and Team Collaboration name re-entry evidence and keep generated previews non-authoritative.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>Daily Cockpit, User Guide, How-To, and Prompt Patterns include AFK/re-entry prompts and no-autonomy warnings.</td><td>Source review and generated docs HTML.</td></tr><tr><td><code>PRD-035-FR05</code> / <code>PRD-035-FR07</code></td><td>Existing advisory check fixtures cover AFK metadata and bounded-AFK warning behavior.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and <code>llms.txt</code> reflect ownership/navigation changes without overexposing AFK as a new workflow.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Roadmap, journal, changelog, generated PRD/docs/roadmap surfaces are fresh.</td><td>Validation commands.</td></tr></tbody></table></div>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
+python3 scripts/version-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/prd-html.py
+python3 scripts/prd-html.py --check
+python3 _maintainer/scripts/docs-html.py
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py
+python3 _maintainer/scripts/roadmap-html.py --check
+python3 _maintainer/scripts/roadmap-maintenance.py
+git diff --check</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p><code>afk_candidate</code> is delegation suitability metadata only. It says a scoped bead may be safe for an agent after context is loaded, files in play are bounded, checks and stop conditions are explicit, and human review remains required.</p>
+<p><code>bounded-afk</code> is the stronger autonomy level for work that may continue while the builder is away. It should name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence through the existing Run Contract path.</p>
+<p><code>can run in parallel</code> is a small-team dependency term. It means branch/worktree-isolated teammate work after coordinator approval, not multiple active beads in one checkout and not merge approval.</p>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

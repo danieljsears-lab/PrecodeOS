@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.37
+Document version: v0.1.38
 Last updated: 2026-06-29
 
 ## Start Here: You Are Not Just Prompting
@@ -276,6 +276,8 @@ Use these prompts when you do not know what to say next.
 | Turn this into a PRD. | `Use the PRD protocol. Draft a beginner-readable destination PRD with problem, non-goals, before/after user moment, risks, verification evidence, agent-facing technical translation, and smallest first bead.` |
 | Break this into beads. | `Use the Decomposition Protocol. Propose vertical journey beads that each have one outcome, one primary authority, bounded files, checks, dependencies, delegation mode, test strategy, review context, complexity, required planning depth, autonomy level, and stop conditions.` |
 | Implement the active bead. | `Before editing, confirm the active bead, primary authority, files in play, checks, stop conditions, and what is out of scope.` |
+| Step away from a bounded agent task. | `Before I step away, confirm whether this bead is afk_candidate or bounded-afk. Show allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. Do not treat AFK metadata as approval.` |
+| Return after AFK work. | `I am back. Re-enter this bead safely: reload the active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block.` |
 | Check for scope drift. | `Run python3 scripts/files-in-play-check.py and explain whether changed files are inside this bead or should become follow-up work.` |
 | Local files or logs look messy. | `Use Local Hygiene. Run the advisory check or dry-run preview and explain what is protected, generated evidence, cache, or cleanup candidate. Do not delete, archive, move, compact, or rewrite anything.` |
 | Prove this works. | `Run the relevant checks through record-check.sh and explain the evidence in plain English.` |
@@ -310,6 +312,8 @@ Classify this bead's complexity, required_planning_depth, and autonomy_level. Th
 ```
 
 This keeps a typo fix from needing a full PRD while still making auth, payments, data, deployment, security, and multi-system work earn stronger planning and evidence.
+
+`afk_candidate` and `bounded-afk` are not permission slips. `afk_candidate` means the scoped bead may be safe to hand to an agent after context is loaded. `bounded-afk` means the work needs a tighter advisory Run Contract and a clear re-entry review. Small-team parallel work is separate: it needs branch/worktree isolation and coordinator review before merge or re-entry.
 
 ### Authority: Facts Live In The Right File
 

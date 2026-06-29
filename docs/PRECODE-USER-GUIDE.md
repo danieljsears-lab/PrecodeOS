@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.72
+Document version: v0.7.74
 Last updated: 2026-06-29
 
 
@@ -439,6 +439,18 @@ Expect a short answer naming:
 For low-risk work, this should be one short quality-floor statement. For riskier work, the agent should route to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Review Lanes, or Release Readiness instead of coding.
 
 This is not a production-readiness certification, code-quality score, or new required stage for every bead.
+
+## Check The Engineering Quality Text Contract
+
+Use this when the engineering quality floor sounds vague, skips proof, skips stop conditions, or claims low risk while naming architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system work.
+
+```bash
+python3 scripts/engineering-quality-check.py --check
+```
+
+Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation.
+
+If the checker warns, revise the quality-floor answer or route to the owner protocol before coding. Do not treat a passing result as permission to build.
 
 ## Command Surface Triage
 
@@ -1146,7 +1158,7 @@ Run python3 scripts/files-in-play-check.py --edit-lock and explain whether any c
 For sensitive, external, destructive, or bounded-AFK work, ask for the stricter plain-English contract before work starts:
 
 ```text
-Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, and rollback or blocked escape path. Then run python3 scripts/run-contract-check.py.
+Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape path, and re-entry evidence. Then run python3 scripts/run-contract-check.py.
 ```
 
 ## Use Alignment, AFK Candidates, And Fresh Review
@@ -1166,6 +1178,16 @@ Say this:
 ```text
 Before marking this bead AFK-safe, show bounded files in play, checks, stop conditions, test strategy, and review context. Confirm it still needs human review.
 ```
+
+Use `bounded-afk` only when the agent may continue while you are away. Before stepping away, ask for allowed actions, proof needed, approval gates, stop conditions, rollback or blocked escape, and what evidence you should inspect when you return.
+
+Say this when you come back:
+
+```text
+I am back. Re-enter this bead safely: reload active memory, the active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block.
+```
+
+Small-team parallel work is different. It needs the Small Team Collaboration Lane, branch or worktree isolation, coordinator review, and merge/re-entry evidence. Do not treat AFK metadata as approval for multiple active beads or merge.
 
 For code-changing work, ask for the test strategy before implementation. Failing-first/TDD is preferred when practical because it makes the agent prove the test can fail before writing the fix.
 

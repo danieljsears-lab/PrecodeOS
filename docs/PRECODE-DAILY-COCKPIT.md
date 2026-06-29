@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.32
+Document version: v0.1.34
 Last updated: 2026-06-29
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
@@ -116,6 +116,7 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
 | Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | A bounded task explanation before implementation begins. |
 | Quality floor | `Quality: before coding, show me the engineering quality standard you are applying here.` | A short quality-risk, simplest-shape, boundary, proof, and stop-condition explanation. It is not a new required stage or production certification. |
+| Check quality text contract | `Run python3 scripts/engineering-quality-check.py --check and explain any advisory warnings.` | Optional advisory check for missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. It does not approve coding, review, release, or generated proof. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Rhythm | `Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.` | A repeated bead-work orientation checklist using existing sources and approval gates; not task selection, Candidate Queue ranking, review acceptance, transition approval, or a new report. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
@@ -185,6 +186,14 @@ Before coding, show me the engineering quality standard you are applying here.
 
 Expected output: quality risk, simplest acceptable shape, boundary or owner file, evidence to prove the work, and what would make the agent stop or ask for approval. For tiny tasks, this should be short. If the answer reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, the agent should route to the existing owner protocol before coding.
 
+If the answer sounds vague, use the advisory checker:
+
+```bash
+python3 scripts/engineering-quality-check.py --check
+```
+
+Expected output: advisory only warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. The Engineering Quality Text-Contract Checker does not approve coding, review, release, or generated proof, does not inspect app code, and does not create a scorecard or checker gate.
+
 ### Choose The Right Workflow
 
 Use when you are not sure whether the next move is intake, PRD work, bead work, review, recovery, or handoff.
@@ -236,6 +245,22 @@ python3 scripts/team-collaboration-check.py
 ```
 
 Use `--github` only for optional read-only GitHub evidence through `gh`. The preview can help a coordinator see branch/worktree state, owner-file impact candidates, stale re-entry risks, and merge/re-entry packet fields, but it does not approve merge, accept implementation, activate beads, mutate GitHub, or replace coordinator review.
+
+### Step Away From A Bounded Agent Task
+
+Use this only when the active bead is already scoped, has files in play, checks, stop conditions, and you want to know whether it is safe to step away.
+
+```text
+Before I step away, confirm whether this bead is only afk_candidate or truly bounded-afk. Show allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. Do not treat AFK metadata as autonomous execution approval.
+```
+
+When you return:
+
+```text
+I am back. Re-enter this bead safely: reload active memory, active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block.
+```
+
+Expected output: what changed, what was proven, what stopped or should have stopped, what still needs approval, and the next safe decision. This does not accept implementation, approve commands, activate another bead, or approve small-team merge/re-entry.
 
 ### When You Are Stuck
 

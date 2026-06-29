@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.21
-Last updated: 2026-06-27
+Document version: v0.1.22
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -73,7 +73,7 @@ These keys are optional for backward compatibility but recommended for new or am
 - `ralph_validator_set` — optional list of validator names or commands for Ralph
 - `ralph_failure_budget` — short plain-English stop threshold
 
-`delegation_mode` describes whether a scoped bead is safe to hand to an agent after context is loaded. It does not activate parallel work, bypass human review, or override the one-active-bead rule.
+`delegation_mode` describes whether a scoped bead is safe to hand to an agent after context is loaded. It does not activate parallel work, approve autonomous execution, bypass human review, or override the one-active-bead rule.
 
 `test_strategy` records how the bead should prove behavior. Prefer `failing_first` for code-changing beads when a useful test boundary exists.
 
@@ -81,7 +81,7 @@ These keys are optional for backward compatibility but recommended for new or am
 
 `complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; Precode infers beginner-readable defaults for backward compatibility. `python3 scripts/bead-depth-check.py` reports advisory warnings when declared depth looks inconsistent with risk, files in play, checks, stop conditions, proof strength, or human approval gates. Treat warnings as routing prompts: fix the metadata, add rationale, strengthen proof, ask for approval, or split the bead.
 
-`run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter.
+`run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter. Bounded-AFK Run Contracts should make re-entry review possible by naming allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and the evidence a returning builder should inspect.
 
 Ralph fields are optional and should appear only when a bead is testable enough for bounded retry. Ralph opt-in does not run automatically, approve attempts, widen files in play, accept review, or activate the next bead.
 

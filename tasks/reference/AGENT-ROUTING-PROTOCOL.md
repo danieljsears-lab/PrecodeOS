@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-15
+Document version: v0.1.6
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -44,6 +44,7 @@ Escalate only when the current tier cannot safely decide. De-escalate when the n
 - Use `deep` for stakes plus ambiguity plus novelty. Do not use it as the default for routine execution.
 - Use `long-horizon` only with explicit checkpoints, review context, and a clear escape path.
 - If a delegated agent realizes it needs a smarter tier, broader scope, or new approval, it returns that finding to the parent instead of escalating independently.
+- If a builder steps away from a delegated `afk_candidate` or `bounded-afk` bead, the return path is evidence review: reload active memory, the active bead, the primary authority, the Context Pack, recorded checks, changed files, Run Contract details when present, and stop conditions before continuing or accepting work.
 - Record durable spend when telemetry is available; missing spend is unknown, not zero.
 - For Small Team Collaboration Lane, teammate parallelism is a repo/workspace coordination pattern, not a model-routing shortcut. Each teammate branch or worktree still needs one bounded bead, one primary authority, explicit checks, and coordinator review before integration.
 
@@ -84,9 +85,10 @@ Delegation must not:
 - exceed a Run Contract's allowed actions, proof needed, approval gates, or expiration condition
 - create recursive agent chains without explicit tool support and clear bounds
 - turn an `afk_candidate` bead into unsupervised product or architecture ownership
+- treat `bounded-afk` as permission for autonomous execution, command approval, review acceptance, merge approval, or scope expansion
 - treat teammate branches, pull requests, or generated handoff packets as approval to merge, accept, activate another bead, or widen the current scope
 
-Prefer delegation for bounded repo exploration, focused review, isolated implementation slices with disjoint files, or long-running verification that can report back with evidence. Sensitive, external, destructive, or `bounded-afk` delegated work should have a Run Contract before delegation.
+Prefer delegation for bounded repo exploration, focused review, isolated implementation slices with disjoint files, or long-running verification that can report back with evidence. Sensitive, external, destructive, or `bounded-afk` delegated work should have a Run Contract before delegation. `afk_candidate` alone means "plausibly safe to hand to an agent after context is loaded"; it does not require a Run Contract unless risk or autonomy rises to `bounded-afk`.
 
 Explorer is the preferred contract for read-only repo discovery. It returns findings and cited paths; it does not edit, activate, approve, or continue into implementation.
 

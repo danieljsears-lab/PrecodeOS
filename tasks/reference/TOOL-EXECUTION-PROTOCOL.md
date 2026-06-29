@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-24
+Document version: v0.1.15
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -76,9 +76,11 @@ Use a bead Run Contract when sensitive, external, destructive, or `bounded-afk` 
 - allowed tool classes
 - forbidden actions
 - approval required before risky actions
+- proof needed and re-entry evidence
+- stop conditions
 - expiration condition
 
-The lease is advisory contract state. It does not override sandbox permissions, approve commands automatically, widen `files_in_play`, or bypass user approval. `python3 scripts/run-contract-check.py` warns when allowed actions are broader than the active bead or when risky work lacks approval and recovery details.
+The lease is advisory contract state. It does not override sandbox permissions, approve commands automatically, widen `files_in_play`, skip recorded proof, accept review, merge work, or bypass user approval. `python3 scripts/run-contract-check.py` warns when allowed actions are broader than the active bead or when risky or bounded-AFK work lacks proof, re-entry evidence, approval, stop, or recovery details.
 
 ## Evidence Distinction
 

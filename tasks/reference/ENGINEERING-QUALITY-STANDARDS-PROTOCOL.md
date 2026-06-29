@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
+Document version: v0.1.1
 Last updated: 2026-06-29
 
 ## Purpose
@@ -83,6 +83,16 @@ Engineering quality floor:
 ```
 
 For low-risk work, keep each line short. For high-risk work, stop after naming the route and do not start implementation until the relevant owner protocol has been satisfied.
+
+## Advisory Text-Contract Check
+
+`python3 scripts/engineering-quality-check.py --check` runs the Engineering Quality Text-Contract Checker. It is optional advisory validation of the quality-floor text contract, not a gate.
+
+The checker looks for quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals in Precode artifact text. It also checks for forbidden certification, scorecard, and checker-gate wording. It may inspect the active bead's declared primary authority, files in play, checks, and Stop If section so missing proof or stop-condition signals are visible before coding.
+
+The checker is advisory only. It does not inspect app code, run linters, run tests, approve implementation, activate beads, accept review, create proof, certify production readiness, certify security or compliance, score code quality, create a checker gate, or replace human approval. It does not approve implementation and does not create a scorecard.
+
+Standards Taxonomy remains deferred. Use repeated checker warning patterns to decide which engineering-standard concepts need beginner-readable teaching later. Do not import external engineering frameworks into this protocol as public package authority before that evidence exists.
 
 ## Standards In Plain English
 

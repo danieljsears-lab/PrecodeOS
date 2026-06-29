@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.39
-# Last updated: 2026-06-23
+# Version: v0.1.40
+# Last updated: 2026-06-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1109,7 +1109,7 @@ def run_contract_required_reasons(bead: BeadRecord) -> list[str]:
         ]
     ).lower()
     reasons: list[str] = []
-    if bead.autonomy_level == "bounded-afk" or bead.delegation_mode == "afk_candidate":
+    if bead.autonomy_level == "bounded-afk":
         reasons.append("bounded_afk")
     if any(term in combined_text for term in SENSITIVE_SURFACE_TERMS):
         reasons.append("sensitive_surface")
@@ -1174,6 +1174,14 @@ def run_contract_quality(bead: BeadRecord | None, check_results: list[dict[str, 
         missing_proof = [lane for lane in proof_needed if lane in RUN_CONTRACT_PROOF_LANES and lane not in known_tiers]
         if missing_proof:
             warnings.append(f"run contract proof needed is not reflected in verification type, checks, or closeout: {missing_proof[:6]}")
+        if "bounded_afk" in reasons:
+            if "manual" not in proof_needed and "manual" not in known_tiers:
+                warnings.append("bounded-afk run contract should name reviewable proof or manual re-entry evidence")
+            if not contract.get("stop_if"):
+                warnings.append("bounded-afk run contract should name stop conditions before delegation")
+            approval_text = " ".join(approval_required).lower()
+            if not any(term in approval_text for term in ("widen", "scope", "external", "destructive", "secret", "merge", "deploy", "approval")):
+                warnings.append("bounded-afk run contract should name what requires human approval before continuing")
         rollback = str(contract.get("rollback_or_blocked_escape") or bead.closeout.get("blocked_escape") or "").lower()
         if any(reason in reasons for reason in ("sensitive_surface", "external_mutation", "destructive")) and not any(
             term in rollback for term in ("rollback", "escape", "unblocker", "not applicable")
@@ -1205,9 +1213,9 @@ def run_contract_quality(bead: BeadRecord | None, check_results: list[dict[str, 
             "contract": contract,
             "plain_english_summary": summary,
             "user_decision": user_decision,
-            "why_this_matters": "Risk-triggered run contracts make allowed actions and proof needed explicit before high-risk work proceeds.",
-            "stop_if": "Stop if allowed actions, proof needed, approval gates, or rollback/escape path are unclear.",
-            "approval_prompt": "Ask the user to approve the exact risky action only after allowed actions, proof needed, and recovery path are named.",
+            "why_this_matters": "Risk-triggered run contracts make allowed actions, proof needed, re-entry evidence, and approval gates explicit before high-risk or bounded-AFK work proceeds.",
+            "stop_if": "Stop if allowed actions, proof needed, re-entry evidence, approval gates, or rollback/escape path are unclear.",
+            "approval_prompt": "Ask the user to approve the exact risky action only after allowed actions, proof needed, re-entry evidence, and recovery path are named.",
             "advisory_only": True,
         },
     }
@@ -1260,6 +1268,13 @@ def decomposition_quality(bead: BeadRecord | None) -> dict[str, Any]:
             warnings.append("afk_candidate bead should list checks")
         if not stop_if.strip():
             warnings.append("afk_candidate bead should list stop conditions")
+        if not bead.test_strategy:
+            warnings.append("afk_candidate bead should declare test_strategy")
+        if not bead.review_context:
+            warnings.append("afk_candidate bead should declare review_context for re-entry review")
+        approval_text = " ".join([stop_if, handback, bead.sections.get("Run Contract", "")]).lower()
+        if not any(term in approval_text for term in ("approval", "review", "human", "manual", "stop")):
+            warnings.append("afk_candidate bead should preserve a human review or approval gate")
     if supporting_authority_hints:
         warnings.append(f"multiple apparent authority surfaces may be involved: {supporting_authority_hints[:6]}")
     if kind in IMPLEMENTATION_BEAD_KINDS and (not bead.parent_prd or bead.parent_prd == "none" or not bead.requirement_ids):
@@ -3425,12 +3440,24 @@ def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
         warnings.append("sensitive-surface bead should not use none/brief planning depth without explicit rationale")
         decision_reasons.append("sensitive-surface work has weak planning depth")
     if autonomy == "bounded-afk":
+        if file_count == 0 or file_count > 8:
+            warnings.append("bounded-afk bead should keep files in play tightly bounded")
+            decision_reasons.append("bounded-AFK work needs narrow files in play before delegation")
         if not bead.checks:
             warnings.append("bounded-afk bead needs explicit checks")
             decision_reasons.append("bounded-AFK work is missing explicit checks")
         if not stop_text:
             warnings.append("bounded-afk bead needs explicit stop conditions")
             decision_reasons.append("bounded-AFK work is missing stop conditions")
+        if not bead.test_strategy:
+            warnings.append("bounded-afk bead needs a declared test_strategy")
+            decision_reasons.append("bounded-AFK work is missing a test strategy")
+        if not bead.review_context:
+            warnings.append("bounded-afk bead needs review_context for re-entry review")
+            decision_reasons.append("bounded-AFK work is missing re-entry review context")
+        elif bead.review_context == "same_session_ok":
+            warnings.append("bounded-afk bead should usually use fresh_context_recommended or fresh_context_required for re-entry review")
+            decision_reasons.append("bounded-AFK work should be reviewable after context reload")
         if file_count > 20:
             warnings.append("bounded-afk bead exceeds the 20-file operating limit")
             decision_reasons.append("bounded-AFK work spans too many files")

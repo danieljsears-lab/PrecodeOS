@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
+Document version: v0.1.15
 Last updated: 2026-06-29
 
 ## Purpose
@@ -132,6 +132,16 @@ Use these delegation terms in bead frontmatter:
 - `human_required` — the work depends on human-only access, taste, domain judgment, or approval
 
 `afk_candidate` does not activate parallel execution, choose a smarter model, authorize subagents, widen files in play, or bypass review. It only describes whether a scoped bead is safe to hand to an agent after context is loaded.
+
+Before marking a bead `afk_candidate`, verify that it has bounded files in play, explicit checks, explicit stop conditions, a declared `test_strategy`, a declared `review_context`, and no hidden approval gate. It should be possible for the builder to return later, reload the Context Pack, inspect recorded evidence, and decide whether the next action is continue, review, split, or block.
+
+Use `bounded-afk` as the stronger `autonomy_level` only when work may continue while the builder is away. Bounded-AFK work should usually include a Run Contract with allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. This is advisory execution policy, not autonomous permission.
+
+Keep solo AFK and small-team parallelism separate:
+
+- `afk_candidate` / `bounded-afk` describe one active bead in one checkout while the builder may be away.
+- `can run in parallel` describes branch/worktree-isolated teammate work after coordinator approval.
+- Neither label approves activation, review acceptance, merge, external mutation, or scope expansion.
 
 If a dependency blocks activation, it belongs in `depends_on`, the PRD open questions, or a named unblocker bead.
 
