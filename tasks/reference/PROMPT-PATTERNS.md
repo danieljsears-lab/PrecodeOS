@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.45
-Last updated: 2026-06-27
+Document version: v0.1.46
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -71,6 +71,7 @@ Alias guardrail floor:
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
 | Acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clarify Acceptance Criteria / Make Acceptance Criteria Testable |
 | Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | Confirm The Task Before Editing |
+| Quality | `Quality: before coding, show me the engineering quality standard you are applying here.` | Engineering Quality Floor |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
 | Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
@@ -583,6 +584,16 @@ The Close State line is human-facing handback guidance only. It does not approve
 
 ```text
 Before editing, confirm the active bead, the primary authority file, the files in play, the first check you expect to run, and what would make you stop or ask me.
+```
+
+## Engineering Quality Floor
+
+```text
+Before coding, show me the engineering quality standard you are applying here.
+
+Use the Engineering Quality Standards Protocol as a thin quality floor, not a new required stage. Briefly tell me the quality risk, simplest acceptable shape, boundary or owner file, evidence to prove it, and what would make you stop or ask for approval.
+
+If the answer reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.
 ```
 
 ## Local Source Intake

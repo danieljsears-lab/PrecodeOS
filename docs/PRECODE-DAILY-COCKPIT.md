@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-27
+Document version: v0.1.23
+Last updated: 2026-06-29
 
 Use this cockpit while you work with an AI coding agent.
 
@@ -57,6 +57,7 @@ These prompt aliases are the lean daily surface. The expanded prompt wording liv
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
 | Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | A bounded task explanation before implementation begins. |
+| Quality floor | `Quality: before coding, show me the engineering quality standard you are applying here.` | A short quality-risk, simplest-shape, boundary, proof, and stop-condition explanation. It is not a new required stage or production certification. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
@@ -114,6 +115,16 @@ Before editing, confirm the active bead, the primary authority file, the files i
 ```
 
 Expected output: a plain-English boundary for the current task. If the agent cannot name the bead, owner file, files in play, and checks, do not let implementation continue.
+
+### Ask For The Engineering Quality Floor
+
+Use when the agent is about to code and you want to confirm it is applying practical engineering judgment without starting a full architecture review.
+
+```text
+Before coding, show me the engineering quality standard you are applying here.
+```
+
+Expected output: quality risk, simplest acceptable shape, boundary or owner file, evidence to prove the work, and what would make the agent stop or ask for approval. For tiny tasks, this should be short. If the answer reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, the agent should route to the existing owner protocol before coding.
 
 ### Choose The Right Workflow
 

@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-24
+Document version: v0.1.7
+Last updated: 2026-06-29
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -40,6 +40,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
 - `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
+- `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: thin pre-coding engineering quality floor and proportional routing when implementation risk appears.
 - `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`: proof expectations and generated-evidence limits.
 - `ACCEPTANCE.md` and `tasks/reference/PRD-PROTOCOL.md`: acceptance criteria and PRD acceptance-oracle guidance, including optional EARS-style wording for vague expected behavior.
 - `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`: closeout, handoff, and review evidence shape.

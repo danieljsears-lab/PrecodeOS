@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.63
-Last updated: 2026-06-27
+Document version: v0.7.64
+Last updated: 2026-06-29
 
 
 
@@ -364,6 +364,7 @@ Do this before letting an agent edit files:
 - Confirm the agent is using Precode instructions.
 - Ask the agent to load active memory only: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
 - Ask the agent to identify the active bead and primary authority file.
+- Ask for the engineering quality floor when you want a short explanation of the quality standard before coding.
 - Work on one feature slice or bead at a time.
 - Do not approve broad changes, sensitive work, dependency changes, production actions, or the next bead yet.
 
@@ -383,6 +384,28 @@ Expect this:
 - blockers or open questions
 
 Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.
+
+## Ask For The Engineering Quality Floor
+
+Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.
+
+Say this:
+
+```text
+Before coding, show me the engineering quality standard you are applying here.
+```
+
+Expect a short answer naming:
+
+- quality risk
+- simplest acceptable implementation shape
+- boundary or owner file
+- evidence that will prove the work
+- what would make the agent stop or ask for approval
+
+For low-risk work, this should be one short quality-floor statement. For riskier work, the agent should route to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Review Lanes, or Release Readiness instead of coding.
+
+This is not a production-readiness certification, code-quality score, or new required stage for every bead.
 
 ## Check Build Loop Health
 
@@ -778,6 +801,7 @@ Use this table when you are unsure what kind of request to make.
 | Approved PRD may need handoff | PRD Handoff Readiness Packet | `Run python3 scripts/prd-handoff-readiness.py --prd <path> --target general and summarize whether this PRD is ready for decomposition, design, engineering, or review handoff. Include status, requirement IDs, open questions, acceptance coverage, candidate bead readiness, proof expectations, risks, owner protocols, blockers, and next safe action. Treat the packet as generated evidence only. Do not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, or code.` |
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
+| Agent is about to code and you want a thin quality check | Engineering quality floor | `Before coding, show me the engineering quality standard you are applying here. Tell me the quality risk, simplest acceptable shape, boundary or owner file, evidence to prove it, and what would make you stop or ask for approval. If this reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.` |
 | Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
@@ -1215,6 +1239,12 @@ Choose the workflow:
 
 ```text
 Use the Workflow Selection Skill. Read active memory and the workflow selection protocol, then return the current situation, recommended workflow, next artifact, required authority source, user approval needed, run contract needed, stop condition, and generated-report warning. Make no edits and do not code yet.
+```
+
+Ask for the engineering quality floor:
+
+```text
+Before coding, show me the engineering quality standard you are applying here.
 ```
 
 Draft or reaffirm a Goal Frame:
