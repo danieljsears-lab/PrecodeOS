@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-19
+Document version: v0.1.5
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -21,6 +21,8 @@ Is this change evidenced, reversible or safely escapable, and explicitly approve
 ```
 
 This protocol prepares evidence and approval questions. It does not deploy, promote, roll back, merge, change dashboards, change secrets, mutate external systems, approve a bead, activate a next bead, or replace the user's release decision.
+
+In the student journey, deployment means this release-prep checkpoint: evidence, docs/support freshness, rollback or blocked escape, and explicit human approvals before any external action. PrecodeOS does not provide platform-specific deployment playbooks, configure providers, mutate dashboards, or execute deploys through this protocol.
 
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` for verification tiers and sensitive-surface gates. Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` for closeout, review, and transition rules. Use `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md` for GitHub status or package checkpoint boundaries.
 

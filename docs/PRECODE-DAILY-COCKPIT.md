@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.26
+Document version: v0.1.32
 Last updated: 2026-06-29
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
@@ -22,7 +22,20 @@ If the optional local `precode` console command is installed, treat it as a shor
 
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
-Document roles are intentionally narrow: `../README.md` is the public package compass, this cockpit is the beginner-facing operating home base, `PRECODE-OS-README.md` is the conceptual Builder OS explainer, and `PRECODE-USER-GUIDE.md` is the deeper operating manual. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-GUIDED-SETUP.md` is setup-only, this cockpit is the beginner-facing operating home base, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+
+## Command Surface Triage
+
+Use the smallest command set that matches your moment. Command surface triage is reader guidance only; it does not approve work, change tool-call classes, choose tasks, or make generated reports authoritative.
+
+| Moment | Start here | Deeper commands |
+|---|---|---|
+| Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | Use this cockpit and the active bead before opening support, maintainer, or advanced checks. |
+| Setup, support, or recovery | `docs/PRECODE-GUIDED-SETUP.md`, `docs/PRECODE-SUPPORT-RUNBOOK.md`, `docs/PRECODE-TROUBLESHOOTING.md` | `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong here when the symptom calls for them. |
+| Advanced evidence or review | The explicit prompt alias or owner protocol for the stage | Ralph, Candidate Queue, Attribution, Team, PRD handoff, Release, Trace, and review commands are conditional surfaces, not daily starting points. |
+| Maintainer validation | Maintainer package work only | Public repo/package checks and generated docs or roadmap checks stay out of the beginner daily loop. |
+
+The optional `precode` facade is only a shortcut over canonical commands. If command output sounds like approval, return to owner files, proof, and explicit user approval.
 
 ## Beginner Path
 
@@ -33,6 +46,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 - Idea: rough idea or messy notes.
 - Brief: Product Brief after at most three high-level questions.
 - Packet: reviewed Conviction Packet / Precode Ingestion Packet.
+- Packet handoff: reviewed Conviction Packet / Precode Ingestion Packet with Local Source Intake readiness self-check.
 - Intake: Local Source Intake summary.
 - PRD: human-reviewed PRD shaping and approval.
 - Bead: candidate decomposition, then approved active bead.
@@ -44,6 +58,23 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 2. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps in that path, not separate commands to choose between.
 3. If PrecodeOS is set up and work exists, run Start, confirm the active bead, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
+
+Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, or explicit user question calls for one.
+
+## Every-Bead Rhythm
+
+After the first bead, use this small repeated rhythm instead of rereading every surface:
+
+`Active -> Changed -> Proven -> Parked -> Approval -> Next`
+
+- Active: name `tasks/todo.md`, the active bead, and the primary authority file.
+- Changed: summarize the changed files or behavior inside the active bead.
+- Proven: show recorded checks, manual verification, proof traces, and review evidence.
+- Parked: name future intent only when it belongs in `CANDIDATE-QUEUE.md`, PRD amendment, a decision, a follow-up bead proposal, defer, or kill.
+- Approval: name review decision, transition proposal, release or merge approval, and any user input still required.
+- Next: route to session start, Workflow Selection, `next-step.py`, or an explicit transition proposal without activating anything.
+
+This rhythm is a checklist, not a workflow. It does not choose tasks, rank Candidate Queue items, approve PRDs, activate beads, accept review, approve transition, replace closeout, replace `next-step.py`, or make generated reports authoritative.
 
 ## Where Your Work Lives
 
@@ -60,12 +91,17 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 | Which artifact or prompt do I need? | Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` | A mapped prompt/artifact, owner source, and stop condition. It is an index only; use Workflow Selection when the answer depends on current state. |
 | I only have a rough idea. | `First PRD: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
+| What happens before release? | `Release: prepare release evidence without release action.` | Late-stage release-prep evidence and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, or approve release. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
 ## Quick Daily Loop
 
-These prompt aliases are the lean daily surface. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols. Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
+These prompt aliases are the lean daily surface. Start, Ask docs, Choose path, First PRD walkthrough, Confirm, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
+
+Advanced aliases are still available, but they are conditional. Artifact Chooser is for artifact mapping, Queue is for parked intent, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, Ralph is for a testable Ralph-enabled bead, Team is for 2-5 person coordination, and Fallback is for a named stuck symptom.
+
+Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 
 | Moment | Lean prompt alias | What it should produce |
 |---|---|---|
@@ -73,7 +109,7 @@ These prompt aliases are the lean daily surface. The expanded prompt wording liv
 | Ask docs | `Ask Precode: answer my stable docs question and cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
 | Choose artifact | `Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead.` | Artifact or prompt routing without task approval, artifact generation, PRD approval, bead activation, or implementation permission. |
 | Choose path | `Choose: use Workflow Selection before work starts.` | A workflow recommendation without coding or task activation. |
-| First PRD walkthrough | `First PRD: use First PRD Walkthrough for my rough idea.` | A beginner path from rough idea to PRD readiness; the expanded prompt says `Use First PRD Walkthrough for my rough idea`, summarizes a Product Brief, produces a Conviction Packet, and prepares a Local Source Intake handoff. Evidence only until Local Source Intake and later human PRD approval. |
+| First PRD walkthrough | `First PRD: use First PRD Walkthrough for my rough idea.` | A beginner path from rough idea to PRD readiness; the expanded prompt says `Use First PRD Walkthrough for my rough idea`, summarizes a Product Brief, produces a reviewed Conviction Packet with Local Source Intake readiness self-check, and prepares a Local Source Intake handoff. Evidence only until Local Source Intake and later human PRD approval. |
 | Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |
 | Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
@@ -81,6 +117,7 @@ These prompt aliases are the lean daily surface. The expanded prompt wording liv
 | Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | A bounded task explanation before implementation begins. |
 | Quality floor | `Quality: before coding, show me the engineering quality standard you are applying here.` | A short quality-risk, simplest-shape, boundary, proof, and stop-condition explanation. It is not a new required stage or production certification. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
+| Rhythm | `Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.` | A repeated bead-work orientation checklist using existing sources and approval gates; not task selection, Candidate Queue ranking, review acceptance, transition approval, or a new report. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Release prep | `Release: prepare release evidence without release action.` | Shipping evidence and approval questions without deployment, merge, rollback, external mutation, or release approval. |

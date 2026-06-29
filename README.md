@@ -198,13 +198,15 @@ Use this order and stop at the first surface that matches your situation:
 
 Do not read all four as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, and OS README is the concept explainer.
 
+For students, the practical path is the Daily Cockpit path: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`, then `Active -> Changed -> Proven -> Parked -> Approval -> Next` after the first bead. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
+
 If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
 
 For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually. Acceptance criteria may use optional EARS-style wording when it clarifies expected behavior; the syntax is not required and generated HTML does not approve or persist it.
 
 For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md). A generated reading page is available at [`docs-html/CANDIDATE-QUEUE.html`](docs-html/CANDIDATE-QUEUE.html), and public users can refresh it with `python3 scripts/docs-html.py`, but the Markdown queue remains canonical. Candidate ranking is review order only; it does not choose what the agent builds next, approve PRDs, activate beads, or reserve bead IDs.
 
-For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
+For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. Ask Precode is conditional docs help, not a start page. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
 Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
@@ -240,7 +242,7 @@ Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `log
 
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
-For the immediate "what now?" question, use:
+For the immediate "what now?" question, keep the command surface small:
 
 ```bash
 python3 scripts/precode_cli.py --dry-run next
@@ -248,10 +250,12 @@ bash scripts/session-start.sh
 python3 scripts/next-step.py
 python3 scripts/loop-health.py
 python3 scripts/os-health.py
-python3 scripts/ralph-loop.py --dry-run
+bash scripts/record-check.sh -- <command>
 ```
 
-`precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts.
+Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.
+
+`precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only.
 

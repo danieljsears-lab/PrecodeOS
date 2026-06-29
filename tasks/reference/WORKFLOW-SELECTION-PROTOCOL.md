@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
+Document version: v0.1.21
 Last updated: 2026-06-29
 
 ## Purpose
@@ -21,6 +21,10 @@ Use this protocol when the next step is unclear, when too many protocols could a
 For a rough idea, do not present Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers. The user-facing route is First PRD Walkthrough. Use Product Discovery Validation only when worth-building uncertainty is the specific blocker, and use the workbook, coach, Product Brief, Conviction Packet, Local Source Intake, and PRD shaping as ordered steps inside the rough-idea path.
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Workflow selection should preserve the order: Local Source Intake before PRD shaping, human PRD approval before decomposition or bead activation, recorded proof before review, and review before closeout or transition approval.
+
+After the first product slice, repeated work can orient through the every-bead rhythm before choosing a workflow: `Active -> Changed -> Proven -> Parked -> Approval -> Next`. This is a human-facing checklist over existing sources: active bead and `tasks/todo.md` for active work, changed-file summary and Closeout Evidence for changed work, recorded checks and manual verification for proof, Candidate Queue or explicit defer/kill destination for parked intent, review decision and transition proposal for approval, and session start, Workflow Selection, `next-step.py`, or transition proposal for next guidance. The rhythm does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, or create generated report authority.
+
+Keep student-facing workflow selection subordinate to the document-role split: README is the public compass, Guided Setup is setup-only, Daily Cockpit is the operating home, User Guide is the annex, How-To is the educational bridge, Troubleshooting is symptom lookup, Ask Precode and Artifact Chooser are conditional helpers, and Release Readiness is release-prep rather than deployment automation.
 
 If the user asks for the Workflow Selection Skill, a "Precode skill", or a "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. Stable documentation questions should route to Ask Precode. Current-state or next-work questions should route through Workflow Selection, Session Start, Troubleshooting, or the relevant owner workflow.
 
@@ -46,7 +50,7 @@ Choose the workflow that matches the current situation:
 |---|---|---|
 | User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
 | User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, candidate ranking, product-value rating, theme grouping, or near-bead sketching without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry, Candidate Queue review, or approved `scripts/candidate-queue.py` preview/apply action |
-| First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | First PRD Walkthrough | Product Brief, then Conviction Packet evidence, then reviewed intake summary before PRD shaping |
+| First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | First PRD Walkthrough | Product Brief, then reviewed Conviction Packet evidence with Local Source Intake readiness self-check, then reviewed intake summary before PRD shaping |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty blocks the First PRD path | Product Discovery Validation inside or before First PRD Walkthrough | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
@@ -69,7 +73,7 @@ If the workflow involves sensitive, external, destructive, or `bounded-afk` exec
 
 Use Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` before PRD shaping when the main uncertainty is whether the user problem, current workaround, demand signal, alternative, or smallest learning step is real enough to justify product definition. Its Discovery Summary is evidence only; it may recommend `proceed`, `pause`, `narrow`, or `kill`, but it does not approve a PRD, activate beads, choose work, or rewrite owner files.
 
-Do not route a Conviction Packet directly to PRD drafting unless Local Source Intake has summarized the packet and the builder has reviewed the intake. The packet is pre-PRD evidence, not approval to define requirements or code.
+Do not route a Conviction Packet directly to PRD drafting unless Local Source Intake has summarized the reviewed packet and the builder has reviewed the intake. Before intake, the packet should pass only a compact self-check for user, painful moment, current workaround or evidence, hypothesis or learning target, strongest evidence, weakest assumption, first slice, not-yet scope, sensitive surfaces, and next safe Precode path. That self-check is advisory; it is not PRD approval, owner-file promotion, task selection, bead activation, or coding permission.
 
 First PRD Walkthrough is the beginner-facing name for this rough-idea-to-PRD-readiness route. Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps inside that route, not competing commands for the same moment. It does not create a new workflow authority, approve PRDs, compile features, create or activate beads, choose tasks, create a roadmap or backlog, mutate owner files, or authorize implementation.
 
@@ -106,6 +110,8 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection 
 Use Plan Loop when the user explicitly asks to explore a topic, implementation angle, feature slice, or unresolved choice before committing it to the next workflow. A Plan Packet is evidence only. It may recommend Product Discovery, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, Candidate Queue, or stop, but it must not approve a PRD, create or activate beads, choose tasks, become backlog authority, or authorize implementation.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
+
+Use the every-bead rhythm when the user needs a compact orientation across current work, changed behavior, proof, parked intent, approvals, and next prompt before selecting one of those workflows. If `Parked` implies future work, route to Candidate Queue, PRD amendment, decision, follow-up bead proposal, defer, or kill. If `Next` implies activation, stop and require an explicit transition proposal and user approval.
 
 Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs a human-maintained place to capture multiple intents before they are ready for intake, discovery, PRD shaping, or decomposition. Candidate Queue review may rank candidates for review, assign product-value ratings, group themes, or sketch near-beads, but it must not choose next work or authorize implementation, approve PRDs, activate beads, mutate `tasks/todo.md`, or reserve `B###` IDs.
 

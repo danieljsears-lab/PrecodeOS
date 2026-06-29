@@ -9,7 +9,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.17
+Document version: v0.1.18
 Last updated: 2026-06-29
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
@@ -28,6 +28,8 @@ If you are still exploring an idea before the project exists, use First PRD Walk
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
 
 Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packet / Precode Ingestion Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only. Bring it through Local Source Intake before PRD shaping; human PRD approval is required before decomposition, bead activation, or implementation.
+
+Do not start a beginner session by choosing among advanced surfaces. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are conditional support tools. Use them only when the active stage, risk, support role, recovery path, or explicit question calls for one.
 
 ---
 

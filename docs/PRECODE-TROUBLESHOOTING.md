@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.17
+Document version: v0.1.18
 Last updated: 2026-06-29
 
 ## Purpose
@@ -479,6 +479,8 @@ Do not let technical support become hidden product ownership.
 | Repair | Files moved, renamed, overwritten, or generated reports edited | `tasks/reference/RECOVERY-PROTOCOL.md` |
 
 ## Script And Check Index
+
+This index is for setup, support, and recovery moments. Beginner daily work should stay with the Daily Cockpit command set first: `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and `record-check.sh`. Use this table when a symptom needs a narrower diagnostic command. Command output is evidence or guidance only; it does not approve repair, mutation, acceptance, transition, or task selection.
 
 | Command | Use it when | Remember |
 |---|---|---|

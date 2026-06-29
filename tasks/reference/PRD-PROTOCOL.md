@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.20
+Document version: v0.1.22
 Last updated: 2026-06-29
 
 ## Purpose
@@ -21,6 +21,8 @@ It sits between the product reference layer and the execution bead layer:
 ```text
 Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close
 ```
+
+This is the student journey spine, not a new start page. README remains the public compass, Daily Cockpit remains the student operating home, and this protocol owns the PRD gate inside that path.
 
 For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. Brief means Product Brief after at most three high-level questions; Packet means reviewed Conviction Packet / Precode Ingestion Packet; Intake means Local Source Intake before PRD shaping. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
 
@@ -94,7 +96,7 @@ Use "First PRD Walkthrough" as the plain-language request for this ramp when the
 
 The Product Brief should name the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
-The Conviction Packet should name the strongest evidence, weakest assumption, primary hypothesis or learning target, guided research notes, MVP-ready first slice, smallest learning step, and not-yet list. It is evidence only and must go through Local Source Intake before PRD shaping.
+The Conviction Packet should name the strongest evidence, weakest assumption, hypothesis, guided research notes, first slice, smallest learning step, not-yet scope, sensitive surfaces, and recommended next Precode path. It is evidence only and must go through Local Source Intake before PRD shaping. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
 
 The agent owns the technical translation after the builder confirms the product story. Requirement IDs, acceptance-check matrices, architecture/project context impact, module/interface candidates, agent context contracts, and bead proposals are internal control surfaces unless the builder must approve a specific risk or tradeoff.
 

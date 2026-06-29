@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.4
-Last updated: 2026-06-24
+Document version: v0.2.5
+Last updated: 2026-06-29
 
 ## Purpose
 
 Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, create beads, or implement a net-new rough product idea.
+
+The dominant outcome is a reviewed Conviction Packet / Precode Ingestion Packet ready for Precode Local Source Intake. This workbook tightens the handoff; it does not create a second workflow, a readiness gate, a PRD shortcut, a backlog, a bead, or permission to code.
 
 This workbook is the default PrecodeOS beginner idea path. It can be invoked directly, through Precode Idea Coach, or as the start of First PRD Walkthrough. First PRD Walkthrough is a plain-language entrypoint, not a new protocol, PRD shortcut, backlog, bead approval, or coding permission.
 
@@ -44,6 +46,8 @@ You do not need product-management vocabulary. You only need to keep asking plai
 - What could make this a bad idea?
 
 The goal is MVP-ready conviction, not proof that the idea is validated. Conviction means you can name the user, painful before moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest complete useful payoff, not-yet scope, and smallest learning step.
+
+Before handoff, run a compact readiness self-check. The packet should name the user, painful moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet scope, sensitive surfaces, and recommended next Precode path. This self-check is advisory only. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
 
 ## Choose Your Builder Lens
 
@@ -97,7 +101,7 @@ The stages are:
 4. Evidence And Assumption Check: rate evidence strength, name the primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, and smallest non-code learning step.
 5. Optional Learning/MVE Framing: when useful, define the smallest complete useful payoff, visible iteration, and core workflow spine.
 6. Candidate Capability Matrix: translate possible features into candidate capabilities, not approved requirements.
-7. Handoff: produce the Conviction Packet, Local Source Intake readiness, and the exact Local Source Intake handoff prompt.
+7. Handoff: produce the reviewed Conviction Packet / Precode Ingestion Packet, Local Source Intake readiness self-check, and the exact Local Source Intake handoff prompt.
 
 Stop the interview when the idea is clear enough for the next Precode step. Move unresolved but non-blocking concerns into `Not yet`, `Needs discovery`, or `Open questions`.
 
@@ -127,7 +131,7 @@ Follow the workbook stages: Orientation, First Three Questions, Challenge And Cl
 
 After at most three high-level product or business questions, summarize progress using the Product Brief fields in this workbook. Challenge broad users, vague pain, missing current workaround, weak evidence, solution-first framing, feature piles, oversized MVP slices, and sensitive surfaces. Rate evidence strength as very weak, weak, medium, strong, or strongest. Treat online research as weak evidence unless it is paired with behavior, a current workaround, spend, switching effort, prototype use, payment, return visits, or another costly action.
 
-When the idea is clear enough, produce a Conviction Packet, Local Source Intake readiness, and Local Source Intake handoff prompt. If worth-building uncertainty is the main issue, recommend Product Discovery Validation instead of forcing a Conviction Packet.
+When the idea is clear enough, produce a reviewed Conviction Packet / Precode Ingestion Packet, Local Source Intake readiness self-check, and Local Source Intake handoff prompt. If worth-building uncertainty is the main issue, recommend Product Discovery Validation instead of forcing a Conviction Packet.
 
 Evidence only; no PRD, beads, owner-file edits, roadmap or backlog, or code.
 
@@ -472,7 +476,7 @@ Use this format:
     - Reaffirmation trigger:
     - Suggested owner file:
 - Next Precode step:
-  - Local Source Intake readiness:
+  - Local Source Intake readiness self-check:
   - PRD-ready context notes:
   - Likely owner files:
   - Recommended Precode next step:
@@ -511,12 +515,12 @@ Evidence only; no PRD, beads, owner-file edits, or code.
 
 ## Local Source Intake Handoff
 
-When the packet is ready, bring only the reviewed packet into Precode with this prompt:
+When the packet is ready, bring only the reviewed packet into Precode with this prompt. The readiness self-check is advisory only; it does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding:
 
 ```text
 Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
 
-Treat the packet as source evidence only. Summarize stable conclusions, assumptions, primary hypothesis or learning target, Hypothesis review status if already reviewed, open questions, risks, Local Source Intake readiness, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
+Treat the packet as source evidence only. Summarize stable conclusions, assumptions, primary hypothesis or learning target, Hypothesis review status if already reviewed, open questions, risks, Local Source Intake readiness self-check, Candidate Goal Frame status if present, and likely owner files. Do not update PRODUCT.md, draft a PRD, create beads, activate work, or write code until I review the intake summary.
 ```
 
 ## Close-The-Loop Prompt

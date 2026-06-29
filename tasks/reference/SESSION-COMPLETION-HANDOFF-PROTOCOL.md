@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
+Document version: v0.1.19
 Last updated: 2026-06-29
 
 ## Purpose
@@ -19,6 +19,10 @@ Completion and handoff keep the end of a session as structured as the start.
 This protocol distinguishes orientation, evidence, review, and activation so a finished-sounding agent response does not become automatic task completion.
 
 In the first-product spine, the end of the path is still three separate gates: Proof, Review, and Close. `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close` means recorded checks and manual evidence come before human review, and closeout with explicit Close State comes after review/handback. Closeout does not accept work, approve transition, or activate another bead by itself.
+
+For repeated bead work after the first slice, completion and handoff should also be explainable through the every-bead rhythm: `Active -> Changed -> Proven -> Parked -> Approval -> Next`. `Active` comes from `tasks/todo.md`, the active bead, and the primary authority. `Changed` comes from changed files, changed behavior, and Closeout Evidence. `Proven` comes from recorded checks, manual verification, proof traces, and review evidence. `Parked` goes only to Candidate Queue, PRD amendment, `DECISIONS.md`, follow-up bead proposal, defer, or kill. `Approval` names review decision, transition proposal, release or merge approval, and user input still required. `Next` names session start, Workflow Selection, `next-step.py`, or transition proposal without activating anything.
+
+The rhythm is human-facing handback language only. It does not replace closeout, approve review, approve transition, activate the next bead, choose tasks, rank Candidate Queue items, or make generated reports authoritative.
 
 Active memory remains exactly:
 
@@ -62,6 +66,7 @@ Closeout Evidence should include:
 - accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
 - build attribution when accountability, teammate work, handoff, fresh-context review, or future traceability matters: human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty
+- every-bead rhythm when repeated bead work needs a compact handback: Active, Changed, Proven, Parked, Approval, and Next
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
@@ -134,6 +139,7 @@ A handoff should be able to explain:
 - blockers
 - next safe action
 - generated-report warning
+- every-bead rhythm summary when it would clarify Active, Changed, Proven, Parked, Approval, and Next
 
 The handoff packet is orientation only. The next agent still starts from active memory, the active bead, and the primary authority file.
 

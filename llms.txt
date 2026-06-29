@@ -8,16 +8,18 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.10
+Document version: v0.1.11
 Last updated: 2026-06-29
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
+
+Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. Do not present them as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
 
 ## Start Here
 
 - `README.md`: public package compass, usage fit, setup path, and high-level navigation.
 - `docs/PRECODE-GUIDED-SETUP.md`: setup-only adoption path before normal work starts.
-- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use.
+- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; also covers the every-bead rhythm and conditional advanced-surface routing.
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
 - `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, not a second start page.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.

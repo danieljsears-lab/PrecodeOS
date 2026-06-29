@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.67
+Document version: v0.7.72
 Last updated: 2026-06-29
 
 
@@ -26,7 +26,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page.
+For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts.
 
@@ -38,15 +38,42 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 
 ## Choose The Right Artifact
 
-If you know the kind of moment you are in but do not know which Precode prompt or artifact to use, start with the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md`.
+If you know the kind of moment you are in but do not know which Precode prompt or artifact to use, use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index.
 
-Use it as an index, not as task approval. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
+Use it as an index, not as a start page or task approval. If your current moment is specifically an artifact-routing question, use the Artifact Chooser; otherwise stay with the Daily Cockpit or Workflow Selection. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
 
 If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.
 
 ```text
 Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me. Do not create tasks, approve a PRD, activate a bead, accept implementation, approve release, or code.
 ```
+
+## Use The Every-Bead Rhythm
+
+After the first product slice, the repeated Precode habit is:
+
+`Active -> Changed -> Proven -> Parked -> Approval -> Next`
+
+Use it when a session is starting, closing, or feels like it is drifting into too many surfaces.
+
+- Active: ask for the active bead, `tasks/todo.md`, primary authority, files in play, checks, and stop conditions.
+- Changed: ask what changed in the active bead and what files or behavior were touched.
+- Proven: ask for recorded checks, manual verification, Closeout Evidence, proof traces, and review evidence.
+- Parked: ask whether future intent belongs in `CANDIDATE-QUEUE.md`, PRD amendment, `DECISIONS.md`, a follow-up bead proposal, defer, or kill.
+- Approval: ask what still needs your review decision, transition approval, release or merge approval, or manual input.
+- Next: ask for session start, Workflow Selection, `next-step.py`, or a transition proposal without activating anything.
+
+Say this:
+
+```text
+Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
+
+Use existing sources only: tasks/todo.md, the active bead, primary authority, recorded checks, Closeout Evidence, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
+
+Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.
+```
+
+Why this matters: Precode should feel repeatable after bead one. The rhythm helps you ask the same control questions every time without turning the answer into approval.
 
 ## Before Your Repo Exists
 
@@ -69,7 +96,9 @@ Push back when the user is too broad, the painful before moment is vague, the cu
 
 Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
 
-When ready, produce a Conviction Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
+When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness self-check, and Local Source Intake handoff prompt.
+
+Do not treat that self-check as approval. It does not approve PRDs, owner-file edits, roadmap or backlog creation, beads, or coding.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
 ```
@@ -81,7 +110,7 @@ Use First PRD Walkthrough for my rough idea.
 
 Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief. Then challenge the idea for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, first useful slice, not-yet scope, and sensitive surfaces.
 
-When ready, produce a Conviction Packet and Local Source Intake handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
+When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the Local Source Intake readiness self-check and handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
 ```
 
 When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
@@ -132,7 +161,7 @@ Follow the workbook steps:
 8. Use the optional learning/MVE framing when the idea is still too abstract: builder lens, visible iteration, core workflow spine, and smallest complete useful payoff.
 9. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
 10. Fill out capability candidates only after the user moments, evidence, and first useful slice are clearer.
-11. Ask for the Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness and a Candidate Goal Frame only if durable intent is clear.
+11. Ask for the reviewed Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness self-check and a Candidate Goal Frame only if durable intent is clear.
 12. Bring only that packet into Precode Local Source Intake.
 13. If a later approved PRD input and Experience artifacts exist in a bootcamp flow, complete `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code proposes the first implementation bead.
 14. After a coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
@@ -410,6 +439,19 @@ Expect a short answer naming:
 For low-risk work, this should be one short quality-floor statement. For riskier work, the agent should route to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Review Lanes, or Release Readiness instead of coding.
 
 This is not a production-readiness certification, code-quality score, or new required stage for every bead.
+
+## Command Surface Triage
+
+PrecodeOS has many scripts because setup, daily work, support, evidence, review, and maintainer validation need different checks. Do not treat the script folder as a beginner menu. Use the command family that matches the role and stage:
+
+| Role or stage | Use these first | Boundary |
+|---|---|---|
+| Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
+| Setup, support, or recovery | `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, active state, file scope, proof, or transition readiness is unclear. They diagnose; they do not approve repair or mutation. |
+| Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
+| Maintainer validation | `version-check.py`, `file-inventory.py --check`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal student daily surface. |
+
+The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.
 
 ## Check Build Loop Health
 
@@ -785,6 +827,8 @@ Why this matters: You should not have to sound technical to operate Precode. The
 
 Use this table when you are unsure what kind of request to make.
 
+Read this table from the top down. The first-product spine, every-bead rhythm, active-bead prompts, proof, review, closeout, and recovery are the normal daily path. Advanced surfaces are conditional "only when this happens" tools: use them when a specific stage, risk, evidence gap, support role, or explicit user question calls for one, not as peer routes for ordinary beginner work.
+
 | Situation | Ask for | Copyable request |
 |---|---|---|
 | I want the shortest safe path from rough idea to PRD readiness | First PRD Walkthrough | `Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps, summarize a Product Brief after at most three high-level questions, challenge weak assumptions, produce a Conviction Packet and Local Source Intake handoff when ready, and treat all output as evidence only. Do not draft or approve a PRD, update owner files, create beads, choose tasks, or code.` |
@@ -816,6 +860,8 @@ Use this table when you are unsure what kind of request to make.
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
 | Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
+
+If several advanced rows seem plausible, do not pick one by taste. Use Workflow Selection first, or return to the every-bead rhythm and ask what is active, what changed, what proof exists, what is parked, what approval is needed, and what next prompt is safe.
 
 Why this matters: Not every request should become code. Good Precode use starts by choosing the right kind of work.
 
@@ -863,6 +909,7 @@ A bead is ready to accept only when the evidence fits the risk:
 - code-changing beads used or explained their `test_strategy`
 - medium/high-risk code-changing beads got the review context the bead required
 - Closeout Evidence says what changed and what remains uncertain
+- the every-bead rhythm is clear: Active, Changed, Proven, Parked, Approval, and Next
 - review decision is `accepted`, `revise`, `split`, or `blocked`
 - release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action
 - nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, remaining risks, approvals, and decision state
@@ -873,6 +920,12 @@ Say this:
 
 ```text
 Before I accept this bead, show me the recorded checks, manual verification, Closeout Evidence, review decision, and whether anything still requires my approval.
+```
+
+For repeated bead work, say this:
+
+```text
+Show the every-bead rhythm before I decide: Active, Changed, Proven, Parked, Approval, and Next. Do not activate the next bead or treat this as review acceptance.
 ```
 
 For a more structured review prompt, say:
@@ -1285,6 +1338,12 @@ Check done:
 
 ```text
 Run a completion check. Tell me whether this bead is ready to accept, revise, split, block, or stop, using recorded evidence.
+```
+
+Show the repeated bead rhythm:
+
+```text
+Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work. Use existing sources only and do not choose tasks, rank candidates, approve a PRD, activate a bead, accept review, approve transition, create a new report, or code.
 ```
 
 Close safely:

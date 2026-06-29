@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.29
+# Version: v0.1.34
 # Last updated: 2026-06-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -359,8 +359,9 @@ def assert_artifact_chooser_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Choose The Right Artifact",
-            "start with the Artifact Chooser",
-            "Use it as an index, not as task approval.",
+            "use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index",
+            "Use it as an index, not as a start page or task approval.",
+            "otherwise stay with the Daily Cockpit or Workflow Selection",
             "If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
@@ -636,6 +637,339 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             if phrase in text and "do not present" not in text.lower() and "Do not expose" not in text:
                 failures.append({"scenario": f"first-product spine forbidden peer phrasing: {path}", "expected": f"remove {phrase}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_peer_phrases)
+
+
+def assert_workbook_handoff_tightening_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/templates/PRODUCT-IDEATION-WORKBOOK.md"): [
+            "reviewed Conviction Packet / Precode Ingestion Packet",
+            "Local Source Intake readiness self-check",
+            "user, painful moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption",
+            "not-yet scope",
+            "sensitive surfaces",
+            "recommended next Precode path",
+            "This self-check is advisory only. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "reviewed Conviction Packet / Precode Ingestion Packet",
+            "Local Source Intake readiness self-check",
+            "Do not treat that self-check as approval.",
+            "It does not approve PRDs, owner-file edits, roadmap or backlog creation, beads, or coding.",
+            "bring only the reviewed Conviction Packet into Precode Local Source Intake",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "reviewed packet with Local Source Intake readiness self-check",
+            "reviewed Conviction Packet with the Local Source Intake readiness self-check and handoff prompt",
+            "Turn the workbook into a reviewed packet, run the readiness self-check, and use Local Source Intake before PRD shaping.",
+        ],
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "reviewed Conviction Packet",
+            "Local Source Intake",
+            "user, painful before moment, current workaround or evidence, hypothesis or learning target, strongest evidence, weakest assumption, first slice, not-yet scope, sensitive surfaces, and next safe Precode path",
+            "It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "reviewed Conviction Packet evidence with Local Source Intake readiness self-check",
+            "Before intake, the packet should pass only a compact self-check",
+            "That self-check is advisory; it is not PRD approval, owner-file promotion, task selection, bead activation, or coding permission.",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "reviewed Conviction Packet / Precode Ingestion Packet",
+            "strongest evidence, weakest assumption, hypothesis, guided research notes, first slice, smallest learning step, not-yet scope, sensitive surfaces, and recommended next Precode path",
+            "It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "reviewed Conviction Packet",
+            "compact readiness self-check",
+            "The self-check is advisory only",
+            "It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "reviewed Conviction Packet / Precode Ingestion Packet",
+            "Local Source Intake readiness self-check",
+            "not-yet scope, sensitive surfaces, or recommended next Precode path are unclear",
+            "This self-check is advisory only; it does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "reviewed Conviction Packet / Precode Ingestion Packet",
+            "Local Source Intake readiness self-check",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "reviewed Conviction Packet handoff and readiness self-check",
+            "Local Source Intake readiness self-check",
+            "workbook output and packet readiness are not a roadmap, backlog, PRD, product approval",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"workbook handoff tightening: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/templates/PRODUCT-IDEATION-WORKBOOK.md"): [
+            "packet approves",
+            "approve the PRD",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "skip Local Source Intake",
+            "packet approval",
+            "readiness gate",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"workbook handoff tightening forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_many_bead_operating_rhythm_contract(failures: list[dict[str, str]]) -> int:
+    rhythm = "Active -> Changed -> Proven -> Parked -> Approval -> Next"
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-034-many-bead-operating-rhythm.md"): [
+            "Many-Bead Operating Rhythm",
+            f"`{rhythm}`",
+            "No task selection, Candidate Queue ranking, PRD approval, bead activation, review acceptance, transition approval, or implementation acceptance.",
+            "No new script, generated report, command wrapper, CLI alias, public protocol file, active-memory field, schema requirement, registry, optional pack, install/update behavior, release-channel behavior, or package-manager behavior.",
+            "`Parked` must not imply Candidate Queue chooses work. `Next` must not imply transition approval.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Every-Bead Rhythm",
+            f"`{rhythm}`",
+            "Active: name `tasks/todo.md`, the active bead, and the primary authority file.",
+            "Changed: summarize the changed files or behavior inside the active bead.",
+            "Proven: show recorded checks, manual verification, proof traces, and review evidence.",
+            "Parked: name future intent only when it belongs in `CANDIDATE-QUEUE.md`, PRD amendment, a decision, a follow-up bead proposal, defer, or kill.",
+            "Approval: name review decision, transition proposal, release or merge approval, and any user input still required.",
+            "Next: route to session start, Workflow Selection, `next-step.py`, or an explicit transition proposal without activating anything.",
+            "This rhythm is a checklist, not a workflow.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use The Every-Bead Rhythm",
+            f"`{rhythm}`",
+            "Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.",
+            "Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.",
+            "the every-bead rhythm is clear: Active, Changed, Proven, Parked, Approval, and Next",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Every-bead rhythm after the first slice",
+            f"`{rhythm}`",
+            "Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.",
+            "Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "After the first product slice, repeated work can orient through the every-bead rhythm before choosing a workflow",
+            f"`{rhythm}`",
+            "The rhythm does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, or create generated report authority.",
+            "If `Parked` implies future work, route to Candidate Queue, PRD amendment, decision, follow-up bead proposal, defer, or kill.",
+            "If `Next` implies activation, stop and require an explicit transition proposal and user approval.",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "For repeated bead work after the first slice, completion and handoff should also be explainable through the every-bead rhythm",
+            f"`{rhythm}`",
+            "`Parked` goes only to Candidate Queue, PRD amendment, `DECISIONS.md`, follow-up bead proposal, defer, or kill.",
+            "`Next` names session start, Workflow Selection, `next-step.py`, or transition proposal without activating anything.",
+            "The rhythm is human-facing handback language only.",
+            "every-bead rhythm when repeated bead work needs a compact handback: Active, Changed, Proven, Parked, Approval, and Next",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Many-Bead Operating Rhythm requirements",
+            f"`{rhythm}`",
+            "repeated bead-work orientation",
+            "does not choose tasks, rank Candidate Queue items, approve PRDs, activate beads, accept review, approve transition, create reports",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"many-bead operating rhythm contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Run the Many-Bead Operating Rhythm command",
+            "generate the Many-Bead Operating Rhythm report",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "approve the next bead from the rhythm",
+            "Candidate Queue decides next",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "the rhythm chooses the workflow",
+            "the rhythm approves transition",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"many-bead operating rhythm forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_student_journey_authority_consolidation_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "For students, the practical path is the Daily Cockpit path",
+            "Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.",
+            "Ask Precode is conditional docs help, not a start page.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "`PRECODE-GUIDED-SETUP.md` is setup-only",
+            "this cockpit is the beginner-facing operating home base",
+            "`PRECODE-USER-GUIDE.md` is the deeper operating manual",
+            "`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge",
+            "stable-docs question",
+            "Late-stage release-prep evidence and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, or approve release.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.",
+            "use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index",
+            "not as a start page or task approval",
+            "Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action.",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "This document is the educational bridge, not the operating home.",
+            "`docs/PRECODE-DAILY-COCKPIT.md` as the student operating home",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "not separate start pages",
+            "stable-docs question",
+            "It is a prompt index only, not the student start page.",
+            "Release evidence and approval questions, not deployment action",
+            "provider configuration",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Keep student-facing workflow selection subordinate to the document-role split",
+            "Daily Cockpit is the operating home",
+            "Ask Precode and Artifact Chooser are conditional helpers",
+            "Release Readiness is release-prep rather than deployment automation",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "This is the student journey spine, not a new start page.",
+            "Daily Cockpit remains the student operating home",
+            "this protocol owns the PRD gate inside that path",
+        ],
+        Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md"): [
+            "In the student journey, deployment means this release-prep checkpoint",
+            "PrecodeOS does not provide platform-specific deployment playbooks, configure providers, mutate dashboards, or execute deploys through this protocol.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Student-facing document roles are intentionally contracted.",
+            "`docs/PRECODE-DAILY-COCKPIT.md` is the student operating home",
+            "Ask Precode and Artifact Chooser are conditional helpers",
+            "`tasks/reference/RELEASE-READINESS-PROTOCOL.md` is release-prep rather than deployment automation",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"student journey authority consolidation: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("README.md"): [
+            "Ask Precode is the start page",
+            "Release Readiness deploys",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Artifact Chooser is the start page",
+            "Release prep deploys",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Artifact Chooser is the student start page",
+            "Release Candidate Evidence Profile deploys",
+        ],
+        Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md"): [
+            "platform-specific deployment playbooks for students",
+            "approves deployment",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"student journey authority forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "## Command Surface Triage",
+            "Use the smallest command set that matches your moment.",
+            "Beginner daily work",
+            "`bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>`",
+            "Setup, support, or recovery",
+            "Advanced evidence or review",
+            "Maintainer validation",
+            "Command surface triage is reader guidance only; it does not approve work, change tool-call classes, choose tasks, or make generated reports authoritative.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "## Command Surface Triage",
+            "Do not treat the script folder as a beginner menu.",
+            "Setup, support, or recovery",
+            "Advanced evidence or review",
+            "Maintainer validation",
+            "The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.",
+        ],
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "## Support Command Triage",
+            "Keep the student's daily command surface small.",
+            "Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`.",
+            "Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.",
+        ],
+        Path("docs/PRECODE-TROUBLESHOOTING.md"): [
+            "This index is for setup, support, and recovery moments.",
+            "Beginner daily work should stay with the Daily Cockpit command set first",
+            "Command output is evidence or guidance only; it does not approve repair, mutation, acceptance, transition, or task selection.",
+        ],
+        Path("README.md"): [
+            "For the immediate \"what now?\" question, keep the command surface small",
+            "Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them.",
+            "Advanced evidence and review commands such as Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.",
+            "Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Command surface triage is documentation guidance, not a registry or wrapper layer.",
+            "Beginner daily work should expose only the smallest useful set",
+            "The optional local CLI facade does not change any underlying command's authority, side effects, approval gates, or evidence limits.",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "Command surface triage is reader guidance only.",
+            "Grouping commands by beginner daily work, setup/support/recovery, advanced evidence/review, and maintainer validation does not change tool-call classes, approve commands, choose tasks, create a router or registry, expand wrapper behavior, or make generated output authoritative.",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"command surface triage contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "command triage approves",
+            "command triage chooses tasks",
+            "command triage replaces owner files",
+        ],
+        Path("README.md"): [
+            "install the command registry",
+            "precode package manager",
+            "Ralph is part of the beginner daily loop",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "command surface triage changes tool-call classes",
+            "command surface triage approves commands",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"command surface triage forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -3002,6 +3336,10 @@ def main() -> int:
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
     onboarding_authority_scenario_count = assert_onboarding_authority_consolidation_contract(failures)
     first_product_spine_scenario_count = assert_first_product_spine_contract(failures)
+    workbook_handoff_scenario_count = assert_workbook_handoff_tightening_contract(failures)
+    many_bead_rhythm_scenario_count = assert_many_bead_operating_rhythm_contract(failures)
+    student_journey_authority_scenario_count = assert_student_journey_authority_consolidation_contract(failures)
+    command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3522,6 +3860,10 @@ def main() -> int:
         + artifact_chooser_scenario_count
         + onboarding_authority_scenario_count
         + first_product_spine_scenario_count
+        + workbook_handoff_scenario_count
+        + many_bead_rhythm_scenario_count
+        + student_journey_authority_scenario_count
+        + command_surface_triage_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)

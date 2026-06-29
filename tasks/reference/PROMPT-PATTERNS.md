@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.49
+Document version: v0.1.54
 Last updated: 2026-06-29
 
 ## Purpose
@@ -17,6 +17,10 @@ Last updated: 2026-06-29
 These prompts help a non-technical builder operate Precode without memorizing every protocol.
 
 They are prompts, not authority. The agent must still follow active memory, the active bead, the primary authority file, and the relevant Precode protocol.
+
+Start, Ask Precode, Choose, First PRD, Confirm, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
+
+Advanced surfaces are conditional "only when this happens" prompts. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
 
 For rough ideas, use one user-facing invocation: `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
 
@@ -32,9 +36,20 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 - Review: human review, with advisory lanes only when needed.
 - Close: closeout evidence and explicit Close State.
 
+Every-bead rhythm after the first slice: `Active -> Changed -> Proven -> Parked -> Approval -> Next`.
+
+- Active: `tasks/todo.md`, active bead, and primary authority.
+- Changed: changed files or behavior inside the bead.
+- Proven: recorded checks, manual verification, proof traces, and review evidence.
+- Parked: future intent in Candidate Queue, PRD amendment, decision, follow-up bead proposal, defer, or kill.
+- Approval: review decision, transition proposal, release or merge approval, and user input still required.
+- Next: session start, Workflow Selection, `next-step.py`, or explicit transition proposal without activation.
+
+This rhythm is a prompt checklist only. It does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, create generated report authority, or replace closeout.
+
 ## Artifact Chooser
 
-Use this chooser when the user knows the kind of moment they are in but does not know which Precode artifact or prompt to use first. It is a prompt index only. It does not choose tasks, approve PRDs, activate beads, accept implementation, generate artifacts automatically, create a template registry, create a marketplace, install optional packs, or create package-manager behavior.
+Use this chooser when the user knows the kind of moment they are in but does not know which Precode artifact or prompt to use first. It is a prompt index only, not the student start page. It does not choose tasks, approve PRDs, activate beads, accept implementation, generate artifacts automatically, create a template registry, create a marketplace, install optional packs, or create package-manager behavior.
 
 If the next step depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, use Workflow Selection before choosing an artifact.
 
@@ -48,7 +63,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
 | Active bead or draft PRD needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, or task creation. |
 | PRD needs handoff readiness review | PRD Handoff Readiness Packet | Read-only PRD handoff packet | PRD Protocol, Decomposition Protocol, and Review Lanes Protocol | Readiness output is treated as PRD approval or bead activation. |
-| Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, or external mutation is being implied. |
+| Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions, not deployment action | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, provider configuration, dashboard mutation, or external mutation is being implied. |
 | Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
 | Something feels broken or confusing | Recovery Protocol or No-Engineer Fallback Prompt Pack | Symptom, first safe move, owner surface, and next safe action | Recovery Protocol | Repair, rollback, overwrite, setup mutation, or app-code change is being requested without approval. |
 | Stable docs question | Ask Precode | Cited docs/protocol answer | README, public docs, and relevant reference protocols | The question depends on current state or what to do next. |
@@ -87,6 +102,7 @@ Alias guardrail floor:
 | Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | Confirm The Task Before Editing |
 | Quality | `Quality: before coding, show me the engineering quality standard you are applying here.` | Engineering Quality Floor |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
+| Rhythm | `Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.` | Every-Bead Rhythm |
 | Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
 | Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
@@ -98,6 +114,20 @@ Alias guardrail floor:
 | Close | `Close: run session close, summarize changes, checks, blockers, approvals, and end with Close State.` | Close The Session |
 | Recover | `I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
 | Fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | No-Engineer Fallback Prompt Pack |
+
+### Every-Bead Rhythm
+
+Use after the first bead, at session start, before closeout, or whenever the work feels scattered across reports, queues, proof, and approval gates.
+
+```text
+Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
+
+Use existing sources only: tasks/todo.md, the active bead, primary authority, changed-file summary, recorded checks, manual verification, Closeout Evidence, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
+
+Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.
+```
+
+Expected output: a six-part orientation checklist. It may name missing proof, blocked approval, or the safest next prompt, but it must not mutate state or authorize work.
 
 ## Safe Prompt Pack
 
@@ -467,7 +497,7 @@ Guide source-cited research when useful. For each source, include the link, date
 
 If worth-building uncertainty becomes the main question, route me to the Product Discovery Interview Skill / Product Discovery Validation instead of trying to turn weak evidence into a Conviction Packet.
 
-Stage 6: Handoff. When the idea is clear enough, produce a Conviction Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness, and Local Source Intake handoff prompt.
+Stage 6: Handoff. When the idea is clear enough, produce a reviewed Conviction Packet / Precode Ingestion Packet with: idea in plain English, intended user and situation, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, guided research notes, MVP-ready first slice, not-yet list, smallest learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness self-check, and Local Source Intake handoff prompt.
 
 Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code. If there are useful not-yet ideas, suggest Candidate Queue entries for my review instead of treating them as approved work. Treat every output as evidence only until I review it and bring the distilled packet into Precode Local Source Intake.
 ```
@@ -569,7 +599,7 @@ Use the Product Conviction Packet Skill handoff path.
 
 I am bringing a reviewed Conviction Packet into a Precode project. Treat the packet as evidence, not authority.
 
-First classify whether the packet is ready for Local Source Intake or should pause for Product Discovery Validation because the user, painful before moment, current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, or sensitive surfaces are unclear.
+First run the Local Source Intake readiness self-check. Classify whether the packet is ready for Local Source Intake or should pause for Product Discovery Validation because the user, painful moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet scope, sensitive surfaces, or recommended next Precode path are unclear. This self-check is advisory only; it does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
 
 If ready, use Local Source Intake on the packet. Summarize stable facts, assumptions, conflicts, open questions, candidate product constitution updates, candidate PRD inputs, likely owner files, and recommended next safe workflow.
 

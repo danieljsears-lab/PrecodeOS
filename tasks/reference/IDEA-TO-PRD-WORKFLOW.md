@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
+Document version: v0.1.17
 Last updated: 2026-06-29
 
 ## Purpose
@@ -35,6 +35,8 @@ Bypass the workbook for bugs, maintenance, approved PRD follow-through, narrow f
 For first-time solo vibecoders and SnapCamp-style bootcamp students, the Conviction Packet is the expected bridge between pre-repo idea exploration and Precode. Claude Cowork, Claude, Claude Code, Codex, or another host agent may help produce it before a repo exists, but the packet is evidence only. It is not product authority, not a PRD, not a backlog, not bead approval, and not permission to code.
 
 Conviction means MVP-ready clarity, not validated demand. The builder should be able to name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, not-yet scope, smallest useful MVP slice, smallest learning step, and recommended next Precode path. Guided online research can support the packet, but it remains weak evidence unless paired with user behavior, a real workaround, spend, switching effort, or prototype demand.
+
+Before handoff, use an advisory readiness self-check for user, painful before moment, current workaround or evidence, hypothesis or learning target, strongest evidence, weakest assumption, first slice, not-yet scope, sensitive surfaces, and next safe Precode path. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
 
 The PRD shard is the destination document: it describes where the work is trying to arrive, what counts as done, and which requirements are stable enough to verify.
 
