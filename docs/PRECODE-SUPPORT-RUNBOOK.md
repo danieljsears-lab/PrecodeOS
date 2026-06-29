@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.29
-Last updated: 2026-06-24
+Document version: v0.1.30
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -604,7 +604,7 @@ Use this routing when a student arrives with messy notes, a Product Brief, guide
 
 | Student state | Support response | Do not do yet |
 |---|---|---|
-| Messy idea or scattered notes | Route to the Product Ideation Workbook or Product Conviction Packet prompt. Ask for a Product Brief after at most three high-level questions. | Do not create a PRD, bead, or code. |
+| Messy idea or scattered notes | Route to First PRD Walkthrough. Use the Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path. | Do not create a PRD, bead, or code. |
 | Product Brief exists but evidence is weak | Ask the student/instructor to name current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
 | Conviction Packet exists | Bring the reviewed packet into Local Source Intake as evidence. | Do not route directly to PRD drafting or Claude Code implementation. |
 | Approved PRD-like input plus Experience artifacts exist | Use `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates one bounded bead. | Do not let raw discovery notes substitute for approved PRD-like input. |

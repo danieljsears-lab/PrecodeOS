@@ -187,9 +187,16 @@ Do not add more active-memory files. If a topic needs durable detail, give it a 
 
 ## Start Here
 
-For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md). If you are using PrecodeOS in a project, start with [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md). It is the daily command, prompt, report, recovery, check, and learning surface for students.
+This README is the public package compass: use it to decide whether PrecodeOS fits, how to adopt it, and which canonical document to open next. It is not the daily operating surface once work has started.
 
-Use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) when you need the deeper operating manual for what to ask the agent, when to stop, what to approve, and what evidence to expect. If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
+Use this order:
+
+1. For target-project setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
+2. Once PrecodeOS is installed or you are already working in a PrecodeOS repo, use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface.
+3. When the Daily Cockpit points you deeper, use [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) as the detailed operating manual.
+4. When you want the conceptual Builder OS explanation, use [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md).
+
+If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
 
 For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually. Acceptance criteria may use optional EARS-style wording when it clarifies expected behavior; the syntax is not required and generated HTML does not approve or persist it.
 
@@ -272,11 +279,11 @@ python3 scripts/ralph-loop.py --dry-run
 |---|---|
 | Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
 | Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
-| Start daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
-| Learn the deeper operating model | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
-| Understand the Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
+| Start or resume daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
+| Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Start from a rough idea | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then the Product Ideation Workbook or Conviction Packet path when prompted |
+| Start from a rough idea | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then `First PRD: use First PRD Walkthrough for my rough idea.` |
 | Work with an agent right now | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
 | Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
@@ -363,8 +370,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.45
-Last updated: 2026-06-21
+Document version: v0.1.46
+Last updated: 2026-06-29
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

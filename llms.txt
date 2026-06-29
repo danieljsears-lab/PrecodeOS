@@ -8,7 +8,7 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
+Document version: v0.1.8
 Last updated: 2026-06-29
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
@@ -16,9 +16,9 @@ This file is a navigation aid only. It points to canonical Markdown files and mu
 ## Start Here
 
 - `README.md`: public package compass, usage fit, setup path, and high-level navigation.
-- `docs/PRECODE-OS-README.md`: beginner-facing Builder OS explainer.
-- `docs/PRECODE-DAILY-COCKPIT.md`: day-to-day user cockpit and safe next prompts.
-- `docs/PRECODE-USER-GUIDE.md`: practical operating guide for normal PrecodeOS use.
+- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base and safe next prompts once PrecodeOS is installed or in use.
+- `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer.
+- `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
 - `CANDIDATE-QUEUE.md`: parked candidate intent, product-value ratings, themes, near-bead sketches, and promotion review surface; not task authority.
 

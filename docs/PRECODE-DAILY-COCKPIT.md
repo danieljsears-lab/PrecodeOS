@@ -9,10 +9,10 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.23
+Document version: v0.1.24
 Last updated: 2026-06-29
 
-Use this cockpit while you work with an AI coding agent.
+Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
 
@@ -22,7 +22,7 @@ If the optional local `precode` console command is installed, treat it as a shor
 
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
-For the deeper operating manual, see `PRECODE-USER-GUIDE.md`. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+Document roles are intentionally narrow: `../README.md` is the public package compass, this cockpit is the beginner-facing operating home base, `PRECODE-OS-README.md` is the conceptual Builder OS explainer, and `PRECODE-USER-GUIDE.md` is the deeper operating manual. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
 
 ## Where Your Work Lives
 
@@ -38,6 +38,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 | Which artifact or prompt do I need? | Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` | A mapped prompt/artifact, owner source, and stop condition. It is an index only; use Workflow Selection when the answer depends on current state. |
+| I only have a rough idea. | `First PRD: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-24
+Document version: v0.1.19
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The Product Definition Gate prevents an AI coding agent from turning vague inten
 It sits between the product reference layer and the execution bead layer:
 
 ```text
-workbook, Candidate Queue, or local material -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
+First PRD Walkthrough for rough ideas -> Product Ideation Workbook step -> Product Brief -> Conviction Packet when useful -> source intake -> gentle PRD ramp -> PRD shard -> FEATURES.md inventory -> Architecture Shaping when risk-triggered -> execution beads -> recorded evidence
 ```
 
 For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
@@ -88,7 +88,7 @@ Discovery may be skipped only with an explicit reason, such as low risk, clear u
 
 ## Founder-Friendly Ramp
 
-For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with the Product Ideation Workbook, then produce a non-authoritative Product Brief after at most three high-level product or business questions. If the builder is still before repo setup or still building product confidence, produce a Conviction Packet before Local Source Intake instead of drafting a PRD.
+For a net-new, rough product idea from a non-technical builder, do not begin by asking PRD, architecture, workflow, module, test, or owner-file questions. Start with First PRD Walkthrough, using Product Ideation Workbook and Precode Idea Coach as ordered steps, then produce a non-authoritative Product Brief after at most three high-level product or business questions. If the builder is still before repo setup or still building product confidence, produce a Conviction Packet before Local Source Intake instead of drafting a PRD.
 
 Use "First PRD Walkthrough" as the plain-language request for this ramp when the builder wants the shortest safe route from rough idea to PRD readiness. If the walkthrough produces a Conviction Packet, workbook output, notes, research, screenshots, or other source material, route that material through Local Source Intake before drafting the PRD. Human PRD approval remains required before feature compilation, decomposition, bead activation, or coding.
 

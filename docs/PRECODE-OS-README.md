@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.26
-Last updated: 2026-06-23
+Document version: v0.8.27
+Last updated: 2026-06-29
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -132,13 +132,13 @@ Decide answers: "Is this idea ready to become planned work?"
 
 Main surfaces:
 
-- `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` for rough early thinking
+- First PRD Walkthrough for rough idea to PRD readiness
+- `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` as the workbook step inside that path
 - Ask Precode when the builder has a stable documentation question or needs to find the right guide
-- Product Conviction Packet guidance for first-time builders researching and exploring an idea before repo setup
 - Workflow Selection Skill when the builder is unsure which Precode workflow should come next
 - discovery, source-intake, idea-to-PRD, and shared-language protocols when the user guide or active task calls for them
 
-Use a Conviction Packet when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. It should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
+Use First PRD Walkthrough when a first-time non-technical builder has messy notes, guided research, a Product Brief, or bootcamp idea work that is not ready to become a PRD. The path produces a Conviction Packet that should name the user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. It is evidence only and must enter Precode through Local Source Intake.
 
 Use the workbook's Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.
 
@@ -317,15 +317,16 @@ Stopping is not failure. In Precode, stopping is how the builder keeps the proje
 
 ## How To Use This Map
 
-This explainer names the six rooms and the Builder OS mental model behind them. It is not the canonical document router and it is not the exhaustive file dictionary.
+This explainer names the six rooms and the Builder OS mental model behind them. It is not the public package compass, the daily operating surface, or the exhaustive file dictionary.
 
 - Use `README.md` when you need the public document compass.
-- Use `docs/PRECODE-USER-GUIDE.md` when you are operating a PrecodeOS repo.
+- Use `docs/PRECODE-DAILY-COCKPIT.md` first when you are operating or resuming work in a PrecodeOS repo.
+- Use `docs/PRECODE-USER-GUIDE.md` when the Daily Cockpit points you to the deeper operating manual.
 - Use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when you need every public package file, protocol, script, and relationship.
 
 ## Where To Go Next
 
-For the canonical document compass, use `README.md`. If you are already operating a PrecodeOS repo, use `docs/PRECODE-USER-GUIDE.md` as the day-to-day home base.
+For the public document compass, use `README.md`. If you are already operating a PrecodeOS repo, use `docs/PRECODE-DAILY-COCKPIT.md` as the practical first working surface. Use `docs/PRECODE-USER-GUIDE.md` only when you need the deeper manual behind a cockpit prompt or decision.
 
 ## Adapting Precode To Your Project
 
@@ -386,4 +387,4 @@ Use `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` when you need:
 - comparison landscape
 - limitations and adoption path
 
-This explainer is the conceptual Builder OS map. `README.md` is the public document compass, and the architecture overview is the maintainer and reviewer companion.
+This explainer is the conceptual Builder OS map. `README.md` is the public document compass, `docs/PRECODE-DAILY-COCKPIT.md` is the beginner-facing operating home base, `docs/PRECODE-USER-GUIDE.md` is the deeper operating manual, and the architecture overview is the maintainer and reviewer companion.

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.46
+Document version: v0.1.47
 Last updated: 2026-06-29
 
 ## Purpose
@@ -26,7 +26,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 
 | User moment | Use first | Artifact to produce or inspect | Required owner source | Stop condition |
 |---|---|---|---|---|
-| Rough idea before a repo exists | First PRD Walkthrough or Precode Idea Coach | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook and Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
+| Rough idea before a repo exists | First PRD Walkthrough | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook and Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
 | Unsure what to do next | Workflow Selection Skill | Workflow recommendation and next artifact | Workflow Selection Protocol plus active memory when a repo exists | Multiple workflows remain plausible or authority is missing. |
 | New notes, research, issue, handoff, or source material | Local Source Intake | Stable facts, assumptions, conflicts, open questions, candidate requirements, and possible beads | Local Source Intake Protocol | Source material is being treated as authority or includes sensitive data. |
 | Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |
@@ -427,6 +427,8 @@ Recommend only accepted, revise, split, blocked, or stop. Do not accept implemen
 
 ### Precode Idea Coach
 
+Precode Idea Coach is the guided interview step inside First PRD Walkthrough. Invoke First PRD Walkthrough as the beginner-facing path; use this longer prompt when the user needs the full pre-repo coaching script.
+
 ```text
 Use the Product Conviction Packet Skill as my pre-repo idea coach.
 
@@ -458,12 +460,14 @@ Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog
 
 ### First PRD Walkthrough
 
+This is the single beginner-facing path name for rough idea to PRD readiness. Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps in the path, not competing commands.
+
 ```text
 Use First PRD Walkthrough for my rough idea.
 
 I am a first-time non-technical builder trying to get from a rough idea to PRD readiness without jumping into code.
 
-Start with the Product Ideation Workbook / Precode Idea Coach path. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
+Start with First PRD Walkthrough. Use the Product Ideation Workbook and Precode Idea Coach as ordered steps inside that path. Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief with: product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
 
 Then run Challenge And Clarity. Push back on broad users, vague pain, solution-first framing, missing workaround, weak evidence, oversized first slice, premature feature piles, or sensitive surfaces. Move non-blocking concerns to Not yet.
 

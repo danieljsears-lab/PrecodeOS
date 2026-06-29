@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-23
+Document version: v0.1.15
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -25,7 +25,7 @@ Use `PRODUCT.md` as the builder-facing product constitution when the idea may af
 For a net-new, rough product idea from a non-technical builder, the default path is the First PRD Walkthrough:
 
 ```text
-Product Ideation Workbook -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> optional Plan Loop when the user wants pre-commitment exploration -> Architecture Shaping when risk-triggered -> bead proposals
+First PRD Walkthrough -> Product Ideation Workbook step -> Precode Idea Coach guided interview -> Product Brief -> Challenge And Clarity -> Conviction Packet -> Local Source Intake -> gentle PRD ramp -> PRD shard -> FEATURES.md compile -> optional Plan Loop when the user wants pre-commitment exploration -> Architecture Shaping when risk-triggered -> bead proposals
 ```
 
 The First PRD Walkthrough is a named beginner entrypoint, not a new protocol or shortcut. Product Briefs, Conviction Packets, workbook notes, research, and source summaries are evidence only. They must not approve PRDs, create a roadmap or backlog, update owner files, create or activate beads, or authorize coding. When the builder brings a reviewed Conviction Packet or other source material into a Precode repo, Local Source Intake must summarize it before PRD shaping. Human PRD approval is still required before `FEATURES.md` compilation, decomposition, bead activation, or implementation.
@@ -70,7 +70,7 @@ Default founder-facing handoffs:
 
 | Handoff | Next safe action | Do not do yet | Good-enough signal | Stop or pause trigger |
 |---|---|---|---|---|
-| First PRD Walkthrough start | Use the Product Ideation Workbook or Precode Idea Coach to produce a Product Brief after at most three high-level questions. | Do not draft a PRD, create beads, update owner files, create a roadmap or backlog, or code. | The builder has one idea, no secrets are pasted, and the next product-facing question is clear. | The request is actually a bug, maintenance task, approved PRD follow-through, or already-scoped implementation request. |
+| First PRD Walkthrough start | Use First PRD Walkthrough, with Product Ideation Workbook and Precode Idea Coach as ordered steps, to produce a Product Brief after at most three high-level questions. | Do not draft a PRD, create beads, update owner files, create a roadmap or backlog, or code. | The builder has one idea, no secrets are pasted, and the next product-facing question is clear. | The request is actually a bug, maintenance task, approved PRD follow-through, or already-scoped implementation request. |
 | Workbook -> Product Brief | Summarize the brief and ask one next best question. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code. | User, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, and smallest useful version are named. | The idea is still only a solution with no user problem or current alternative. |
 | Product Brief -> Conviction Packet or Discovery | Choose targeted exploration and guided research/challenge when more context exists, or Product Discovery Validation when worth-building is uncertain. | Do not turn capability candidates into requirements. | The next uncertainty is clear: missing context, weak evidence, broad audience, demand, risk, or first slice. | Evidence is weak, audience is too broad, or too many candidates need narrowing. |
 | Conviction Packet -> Local Source Intake | Bring only the reviewed packet into Local Source Intake. | Do not draft a PRD, create beads, update `PRODUCT.md`, or code from the packet directly. | User, problem, before/after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready slice, not-yet list, and smallest learning step are named. | The packet is still raw enthusiasm, research-only proof, or a feature pile without user behavior or a current alternative. |

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.70
+Document version: v0.2.71
 Last updated: 2026-06-29
 
 ## Purpose
@@ -123,7 +123,8 @@ AGENT.md + DECISIONS.md + tasks/todo.md
 ```text
 local source or idea
   -> Candidate Queue when the user wants to park intent before promotion
-  -> Product Ideation Workbook / Conviction Packet when a first-time rough idea needs pre-repo product thinking
+  -> First PRD Walkthrough when a first-time rough idea needs pre-repo product thinking
+  -> Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path
   -> Product Discovery Validation when worth-building is uncertain
   -> PRODUCT.md fit check
   -> Local Source Intake
@@ -193,22 +194,22 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `AGENT.md` | active-memory | Shared AI coding agent operating model, command surface, active-memory contract, stuck-user recovery trigger, and verification gate. | Loaded every session; points to scripts, adapters, the active-memory set, and the Recovery Protocol when a user says `I am stuck, help me`. |
 | `DECISIONS.md` | active-memory | Hard decisions, open questions, superseded decision context. | Consulted when product, architecture, or OS decisions are made or revisited. |
 | `tasks/todo.md` | active-memory | Current bead pointer and current execution view. | Must match the one `in_progress` bead. |
-| `README.md` | reference | Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS. | Points to the Builder OS map, practical guides, reviewer surfaces, contribution policy, governance, trademark guidance, and this inventory for exhaustive navigation. |
+| `README.md` | reference | Public GitHub landing page, usage-fit guide, adoption quickstart, and curated document compass for PrecodeOS. | Points users to setup, the Daily Cockpit as the first working surface, the conceptual Builder OS explainer, the deeper user guide, reviewer surfaces, contribution policy, governance, trademark guidance, and this inventory for exhaustive navigation. |
 | `LICENSE` | reference | Apache License 2.0 terms for use, modification, and distribution. | Root legal/provenance file; not active memory or task authority. |
 | `NOTICE` | reference | Creator attribution, copyright ownership, canonical site, trademark notice, and distribution notice text. | Complements `LICENSE`; preserves "Created by Dan Sears / Recode", `https://www.precodeos.org`, and PrecodeOS trademark attribution. |
 | `GOVERNANCE.md` | reference | Benevolent founder-maintainer governance model and official project authority. | Explains contribution decision rights, roadmap authority, forks, and maintainer delegation. |
 | `CONTRIBUTING.md` | reference | Contribution rules and inbound = Apache-2.0 policy. | Guides proposed changes while preserving provenance, active-memory limits, and beginner-safe behavior. |
 | `TRADEMARK.md` | reference | PrecodeOS trademark ownership, brand-use, allowed descriptive references, fork naming, and official-project identity guidance. | Clarifies that Apache-2.0 does not grant confusing brand use, trademark rights, or official-project identity. |
 | `docs/PRECODE-MANIFESTO.md` | reference | Philosophical anchor for why Precode exists, who it serves, core values, and principles. | Guides positioning and fit for future OS changes without becoming operational authority. |
-| `docs/PRECODE-DAILY-COCKPIT.md` | reference | Student-first daily command, prompt, stuck recovery, Bugfix Spec Lane pointer for small repairs, no-engineer fallback prompt pointer, report, check, and learning reference for normal PrecodeOS work. | First public HTML docs entry; summarizes daily action and links to deeper guides and protocols without replacing them. |
+| `docs/PRECODE-DAILY-COCKPIT.md` | reference | Student-first and beginner-facing operating home base for normal PrecodeOS work, including daily prompts, start/close/recovery prompts, report/check orientation, and learning reference. | First working surface once PrecodeOS is installed or in use; links to deeper guides and protocols without replacing them. |
 | `llms.txt` | reference-navigation | Compact AI-readable index for stable PrecodeOS package docs, protocols, generated reading surfaces, active-memory contract, maintainer boundary, and no-runtime guardrails. | Points agents to canonical Markdown owner files. It is not active memory, task authority, current-state evidence, a package registry, an optional-pack manifest, or permission to install, wrap, proxy, compress, update, or mutate tools. |
 | `CANDIDATE-QUEUE.md` | reference | User-facing parked intent queue for ideas, research leads, candidate review ranking, blocked or stale candidates, PRD candidates, and candidate bead visibility. | Uses `CQ-###` source IDs and promotion targets; not active memory, task selection, PRD approval, bead activation, implementation priority, generated proof, project-board authority, or permission to code. |
-| `docs/PRECODE-OS-README.md` | reference | Beginner-first canonical explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Points users to the how-to guide, user guide, architecture overview, file inventory, and manifesto. |
+| `docs/PRECODE-OS-README.md` | reference | Conceptual explainer for Precode's Builder OS model, six-room surface map, plain-English project-folder model, and idea-to-evidence workflow. | Explains the model; does not replace README as compass, Daily Cockpit as operating home base, or this inventory as the file dictionary. |
 | `docs/PRECODE-GUIDED-SETUP.md` | reference | Beginner-safe guided setup for pulling PrecodeOS from GitHub and adopting it into a new or existing project. | Explains manual package adoption, copy groups, exclusions, validation, clone-first preview safety for risky existing-Precode refreshes, and support-engineer setup flow while deferring canonical file ownership to this inventory. |
 | `docs/PRECODE-SUPPORT-RUNBOOK.md` | reference | Public-safe support-engineer field guide for guiding first-time PrecodeOS adoption, user-owned intent capture, setup, first safe session, parallel environment/scaffold readiness, stuck-user diagnosis, no-engineer fallback prompt routing, and repair routing. | Companion to guided setup, user guide, troubleshooting, file inventory, and recovery protocol; does not create product truth, approve PRDs, accept work, interpret feedback, approve repair, or approve transitions. |
 | `docs/PRECODE-TROUBLESHOOTING.md` | reference | Symptom-first troubleshooting reference for setup, validation, active state, current bead, generated-report, copy, stable-fix and Bugfix Spec Lane routing, fallback prompt, and first-session confusion. | Routes users, support engineers, and agents back to owner files, advisory checks, guided setup, prompt patterns, and recovery protocol without becoming auto-repair policy. |
 | `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
-| `docs/PRECODE-USER-GUIDE.md` | reference | Hands-on user playbook for operating Precode. | Prescriptive guide for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, review prompts, and no-engineer fallback prompt discoverability. |
+| `docs/PRECODE-USER-GUIDE.md` | reference | Deeper hands-on operating manual for PrecodeOS. | Prescriptive guide behind the Daily Cockpit for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, review prompts, and no-engineer fallback prompt discoverability. |
 | `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; cross-links common sideways moments to the shared fallback prompt pack; commit-eligible public documentation, not private local material. |
 | `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
 | `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` | reference | User-facing package file dictionary and relationship map for public PrecodeOS files. | Supported by `logs/file-inventory.json`; private local material remains outside public inventory. |

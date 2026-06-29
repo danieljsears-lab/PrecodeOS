@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-26
+Document version: v0.1.17
+Last updated: 2026-06-29
 
 ## Purpose
 
@@ -414,6 +414,8 @@ The output is an extension-shape review only. It does not approve the extension,
 - Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
 ### Product Conviction Packet Skill
+
+Product Conviction Packet Skill is the skill-playbook form of the coaching step inside First PRD Walkthrough. Use First PRD Walkthrough as the beginner-facing rough-idea path name; use this skill when a host agent needs the detailed product-coach interview contract.
 
 ```text
 Name: Product Conviction Packet Skill

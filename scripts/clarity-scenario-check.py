@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.27
-# Last updated: 2026-06-26
+# Version: v0.1.28
+# Last updated: 2026-06-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -345,7 +345,7 @@ def assert_artifact_chooser_contract(failures: list[dict[str, str]]) -> int:
             "Artifact Chooser",
             "Use this chooser when the user knows the kind of moment they are in",
             "If the next step depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, use Workflow Selection before choosing an artifact.",
-            "First PRD Walkthrough or Precode Idea Coach",
+            "First PRD Walkthrough",
             "Local Source Intake",
             "PRD Shaping",
             "Candidate Queue",
@@ -392,6 +392,124 @@ def assert_artifact_chooser_contract(failures: list[dict[str, str]]) -> int:
             if term not in text:
                 failures.append({"scenario": f"artifact chooser contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
+
+
+def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "This README is the public package compass",
+            "not the daily operating surface once work has started",
+            "use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface",
+            "First PRD: use First PRD Walkthrough for my rough idea.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo.",
+            "this cockpit is the beginner-facing operating home base",
+            "I only have a rough idea.",
+            "The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping.",
+            "These are steps in the path, not competing commands.",
+        ],
+        Path("docs/PRECODE-OS-README.md"): [
+            "not the public package compass, the daily operating surface, or the exhaustive file dictionary",
+            "Use `docs/PRECODE-DAILY-COCKPIT.md` first when you are operating or resuming work in a PrecodeOS repo.",
+            "First PRD Walkthrough for rough idea to PRD readiness",
+            "This explainer is the conceptual Builder OS map.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`.",
+            "This guide is the deeper operating manual",
+            "Rough ideas go to First PRD Walkthrough.",
+            "ordered steps, not competing commands",
+            "Start with the Product Ideation Workbook and Precode Idea Coach steps",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "Use First PRD Walkthrough when you want the shortest safe route from rough idea to PRD readiness.",
+            "Product Ideation Workbook and Precode Idea Coach as ordered steps",
+            "Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "| First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | First PRD Walkthrough |",
+            "Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps inside that route, not competing commands for the same moment.",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "| Rough idea before a repo exists | First PRD Walkthrough |",
+            "Precode Idea Coach is the guided interview step inside First PRD Walkthrough.",
+            "This is the single beginner-facing path name for rough idea to PRD readiness.",
+            "Use the Product Ideation Workbook and Precode Idea Coach as ordered steps inside that path.",
+        ],
+        Path("tasks/reference/PRD-PROTOCOL.md"): [
+            "First PRD Walkthrough for rough ideas -> Product Ideation Workbook step -> Product Brief",
+            "Start with First PRD Walkthrough, using Product Ideation Workbook and Precode Idea Coach as ordered steps",
+            "Use \"First PRD Walkthrough\" as the plain-language request for this ramp",
+        ],
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "First PRD Walkthrough -> Product Ideation Workbook step -> Precode Idea Coach guided interview",
+            "The First PRD Walkthrough is a named beginner entrypoint, not a new protocol or shortcut.",
+            "Use First PRD Walkthrough, with Product Ideation Workbook and Precode Idea Coach as ordered steps",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Product Conviction Packet Skill is the skill-playbook form of the coaching step inside First PRD Walkthrough.",
+            "Use First PRD Walkthrough as the beginner-facing rough-idea path name",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Daily Cockpit as the first working surface",
+            "beginner-facing operating home base",
+            "Deeper hands-on operating manual",
+            "First PRD Walkthrough when a first-time rough idea needs pre-repo product thinking",
+            "Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path",
+        ],
+        Path("llms.txt"): [
+            "beginner-facing operating home base and safe next prompts",
+            "conceptual Builder OS explainer",
+            "deeper operating manual behind the Daily Cockpit",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"onboarding authority consolidation: {path}", "expected": term, "actual": "missing"})
+
+    readme = Path("README.md").read_text(encoding="utf-8")
+    start_here = readme.split("## Start Here", 1)[1].split("## How PrecodeOS Works", 1)[0]
+    ordered_markers = [
+        "This README is the public package compass",
+        "PRECODE-GUIDED-SETUP.md",
+        "PRECODE-DAILY-COCKPIT.md",
+        "PRECODE-USER-GUIDE.md",
+        "PRECODE-OS-README.md",
+    ]
+    positions = [start_here.find(marker) for marker in ordered_markers]
+    if any(position == -1 for position in positions) or positions != sorted(positions):
+        failures.append({"scenario": "onboarding authority consolidation: README order", "expected": "setup -> Daily Cockpit -> User Guide -> OS README", "actual": str(positions)})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "First PRD Walkthrough or Precode Idea Coach",
+            "Product Ideation Workbook / Precode Idea Coach",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Product Ideation Workbook or Product Conviction Packet Skill",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Rough ideas go to First PRD Walkthrough or Precode Idea Coach",
+            "Product Ideation Workbook / Precode Idea Coach",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "Product Ideation Workbook or Precode Idea Coach",
+            "Product Ideation Workbook / Precode Idea Coach",
+        ],
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "Product Ideation Workbook or Precode Idea Coach",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"onboarding authority consolidation forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+
+    return len(required_terms_by_path) + 1 + len(forbidden_terms_by_path)
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -2756,6 +2874,7 @@ def main() -> int:
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
+    onboarding_authority_scenario_count = assert_onboarding_authority_consolidation_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
@@ -3274,6 +3393,7 @@ def main() -> int:
         + 1
         + daily_prompt_alias_scenario_count
         + artifact_chooser_scenario_count
+        + onboarding_authority_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
