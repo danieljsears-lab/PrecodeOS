@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.38
-Last updated: 2026-06-29
+Document version: v0.1.39
+Last updated: 2026-06-30
 
 ## Start Here: You Are Not Just Prompting
 
@@ -64,6 +64,8 @@ The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead ->
 That means rough idea or messy notes become a Product Brief, then a reviewed packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State.
 
 Use this path when you are still asking, "What am I really trying to build?"
+
+When the useful next step is not immediate PRD shaping or active bead work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The first Plan Mode pass develops the candidate before it enters Candidate Queue. The second Plan Mode pass develops an implementation plan for a selected candidate. Neither pass authorizes coding, task selection, PRD approval, or bead activation.
 
 ```text
 Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with the product idea, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question. Then help me produce a reviewed Conviction Packet with the Local Source Intake readiness self-check and handoff prompt before Precode Local Source Intake. Do not update PRODUCT.md, write a PRD, create beads, or start coding.
@@ -235,6 +237,7 @@ idea or notes
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |
 | Hypothesis Review / Learning Loop | The agent reviews whether an existing hypothesis or learning target was untested, tested, narrowed, killed, promoted, stale, or not applicable. | "Tell me what was tested, what was learned, and the next safe Precode workflow. Do not approve product direction, rank candidates, create beads, require analytics, create a database, or code." |
+| Plan Mode Candidate Craft Loop | The agent slows down idea-to-candidate and candidate-to-implementation-plan decisions before work activates. | "Use Plan Mode first. Produce evidence only; do not approve PRDs, choose tasks, activate beads, or code." |
 | Plan Loop | The agent explores one post-intake or post-PRD feature angle before PRD amendment, Architecture Shaping, Decomposition, bead proposal, activation, or code. | "Produce a Plan Packet as evidence only." |
 | Goal Frame | Reviewed orientation for a durable goal before workflow selection. | "Use this only as advisory workflow context. Do not create tasks or approve work." |
 | Product constitution fit check | The agent checks whether the idea fits the product promise, users, non-goals, current bets, success signals, and design or voice. | "Use `PRODUCT.md` for planning context, not active work." |
@@ -267,7 +270,8 @@ Use these prompts when you do not know what to say next.
 | My workbook includes a Candidate Goal Frame. | `Use Local Source Intake on this Candidate Goal Frame. Tell me whether it is stable enough to reaffirm, but do not update PRODUCT.md.` |
 | My intent is durable, but I do not know the workflow yet. | `This sounds durable. Draft a Goal Frame for my review, but do not create tasks or start coding.` |
 | I have an old Goal Frame. | `Check whether this Goal Frame still matches the active PRD, active bead, and current evidence. Ask me to reaffirm it before using it for workflow guidance.` |
-| I want to explore one feature angle before it becomes a bead. | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Produce a Plan Packet as evidence only.` |
+| I want to develop an idea into a future candidate. | `Use Plan Mode for the Plan Mode Candidate Craft Loop. Develop the idea into a Plan Packet before any Candidate Queue entry. If I approve candidate capture, draft the queue entry as parked intent only. Do not approve a PRD, choose tasks, activate a bead, authorize implementation, or code.` |
+| I want to explore one feature angle before it becomes a bead. | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Use Plan Mode first and produce a Plan Packet as evidence only.` |
 | I need alignment before planning. | `Align this idea one high-level product or business question at a time. Include your recommended answer. After at most three questions, summarize a Product Brief. Do not write a PRD or plan until the design concept is shared.` |
 | I keep explaining the same terms. | `Use the Ubiquitous Language Protocol. Capture my terms, meanings, aliases, avoid terms, source pointers, freshness, and UI/code/test/docs/support/user-language examples. Do not code.` |
 | I need to know if this is worth building. | `Challenge this idea. Tell me the user problem, strongest reason to build it, biggest risk, and smallest useful test.` |
@@ -604,6 +608,7 @@ Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Tr
 | "Just code it." | The agent may build the wrong thing quickly. | Ask for intake, PRD, or workflow selection first. |
 | Skipping discovery for a broad, paid, or weakly evidenced idea. | The agent may write a convincing PRD for a problem that has no real pull. | Use Product Discovery Validation and ask for current workaround, evidence strength, riskiest assumption, and smallest non-code learning step. |
 | Treating Plan Loop output as permission to code. | A Plan Packet can clarify the next path, but it is not PRD approval, a bead contract, task selection, or implementation permission. | Route the packet through PRD amendment, Architecture Shaping, Decomposition, Candidate Queue, Product Discovery, owner-file update, or stop. |
+| Treating a Candidate Queue entry or implementation plan as permission to code. | The Plan Mode Candidate Craft Loop separates candidate thinking from implementation planning and implementation planning from activation. | Use Plan Mode before candidate capture and again before implementation planning; then route through PRD, owner-file, Architecture Shaping, Decomposition, and approval gates before build. |
 | Treating workbook output as project truth. | Workbook notes may include guesses, research fragments, or unresolved choices. | Turn the workbook into a reviewed packet, run the readiness self-check, and use Local Source Intake before PRD shaping. |
 | Treating a Candidate Goal Frame as already approved. | Early direction can feel settled before Precode has checked stability, conflicts, and scope. | Run Local Source Intake and reaffirm before updating `PRODUCT.md`. |
 | Treating a Goal Frame as a task list. | Durable intent becomes hidden authority and can push the agent into stale work. | Reaffirm it, then use it only for workflow guidance. |

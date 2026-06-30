@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.56
-Last updated: 2026-06-29
+Document version: v0.1.58
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -18,11 +18,11 @@ These prompts help a non-technical builder operate Precode without memorizing ev
 
 They are prompts, not authority. The agent must still follow active memory, the active bead, the primary authority file, and the relevant Precode protocol.
 
-Start, Ask Precode, Choose, First PRD, Confirm, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
+Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
 
 Advanced surfaces are conditional "only when this happens" prompts. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
 
-For rough ideas, use one user-facing invocation: `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
+For rough ideas, use one user-facing invocation: `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
 
@@ -46,6 +46,10 @@ Every-bead rhythm after the first slice: `Active -> Changed -> Proven -> Parked 
 - Next: session start, Workflow Selection, `next-step.py`, or explicit transition proposal without activation.
 
 This rhythm is a prompt checklist only. It does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, create generated report authority, or replace closeout.
+
+Plan Mode Candidate Craft Loop for candidate development: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`.
+
+Use Plan Mode at two gates: before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Packets, Candidate Queue entries, and implementation plans are evidence only; they do not approve PRDs, rank implementation priority, activate beads, update `tasks/todo.md`, authorize implementation, or code.
 
 ## Artifact Chooser
 
@@ -89,38 +93,43 @@ Alias guardrail floor:
 - Stop and ask before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 - Use the expanded prompt below when the moment is setup, recovery, release, review, team coordination, reversal, or any sensitive surface.
 
+### Core Default Loop
+
 | Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
 |---|---|---|
 | Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Start The Session |
 | Ask Precode | `Ask Precode: answer my stable docs question and cite the source files.` | Ask A Stable Docs Question |
-| Choose | `Choose: use Workflow Selection before work starts.` | Choose The Right Workflow |
-| First PRD | `First PRD: use First PRD Walkthrough for my rough idea.` | First PRD Walkthrough |
-| Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
-| Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
-| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
+| Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Choose The Right Workflow / First PRD Walkthrough / Artifact Chooser |
+| Check | `Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm The Task Before Editing / Engineering Quality Floor / Every-Bead Rhythm |
 | Acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clarify Acceptance Criteria / Make Acceptance Criteria Testable |
-| Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | Confirm The Task Before Editing |
-| Quality | `Quality: before coding, show me the engineering quality standard you are applying here.` | Engineering Quality Floor |
-| Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
-| Rhythm | `Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.` | Every-Bead Rhythm |
+| Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
 | Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
+| Review | `Review: check this work or artifact before I accept it.` | Review / Acceptance Skill, Review Lanes, PRD Handoff Readiness, or Requirement-To-Proof Review when the artifact or risk calls for one |
+| Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Close The Session / Daily Learning Loop |
+| Recover | `Recover: I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
+
+### Advanced / Conditional Surfaces
+
+Use these aliases only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points.
+
+| Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
+|---|---|---|
+| Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
+| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
+| Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
 | Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
 | Trace | `Trace: map this requirement or bug behavior to proof.` | Requirement-To-Proof Review |
 | Attribution | `Attribution: review who-built-what evidence.` | Build Attribution Review |
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | Implemented Bead Reversal Workflow |
 | Ralph | `Ralph: run a bounded dry run only.` | Run A Bounded Ralph Attempt |
-| Learn | `Learn: explain the learning diary, bead journal, and attribution evidence.` | Daily Learning Loop |
-| Close | `Close: run session close, summarize changes, checks, blockers, approvals, and end with Close State.` | Close The Session |
-| Recover | `I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
-| Fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | No-Engineer Fallback Prompt Pack |
 
 ### Every-Bead Rhythm
 
 Use after the first bead, at session start, before closeout, or whenever the work feels scattered across reports, queues, proof, and approval gates.
 
 ```text
-Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
+Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
 
 Use existing sources only: tasks/todo.md, the active bead, primary authority, changed-file summary, recorded checks, manual verification, Closeout Evidence, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
 
@@ -128,6 +137,24 @@ Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead,
 ```
 
 Expected output: a six-part orientation checklist. It may name missing proof, blocked approval, or the safest next prompt, but it must not mutate state or authorize work.
+
+### Plan Mode Candidate Craft Loop
+
+Use when an idea, feature angle, or selected candidate needs staged planning before any active work begins.
+
+```text
+Use Plan Mode for the Plan Mode Candidate Craft Loop.
+
+Core loop: Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build.
+
+Tool note: in Codex use /plan; in Claude Code use Plan Mode; in other agents use an equivalent read-only planning mode.
+
+First develop the idea into a Plan Packet before any Candidate Queue entry. If I approve candidate capture, draft the Candidate Queue entry as parked intent only. If I later select the candidate, use Plan Mode again to develop an implementation plan before any PRD amendment, Architecture Shaping, Decomposition, bead activation, tasks/todo.md update, or code.
+
+Do not approve a PRD, choose tasks, rank the candidate as implementation priority, activate a bead, authorize implementation, or code.
+```
+
+Expected output: a staged plan or implementation-plan draft plus explicit approval gates. It may recommend Candidate Queue, Product Discovery, Local Source Intake, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, defer, kill, or stop, but it must not perform those promotions automatically.
 
 ## Safe Prompt Pack
 
@@ -567,7 +594,7 @@ Use Build-React-Learn for an exploratory prototype bead.
 
 Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
 React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
-Learn: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead.
+Close: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead as learning context before closeout.
 
 Use normal Precode bead rules: one active bead, explicit files in play, checks, stop conditions, closeout evidence, and user approval before any transition. Do not create a new bead-kind enum, treat the prototype as product approval, accept implementation, approve a PRD, choose the next task, or activate another bead.
 ```
@@ -910,6 +937,8 @@ Use the Workflow Selection Protocol. Tell me the current situation, recommended 
 
 ```text
 Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+Use Plan Mode first: Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
 
 First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
 

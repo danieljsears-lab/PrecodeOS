@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.34
-Last updated: 2026-06-29
+Document version: v0.1.36
+Last updated: 2026-06-30
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
@@ -55,11 +55,26 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 - Close: closeout evidence and explicit Close State.
 
 1. If PrecodeOS is not in the project yet, stop here and use `PRECODE-GUIDED-SETUP.md`.
-2. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps in that path, not separate commands to choose between.
-3. If PrecodeOS is set up and work exists, run Start, confirm the active bead, then use Build, Prove, Review, Close, or Recover from the loop below.
+2. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps in that path, not separate commands to choose between.
+3. If PrecodeOS is set up and work exists, run Start, Check, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
 Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, or explicit user question calls for one.
+
+## Plan Mode Candidate Craft Loop
+
+Use this loop when an idea or feature angle should become future work before any build starts:
+
+`Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`
+
+Plan Mode is required at two gates:
+
+- Before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought.
+- Before developing an implementation plan for a selected candidate.
+
+Tool notes: in Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode.
+
+This loop teaches staged commitment. A Plan Packet, Candidate Queue entry, or implementation plan is evidence only. It does not approve a PRD, rank work for implementation, activate a bead, update `tasks/todo.md`, authorize coding, or skip the normal owner-file, decomposition, proof, review, and transition gates.
 
 ## Every-Bead Rhythm
 
@@ -84,22 +99,23 @@ Use this cockpit to find the right surface before asking an agent to continue.
 |---|---|---|
 | What is active right now? | `tasks/todo.md`, the active bead, and the bead's primary authority file | The current work boundary, files in play, checks, stop conditions, and approval gates. |
 | Where do future ideas go? | `CANDIDATE-QUEUE.md` with the Candidate Queue Protocol | Parked intent, evidence, review order, and promotion target. It does not choose the active task or authorize implementation. |
+| How do I turn an idea into a candidate? | Plan Mode Candidate Craft Loop | Use Plan Mode first, then propose a Candidate Queue entry for review. Use Plan Mode again before any implementation plan. The loop is evidence only until normal approval gates are satisfied. |
 | Where do product or requirement decisions live? | Owner files such as `PRODUCT.md`, `FEATURES.md`, `ACCEPTANCE.md`, and approved PRDs in `tasks/prds/` | Reviewed product truth, requirements, acceptance criteria, and PRD destinations before executable beads. |
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
-| Which artifact or prompt do I need? | Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` | A mapped prompt/artifact, owner source, and stop condition. It is an index only; use Workflow Selection when the answer depends on current state. |
-| I only have a rough idea. | `First PRD: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
+| Which artifact, idea, or path do I need? | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | A mapped workflow, artifact, or rough-idea path. Artifact Chooser remains an index only; use Workflow Selection when the answer depends on current state. |
+| I only have a rough idea. | `Ideation: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
 | What happens before release? | `Release: prepare release evidence without release action.` | Late-stage release-prep evidence and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, or approve release. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
 ## Quick Daily Loop
 
-These prompt aliases are the lean daily surface. Start, Ask docs, Choose path, First PRD walkthrough, Confirm, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
+These prompt aliases are the lean daily surface. Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
 
-Advanced aliases are still available, but they are conditional. Artifact Chooser is for artifact mapping, Queue is for parked intent, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, Ralph is for a testable Ralph-enabled bead, Team is for 2-5 person coordination, and Fallback is for a named stuck symptom.
+Advanced aliases are still available, but they are conditional. Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
 
 Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 
@@ -107,29 +123,30 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 |---|---|---|
 | Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Current bead, done-when target, files in play, checks, stop conditions, open questions, generated-report warning. |
 | Ask docs | `Ask Precode: answer my stable docs question and cite the source files.` | A cited docs/protocol answer, or a stop-and-route message when the question depends on current project state. |
-| Choose artifact | `Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead.` | Artifact or prompt routing without task approval, artifact generation, PRD approval, bead activation, or implementation permission. |
-| Choose path | `Choose: use Workflow Selection before work starts.` | A workflow recommendation without coding or task activation. |
-| First PRD walkthrough | `First PRD: use First PRD Walkthrough for my rough idea.` | A beginner path from rough idea to PRD readiness; the expanded prompt says `Use First PRD Walkthrough for my rough idea`, summarizes a Product Brief, produces a reviewed Conviction Packet with Local Source Intake readiness self-check, and prepares a Local Source Intake handoff. Evidence only until Local Source Intake and later human PRD approval. |
-| Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. |
-| Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
-| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
+| Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Workflow Selection, First PRD Walkthrough, or Artifact Chooser routing without task approval, artifact generation, PRD approval, bead activation, implementation permission, or later human PRD approval. |
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
-| Confirm | `Confirm: name the active bead, authority, files, first check, and stop conditions before editing.` | A bounded task explanation before implementation begins. |
-| Quality floor | `Quality: before coding, show me the engineering quality standard you are applying here.` | A short quality-risk, simplest-shape, boundary, proof, and stop-condition explanation. It is not a new required stage or production certification. |
-| Check quality text contract | `Run python3 scripts/engineering-quality-check.py --check and explain any advisory warnings.` | Optional advisory check for missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. It does not approve coding, review, release, or generated proof. |
-| Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
-| Rhythm | `Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.` | A repeated bead-work orientation checklist using existing sources and approval gates; not task selection, Candidate Queue ranking, review acceptance, transition approval, or a new report. |
+| Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. If the candidate is being developed or turned into an implementation plan, use Plan Mode first. |
+| Check | `Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm, Engineering Quality Floor, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
+| Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
+| Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
+| Recover | `Recover: I am stuck, help me.` | A prescriptive recovery response plus named fallback prompt when a symptom is known: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
+
+### Advanced / Conditional Surfaces
+
+Use these only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points.
+
+| Moment | Conditional alias | What it should produce |
+|---|---|---|
+| Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
+| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
+| Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Release prep | `Release: prepare release evidence without release action.` | Shipping evidence and approval questions without deployment, merge, rollback, external mutation, or release approval. |
 | Trace proof | `Trace: map this requirement or bug behavior to proof.` | A compact proof trace without acceptance or generated-proof authority. |
 | Review attribution | `Attribution: review who-built-what evidence.` | A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior. |
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | A safe reversal plan or candidate bead shape without rollback automation or history rewriting. |
 | Ralph | `Ralph: run a bounded dry run only.` | Retry evidence for one active bead without accepting work or activating anything. |
-| Learn | `Learn: explain the learning diary, bead journal, and attribution evidence.` | A lesson summary plus implemented-bead path, build-change context, and attribution evidence that stays evidence-only. |
-| Close | `Close: run session close, summarize changes, checks, blockers, approvals, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
-| Recover | `I am stuck, help me.` | A prescriptive recovery response: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
-| Named fallback | `Fallback: use the No-Engineer Fallback Prompt Pack for this symptom.` | A symptom-specific recovery prompt for agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, or stop-or-continue moments. |
 
 ## Core Prompts
 

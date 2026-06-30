@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.28
-Last updated: 2026-06-29
+Document version: v0.8.29
+Last updated: 2026-06-30
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -148,6 +148,8 @@ Product Discovery Validation is optional. Use it when an idea is broad, risky, m
 
 Use the Plan Loop when the builder has already done intake or PRD shaping and explicitly wants to explore a feature angle before committing it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. It produces a Plan Packet as evidence only, not a PRD, backlog, bead, or implementation plan.
 
+Use the Plan Mode Candidate Craft Loop when an idea should become future candidate work or a selected candidate needs an implementation plan: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The loop does not approve PRDs, choose tasks, activate beads, update `tasks/todo.md`, authorize implementation, or code.
+
 Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.
 
 ### 3. Plan
@@ -235,6 +237,7 @@ idea or source material
   -> optional Exploration Loop
   -> optional Product Discovery Validation
   -> Local Source Intake
+  -> optional Plan Mode Candidate Craft Loop when idea-to-candidate or candidate-to-implementation-plan commitment is needed
   -> optional Plan Loop when post-intake or post-PRD feature-angle uncertainty remains
   -> product constitution fit check
   -> alignment / grilling

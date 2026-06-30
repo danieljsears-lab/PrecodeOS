@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-23
+Document version: v0.1.4
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -97,7 +97,7 @@ The Daily Cockpit is the primary daily reader surface for this journal.
 
 When the bead build journal exists, Daily Cockpit report guidance should include it where a builder is trying to understand what changed or validate build status:
 
-- Learn: read the bead build journal alongside the learning diary when the question is "what path of work happened?" or "what code changed?"
+- Close: read the bead build journal alongside the learning diary when the question is "what path of work happened?" or "what code changed?"
 - Close: session close should update or point to the latest bead build journal entry after closeout evidence refresh.
 - Runnable reports: list the generated journal command or file once implemented.
 - Done/evidence prompts: ask the agent to summarize the latest journal entry without treating it as active memory.

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.74
-Last updated: 2026-06-29
+Document version: v0.7.76
+Last updated: 2026-06-30
 
 
 
@@ -36,16 +36,16 @@ If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBO
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
-## Choose The Right Artifact
+## Use Ideation Or The Right Artifact
 
-If you know the kind of moment you are in but do not know which Precode prompt or artifact to use, use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index.
+If you have a rough idea, a path-choice question, or an artifact-routing question, start with the Daily Cockpit's `Ideation:` alias. It can route you to First PRD Walkthrough, Workflow Selection, or the Artifact Chooser without making any of them a competing start page.
 
-Use it as an index, not as a start page or task approval. If your current moment is specifically an artifact-routing question, use the Artifact Chooser; otherwise stay with the Daily Cockpit or Workflow Selection. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
+Use Artifact Chooser as an index, not as a start page or task approval. If your current moment is specifically an artifact-routing question, Ideation may route there; otherwise stay with the Daily Cockpit or Workflow Selection. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
 
 If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.
 
 ```text
-Use the Precode Artifact Chooser. Map my current moment to the right Precode artifact or prompt, name the required owner source, and tell me the stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me. Do not create tasks, approve a PRD, activate a bead, accept implementation, approve release, or code.
+Ideation: map my current moment to the right Precode path before PRD shaping or coding. If this is an artifact-routing question, use Artifact Chooser as an index and name the required owner source and stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me. Do not create tasks, approve a PRD, activate a bead, accept implementation, approve release, or code.
 ```
 
 ## Use The Every-Bead Rhythm
@@ -66,7 +66,7 @@ Use it when a session is starting, closing, or feels like it is drifting into to
 Say this:
 
 ```text
-Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
+Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
 
 Use existing sources only: tasks/todo.md, the active bead, primary authority, recorded checks, Closeout Evidence, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
 
@@ -220,6 +220,35 @@ Use this compact matrix:
 
 Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak worth-building evidence, use the Product Discovery Interview Skill / Product Discovery Validation next.
 
+## Use Plan Mode Before Candidate Or Implementation Commitment
+
+Use the Plan Mode Candidate Craft Loop when an idea or feature angle should become future work before any build starts:
+
+`Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`
+
+Plan Mode is required at two gates:
+
+- Before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought.
+- Before developing an implementation plan for a selected candidate.
+
+Use the host's native planning posture: Codex `/plan`, Claude Code Plan Mode, or an equivalent read-only planning mode in another agent. If the tool does not have a named Plan Mode, ask the agent to stay read-only and produce the plan before editing.
+
+The loop is staged commitment, not authorization. A Plan Packet, Candidate Queue entry, or implementation plan does not approve a PRD, rank work for implementation, activate a bead, update `tasks/todo.md`, authorize coding, or skip owner-file, decomposition, proof, review, and transition gates.
+
+Say this:
+
+```text
+Use Plan Mode for the Plan Mode Candidate Craft Loop.
+
+First develop the idea into a Plan Packet before any Candidate Queue entry. Use Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
+
+If I approve candidate capture, draft the Candidate Queue entry as parked intent only.
+
+If I later select the candidate, use Plan Mode again to develop an implementation plan before any PRD amendment, Architecture Shaping, Decomposition, bead activation, tasks/todo.md update, or code.
+
+Do not approve a PRD, choose tasks, rank the candidate as implementation priority, activate a bead, authorize implementation, or code.
+```
+
 ## Use The Plan Loop Before Bead Commitment
 
 Use the Plan Loop when you have already done intake or PRD shaping and want to think through one feature angle before committing it to a PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
@@ -230,6 +259,8 @@ Say this:
 
 ```text
 Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+Use Plan Mode first: Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
 
 First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
 
@@ -268,7 +299,7 @@ Use Build-React-Learn for an exploratory prototype bead.
 
 Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
 React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
-Learn: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead.
+Close: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead as learning context before closeout.
 
 Do not treat the prototype as product approval, implementation acceptance, PRD approval, or permission to activate another bead.
 ```
@@ -562,7 +593,7 @@ Why this matters: Goal Frames help the repo remember the direction you are aimin
 
 ## Use The Candidate Queue For Parked Intent
 
-Use `CANDIDATE-QUEUE.md` when you have multiple ideas, research leads, not-yet items, or possible future slices that you do not want to lose, but that are not ready to become PRDs or beads.
+Use `CANDIDATE-QUEUE.md` when you have multiple ideas, research leads, not-yet items, or possible future slices that you do not want to lose, but that are not ready to become PRDs or beads. Use Plan Mode before developing a new Candidate Queue entry, then use Plan Mode again before developing an implementation plan for any selected candidate.
 
 A Candidate Queue says: "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion."
 
@@ -847,7 +878,8 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Net-new rough product idea from a non-technical founder | First PRD Walkthrough | `Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook and Precode Idea Coach steps. Ask only high-level product or business questions. After at most three questions, summarize a Product Brief and one next best question. Use builder lens and smallest complete useful payoff framing only if it clarifies the idea. Do not write a PRD or code.` |
 | My PRD input feels thin or scattered | PRD-Ready Context | `Use PRD-Ready Context to organize product context, user and problem, before/after experience, constraints, success signals, risks, and unknowns. Treat the result as evidence for Local Source Intake or PRD shaping, not as an approved PRD, bead, or permission to code.` |
 | Existing notes or rough feature ideas need real thinking before PRD commitment | Exploration Loop | `Use the Exploration Loop on the content I already have. Reuse my notes, summarize what is known, ask only targeted questions that could change the product direction, evidence, risk, or first slice, then produce an Exploration Evidence Packet. Do not write a PRD or code.` |
-| Post-intake or post-PRD feature angle needs thinking before bead commitment | Plan Loop | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Ask only targeted questions that could change the next workflow, risk, first slice, owner-file impact, or stop condition, then produce a Plan Packet. Treat it as evidence only.` |
+| Idea or feature angle should become future work | Plan Mode Candidate Craft Loop | `Use Plan Mode for the Plan Mode Candidate Craft Loop: Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build. Develop the candidate in read-only planning first, then draft a Candidate Queue entry only if I approve capture. If I later select the candidate, use Plan Mode again before implementation planning. Do not approve a PRD, choose tasks, activate a bead, update tasks/todo.md, authorize implementation, or code.` |
+| Post-intake or post-PRD feature angle needs thinking before bead commitment | Plan Loop | `Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. Use Plan Mode first. Ask only targeted questions that could change the next workflow, risk, first slice, owner-file impact, or stop condition, then produce a Plan Packet. Treat it as evidence only.` |
 | Student needs to try a small reversible option in the real repo before choosing the path | Build-React-Learn exploratory prototype bead | `Use Build-React-Learn for an exploratory prototype bead. Build one tiny reversible option, react to what worked or failed, and learn whether to keep, revise, rebuild, discard, split, amend the PRD, use Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead. Do not treat the prototype as approval or permission to activate another bead.` |
 | Starting a new product or checking product drift | Product constitution review | `Review PRODUCT.md with me. Clarify product promise, users, strategy, non-goals, current bets, success signals, and design or voice. Do not code.` |
 | Broad, risky, paid, market-facing, or weakly evidenced idea after the first Product Brief | Product Discovery Interview Skill / Product Discovery Validation | `Use the Product Discovery Interview Skill. Name the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and recommend proceed, pause, narrow, or kill. Do not write a PRD or code.` |
@@ -1365,7 +1397,7 @@ Run a completion check. Tell me whether this bead is ready to accept, revise, sp
 Show the repeated bead rhythm:
 
 ```text
-Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work. Use existing sources only and do not choose tasks, rank candidates, approve a PRD, activate a bead, accept review, approve transition, create a new report, or code.
+Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work. Use existing sources only and do not choose tasks, rank candidates, approve a PRD, activate a bead, accept review, approve transition, create a new report, or code.
 ```
 
 Close safely:

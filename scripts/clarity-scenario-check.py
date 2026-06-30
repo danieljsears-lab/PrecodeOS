@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.36
-# Last updated: 2026-06-29
+# Version: v0.1.38
+# Last updated: 2026-06-30
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -299,13 +299,13 @@ def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
             "generated reports stay evidence only",
             "explicit approval is still required",
             "Start: run the Precode session start",
-            "Choose: use Workflow Selection",
-            "Confirm: name the active bead",
+            "Ideation: map my current moment",
+            "Check: name the active bead",
             "Build: work only on the active bead",
             "Prove: show recorded evidence",
             "Close: run session close",
             "I am stuck, help me.",
-            "Fallback: use the No-Engineer Fallback Prompt Pack",
+            "Advanced / Conditional Surfaces",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Daily Prompt Aliases",
@@ -313,14 +313,14 @@ def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
             "must not become command-wrapper behavior",
             "Treat generated reports, logs, source notes, screenshots, transcripts, imported issues, handoffs, journals, ledgers, and previews as evidence only",
             "Start: run the Precode session start",
-            "Choose: use Workflow Selection",
+            "Ideation: map my current moment",
             "Build: work only on the active bead",
             "Close: run session close",
             "No-Engineer Fallback Prompt Pack",
         ],
         Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
             "Daily Prompt Alias Boundary",
-            "Start, Choose, Confirm, Build, Prove, Close, Recover, and Fallback",
+            "Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover",
             "not command wrappers",
             "v1 remains prompt playbook first",
         ],
@@ -358,17 +358,17 @@ def assert_artifact_chooser_contract(failures: list[dict[str, str]]) -> int:
             "Do not create a template registry, marketplace, optional pack, package-manager behavior, hidden task selector, automatic artifact generator",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
-            "Choose The Right Artifact",
-            "use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index",
-            "Use it as an index, not as a start page or task approval.",
+            "Use Ideation Or The Right Artifact",
+            "start with the Daily Cockpit's `Ideation:` alias",
+            "Use Artifact Chooser as an index, not as a start page or task approval.",
             "otherwise stay with the Daily Cockpit or Workflow Selection",
             "If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Which artifact or prompt do I need?",
-            "Choose artifact",
-            "Use the Precode Artifact Chooser",
-            "Artifact or prompt routing without task approval, artifact generation, PRD approval, bead activation, or implementation permission.",
+            "Which artifact, idea, or path do I need?",
+            "Ideation: map my current moment",
+            "Workflow Selection, First PRD Walkthrough, or Artifact Chooser routing",
+            "without task approval, artifact generation, PRD approval, bead activation, implementation permission",
         ],
         Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
             "Artifact Chooser Boundary",
@@ -401,7 +401,7 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "This README is the public package compass",
             "not the daily operating surface once work has started",
             "use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface",
-            "First PRD: use First PRD Walkthrough for my rough idea.",
+            "Ideation: use First PRD Walkthrough for my rough idea.",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo.",
@@ -749,14 +749,14 @@ def assert_many_bead_operating_rhythm_contract(failures: list[dict[str, str]]) -
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Use The Every-Bead Rhythm",
             f"`{rhythm}`",
-            "Rhythm: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.",
+            "Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.",
             "Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.",
             "the every-bead rhythm is clear: Active, Changed, Proven, Parked, Approval, and Next",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Every-bead rhythm after the first slice",
             f"`{rhythm}`",
-            "Rhythm: show Active, Changed, Proven, Parked, Approval, and Next without activating anything.",
+            "Check: show Active, Changed, Proven, Parked, Approval, and Next",
             "Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.",
         ],
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
@@ -826,7 +826,7 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.",
-            "use the Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` as a conditional index",
+            "start with the Daily Cockpit's `Ideation:` alias",
             "not as a start page or task approval",
             "Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action.",
         ],
@@ -991,7 +991,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "does not create proof",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Check quality text contract",
+            "Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.",
             "python3 scripts/engineering-quality-check.py --check",
             "advisory only",
             "does not approve coding, review, release, or generated proof",
@@ -1556,6 +1556,105 @@ def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
     return len(required_terms_by_path)
 
 
+def assert_plan_mode_candidate_craft_loop_contract(failures: list[dict[str, str]]) -> int:
+    loop = "Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build"
+    required_terms_by_path = {
+        Path("README.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode.",
+            "Plan Mode is required before developing a Candidate Queue entry",
+            "before developing an implementation plan for a selected candidate",
+            "evidence only",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "in Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode",
+            "Before developing a Candidate Queue entry",
+            "Before developing an implementation plan for a selected candidate",
+            "does not approve a PRD",
+            "authorize coding",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use Plan Mode Before Candidate Or Implementation Commitment",
+            loop,
+            "Codex `/plan`, Claude Code Plan Mode",
+            "If the tool does not have a named Plan Mode, ask the agent to stay read-only",
+            "Do not approve a PRD, choose tasks, rank the candidate as implementation priority, activate a bead, authorize implementation, or code.",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "Use Plan Mode first. Produce evidence only",
+            "Treating a Candidate Queue entry or implementation plan as permission to code.",
+        ],
+        Path("docs/PRECODE-OS-README.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "does not approve PRDs, choose tasks, activate beads, update `tasks/todo.md`, authorize implementation, or code",
+        ],
+        Path("docs/CLAUDE-CODE-FIELD-GUIDE.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "In Claude Code, use Plan Mode. If you are in Codex, use `/plan`",
+            "Use Plan Mode for candidate work",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "in Codex use /plan; in Claude Code use Plan Mode; in other agents use an equivalent read-only planning mode",
+            "before any PRD amendment, Architecture Shaping, Decomposition, bead activation, tasks/todo.md update, or code",
+            "must not perform those promotions automatically",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "Plan Mode is required before developing a Candidate Queue entry",
+            "before developing an implementation plan",
+            "must not approve a PRD, create or activate beads, choose tasks, rank Candidate Queue items as implementation priority, update `tasks/todo.md`, become backlog authority, or authorize implementation",
+        ],
+        Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "Plan Mode is required before developing a Candidate Queue entry",
+            "If a selected candidate needs an implementation plan, produce that plan in Plan Mode",
+        ],
+        Path("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md"): [
+            "Use Plan Mode before developing a Candidate Queue entry",
+            "If the user later selects a candidate for implementation planning, use Plan Mode again",
+            "implementation plan is evidence only",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "Use Plan Mode before decomposition when a selected Candidate Queue entry needs an implementation plan.",
+            "The implementation plan is evidence only",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Plan Mode Candidate Craft Boundary",
+            "staged-commitment habit",
+            "must not approve PRDs, choose tasks, rank candidates as implementation priority, activate beads, update `tasks/todo.md`, authorize implementation, or code",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "Plan Mode gate text-contract checks",
+            "implementation-plan approval",
+        ],
+        Path("llms.txt"): [
+            "Plan Mode Candidate Craft Loop",
+            loop,
+            "In Codex use `/plan`, in Claude Code use Plan Mode",
+            "neither output authorizes implementation",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"plan mode candidate craft loop: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
 def assert_first_prd_walkthrough_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
@@ -1621,11 +1720,11 @@ def assert_first_prd_walkthrough_contract(failures: list[dict[str, str]]) -> int
             "create or activate beads",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "First PRD walkthrough",
-            "Use First PRD Walkthrough for my rough idea",
+            "Ideation",
+            "Ideation: use First PRD Walkthrough for my rough idea",
             "Product Brief",
             "Conviction Packet",
-            "Local Source Intake handoff",
+            "Local Source Intake",
             "evidence only",
             "human PRD approval",
         ],
@@ -3434,6 +3533,7 @@ def main() -> int:
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
+    plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
@@ -3982,6 +4082,7 @@ def main() -> int:
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
         + plan_loop_scenario_count
+        + plan_mode_candidate_craft_scenario_count
         + first_prd_walkthrough_scenario_count
         + 1
         + 2

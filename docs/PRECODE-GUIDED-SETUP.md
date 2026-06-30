@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-29
+Document version: v0.1.16
+Last updated: 2026-06-30
 
 ## What This Guide Is For
 
@@ -410,7 +410,7 @@ For a short support slot, start with the fast support flow in `docs/PRECODE-SUPP
 
 ### Preflight
 
-Confirm:
+Confirm these setup facts:
 
 - the user has a target project folder
 - the user understands that PrecodeOS is a package layer, not an app runtime

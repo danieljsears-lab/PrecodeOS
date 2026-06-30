@@ -26,6 +26,8 @@ Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the source is a Candidate
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when the right next workflow is still unclear.
 
+Use Plan Mode before decomposition when a selected Candidate Queue entry needs an implementation plan. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The implementation plan is evidence only until the owning PRD, decision, owner-file, Architecture Shaping when needed, and Decomposition review support a candidate bead proposal.
+
 Use Plan Loop before decomposition when the user explicitly asks to explore a feature angle, option, risk, or first-slice question before committing it to a bead proposal. A Plan Packet is evidence only; it can inform Decomposition, but it does not create candidate beads or authorize activation.
 
 Use an exploratory prototype bead when a student needs Build-React-Learn in the real repo: one tiny reversible option or vertical slice, normal activation, bounded files in play, checks, stop conditions, and closeout that decides whether to keep, revise, rebuild, discard, split, or promote learning. This is a bead pattern, not a new mode, bead-kind enum, task selector, or approval path.

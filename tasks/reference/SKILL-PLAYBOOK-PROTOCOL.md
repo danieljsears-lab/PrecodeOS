@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-29
+Document version: v0.1.20
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -47,9 +47,15 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 
 ## Daily Prompt Alias Boundary
 
-Daily prompt aliases are a compact invocation layer for students using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Choose, Confirm, Build, Prove, Close, Recover, and Fallback, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
+Daily prompt aliases are a compact invocation layer for students using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
 
 Aliases are not command wrappers, packaged skills, optional packs, registries, active memory, generated evidence, approval surfaces, or task-selection surfaces. They do not reduce the Skill Surface Model: v1 remains prompt playbook first, with read-only command wrappers deferred until a separate package decision.
+
+## Plan Mode Candidate Craft Boundary
+
+Skill-style workflows may tell a host agent to use Plan Mode before candidate development or implementation-plan development. In Codex this means `/plan`; in Claude Code it means Plan Mode; in other agents it means an equivalent read-only planning posture.
+
+This is a staged-commitment habit, not a new skill, command, router, roadmap, backlog, approval surface, or authority layer. Plan Packets, Candidate Queue entries, and implementation plans remain evidence only until promoted through the relevant owner workflow. They must not approve PRDs, choose tasks, rank candidates as implementation priority, activate beads, update `tasks/todo.md`, authorize implementation, or code.
 
 ## Artifact Chooser Boundary
 

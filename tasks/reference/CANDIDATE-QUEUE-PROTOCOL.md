@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-23
+Document version: v0.1.2
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -61,6 +61,8 @@ Candidate Queue shaping may add reviewed metadata that helps a user decide what 
 - weakest assumption
 
 This shaping is not product approval. It does not approve a PRD, activate a bead, reserve a bead ID, choose the next task, mutate `tasks/todo.md`, or authorize implementation.
+
+Use Plan Mode before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. If the user later selects a candidate for implementation planning, use Plan Mode again before drafting the implementation plan. The resulting Plan Packet, queue entry, or implementation plan is evidence only and must still move through Local Source Intake, Product Discovery, PRD work, decisions, owner-file updates, Architecture Shaping, Decomposition, defer, kill, or stop.
 
 ## Product-Value Ratings
 

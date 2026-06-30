@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-29">
+  <meta name="generated-at" content="2026-06-30">
   <title>PrecodeOS Explainer · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.28</span><span>Updated 2026-06-29</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.29</span><span>Updated 2026-06-30</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -300,6 +300,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Use the workbook&#x27;s Exploration Loop when the builder already has notes, a Product Brief, rough feature ideas, research snippets, user quotes, screenshots, sketches, chat summaries, a Candidate Goal Frame, or not-yet ideas. The loop reuses that content, challenges what is missing, and produces an evidence packet with capability candidates. It is evidence only, not a backlog or PRD.</p>
 <p>Product Discovery Validation is optional. Use it when an idea is broad, risky, market-facing, paid, evidence-poor, or solution-first. It should produce a short recommendation: <code>proceed</code>, <code>pause</code>, <code>narrow</code>, or <code>kill</code>.</p>
 <p>Use the Plan Loop when the builder has already done intake or PRD shaping and explicitly wants to explore a feature angle before committing it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. It produces a Plan Packet as evidence only, not a PRD, backlog, bead, or implementation plan.</p>
+<p>Use the Plan Mode Candidate Craft Loop when an idea should become future candidate work or a selected candidate needs an implementation plan: <code>Idea -&amp;gt; Plan Mode -&amp;gt; Candidate Queue -&amp;gt; Plan Mode -&amp;gt; Implementation Plan -&amp;gt; Approved Bead -&amp;gt; Build</code>. In Codex, use <code>/plan</code>; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The loop does not approve PRDs, choose tasks, activate beads, update <code>tasks/todo.md</code>, authorize implementation, or code.</p>
 <p>Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.</p>
 <h3 id="3-plan"><a class="heading-anchor" href="#3-plan" aria-label="Link to 3. Plan">#</a>3. Plan</h3>
 <p>Plan answers: &quot;What exactly should be built, and what is the smallest safe slice?&quot;</p>
@@ -337,6 +338,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   -&gt; optional Exploration Loop
   -&gt; optional Product Discovery Validation
   -&gt; Local Source Intake
+  -&gt; optional Plan Mode Candidate Craft Loop when idea-to-candidate or candidate-to-implementation-plan commitment is needed
   -&gt; optional Plan Loop when post-intake or post-PRD feature-angle uncertainty remains
   -&gt; product constitution fit check
   -&gt; alignment / grilling

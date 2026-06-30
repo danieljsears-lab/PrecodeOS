@@ -104,6 +104,8 @@ Ralph-style iteration is opt-in and bounded by the active bead.
 
 `CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, product-value ratings, themes, and near-bead sketches. It says, "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion." It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code. `python3 scripts/candidate-queue.py` can preview raw-note import or shaping proposals, but apply requires explicit `--approve-action` and may write only to `CANDIDATE-QUEUE.md`.
 
+When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
+
 ## What You Can Build
 
 - MVPs with clearer product intent before code.
@@ -208,7 +210,7 @@ For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CAN
 
 For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. Ask Precode is conditional docs help, not a start page. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
 
-Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent confirm the active bead, and only then approve work. If you only have a rough idea, use `First PRD: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
+Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent check the active bead, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
 
@@ -289,7 +291,7 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 | Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
 | Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Start from a rough idea | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then `First PRD: use First PRD Walkthrough for my rough idea.` |
+| Start from a rough idea | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then `Ideation: use First PRD Walkthrough for my rough idea.` |
 | Work with an agent right now | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
 | Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
@@ -376,8 +378,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.46
-Last updated: 2026-06-29
+Document version: v0.1.48
+Last updated: 2026-06-30
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

@@ -8,12 +8,14 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-29
+Document version: v0.1.14
+Last updated: 2026-06-30
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
 Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. Do not present them as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
+
+Use the Plan Mode Candidate Craft Loop when candidate or implementation-plan commitment is at issue: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex use `/plan`, in Claude Code use Plan Mode, and in other agents use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate; neither output authorizes implementation.
 
 ## Start Here
 
@@ -37,7 +39,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 ## Protocol Entry Points
 
-- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting, including First PRD Walkthrough as the rough-idea route, `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close` as the visible first-product spine, and Plan Loop routing for explicit post-intake or post-PRD feature-angle exploration before bead commitment.
+- `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting, including First PRD Walkthrough as the rough-idea route, `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close` as the visible first-product spine, Plan Mode Candidate Craft Loop gates before candidate or implementation-plan commitment, and Plan Loop routing for explicit post-intake or post-PRD feature-angle exploration before bead commitment.
 - `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, assign product-value ratings, group themes, sketch near-beads, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
 - `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.

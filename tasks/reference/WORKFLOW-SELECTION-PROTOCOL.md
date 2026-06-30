@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.21
-Last updated: 2026-06-29
+Document version: v0.1.22
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -23,6 +23,8 @@ For a rough idea, do not present Product Discovery Interview, Product Conviction
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Workflow selection should preserve the order: Local Source Intake before PRD shaping, human PRD approval before decomposition or bead activation, recorded proof before review, and review before closeout or transition approval.
 
 After the first product slice, repeated work can orient through the every-bead rhythm before choosing a workflow: `Active -> Changed -> Proven -> Parked -> Approval -> Next`. This is a human-facing checklist over existing sources: active bead and `tasks/todo.md` for active work, changed-file summary and Closeout Evidence for changed work, recorded checks and manual verification for proof, Candidate Queue or explicit defer/kill destination for parked intent, review decision and transition proposal for approval, and session start, Workflow Selection, `next-step.py`, or transition proposal for next guidance. The rhythm does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, or create generated report authority.
+
+When a user wants to develop an idea into future candidate work or turn a selected candidate into an implementation plan, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. This loop does not create a new workflow authority, approve PRDs, rank Candidate Queue items for implementation, activate beads, update `tasks/todo.md`, authorize implementation, or code.
 
 Keep student-facing workflow selection subordinate to the document-role split: README is the public compass, Guided Setup is setup-only, Daily Cockpit is the operating home, User Guide is the annex, How-To is the educational bridge, Troubleshooting is symptom lookup, Ask Precode and Artifact Chooser are conditional helpers, and Release Readiness is release-prep rather than deployment automation.
 
@@ -50,12 +52,14 @@ Choose the workflow that matches the current situation:
 |---|---|---|
 | User asks a stable PrecodeOS documentation question or asks where to find guidance | Ask Precode Docs Skill | cited docs/protocol answer |
 | User asks for a product roadmap, backlog-like list, parked ideas, future candidate review, candidate ranking, product-value rating, theme grouping, or near-bead sketching without active work | Candidate Queue Protocol | `CANDIDATE-QUEUE.md` entry, Candidate Queue review, or approved `scripts/candidate-queue.py` preview/apply action |
+| User asks to develop an idea or feature angle into future candidate work before implementation | Plan Mode Candidate Craft Loop | Plan Packet first, then reviewed Candidate Queue entry only if the user approves candidate capture |
 | First-time non-technical builder has a rough idea before repo setup or asks for First PRD Walkthrough | First PRD Walkthrough | Product Brief, then reviewed Conviction Packet evidence with Local Source Intake readiness self-check, then reviewed intake summary before PRD shaping |
 | Reviewed Conviction Packet is ready to enter Precode | Local Source Intake | reviewed source summary and next safe Precode workflow |
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty blocks the First PRD path | Product Discovery Validation inside or before First PRD Walkthrough | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Scattered notes, screenshots, research, chat summary, or issue export for an existing Precode project | Local Source Intake | reviewed source summary |
-| User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop | Plan Packet |
+| User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop in Plan Mode | Plan Packet |
+| User selects a Candidate Queue entry and asks for an implementation plan | Plan Mode Candidate Craft Loop, then the owner workflow | Implementation plan draft only; no activation before PRD/authority/decomposition approval |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
 | Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
 | Approved PRD with auth, data, API, integration, dependency, migration, workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
@@ -107,7 +111,9 @@ The output is guidance only. It does not approve a PRD, activate a bead, choose 
 
 Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when workflow selection discovers future, deferred, blocked, follow-up, or PRD-approved work that should remain visible but non-active.
 
-Use Plan Loop when the user explicitly asks to explore a topic, implementation angle, feature slice, or unresolved choice before committing it to the next workflow. A Plan Packet is evidence only. It may recommend Product Discovery, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, Candidate Queue, or stop, but it must not approve a PRD, create or activate beads, choose tasks, become backlog authority, or authorize implementation.
+Use the Plan Mode Candidate Craft Loop when the user asks to develop candidate work or implementation-plan work from an idea, feature angle, or selected Candidate Queue entry. A Plan Packet, queue entry, or implementation plan is evidence only. It may recommend Product Discovery, Local Source Intake, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, Candidate Queue, defer, kill, or stop, but it must not approve a PRD, create or activate beads, choose tasks, rank Candidate Queue items as implementation priority, update `tasks/todo.md`, become backlog authority, or authorize implementation.
+
+Use Plan Loop when the user explicitly asks to explore a topic, implementation angle, feature slice, or unresolved choice before committing it to the next workflow. Use Plan Mode first when the host supports it. A Plan Packet is evidence only. It may recommend Product Discovery, PRD draft or amendment, owner-file update, Architecture Shaping, Decomposition, Candidate Queue, or stop, but it must not approve a PRD, create or activate beads, choose tasks, become backlog authority, or authorize implementation.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when the correct workflow is checkpoint, session close, review, handoff, or transition proposal.
 

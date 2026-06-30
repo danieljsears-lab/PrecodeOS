@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-29
+Document version: v0.1.19
+Last updated: 2026-06-30
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -28,6 +28,8 @@ If you are still exploring an idea before the project exists, use First PRD Walk
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
 
 Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packet / Precode Ingestion Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only. Bring it through Local Source Intake before PRD shaping; human PRD approval is required before decomposition, bead activation, or implementation.
+
+When an idea should become future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Claude Code, use Plan Mode. If you are in Codex, use `/plan`; in another agent, ask for an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan for a selected candidate. Neither output approves a PRD, chooses tasks, activates a bead, updates `tasks/todo.md`, or permits code.
 
 Do not start a beginner session by choosing among advanced surfaces. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are conditional support tools. Use them only when the active stage, risk, support role, recovery path, or explicit question calls for one.
 
@@ -406,6 +408,15 @@ Don't code yet. Just tell me the steps you would take to accomplish this.
 I'll approve the approach before you start.
 ```
 *Why it works: Separates thinking from doing. Catches wrong directions early.*
+
+**Use Plan Mode for candidate work**
+```
+Use Plan Mode for this idea before it becomes a Candidate Queue entry.
+If I later pick the candidate, use Plan Mode again before writing an
+implementation plan. Do not activate a bead or code until Precode's normal
+approval gates are satisfied.
+```
+*Why it works: Keeps a promising idea from silently becoming active work.*
 
 ---
 
