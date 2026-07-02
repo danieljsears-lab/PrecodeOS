@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.29
-Last updated: 2026-06-30
+Document version: v0.8.30
+Last updated: 2026-07-02
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -190,6 +190,8 @@ Main surfaces:
 - Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions
 
 Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.
+
+For the same reason, a more capable model does not replace Precode. A better model makes the agent stronger; Precode keeps the project owned, bounded, proven, and recoverable across whatever model you use.
 
 ### 5. Prove
 

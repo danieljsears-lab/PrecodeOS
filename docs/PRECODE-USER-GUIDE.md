@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.76
-Last updated: 2026-06-30
+Document version: v0.7.77
+Last updated: 2026-07-02
 
 
 
@@ -1431,6 +1431,10 @@ Check whether this memory belongs in DECISIONS.md, a PRD, an authority doc, or s
 #### What does Precode help me avoid?
 
 Scope creep, stale context, confident wrong code, vague done, skipped checks, skipped manual verification, and uncontrolled next-task momentum.
+
+#### Won't a more capable model just do this natively?
+
+Newer models genuinely do more on their own: more planning, longer context, self-checking, in-session memory. But those gains live inside the model and the chat. They are fast, confident, vendor-specific, and gone when the session ends or you switch tools. Precode is not an agent or a model, so it is not competing on that axis. It is the repo-owned control layer around whatever agent you run: intent, scope, approval, proof, and recovery kept as readable files and human gates that persist across sessions, tools, and models. A more capable model is a reason to want that layer more, not less, because a faster, more confident agent is exactly when quiet drift gets expensive. Precode is not anti-AI; it is anti-drift. A model still cannot grant itself permission to touch payments or production, its in-session memory is not your project's durable source of truth, and its confidence is still not recorded evidence. As models make writing code cheap, usable human-owned control is the scarce part, and that is the part Precode owns.
 
 #### What habit should I build first?
 

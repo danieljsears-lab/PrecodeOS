@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.34
-Last updated: 2026-06-29
+Document version: v0.1.35
+Last updated: 2026-07-02
 
 ## Purpose
 
@@ -38,7 +38,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
 4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
-5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
 
@@ -46,7 +46,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 
 Keep the student's daily command surface small. Start normal work in the Daily Cockpit with `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and recorded checks. Move to the support command family only when setup, active state, file scope, proof, or transition readiness is the actual blocker.
 
-Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`. They are diagnostic or advisory unless their owning protocol and explicit user approval allow a narrow mutation. Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.
+Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`. They are diagnostic or advisory unless their owning protocol and explicit user approval allow a narrow mutation. In refresh work, run `validate-memory.sh` before the student's first Start; duplicate PRD/bead IDs after a refresh are a refresh blocker, not normal first-session work. Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.
 
 ## Stuck User Recovery
 

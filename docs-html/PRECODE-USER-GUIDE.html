@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-30">
+  <meta name="generated-at" content="2026-07-02">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.76</span><span>Updated 2026-06-30</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.77</span><span>Updated 2026-07-02</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -795,6 +795,8 @@ Ask one blocking question at a time. Treat generated reports and source notes as
 <h3 id="getting-started"><a class="heading-anchor" href="#getting-started" aria-label="Link to Getting Started">#</a>Getting Started</h3>
 <h4 id="what-does-precode-help-me-avoid"><a class="heading-anchor" href="#what-does-precode-help-me-avoid" aria-label="Link to What does Precode help me avoid?">#</a>What does Precode help me avoid?</h4>
 <p>Scope creep, stale context, confident wrong code, vague done, skipped checks, skipped manual verification, and uncontrolled next-task momentum.</p>
+<h4 id="won-t-a-more-capable-model-just-do-this-natively"><a class="heading-anchor" href="#won-t-a-more-capable-model-just-do-this-natively" aria-label="Link to Won&#x27;t a more capable model just do this natively?">#</a>Won&#x27;t a more capable model just do this natively?</h4>
+<p>Newer models genuinely do more on their own: more planning, longer context, self-checking, in-session memory. But those gains live inside the model and the chat. They are fast, confident, vendor-specific, and gone when the session ends or you switch tools. Precode is not an agent or a model, so it is not competing on that axis. It is the repo-owned control layer around whatever agent you run: intent, scope, approval, proof, and recovery kept as readable files and human gates that persist across sessions, tools, and models. A more capable model is a reason to want that layer more, not less, because a faster, more confident agent is exactly when quiet drift gets expensive. Precode is not anti-AI; it is anti-drift. A model still cannot grant itself permission to touch payments or production, its in-session memory is not your project&#x27;s durable source of truth, and its confidence is still not recorded evidence. As models make writing code cheap, usable human-owned control is the scarce part, and that is the part Precode owns.</p>
 <h4 id="what-habit-should-i-build-first"><a class="heading-anchor" href="#what-habit-should-i-build-first" aria-label="Link to What habit should I build first?">#</a>What habit should I build first?</h4>
 <p>Start every serious session with <code>bash scripts/session-start.sh</code>, then make the agent explain the bead before coding.</p>
 <p><code>session-start.sh</code> now also displays the <code>next-step</code> router decision. If you run <code>python3 scripts/next-step.py</code> separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet. The machine-readable shape is kept stable for key fields and categories, but the generated prose may change to stay clear.</p>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-06-30">
+  <meta name="generated-at" content="2026-07-02">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.16</span><span>Updated 2026-06-30</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.17</span><span>Updated 2026-07-02</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -302,11 +302,11 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>The adaptation plan is non-mutating evidence. It names owner-file creation or adaptation candidates, approval gates, preserved project material, and deferred package-copy, hook, CI, app-command, and app-code work. It does not approve owner-file edits.</p>
 <p>For a target that already has PrecodeOS active memory, use upgrade preview before treating the work as setup repair or package update:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview</code></pre>
-<p>The upgrade preview classifies the target as <code>clean</code>, <code>dirty_package_edits</code>, <code>dirty_project_or_owner_edits</code>, <code>mixed_or_unknown</code>, or <code>blocked</code>. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.</p>
+<p>The upgrade preview classifies the target as <code>clean</code>, <code>dirty_package_edits</code>, <code>dirty_project_or_owner_edits</code>, <code>mixed_or_unknown</code>, or <code>blocked</code>. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports <code>blocked_identity_collision</code>, do not copy that file, do not renumber the student&#x27;s existing ID, and preserve target PRDs/beads. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.</p>
 <p>If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.</p>
-<p>If the preview shows a missing package-owned file marked <code>review_package_copy_candidate</code>, you may copy that one file only after approving its <code>UP-ID</code>:</p>
+<p>If the preview shows a missing package-owned file marked <code>review_package_copy_candidate</code>, you may copy that one file only after approving its <code>UP-ID</code>. Package development PRDs and beads are not normal upgrade-copy candidates for existing Precode targets; copy only <code>PRD-000-template</code>, schemas/reference files, or other copyable non-identity package files:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview --apply-upgrade-preview --approve-action &lt;UP-ID&gt;</code></pre>
-<p>This apply mode refuses dirty or unknown package states, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.</p>
+<p>This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.</p>
 <p>When setup state is partial or confusing, ask for recovery guidance:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --recovery-guidance</code></pre>
 <p>Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.</p>

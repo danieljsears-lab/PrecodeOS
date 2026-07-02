@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-20
+Document version: v0.1.3
+Last updated: 2026-07-02
 
 ## Purpose
 
@@ -65,6 +65,10 @@ The plan is not copy approval or edit approval.
 
 For support-assisted upgrades of an existing Precode target with important active work, known local package edits, or unclear recovery state, prefer a clone-first preview: preserve the current environment as the backup, run `--upgrade-preview` against a fresh clone, and review dirty or customized paths before any approved copy action. This is a support safety posture, not rollback automation or package-update permission.
 
+Upgrade preview is ID-aware for PRD and bead Markdown files. It reads incoming `prd_id` / `bead_id` values and target IDs before proposing copy actions. If an incoming package file declares an ID that already exists at another target path, the action must be `blocked_identity_collision`, name the incoming path, incoming ID, and existing target path, and remain non-copyable.
+
+For existing Precode targets, package development PRDs and beads are not normal upgrade-copy material. Preserve target PRDs and beads; copy only `tasks/prds/PRD-000-template.md`, schema/reference files such as `tasks/prds/PRD-SHARD-SCHEMA.md` and `tasks/beads/BEAD-SCHEMA.md`, or other non-identity package files when they are marked copyable. Do not auto-renumber incoming beta PRDs or beads.
+
 It must classify package state as one of:
 
 | Classification | Meaning |
@@ -86,6 +90,8 @@ Preview actions use stable IDs and categories:
 | `review_owner_creation_candidate` | Owner or active-memory surface is missing; create only from confirmed target truth. |
 | `preserve_existing` | Existing target material should stay in place. |
 | `deferred` | Hooks, CI, or other out-of-scope setup remains a separate approval path. |
+| `deferred_package_dev_identity` | Package development PRD/bead file is missing in the target but is not an upgrade-copy candidate. |
+| `blocked_identity_collision` | Incoming PRD/bead ID already exists at a different target path; preserve target identity and do not copy. |
 
 ## Upgrade Apply
 
@@ -97,7 +103,7 @@ Preview actions use stable IDs and categories:
 - each approved action is for a missing package-owned file
 - the source file exists and the target path does not exist
 
-It must refuse dirty package states, unknown action IDs, non-copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+It must refuse dirty package states, unknown action IDs, non-copy actions, identity-collision actions, package dev PRD/bead copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
 
 The package keeps fixture coverage for these upgrade-apply refusals in `scripts/bootstrap-check.py --self-test`, including missing approval, unknown IDs, dirty or unknown package state, missing source files, and overwrite refusal. The fixtures are regression evidence only; they do not approve package updates or dirty-file replacement.
 
@@ -113,6 +119,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Existing projects must complete Existing Repo Intake before owner-file adaptation or package copy decisions.
 - Dirty package-owned files require manual review; they are not safe update candidates.
 - Owner and active-memory files preserve project truth and are never automatically adapted.
+- Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
 - No command in this protocol creates release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
 

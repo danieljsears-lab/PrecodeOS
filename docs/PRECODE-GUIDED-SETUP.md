@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-30
+Document version: v0.1.17
+Last updated: 2026-07-02
 
 ## What This Guide Is For
 
@@ -141,17 +141,17 @@ For a target that already has PrecodeOS active memory, use upgrade preview befor
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 ```
 
-The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
+The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the student's existing ID, and preserve target PRDs/beads. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
 
 If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
 
-If the preview shows a missing package-owned file marked `review_package_copy_candidate`, you may copy that one file only after approving its `UP-ID`:
+If the preview shows a missing package-owned file marked `review_package_copy_candidate`, you may copy that one file only after approving its `UP-ID`. Package development PRDs and beads are not normal upgrade-copy candidates for existing Precode targets; copy only `PRD-000-template`, schemas/reference files, or other copyable non-identity package files:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```
 
-This apply mode refuses dirty or unknown package states, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
 
 When setup state is partial or confusing, ask for recovery guidance:
 

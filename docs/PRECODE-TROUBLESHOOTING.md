@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-06-29
+Document version: v0.1.19
+Last updated: 2026-07-02
 
 ## Purpose
 
@@ -256,6 +256,8 @@ Safe path:
 
 `scripts/next-id.py` suggests only. It does not reserve an ID, rename files, update references, approve PRDs, activate beads, or mutate the repo.
 
+During support-assisted package refresh, duplicate PRD/bead IDs are a refresh blocker. Run `bootstrap-check.py --upgrade-preview` before copying package files, preserve the target project's existing PRDs/beads, and do not copy incoming package development PRDs or beads that collide with target IDs.
+
 Do not patch generated reports as a substitute for fixing active memory.
 
 ### `file-inventory --check` Fails Or Warns
@@ -491,8 +493,8 @@ This index is for setup, support, and recovery moments. Beginner daily work shou
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan` | Source and target are clear enough to show a setup checklist before manual setup approval. | Setup-plan evidence only; not copy permission, owner-file adaptation approval, install permission, release-channel metadata, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>` | Empty or nearly empty target setup has a reviewed copy action ID the user approves. | Copies only approved `review_copy_candidate` actions; not owner-file adaptation, existing-repo mutation, overwrite permission, hook setup, CI setup, app commands, app-code edits, release-channel metadata, package-manager behavior, rollback automation, or a CLI. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan` | Existing Repo Intake has been reviewed and the user needs an owner-file adaptation checklist. | Evidence only; not owner-file edit approval, copy permission, hook setup, CI setup, app commands, app-code edits, release-channel metadata, package-manager behavior, or rollback automation. |
-| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview` | Target already has Precode active memory and package setup/update state needs comparison. | Evidence only; classifies package state and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback automation. |
-| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>` | Existing Precode target has a missing package-owned file marked `review_package_copy_candidate` and the user approves that action ID. | Copies only approved missing package-owned files; refuses dirty/unknown package states, overwrites, owner-file adaptation, hooks, CI, app commands, app-code edits, release-channel metadata, package-manager behavior, and rollback automation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview` | Target already has Precode active memory and package setup/update state needs comparison. | Evidence only; classifies package state, reports PRD/bead identity collisions, and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback automation. |
+| `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>` | Existing Precode target has a missing package-owned file marked `review_package_copy_candidate` and the user approves that action ID. | Copies only approved missing package-owned files; refuses dirty/unknown package states, identity collisions, overwrites, owner-file adaptation, hooks, CI, app commands, app-code edits, release-channel metadata, package-manager behavior, and rollback automation. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance` | Setup is partial, confusing, or failed and support needs the next safe diagnostic path. | Guidance only; may recommend validation or preview commands but does not automate rollback, destructive cleanup, overwrites, hook setup, CI setup, or setup/update mutation. |
 | `python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>` | Target already has app code, docs, CI, product history, or active work and needs the existing-app adoption branch. | Read-only by default; reports likely checks as future hints only and writes no target files. |
 | `bash scripts/session-start.sh` | Beginning or resetting a session. | It prints context and generated router guidance. |

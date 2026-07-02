@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-21
+Document version: v0.1.7
+Last updated: 2026-07-02
 
 ## Purpose
 
@@ -56,7 +56,7 @@ Default mode prints a plain-English report and writes nothing.
 
 `--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and CLI installation.
 
-`--existing-project-adaptation-plan`, `--upgrade-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, package upgrade preview, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only.
+`--existing-project-adaptation-plan`, `--upgrade-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, ID-aware package upgrade preview, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only. Upgrade preview must report PRD/bead identity collisions instead of marking incoming package dev PRDs or beads copyable.
 
 `--write-evidence` writes generated evidence only under the source Precode workspace:
 
@@ -87,6 +87,8 @@ Plain output should also remind the user that the result is generated evidence o
 When `--preview-manifest` is used, output should also include an `install_update_preview` object with action categories and a next setup gate. The preview is governed by `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md`.
 
 When `--supervised-setup-plan` is used, output should also include a `supervised_setup_plan` object. The setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`.
+
+When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable.
 
 ## Target Kinds
 

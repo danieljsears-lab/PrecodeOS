@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.2
-# Last updated: 2026-06-21
+# Version: v0.5.3
+# Last updated: 2026-07-02
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -143,6 +143,10 @@ SECRET_OR_LOCAL_NAMES = {
     "credentials",
     "secrets",
 }
+IDENTITY_FILE_RULES = {
+    "tasks/prds/": {"field": "prd_id", "template": "tasks/prds/PRD-000-template.md", "schema": "tasks/prds/PRD-SHARD-SCHEMA.md"},
+    "tasks/beads/": {"field": "bead_id", "schema": "tasks/beads/BEAD-SCHEMA.md"},
+}
 
 
 def resolve_candidate(raw: str) -> Path:
@@ -208,6 +212,88 @@ def file_digest(path: Path) -> str:
         for chunk in iter(lambda: handle.read(65536), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def frontmatter(text: str) -> dict[str, str]:
+    if not text.startswith("---\n"):
+        return {}
+    end = text.find("\n---", 4)
+    if end == -1:
+        return {}
+    values: dict[str, str] = {}
+    for line in text[4:end].splitlines():
+        if ":" in line and not line.startswith(" "):
+            key, value = line.split(":", 1)
+            values[key.strip()] = value.strip().strip("'\"")
+    return values
+
+
+def identity_rule(relative_path: str) -> dict[str, str] | None:
+    for prefix, rule in IDENTITY_FILE_RULES.items():
+        if relative_path.startswith(prefix):
+            return rule
+    return None
+
+
+def file_identity(root: Path, relative_path: str) -> tuple[str, str] | None:
+    rule = identity_rule(relative_path)
+    if rule is None:
+        return None
+    path = root / relative_path
+    if not path.is_file():
+        return None
+    field = rule["field"]
+    item_id = frontmatter(path.read_text(encoding="utf-8")).get(field, "").strip()
+    if not item_id:
+        return None
+    return field, item_id
+
+
+def identity_index(root: Path) -> dict[tuple[str, str], list[str]]:
+    indexed: dict[tuple[str, str], list[str]] = {}
+    for prefix in IDENTITY_FILE_RULES:
+        directory = root / prefix.rstrip("/")
+        if not directory.is_dir():
+            continue
+        for path in sorted(directory.glob("*.md")):
+            if not path.is_file():
+                continue
+            relative_path = rel(path, root)
+            identity = file_identity(root, relative_path)
+            if identity is None:
+                continue
+            indexed.setdefault(identity, []).append(relative_path)
+    return indexed
+
+
+def upgrade_identity_collision(
+    source_root: Path,
+    target_identity: dict[tuple[str, str], list[str]],
+    relative_path: str,
+) -> dict[str, str] | None:
+    identity = file_identity(source_root, relative_path)
+    if identity is None:
+        return None
+    existing_paths = [path for path in target_identity.get(identity, []) if path != relative_path]
+    if not existing_paths:
+        return None
+    field, item_id = identity
+    return {
+        "identity_field": field,
+        "incoming_id": item_id,
+        "incoming_path": relative_path,
+        "existing_target_path": existing_paths[0],
+    }
+
+
+def is_package_dev_identity_path(relative_path: str) -> bool:
+    if relative_path.startswith("tasks/prds/"):
+        rule = IDENTITY_FILE_RULES["tasks/prds/"]
+        return relative_path not in {rule["template"], rule["schema"]}
+    if relative_path.startswith("tasks/beads/"):
+        rule = IDENTITY_FILE_RULES["tasks/beads/"]
+        return relative_path != rule["schema"]
+    return False
 
 
 def is_secret_or_local_path(relative_path: str) -> bool:
@@ -545,6 +631,9 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
     dirty_package: list[str] = []
     dirty_owner: list[str] = []
     missing_package: list[str] = []
+    identity_collisions: list[dict[str, str]] = []
+    deferred_identity_paths: list[str] = []
+    target_identity = identity_index(target_root)
     action_index = 1
 
     for group in payload["public_file_groups"]:
@@ -574,9 +663,25 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
                 category = "deferred"
                 reason = "hooks and CI require separate explicit approval and are not part of upgrade preview"
             elif not target_path.exists():
-                missing_package.append(path)
-                category = "review_package_copy_candidate"
-                reason = "package-owned file is missing in the target and may be copied after explicit action approval"
+                identity_collision = upgrade_identity_collision(source_root, target_identity, path)
+                if identity_collision:
+                    identity_collisions.append(identity_collision)
+                    category = "blocked_identity_collision"
+                    reason = (
+                        f"incoming {identity_collision['identity_field']} {identity_collision['incoming_id']} "
+                        f"already exists at {identity_collision['existing_target_path']}; preserve target identity and do not copy"
+                    )
+                elif is_package_dev_identity_path(path):
+                    deferred_identity_paths.append(path)
+                    category = "deferred_package_dev_identity"
+                    reason = (
+                        "package dev PRD/bead files are not upgrade-copy candidates for existing Precode targets; "
+                        "preserve target PRDs/beads"
+                    )
+                else:
+                    missing_package.append(path)
+                    category = "review_package_copy_candidate"
+                    reason = "package-owned file is missing in the target and may be copied after explicit action approval"
             elif not source_path.is_file() or not target_path.is_file():
                 dirty_package.append(path)
                 category = "manual_package_review"
@@ -588,7 +693,10 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
                 dirty_package.append(path)
                 category = "manual_package_review"
                 reason = "target package-owned file differs from source; do not overwrite without a separate reviewed update decision"
-            actions.append(numbered_action("UP", action_index, category, path, reason, group_name))
+            action = numbered_action("UP", action_index, category, path, reason, group_name)
+            if category == "blocked_identity_collision":
+                action.update(identity_collision)
+            actions.append(action)
             action_index += 1
 
     if blockers:
@@ -604,7 +712,13 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
 
     return {
         "preview_kind": "package_upgrade_preview",
-        "status": "blocked" if blockers else "warning" if dirty_package or dirty_owner or missing_package else "pass",
+        "status": (
+            "blocked"
+            if blockers
+            else "warning"
+            if dirty_package or dirty_owner or missing_package or identity_collisions or deferred_identity_paths
+            else "pass"
+        ),
         "source_root": payload["source_root"],
         "target_root": payload["target_root"],
         "target_kind": kind,
@@ -613,6 +727,8 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
         "dirty_package_paths": dirty_package,
         "dirty_project_or_owner_paths": dirty_owner,
         "missing_package_paths": missing_package,
+        "identity_collisions": identity_collisions,
+        "deferred_package_dev_identity_paths": deferred_identity_paths,
         "blockers": blockers,
         "writes_by_default": False,
         "target_mutation_allowed": False,
@@ -627,7 +743,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
             "package-manager updates",
             "rollback automation",
         ],
-        "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review.",
+        "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review and identity collisions block copying.",
     }
 
 
@@ -943,6 +1059,17 @@ def apply_upgrade_preview(payload: dict[str, Any], approved_action_ids: list[str
         if action is None:
             blocked.append({"path": action_id, "reason": "approved action ID is not present in the upgrade preview"})
             continue
+        if action["category"] == "blocked_identity_collision":
+            blocked.append(
+                {
+                    "path": str(action["path"]),
+                    "reason": (
+                        f"{action_id} has identity collision {action.get('incoming_id', '')}; "
+                        "upgrade apply refuses incoming PRD/bead IDs that already exist in the target"
+                    ),
+                }
+            )
+            continue
         if action["category"] != "review_package_copy_candidate":
             blocked.append(
                 {
@@ -1225,6 +1352,15 @@ def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
     if preview["dirty_project_or_owner_paths"]:
         lines.append("\nProject or owner paths to preserve/review:")
         lines.extend(f"- `{item}`" for item in preview["dirty_project_or_owner_paths"])
+    if preview["identity_collisions"]:
+        lines.append("\nIdentity collisions blocking copy:")
+        for item in preview["identity_collisions"]:
+            lines.append(
+                f"- `{item['incoming_path']}` declares `{item['incoming_id']}`, already present at `{item['existing_target_path']}`"
+            )
+    if preview["deferred_package_dev_identity_paths"]:
+        lines.append("\nPackage dev PRDs/beads deferred:")
+        lines.extend(f"- `{item}`" for item in preview["deferred_package_dev_identity_paths"])
     lines.append("\nUpgrade-preview actions:")
     for action in preview["actions"]:
         group = f" ({action['group']})" if "group" in action else ""
@@ -1417,6 +1553,30 @@ def self_test() -> int:
         existing_precode_payload["install_update_preview"] = build_manifest_preview(existing_precode_payload)
         existing_precode_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_precode_payload)
         (source / "docs" / "NEW-PACKAGE-DOC.md").write_text("new package doc\n", encoding="utf-8")
+        (source / "tasks" / "prds").mkdir(parents=True)
+        (source / "tasks" / "beads").mkdir(parents=True)
+        (existing_precode_target / "tasks" / "prds").mkdir(parents=True)
+        (existing_precode_target / "tasks" / "beads").mkdir(parents=True)
+        (source / "tasks" / "prds" / "PRD-002-bootstrap-confidence-lane.md").write_text(
+            "---\nprd_id: PRD-002\n---\n# Bootstrap Confidence Lane\n",
+            encoding="utf-8",
+        )
+        (source / "tasks" / "prds" / "PRD-003-existing-repo-intake.md").write_text(
+            "---\nprd_id: PRD-003\n---\n# Existing Repo Intake\n",
+            encoding="utf-8",
+        )
+        (source / "tasks" / "beads" / "B001-ubiquitous-language-glossary-hardening.md").write_text(
+            "---\nbead_id: B001\n---\n# Ubiquitous Language Glossary Hardening\n",
+            encoding="utf-8",
+        )
+        (existing_precode_target / "tasks" / "prds" / "PRD-002-backend-foundation.md").write_text(
+            "---\nprd_id: PRD-002\n---\n# Backend Foundation\n",
+            encoding="utf-8",
+        )
+        (existing_precode_target / "tasks" / "beads" / "B001-backend-scaffold.md").write_text(
+            "---\nbead_id: B001\n---\n# Backend Scaffold\n",
+            encoding="utf-8",
+        )
         existing_precode_payload["package_upgrade_preview"] = build_upgrade_preview(existing_precode_payload)
         existing_precode_payload["bootstrap_recovery_guidance"] = build_recovery_guidance(existing_precode_payload)
         assert existing_precode_payload["target_kind"] == "existing_precode"
@@ -1430,12 +1590,46 @@ def self_test() -> int:
             for action in existing_precode_payload["supervised_setup_plan"]["actions"]
         )
         assert existing_precode_payload["package_upgrade_preview"]["package_state_classification"] == "dirty_project_or_owner_edits"
+        prd_collision_actions = [
+            action
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+            if action["category"] == "blocked_identity_collision"
+            and action["path"] == "tasks/prds/PRD-002-bootstrap-confidence-lane.md"
+        ]
+        bead_collision_actions = [
+            action
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+            if action["category"] == "blocked_identity_collision"
+            and action["path"] == "tasks/beads/B001-ubiquitous-language-glossary-hardening.md"
+        ]
+        assert len(prd_collision_actions) == 1
+        assert prd_collision_actions[0]["incoming_id"] == "PRD-002"
+        assert prd_collision_actions[0]["existing_target_path"] == "tasks/prds/PRD-002-backend-foundation.md"
+        assert len(bead_collision_actions) == 1
+        assert bead_collision_actions[0]["incoming_id"] == "B001"
+        assert bead_collision_actions[0]["existing_target_path"] == "tasks/beads/B001-backend-scaffold.md"
+        assert not any(
+            action["category"] == "review_package_copy_candidate"
+            and action["path"] in {
+                "tasks/prds/PRD-002-bootstrap-confidence-lane.md",
+                "tasks/beads/B001-ubiquitous-language-glossary-hardening.md",
+            }
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+        )
+        assert any(
+            action["category"] == "deferred_package_dev_identity"
+            and action["path"] == "tasks/prds/PRD-003-existing-repo-intake.md"
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+        )
         upgrade_copy_ids = [
             action["id"]
             for action in existing_precode_payload["package_upgrade_preview"]["actions"]
             if action["category"] == "review_package_copy_candidate" and action["path"] == "docs/NEW-PACKAGE-DOC.md"
         ]
         assert len(upgrade_copy_ids) == 1
+        collision_apply = apply_upgrade_preview(existing_precode_payload, [prd_collision_actions[0]["id"]])
+        assert collision_apply["status"] == "blocked"
+        assert any("identity collision" in item["reason"] for item in collision_apply["blocked"])
         upgrade_apply = apply_upgrade_preview(existing_precode_payload, upgrade_copy_ids)
         assert upgrade_apply["status"] == "applied"
         assert (existing_precode_target / "docs" / "NEW-PACKAGE-DOC.md").is_file()
