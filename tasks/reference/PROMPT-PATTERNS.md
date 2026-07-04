@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.61
+Document version: v0.1.63
 Last updated: 2026-07-04
 
 ## Purpose
@@ -100,7 +100,7 @@ Alias guardrail floor:
 | Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Start The Session |
 | Ask Precode | `Ask Precode: answer my stable docs question and cite the source files.` | Ask A Stable Docs Question |
 | Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Choose The Right Workflow / First PRD Walkthrough / Artifact Chooser |
-| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm The Task Before Editing / Check Task Suitability Before Work / Engineering Quality Floor / Every-Bead Rhythm |
+| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.` | Confirm The Task Before Editing / Check Task Suitability Before Work / Engineering Quality Floor / Vibe-To-Agentic Boundary / Every-Bead Rhythm |
 | Acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clarify Acceptance Criteria / Make Acceptance Criteria Testable |
 | Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
 | Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
@@ -730,6 +730,22 @@ If the quality-floor text looks complete but the changed files look broader than
 Run `python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview`. Treat the repo heuristics as advisory only. Use them to compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. Do not treat the result as proof, implementation approval, review acceptance, code-quality score, linter output, test output, or a checker gate.
 ```
 
+## Vibe-To-Agentic Boundary
+
+```text
+Check whether this is safe to keep as exploratory vibe work or whether it needs governed Precode flow.
+
+Name the risk, reversibility, user-facing impact, sensitive surfaces, files or systems likely to change, proof needed, and next safe path.
+
+If it is exploratory, keep it tiny, reversible, and evidence-only. If it is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited, route me through the right Precode owner workflow before coding.
+
+Do not approve a PRD, activate a bead, accept implementation, approve release, mutate files, create generated proof, or code.
+```
+
+Use this when a quick AI sketch is starting to look like something the project may keep. The answer should recommend only exploratory, Ideation, PRD or owner-file shaping, candidate capture, approved bead work, proof/review, release readiness, split, block, or stop.
+
+The boundary check is not a new stage, score, command, or approval surface.
+
 ## Local Source Intake
 
 ```text
@@ -1257,6 +1273,20 @@ Do not treat screenshots, browser notes, GitHub status, generated reports, smoke
 Review this Release Candidate Evidence Profile against Closeout Evidence and recorded checks.
 Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
 Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
+```
+
+## Fresh-Context Comprehension Review
+
+```text
+Review this PRD or bead in a fresh context as a comprehension test against canonical Precode artifacts.
+
+Inputs: PRD or bead path, primary authority file, relevant owner docs, and recorded evidence if reviewing completed work.
+
+Reload only the needed canonical artifacts. Do not rely on the prior implementation chat.
+
+Return: what is being built, what is authoritative, what is out of scope, what proof is required, unresolved ambiguities, and where the agent must stop for human approval.
+
+Do not approve PRDs, activate beads, create tasks, accept implementation, rewrite owner files, create generated proof, run mutating commands, mutate files, or treat review output or confidence as authority.
 ```
 
 ## Fresh-Context Review

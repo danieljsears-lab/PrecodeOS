@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.80
+Document version: v0.7.82
 Last updated: 2026-07-04
 
 
@@ -35,6 +35,26 @@ Put raw reference material for the project in root-level `project-evidence/`: no
 If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBOOK.md`. If setup, active state, validation, or generated reports feel wrong, use `docs/PRECODE-TROUBLESHOOTING.md` before editing files.
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
+
+## Check The Vibe-To-Agentic Boundary
+
+Fast AI exploration is useful when the work is a quick sketch, tiny demo, or throwaway experiment. Keep it loose only when the change is reversible, low-risk, not user-facing, not sensitive, and not something future-you must trust.
+
+Switch into governed Precode flow when the work is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited. That means product intent, PRD or owner-file authority when needed, one approved bead, checks, Closeout Evidence, review, and human approval before the next step.
+
+Say this before coding when the risk is unclear:
+
+```text
+Check whether this is safe to keep as exploratory vibe work or whether it needs governed Precode flow.
+
+Name the risk, reversibility, user-facing impact, sensitive surfaces, files or systems likely to change, proof needed, and next safe path.
+
+If it is exploratory, keep it tiny, reversible, and evidence-only. If it is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited, route me through the right Precode owner workflow before coding.
+
+Do not approve a PRD, activate a bead, accept implementation, approve release, mutate files, create generated proof, or code.
+```
+
+Why this matters: vibe coding is fine for reversible learning. It becomes dangerous when a plausible demo quietly becomes software you expect to keep.
 
 ## Use Ideation Or The Right Artifact
 
@@ -1282,6 +1302,8 @@ Before coding, declare the test_strategy. If failing_first is practical, write t
 ```
 
 For medium/high-risk work, ask for a fresh-context review. A fresh reviewer reloads active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence instead of relying on the implementation chat.
+
+Fresh-context review is a comprehension test against canonical artifacts. The reviewer should be able to explain what is being built, what is authoritative, what is out of scope, what proof is required, which ambiguities remain, and where to stop for human approval. It is not PRD approval, bead activation, task creation, implementation acceptance, owner-file rewrite authority, generated proof, or permission to mutate files.
 
 Say this:
 

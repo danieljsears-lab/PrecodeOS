@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.31
+Document version: v0.8.32
 Last updated: 2026-07-04
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
@@ -28,6 +28,8 @@ The technical definition is still true: PrecodeOS is a repo-native control layer
 
 In plain English: Precode lives inside your project folder, keeps important project truth in readable Markdown files, and uses small scripts to check whether the agent is staying aligned.
 
+It treats product intent, design judgment, acceptance, and proof as durable repo-owned control surfaces. Code can appear quickly, but the builder should still be able to read why the work exists, what is in bounds, what evidence matters, and where human approval is required.
+
 For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.
 
 PrecodeOS is open source under Apache-2.0. `NOTICE` preserves creator attribution: Created by Dan Sears / Recode. Canonical site: `https://www.precodeos.org`.
@@ -44,6 +46,7 @@ Precode gives the repo a small operating model:
 - one current task
 - Build Loop Health for focused, stoppable, closeable, evidenced, graph-coherent work
 - clear owner files for durable facts
+- product intent, design judgment, acceptance, and proof captured before code runs ahead
 - optional discovery before PRD work
 - PRDs before feature implementation when intent is fuzzy or risky
 - explicit Small Team Collaboration Lane when 2-5 people need branch/worktree-isolated work on the same product

@@ -42,6 +42,8 @@ It lives inside a repository as Markdown owner files, execution contracts, valid
 
 Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps software work human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces instead of hidden chat assumptions.
 
+PrecodeOS treats product intent, design judgment, acceptance, and proof as durable repo-owned control surfaces for AI coding work. The agent can move quickly, but the reasons for the work, the bounds of the work, and the evidence for accepting it stay readable in the repository.
+
 ## Who It's For
 
 PrecodeOS is for solo builders who want the speed and capability of AI coding agents without relinquishing control of the project to the agent.
@@ -78,7 +80,7 @@ PrecodeOS is worth it when the cost of getting lost is bigger than the cost of a
 | You want checkpoints because mistakes, regressions, or confusion would be painful. | Mistakes are cheap and you are comfortable moving fast without much process. |
 | Future-you, another human, a client, or another agent will need to understand what happened. | It is just you for an hour and there is nothing worth preserving. |
 
-**The bright line**: use PrecodeOS when you are building something you care about, expect to revisit, or do not want AI to slowly derail. Skip it when you are doing a quick sketch, demo, or throwaway experiment.
+**The bright line**: quick sketches, tiny demos, and throwaway experiments can stay loose. Switch to PrecodeOS when the work is durable, user-facing, sensitive, multi-file, hard to prove, or something you expect to revisit. If a mistake would be expensive to understand, undo, explain, or trust later, do not let vibe coding harden into production code.
 
 ## Technical Summary
 
@@ -87,6 +89,7 @@ PrecodeOS treats the repository as the control surface for AI-assisted software 
 - **Tiny active memory:** only the minimum files needed to start the current session are always loaded.
 - **One active unit of work:** the current task is represented by a bead contract, not by chat momentum.
 - **One owner per durable fact:** product, architecture, API, data, security, and acceptance truth live in explicit owner files.
+- **Design judgment before code:** product intent, acceptance, and proof expectations are written down before AI speed turns weak understanding into implementation.
 - **Evidence over confidence:** checks and closeout evidence matter more than agent claims.
 - **Generated output is not authority:** reports summarize state, but they do not choose work or approve completion.
 - **Human approval at transitions:** agents can propose; humans approve direction, acceptance, sensitive actions, and task transitions.
@@ -384,7 +387,7 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.49
+Document version: v0.1.50
 Last updated: 2026-07-04
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.41
+# Version: v0.1.42
 # Last updated: 2026-07-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -995,7 +995,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "does not create proof",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.",
+            "Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.",
             "python3 scripts/engineering-quality-check.py --check",
             "advisory only",
             "does not approve coding, review, release, or generated proof",
@@ -1124,6 +1124,67 @@ def assert_public_objection_handling_contract(failures: list[dict[str, str]]) ->
         for term in forbidden_terms:
             if term in text:
                 failures.append({"scenario": f"public objection handling forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_vibe_to_agentic_boundary_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "quick sketches, tiny demos, and throwaway experiments can stay loose",
+            "Switch to PrecodeOS when the work is durable, user-facing, sensitive, multi-file, hard to prove, or something you expect to revisit",
+            "do not let vibe coding harden into production code",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Check The Vibe-To-Agentic Boundary",
+            "Check whether this is safe to keep as exploratory vibe work or whether it needs governed Precode flow.",
+            "durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited",
+            "Do not approve a PRD, activate a bead, accept implementation, approve release, mutate files, create generated proof, or code.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "vibe-to-agentic boundary",
+            "Check The Vibe-To-Agentic Boundary",
+            "keep it tiny, reversible, and evidence-only",
+            "route me through the right Precode owner workflow before coding",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Vibe-To-Agentic Boundary",
+            "Check whether this is safe to keep as exploratory vibe work or whether it needs governed Precode flow.",
+            "The boundary check is not a new stage, score, command, or approval surface.",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"vibe-to-agentic boundary contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("README.md"): [
+            "Google endorses PrecodeOS",
+            "Harness Protocol",
+            "production agent platform",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Google endorses PrecodeOS",
+            "Harness Protocol",
+            "production agent platform",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Google endorses PrecodeOS",
+            "Harness Protocol",
+            "production agent platform",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Google endorses PrecodeOS",
+            "Harness Protocol",
+            "production agent platform",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"vibe-to-agentic boundary forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
@@ -3829,6 +3890,7 @@ def main() -> int:
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
+    vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
     task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
@@ -4380,6 +4442,7 @@ def main() -> int:
         + command_surface_triage_scenario_count
         + engineering_quality_scenario_count
         + public_objection_scenario_count
+        + vibe_to_agentic_boundary_scenario_count
         + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.38
+Document version: v0.1.39
 Last updated: 2026-07-04
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
@@ -126,7 +126,7 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Workflow Selection, First PRD Walkthrough, or Artifact Chooser routing without task approval, artifact generation, PRD approval, bead activation, implementation permission, or later human PRD approval. |
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
 | Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. If the candidate is being developed or turned into an implementation plan, use Plan Mode first. |
-| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm, Task Suitability, Engineering Quality Floor, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
+| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.` | Confirm, Task Suitability, Engineering Quality Floor, Vibe-To-Agentic Boundary, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, Engineering Quality Review Lane, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
@@ -233,6 +233,20 @@ python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
 ```
 
 Expected output: advisory only repo-shape warnings about changed files, files in play, checks, config/dependency touches, docs/protocol/PRD touches, script touches, broad cross-surface edits, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve coding, accept review, certify production readiness, create proof, or create a checker gate.
+
+### Check The Vibe-To-Agentic Boundary
+
+Use this before coding when you are not sure whether a fast AI sketch is still safe or whether it needs the full Precode loop.
+
+```text
+Check whether this is safe to keep as exploratory vibe work or whether it needs governed Precode flow.
+
+Name the risk, reversibility, user-facing impact, sensitive surfaces, files or systems likely to change, proof needed, and next safe path.
+
+If it is exploratory, keep it tiny, reversible, and evidence-only. If it is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited, route me through the right Precode owner workflow before coding.
+
+Do not approve a PRD, activate a bead, accept implementation, approve release, mutate files, create generated proof, or code.
+```
 
 ### Choose The Right Workflow
 
