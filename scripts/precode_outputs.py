@@ -131,6 +131,8 @@ Use this index to find reviewed memory cards. Before acting, return to active me
 
 Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets; search misses should stay explicit instead of forcing weak memory into context.
 
+If a card may need promotion, use Memory Promotion Review: name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Search results may identify a proposed owner, but they must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
+
 Use this prompt when asking an agent to search memory:
 
 ```text

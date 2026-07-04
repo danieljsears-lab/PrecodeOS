@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-29
+Document version: v0.1.16
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -25,6 +25,8 @@ Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when a candidate bead com
 Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the source is a Candidate Queue entry. Queue entries, product-value ratings, themes, and near-bead sketches can inform decomposition only after the relevant PRD, decision, or owner file is ready; the queue itself does not authorize bead creation or activation.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` before decomposition when the right next workflow is still unclear.
+
+Use `tasks/prds/PRD-036-task-suitability-split-heuristics.md` and the task-suitability questions before proposing or activating a candidate bead when the work may be broad, proof-unclear, approval-gated, or easy to mistake for one task. Suitability guidance may recommend `continue`, `clarify`, `route`, `split`, `block`, or `stop`, but it does not create candidate beads, activate work, approve PRDs, or authorize implementation.
 
 Use Plan Mode before decomposition when a selected Candidate Queue entry needs an implementation plan. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The implementation plan is evidence only until the owning PRD, decision, owner-file, Architecture Shaping when needed, and Decomposition review support a candidate bead proposal.
 
@@ -70,7 +72,7 @@ A candidate bead is ready to propose only when it has:
 - no hidden user approval gate
 - Architecture Brief evidence or an explicit low-risk skip reason when `required_planning_depth` is `PRD+architecture` or `PRD+architecture+test-plan`
 
-If the bead needs a second primary authority, a second outcome, or a second risk model, split it.
+If the bead needs a second primary authority, a second outcome, a second proof strategy, a second risk model, or a separate approval gate, split it.
 
 `bead_kind` should describe the candidate's work shape, not replace decomposition judgment. If the plain-language label and frontmatter value differ, use the closest currently recognized frontmatter value from `tasks/beads/BEAD-SCHEMA.md` and explain the user-facing label in notes or handback.
 
@@ -88,6 +90,7 @@ Use `not a bead yet` when the work has:
 - missing PRD approval for product feature work
 - missing Architecture Brief evidence for architecture-sensitive approved PRDs
 - implementation-changing open questions
+- multiple outcomes, owner surfaces, proof paths, approval gates, or risk models
 
 The next output should be source intake, PRD shaping, decision logging, architecture/security/API/schema clarification, or an unblocker bead.
 
@@ -144,6 +147,8 @@ Keep solo AFK and small-team parallelism separate:
 - `afk_candidate` / `bounded-afk` describe one active bead in one checkout while the builder may be away.
 - `can run in parallel` describes branch/worktree-isolated teammate work after coordinator approval.
 - Neither label approves activation, review acceptance, merge, external mutation, or scope expansion.
+
+When a candidate depends on cloud-agent, PR, teammate branch/worktree, or delegated-agent return, require re-entry evidence before the next bead or merge decision. The candidate should be able to return scope, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and a next human action of continue, review, split, block, or handoff. Do not use that evidence to approve activation, merge, transition, or external mutation.
 
 If a dependency blocks activation, it belongs in `depends_on`, the PRD open questions, or a named unblocker bead.
 
@@ -213,10 +218,12 @@ Split when:
 
 - files in play grow beyond the bead's expected scope
 - risk level changes
+- a second primary authority, outcome, proof strategy, risk model, or approval gate appears
 - implementation-changing unknowns appear
 - verification requires a different strategy
 - manual setup blocks progress
 - the done-when statement contains "and then"
+- task suitability returns `split`, `route`, `block`, or `stop`
 
 For `PRD+architecture` and `PRD+architecture+test-plan` beads, do not propose implementation beads until Architecture Brief evidence exists or the PRD/bead notes explain why Architecture Shaping was safely skipped.
 
@@ -232,6 +239,7 @@ Are files in play bounded?
 Are dependencies clear?
 Are sensitive approval gates resolved or named?
 Is this planning, execution, review, setup, or unblocker work?
+Would task suitability return continue, clarify, route, split, block, or stop?
 What should be deferred?
 ```
 

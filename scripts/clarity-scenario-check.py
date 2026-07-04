@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.38
-# Last updated: 2026-06-30
+# Version: v0.1.41
+# Last updated: 2026-07-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -22,6 +22,7 @@ from os_compiler import (
     build_attribution_ledger,
     command_classification,
     completion_session_freshness,
+    memory_summary,
     next_step_guidance,
     reference_followthrough_quality,
     release_evidence_quality,
@@ -910,7 +911,7 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "## Command Surface Triage",
             "Do not treat the script folder as a beginner menu.",
-            "Setup, support, or recovery",
+            "Setup, support, refresh, or recovery",
             "Advanced evidence or review",
             "Maintainer validation",
             "The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.",
@@ -929,7 +930,7 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
         Path("README.md"): [
             "For the immediate \"what now?\" question, keep the command surface small",
             "Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them.",
-            "Advanced evidence and review commands such as Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.",
+            "Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.",
             "Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
@@ -977,21 +978,24 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         Path("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md"): [
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
+            "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
             "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
             "does not inspect app code",
             "does not approve implementation",
             "does not create a scorecard",
+            "repo-shape risk only",
             "Standards Taxonomy remains deferred",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
+            "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
             "advisory only",
             "does not approve implementation",
             "does not create proof",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.",
+            "Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.",
             "python3 scripts/engineering-quality-check.py --check",
             "advisory only",
             "does not approve coding, review, release, or generated proof",
@@ -999,6 +1003,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Check The Engineering Quality Text Contract",
             "python3 scripts/engineering-quality-check.py --check",
+            "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
             "advisory only",
             "does not inspect app code",
             "does not approve implementation",
@@ -1006,6 +1011,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "scripts/engineering-quality-check.py",
             "Engineering Quality Text-Contract Checker",
+            "--repo-heuristics-preview",
             "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
             "no app-code parsing",
             "no scorecard",
@@ -1013,6 +1019,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         Path("llms.txt"): [
             "scripts/engineering-quality-check.py",
             "Engineering Quality Text-Contract Checker",
+            "--repo-heuristics-preview",
             "advisory only",
         ],
     }
@@ -1053,9 +1060,170 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         failures.append({"scenario": "engineering quality checker self-test", "expected": "pass", "actual": json.dumps(payload, sort_keys=True)})
     if payload.get("advisory_only") is not True:
         failures.append({"scenario": "engineering quality checker advisory", "expected": "advisory_only true", "actual": str(payload.get("advisory_only"))})
-    if payload.get("scenario_count") != 6:
-        failures.append({"scenario": "engineering quality checker scenario count", "expected": "6", "actual": str(payload.get("scenario_count"))})
-    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 6
+    if payload.get("scenario_count") != 8:
+        failures.append({"scenario": "engineering quality checker scenario count", "expected": "8", "actual": str(payload.get("scenario_count"))})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 8
+
+
+def assert_public_objection_handling_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "Won't a more capable model just do this natively?",
+            "Better models make agents stronger.",
+            "PrecodeOS solves a different problem",
+            "intent, scope, approval, proof, and recovery owned by the repo",
+            "across sessions, tools, and models",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Won't a more capable model just do this natively?",
+            "Newer models genuinely do more on their own",
+            "Precode is not an agent or a model",
+            "repo-owned control layer around whatever agent you run",
+            "A more capable model is a reason to want that layer more, not less",
+        ],
+        Path("docs/PRECODE-OS-README.md"): [
+            "a more capable model does not replace Precode",
+            "A better model makes the agent stronger",
+            "Precode keeps the project owned, bounded, proven, and recoverable across whatever model you use",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"public objection handling contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("README.md"): [
+            "model compatibility matrix",
+            "per-model compatibility matrix",
+            "model-tracking obligation",
+            "Devin-specific public comparison",
+            "PrecodeOS makes agents safe",
+            "PrecodeOS makes agents autonomous",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "model compatibility matrix",
+            "per-model compatibility matrix",
+            "model-tracking obligation",
+            "Devin-specific public comparison",
+            "Precode makes agents safe",
+            "Precode makes agents autonomous",
+        ],
+        Path("docs/PRECODE-OS-README.md"): [
+            "model compatibility matrix",
+            "per-model compatibility matrix",
+            "model-tracking obligation",
+            "Devin-specific public comparison",
+            "Precode makes agents safe",
+            "Precode makes agents autonomous",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"public objection handling forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_task_suitability_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-036-task-suitability-split-heuristics.md"): [
+            "continue",
+            "clarify",
+            "route",
+            "split",
+            "block",
+            "stop",
+            "does not choose tasks",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "task-suitability questions",
+            "continue",
+            "clarify",
+            "route",
+            "split",
+            "block",
+            "stop",
+            "does not choose tasks",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "task-suitability questions",
+            "a second primary authority, a second outcome, a second proof strategy, a second risk model, or a separate approval gate",
+            "task suitability returns `split`, `route`, `block`, or `stop`",
+        ],
+        Path("tasks/beads/BEAD-SCHEMA.md"): [
+            "scripts/task-suitability-check.py --check",
+            "continue",
+            "clarify",
+            "route",
+            "split",
+            "block",
+            "stop",
+            "does not approve PRDs",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Check Task Suitability Before Work",
+            "python3 scripts/task-suitability-check.py --check",
+            "Do not choose tasks",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Check Task Suitability Before Work",
+            "python3 scripts/task-suitability-check.py --check",
+            "It does not approve work",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Check Task Suitability Before Work",
+            "python3 scripts/task-suitability-check.py --check",
+            "does not choose tasks",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/task-suitability-check.py",
+            "Task Suitability Checker",
+            "no task selection",
+        ],
+        Path("llms.txt"): [
+            "scripts/task-suitability-check.py",
+            "Task Suitability Checker",
+            "not task selection",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"task suitability contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "task suitability approval",
+            "passing suitability grants permission",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "passing suitability grants permission",
+            "suitability score",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"task suitability forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+
+    module = load_script_module("task_suitability_check", "task-suitability-check.py")
+    payload = module.self_test()
+    if payload.get("status") != "pass":
+        failures.append({"scenario": "task suitability checker self-test", "expected": "pass", "actual": json.dumps(payload, sort_keys=True)})
+    if payload.get("advisory_only") is not True:
+        failures.append({"scenario": "task suitability checker advisory", "expected": "advisory_only true", "actual": str(payload.get("advisory_only"))})
+    if payload.get("scenario_count") != 7:
+        failures.append({"scenario": "task suitability checker scenario count", "expected": "7", "actual": str(payload.get("scenario_count"))})
+    decisions = {item.get("actual") for item in payload.get("scenarios") or []}
+    expected_decisions = {"continue", "clarify", "route", "split", "block", "stop"}
+    if not expected_decisions.issubset(decisions):
+        failures.append({"scenario": "task suitability checker decisions", "expected": str(sorted(expected_decisions)), "actual": str(sorted(decisions))})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 7
 
 
 def assert_stuck_recovery_contract(failures: list[dict[str, str]]) -> None:
@@ -1475,6 +1643,80 @@ def assert_ubiquitous_language_contract(failures: list[dict[str, str]]) -> int:
             if term not in text:
                 failures.append({"scenario": f"ubiquitous language contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
+
+
+def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/MEMORY-PROTOCOL.md"): [
+            "Memory Promotion Review",
+            "memory claim",
+            "source pointers",
+            "current status",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "Do not promote anything without my approval",
+        ],
+        Path("memory/cards/MEMORY-CARD-FORMAT.md"): [
+            "manual promotion review",
+            "source pointers",
+            "proposed owner",
+            "approval required",
+            "stay reviewed memory",
+            "without explicit approval",
+        ],
+        Path("memory/cards/MEMORY-CARD-template.md"): [
+            "current status",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "Search results may warn about promotion need, but they must not perform the promotion",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Review this memory for promotion",
+            "stay reviewed memory",
+            "be promoted to DECISIONS.md",
+            "Do not create cards",
+            "change active memory without my approval",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Review this memory for promotion",
+            "proposed owner",
+            "approval required",
+            "Do not create cards",
+            "Do not promote anything without my approval",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Review memory promotion",
+            "source pointers",
+            "approval required",
+            "Search results may name a proposed promotion owner",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Memory Promotion Review",
+            "auto-promote cards",
+            "all promotion is manual and approval-gated",
+        ],
+        Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
+            "Reviewed-memory recall layer",
+            "scripts/memory-check.py --needs-promotion",
+            "promotion review is manual",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"reviewed memory promotion contract: {path}", "expected": term, "actual": "missing"})
+
+    compiled = memory_summary(Path("."))
+    details = compiled.get("details") if isinstance(compiled.get("details"), dict) else {}
+    safe_prompt = str(details.get("safe_usage_prompt") or "")
+    for term in ["stay reviewed memory", "proposed memory card", "DECISIONS.md", "do not promote anything without approval"]:
+        if term not in safe_prompt:
+            failures.append({"scenario": "reviewed memory safe usage prompt", "expected": term, "actual": safe_prompt})
+    return len(required_terms_by_path) + 1
 
 
 def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
@@ -1909,7 +2151,9 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "security review lane",
         "release / docs freshness review lane",
         "dependency graph review lane",
+        "engineering quality review lane",
         "prd quality review lane",
+        "tasks/prds/prd-038-engineering-quality-review-lane.md",
         "lane:",
         "review target:",
         "authority checked:",
@@ -1929,6 +2173,9 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "create implementation tasks",
         "rewrite prds",
         "scorecard authority",
+        "checker authority",
+        "certify code quality",
+        "certify production readiness",
         "work graph reports are evidence only",
         "repair the markdown owner files",
         "approve parallel execution",
@@ -1941,6 +2188,16 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "requirement-to-proof readiness",
         "smallest first slice",
         "requirements gap and conflict review",
+        "scope discipline",
+        "simplest acceptable implementation",
+        "owner-file and boundary integrity",
+        "configuration or dependency handling",
+        "sensitive-surface routing",
+        "stop-condition observance",
+        "approval-gate observance",
+        "inspect app code",
+        "add repo heuristics",
+        "language-aware analysis",
     ]
     for term in required_terms:
         if term not in protocol_text:
@@ -1948,8 +2205,9 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
 
     prompt_terms = [
         "use the review lanes protocol for this active bead or draft prd",
-        "run exactly one lane: security review lane, release / docs freshness review lane, dependency graph review lane, or prd quality review lane",
+        "run exactly one lane: security review lane, release / docs freshness review lane, dependency graph review lane, engineering quality review lane, or prd quality review lane",
         "run exactly one lane: dependency graph review lane",
+        "run exactly one lane: engineering quality review lane",
         "run exactly one lane: prd quality review lane",
         "findings, missing proof, acceptance questions",
         "missing or non-done dependencies",
@@ -1964,10 +2222,18 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "approve transitions",
         "approve parallel execution",
         "certify security or compliance",
+        "certify code quality",
+        "certify production readiness",
         "create follow-up tasks",
         "create implementation tasks",
         "rewrite prds",
         "scorecard authority",
+        "checker authority",
+        "scope discipline",
+        "simplest acceptable shape",
+        "owner-file and boundary integrity",
+        "configuration or dependency handling",
+        "sensitive-surface routing",
         "treat work graph reports or confidence as proof",
         "mutate github",
         "mutate external systems",
@@ -1981,6 +2247,7 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "security review lane",
         "release / docs freshness review lane",
         "dependency graph review lane",
+        "engineering quality review lane",
         "prd quality review lane",
         "stale or misleading work graph output",
         "product quality and handoff readiness",
@@ -1989,14 +2256,40 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "work graph authority",
         "prd approval",
         "scorecard authority",
+        "checker authority",
         "security sign-off",
+        "code-quality certification",
+        "production-readiness certification",
     ):
         if term not in user_guide_text:
             failures.append({"scenario": "review lanes user guidance", "expected": term, "actual": "missing"})
 
-    for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance"):
+    for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance", "engineering quality review lane", "certify code quality"):
         if term not in bead_schema_text:
             failures.append({"scenario": "review lanes bead schema", "expected": term, "actual": "missing"})
+
+    prd_text = Path("tasks/prds/PRD-038-engineering-quality-review-lane.md").read_text(encoding="utf-8").lower()
+    for term in (
+        "completed or nearly completed active bead",
+        "scope discipline",
+        "simplest acceptable implementation shape",
+        "owner-file and boundary integrity",
+        "proof quality",
+        "configuration or dependency handling",
+        "sensitive-surface routing",
+        "stop-condition observance",
+        "approval-gate observance",
+        "does not broaden the quality floor into repo heuristics",
+        "language-aware analysis",
+        "no app-code parser",
+        "no implementation acceptance",
+        "no app-code parsing",
+        "no linter replacement",
+        "no code-quality score",
+        "no checker gate",
+    ):
+        if term not in prd_text:
+            failures.append({"scenario": "engineering quality review lane prd", "expected": term, "actual": "missing"})
 
 
 def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -> int:
@@ -2122,6 +2415,7 @@ def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -
         "one_active_bead_per_checkout",
         "owner_file_impacts",
         "re_entry_risks",
+        "delegation_reentry",
         "merge_review_packet_fields",
         "assignment_packet_fields",
         "github_evidence",
@@ -2139,6 +2433,14 @@ def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -
     for term in ["task selection", "merge approval", "GitHub mutation"]:
         if term not in forbidden:
             failures.append({"scenario": "team preview forbidden use", "expected": term, "actual": forbidden})
+    delegation_reentry = details.get("delegation_reentry") or {}
+    for field in ["scope_returned", "changed_files", "approval_still_required", "external_status_evidence", "forbidden_actions_not_taken"]:
+        if field not in delegation_reentry:
+            failures.append({"scenario": "delegation re-entry field", "expected": field, "actual": "missing"})
+    reentry_forbidden = " ".join(delegation_reentry.get("forbidden_actions_not_taken") or [])
+    for term in ["implementation acceptance", "merge approval", "external mutation"]:
+        if term not in reentry_forbidden:
+            failures.append({"scenario": "delegation re-entry forbidden use", "expected": term, "actual": reentry_forbidden})
     return len(required_terms_by_path) + 1
 
 
@@ -3526,12 +3828,15 @@ def main() -> int:
     student_journey_authority_scenario_count = assert_student_journey_authority_consolidation_contract(failures)
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
+    public_objection_scenario_count = assert_public_objection_handling_contract(failures)
+    task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
     hypothesis_guidance_scenario_count = assert_hypothesis_guidance_contract(failures)
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
+    reviewed_memory_promotion_scenario_count = assert_reviewed_memory_promotion_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
@@ -4074,6 +4379,8 @@ def main() -> int:
         + student_journey_authority_scenario_count
         + command_surface_triage_scenario_count
         + engineering_quality_scenario_count
+        + public_objection_scenario_count
+        + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
@@ -4081,6 +4388,7 @@ def main() -> int:
         + hypothesis_guidance_scenario_count
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
+        + reviewed_memory_promotion_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
         + first_prd_walkthrough_scenario_count

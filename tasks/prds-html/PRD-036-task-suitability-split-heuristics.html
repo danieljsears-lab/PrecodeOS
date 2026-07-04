@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-036 - Task Suitability And Split Heuristics</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-036 - Task Suitability And Split Heuristics</h1>
+  <p class="muted">Static HTML generated from <code>PRD-036-task-suitability-split-heuristics.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-036-task-suitability-split-heuristics.md#prd-036-task-suitability-split-heuristics">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>TBD</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-04</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Destination shard for advisory task-suitability and split-readiness guidance before PrecodeOS work starts or a candidate bead is activated.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation approval, review acceptance, generated proof, autonomous execution approval, task scoring, task ranking, command approval, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, package-manager behavior, or external mutation.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 11</p>
+      <p><strong>Acceptance rows found:</strong> 8</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>acceptance oracle missing IDs: PRD-036-NFR01, PRD-036-NFR02, PRD-036-NFR03</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-036-FR01</code></td><td>Workflow Selection must include advisory task-suitability questions before routing to implementation, decomposition, review, repair, or unblocker work.</td><td>P0</td><td>Questions cover destination clarity, owner source, reviewable size, proof, approval gates, stop conditions, and split need.</td></tr><tr><td><code>PRD-036-FR02</code></td><td>Decomposition must name split triggers when a candidate bead has multiple outcomes, authority owners, proof strategies, risk models, manual gates, broad files in play, or &quot;and then&quot; done-when language.</td><td>P0</td><td>Candidate beads remain proposals until normal activation.</td></tr><tr><td><code>PRD-036-FR03</code></td><td>Prompt Patterns and beginner docs must provide a copyable suitability prompt that returns <code>continue</code>, <code>clarify</code>, <code>route</code>, <code>split</code>, <code>block</code>, or <code>stop</code>.</td><td>P0</td><td>The prompt must preserve no-approval boundaries.</td></tr><tr><td><code>PRD-036-FR04</code></td><td><code>scripts/task-suitability-check.py --check</code> must print advisory JSON for active-bead or current-planning suitability signals.</td><td>P0</td><td>No mutation, no task selection, no approval.</td></tr><tr><td><code>PRD-036-FR05</code></td><td><code>scripts/task-suitability-check.py --self-test</code> must cover continue, clarify, route, split, block, and stop scenarios.</td><td>P0</td><td>Deterministic synthetic checks only.</td></tr><tr><td><code>PRD-036-FR06</code></td><td>Public inventory, AI navigation, and generated reading/review surfaces must mention the checker and its boundaries.</td><td>P1</td><td>Discoverability without daily command sprawl.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-036-task-suitability-split-heuristics.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-036-task-suitability-split-heuristics.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Evidence lane</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Recorded source or evidence location</th><th>What this does not prove</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-036-FR01`</textarea></td><td><textarea data-cockpit-cell>Workflow Selection names task suitability before implementation routing.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Read protocol wording.</textarea></td><td><textarea data-cockpit-cell>Protocol text</textarea></td><td><textarea data-cockpit-cell>`tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`</textarea></td><td><textarea data-cockpit-cell>Does not choose work.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-FR02`</textarea></td><td><textarea data-cockpit-cell>Decomposition explains split triggers.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Read decomposition checklist.</textarea></td><td><textarea data-cockpit-cell>Protocol text</textarea></td><td><textarea data-cockpit-cell>`tasks/reference/DECOMPOSITION-PROTOCOL.md`</textarea></td><td><textarea data-cockpit-cell>Does not activate beads.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-FR03`</textarea></td><td><textarea data-cockpit-cell>Prompt guidance returns only advisory suitability decisions.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Paste prompt review.</textarea></td><td><textarea data-cockpit-cell>Prompt text</textarea></td><td><textarea data-cockpit-cell>`tasks/reference/PROMPT-PATTERNS.md`</textarea></td><td><textarea data-cockpit-cell>Does not approve implementation.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-FR04`</textarea></td><td><textarea data-cockpit-cell>Checker emits advisory JSON and no mutation.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/task-suitability-check.py --check`</textarea></td><td><textarea data-cockpit-cell>Inspect output boundaries.</textarea></td><td><textarea data-cockpit-cell>Active repo state</textarea></td><td><textarea data-cockpit-cell>stdout JSON</textarea></td><td><textarea data-cockpit-cell>Does not prove the task should be done.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-FR05`</textarea></td><td><textarea data-cockpit-cell>Checker self-test covers all suitability decision labels.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/task-suitability-check.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect scenario names.</textarea></td><td><textarea data-cockpit-cell>Synthetic fixtures</textarea></td><td><textarea data-cockpit-cell>stdout JSON</textarea></td><td><textarea data-cockpit-cell>Does not test app behavior.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-FR06`</textarea></td><td><textarea data-cockpit-cell>Public docs and inventory mention the checker with no-authority boundaries.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>docs and inventory freshness checks</textarea></td><td><textarea data-cockpit-cell>Read rendered docs.</textarea></td><td><textarea data-cockpit-cell>Public docs</textarea></td><td><textarea data-cockpit-cell>`docs-html/`, `tasks/prds-html/`</textarea></td><td><textarea data-cockpit-cell>Does not make generated HTML authority.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-SEC01`</textarea></td><td><textarea data-cockpit-cell>Sensitive or approval-gated work routes or stops.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>checker self-test</textarea></td><td><textarea data-cockpit-cell>Inspect route/stop scenario.</textarea></td><td><textarea data-cockpit-cell>Synthetic sensitive fixture</textarea></td><td><textarea data-cockpit-cell>stdout JSON</textarea></td><td><textarea data-cockpit-cell>Does not approve sensitive work.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-036-SEC02`</textarea></td><td><textarea data-cockpit-cell>Checker remains read-only and advisory.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>checker self-test and source review</textarea></td><td><textarea data-cockpit-cell>Inspect script behavior.</textarea></td><td><textarea data-cockpit-cell>Script source</textarea></td><td><textarea data-cockpit-cell>`scripts/task-suitability-check.py`</textarea></td><td><textarea data-cockpit-cell>Does not certify security.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-036-task-suitability-split-heuristics">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-036-task-suitability-split-heuristics" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Evidence lane | Automated check | Manual check | Fixture or data needed | Recorded source or evidence location | What this does not prove |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `PRD-036-FR01` | Workflow Selection names task suitability before implementation routing. | `static` | `python3 scripts/clarity-scenario-check.py` | Read protocol wording. | Protocol text | `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` | Does not choose work. |
+| `PRD-036-FR02` | Decomposition explains split triggers. | `static` | `python3 scripts/clarity-scenario-check.py` | Read decomposition checklist. | Protocol text | `tasks/reference/DECOMPOSITION-PROTOCOL.md` | Does not activate beads. |
+| `PRD-036-FR03` | Prompt guidance returns only advisory suitability decisions. | `static` | `python3 scripts/clarity-scenario-check.py` | Paste prompt review. | Prompt text | `tasks/reference/PROMPT-PATTERNS.md` | Does not approve implementation. |
+| `PRD-036-FR04` | Checker emits advisory JSON and no mutation. | `static` | `python3 scripts/task-suitability-check.py --check` | Inspect output boundaries. | Active repo state | stdout JSON | Does not prove the task should be done. |
+| `PRD-036-FR05` | Checker self-test covers all suitability decision labels. | `static` | `python3 scripts/task-suitability-check.py --self-test` | Inspect scenario names. | Synthetic fixtures | stdout JSON | Does not test app behavior. |
+| `PRD-036-FR06` | Public docs and inventory mention the checker with no-authority boundaries. | `static` | docs and inventory freshness checks | Read rendered docs. | Public docs | `docs-html/`, `tasks/prds-html/` | Does not make generated HTML authority. |
+| `PRD-036-SEC01` | Sensitive or approval-gated work routes or stops. | `static` | checker self-test | Inspect route/stop scenario. | Synthetic sensitive fixture | stdout JSON | Does not approve sensitive work. |
+| `PRD-036-SEC02` | Checker remains read-only and advisory. | `static` | checker self-test and source review | Inspect script behavior. | Script source | `scripts/task-suitability-check.py` | Does not certify security. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-036-task-suitability-and-split-heuristics">PRD-036 - Task Suitability And Split Heuristics</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-036</code></li><li>Status: <code>approved</code></li><li>Owner: <code>user</code></li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-07-04</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: <code>maintainer roadmap</code></li><li>Source references: <code>_maintainer/PRECODE-ROADMAP.md</code> candidate <code>Task Suitability And Split Heuristics</code></li><li>Stable facts: The roadmap identified task suitability as a near-term public package slice because plain pre-task questions can reduce scope bloat, proof ambiguity, and premature agent execution.</li><li>Assumptions: Beginners and agents benefit from one plain suitability frame before work starts, but the output must remain advisory and subordinate to owner files, PRDs, beads, and human gates.</li><li>Candidate requirements: Fold suitability into Workflow Selection and Decomposition; add prompt guidance and a read-only checker; preserve no-authority boundaries.</li><li>Candidate non-goals: New task selector, task score, runtime autonomy, skill surface, command wrapper, generated approval, or package-manager behavior.</li><li>Authority files likely affected: <code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code>, <code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code>, <code>tasks/beads/BEAD-SCHEMA.md</code>, <code>tasks/reference/PROMPT-PATTERNS.md</code></li></ul>
+<h2 id="problem">Problem</h2>
+<p>Beginners and agents can start work before the request is clear enough, small enough, proof-ready enough, or bounded enough. Without a plain suitability check, broad work can look executable even when the destination, owner surface, stop conditions, split point, or proof path is missing.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: The builder or agent is about to plan, decompose, activate, or implement work but cannot tell whether it is one bounded task.</li><li>After: The builder sees whether to continue, clarify, route, split, block, or stop before implementation starts.</li><li>Why now: More capable agents make execution feel easy; PrecodeOS needs the pre-work judgment layer to stay visible without adding runtime autonomy.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS can ask and check whether a task is clear, bounded, proof-ready, and safe to continue before work starts or a candidate bead is activated.</li><li>Definition of done: Workflow Selection, Decomposition, bead guidance, prompts, public docs, and a read-only checker all express the same advisory suitability contract.</li><li>First useful vertical slice: Public protocol/prompt guidance plus <code>scripts/task-suitability-check.py --check</code> advisory output.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Make pre-work suitability questions beginner-readable.</li><li>Goal 2: Make split triggers explicit before a broad request becomes an active bead.</li><li>Goal 3: Validate the public contract with deterministic checker and clarity-scenario coverage.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>Not doing: task selection, task ranking, task scoring, PRD approval, bead activation, implementation authorization, review acceptance, generated proof, autonomous execution approval, new daily alias, new skill surface, command facade entry, registry, optional pack, install/update behavior, release channel, package-manager behavior, or external mutation.</li><li>Deferred: deeper repo-level heuristics, language-aware analysis, delegation re-entry evidence pack, and engineering-quality review lane expansion.</li><li>Explicitly out of scope: treating suitability output as permission to code or as a replacement for owner-file, PRD, decomposition, transition, review, or human approval gates.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-036-FR01</code></td><td>Workflow Selection must include advisory task-suitability questions before routing to implementation, decomposition, review, repair, or unblocker work.</td><td>P0</td><td>Questions cover destination clarity, owner source, reviewable size, proof, approval gates, stop conditions, and split need.</td></tr><tr><td><code>PRD-036-FR02</code></td><td>Decomposition must name split triggers when a candidate bead has multiple outcomes, authority owners, proof strategies, risk models, manual gates, broad files in play, or &quot;and then&quot; done-when language.</td><td>P0</td><td>Candidate beads remain proposals until normal activation.</td></tr><tr><td><code>PRD-036-FR03</code></td><td>Prompt Patterns and beginner docs must provide a copyable suitability prompt that returns <code>continue</code>, <code>clarify</code>, <code>route</code>, <code>split</code>, <code>block</code>, or <code>stop</code>.</td><td>P0</td><td>The prompt must preserve no-approval boundaries.</td></tr><tr><td><code>PRD-036-FR04</code></td><td><code>scripts/task-suitability-check.py --check</code> must print advisory JSON for active-bead or current-planning suitability signals.</td><td>P0</td><td>No mutation, no task selection, no approval.</td></tr><tr><td><code>PRD-036-FR05</code></td><td><code>scripts/task-suitability-check.py --self-test</code> must cover continue, clarify, route, split, block, and stop scenarios.</td><td>P0</td><td>Deterministic synthetic checks only.</td></tr><tr><td><code>PRD-036-FR06</code></td><td>Public inventory, AI navigation, and generated reading/review surfaces must mention the checker and its boundaries.</td><td>P1</td><td>Discoverability without daily command sprawl.</td></tr></tbody></table></div>
+<h3 id="security-and-privacy-requirements">Security And Privacy Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-036-SEC01</code></td><td>Suitability guidance must stop or route when sensitive, external, destructive, deployment, secret, auth, payment, migration, or bounded-AFK risk is visible without an approval path.</td><td>P0</td><td>Routes to existing owner protocols; does not approve the action.</td></tr><tr><td><code>PRD-036-SEC02</code></td><td>Suitability output must not inspect secrets, mutate files, run app code, approve commands, or use maintainer-private files as public authority.</td><td>P0</td><td>Static source inspection only.</td></tr></tbody></table></div>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-036-NFR01</code></td><td>Output must use plain beginner-readable language.</td><td>P0</td><td>Avoid numeric scores.</td></tr><tr><td><code>PRD-036-NFR02</code></td><td>Checker output must remain stable enough for clarity scenarios and adapter diagnostics.</td><td>P1</td><td>JSON fields should be additive.</td></tr><tr><td><code>PRD-036-NFR03</code></td><td>The implementation must preserve existing Workflow Selection, Decomposition, adaptive-depth, and engineering-quality boundaries.</td><td>P0</td><td>Suitability is a pre-work routing aid, not a replacement.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Evidence lane</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Recorded source or evidence location</th><th>What this does not prove</th></tr></thead><tbody><tr><td><code>PRD-036-FR01</code></td><td>Workflow Selection names task suitability before implementation routing.</td><td><code>static</code></td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Read protocol wording.</td><td>Protocol text</td><td><code>tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md</code></td><td>Does not choose work.</td></tr><tr><td><code>PRD-036-FR02</code></td><td>Decomposition explains split triggers.</td><td><code>static</code></td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Read decomposition checklist.</td><td>Protocol text</td><td><code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code></td><td>Does not activate beads.</td></tr><tr><td><code>PRD-036-FR03</code></td><td>Prompt guidance returns only advisory suitability decisions.</td><td><code>static</code></td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Paste prompt review.</td><td>Prompt text</td><td><code>tasks/reference/PROMPT-PATTERNS.md</code></td><td>Does not approve implementation.</td></tr><tr><td><code>PRD-036-FR04</code></td><td>Checker emits advisory JSON and no mutation.</td><td><code>static</code></td><td><code>python3 scripts/task-suitability-check.py --check</code></td><td>Inspect output boundaries.</td><td>Active repo state</td><td>stdout JSON</td><td>Does not prove the task should be done.</td></tr><tr><td><code>PRD-036-FR05</code></td><td>Checker self-test covers all suitability decision labels.</td><td><code>static</code></td><td><code>python3 scripts/task-suitability-check.py --self-test</code></td><td>Inspect scenario names.</td><td>Synthetic fixtures</td><td>stdout JSON</td><td>Does not test app behavior.</td></tr><tr><td><code>PRD-036-FR06</code></td><td>Public docs and inventory mention the checker with no-authority boundaries.</td><td><code>static</code></td><td>docs and inventory freshness checks</td><td>Read rendered docs.</td><td>Public docs</td><td><code>docs-html/</code>, <code>tasks/prds-html/</code></td><td>Does not make generated HTML authority.</td></tr><tr><td><code>PRD-036-SEC01</code></td><td>Sensitive or approval-gated work routes or stops.</td><td><code>static</code></td><td>checker self-test</td><td>Inspect route/stop scenario.</td><td>Synthetic sensitive fixture</td><td>stdout JSON</td><td>Does not approve sensitive work.</td></tr><tr><td><code>PRD-036-SEC02</code></td><td>Checker remains read-only and advisory.</td><td><code>static</code></td><td>checker self-test and source review</td><td>Inspect script behavior.</td><td>Script source</td><td><code>scripts/task-suitability-check.py</code></td><td>Does not certify security.</td></tr></tbody></table></div>
+<h2 id="interfaces-and-outputs">Interfaces And Outputs</h2>
+<p><code>scripts/task-suitability-check.py --check</code> prints JSON with:</p>
+<ul><li><code>tool</code></li><li><code>status</code></li><li><code>warnings</code></li><li><code>advisory_only</code></li><li><code>details.current_bead</code></li><li><code>details.suitability_decision</code></li><li><code>details.suitability_questions</code></li><li><code>details.split_reasons</code></li><li><code>details.missing_signals</code></li><li><code>details.route_reasons</code></li><li><code>details.block_reasons</code></li><li><code>recommended_next_safe_action</code></li><li><code>generated_report_warning</code></li></ul>
+<p>The checker may recommend only <code>continue</code>, <code>clarify</code>, <code>route</code>, <code>split</code>, <code>block</code>, or <code>stop</code>.</p>
+<h2 id="boundaries">Boundaries</h2>
+<p>Task suitability is advisory only. It helps a builder decide what to inspect next, but it does not choose tasks, rank work, approve a PRD, activate a bead, update <code>tasks/todo.md</code>, authorize implementation, accept review, approve release, approve external mutation, or create generated proof.</p>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B002-task-suitability-split-heuristics</code></td><td><code>PRD-036-FR01</code> through <code>PRD-036-FR06</code>, <code>PRD-036-SEC01</code> through <code>PRD-036-SEC02</code>, <code>PRD-036-NFR01</code> through <code>PRD-036-NFR03</code></td><td>PRD shard, protocol guidance, prompt guidance, checker, docs/inventory/navigation, clarity coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-036-task-suitability-split-heuristics.md</code></td><td>checker self-test, clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-3" href="#functional-requirements">Functional Requirements</a><a class="level-3" href="#security-and-privacy-requirements">Security And Privacy Requirements</a><a class="level-3" href="#non-functional-requirements">Non-Functional Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#interfaces-and-outputs">Interfaces And Outputs</a><a class="level-2" href="#boundaries">Boundaries</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

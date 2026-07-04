@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.35
-Last updated: 2026-07-02
+Document version: v0.1.36
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -47,6 +47,21 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 Keep the student's daily command surface small. Start normal work in the Daily Cockpit with `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and recorded checks. Move to the support command family only when setup, active state, file scope, proof, or transition readiness is the actual blocker.
 
 Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`. They are diagnostic or advisory unless their owning protocol and explicit user approval allow a narrow mutation. In refresh work, run `validate-memory.sh` before the student's first Start; duplicate PRD/bead IDs after a refresh are a refresh blocker, not normal first-session work. Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.
+
+## Recurring Existing Precode Refresh
+
+Use this when a user already has PrecodeOS in a project and wants to refresh package-owned surfaces without walking through setup manually every time.
+
+Start with the Existing Precode Refresh prompt in `tasks/reference/PROMPT-PATTERNS.md` or the copyable version in `docs/PRECODE-GUIDED-SETUP.md`. The support stance is still read-only first:
+
+- confirm the PrecodeOS package source, target project, current folder, and target `git status`
+- run `bootstrap-check.py --upgrade-preview` before any copy action
+- explain clean, dirty, mixed, unknown, blocked, identity-collision, and deferred package-development states in plain English
+- show candidate `UP-ID` actions only for missing package-owned files
+- stop before mutation unless the user approves specific `UP-ID` actions
+- run validation before the user's first normal Start after a refresh
+
+Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, create package-manager behavior, or automate rollback.
 
 ## Stuck User Recovery
 

@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.14
-Last updated: 2026-06-30
+Document version: v0.1.15
+Last updated: 2026-07-04
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -40,13 +40,17 @@ Do not expand active memory through this index, generated reports, reviewed memo
 ## Protocol Entry Points
 
 - `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`: choose the right Precode workflow before acting, including First PRD Walkthrough as the rough-idea route, `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close` as the visible first-product spine, Plan Mode Candidate Craft Loop gates before candidate or implementation-plan commitment, and Plan Loop routing for explicit post-intake or post-PRD feature-angle exploration before bead commitment.
+- `tasks/prds/PRD-036-task-suitability-split-heuristics.md`: advisory task-suitability and split-readiness guidance for deciding whether current work should continue, clarify, route, split, block, or stop before implementation.
 - `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, assign product-value ratings, group themes, sketch near-beads, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
 - `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
 - `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
-- `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: thin pre-coding engineering quality floor, optional Engineering Quality Text-Contract Checker routing, and proportional routing when implementation risk appears.
+- `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: thin pre-coding engineering quality floor, optional Engineering Quality Text-Contract Checker routing, post-implementation Engineering Quality Review Lane routing, and proportional routing when implementation risk appears.
+- `tasks/prds/PRD-038-engineering-quality-review-lane.md`: advisory Engineering Quality Review Lane requirements for checking completed or nearly completed active beads against the quality floor; not implementation acceptance, code-quality certification, production-readiness certification, scorecard authority, checker gate, app-code parsing, repo heuristics, language-aware analysis, follow-up task creation, or owner-file rewrite.
+- `tasks/prds/PRD-039-engineering-quality-repo-heuristics.md`: advisory Engineering Quality Repo Heuristics Preview requirements for explicit `--repo-heuristics-preview` changed-file repo-shape warnings; not default checker behavior, app-code parsing, AST analysis, linter replacement, test execution, code-quality scoring, implementation approval, review acceptance, or checker-gate authority.
 - `tasks/prds/PRD-035-afk-delegation-safety-improvements.md`: bounded AFK and delegation safety requirements; AFK metadata is not autonomous execution, command, review, merge, or transition approval.
+- `tasks/prds/PRD-037-delegation-re-entry-evidence-pack.md`: delegated return evidence requirements for solo AFK, branch/worktree teammate, and cloud-agent/PR returns; re-entry fields are evidence only and do not approve continue, acceptance, merge, transition, GitHub mutation, or external mutation.
 - `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`: proof expectations and generated-evidence limits.
 - `ACCEPTANCE.md` and `tasks/reference/PRD-PROTOCOL.md`: acceptance criteria and PRD acceptance-oracle guidance, including optional EARS-style wording for vague expected behavior.
 - `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`: closeout, handoff, and review evidence shape.
@@ -64,7 +68,8 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 - `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`, with static progress cues, section links, and source Markdown links; Markdown remains canonical.
 - `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
-- `scripts/engineering-quality-check.py`: Engineering Quality Text-Contract Checker; advisory only, not implementation approval, generated proof, app-code parsing, scorecard, or checker gate.
+- `scripts/engineering-quality-check.py`: Engineering Quality Text-Contract Checker; advisory only, including package text-contract coverage for Engineering Quality Review Lane references and explicit `--repo-heuristics-preview` changed-file repo-shape warnings; not implementation approval, review acceptance, generated proof, app-code parsing, AST analysis, linter replacement, test execution, scorecard, or checker gate.
+- `scripts/task-suitability-check.py`: Task Suitability Checker; advisory continue/clarify/route/split/block/stop guidance only, not task selection, PRD approval, bead activation, implementation authorization, review acceptance, command approval, or generated proof.
 - `scripts/candidate-queue.py`: local Candidate Queue preview/apply helper; preview is non-authority and apply requires explicit `--approve-action`.
 - `scripts/session-friction-check.py`: read-only Session Friction Review diagnostic; findings are generated evidence only and require manual promotion.
 - `scripts/build-attribution-ledger.py`: read-only Build Attribution Ledger diagnostic; who-built-what findings are generated evidence only and require closeout review.

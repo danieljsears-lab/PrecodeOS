@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-23
+Document version: v0.1.5
+Last updated: 2026-07-04
 
 ---
 memory_id: MEMORY-000
@@ -49,7 +49,8 @@ Use this section only when `category: project_glossary`; otherwise write `Not ap
 ## Promotion Review
 
 - If this becomes a decision, requirement, architecture rule, security rule, acceptance rule, or task instruction, move it to the correct owner file after human review.
-- If `status` is `needs_promotion`, replace `authority_owner_if_promoted: none` with the proposed owner file or protocol. Search results may warn about promotion need, but they must not perform the promotion.
+- If `status` is `needs_promotion`, replace `authority_owner_if_promoted: none` with the proposed owner file or protocol, then name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition before any owner-file edit.
+- Say whether this should stay reviewed memory, become a proposed memory card, be promoted to `DECISIONS.md`, a PRD, a protocol, an approved bead, or another owner file. Search results may warn about promotion need, but they must not perform the promotion.
 - For `project_glossary`, use reviewed terms to orient future agents only. Do not override current code, active beads, approved PRDs, active memory, or owner files.
 - Keep `memory_space` as a retrieval label only. It does not create authority, task selection, access control, or optional-pack behavior.
 - If this card becomes stale, superseded, archived, or low-confidence, keep that state visible so memory search treats it as weak or historical context.

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-30
+Document version: v0.1.23
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -25,6 +25,8 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 After the first product slice, repeated work can orient through the every-bead rhythm before choosing a workflow: `Active -> Changed -> Proven -> Parked -> Approval -> Next`. This is a human-facing checklist over existing sources: active bead and `tasks/todo.md` for active work, changed-file summary and Closeout Evidence for changed work, recorded checks and manual verification for proof, Candidate Queue or explicit defer/kill destination for parked intent, review decision and transition proposal for approval, and session start, Workflow Selection, `next-step.py`, or transition proposal for next guidance. The rhythm does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, or create generated report authority.
 
 When a user wants to develop an idea into future candidate work or turn a selected candidate into an implementation plan, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. This loop does not create a new workflow authority, approve PRDs, rank Candidate Queue items for implementation, activate beads, update `tasks/todo.md`, authorize implementation, or code.
+
+Before routing a user or agent toward implementation, ask the task-suitability questions in plain language: is the destination clear, is there one owner source, is the change reviewable as one unit, is the proof path known, are approval gates and stop conditions explicit, and should the work be clarified, routed, split, blocked, or stopped before it starts. This is advisory workflow guidance only. It does not choose tasks, approve PRDs, activate beads, authorize implementation, or override owner files.
 
 Keep student-facing workflow selection subordinate to the document-role split: README is the public compass, Guided Setup is setup-only, Daily Cockpit is the operating home, User Guide is the annex, How-To is the educational bridge, Troubleshooting is symptom lookup, Ask Precode and Artifact Chooser are conditional helpers, and Release Readiness is release-prep rather than deployment automation.
 
@@ -70,6 +72,8 @@ Choose the workflow that matches the current situation:
 | User asks for Workflow Selection Skill or another current-state skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
 
 When the recommended workflow is a bead proposal, use the bead kind menu in `tasks/beads/BEAD-SCHEMA.md` to explain the work shape in beginner-readable terms: intake, shaping, implementation, repair, refactor, setup/integration, unblocker, or review. The menu is guidance only. It does not choose work, approve PRDs, activate beads, add new schema authority, or override the Bead Decomposition Test.
+
+When task suitability is unclear, return one recommendation from this set and explain why: `continue`, `clarify`, `route`, `split`, `block`, or `stop`. Use `continue` only when the current path has a visible destination, owner source, bounded scope, proof path, approval posture, and stop condition. Use `clarify` when a required signal is missing, `route` when a different owner protocol or PRD path must happen first, `split` when the request has multiple outcomes or proof strategies, `block` when active state or an external/manual gate prevents work, and `stop` when continuing would imply unauthorized mutation or authority drift.
 
 If no row fits, stop and name what is missing: source evidence, product definition, authority owner, decomposition, verification path, approval gate, or state repair.
 
@@ -145,5 +149,7 @@ Stop before work starts when:
 ## Advisory Check
 
 `scripts/workflow-check.py` is advisory. It may warn about wrong workflow fit, PRD approval gaps, approved PRDs without bead proposals, mixed planning and implementation, blocked work without an unblocker path, backlog-like active fields, or generated reports appearing to drive task selection.
+
+`scripts/task-suitability-check.py --check` is advisory. It may warn that the current active bead or candidate work is missing suitability signals, should route through another owner protocol, should split, or is blocked before implementation. Its output is generated evidence only; it does not choose work, approve PRDs, activate beads, authorize implementation, accept review, approve commands, or create proof.
 
 Warnings are generated evidence only. They do not choose tasks, approve PRDs, activate beads, change bead state, or edit active memory.

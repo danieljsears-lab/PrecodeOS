@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-038 -- Engineering Quality Review Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-038 -- Engineering Quality Review Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-038-engineering-quality-review-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-038-engineering-quality-review-lane.md#prd-038-engineering-quality-review-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Engineering Quality Review Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-04</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the advisory Engineering Quality Review Lane for one completed or nearly completed active bead.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, production readiness certification, code-quality certification, generated proof, scorecard authority, checker gate, follow-up task creation, owner-file rewrite, app-code parsing, linter replacement, GitHub mutation, external mutation, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, package-manager behavior, or a persona system.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 9</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-038-FR01</code></td><td>Review Lanes Protocol must define Engineering Quality Review Lane as optional advisory review for one completed or nearly completed active bead.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-038-FR02</code></td><td>Lane input guidance must include the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification when relevant, Closeout Evidence or current closeout draft, and the Engineering Quality Standards Protocol.</td><td>P0</td><td>Keeps review grounded.</td></tr><tr><td><code>PRD-038-FR03</code></td><td>Lane output must use the existing Review Lanes fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-038-FR04</code></td><td>Lane focus must include scope discipline, simplest acceptable implementation shape, owner-file and boundary integrity, proof quality, configuration or dependency handling, sensitive-surface routing, stop-condition observance, and approval-gate observance.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-038-FR05</code></td><td>Engineering Quality Standards Protocol must keep the pre-coding floor distinct from post-implementation review.</td><td>P0</td><td>Prevents ceremony creep.</td></tr><tr><td><code>PRD-038-FR06</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, Bead Schema, package inventory, and AI navigation must expose the lane only as conditional review guidance.</td><td>P1</td><td>Discoverability without daily-route inflation.</td></tr><tr><td><code>PRD-038-FR07</code></td><td><code>scripts/clarity-scenario-check.py</code> must check PRD-038, lane focus, output fields, and forbidden authority claims.</td><td>P1</td><td>Text-contract coverage only.</td></tr><tr><td><code>PRD-038-FR08</code></td><td><code>scripts/engineering-quality-check.py</code> must verify the package text contract references post-implementation Engineering Quality Review Lane while remaining advisory only.</td><td>P1</td><td>No review-output or app-code analysis.</td></tr><tr><td><code>PRD-038-FR09</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-038-engineering-quality-review-lane">PRD-038 -- Engineering Quality Review Lane</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS already has a thin pre-coding Engineering Quality floor and an advisory text-contract checker. PRD-038 makes the post-implementation review lane durable by defining the narrow Review Lanes extension that checks whether completed or nearly completed work respected that floor.</p>
+<p>This is a reconciliation-and-close slice for the roadmap candidate. It does not broaden the quality floor into repo heuristics, standards taxonomy, release readiness, language-aware analysis, app-code parsing, linting, scoring, or approval machinery.</p>
+<h2 id="problem">Problem</h2>
+<p>An implementation can sound complete while still hiding scope drift, needless abstraction, owner-file confusion, weak proof, skipped stop conditions, or unreviewed configuration, dependency, data, secret, or sensitive-surface risk.</p>
+<p>The pre-coding quality floor helps before code changes begin. Builders also need a small post-implementation review lens that turns those same concerns into findings, missing proof, acceptance questions, and a recommendation without accepting the work.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Define the Engineering Quality Review Lane as advisory review input for one completed or nearly completed active bead.</li><li>Keep the lane tied to the existing Review Lanes output contract.</li><li>Keep the lane clearly separate from implementation acceptance, code-quality certification, production-readiness certification, checker authority, repo heuristics, and language-aware analysis.</li><li>Make the public PRD, protocol, docs, prompt, checker, inventory, generated surfaces, and maintainer roadmap history agree.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No app-code parser, linter replacement, test runner, repo-heuristics analyzer, language-aware analysis, standards taxonomy, production-readiness certification, code-quality score, generated review report, new command, checker gate, or scorecard.</li><li>No implementation acceptance, review approval, PRD approval, bead activation, transition approval, release approval, follow-up task creation, owner-file rewrite, GitHub mutation, external mutation, registry, optional pack, install/update behavior, release-channel behavior, or package-manager behavior.</li><li>No app-code parsing, no linter replacement, no code-quality score, and no checker gate.</li><li>No change to Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, PRD Quality Review Lane, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness authority.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-038-FR01</code></td><td>Review Lanes Protocol must define Engineering Quality Review Lane as optional advisory review for one completed or nearly completed active bead.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-038-FR02</code></td><td>Lane input guidance must include the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification when relevant, Closeout Evidence or current closeout draft, and the Engineering Quality Standards Protocol.</td><td>P0</td><td>Keeps review grounded.</td></tr><tr><td><code>PRD-038-FR03</code></td><td>Lane output must use the existing Review Lanes fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-038-FR04</code></td><td>Lane focus must include scope discipline, simplest acceptable implementation shape, owner-file and boundary integrity, proof quality, configuration or dependency handling, sensitive-surface routing, stop-condition observance, and approval-gate observance.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-038-FR05</code></td><td>Engineering Quality Standards Protocol must keep the pre-coding floor distinct from post-implementation review.</td><td>P0</td><td>Prevents ceremony creep.</td></tr><tr><td><code>PRD-038-FR06</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, Bead Schema, package inventory, and AI navigation must expose the lane only as conditional review guidance.</td><td>P1</td><td>Discoverability without daily-route inflation.</td></tr><tr><td><code>PRD-038-FR07</code></td><td><code>scripts/clarity-scenario-check.py</code> must check PRD-038, lane focus, output fields, and forbidden authority claims.</td><td>P1</td><td>Text-contract coverage only.</td></tr><tr><td><code>PRD-038-FR08</code></td><td><code>scripts/engineering-quality-check.py</code> must verify the package text contract references post-implementation Engineering Quality Review Lane while remaining advisory only.</td><td>P1</td><td>No review-output or app-code analysis.</td></tr><tr><td><code>PRD-038-FR09</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-038-FR01</code></td><td>Review Lanes Protocol defines Engineering Quality Review Lane as advisory review for completed or nearly completed active beads.</td><td>Source review and clarity scenario.</td></tr><tr><td><code>PRD-038-FR02</code></td><td>Required input guidance names active bead, primary authority, files or changed-file summary, checks, manual verification, closeout evidence, and Engineering Quality Standards Protocol.</td><td>Source review.</td></tr><tr><td><code>PRD-038-FR03</code></td><td>Lane output uses <code>Lane</code>, <code>Review target</code>, <code>Authority checked</code>, <code>Evidence reviewed</code>, <code>Findings</code>, <code>Missing proof</code>, <code>Acceptance questions</code>, <code>Recommendation</code>, <code>Approval still required</code>, and <code>Promotion path</code>.</td><td>Clarity scenario.</td></tr><tr><td><code>PRD-038-FR04</code></td><td>Lane focus covers scope, simplest shape, boundaries, proof, configuration/dependency handling, sensitive-surface routing, and stop conditions.</td><td>Clarity scenario.</td></tr><tr><td><code>PRD-038-FR05</code></td><td>Standards Protocol distinguishes pre-coding floor from post-implementation review and preserves deferred taxonomy.</td><td>Engineering quality checker and source review.</td></tr><tr><td><code>PRD-038-FR06</code></td><td>Prompt, docs, bead schema, inventory, and AI navigation mention the lane without making it a required gate.</td><td>Source review and generated docs HTML.</td></tr><tr><td><code>PRD-038-FR07</code></td><td>Clarity scenario catches required lane terms and forbidden authority drift.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-038-FR08</code></td><td>Engineering quality checker self-test covers review-lane contract terms and still reports advisory-only output.</td><td><code>python3 scripts/engineering-quality-check.py --self-test</code>.</td></tr><tr><td><code>PRD-038-FR09</code></td><td>Package inventory, maintainer changelog, roadmap, journal, and generated surfaces are fresh.</td><td>Validation commands.</td></tr></tbody></table></div>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/engineering-quality-check.py --self-test
+python3 scripts/engineering-quality-check.py --check
+python3 scripts/clarity-scenario-check.py
+python3 scripts/version-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/public-repo-check.py
+python3 scripts/prd-html.py
+python3 scripts/prd-html.py --check
+python3 scripts/docs-html.py
+python3 scripts/docs-html.py --check
+python3 _maintainer/scripts/docs-html.py
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p>The Engineering Quality Review Lane is a review conversation shape. It may recommend <code>accepted</code>, <code>revise</code>, <code>split</code>, <code>blocked</code>, or <code>stop</code>, but the recommendation is not acceptance.</p>
+<p>If findings reveal new work, the promotion path is normal Precode review: Closeout Evidence, PRD amendment, owner-file update, candidate or approved bead after user review, Release Readiness, reviewed memory, or another Review Lane. The lane does not create or apply those changes automatically.</p>
+<p>Repo-level heuristics, standards taxonomy, release-readiness quality expansion, and language-aware analysis remain separate deferred roadmap work.</p>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B002-engineering-quality-review-lane</code></td><td><code>PRD-038-FR01</code> through <code>PRD-038-FR09</code></td><td>PRD shard, protocol guidance, prompt guidance, docs/inventory/navigation, clarity coverage, engineering-quality checker text contract, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-038-engineering-quality-review-lane.md</code></td><td>clarity scenario, engineering-quality checker, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

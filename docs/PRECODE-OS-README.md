@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.30
-Last updated: 2026-07-02
+Document version: v0.8.31
+Last updated: 2026-07-04
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
@@ -183,6 +183,7 @@ Main surfaces:
 - `tasks/todo.md` for the active bead pointer
 - `tasks/beads/*.md` for current execution scope
 - `python3 scripts/loop-health.py` for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent
+- `python3 scripts/task-suitability-check.py` for advisory continue/clarify/route/split/block/stop guidance before broad or proof-unclear work starts
 - `python3 scripts/ralph-loop.py` for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear
 - `modes/NAVIGATOR.md`, `modes/EXPLORER.md`, `modes/BUILDER.md`, and `modes/REVIEW.md` for role posture
 - `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` for tool-specific shims

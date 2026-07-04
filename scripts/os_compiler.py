@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.40
-# Last updated: 2026-06-29
+# Version: v0.1.41
+# Last updated: 2026-07-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -2617,6 +2617,68 @@ def reversal_workflow_quality(bead: BeadRecord | None, check_results: list[dict[
     }
 
 
+def delegation_reentry_pack(
+    *,
+    bead: BeadRecord | None,
+    changed_paths: list[str],
+    check_results: list[dict[str, Any]],
+    manual_verification: str = "",
+    unresolved_risks: list[str] | None = None,
+    external_status_evidence: dict[str, Any] | None = None,
+    forbidden_actions_not_taken: list[str] | None = None,
+    next_human_action: str = "review returned evidence before continuing",
+) -> dict[str, Any]:
+    checks = [
+        {
+            "command": row.get("command"),
+            "status": row.get("status"),
+            "timestamp": row.get("timestamp"),
+        }
+        for row in check_results
+        if row.get("command") or row.get("status")
+    ]
+    external = external_status_evidence or {
+        "status": "not_requested",
+        "advisory_only": True,
+        "summary": "No external status evidence was requested.",
+    }
+    return {
+        "advisory_only": True,
+        "source_prd": "tasks/prds/PRD-037-delegation-re-entry-evidence-pack.md",
+        "scope_returned": {
+            "current_bead": bead.rel_path if bead else "missing",
+            "primary_authority": bead.primary_authority if bead else "missing",
+            "delegation_mode": bead.delegation_mode if bead else "missing",
+            "autonomy_level": bead.autonomy_level if bead else "missing",
+        },
+        "changed_files": changed_paths,
+        "checks_and_results": checks,
+        "manual_verification": manual_verification or "not recorded",
+        "approval_still_required": [
+            "implementation acceptance",
+            "merge approval",
+            "transition approval",
+            "external mutation",
+            "scope expansion",
+        ],
+        "unresolved_risks": unresolved_risks or [],
+        "external_status_evidence": external,
+        "forbidden_actions_not_taken": forbidden_actions_not_taken
+        or [
+            "task selection",
+            "PRD approval",
+            "bead activation",
+            "implementation acceptance",
+            "merge approval",
+            "release approval",
+            "GitHub mutation",
+            "external mutation",
+        ],
+        "recommended_next_human_action": next_human_action,
+        "generated_report_warning": "Delegation re-entry fields are evidence only; they do not approve continue, review, merge, transition, or external mutation.",
+    }
+
+
 def completion_handoff_quality(
     root: Path,
     todo: dict[str, Any],
@@ -2731,6 +2793,15 @@ def completion_handoff_quality(
     if reversal_workflow.get("status") == "warning":
         warnings.extend([f"reversal workflow: {warning}" for warning in reversal_workflow.get("warnings") or []])
 
+    delegation_reentry = delegation_reentry_pack(
+        bead=bead,
+        changed_paths=changed,
+        check_results=bead_rows,
+        manual_verification=closeout.get("manual_verification", "not recorded"),
+        unresolved_risks=[warning for warning in warnings if "re-entry" in warning or "approval" in warning or "proof" in warning],
+        next_human_action=next_safe_action,
+    )
+
     details = {
         "current_bead": bead.rel_path,
         "closeout_status": "complete" if not close_state.get("blockers") else "incomplete",
@@ -2749,6 +2820,7 @@ def completion_handoff_quality(
         "release_evidence": release_evidence,
         "reference_followthrough": reference_followthrough,
         "reversal_workflow": reversal_workflow,
+        "delegation_reentry": delegation_reentry,
         "handoff_packet": required_context,
         "generated_report_warning": "Generated handoff packets are evidence only; do not use them as active memory, task selection, or transition approval.",
     }
@@ -2844,6 +2916,25 @@ def tool_execution_quality(
         "approval_gap_count": len(set(approval_gaps)),
         "destructive_count": len(destructive_rows),
         "missing_failure_category_count": len(missing_failure_category),
+        "delegation_reentry_evidence_fields": [
+            "scope returned",
+            "changed files",
+            "checks and results",
+            "manual verification",
+            "approval still required",
+            "unresolved risks",
+            "external status evidence",
+            "forbidden actions not taken",
+            "recommended next human action",
+        ],
+        "delegation_reentry_forbidden_uses": [
+            "command approval",
+            "implementation acceptance",
+            "merge approval",
+            "transition approval",
+            "GitHub mutation",
+            "external mutation",
+        ],
     }
     return {"status": "warning" if warnings else "pass", "warnings": warnings, "details": details}
 
@@ -3513,6 +3604,205 @@ def bead_depth_quality(bead: BeadRecord | None) -> dict[str, Any]:
     }
 
 
+TASK_SUITABILITY_GENERATED_WARNING = (
+    "Task suitability output is generated evidence only; it does not choose work, approve PRDs, "
+    "activate beads, authorize implementation, accept review, approve commands, or create proof."
+)
+SUITABILITY_DECISIONS = {"continue", "clarify", "route", "split", "block", "stop"}
+
+
+def _task_suitability_payload_from_values(
+    *,
+    current_bead: str,
+    status: str,
+    bead_kind: str,
+    primary_authority: str,
+    parent_prd: str,
+    requirement_ids: list[str],
+    files_in_play: list[str],
+    checks: list[str],
+    verification_type: list[str],
+    stop_text: str,
+    done_when: str,
+    objective: str,
+    depends_on: list[str],
+    run_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    warnings: list[str] = []
+    split_reasons: list[str] = []
+    missing_signals: list[str] = []
+    route_reasons: list[str] = []
+    block_reasons: list[str] = []
+    stop_reasons: list[str] = []
+    run_contract = run_contract or {}
+    full_text = " ".join(
+        [
+            current_bead,
+            status,
+            bead_kind,
+            primary_authority,
+            parent_prd,
+            " ".join(requirement_ids),
+            " ".join(files_in_play),
+            " ".join(checks),
+            " ".join(verification_type),
+            stop_text,
+            done_when,
+            objective,
+            " ".join(depends_on),
+        ]
+    ).lower()
+    file_count = len(files_in_play)
+    sensitive_surface = any(term in full_text for term in SENSITIVE_SURFACE_TERMS)
+    planning_like = any(term in full_text for term in ("clarify requirements", "shape the prd", "source intake", "product decision", "open question"))
+    implementation_kind = bead_kind.lower().strip() in IMPLEMENTATION_BEAD_KINDS
+    planning_kind = bead_kind.lower().strip() in PLANNING_BEAD_KINDS
+
+    if not current_bead or current_bead == "missing":
+        block_reasons.append("no active bead is visible")
+    if current_bead.startswith("_maintainer/") or primary_authority.startswith("_maintainer/"):
+        stop_reasons.append("maintainer-private material is being treated as public task authority")
+    if primary_authority.startswith("logs/") or primary_authority in GENERATED_REPORTS:
+        stop_reasons.append("generated evidence is being treated as primary task authority")
+    if status in {"needs_info", "manual_testing"}:
+        block_reasons.append("current bead is blocked or waiting for manual testing")
+    if not primary_authority:
+        missing_signals.append("primary authority source")
+    if implementation_kind and not parent_prd:
+        route_reasons.append("implementation work lacks parent PRD traceability")
+    if implementation_kind and not requirement_ids:
+        route_reasons.append("implementation work lacks requirement IDs")
+    if not checks:
+        missing_signals.append("proof or check path")
+    if not verification_type:
+        missing_signals.append("verification type")
+    if not stop_text.strip():
+        missing_signals.append("stop conditions")
+    if not objective.strip():
+        missing_signals.append("observable objective")
+    if not done_when.strip():
+        missing_signals.append("done-when target")
+    if any(term in done_when.lower() for term in VAGUE_DONE_TERMS):
+        split_reasons.append("done-when wording is broad, vague, or contains 'and then'")
+    if done_when.count("\n- ") > 4:
+        split_reasons.append("done-when has many checklist items")
+    if file_count > 12:
+        split_reasons.append("files in play are broad enough to consider splitting")
+    if len({Path(item).parts[0] for item in files_in_play if item}) > 4:
+        split_reasons.append("files in play span several top-level areas")
+    if sensitive_surface and not any(term in full_text for term in ("approval", "manual", "run contract", "user")):
+        route_reasons.append("sensitive or external surface lacks visible approval routing")
+    if planning_like and implementation_kind:
+        route_reasons.append("implementation bead appears to contain planning or product-definition work")
+    if planning_kind and any(Path(item).suffix in CODE_EXTENSIONS for item in files_in_play):
+        route_reasons.append("planning bead includes implementation-looking files")
+    if run_contract.get("required") and not run_contract.get("present"):
+        route_reasons.append("run contract appears required but absent")
+    if depends_on and any(item for item in depends_on if item not in {"none", "[]"}):
+        if not any(term in full_text for term in ("blocked", "waits", "manual setup", "unblocker")):
+            route_reasons.append("dependencies are named without a clear blocked or unblocker path")
+
+    if stop_reasons:
+        decision = "stop"
+        recommended = "Stop until authority drift is repaired and the correct owner source is named."
+    elif block_reasons:
+        decision = "block"
+        recommended = "Block work until active state, manual testing, or the blocked escape path is clear."
+    elif route_reasons:
+        decision = "route"
+        recommended = "Route through the named owner protocol or PRD/decomposition path before implementation."
+    elif split_reasons:
+        decision = "split"
+        recommended = "Split or narrow the candidate before activation or implementation."
+    elif missing_signals:
+        decision = "clarify"
+        recommended = "Clarify the missing suitability signals before treating the task as ready."
+    else:
+        decision = "continue"
+        recommended = "Continue inside the current approved scope; normal proof, review, and approval gates still apply."
+
+    warnings.extend(f"missing suitability signal: {item}" for item in missing_signals)
+    warnings.extend(f"split review: {item}" for item in split_reasons)
+    warnings.extend(f"route review: {item}" for item in route_reasons)
+    warnings.extend(f"blocker: {item}" for item in block_reasons)
+    warnings.extend(f"stop: {item}" for item in stop_reasons)
+    details = {
+        "current_bead": current_bead or "missing",
+        "suitability_decision": decision,
+        "suitability_questions": [
+            "Is the destination clear?",
+            "Is there exactly one primary authority source?",
+            "Is the work reviewable as one change?",
+            "Is the proof or check path known?",
+            "Are approval gates and stop conditions explicit?",
+            "Should this be clarified, routed, split, blocked, or stopped before work starts?",
+        ],
+        "split_reasons": split_reasons,
+        "missing_signals": missing_signals,
+        "route_reasons": route_reasons,
+        "block_reasons": block_reasons,
+        "stop_reasons": stop_reasons,
+        "files_in_play_count": file_count,
+        "checks_count": len(checks),
+        "verification_type": verification_type,
+        "sensitive_surface_detected": sensitive_surface,
+        "advisory_only": True,
+        "forbidden_uses": [
+            "task selection",
+            "task ranking",
+            "PRD approval",
+            "bead activation",
+            "implementation authorization",
+            "review acceptance",
+            "command approval",
+            "generated proof",
+        ],
+    }
+    return {
+        "status": "warning" if warnings else "pass",
+        "warnings": warnings,
+        "advisory_only": True,
+        "details": details,
+        "recommended_next_safe_action": recommended,
+        "generated_report_warning": TASK_SUITABILITY_GENERATED_WARNING,
+    }
+
+
+def task_suitability_quality(current_bead: BeadRecord | None) -> dict[str, Any]:
+    if not current_bead:
+        return _task_suitability_payload_from_values(
+            current_bead="missing",
+            status="missing",
+            bead_kind="",
+            primary_authority="",
+            parent_prd="",
+            requirement_ids=[],
+            files_in_play=[],
+            checks=[],
+            verification_type=[],
+            stop_text="",
+            done_when="",
+            objective="",
+            depends_on=[],
+        )
+    return _task_suitability_payload_from_values(
+        current_bead=current_bead.rel_path,
+        status=current_bead.status,
+        bead_kind=current_bead.bead_kind,
+        primary_authority=current_bead.primary_authority,
+        parent_prd=current_bead.parent_prd,
+        requirement_ids=current_bead.requirement_ids,
+        files_in_play=current_bead.files_in_play,
+        checks=current_bead.checks,
+        verification_type=current_bead.verification_type,
+        stop_text=current_bead.sections.get("Stop If", ""),
+        done_when=current_bead.sections.get("Done When", ""),
+        objective=current_bead.sections.get("Objective", ""),
+        depends_on=current_bead.depends_on,
+        run_contract=current_bead.run_contract,
+    )
+
+
 def stable_fix_eligibility(bead: BeadRecord | None, latest_checks: dict[tuple[str, str], dict[str, Any]]) -> dict[str, Any]:
     warnings: list[str] = []
     details: dict[str, Any] = {
@@ -3955,6 +4245,16 @@ def team_collaboration_preview(
     if github_payload.get("status") not in {"pass", "not_requested"}:
         warnings.append(str(github_payload.get("summary") or "GitHub team evidence is unavailable or incomplete"))
 
+    delegation_reentry = delegation_reentry_pack(
+        bead=current_bead,
+        changed_paths=scoped_changed_paths,
+        check_results=[],
+        manual_verification="coordinator review required",
+        unresolved_risks=re_entry_risks,
+        external_status_evidence=github_payload,
+        next_human_action="Coordinator reviews delegated return evidence before continue, merge, split, block, or handoff.",
+    )
+
     return {
         "status": "warning" if warnings else "pass",
         "generated_report_warning": TEAM_COLLABORATION_GENERATED_WARNING,
@@ -3983,6 +4283,7 @@ def team_collaboration_preview(
             "overlap_with_active_scope": overlap_with_active_scope,
             "conflict_preview_status": conflict_preview_status,
             "re_entry_risks": re_entry_risks,
+            "delegation_reentry": delegation_reentry,
             "merge_review_packet_fields": [
                 "assigned bead and branch/worktree",
                 "primary authority and files changed",
@@ -3990,6 +4291,7 @@ def team_collaboration_preview(
                 "manual verification, if needed",
                 "owner-file impacts",
                 "conflicts with integration branch",
+                "external status evidence, if requested",
                 "open questions and follow-up bead candidates",
                 "forbidden actions not taken",
             ],
@@ -5230,8 +5532,8 @@ def memory_summary(root: Path) -> dict[str, Any]:
             "card_count_warning": len(cards) > MEMORY_INDEX_CONTEXT_WARNING_CARDS,
             "guidance": "Use selective recall and citations instead of loading whole memory files when cards or indexes grow large.",
         },
-        "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting.",
-        "safe_usage_prompt": "Search reviewed memory, recall concise cited snippets, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action.",
+        "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting. If a lesson may need promotion, run Memory Promotion Review before any card write or owner-file edit.",
+        "safe_usage_prompt": "Search reviewed memory, recall concise cited snippets, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action. Say whether useful results should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file; do not promote anything without approval.",
     }
     return {"status": "warning" if warnings else "pass", "generated_report_warning": MEMORY_GENERATED_WARNING, "warnings": warnings, "details": details}
 
@@ -5335,6 +5637,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         changed,
     )
     current_bead_depth = bead_depth_quality(current_bead)
+    current_task_suitability = task_suitability_quality(current_bead)
     current_files_in_play_guardrail = files_in_play_guardrail(root, current_bead, command=command, edit_lock=edit_lock)
     current_run_contract = run_contract_quality(current_bead, check_results)
     current_accessibility_advisory_gate = accessibility_advisory_gate_quality(current_bead)
@@ -5445,6 +5748,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         "completion_handoff": current_completion_handoff,
         "next_step": current_next_step,
         "bead_depth": current_bead_depth,
+        "task_suitability": current_task_suitability,
         "files_in_play_guardrail": current_files_in_play_guardrail,
         "run_contract": current_run_contract,
         "accessibility_advisory_gate": current_accessibility_advisory_gate,

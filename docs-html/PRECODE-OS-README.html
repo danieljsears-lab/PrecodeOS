@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-02">
+  <meta name="generated-at" content="2026-07-04">
   <title>PrecodeOS Explainer · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Explainer</h1>
   <p class="lede">PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.</p>
-  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.30</span><span>Updated 2026-07-02</span></p>
+  <p class="meta"><a href="../docs/PRECODE-OS-README.md">Source Markdown</a><span>v0.8.31</span><span>Updated 2026-07-04</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -314,7 +314,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <h3 id="4-build"><a class="heading-anchor" href="#4-build" aria-label="Link to 4. Build">#</a>4. Build</h3>
 <p>Build answers: &quot;What may the agent change right now?&quot;</p>
 <p>Main surfaces:</p>
-<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
+<ul><li><code>tasks/todo.md</code> for the active bead pointer</li><li><code>tasks/beads/*.md</code> for current execution scope</li><li><code>python3 scripts/loop-health.py</code> for an advisory Build Loop Health check on whether current work is focused, stoppable, closeable, evidenced, easy to steer, and graph-coherent</li><li><code>python3 scripts/task-suitability-check.py</code> for advisory continue/clarify/route/split/block/stop guidance before broad or proof-unclear work starts</li><li><code>python3 scripts/ralph-loop.py</code> for opt-in bounded retry attempts on one active bead when checks and stop conditions are clear</li><li><code>modes/NAVIGATOR.md</code>, <code>modes/EXPLORER.md</code>, <code>modes/BUILDER.md</code>, and <code>modes/REVIEW.md</code> for role posture</li><li><code>adapters/*.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, and <code>.github/copilot-instructions.md</code> for tool-specific shims</li><li>agent-routing and tool-execution protocols when the task needs model, context, delegation, approval, or tool-call guidance</li><li>Run Contracts in beads when higher-risk or bounded-AFK work needs allowed actions, proof needed, approval gates, and stop conditions</li></ul>
 <p>Precode is tool-neutral. It does not replace Codex, Claude, Cursor, Gemini, Antigravity, or future agents. It gives them a shared repo-owned operating model.</p>
 <p>For the same reason, a more capable model does not replace Precode. A better model makes the agent stronger; Precode keeps the project owned, bounded, proven, and recoverable across whatever model you use.</p>
 <h3 id="5-prove"><a class="heading-anchor" href="#5-prove" aria-label="Link to 5. Prove">#</a>5. Prove</h3>

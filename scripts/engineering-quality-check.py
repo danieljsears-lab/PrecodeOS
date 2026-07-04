@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-29
+# Version: v0.1.1
+# Last updated: 2026-07-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import re
+import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -23,7 +25,8 @@ CONTRACT = (
 )
 GENERATED_WARNING = (
     "engineering-quality-check output is advisory only; it does not approve implementation, "
-    "activate beads, accept review, score code quality, certify production readiness, or create proof."
+    "activate beads, accept review, score code quality, certify production readiness, inspect app code, "
+    "or create proof."
 )
 DOES_NOT = [
     "read maintainer-private files as public package authority",
@@ -37,8 +40,14 @@ DOES_NOT = [
     "certify production readiness, security, compliance, scalability, reliability, or accessibility",
     "create generated proof",
     "create a checker gate",
+    "inspect Engineering Quality Review Lane output",
+    "create repo heuristics or language-aware analysis",
     "create registry, optional-pack, install/update, release-channel, or package-manager behavior",
 ]
+REPO_HEURISTICS_CONTRACT = (
+    "Engineering Quality Repo Heuristics Preview inspects declared files in play and read-only git "
+    "changed-file summaries for repo-shape risk only."
+)
 OWNER_PROTOCOL_ROUTES = {
     "architecture": "tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md",
     "auth": "tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md",
@@ -69,19 +78,32 @@ REQUIRED_TERMS_BY_PATH = {
     "tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md": [
         "Engineering Quality Text-Contract Checker",
         "python3 scripts/engineering-quality-check.py --check",
+        "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
         "advisory only",
         "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
+        "repo-shape risk only",
         "does not inspect app code",
         "does not approve implementation",
         "does not create a scorecard",
+        "Engineering Quality Review Lane",
+        "tasks/prds/PRD-038-engineering-quality-review-lane.md",
+        "does not accept implementation",
+        "does not inspect app code",
+        "does not add repo heuristics",
+        "does not add language-aware analysis",
         "Standards Taxonomy remains deferred",
     ],
     "tasks/reference/PROMPT-PATTERNS.md": [
         "Engineering Quality Text-Contract Checker",
         "python3 scripts/engineering-quality-check.py --check",
+        "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
         "advisory only",
         "does not approve implementation",
         "does not create proof",
+        "Engineering Quality Review Lane",
+        "Run exactly one lane: Engineering Quality Review Lane",
+        "Do not accept implementation",
+        "create checker authority",
     ],
     "docs/PRECODE-DAILY-COCKPIT.md": [
         "Check quality text contract",
@@ -92,13 +114,20 @@ REQUIRED_TERMS_BY_PATH = {
     "docs/PRECODE-USER-GUIDE.md": [
         "Check The Engineering Quality Text Contract",
         "python3 scripts/engineering-quality-check.py --check",
+        "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
         "advisory only",
         "does not inspect app code",
         "does not approve implementation",
+        "Engineering Quality Review Lane",
+        "does not certify code quality",
+        "does not certify production readiness",
     ],
     "docs/PRECODE-PACKAGE-FILE-INVENTORY.md": [
         "scripts/engineering-quality-check.py",
         "Engineering Quality Text-Contract Checker",
+        "--repo-heuristics-preview",
+        "Engineering Quality Review Lane",
+        "PRD-038",
         "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
         "no app-code parsing",
         "no scorecard",
@@ -106,7 +135,24 @@ REQUIRED_TERMS_BY_PATH = {
     "llms.txt": [
         "scripts/engineering-quality-check.py",
         "Engineering Quality Text-Contract Checker",
+        "--repo-heuristics-preview",
+        "Engineering Quality Review Lane",
         "advisory only",
+    ],
+    "tasks/prds/PRD-038-engineering-quality-review-lane.md": [
+        "Engineering Quality Review Lane",
+        "completed or nearly completed active bead",
+        "scope discipline",
+        "simplest acceptable implementation shape",
+        "owner-file and boundary integrity",
+        "proof quality",
+        "configuration or dependency handling",
+        "sensitive-surface routing",
+        "stop-condition observance",
+        "does not broaden the quality floor into repo heuristics",
+        "language-aware analysis",
+        "No app-code parser",
+        "No implementation acceptance",
     ],
 }
 
@@ -159,7 +205,9 @@ def active_bead_summary(root: Path) -> tuple[list[str], dict[str, Any]]:
     details.update(
         {
             "primary_authority": primary_authority or "missing",
+            "files_in_play": files_in_play,
             "files_in_play_count": len(files_in_play),
+            "checks": checks,
             "checks_count": len(checks),
             "stop_if_present": bool(stop_if.strip()),
         }
@@ -177,6 +225,145 @@ def active_bead_summary(root: Path) -> tuple[list[str], dict[str, Any]]:
     if not stop_if.strip():
         warnings.append(f"{rel_path} does not declare Stop If conditions")
     return warnings, details
+
+
+def git_changed_paths(root: Path) -> tuple[list[str], list[str]]:
+    warnings: list[str] = []
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=all"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return [], [f"repo heuristics preview could not read git status: {exc}"]
+    if result.returncode != 0:
+        reason = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return [], [f"repo heuristics preview could not read git status: {reason}"]
+
+    paths: list[str] = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        path = line[3:].strip()
+        if " -> " in path:
+            path = path.rsplit(" -> ", 1)[1].strip()
+        if path:
+            paths.append(path)
+    return sorted(dict.fromkeys(paths)), warnings
+
+
+def path_category(path: str) -> str:
+    name = Path(path).name
+    suffix = Path(path).suffix.lower()
+    if path.startswith(("docs/", "docs-html/")) or name in {"README.md", "llms.txt"}:
+        return "docs"
+    if path.startswith(("tasks/reference/", "tasks/prds/", "tasks/prds-html/")):
+        return "protocol-or-prd"
+    if path.startswith((".github/", "adapters/", "modes/")) or name in {
+        ".gitignore",
+        "pyproject.toml",
+        "package.json",
+        "package-lock.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+        "requirements.txt",
+        "requirements-dev.txt",
+    }:
+        return "config-or-dependency"
+    if path.startswith("scripts/"):
+        return "script"
+    if path.startswith("logs/"):
+        return "generated-evidence"
+    if path.startswith("tests/") or name.startswith("test_") or name.endswith("_test.py") or suffix in {".spec", ".test"}:
+        return "test"
+    if path.startswith("_maintainer/"):
+        return "maintainer-private"
+    return "source-or-other"
+
+
+def check_mentions(checks: list[str], terms: list[str]) -> bool:
+    lower_checks = " ".join(checks).lower()
+    return any(term in lower_checks for term in terms)
+
+
+def path_is_declared(path: str, declared: set[str]) -> bool:
+    for item in declared:
+        clean = item.rstrip("/")
+        if not clean:
+            continue
+        if path == clean or path.startswith(f"{clean}/"):
+            return True
+        if any(char in clean for char in "*?[]") and fnmatch.fnmatch(path, clean):
+            return True
+    return False
+
+
+def repo_heuristics_preview(root: Path, active_bead: dict[str, Any]) -> dict[str, Any]:
+    changed_paths, git_warnings = git_changed_paths(root)
+    files_in_play = [str(item) for item in active_bead.get("files_in_play", []) if str(item).strip()]
+    primary_authority = str(active_bead.get("primary_authority") or "").strip()
+    declared = set(files_in_play)
+    if primary_authority and primary_authority != "missing":
+        declared.add(primary_authority)
+    checks = [str(item) for item in active_bead.get("checks", []) if str(item).strip()]
+    warnings: list[str] = list(git_warnings)
+
+    changed_not_declared = [
+        path
+        for path in changed_paths
+        if not path_is_declared(path, declared)
+        and not path.startswith(("docs-html/", "tasks/prds-html/", "logs/"))
+    ]
+    if changed_not_declared:
+        warnings.append(
+            "repo heuristics preview found changed files not declared in files_in_play or primary_authority"
+        )
+
+    categories: dict[str, list[str]] = {}
+    for path in changed_paths:
+        categories.setdefault(path_category(path), []).append(path)
+
+    if len([category for category, paths in categories.items() if category != "generated-evidence" and paths]) >= 4:
+        warnings.append("repo heuristics preview found broad cross-surface changes")
+    if categories.get("config-or-dependency") and not check_mentions(
+        checks, ["version-check", "file-inventory", "dependency", "test", "pytest", "npm", "pnpm"]
+    ):
+        warnings.append("repo heuristics preview found config or dependency changes without a matching check")
+    if categories.get("script") and not check_mentions(checks, ["self-test", "clarity-scenario", "version-check", "pytest"]):
+        warnings.append("repo heuristics preview found script changes without a script or scenario check")
+    if (categories.get("docs") or categories.get("protocol-or-prd")) and not check_mentions(
+        checks, ["docs-html", "prd-html", "clarity-scenario", "file-inventory"]
+    ):
+        warnings.append("repo heuristics preview found docs, protocol, or PRD changes without docs/reference validation")
+    if categories.get("generated-evidence") and not checks:
+        warnings.append("repo heuristics preview found generated evidence changes but no recorded check")
+
+    return {
+        "enabled": True,
+        "advisory_only": True,
+        "contract": REPO_HEURISTICS_CONTRACT,
+        "changed_paths": changed_paths,
+        "changed_paths_count": len(changed_paths),
+        "declared_files_in_play": sorted(declared),
+        "changed_not_declared": changed_not_declared,
+        "changed_not_declared_count": len(changed_not_declared),
+        "categories": {key: sorted(value) for key, value in sorted(categories.items())},
+        "warnings": warnings,
+        "does_not": [
+            "parse application code deeply",
+            "run linters",
+            "run tests",
+            "score code quality",
+            "approve implementation",
+            "accept review",
+            "certify production readiness",
+            "create generated proof",
+            "create a checker gate",
+        ],
+    }
 
 
 def missing_contract_terms(root: Path) -> list[str]:
@@ -223,7 +410,15 @@ def analyze_quality_floor_text(text: str) -> list[str]:
         for term, route in OWNER_PROTOCOL_ROUTES.items()
         if term in lower
     }
-    if risk_routes and not any(route.lower() in lower for route in set(risk_routes.values())):
+    route_labels = [
+        "architecture shaping",
+        "system design pattern",
+        "verification guardrail",
+        "tool execution",
+        "review lanes",
+        "release readiness",
+    ]
+    if risk_routes and not any(route.lower() in lower for route in set(risk_routes.values())) and not any(label in lower for label in route_labels):
         warnings.append("quality-floor answer names high-risk terms without routing to an owner protocol")
     return warnings
 
@@ -231,12 +426,18 @@ def analyze_quality_floor_text(text: str) -> list[str]:
 def recommended_next_safe_action(warnings: list[str]) -> str:
     if not warnings:
         return "continue inside the active bead; normal approval and proof gates still apply"
-    if any("high-risk terms" in warning or "primary_authority" in warning for warning in warnings):
+    if any(
+        "high-risk terms" in warning
+        or "missing primary_authority" in warning
+        or "uses maintainer-private primary_authority" in warning
+        or "primary_authority does not exist" in warning
+        for warning in warnings
+    ):
         return "stop and route through the relevant owner protocol before coding"
     return "revise the quality-floor text contract before treating it as implementation orientation"
 
 
-def build_payload(root: Path, quality_text: str = "") -> dict[str, Any]:
+def build_payload(root: Path, quality_text: str = "", repo_heuristics: bool = False) -> dict[str, Any]:
     warnings = missing_contract_terms(root)
     bead_warnings, active_bead = active_bead_summary(root)
     warnings.extend(bead_warnings)
@@ -244,18 +445,26 @@ def build_payload(root: Path, quality_text: str = "") -> dict[str, Any]:
     if quality_text:
         quality_floor_warnings = analyze_quality_floor_text(quality_text)
         warnings.extend(quality_floor_warnings)
+    repo_preview: dict[str, Any] | None = None
+    if repo_heuristics:
+        repo_preview = repo_heuristics_preview(root, active_bead)
+        warnings.extend(str(item) for item in repo_preview.get("warnings", []))
+        warnings.append("repo heuristics preview is enabled; treat changed-file findings as advisory only")
+    details: dict[str, Any] = {
+        "checked_paths": sorted(REQUIRED_TERMS_BY_PATH) + ([active_bead["path"]] if active_bead.get("path") else []),
+        "contract": CONTRACT,
+        "active_bead": active_bead,
+        "quality_floor_warnings": quality_floor_warnings,
+        "does_not": DOES_NOT,
+    }
+    if repo_preview is not None:
+        details["repo_heuristics_preview"] = repo_preview
     return {
         "tool": "engineering-quality-check",
         "status": "pass" if not warnings else "warning",
         "warnings": warnings,
         "advisory_only": True,
-        "details": {
-            "checked_paths": sorted(REQUIRED_TERMS_BY_PATH) + ([active_bead["path"]] if active_bead.get("path") else []),
-            "contract": CONTRACT,
-            "active_bead": active_bead,
-            "quality_floor_warnings": quality_floor_warnings,
-            "does_not": DOES_NOT,
-        },
+        "details": details,
         "recommended_next_safe_action": recommended_next_safe_action(warnings),
         "generated_report_warning": GENERATED_WARNING,
     }
@@ -373,13 +582,43 @@ def self_test() -> dict[str, Any]:
 """,
             "warning": "scorecard",
         },
+        "review lane reference": {
+            "status": "pass",
+            "text": """Engineering quality floor:
+- Quality risk: medium
+- Standard I am applying: review completed work against the Engineering Quality Review Lane after proof is recorded.
+- Simplest acceptable shape: one advisory review using the Review Lanes Protocol.
+- Boundary or owner file: tasks/prds/PRD-038-engineering-quality-review-lane.md
+- Evidence to prove it: recorded checks, manual verification, and closeout evidence.
+- Stop or approval trigger: stop if the review would accept implementation, certify code quality, or create follow-up tasks.
+- Routing: use Review Lanes
+""",
+        },
+        "repo heuristics preview git unavailable": {
+            "status": "warning",
+            "repo_heuristics": True,
+            "text": """Engineering quality floor:
+- Quality risk: low
+- Standard I am applying: keep the change inside the active bead.
+- Simplest acceptable shape: one docs update.
+- Boundary or owner file: PROJECT-CONTEXT.md
+- Evidence to prove it: python3 scripts/version-check.py
+- Stop or approval trigger: stop if scope expands.
+- Routing: continue
+""",
+            "warning": "repo heuristics preview could not read git status",
+        },
     }
     failures: list[dict[str, str]] = []
     for name, fixture in fixtures.items():
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             write_fixture(root, str(fixture["text"]))
-            payload = build_payload(root, quality_text=str(fixture["text"]))
+            payload = build_payload(
+                root,
+                quality_text=str(fixture["text"]),
+                repo_heuristics=bool(fixture.get("repo_heuristics")),
+            )
             if payload["status"] != fixture["status"]:
                 failures.append({"scenario": name, "expected": str(fixture["status"]), "actual": str(payload["status"])})
             warning = str(fixture.get("warning") or "")
@@ -389,6 +628,8 @@ def self_test() -> dict[str, Any]:
                 failures.append({"scenario": name, "expected": "advisory_only true", "actual": str(payload["advisory_only"])})
             if "approve implementation" not in payload["details"]["does_not"]:
                 failures.append({"scenario": name, "expected": "forbidden authority list", "actual": str(payload["details"]["does_not"])})
+            if fixture.get("repo_heuristics") and "repo_heuristics_preview" not in payload["details"]:
+                failures.append({"scenario": name, "expected": "repo heuristics preview details", "actual": "missing"})
     return {
         "tool": "engineering-quality-check",
         "mode": "self-test",
@@ -403,6 +644,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="check engineering quality text contracts without writing files")
     parser.add_argument("--quality-text", help="optional quality-floor answer text to inspect")
+    parser.add_argument("--repo-heuristics-preview", action="store_true", help="include advisory changed-file repo-shape heuristics")
     parser.add_argument("--self-test", action="store_true", help="run deterministic fixture coverage")
     args = parser.parse_args()
 
@@ -412,7 +654,7 @@ def main() -> int:
         return 0 if payload["status"] == "pass" else 1
     if not args.check:
         parser.error("choose --check or --self-test")
-    payload = build_payload(ROOT, quality_text=args.quality_text or "")
+    payload = build_payload(ROOT, quality_text=args.quality_text or "", repo_heuristics=args.repo_heuristics_preview)
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 

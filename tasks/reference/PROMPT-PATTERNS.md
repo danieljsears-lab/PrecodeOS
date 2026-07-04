@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.58
-Last updated: 2026-06-30
+Document version: v0.1.61
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -100,7 +100,7 @@ Alias guardrail floor:
 | Start | `Start: run the Precode session start and explain the Context Pack before editing.` | Start The Session |
 | Ask Precode | `Ask Precode: answer my stable docs question and cite the source files.` | Ask A Stable Docs Question |
 | Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Choose The Right Workflow / First PRD Walkthrough / Artifact Chooser |
-| Check | `Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm The Task Before Editing / Engineering Quality Floor / Every-Bead Rhythm |
+| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm The Task Before Editing / Check Task Suitability Before Work / Engineering Quality Floor / Every-Bead Rhythm |
 | Acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clarify Acceptance Criteria / Make Acceptance Criteria Testable |
 | Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
 | Build | `Build: work only on the active bead.` | Keep Implementation Bounded |
@@ -118,6 +118,7 @@ Use these aliases only when the current stage, risk, evidence gap, support role,
 | Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
+| Re-entry | `Re-entry: review delegated work before continuing.` | Delegation Re-Entry Evidence Pack |
 | Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
 | Trace | `Trace: map this requirement or bug behavior to proof.` | Requirement-To-Proof Review |
 | Attribution | `Attribution: review who-built-what evidence.` | Build Attribution Review |
@@ -137,6 +138,24 @@ Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead,
 ```
 
 Expected output: a six-part orientation checklist. It may name missing proof, blocked approval, or the safest next prompt, but it must not mutate state or authorize work.
+
+### Check Task Suitability Before Work
+
+Use before implementation, decomposition, or candidate activation when a request may be too vague, broad, proof-unclear, approval-gated, or easy to mistake for one task.
+
+```text
+Check task suitability before work starts.
+
+Use active memory, the active bead or candidate plan if one exists, the primary authority source, Workflow Selection, and Decomposition. Tell me whether the task is clear enough, small enough, proof-ready enough, and bounded enough to continue.
+
+Return one recommendation only: continue, clarify, route, split, block, or stop.
+
+Explain the destination, owner source, reviewable change size, proof path, approval gates, stop conditions, and split reasons. If useful, run python3 scripts/task-suitability-check.py --check and treat the output as advisory generated evidence only.
+
+Do not choose tasks, rank work, approve a PRD, activate a bead, update tasks/todo.md, authorize implementation, accept review, approve commands, create proof, mutate external systems, or code.
+```
+
+Expected output: a task-suitability recommendation plus missing signals, split reasons, route or block reasons, approval still required, and next safe prompt. Suitability guidance does not replace Workflow Selection, Decomposition, owner files, PRDs, beads, review, or human approval.
 
 ### Plan Mode Candidate Craft Loop
 
@@ -209,6 +228,32 @@ Do not copy, edit, overwrite, install hooks, change CI, run app commands, write 
 Show owner-file creation or adaptation candidates, preserved project material, approval gates, blockers, and deferred actions.
 Treat the plan as evidence only, not permission to mutate or adapt owner files.
 ```
+
+### Existing Precode Refresh
+
+```text
+Run the Existing Precode Refresh prompt for this project.
+
+Use my clean PrecodeOS package checkout as the source and my existing Precode project as the target.
+
+First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. Then run:
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
+
+Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, provide package-manager behavior, or automate rollback.
+
+If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+
+After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.
+```
+
+Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, candidate `UP-ID` actions, validation next steps, and explicit stop-before-mutation status.
+
+This is a refresh prompt, not an automatic update, release channel, rollback path, package manager, owner-file adaptation engine, or permission to overwrite.
 
 ### Package Upgrade Preview
 
@@ -487,13 +532,13 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
 
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane.
 
 Load the active bead or draft PRD, primary authority, files in play or changed-file summary when relevant, recorded checks or source evidence when relevant, manual verification when relevant, closeout evidence when relevant, Work Graph evidence when dependency relationships are being reviewed, PRD Protocol when PRD quality is being reviewed, and only the owner files needed for this lane.
 
 Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
 
-Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
 ```
 
 ### Precode Idea Coach
@@ -678,6 +723,12 @@ Run the Engineering Quality Text-Contract Checker with `python3 scripts/engineer
 ```
 
 The checker does not approve implementation, does not create proof, does not inspect app code, and does not make Standards Taxonomy implemented. It only helps decide whether the quality-floor text is complete enough to continue or whether an owner protocol should be loaded first.
+
+If the quality-floor text looks complete but the changed files look broader than the bead claims, run the repo-shape preview:
+
+```text
+Run `python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview`. Treat the repo heuristics as advisory only. Use them to compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. Do not treat the result as proof, implementation approval, review acceptance, code-quality score, linter output, test output, or a checker gate.
+```
 
 ## Local Source Intake
 
@@ -887,6 +938,23 @@ Tell me whether any finding belongs in the PRD, an owner-file update, PRD amendm
 Recommend only accepted, revise, split, blocked, or stop. Do not approve the PRD, certify quality, rewrite the PRD, rewrite owner files, create implementation tasks, activate beads, approve handoff, create scorecard authority, create checker authority, create generated proof, mutate GitHub, mutate external systems, or treat review output or confidence as proof.
 ```
 
+## Engineering Quality Review Lane
+
+```text
+Use the Review Lanes Protocol for this active bead.
+Run exactly one lane: Engineering Quality Review Lane.
+
+Load the active bead, primary authority, files in play or changed-file summary, recorded checks, manual verification when relevant, Closeout Evidence or current closeout draft, and the Engineering Quality Standards Protocol.
+
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Focus on scope discipline, simplest acceptable shape, owner-file and boundary integrity, proof quality, configuration or dependency handling, sensitive-surface routing, and whether stop conditions or approval gates were observed.
+
+Tell me whether any finding belongs in Closeout Evidence, a PRD amendment, owner-file update, candidate or approved bead, Release Readiness, reviewed memory, or another Review Lane.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, certify code quality, certify production readiness, score code, create scorecard authority, create checker authority, create follow-up tasks, rewrite owner files, activate beads, replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness, mutate GitHub, mutate external systems, or treat review output or confidence as proof.
+```
+
 ## Vertical-Slice Decomposition
 
 ```text
@@ -907,6 +975,20 @@ Before I step away, confirm whether this bead is afk_candidate or bounded-afk. S
 
 ```text
 I am back. Re-enter this bead safely: reload active memory, the active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block. Do not accept implementation, approve commands, activate another bead, or approve small-team merge/re-entry.
+```
+
+## Delegation Re-Entry Evidence Pack
+
+```text
+Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
+```
+
+```text
+Review this teammate branch or worktree as delegated re-entry evidence. Compare assigned bead, primary authority, changed files, checks and results, manual verification, owner-file impacts, integration conflicts, stale branch or stale evidence signals, unresolved risks, external status evidence if available, and forbidden actions not taken. Recommend only continue, review, split, block, or coordinator merge/re-entry review. Do not approve merge or promote findings into owner files.
+```
+
+```text
+Review this cloud-agent or PR return as evidence only. Summarize scope returned, changed files, checks and results, review comments, workflow or CI status, manual verification still needed, approvals still required, unresolved risks, and forbidden actions not taken. Use optional GitHub evidence only if available and read-only. Do not treat the PR, review, CI status, or agent summary as implementation acceptance, merge approval, transition approval, or external mutation approval.
 ```
 
 ## Architecture Shaping
@@ -1145,9 +1227,9 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, mutate GitHub, mutate external systems, or treat generated reports, review output, or confidence as proof.
+Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, review output, or confidence as proof.
 ```
 
 ## Release Candidate Evidence Profile
@@ -1284,11 +1366,15 @@ Search reviewed memory for what we have learned about this topic. Cite the memor
 ```
 
 ```text
+Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Tell me whether it should stay reviewed memory, become a proposed memory card, be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.
+```
+
+```text
 Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, and do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
 ```
 
 ```text
-Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.
+Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should stay reviewed memory, become a card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file.
 ```
 
 ```text

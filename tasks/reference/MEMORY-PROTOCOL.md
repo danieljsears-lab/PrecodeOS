@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-23
+Document version: v0.1.8
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -41,6 +41,18 @@ Use this rule:
 
 - If it explains what was learned, it may belong in memory.
 - If it decides what is true or what must happen, promote it to the owning authority file.
+
+When the distinction is unclear, run a Memory Promotion Review before editing anything:
+
+- memory claim: the lesson, preference, term, risk, or source pointer under review
+- source pointers: the memory card, generated index entry, diary, bead, PRD, check, or local evidence that supports it
+- current status: `reviewed`, `needs_promotion`, `superseded`, `archived`, stale, low-confidence, or not yet captured
+- proposed owner: `DECISIONS.md`, a PRD, `FEATURES.md`, an owner file, an approved bead, a reference protocol, or `none`
+- promotion action: keep as reviewed memory, propose a memory card, amend an owner file, create or amend a PRD, propose a bead, or defer
+- approval required: the human approval needed before any card write, owner-file edit, PRD amendment, protocol update, bead change, or active-memory change
+- stop condition: stop if the source evidence is weak, the owner is unclear, the memory conflicts with current authority, or the requested action would auto-promote memory
+
+Memory Promotion Review is a reasoning shape, not a new workflow authority. It must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, expand active memory, or treat generated indexes as source truth.
 
 ## Storage Shape
 
@@ -180,7 +192,7 @@ Session-friction findings are also demoted signals until reviewed. They may sugg
 Copyable search prompt:
 
 ```text
-Search reviewed memory for this topic with selective recall. Cite matching cards by path, title, memory space, category, freshness, status, source pointers, and promotion owner. Return concise snippets instead of loading whole memory files. Treat memory as evidence only, visibly demote stale, superseded, archived, or low-confidence cards, and return to active memory, the active bead, and the owner file before recommending action.
+Search reviewed memory for this topic with selective recall. Cite matching cards by path, title, memory space, category, freshness, status, source pointers, and promotion owner. Return concise snippets instead of loading whole memory files. Treat memory as evidence only, visibly demote stale, superseded, archived, low-confidence, or needs_promotion cards, and return to active memory, the active bead, and the owner file before recommending action. Tell me whether each useful result should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, or another owner file. Do not promote anything without my approval.
 ```
 
 Copyable retrieval-readiness prompt:
@@ -207,7 +219,13 @@ Promote memory when it becomes authoritative:
 
 If no owner file accepts it, the item remains reviewed memory only.
 
-Promotion is manual. A memory search result may warn that a card needs promotion and name the proposed owner, but the result must not edit `DECISIONS.md`, PRDs, protocols, owner files, or beads. The user must approve the owner-file change through the normal Precode workflow.
+Promotion is manual. A memory search result may warn that a card needs promotion and name the proposed owner, but the result must not edit `DECISIONS.md`, PRDs, protocols, owner files, active memory, or beads. The user must approve the owner-file change through the normal Precode workflow.
+
+Use this prompt for the promotion decision:
+
+```text
+Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Tell me whether it should stay reviewed memory, become a proposed memory card, be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.
+```
 
 ## Exportability
 

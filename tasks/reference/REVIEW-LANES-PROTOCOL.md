@@ -3,14 +3,14 @@
 
 > AUTHORITY: Optional advisory review lane templates for one active bead or one draft PRD.
 > NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
-> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, PRD Quality Review Lane, or Review Lanes review for one active bead or one draft PRD.
+> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Review Lanes review for one active bead or one draft PRD.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-24
+Document version: v0.1.5
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -47,6 +47,14 @@ Use the Dependency Graph Review Lane when the bead touches or may affect:
 - safe sequencing, split decisions, or whether relationship risks should block acceptance
 - branch/worktree-isolated teammate work or a `can run in parallel` claim
 
+Use the Engineering Quality Review Lane when the active bead is complete or nearly complete and the user wants to check whether completed work respected the Engineering Quality floor:
+
+- scope discipline and whether the work stayed inside the active bead, files in play, and primary authority
+- simplest acceptable implementation shape, avoiding needless abstraction or broad rewrites
+- owner-file, boundary, configuration, dependency, and sensitive-surface handling
+- proof quality, recorded checks, manual verification, and remaining uncertainty
+- stop-condition observance, approval-gate observance, and whether higher-risk work should have routed to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Security Review, Release / Docs Freshness, or Dependency Graph Review
+
 Use the PRD Quality Review Lane when the draft PRD needs pre-approval review of:
 
 - user problem clarity, before/after moment, strategy fit, non-goals, or assumptions
@@ -57,7 +65,7 @@ Use the PRD Quality Review Lane when the draft PRD needs pre-approval review of:
 
 `scripts/prd-handoff-readiness.py --prd <path> --target review` may be used as PRD-review evidence when handoff readiness is the narrow question. Treat the packet as cited generated evidence only. It can inform findings, missing proof, acceptance questions, and recommendation, but it does not approve the PRD, create tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, or replace the Markdown PRD.
 
-Do not use a Review Lane as a general brainstorming step, a task planner, a second active bead, a required gate for every task, a substitute for normal acceptance review, or a substitute for human PRD approval.
+Do not use a Review Lane as a general brainstorming step, a task planner, a second active bead, a required gate for every task, a substitute for normal acceptance review, a code-quality score, or a substitute for human PRD approval.
 
 ## Required Inputs
 
@@ -76,6 +84,7 @@ Load only the sources needed for the lane:
 - relevant owner files, such as `SECURITY.md`, `ACCEPTANCE.md`, `docs/*.md`, or the owning PRD, only when their `LOAD_WHEN` applies
 - `tasks/reference/PRD-PROTOCOL.md`, relevant source inputs, acceptance oracles, open questions, proof expectations, and handoff context when PRD quality is being reviewed
 - PRD handoff readiness packet output when the review question is whether a PRD is ready for decomposition, design, engineering, or review handoff
+- `tasks/prds/PRD-038-engineering-quality-review-lane.md` when implementing, validating, or changing the Engineering Quality Review Lane package capability
 
 If the active bead, draft PRD, primary authority, recorded evidence, or changed-file summary needed for the selected lane is missing, stop and ask for the missing source instead of inventing a review.
 
@@ -164,6 +173,24 @@ The PRD Quality Review Lane complements Requirements Gap And Conflict Review. Re
 
 The PRD Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not approve the PRD, certify PRD quality, rewrite the PRD, rewrite owner files, generate implementation tasks, activate beads, approve handoff, accept implementation, create scorecard authority, create checker authority, create generated proof, mutate GitHub, mutate external systems, replace PRD Protocol, or replace Requirements Gap And Conflict Review.
 
+## Engineering Quality Review Lane
+
+Use this lane to inspect whether one completed or nearly completed active bead respected the Engineering Quality floor well enough for a human acceptance conversation.
+
+Focus on:
+
+- whether the implementation stayed inside the active bead, files in play, and primary authority
+- whether the chosen shape was the simplest acceptable implementation for the requirement and proof path
+- whether owner-file and boundary integrity held across modules, configuration, dependency, external-service, secret, data, and sensitive-surface boundaries
+- whether configuration or dependency handling and sensitive-surface routing were explicit when those risks appeared
+- whether recorded checks, manual verification, and Closeout Evidence actually support the quality claims being reviewed
+- whether stop conditions, approval gates, and routing triggers were observed before risk expanded
+- whether any finding belongs in Closeout Evidence, a PRD amendment, owner-file update, candidate or approved bead, Release Readiness, reviewed memory, or another Review Lane
+
+The Engineering Quality Review Lane complements the Engineering Quality Standards Protocol and is owned as a package capability by `tasks/prds/PRD-038-engineering-quality-review-lane.md`. The Standards Protocol is the pre-coding quality floor; this lane is post-implementation review input. It does not replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.
+
+The Engineering Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, certify code quality, certify production readiness, score code, create checker authority, create scorecard authority, replace linters, replace tests, inspect app code, add repo heuristics, add language-aware analysis, create follow-up tasks, rewrite owner files, activate beads, approve release, mutate GitHub, mutate external systems, or turn review output into generated proof.
+
 For any lane, `Missing proof` should name the requirement, bug behavior, acceptance criterion, or release risk that lacks a recorded source. Avoid vague findings such as "needs more tests" when the real gap is that no evidence is tied to the claim being accepted.
 
 ## Promotion Path
@@ -190,6 +217,7 @@ Stop if:
 - a sensitive surface appears without an approval gate
 - the lane would require secrets, credentials, private data, provider config, dashboard values, or production details
 - the answer would certify security, compliance, release readiness, or acceptance
+- the answer would certify code quality, production readiness, scalability, reliability, or maintainability
 - the answer would approve a PRD, certify PRD quality, create scorecard authority, rewrite the PRD, or turn PRD review findings into implementation tasks
 - the answer would treat generated Work Graph reports as authority, proof, task selection, or transition approval
 - the answer would approve parallel execution instead of routing through branch/worktree isolation and coordinator review
@@ -210,6 +238,8 @@ Review Lanes must not:
 - approve merge or migration
 - approve security posture
 - certify compliance
+- certify code quality
+- certify production readiness
 - create follow-up tasks
 - create implementation tasks
 - rewrite owner files
@@ -223,4 +253,5 @@ Review Lanes must not:
 - treat Work Graph reports as authority, proof, transition approval, or task selection
 - treat generated reports, screenshots, browser notes, GitHub status, or confidence as proof
 - create scorecard authority
+- create checker authority
 - create a registry, optional pack, command wrapper, package-manager behavior, release-channel behavior, generated report, checker gate, task-runner system, or persona system

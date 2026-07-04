@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-02">
+  <meta name="generated-at" content="2026-07-04">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.17</span><span>Updated 2026-07-02</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.18</span><span>Updated 2026-07-04</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -307,6 +307,29 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <p>If the preview shows a missing package-owned file marked <code>review_package_copy_candidate</code>, you may copy that one file only after approving its <code>UP-ID</code>. Package development PRDs and beads are not normal upgrade-copy candidates for existing Precode targets; copy only <code>PRD-000-template</code>, schemas/reference files, or other copyable non-identity package files:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview --apply-upgrade-preview --approve-action &lt;UP-ID&gt;</code></pre>
 <p>This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.</p>
+<h2 id="existing-precode-refresh"><a class="heading-anchor" href="#existing-precode-refresh" aria-label="Link to Existing Precode Refresh">#</a>Existing Precode Refresh</h2>
+<p>Use this when PrecodeOS is already embedded in your project and you want a faster way to check whether package-owned surfaces can be refreshed.</p>
+<p>This is a self-serve prompt path, not an automatic update. It uses upgrade preview first, shows what is safe to consider, and stops before copying anything unless you explicitly approve specific <code>UP-ID</code> actions.</p>
+<p>Copy this prompt into your agent:</p>
+<pre><code class="language-text">Run the Existing Precode Refresh prompt for this project.
+
+Use my clean PrecodeOS package checkout as the source and my existing Precode project as the target.
+
+First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. Then run:
+
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview
+
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
+
+Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, provide package-manager behavior, or automate rollback.
+
+If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
+
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview --apply-upgrade-preview --approve-action &lt;UP-ID&gt;
+
+After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.</code></pre>
+<p>Checklist before approving any <code>UP-ID</code>:</p>
+<ul><li>The PrecodeOS source checkout and target project are unambiguous.</li><li><code>git status</code> in the target is clean, understood, or intentionally preserved.</li><li>The preview did not report <code>blocked_identity_collision</code> for the action.</li><li>The action copies a missing package-owned file only.</li><li>No owner file, active memory, app code, generated evidence, secret, CI, hook, PRD identity, bead identity, or deployment setting will be overwritten.</li><li>You understand the validation command to run before normal work resumes.</li></ul>
 <p>When setup state is partial or confusing, ask for recovery guidance:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --recovery-guidance</code></pre>
 <p>Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.</p>
@@ -440,7 +463,7 @@ Here are the conflicts and choices that need your approval:</code></pre>
   <a class="tool-link" href="#top">Back to top</a>
   <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
 </aside>
-    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#existing-precode-refresh">Existing Precode Refresh</a><a class="level-2" href="#ember-bootcamp-fit-check-precodeos-or-plain-vs-code">Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
   </div>
 </section>
 

@@ -282,6 +282,7 @@ Use these prompts when you do not know what to say next.
 | Implement the active bead. | `Before editing, confirm the active bead, primary authority, files in play, checks, stop conditions, and what is out of scope.` |
 | Step away from a bounded agent task. | `Before I step away, confirm whether this bead is afk_candidate or bounded-afk. Show allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. Do not treat AFK metadata as approval.` |
 | Return after AFK work. | `I am back. Re-enter this bead safely: reload the active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block.` |
+| Return after teammate, cloud-agent, or PR work. | `Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff.` |
 | Check for scope drift. | `Run python3 scripts/files-in-play-check.py and explain whether changed files are inside this bead or should become follow-up work.` |
 | Local files or logs look messy. | `Use Local Hygiene. Run the advisory check or dry-run preview and explain what is protected, generated evidence, cache, or cleanup candidate. Do not delete, archive, move, compact, or rewrite anything.` |
 | Prove this works. | `Run the relevant checks through record-check.sh and explain the evidence in plain English.` |
@@ -318,6 +319,8 @@ Classify this bead's complexity, required_planning_depth, and autonomy_level. Th
 This keeps a typo fix from needing a full PRD while still making auth, payments, data, deployment, security, and multi-system work earn stronger planning and evidence.
 
 `afk_candidate` and `bounded-afk` are not permission slips. `afk_candidate` means the scoped bead may be safe to hand to an agent after context is loaded. `bounded-afk` means the work needs a tighter advisory Run Contract and a clear re-entry review. Small-team parallel work is separate: it needs branch/worktree isolation and coordinator review before merge or re-entry.
+
+When work comes back from a teammate branch/worktree, cloud agent, or pull request, use a Delegation Re-Entry Evidence Pack before continuing. The pack should name returned scope, changed files, checks and results, manual verification, approvals still required, unresolved risks, external status evidence, forbidden actions not taken, and the next human action. Agent summaries, PR status, CI, and review comments are evidence only; they do not accept implementation, approve merge, approve transition, or mutate external systems.
 
 ### Authority: Facts Live In The Right File
 

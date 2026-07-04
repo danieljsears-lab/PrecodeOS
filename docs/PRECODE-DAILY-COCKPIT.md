@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.36
-Last updated: 2026-06-30
+Document version: v0.1.38
+Last updated: 2026-07-04
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
@@ -126,10 +126,10 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Ideation | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | Workflow Selection, First PRD Walkthrough, or Artifact Chooser routing without task approval, artifact generation, PRD approval, bead activation, implementation permission, or later human PRD approval. |
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
 | Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. If the candidate is being developed or turned into an implementation plan, use Plan Mode first. |
-| Check | `Check: name the active bead, authority, files, first check, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm, Engineering Quality Floor, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
+| Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, stop conditions, and every-bead rhythm before editing.` | Confirm, Task Suitability, Engineering Quality Floor, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
-| Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
+| Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, Engineering Quality Review Lane, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
 | Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
 | Recover | `Recover: I am stuck, help me.` | A prescriptive recovery response plus named fallback prompt when a symptom is known: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 
@@ -142,6 +142,7 @@ Use these only when the current stage, risk, evidence gap, support role, or expl
 | Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
+| Delegation re-entry | `Re-entry: review delegated work before continuing.` | Evidence-only return review for solo AFK, teammate branch/worktree, or cloud-agent/PR work; not acceptance, merge approval, transition approval, or external mutation. |
 | Release prep | `Release: prepare release evidence without release action.` | Shipping evidence and approval questions without deployment, merge, rollback, external mutation, or release approval. |
 | Trace proof | `Trace: map this requirement or bug behavior to proof.` | A compact proof trace without acceptance or generated-proof authority. |
 | Review attribution | `Attribution: review who-built-what evidence.` | A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior. |
@@ -193,6 +194,20 @@ Before editing, confirm the active bead, the primary authority file, the files i
 
 Expected output: a plain-English boundary for the current task. If the agent cannot name the bead, owner file, files in play, and checks, do not let implementation continue.
 
+### Check Task Suitability Before Work
+
+Use when the next request may be too vague, broad, proof-unclear, approval-gated, or easy to mistake for one task.
+
+```text
+Check task suitability before work starts. Tell me whether this should continue, clarify, route, split, block, or stop.
+
+Explain the destination, owner source, reviewable change size, proof path, approval gates, stop conditions, and split reasons. If useful, run python3 scripts/task-suitability-check.py --check and treat the output as advisory generated evidence only.
+
+Do not choose tasks, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, create proof, or code.
+```
+
+Expected output: an advisory recommendation of `continue`, `clarify`, `route`, `split`, `block`, or `stop`, plus the missing signals or split reasons. It does not approve work.
+
 ### Ask For The Engineering Quality Floor
 
 Use when the agent is about to code and you want to confirm it is applying practical engineering judgment without starting a full architecture review.
@@ -209,7 +224,15 @@ If the answer sounds vague, use the advisory checker:
 python3 scripts/engineering-quality-check.py --check
 ```
 
-Expected output: advisory only warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. The Engineering Quality Text-Contract Checker does not approve coding, review, release, or generated proof, does not inspect app code, and does not create a scorecard or checker gate.
+Expected output: Check quality text contract warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. The Engineering Quality Text-Contract Checker is advisory only; it does not approve coding, review, release, or generated proof, does not inspect app code, and does not create a scorecard or checker gate.
+
+If the text contract looks complete but changed files appear broader than the active bead claims, use the repo-shape preview:
+
+```bash
+python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
+```
+
+Expected output: advisory only repo-shape warnings about changed files, files in play, checks, config/dependency touches, docs/protocol/PRD touches, script touches, broad cross-surface edits, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve coding, accept review, certify production readiness, create proof, or create a checker gate.
 
 ### Choose The Right Workflow
 
@@ -262,6 +285,16 @@ python3 scripts/team-collaboration-check.py
 ```
 
 Use `--github` only for optional read-only GitHub evidence through `gh`. The preview can help a coordinator see branch/worktree state, owner-file impact candidates, stale re-entry risks, and merge/re-entry packet fields, but it does not approve merge, accept implementation, activate beads, mutate GitHub, or replace coordinator review.
+
+### Review Delegated Re-Entry Evidence
+
+Use when work returns from solo AFK, a teammate branch/worktree, or a cloud-agent/PR context.
+
+```text
+Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
+```
+
+Expected output: returned scope, changed files, checks, manual verification, approvals still required, unresolved risks, external evidence if any, forbidden actions not taken, and one next human action. This does not approve implementation, merge, transition, GitHub mutation, or external mutation.
 
 ### Step Away From A Bounded Agent Task
 
@@ -416,6 +449,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |
 | `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, evidenced, and graph-coherent. |
+| `python3 scripts/task-suitability-check.py --check` | A task may be too vague, broad, proof-unclear, approval-gated, or not ready as one bead. | Prints advisory continue/clarify/route/split/block/stop guidance. It does not choose work or approve implementation. |
 | `python3 scripts/loop-health.py --verbose` | The compact signal is unclear. | Shows dimension-level warnings, including work-graph warnings, for deeper diagnosis. |
 | `python3 scripts/ralph-loop.py --dry-run` | A Ralph-enabled bead needs bounded retry evidence. | Runs the Ralph validator set and returns retry/review/ask/stop guidance. It does not accept work. |
 | `python3 scripts/update-learning-diary.py --append` | You need to append a learning entry after closeout evidence. | Updates `logs/learning-diary.md`; the diary is evidence, not active memory. |
@@ -539,7 +573,8 @@ Learning matters because Precode should make you more capable over time, not jus
 | Read the lesson | `Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.` | A plain-English session lesson from `logs/learning-diary.md`. |
 | Understand build changes | `Read the generated bead build journal if it exists. Tell me the path of already-worked beads, what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory, Candidate Queue authority, or acceptance.` | A plain-English implemented-bead path and build-change summary from `logs/bead-build-journal.md` when available. |
 | Search reviewed memory | `Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.` | Relevant reviewed memory cards with source pointers. |
-| Propose memory | `Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should remain memory or be promoted to DECISIONS.md, a PRD, or another authority file.` | A proposed memory card or promotion recommendation. |
+| Propose memory | `Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should stay reviewed memory, become a card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file.` | A proposed memory card or promotion recommendation. |
+| Review memory promotion | `Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.` | A manual promotion review that keeps memory evidence-only until an owner-file change is approved. |
 | Check memory quality | `Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.` | Memory warnings or confirmation. |
 
 Commands:
@@ -550,7 +585,7 @@ python3 scripts/update-memory-index.py
 python3 scripts/memory-check.py
 ```
 
-Memory is reviewed evidence. It can help future agents understand lessons, preferences, glossary terms, risks, and source pointers. It does not replace `DECISIONS.md`, PRDs, beads, active memory, or current code.
+Memory is reviewed evidence. It can help future agents understand lessons, preferences, glossary terms, risks, and source pointers. It does not replace `DECISIONS.md`, PRDs, beads, active memory, or current code. Search results may name a proposed promotion owner, but promotion is manual and requires explicit approval before any card write, owner-file edit, PRD amendment, protocol update, bead change, or active-memory change.
 
 ## Appendix: Stop Signals
 

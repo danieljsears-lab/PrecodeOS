@@ -63,6 +63,7 @@ Closeout Evidence should include:
 - evidence source
 - allowed actions and proof needed when the bead has a Run Contract
 - AFK or bounded-AFK re-entry evidence when the builder stepped away: elapsed context, changed files, recorded checks, proof still missing, stop conditions hit or not hit, approval still required, and the next action as continue, review, split, or block
+- delegated re-entry evidence when work returns from a solo AFK agent, branch/worktree teammate, or cloud-agent/PR context: scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence if any, forbidden actions not taken, and recommended next human action
 - release-readiness note when the completed work may affect users, production, deployment, external services, docs needed for use, or post-release support
 - accessibility advisory when the Accessibility Advisor was invoked, an owner file required it, or the review/release decision explicitly depends on it
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
@@ -97,6 +98,8 @@ Session-close handback should end with an explicit `Close State` line:
 Use `Safe to close` only when the session close ran, the closeout state has been summarized, and no immediate user action is needed to preserve or clarify Precode session state. The Close State line is human-facing guidance only. It does not approve review, promote a bead, activate the next bead, commit, push, deploy, release, rollback, certify external sync, or create host-specific tab-management behavior.
 
 When returning from solo AFK or bounded-AFK work, treat the return as re-entry review before continuing. The agent should name what changed while the builder was away, which checks ran, whether any Run Contract limit or stop condition was hit, what proof is still missing, and what still needs human approval. A clean re-entry summary does not accept implementation, approve commands, or activate another bead.
+
+When returning from delegated work, use one evidence shape across solo AFK, branch/worktree teammate, and cloud-agent/PR returns. The handback should name scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence if any, forbidden actions not taken, and the recommended next human action. The recommended next action may be only `continue`, `review`, `split`, `block`, or `handoff`; merge, external mutation, review acceptance, and transition still need their normal approval gates.
 
 Small team closeout should also follow `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a teammate branch/worktree is involved. The contributor closeout should name the branch or worktree, assigned bead, coordinator or reviewer, files changed, checks, manual verification, owner-file impacts, conflicts with integration state, stale re-entry risks, and whether the next action is continue, review, split, block, or coordinator merge/re-entry review. `python3 scripts/team-collaboration-check.py` may provide preview evidence for these fields, but generated preview output is not acceptance, merge approval, or owner-file promotion.
 

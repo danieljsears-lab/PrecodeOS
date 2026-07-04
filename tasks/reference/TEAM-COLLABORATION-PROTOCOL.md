@@ -130,6 +130,7 @@ Default local preview reports:
 - owner-file impact candidates
 - overlap with active bead scope
 - stale branch or re-entry risks
+- delegation re-entry fields for teammate, delegated-agent, or cloud-agent return
 - merge/re-entry review packet fields
 - teammate assignment packet fields
 - forbidden uses and generated-report warning
@@ -161,6 +162,7 @@ The coordinator's merge/re-entry review should include:
 - owner-file impacts
 - conflicts with the integration branch
 - stale evidence or stale branch signals
+- delegated-agent or cloud-agent return evidence: scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, and forbidden actions not taken
 - open questions and follow-up bead candidates
 - forbidden actions not taken
 
@@ -177,6 +179,7 @@ If two teammates touch the same owner file family, the coordinator must review t
 GitHub branches, pull requests, reviews, checks, labels, comments, and project-board status are external evidence.
 
 GitHub evidence must not choose tasks.
+Cloud-agent, CI, pull request, and review summaries follow the same rule. They may populate delegated re-entry evidence fields, but they do not approve continue, implementation acceptance, merge, release, transition, GitHub mutation, external mutation, or owner-file promotion.
 
 They may help answer:
 
@@ -209,6 +212,7 @@ When a teammate returns after another contributor or coordinator changed integra
 - whether checks or manual verification are stale
 - whether any teammate AFK or delegated-agent work changed files beyond the assigned bead
 - whether recorded evidence is enough for coordinator review without relying on chat history
+- whether cloud-agent or PR status is only evidence and still leaves explicit approval gates unresolved
 - whether the next action is continue, rebase/update, review, split, block, or handoff
 
 If re-entry changes the product decision, PRD, owner-file scope, files in play, or verification strategy, stop and ask the coordinator before editing.

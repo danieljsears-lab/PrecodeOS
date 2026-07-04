@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.32
-Last updated: 2026-06-23
+Document version: v0.3.33
+Last updated: 2026-07-04
 
 ## Executive Summary
 
@@ -162,7 +162,7 @@ This architectural layer model explains how PrecodeOS fits together. For operati
 | Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |
 | Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test/doc/support names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`, and generated memory-index glossary excerpts as evidence only. |
-| Reviewed-memory recall layer | Preserve durable lessons as reviewed plain files while keeping context loading selective and cited. | `memory/cards/`, `logs/memory-index.md/json`, `scripts/memory-check.py --recall`, and `scripts/memory-check.py --retrieval-review`; retrieval review is generated evidence only and does not approve semantic search or a shared backend. |
+| Reviewed-memory recall layer | Preserve durable lessons as reviewed plain files while keeping context loading selective, cited, and subordinate to owner files. | `memory/cards/`, `logs/memory-index.md/json`, `scripts/memory-check.py --recall`, `scripts/memory-check.py --needs-promotion`, and `scripts/memory-check.py --retrieval-review`; promotion review is manual, and retrieval review is generated evidence only that does not approve semantic search or a shared backend. |
 | Session Friction Review layer | Review repeated tool failures, stale evidence, generated-refresh gaps, and memory/context pressure without turning them into automatic learning. | `scripts/session-friction-check.py` and `logs/session-friction-review.json`; findings require citations, confidence, freshness, proposed destination, and manual promotion. |
 | Workflow-selection layer | Route rough ideas, source intake, PRDs, architecture shaping, review, repair, and closeout to the right protocol before work starts. | `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`, `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md`, `tasks/reference/PLANNING-PROTOCOL.md`. |
 | Setup-intake layer | Keep first-run confidence and existing-repo intake read-only until a user explicitly chooses a setup path. | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md`, `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md`, `scripts/bootstrap-check.py`, `scripts/existing-repo-intake.py`. |

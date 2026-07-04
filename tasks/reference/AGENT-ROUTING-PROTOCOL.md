@@ -45,6 +45,7 @@ Escalate only when the current tier cannot safely decide. De-escalate when the n
 - Use `long-horizon` only with explicit checkpoints, review context, and a clear escape path.
 - If a delegated agent realizes it needs a smarter tier, broader scope, or new approval, it returns that finding to the parent instead of escalating independently.
 - If a builder steps away from a delegated `afk_candidate` or `bounded-afk` bead, the return path is evidence review: reload active memory, the active bead, the primary authority, the Context Pack, recorded checks, changed files, Run Contract details when present, and stop conditions before continuing or accepting work.
+- If a cloud-agent, PR, teammate branch, or external agent returns work, route re-entry through the Delegation Re-Entry Evidence Pack fields before continuing: scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action.
 - Record durable spend when telemetry is available; missing spend is unknown, not zero.
 - For Small Team Collaboration Lane, teammate parallelism is a repo/workspace coordination pattern, not a model-routing shortcut. Each teammate branch or worktree still needs one bounded bead, one primary authority, explicit checks, and coordinator review before integration.
 

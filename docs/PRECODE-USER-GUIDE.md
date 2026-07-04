@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.77
-Last updated: 2026-07-02
+Document version: v0.7.80
+Last updated: 2026-07-04
 
 
 
@@ -28,7 +28,7 @@ PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` a
 
 For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
 
-If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts.
+If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts. If PrecodeOS is already embedded in your project and you want to refresh package-owned surfaces, use the Existing Precode Refresh prompt in Guided Setup or `tasks/reference/PROMPT-PATTERNS.md`; it previews first and stops before approved `UP-ID` copy actions.
 
 Put raw reference material for the project in root-level `project-evidence/`: notes, documents, screenshots, research, design exports, and link lists. Treat that folder as evidence only. It is not active memory, not product truth, not task approval, and not permission for the agent to code. Use Local Source Intake before promoting anything from it into owner files.
 
@@ -380,6 +380,14 @@ Load active memory, the team coordination notes, and the bead assigned to this b
 
 Parallel work requires branch or worktree isolation. One checkout still has one active bead. GitHub branches, pull requests, reviews, and checks are evidence until the coordinator reviews them against the assigned bead, primary authority, recorded checks, manual verification, and owner-file impacts.
 
+When delegated work returns, use one re-entry evidence shape before continuing:
+
+```text
+Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
+```
+
+For cloud-agent or PR returns, keep the prompt provider-neutral. Optional GitHub branch, PR, review, check, or workflow status can help fill evidence fields when it is read-only and available, but it still does not approve implementation, merge, transition, or external mutation.
+
 For a read-only Small Team Collaboration Lane preview, run:
 
 ```text
@@ -449,6 +457,37 @@ Expect this:
 
 Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.
 
+## Check Task Suitability Before Work
+
+Use this when a request may be too vague, broad, proof-unclear, approval-gated, or easy to mistake for one task. This is the question before coding: is the work clear enough, small enough, proof-ready enough, and bounded enough to continue?
+
+Say this:
+
+```text
+Check task suitability before work starts. Tell me whether this should continue, clarify, route, split, block, or stop.
+
+Explain the destination, owner source, reviewable change size, proof path, approval gates, stop conditions, and split reasons. If useful, run python3 scripts/task-suitability-check.py --check and treat the output as advisory generated evidence only.
+
+Do not choose tasks, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, create proof, or code.
+```
+
+Expect one recommendation:
+
+- `continue`: the task has a visible destination, owner source, bounded scope, proof path, approval posture, and stop condition.
+- `clarify`: a required signal is missing.
+- `route`: a different owner protocol, PRD path, Architecture Shaping, Decomposition, recovery, or approval path must happen first.
+- `split`: the request has multiple outcomes, owner files, proof strategies, risk models, approval gates, or "and then" work.
+- `block`: active state, manual testing, external status, or a missing approval prevents safe work.
+- `stop`: continuing would imply unauthorized mutation, authority drift, or unsafe scope.
+
+The command is optional:
+
+```bash
+python3 scripts/task-suitability-check.py --check
+```
+
+The checker output is advisory JSON only. It does not choose tasks, rank work, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, or create proof.
+
 ## Ask For The Engineering Quality Floor
 
 Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.
@@ -479,9 +518,17 @@ Use this when the engineering quality floor sounds vague, skips proof, skips sto
 python3 scripts/engineering-quality-check.py --check
 ```
 
-Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation.
+Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation and does not certify production readiness.
 
 If the checker warns, revise the quality-floor answer or route to the owner protocol before coding. Do not treat a passing result as permission to build.
+
+If the quality-floor answer sounds complete but the changed files look broader than the bead claims, add the repo-shape preview:
+
+```bash
+python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
+```
+
+Expected output: advisory only repo-shape warnings that compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. It can warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, generated-evidence gaps, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate.
 
 ## Command Surface Triage
 
@@ -490,7 +537,7 @@ PrecodeOS has many scripts because setup, daily work, support, evidence, review,
 | Role or stage | Use these first | Boundary |
 |---|---|---|
 | Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
-| Setup, support, or recovery | `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, active state, file scope, proof, or transition readiness is unclear. They diagnose; they do not approve repair or mutation. |
+| Setup, support, refresh, or recovery | `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; they do not approve repair, refresh mutation, or package update behavior. |
 | Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
 | Maintainer validation | `version-check.py`, `file-inventory.py --check`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal student daily surface. |
 
@@ -792,6 +839,7 @@ Follow these steps in order.
 | Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
 | Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. Its JSON shape is regression-covered for adapters and diagnostics. | The agent treats generated help as approval or active memory. |
 | Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, graph warning if relevant, and next move. | The agent treats loop health as a grade or hard approval. |
+| Check task suitability | `Run python3 scripts/task-suitability-check.py --check and explain whether to continue, clarify, route, split, block, or stop.` | Advisory suitability warnings about missing signals, split reasons, route reasons, or blockers. | The agent treats suitability output as task selection or implementation approval. |
 | Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
 | Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
 | Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
@@ -898,7 +946,7 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
-| Security, release, docs freshness, dependency, or draft-PRD quality needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, transitions, parallel execution, or create tasks.` |
+| Security, release, docs freshness, dependency, engineering-quality, or draft-PRD quality needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, code quality, production readiness, transitions, parallel execution, or create tasks.` |
 | A requirement, bug behavior, or acceptance criterion has unclear proof | Requirement-to-proof review | `Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.` |
 | Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
@@ -994,22 +1042,26 @@ Use Release / Docs Freshness Review Lane for user-facing behavior, setup, suppor
 
 Use Dependency Graph Review Lane for dependency, blocker, follow-up, transition, owner-file overlap, broad files-in-play, stale Work Graph, or unsafe parallel-work questions.
 
+Use Engineering Quality Review Lane for a completed or nearly completed active bead when scope discipline, simplest acceptable shape, owner-file and boundary integrity, proof quality, configuration or dependency handling, sensitive-surface routing, stop-condition observance, or approval-gate observance need review.
+
 Use PRD Quality Review Lane for a draft PRD before approval when user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, or smallest first slice need review.
 
 Say this:
 
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, or PRD Quality Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve PRDs, approve release, approve transition, certify security or compliance, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, approve parallel execution, create scorecard authority, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, review output, or confidence as proof.
+Do not accept implementation, approve review, approve PRDs, approve release, approve transition, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, approve parallel execution, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, review output, or confidence as proof.
 ```
 
 For dependency graph review, stale or misleading Work Graph output means repair the Markdown owner files, beads, PRDs, closeout notes, or recorded evidence first, then regenerate the graph. Do not edit generated graph reports as the source of truth.
 
 For PRD quality review, the lane complements Requirements Gap And Conflict Review. It reviews product quality and handoff readiness; it does not approve the PRD, rewrite the PRD, generate implementation tasks, activate beads, certify quality, create scorecard authority, or replace the normal PRD approval rules.
 
-Stop if: the agent treats the lane as acceptance, PRD approval, PRD rewrite permission, release approval, security sign-off, compliance approval, transition approval, parallel execution approval, Work Graph authority, scorecard authority, generated proof, or a task creator.
+For Engineering Quality Review Lane, the lane complements the Engineering Quality Standards Protocol. It reviews completed work against the quality floor; it does not certify code quality, certify production readiness, score code, replace tests or linters, create checker authority, create follow-up tasks, or replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.
+
+Stop if: the agent treats the lane as acceptance, PRD approval, PRD rewrite permission, release approval, security sign-off, compliance approval, code-quality certification, production-readiness certification, transition approval, parallel execution approval, Work Graph authority, scorecard authority, checker authority, generated proof, or a task creator.
 
 Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.
 
@@ -1245,7 +1297,8 @@ Do this:
 
 - Ask the agent to search reviewed memory for a specific topic.
 - Make it cite the memory cards it used.
-- Make it say whether the memory is evidence only or should be promoted to an owner file.
+- Make it say whether the result should stay reviewed memory, become a proposed memory card, or be promoted to `DECISIONS.md`, a PRD, a protocol, an approved bead, or another owner file.
+- Make it name the source pointers, current status, proposed owner, promotion action, approval required, and stop condition before any promotion.
 - Demote stale, superseded, archived, or low-confidence cards before relying on them.
 - Return to active memory and the active bead before editing.
 
@@ -1255,10 +1308,16 @@ Say this:
 Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.
 ```
 
+When memory may need to become project truth, ask for a promotion review:
+
+```text
+Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Tell me whether it should stay reviewed memory, become a proposed memory card, be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.
+```
+
 You can also ask for a read-only filtered search:
 
 ```text
-Run python3 scripts/memory-check.py --query "topic words". Cite card path, title, category, freshness, status, source pointers, and promotion owner. Do not promote anything without my approval.
+Run python3 scripts/memory-check.py --query "topic words". Cite card path, title, category, freshness, status, source pointers, and promotion owner. Tell me whether each useful result should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, or another owner file. Do not promote anything without my approval.
 ```
 
 Before discussing semantic search or a shared memory backend, ask for a retrieval-readiness review:
@@ -1421,7 +1480,7 @@ Turn this diary lesson into a proposed memory card for my approval. Do not write
 Check promotion:
 
 ```text
-Check whether this memory belongs in DECISIONS.md, a PRD, an authority doc, or should remain reviewed evidence.
+Check whether this memory should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Name the source pointers, current status, proposed owner, promotion action, approval required, and stop condition before recommending any edit.
 ```
 
 ## FAQ

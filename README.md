@@ -255,13 +255,15 @@ python3 scripts/os-health.py
 bash scripts/record-check.sh -- <command>
 ```
 
-Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.
+Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.
 
 `precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
+
+`task-suitability-check.py --check` reports advisory `continue`, `clarify`, `route`, `split`, `block`, or `stop` guidance when a request may be too vague, broad, proof-unclear, approval-gated, or not ready as one bead. It does not choose work, approve PRDs, activate beads, authorize implementation, accept review, approve commands, or create proof.
 
 `os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters, gives a plain-English safe ask and do-not-approve warning, and points to the owner command or protocol.
 
@@ -343,6 +345,10 @@ No. It is a repo-native operating layer: Markdown owner files, task contracts, v
 
 No. It gives those agents shared project rules and a safer handoff surface.
 
+### Won't a more capable model just do this natively?
+
+Better models make agents stronger. PrecodeOS solves a different problem: it keeps intent, scope, approval, proof, and recovery owned by the repo and visible to the builder across sessions, tools, and models. More capability is a reason to want that control layer more, not less.
+
 ### Why only three active-memory files?
 
 Small active memory keeps the current task inspectable and reduces stale-context drift.
@@ -378,8 +384,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.48
-Last updated: 2026-06-30
+Document version: v0.1.49
+Last updated: 2026-07-04
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

@@ -131,7 +131,7 @@ def selective_recall(cards: list[dict[str, Any]], args: argparse.Namespace) -> d
             "semantic": "deferred_optional_extension",
             "hybrid_backend": "deferred; no Postgres, pgvector, Docker, MCP, REST API, or shared backend required",
         },
-        "safe_next_step": "Use only the cited snippets, then verify against active memory, the active bead, and the relevant owner file before acting.",
+        "safe_next_step": "Use only the cited snippets, then verify against active memory, the active bead, and the relevant owner file before acting. If a result may need promotion, run a manual Memory Promotion Review and get approval before creating cards or editing owner files.",
         "generated_evidence_only": True,
     }
 
@@ -302,7 +302,7 @@ def filtered_payload(payload: dict[str, Any], args: argparse.Namespace) -> dict[
         "total_cards": len(cards),
         "token_budget": token_budget,
         "generated_evidence_only": True,
-        "safe_next_step": "Cite matching cards, then verify against active memory, the active bead, and the relevant owner file before acting.",
+        "safe_next_step": "Cite matching cards, then verify against active memory, the active bead, and the relevant owner file before acting. If a result may need promotion, name the proposed owner and approval required, but do not create cards or edit owner files without approval.",
     }
     if args.recall:
         next_payload["recall"] = selective_recall(selected, args)

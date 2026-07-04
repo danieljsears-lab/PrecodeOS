@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-29
+Document version: v0.1.24
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -94,6 +94,8 @@ When the bead's acceptance confidence depends on a specific requirement ID, bug 
 
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` when creating, reviewing, or splitting beads. Candidate beads should pass the Bead Decomposition Test before activation.
 
+Use `tasks/prds/PRD-036-task-suitability-split-heuristics.md` or `python3 scripts/task-suitability-check.py --check` when a candidate or active bead may not be clear enough, small enough, proof-ready enough, or bounded enough to continue. Suitability output is advisory only: it may recommend `continue`, `clarify`, `route`, `split`, `block`, or `stop`, but it does not approve PRDs, activate beads, authorize implementation, accept review, approve commands, or create proof.
+
 Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when a bead is assigned to a teammate branch/worktree, when a candidate is described as `can run in parallel`, or when a coordinator needs merge/re-entry evidence. `python3 scripts/team-collaboration-check.py` can provide read-only preview evidence for branch/worktree state, owner-file impacts, stale re-entry risk, and optional GitHub status, but it does not approve parallel work, activate beads, accept implementation, or approve merge.
 
 Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether the next artifact should be source intake, PRD shaping, decomposition, a planning bead, an implementation bead, a review bead, an unblocker, or state repair.
@@ -110,7 +112,7 @@ A release-relevant bead may include a Release Candidate Evidence Profile when th
 
 When release confidence depends on a specific requirement, behavior, or non-functional expectation, include verification and release evidence in the bead body or closeout. Name the requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty. This trace is advisory evidence framing only; it does not approve release, accept review, create generated proof, add required frontmatter, or create a new evidence report.
 
-Use the Review Lanes Protocol, `tasks/reference/REVIEW-LANES-PROTOCOL.md`, when a completed or nearly completed bead needs a Security Review Lane or Release / Docs Freshness Review Lane. Keep review lane output in the bead body or closeout, not as required frontmatter. Review lanes produce findings, missing proof, acceptance questions, a recommendation, approvals still required, and a promotion path. They do not accept implementation, approve review decisions, approve release, certify security or compliance, create follow-up tasks, override owner files, or activate another bead.
+Use the Review Lanes Protocol, `tasks/reference/REVIEW-LANES-PROTOCOL.md`, when a completed or nearly completed bead needs a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane. Keep review lane output in the bead body or closeout, not as required frontmatter. Review lanes produce findings, missing proof, acceptance questions, a recommendation, approvals still required, and a promotion path. They do not accept implementation, approve review decisions, approve release, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks, override owner files, create scorecard or checker authority, or activate another bead.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 

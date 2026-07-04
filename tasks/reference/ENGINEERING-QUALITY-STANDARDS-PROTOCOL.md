@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-29
+Document version: v0.1.3
+Last updated: 2026-07-04
 
 ## Purpose
 
@@ -62,7 +62,7 @@ Route to existing protocols when the quality-floor answer reveals higher risk:
 | Implementation shape, business-rule location, provider boundary, state flow, strategy boundary, audit trail, auth/access boundary, or deep module needs explanation | `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` |
 | Proof quality, test strategy, manual verification, sensitive-surface gate, rollback, or false-done risk is unclear | `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` |
 | Command risk, destructive action, external mutation, secrets, provider dashboards, or approval-sensitive tool use appears | `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` |
-| Work is nearly done and needs a named advisory review lens | `tasks/reference/REVIEW-LANES-PROTOCOL.md` |
+| Work is nearly done and needs a named advisory review lens | `tasks/reference/REVIEW-LANES-PROTOCOL.md`; use Engineering Quality Review Lane when the narrow question is whether completed work respected this quality floor. |
 | User-facing shipping, deployment, rollback, smoke evidence, or docs freshness risk appears | `tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
 
 This protocol should point to those owner protocols. It should not duplicate them.
@@ -91,6 +91,12 @@ For low-risk work, keep each line short. For high-risk work, stop after naming t
 The checker looks for quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals in Precode artifact text. It also checks for forbidden certification, scorecard, and checker-gate wording. It may inspect the active bead's declared primary authority, files in play, checks, and Stop If section so missing proof or stop-condition signals are visible before coding.
 
 The checker is advisory only. It does not inspect app code, run linters, run tests, approve implementation, activate beads, accept review, create proof, certify production readiness, certify security or compliance, score code quality, create a checker gate, or replace human approval. It does not approve implementation and does not create a scorecard.
+
+`python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview` adds the Engineering Quality Repo Heuristics Preview. Use it only when changed-file repo-shape risk may contradict the quality-floor answer. The preview compares read-only git changed-file summaries with the active bead's primary authority, files in play, checks, and Stop If section. It may warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, or generated-evidence gaps.
+
+Repo heuristics preview is repo-shape risk only. If git metadata is unavailable, the output must say that explicitly and continue with declared Precode artifact signals only. The preview does not inspect app code deeply, parse ASTs, run linters, run tests, approve implementation, accept review, certify production readiness, score code quality, create proof, create a checker gate, replace Review Lanes, replace Release Readiness, or make warnings block ordinary low-risk work.
+
+For post-implementation review, use Engineering Quality Review Lane in the Review Lanes Protocol. That lane is owned by `tasks/prds/PRD-038-engineering-quality-review-lane.md` and reviews whether completed or nearly completed work respected this floor. It is advisory review input only; it does not accept implementation, approve review, certify code quality, certify production readiness, create follow-up tasks, replace tests or linters, inspect app code, add repo heuristics, add language-aware analysis, or expand this protocol into a full standards taxonomy. It does not add repo heuristics and does not add language-aware analysis.
 
 Standards Taxonomy remains deferred. Use repeated checker warning patterns to decide which engineering-standard concepts need beginner-readable teaching later. Do not import external engineering frameworks into this protocol as public package authority before that evidence exists.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-07-02
+Document version: v0.1.18
+Last updated: 2026-07-04
 
 ## What This Guide Is For
 
@@ -152,6 +152,43 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+
+## Existing Precode Refresh
+
+Use this when PrecodeOS is already embedded in your project and you want a faster way to check whether package-owned surfaces can be refreshed.
+
+This is a self-serve prompt path, not an automatic update. It uses upgrade preview first, shows what is safe to consider, and stops before copying anything unless you explicitly approve specific `UP-ID` actions.
+
+Copy this prompt into your agent:
+
+```text
+Run the Existing Precode Refresh prompt for this project.
+
+Use my clean PrecodeOS package checkout as the source and my existing Precode project as the target.
+
+First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. Then run:
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
+
+Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, provide package-manager behavior, or automate rollback.
+
+If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+
+After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.
+```
+
+Checklist before approving any `UP-ID`:
+
+- The PrecodeOS source checkout and target project are unambiguous.
+- `git status` in the target is clean, understood, or intentionally preserved.
+- The preview did not report `blocked_identity_collision` for the action.
+- The action copies a missing package-owned file only.
+- No owner file, active memory, app code, generated evidence, secret, CI, hook, PRD identity, bead identity, or deployment setting will be overwritten.
+- You understand the validation command to run before normal work resumes.
 
 When setup state is partial or confusing, ask for recovery guidance:
 

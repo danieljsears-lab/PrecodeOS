@@ -192,6 +192,7 @@ def self_test(root: Path) -> dict[str, Any]:
         "one_active_bead_per_checkout",
         "owner_file_impacts",
         "re_entry_risks",
+        "delegation_reentry",
         "merge_review_packet_fields",
         "assignment_packet_fields",
         "github_evidence",
@@ -208,6 +209,10 @@ def self_test(root: Path) -> dict[str, Any]:
     for term in ["task selection", "merge approval", "GitHub mutation"]:
         if term not in forbidden:
             failures.append({"scenario": "forbidden uses", "expected": term, "actual": forbidden})
+    reentry = details.get("delegation_reentry") or {}
+    for field in ["scope_returned", "changed_files", "approval_still_required", "external_status_evidence", "recommended_next_human_action"]:
+        if field not in reentry:
+            failures.append({"scenario": "delegation re-entry field", "expected": field, "actual": "missing"})
 
     return {
         "tool": "team-collaboration-check",

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-06-23
+Document version: v0.1.7
+Last updated: 2026-07-04
 
 Each memory card captures one reusable piece of reviewed knowledge.
 
@@ -51,6 +51,10 @@ Do not create a memory card automatically from generated diary output. Propose t
 ## Search And Promotion Rule
 
 Memory cards may be searched and exported through generated indexes, but search results are evidence only. Stale, superseded, archived, and low-confidence cards must be treated as weak or historical context. A `needs_promotion` card names the owner file to review; it does not update that owner file or become authority by itself.
+
+Before a memory item becomes project truth, run a manual promotion review. Name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. The answer should say whether the item should stay reviewed memory, become a proposed memory card, be promoted to `DECISIONS.md`, a PRD, a protocol, an approved bead, or another owner file.
+
+Promotion review must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without explicit approval.
 
 For `project_glossary` cards, search and recall may surface term excerpts and demotion warnings. The agent must still verify the term against current active memory, active bead, approved PRD, code, and owner files before using it to name UI, modules, routes, tests, or docs.
 
