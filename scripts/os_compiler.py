@@ -2763,8 +2763,11 @@ def completion_handoff_quality(
         required_context["reversal workflow"] = "record superseded bead, reversal target, reversal reason, preserved behavior, reversal proof, and approvals still required"
 
     close_state = close_readiness(bead, current_checks)
+    accepted_hold = accepted_hold_reentry_state(bead, close_state, promotion_state)
     if bead.status in {"needs_info", "manual_testing"}:
         next_safe_action = "record exact blocked escape path or create a narrow unblocker bead"
+    elif accepted_hold.get("eligible"):
+        next_safe_action = accepted_hold["next_safe_action"]
     elif close_state.get("eligible") and review_decision_accepted(closeout.get("review_decision", "")):
         next_safe_action = "review transition proposal; user approval is still required"
     elif bead_rows:
@@ -2815,6 +2818,7 @@ def completion_handoff_quality(
         "session_freshness": session_freshness,
         "next_bead": next_rel or next_value or "not recorded",
         "next_bead_start_readiness": next_start,
+        "accepted_hold": accepted_hold,
         "handoff_context_missing": missing_context,
         "next_safe_action": next_safe_action,
         "release_evidence": release_evidence,
@@ -3401,6 +3405,59 @@ def promotion_readiness(
         "next_bead": next_rel,
         "next_start_readiness": next_start,
         "close_readiness": close_state,
+    }
+
+
+ACCEPTED_HOLD_BLOCKER_MARKERS = (
+    "current bead status must be review before promotion",
+    "next bead is not named",
+    "next bead file is missing",
+    "next bead blocker:",
+)
+
+
+def accepted_hold_reentry_state(
+    bead: BeadRecord,
+    close_state: dict[str, Any],
+    promotion_state: dict[str, Any],
+) -> dict[str, Any]:
+    blockers = [str(item) for item in (promotion_state.get("blockers") or [])]
+    normalized = [item.lower() for item in blockers]
+    closeout_complete = bool(close_state.get("eligible"))
+    review_accepted = review_decision_accepted(str(close_state.get("review_decision") or ""))
+    status_held = bead.status in {"in_progress", "review"}
+    blockers_are_hold_only = bool(normalized) and all(
+        any(marker in blocker for marker in ACCEPTED_HOLD_BLOCKER_MARKERS) for blocker in normalized
+    )
+    next_bead_blocked = any("next bead" in blocker for blocker in normalized)
+
+    eligible = (
+        closeout_complete
+        and review_accepted
+        and status_held
+        and not promotion_state.get("eligible")
+        and blockers_are_hold_only
+        and next_bead_blocked
+    )
+
+    if eligible:
+        next_safe_action = "author or propose the next bead before transition approval"
+        summary = "The active bead is accepted and held only because next-bead transition inputs are not ready."
+    else:
+        next_safe_action = "use normal closeout, review, or transition routing"
+        summary = "No accepted-hold state detected."
+
+    return {
+        "eligible": eligible,
+        "advisory_only": True,
+        "state": "accepted_hold" if eligible else "not_accepted_hold",
+        "current_bead_status": bead.status,
+        "closeout_complete": closeout_complete,
+        "review_accepted": review_accepted,
+        "promotion_blockers": blockers,
+        "next_safe_action": next_safe_action,
+        "summary": summary,
+        "does_not_approve_transition": True,
     }
 
 

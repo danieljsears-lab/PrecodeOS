@@ -15,6 +15,7 @@ GENERATED_REPORTS = ["PRECODE-HELP.md", "PROGRESS.md", "OS-HEALTH.md"]
 REFERENCE_BY_CATEGORY = {
     "state-repair": "tasks/reference/STATE-MANAGEMENT-PROTOCOL.md",
     "scope-repair": "tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md",
+    "accepted-hold": "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
     "transition-approval": "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
     "review": "modes/REVIEW.md",
     "closeout": "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
@@ -124,11 +125,13 @@ def next_step_guidance(
     summary = "Repair Precode state before continuing."
     stop_if = "Stop if the agent cannot name the active bead, authority file, files in play, and checks."
     approval_prompt = "Ask the agent to repair active state before editing."
+    accepted_hold: dict[str, Any] = {}
 
     if not bead:
         blockers.append("current bead is missing")
     else:
         closeout_blockers = (completion_state.get("details") or {}).get("closeout_blockers") or []
+        accepted_hold = (completion_state.get("details") or {}).get("accepted_hold") or {}
         promotion_blockers = promotion_state.get("blockers") or []
         guard_details = guardrail_state.get("details") or {}
         out_of_scope = guard_details.get("out_of_scope_paths") or []
@@ -147,6 +150,14 @@ def next_step_guidance(
             summary = "Stop: changed files appear outside the approved task."
             stop_if = "Stop until each out-of-scope path is explained as generated evidence, current-bead work, or a separate follow-up."
             approval_prompt = "Ask the user whether to revert, split, or explicitly approve the scope change."
+        elif accepted_hold.get("eligible"):
+            category = "accepted-hold"
+            action = "author or propose the next bead before transition; do not continue implementation or repeat acceptance review"
+            blockers.extend(str(item) for item in promotion_blockers[:6])
+            user_decision = "author next bead"
+            summary = "The active bead is accepted and held; scope or author the next bead before asking for transition approval."
+            stop_if = "Stop if the agent treats the accepted hold as unfinished implementation, repeats acceptance review, or activates a next bead without approval."
+            approval_prompt = "Ask the agent to scope or author the next bead, then show the transition proposal without approving it."
         elif promotion_state.get("eligible"):
             category = "transition-approval"
             action = "review the transition proposal; user approval is required before activating the next bead"
@@ -272,7 +283,7 @@ def next_step_guidance(
                 "More context is useful only when the active bead, authority file, or this router decision points to it."
             ),
             "why_this_matters": (
-                "Precode should reduce the beginner's next decision to continue, ask, reaffirm, review, approve, "
+                "Precode should reduce the beginner's next decision to continue, ask, reaffirm, review, author next bead, approve, "
                 "repair, or stop."
             ),
             "stop_if": stop_if,
@@ -283,6 +294,7 @@ def next_step_guidance(
             "needs_review": category in {"review", "transition-approval", "closeout"},
             "needs_transition": bool(promotion_state.get("eligible")),
             "next_bead": promotion_state.get("next_bead") or "not recorded",
+            "accepted_hold": accepted_hold,
             "goal_frame": current_goal or {},
             "goal_frame_advisory": "Goal Frames can guide workflow selection only; they cannot choose tasks, approve transitions, or override active memory.",
             "stable_fix_eligibility": stable_fix_details,

@@ -411,6 +411,25 @@ Support can say:
 A checkpoint is a status report, not approval. We are going to compare Claude's claims with recorded checks and manual verification. If the evidence was invented or overstated, we will mark the bead honestly and stop before activating anything new.
 ```
 
+### Accepted-Hold Re-entry
+
+Use this procedure when a student reports that every new session re-discovers that the previous bead was already accepted, but cannot transition because the next bead is missing or not ready.
+
+First separate the state from the next action:
+
+- accepted closeout means the prior bead does not need more implementation
+- an active `in_progress` or `review` bead can still be held because the next bead is not named, authored, ready, or transition-approved
+- `accepted-hold` is generated routing help only; it does not mark the bead `done` or activate the next bead
+
+Run only read-only diagnostics from the project root:
+
+```bash
+python3 scripts/next-step.py
+python3 scripts/bead-transition.py --json
+```
+
+If `next-step.py` says to author the next bead, stop re-reviewing the accepted bead. Help the student scope or author the next bead, then show the transition proposal. Do not approve the transition or activate the next bead without explicit user approval.
+
 ### Implemented Bead Reversal Support
 
 Use this when a student or builder says already-implemented work needs to be undone, removed, or superseded.

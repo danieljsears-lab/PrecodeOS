@@ -44,6 +44,8 @@ Active memory remains exactly:
 
 Review-intent phrases are review requests. If the active bead is still `in_progress` and the user asks "do you accept these changes?", "is this accepted?", "can I accept this?", or equivalent acceptance-review wording, the agent must switch the active bead to `review` first, present the Review / Acceptance output, and wait for a review decision. That wording must not mark the bead `done`, approve the review decision, approve transition, or activate the next bead.
 
+An accepted hold is the narrow re-entry state where Closeout Evidence is complete, manual verification is clear, review decision is accepted, and the active bead is still `in_progress` or `review` only because the next bead is not named, authored, ready, or transition-approved. Session start and `next-step.py` should classify this as `accepted-hold` and point to authoring or proposing the next bead before transition. Do not treat an accepted hold as unfinished implementation, repeat acceptance review, mark the bead `done`, approve transition, or activate another bead without the normal explicit approval path.
+
 ## Required Completion Fields
 
 Closeout Evidence should include:

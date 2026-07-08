@@ -871,6 +871,8 @@ Follow these steps in order.
 
 Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.
 
+If `next-step.py` says `author next bead`, the current bead is in an accepted hold: evidence and review are complete, but the next bead still needs to be scoped or authored before transition approval. Do not keep implementing the accepted bead or repeat the acceptance review. Ask the agent to propose or author the next bead, then show the transition proposal without approving it.
+
 ## Use The Daily Loop
 
 Keep this table open during normal work.

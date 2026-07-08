@@ -50,6 +50,7 @@ STABLE_DECISIONS = {
     "ask for missing info",
     "ask for proof",
     "review",
+    "author next bead",
     "approve transition",
     "repair state",
     "approval needed",
@@ -59,6 +60,7 @@ STABLE_DECISIONS = {
 ROUTER_DECISION_CATEGORIES = {
     "state-repair",
     "scope-repair",
+    "accepted-hold",
     "transition-approval",
     "review",
     "closeout",
@@ -188,13 +190,14 @@ def next_payload(
     run_contract: dict[str, Any] | None = None,
     goal_frame: dict[str, Any] | None = None,
     stable_fix: dict[str, Any] | None = None,
+    accepted_hold: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
         Path("."),
         {"sections": {"Open Questions": "- none"}, "current_bead": "tasks/beads/B999-clarity-fixture.md"},
         current,
         promotion or {"eligible": False, "blockers": [], "next_bead": "not recorded"},
-        {"details": {"closeout_blockers": closeout_blockers or []}},
+        {"details": {"closeout_blockers": closeout_blockers or [], "accepted_hold": accepted_hold or {}}},
         {"details": {}},
         depth or {"status": "pass", "warnings": [], "details": {}},
         guardrail or {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
@@ -3667,6 +3670,36 @@ def main() -> int:
             "approve transition",
         ),
         (
+            "accepted hold needs next bead",
+            (
+                next_payload(
+                    bead(
+                        status="in_progress",
+                        closeout={
+                            "manual_verification": "Who checked: fixture. What was checked: accepted-hold evidence. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+                            "review_decision": "accepted",
+                        },
+                    ),
+                    promotion={
+                        "eligible": False,
+                        "blockers": [
+                            "current bead status must be review before promotion; found in_progress",
+                            "next bead is not named in Closeout Evidence or Handback",
+                        ],
+                        "next_bead": None,
+                    },
+                    accepted_hold={
+                        "eligible": True,
+                        "advisory_only": True,
+                        "state": "accepted_hold",
+                        "next_safe_action": "author or propose the next bead before transition approval",
+                    },
+                )["details"]
+                or {}
+            ).get("user_decision"),
+            "author next bead",
+        ),
+        (
             "closeout incomplete",
             (next_payload(bead(), closeout_blockers=["manual verification is missing"])["details"] or {}).get(
                 "user_decision"
@@ -3706,6 +3739,33 @@ def main() -> int:
                 promotion={"eligible": True, "blockers": [], "next_bead": "tasks/beads/B998-next.md"},
             ),
             "transition-approval",
+        ),
+        (
+            "accepted hold",
+            next_payload(
+                bead(
+                    status="in_progress",
+                    closeout={
+                        "manual_verification": "Who checked: fixture. What was checked: accepted-hold evidence. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+                        "review_decision": "accepted",
+                    },
+                ),
+                promotion={
+                    "eligible": False,
+                    "blockers": [
+                        "current bead status must be review before promotion; found in_progress",
+                        "next bead is not named in Closeout Evidence or Handback",
+                    ],
+                    "next_bead": None,
+                },
+                accepted_hold={
+                    "eligible": True,
+                    "advisory_only": True,
+                    "state": "accepted_hold",
+                    "next_safe_action": "author or propose the next bead before transition approval",
+                },
+            ),
+            "accepted-hold",
         ),
         ("review", next_payload(bead(status="review"), promotion={"eligible": False, "blockers": ["review evidence is unclear"], "next_bead": "not recorded"}), "review"),
         ("closeout", next_payload(bead(), closeout_blockers=["manual verification is missing"]), "closeout"),

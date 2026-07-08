@@ -133,6 +133,8 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
 | Recover | `Recover: I am stuck, help me.` | A prescriptive recovery response plus named fallback prompt when a symptom is known: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 
+If the generated next-step decision is `author next bead`, treat it as an accepted hold: the current bead is accepted, but transition still needs a next bead proposal or authored bead. Do not continue implementation, repeat acceptance review, approve transition, or activate a bead from that generated classification.
+
 ### Advanced / Conditional Surfaces
 
 Use these only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points.
