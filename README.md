@@ -40,6 +40,8 @@ It uses build loops, bead contracts, recorded checks, advisory loop health, clos
 
 It lives inside a repository as Markdown owner files, execution contracts, validation scripts, compilers, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents, and it does not run the agent; you run the agent.
 
+Taken together, those files form an advisory repo-native harness for agentic work: owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades make the work inspectable without becoming approval authority. The harness is not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
+
 Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps software work human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces instead of hidden chat assumptions.
 
 PrecodeOS treats product intent, design judgment, acceptance, and proof as durable repo-owned control surfaces for AI coding work. The agent can move quickly, but the reasons for the work, the bounds of the work, and the evidence for accepting it stay readable in the repository.
@@ -150,6 +152,8 @@ python3 scripts/precode_cli.py validate
 ```
 
 For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a curated wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
+
+The optional facade, generated router output, run-contract sidecars, and recorded-check ledger are part of PrecodeOS's advisory harness contract. They make boundaries visible for humans and agents, but Markdown owner files, protocols, active beads, recorded proof, and explicit human gates remain the source of authority.
 
 Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
 
@@ -387,8 +391,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.50
-Last updated: 2026-07-04
+Document version: v0.1.51
+Last updated: 2026-07-08
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

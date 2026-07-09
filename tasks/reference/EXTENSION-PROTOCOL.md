@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-26
+Document version: v0.1.23
+Last updated: 2026-07-08
 
 ## Purpose
 
@@ -28,6 +28,8 @@ Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes comma
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when an extension introduces a new integration boundary, provider abstraction, workflow state, audit trail, or other reusable implementation shape.
 
+PrecodeOS's existing owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades form an advisory repo-native harness contract. Treat harness hardening as boundary and contract work, not as permission to add a Harness Protocol, agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
+
 Use `llms.txt` only as a compact navigation index for stable canonical PrecodeOS documentation. It is not active memory, a generated evidence report, a runtime integration contract, a package registry, or permission to compress, proxy, wrap, install, update, or mutate tools.
 
 Active memory remains exactly:
@@ -39,6 +41,8 @@ Active memory remains exactly:
 Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when an extension touches adapters, shims, skill playbooks, generated reports, reviewed memory, source evidence, or maintainer-local context. Extensions may add or improve one layer, but they must not let that layer become active memory, task authority, approval, or a hidden operating model.
 
 Future host shims and native rule-directory surfaces must start as advisory compatibility notes in `adapters/ADAPTER-INDEX.md` or a specific adapter, then pass extension review before they become shipped Precode surfaces. Do not add broad host support promises from speculative model, IDE, agent, pricing, quota, or cloud-runner behavior.
+
+Future host-facing contract consumption may become stricter only after advisory run contracts, command classification, and wrapper boundaries prove stable in real use. Any stricter host adapter must remain subordinate to owner files, active beads, recorded proof, user approval gates, and the Tool Execution Protocol; it must not silently become runtime enforcement or command approval.
 
 Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
 

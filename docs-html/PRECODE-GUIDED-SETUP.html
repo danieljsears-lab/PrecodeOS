@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-04">
+  <meta name="generated-at" content="2026-07-09">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">What This Guide Is For</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.18</span><span>Updated 2026-07-04</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.19</span><span>Updated 2026-07-09</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -365,6 +365,13 @@ Explain the plan in plain English and stop for my approval.</code></pre>
 <p>Expect the agent to name:</p>
 <ul><li>the PrecodeOS package checkout</li><li>the target project folder</li><li>whether this is a new project or existing project</li><li>the public file groups to copy</li><li>the private, generated, local, and secret files to exclude</li><li>conflicts, missing dependencies, and the first safe next action from Bootstrap Confidence</li><li>the first validation command</li></ul>
 <p>Stop if the agent tries to run a broad installer, invents a <code>precode</code> CLI command, installs hooks silently, or starts editing application code.</p>
+<p>If a screenshot or transcript mentions a commit-hook, <code>write-guard.sh</code>, or <code>os-integrity-check.py</code> failure, first ask for the exact terminal output from the current checkout. A stale maintainer note is not enough evidence to reinstall or overwrite PrecodeOS. From the PrecodeOS package folder, a support helper can ask the user to run:</p>
+<pre><code class="language-bash">git status --short --branch
+test -f scripts/os-integrity-check.py &amp;&amp; echo &quot;os-integrity-check present&quot;
+test -f scripts/os-checkpoint.py &amp;&amp; echo &quot;os-checkpoint present&quot;
+test -f scripts/write-guard.sh &amp;&amp; echo &quot;write-guard present&quot;
+bash scripts/pre-commit-validate.sh</code></pre>
+<p>Git hooks are optional advanced validation, not normal first setup. If a commit hook fails after hooks were explicitly installed, strict OS Integrity output usually means a protected PrecodeOS-owned source edit needs a scoped checkpoint; it does not by itself prove that the package is missing files or should be reinstalled.</p>
 <h2 id="step-3-choose-the-first-adoption-fork"><a class="heading-anchor" href="#step-3-choose-the-first-adoption-fork" aria-label="Link to Step 3: Choose The First Adoption Fork">#</a>Step 3: Choose The First Adoption Fork</h2>
 <p>Use the new-project path first if you are starting from an empty or nearly empty repository.</p>
 <p>Use the existing-project path if your target project already has application code, product docs, project conventions, or active work.</p>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-29
+Document version: v0.1.16
+Last updated: 2026-07-08
 
 ## Purpose
 
@@ -21,6 +21,8 @@ A command can be useful without proving the work is done. Precode separates:
 - tool use: an action happened
 - verification evidence: a check proved something and was recorded
 - user approval: a human approved a risky action
+
+Tool execution is part of PrecodeOS's advisory repo-native harness contract. Command classes, run contracts, generated sidecars, recorded checks, and transparent facades make agent work inspectable, but they are not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token read-only tools, browser or screenshot-heavy tools, delegated agents, and external mutation tools.
 
@@ -81,6 +83,8 @@ Use a bead Run Contract when sensitive, external, destructive, or `bounded-afk` 
 - expiration condition
 
 The lease is advisory contract state. It does not override sandbox permissions, approve commands automatically, widen `files_in_play`, skip recorded proof, accept review, merge work, or bypass user approval. `python3 scripts/run-contract-check.py` warns when allowed actions are broader than the active bead or when risky or bounded-AFK work lacks proof, re-entry evidence, approval, stop, or recovery details.
+
+Future host adapters may consume `logs/run-contract.json` or `logs/run-contract.yaml` more strictly after real use proves the advisory contract is stable. That future path would still require extension review and must not silently create command approval, runtime enforcement, package-manager behavior, or generated-output authority.
 
 ## Evidence Distinction
 

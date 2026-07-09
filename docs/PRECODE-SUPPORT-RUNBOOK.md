@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.36
-Last updated: 2026-07-04
+Document version: v0.1.37
+Last updated: 2026-07-09
 
 ## Purpose
 
@@ -148,6 +148,30 @@ Stop and explain the issue before changing anything when the error appears to in
 
 Do not modify files inside precode/ except when the active bead explicitly allows that exact Precode control-layer change. If a Precode framework file appears to cause the error, surface the symptom and escalation path to the support lead or maintainer instead of patching it casually.
 ```
+
+### Commit-Hook Or OS-Integrity Triage
+
+If a student shows a screenshot or agent summary that claims the commit hook, `write-guard.sh`, or `os-integrity-check.py` is broken, treat it as indirect evidence until the current terminal output is available. Do not recommend reinstalling PrecodeOS, overwriting files, using `--no-verify`, or patching hook scripts from a screenshot alone.
+
+Support can say:
+
+```text
+That screenshot is not the actual Precode error output. It looks like an old maintainer/Codex note about a commit-hook gap, and the latest PrecodeOS repo should include the hook dependency files.
+
+Please do not reinstall or overwrite anything yet.
+
+From the PrecodeOS package folder, run:
+
+git status --short --branch
+test -f scripts/os-integrity-check.py && echo "os-integrity-check present"
+test -f scripts/os-checkpoint.py && echo "os-checkpoint present"
+test -f scripts/write-guard.sh && echo "write-guard present"
+bash scripts/pre-commit-validate.sh
+
+Then send me the full terminal output. If you installed Git hooks and the failure happens during commit, say that too. Git hooks are not part of normal first setup unless explicitly approved.
+```
+
+If hooks were installed and the failure is a strict OS Integrity warning, explain that protected PrecodeOS-owned source edits require a scoped checkpoint. That warning is not package-manager behavior, auto-repair permission, or evidence that the student's project should be reinstalled.
 
 ## Case Priority
 

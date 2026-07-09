@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-07-04
+Document version: v0.1.19
+Last updated: 2026-07-09
 
 ## What This Guide Is For
 
@@ -278,6 +278,18 @@ Expect the agent to name:
 - the first validation command
 
 Stop if the agent tries to run a broad installer, invents a `precode` CLI command, installs hooks silently, or starts editing application code.
+
+If a screenshot or transcript mentions a commit-hook, `write-guard.sh`, or `os-integrity-check.py` failure, first ask for the exact terminal output from the current checkout. A stale maintainer note is not enough evidence to reinstall or overwrite PrecodeOS. From the PrecodeOS package folder, a support helper can ask the user to run:
+
+```bash
+git status --short --branch
+test -f scripts/os-integrity-check.py && echo "os-integrity-check present"
+test -f scripts/os-checkpoint.py && echo "os-checkpoint present"
+test -f scripts/write-guard.sh && echo "write-guard present"
+bash scripts/pre-commit-validate.sh
+```
+
+Git hooks are optional advanced validation, not normal first setup. If a commit hook fails after hooks were explicitly installed, strict OS Integrity output usually means a protected PrecodeOS-owned source edit needs a scoped checkpoint; it does not by itself prove that the package is missing files or should be reinstalled.
 
 ## Step 3: Choose The First Adoption Fork
 

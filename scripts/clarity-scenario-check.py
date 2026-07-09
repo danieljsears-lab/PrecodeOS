@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.42
-# Last updated: 2026-07-04
+# Version: v0.1.43
+# Last updated: 2026-07-08
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1188,6 +1188,63 @@ def assert_vibe_to_agentic_boundary_contract(failures: list[dict[str, str]]) -> 
         for term in forbidden_terms:
             if term in text:
                 failures.append({"scenario": f"vibe-to-agentic boundary forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_harness_contract_hardening(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "advisory repo-native harness",
+            "owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades",
+            "not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer",
+            "Markdown owner files, protocols, active beads, recorded proof, and explicit human gates remain the source of authority",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "advisory repo-native harness contract",
+            "owner files, protocols, generated sidecars, recorded checks, adapters, and transparent command facades",
+            "it does not enforce commands, approve work, select tasks, replace owner files, or become a package manager",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "advisory repo-native harness contract",
+            "Command classes, run contracts, generated sidecars, recorded checks, and transparent facades make agent work inspectable",
+            "Future host adapters may consume `logs/run-contract.json` or `logs/run-contract.yaml` more strictly",
+            "must not silently create command approval, runtime enforcement, package-manager behavior, or generated-output authority",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "advisory repo-native harness contract",
+            "not as permission to add a Harness Protocol",
+            "Future host-facing contract consumption may become stricter only after advisory run contracts, command classification, and wrapper boundaries prove stable in real use",
+            "must not silently become runtime enforcement or command approval",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"harness contract hardening: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("README.md"): [
+            "Harness Protocol",
+            "custom agent runtime",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Harness Protocol",
+            "custom agent runtime",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "Harness Protocol",
+            "custom agent runtime",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "custom agent runtime",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"harness contract hardening forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
@@ -3951,6 +4008,7 @@ def main() -> int:
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
     vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
+    harness_contract_scenario_count = assert_harness_contract_hardening(failures)
     task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
@@ -4503,6 +4561,7 @@ def main() -> int:
         + engineering_quality_scenario_count
         + public_objection_scenario_count
         + vibe_to_agentic_boundary_scenario_count
+        + harness_contract_scenario_count
         + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)

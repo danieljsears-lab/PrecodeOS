@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.85
-Last updated: 2026-07-04
+Document version: v0.2.87
+Last updated: 2026-07-09
 
 ## Purpose
 
@@ -56,7 +56,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Adapters and shims | `adapters/*.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` | Thin compatibility surfaces for AI coding tools; `adapters/ADAPTER-INDEX.md` owns the narrow compatibility shim matrix. |
 | Host-agent skills | `.agents/README.md`, `.agents/skills/*.md` | Host-discoverable skill files and their boundary note; not Precode skill-playbook authority, active memory, task approval, command approval, registry behavior, or optional-pack installation. |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` | Marker and user guidance for target-project raw evidence such as notes, documents, screenshots, research, and links. |
-| Scripts and local CLI | `scripts/*.py`, `scripts/*.sh`, `pyproject.toml` | Validation, state compilation, evidence recording, bounded Ralph attempts, auditing, local hygiene checks, generated reports, engineering-quality text-contract checks, task-suitability checks, team collaboration preview evidence through `scripts/team-collaboration-check.py` and `logs/team-collaboration-preview.json`, and the optional local `precode` command facade. |
+| Scripts and local CLI | `scripts/*.py`, `scripts/*.sh`, `pyproject.toml` | Validation, state compilation, evidence recording, bounded Ralph attempts, auditing, local hygiene checks, generated reports, engineering-quality text-contract checks, task-suitability checks, team collaboration preview evidence through `scripts/team-collaboration-check.py` and `logs/team-collaboration-preview.json`, and the optional local `precode` command facade. These surfaces form an advisory repo-native harness contract with owner files, protocols, generated sidecars, recorded checks, adapters, and transparent command facades; they do not create an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer. |
 | Reviewed memory | `memory/`, `memory/cards/*.md` | Reviewed memory cards and templates; evidence only. |
 | Generated reports | `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.md` | Human-readable generated evidence, including the Work Graph Report; not authority. |
 | Generated sidecars | `logs/*.json`, `logs/*.jsonl`, `logs/progress.json`, `logs/run-contract.yaml` | Machine-readable generated evidence, execution profiles, and ledgers. |
@@ -177,6 +177,8 @@ scripts/os_compiler.py
 ```
 
 Generated sidecars summarize current state but do not replace source files.
+
+This script-and-sidecar chain is the machine-readable part of the advisory PrecodeOS harness contract. It can expose boundaries such as `next-step`, readiness, authority-map, run-contract, and evidence state for humans and host adapters to inspect, but it does not enforce commands, approve work, select tasks, replace owner files, or become a package manager.
 
 Bootstrap Confidence is separate from compiled current-state sidecars because it compares a PrecodeOS package source with an adoption target before the target is necessarily a valid Precode repo. Existing Repo Intake is the next first-fork branch for targets that already have app code, docs, CI, product history, or active work. The supervised setup plan is the final non-mutating checklist layer after manifest preview. Supervised setup apply is the narrow mutating layer for explicitly approved setup-plan copy actions in empty or nearly empty targets only. Bootstrap Closeout adds non-mutating existing-project adaptation planning, existing-Precode package upgrade preview, the public Existing Precode Refresh prompt, support-assisted recovery guidance, and an explicit action-ID apply path for missing package-owned files only.
 
@@ -342,10 +344,10 @@ Command surface triage is documentation guidance, not a registry or wrapper laye
 | `scripts/update-bead-closeout.py` | Refreshes closeout evidence markers, including reference follow-through when recorded. | Check logs and active bead. | Updates active bead closeout fields without approving work or transition. |
 | `scripts/log-loop-event.sh` | Appends loop events. | Event type and bead context. | `logs/loop-runs.jsonl`. |
 | `scripts/execution-state.py` | Prints execution state. | Active memory and bead state. | Human-readable or machine-readable state. |
-| `scripts/write-guard.sh` | Guards writes against scope rules and runs strict OS-integrity checkpoint checks for protected staged source edits. | Paths, staged changes, active bead context, and OS checkpoint manifests. | Pass/fail write-scope signal; no mutation or command approval. |
+| `scripts/write-guard.sh` | Guards writes against scope rules and runs strict OS-integrity checkpoint checks for protected staged source edits. | Paths, staged changes, active bead context, and OS checkpoint manifests. | Pass/fail write-scope signal; no mutation or command approval; strict checkpoint warnings mean protected PrecodeOS-owned source edits need scoped checkpoint evidence, not reinstall or package update permission. |
 | `scripts/hypothesis-check.py` | Checks Hypothesis Guidance and Hypothesis Review / Learning Loop contract coverage across canonical Markdown surfaces. | Product Discovery, Hypothesis Review, Candidate Queue, Planning, Local Source Intake, PRD, prompt, workbook, user-guide, Daily Cockpit, and package-inventory hypothesis fields and guardrails. | Advisory JSON only; does not judge product hypothesis quality, parse generated HTML as authority, rank Candidate Queue entries, approve PRDs, activate beads, choose tasks, require analytics, create a database, make generated status authoritative, or write files. |
-| `scripts/install-git-hooks.sh` | Installs local git hooks when available. | Repo checkout. | Local hook files. |
-| `scripts/pre-commit-validate.sh` | Runs validation before commit. | Working tree. | Pass/fail hook output. |
+| `scripts/install-git-hooks.sh` | Installs local git hooks when available. | Repo checkout after separate explicit approval. | Local hook files; optional advanced validation, not normal first setup, package-manager behavior, or hidden approval. |
+| `scripts/pre-commit-validate.sh` | Runs validation before commit when local hooks are installed or when invoked manually for support triage. | Working tree and staged paths. | Pass/fail hook output; absence of staged files is a clean no-op, and failures should be diagnosed from current terminal output before repair guidance. |
 | `scripts/scheduled-audit.sh` | Shell wrapper for opt-in scheduled audits. | Local repo and optional external tools. | Audit output files and generated audit report. |
 | `scripts/scheduled-audit.py` | Renders scheduled audit report. | Audit command results and compiled state. | `logs/scheduled-audit.md/json`. |
 | `scripts/github-audit.py` | Read-only GitHub repository/CI audit. | Git and `gh` when configured. | JSON status output. |
