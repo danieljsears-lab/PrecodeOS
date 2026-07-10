@@ -329,6 +329,7 @@ python3 scripts/precode_cli.py check
 bash scripts/validate-memory.sh
 python3 scripts/version-check.py
 python3 scripts/file-inventory.py --check
+python3 scripts/package-knowledge-lint.py --check
 python3 scripts/public-repo-check.py
 ```
 
@@ -391,8 +392,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.51
-Last updated: 2026-07-08
+Document version: v0.1.52
+Last updated: 2026-07-10
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

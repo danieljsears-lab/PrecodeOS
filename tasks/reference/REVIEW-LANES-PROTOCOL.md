@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
+Document version: v0.1.7
 Last updated: 2026-07-10
 
 ## Purpose
@@ -216,7 +216,7 @@ Focus on:
 
 The Cross-Reference / Staleness Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not edit stale references automatically, declare stale claims authoritative, create tasks, approve review, accept implementation, approve PRDs, approve release, approve transitions, rewrite owner files, rewrite generated output as source truth, create a generated report family, create checker authority, become a required gate for every docs change, inspect private maintainer files as public package authority, mutate GitHub, mutate external systems, or replace the current owner files.
 
-Use existing freshness and generated-surface checks before proposing new machinery. A future broad doc graph, orphan-page, backlink, contradiction, duplicate-concept, or semantic-lint system belongs in a separate roadmap candidate unless real review examples prove that this lane needs it.
+Use existing freshness and generated-surface checks before proposing new machinery. When repeated review examples need deterministic package graph evidence, run `python3 scripts/package-knowledge-lint.py --check` as advisory Package Knowledge Lint evidence for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk. The lint output does not edit files, approve review, create checker authority, select tasks, promote sources, rewrite docs automatically, declare stale claims authoritative, or become a required docs-change gate. Broader semantic contradiction, LLM judging, automatic backlink suggestions, or generated-authority graph behavior remains out of scope unless a later roadmap candidate explicitly approves it.
 
 For any lane, `Missing proof` should name the requirement, bug behavior, acceptance criterion, or release risk that lacks a recorded source. Avoid vague findings such as "needs more tests" when the real gap is that no evidence is tied to the claim being accepted.
 

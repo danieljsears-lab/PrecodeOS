@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-08
+Document version: v0.1.24
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -59,7 +59,7 @@ Future retrieval-backed memory is governed by this protocol before any database,
 | Skill playbook | Read-only host-agent invocation guidance for stable docs help, an existing Precode workflow, or extension review | `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` plus the owner protocol, canonical docs, or adapter |
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Approval-gated local queue helper | Previews Candidate Queue import or shaping actions and applies only explicit approved action IDs | `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` plus `scripts/candidate-queue.py` |
-| Audit | Reads project or external status and reports findings | `scripts/*-audit.py` or read-only preview scripts such as `scripts/team-collaboration-check.py` and `scripts/session-friction-check.py` |
+| Audit | Reads project, package, or external status and reports findings | `scripts/*-audit.py`, `scripts/package-knowledge-lint.py`, or read-only preview scripts such as `scripts/team-collaboration-check.py` and `scripts/session-friction-check.py` |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | AI-readable navigation index | Compact stable-docs index for AI assistants and documentation tools | `llms.txt` plus canonical Markdown owner files |
@@ -153,6 +153,8 @@ Generated evidence should live under `logs/` unless a legacy Precode report alre
 Generated JSON and JSONL files must be treated as evidence only. They may feed summaries, audits, or human review, but they must not directly rewrite active memory, bead state, PRDs, decisions, or product authority files.
 
 Generated reports, sidecars, and public generated HTML added by an extension should be represented in `logs/authority-map.json` surface classes when the generated map is refreshed. That classification is orientation evidence only; it does not approve the extension, make generated output authoritative, or replace the owning protocol, adapter, PRD, decision, authority file, or approved bead.
+
+`logs/package-knowledge-lint.json` may expose Package Knowledge Lint findings for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk across the public package core. It is generated evidence only: it must not approve edits, choose tasks, promote sources, rewrite docs automatically, declare stale claims authoritative, create proof, accept implementation, create a checker gate, create registry or optional-pack behavior, or create install/update, release-channel, or package-manager behavior.
 
 `logs/run-contract.json` and `logs/run-contract.yaml` are generated execution profiles compiled from the active bead. They may help a future host adapter enforce allowed actions and proof needed, but they are not authority and do not approve commands.
 

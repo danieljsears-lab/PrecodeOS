@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-07-04
+Document version: v0.1.16
+Last updated: 2026-07-10
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -70,6 +70,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`, with static progress cues, section links, and source Markdown links; Markdown remains canonical.
 - `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
 - `scripts/engineering-quality-check.py`: Engineering Quality Text-Contract Checker; advisory only, including package text-contract coverage for Engineering Quality Review Lane references and explicit `--repo-heuristics-preview` changed-file repo-shape warnings; not implementation approval, review acceptance, generated proof, app-code parsing, AST analysis, linter replacement, test execution, scorecard, or checker gate.
+- `scripts/package-knowledge-lint.py`: Package Knowledge Lint over the public package core; advisory generated evidence only for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk; not edit approval, task selection, source promotion, automatic doc rewrite, stale-claim authority, proof, implementation acceptance, checker gate, registry, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.
 - `scripts/task-suitability-check.py`: Task Suitability Checker; advisory continue/clarify/route/split/block/stop guidance only, not task selection, PRD approval, bead activation, implementation authorization, review acceptance, command approval, or generated proof.
 - `scripts/candidate-queue.py`: local Candidate Queue preview/apply helper; preview is non-authority and apply requires explicit `--approve-action`.
 - `scripts/session-friction-check.py`: read-only Session Friction Review diagnostic; findings are generated evidence only and require manual promotion.

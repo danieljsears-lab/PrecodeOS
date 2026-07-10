@@ -1310,6 +1310,92 @@ def assert_cross_reference_staleness_review_lane_contract(failures: list[dict[st
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
+def assert_package_knowledge_lint_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("scripts/package-knowledge-lint.py"): [
+            "Package Knowledge Lint output is advisory generated evidence only.",
+            "does not approve edits",
+            "select tasks",
+            "promote sources",
+            "rewrite docs",
+            "declare stale claims authoritative",
+            "create a checker gate",
+            "package-manager behavior",
+            "logs/package-knowledge-lint.json",
+            "broken internal links or anchors",
+            "duplicate heading labels",
+            "orphan public references",
+            "public/private boundary risk",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "`scripts/package-knowledge-lint.py`",
+            "`logs/package-knowledge-lint.json`",
+            "broken internal links or anchors",
+            "duplicate heading labels",
+            "orphan public references",
+            "stale generated sidecar cues",
+            "duplicate authority claims",
+            "public/private boundary risk",
+            "must not approve edits, choose tasks, promote sources, rewrite docs automatically",
+            "install/update, release-channel, or package-manager behavior",
+        ],
+        Path("tasks/reference/REVIEW-LANES-PROTOCOL.md"): [
+            "python3 scripts/package-knowledge-lint.py --check",
+            "advisory Package Knowledge Lint evidence",
+            "does not edit files, approve review, create checker authority, select tasks, promote sources",
+            "Broader semantic contradiction, LLM judging, automatic backlink suggestions, or generated-authority graph behavior remains out of scope",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "`scripts/package-knowledge-lint.py`",
+            "Package Knowledge Lint over the public package core",
+            "`logs/package-knowledge-lint.json`",
+            "generated evidence only, not edit approval, task selection, source promotion, automatic doc rewrite",
+            "install/update, release-channel, or package-manager behavior",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "`package-knowledge-lint.py --check`",
+            "These are package-maintenance checks, not the normal student daily surface.",
+        ],
+        Path("README.md"): [
+            "python3 scripts/package-knowledge-lint.py --check",
+        ],
+        Path("llms.txt"): [
+            "`scripts/package-knowledge-lint.py`",
+            "Package Knowledge Lint over the public package core",
+            "advisory generated evidence only",
+            "not edit approval, task selection, source promotion, automatic doc rewrite",
+            "release-channel behavior, or package-manager behavior",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"package knowledge lint contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/REVIEW-LANES-PROTOCOL.md"): [
+            "Package Knowledge Lint approves review",
+            "Package Knowledge Lint is required for every docs change",
+            "Package Knowledge Lint automatically rewrites docs",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Package Knowledge Lint is part of beginner daily work",
+            "package-knowledge-lint.py approves edits",
+        ],
+        Path("llms.txt"): [
+            "Package Knowledge Lint is authority",
+            "Package Knowledge Lint selects tasks",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"package knowledge lint forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
 def assert_task_suitability_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/prds/PRD-036-task-suitability-split-heuristics.md"): [
@@ -4170,6 +4256,7 @@ def main() -> int:
     vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
     harness_contract_scenario_count = assert_harness_contract_hardening(failures)
     cross_reference_staleness_scenario_count = assert_cross_reference_staleness_review_lane_contract(failures)
+    package_knowledge_lint_scenario_count = assert_package_knowledge_lint_contract(failures)
     task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
@@ -4725,6 +4812,7 @@ def main() -> int:
         + vibe_to_agentic_boundary_scenario_count
         + harness_contract_scenario_count
         + cross_reference_staleness_scenario_count
+        + package_knowledge_lint_scenario_count
         + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
