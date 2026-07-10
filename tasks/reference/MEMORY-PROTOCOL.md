@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-07-04
+Document version: v0.1.9
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -53,6 +53,8 @@ When the distinction is unclear, run a Memory Promotion Review before editing an
 - stop condition: stop if the source evidence is weak, the owner is unclear, the memory conflicts with current authority, or the requested action would auto-promote memory
 
 Memory Promotion Review is a reasoning shape, not a new workflow authority. It must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, expand active memory, or treat generated indexes as source truth.
+
+Memory Promotion Review is the reviewed-memory instance of Source-To-Promotion Hygiene Review. When a memory claim may move to an owner file, check source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. `scripts/memory-check.py` may surface missing promotion-hygiene fields for `needs_promotion` cards, but that output is generated evidence only and must not perform the promotion.
 
 ## Storage Shape
 

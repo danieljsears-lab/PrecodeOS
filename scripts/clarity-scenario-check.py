@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.43
-# Last updated: 2026-07-08
+# Version: v0.1.44
+# Last updated: 2026-07-10
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1248,6 +1248,68 @@ def assert_harness_contract_hardening(failures: list[dict[str, str]]) -> int:
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
+def assert_cross_reference_staleness_review_lane_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/REVIEW-LANES-PROTOCOL.md"): [
+            "Cross-Reference / Staleness Review Lane",
+            "bounded package documentation/reference surface",
+            "stale, deleted, renamed, or superseded file references",
+            "semantic drift, duplicate concepts, and contradiction risk as manual review prompts",
+            "must not edit stale references automatically",
+            "rewrite generated output as source truth",
+            "Use existing freshness and generated-surface checks before proposing new machinery.",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Cross-Reference / Staleness Review Lane",
+            "Review these files or file families: [docs/*.md, tasks/reference/*.md, or specific paths].",
+            "Treat semantic drift, duplicate concepts, and contradiction risk as manual review prompts",
+            "do not hand-edit generated output as source truth",
+            "Do not edit files automatically, declare stale claims authoritative, create tasks",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Cross-Reference / Staleness Review Lane",
+            "bounded package docs or reference surface",
+            "stale file references, renamed prompts or aliases, missing owner pointers",
+            "semantic drift, duplicate concepts, and contradiction risk are manual review prompts",
+            "repair or regenerate from source Markdown; do not hand-edit generated output as source truth",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Cross-Reference / Staleness Review Lanes",
+            "one bounded package documentation/reference surface",
+            "declare stale claims authoritative",
+            "treat Work Graph reports or generated HTML as authority",
+            "inspect private maintainer files as public package authority",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"cross-reference staleness lane contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/REVIEW-LANES-PROTOCOL.md"): [
+            "automatically fixes stale references",
+            "generated stale-fact authority",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "automatically fixes stale references",
+            "generated stale-fact authority",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "automatically fixes stale references",
+            "required gate for every docs change",
+            "generated stale-fact authority",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"cross-reference staleness lane forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
 def assert_task_suitability_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/prds/PRD-036-task-suitability-split-heuristics.md"): [
@@ -1838,6 +1900,104 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
         if term not in safe_prompt:
             failures.append({"scenario": "reviewed memory safe usage prompt", "expected": term, "actual": safe_prompt})
     return len(required_terms_by_path) + 1
+
+
+def assert_source_to_promotion_hygiene_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Source-To-Promotion Hygiene Review",
+            "source summary, Candidate Queue entry, memory claim, or durable chat analysis",
+            "source refs",
+            "evidence strength",
+            "open conflicts",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "Do not approve a PRD",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "Source-To-Promotion Hygiene Review",
+            "source refs",
+            "evidence strength",
+            "open conflicts",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "does not approve PRDs",
+        ],
+        Path("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md"): [
+            "Source-To-Promotion Hygiene Review gaps",
+            "source refs",
+            "evidence strength",
+            "open conflicts",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "do not approve Local Source Intake",
+        ],
+        Path("tasks/reference/MEMORY-PROTOCOL.md"): [
+            "reviewed-memory instance of Source-To-Promotion Hygiene Review",
+            "source refs",
+            "evidence strength",
+            "open conflicts",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "must not perform the promotion",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Source-To-Promotion Hygiene Review",
+            "source summary, Candidate Queue entry, memory claim, or durable chat analysis",
+            "source refs",
+            "promotion action",
+            "approval required",
+            "stop condition",
+            "must not perform promotion",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Is this source ready to promote?",
+            "Source-To-Promotion Hygiene Review",
+            "source refs",
+            "evidence strength",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Source-To-Promotion Hygiene Review",
+            "source refs",
+            "evidence strength",
+            "open conflicts",
+            "proposed owner",
+            "promotion action",
+            "approval required",
+            "stop condition",
+        ],
+        Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
+            "Source-To-Promotion Hygiene Review",
+            "queue entries, memory claims, and durable chat analyses",
+            "promoted through a named owner",
+        ],
+        Path("llms.txt"): [
+            "Source-To-Promotion Hygiene Review",
+            "source summary, Candidate Queue entry, memory claim, or durable chat analysis",
+            "source refs",
+            "evidence strength",
+            "approval required",
+            "stop condition",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"source-to-promotion hygiene contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
 
 
 def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
@@ -4009,6 +4169,7 @@ def main() -> int:
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
     vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
     harness_contract_scenario_count = assert_harness_contract_hardening(failures)
+    cross_reference_staleness_scenario_count = assert_cross_reference_staleness_review_lane_contract(failures)
     task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
@@ -4017,6 +4178,7 @@ def main() -> int:
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
     reviewed_memory_promotion_scenario_count = assert_reviewed_memory_promotion_contract(failures)
+    source_to_promotion_hygiene_scenario_count = assert_source_to_promotion_hygiene_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
@@ -4562,6 +4724,7 @@ def main() -> int:
         + public_objection_scenario_count
         + vibe_to_agentic_boundary_scenario_count
         + harness_contract_scenario_count
+        + cross_reference_staleness_scenario_count
         + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)
@@ -4571,6 +4734,7 @@ def main() -> int:
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
         + reviewed_memory_promotion_scenario_count
+        + source_to_promotion_hygiene_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
         + first_prd_walkthrough_scenario_count

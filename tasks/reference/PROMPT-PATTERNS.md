@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.63
-Last updated: 2026-07-04
+Document version: v0.1.64
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -65,7 +65,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |
 | Future idea not ready for PRD or bead | Candidate Queue | Candidate Queue entry or shaping proposal | Candidate Queue Protocol | Ranking is treated as implementation priority or task authority. |
 | Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
-| Active bead or draft PRD needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, or task creation. |
+| Active bead, draft PRD, or bounded package docs/reference surface needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, stale-claim authority, owner-file rewrite permission, or task creation. |
 | PRD needs handoff readiness review | PRD Handoff Readiness Packet | Read-only PRD handoff packet | PRD Protocol, Decomposition Protocol, and Review Lanes Protocol | Readiness output is treated as PRD approval or bead activation. |
 | Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions, not deployment action | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, provider configuration, dashboard mutation, or external mutation is being implied. |
 | Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
@@ -532,13 +532,13 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
 
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
 
-Load the active bead or draft PRD, primary authority, files in play or changed-file summary when relevant, recorded checks or source evidence when relevant, manual verification when relevant, closeout evidence when relevant, Work Graph evidence when dependency relationships are being reviewed, PRD Protocol when PRD quality is being reviewed, and only the owner files needed for this lane.
+Load the active bead, draft PRD, or bounded package docs/reference surface; primary authority; files in play or changed-file summary when relevant; recorded checks or source evidence when relevant; manual verification when relevant; closeout evidence when relevant; Work Graph evidence when dependency relationships are being reviewed; PRD Protocol when PRD quality is being reviewed; generated-doc freshness results when package cross-references are being reviewed; and only the owner files needed for this lane.
 
 Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
 
-Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, automatically edit stale references, declare stale claims authoritative, rewrite generated output as source truth, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, generated HTML, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
 ```
 
 ### Precode Idea Coach
@@ -750,6 +750,20 @@ The boundary check is not a new stage, score, command, or approval surface.
 
 ```text
 Use the Local Source Intake Protocol on these local materials. Treat them as evidence only. Summarize stable facts, conflicts, open questions, candidate requirements, and possible beads. Do not update authority files or write code.
+```
+
+### Source-To-Promotion Hygiene Review
+
+```text
+Use Source-To-Promotion Hygiene Review on this source summary, Candidate Queue entry, memory claim, or durable chat analysis.
+
+Treat the input as evidence only. Check whether it names source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition.
+
+Return: review target, source refs found or missing, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, recommendation, and what must not happen automatically.
+
+Allowed recommendations are: keep as evidence, ask for more source refs, run Local Source Intake, update Candidate Queue, run Memory Promotion Review, draft or amend a PRD, update `DECISIONS.md`, update an owner file, route to decomposition review, defer, or kill.
+
+Do not approve a PRD, promote owner-file facts, create or activate beads, choose tasks, update tasks/todo.md, accept implementation, edit files, or treat generated summaries as authority.
 ```
 
 ## Engineer Initiation
@@ -969,6 +983,24 @@ Focus on scope discipline, simplest acceptable shape, owner-file and boundary in
 Tell me whether any finding belongs in Closeout Evidence, a PRD amendment, owner-file update, candidate or approved bead, Release Readiness, reviewed memory, or another Review Lane.
 
 Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, certify code quality, certify production readiness, score code, create scorecard authority, create checker authority, create follow-up tasks, rewrite owner files, activate beads, replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness, mutate GitHub, mutate external systems, or treat review output or confidence as proof.
+```
+
+## Cross-Reference / Staleness Review Lane
+
+```text
+Use the Review Lanes Protocol for this bounded package documentation/reference surface.
+Run exactly one lane: Cross-Reference / Staleness Review Lane.
+
+Review these files or file families: [docs/*.md, tasks/reference/*.md, or specific paths].
+Load only the selected source files, the current owner files needed to resolve authority, relevant public package inventory rows, and generated-doc freshness evidence when available.
+
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Focus on stale, deleted, renamed, or superseded file references, alias names, prompt names, command names, missing links, missing backlinks, missing owner pointers, stale generated-surface pointers, duplicate concept labels, contradiction risk, and public/private boundary drift.
+
+Treat semantic drift, duplicate concepts, and contradiction risk as manual review prompts that require current owner-file comparison. If generated HTML, Work Graph output, roadmap HTML, or another generated surface is stale, tell me which source Markdown or owner file should be repaired or regenerated; do not hand-edit generated output as source truth.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not edit files automatically, declare stale claims authoritative, create tasks, approve review, accept implementation, approve PRDs, approve release, approve transitions, rewrite owner files, rewrite generated output as source truth, create a generated report family, create checker authority, make this a required gate for every docs change, inspect private maintainer files as public package authority, mutate GitHub, mutate external systems, or replace the current owner files.
 ```
 
 ## Vertical-Slice Decomposition

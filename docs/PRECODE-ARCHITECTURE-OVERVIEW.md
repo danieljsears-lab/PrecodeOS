@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.33
-Last updated: 2026-07-04
+Document version: v0.3.34
+Last updated: 2026-07-10
 
 ## Executive Summary
 
@@ -157,7 +157,7 @@ This architectural layer model explains how PrecodeOS fits together. For operati
 | Active-memory kernel | Define the minimal always-loaded context. | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`. |
 | Authority contracts | Declare what each file owns and must not own. | `AUTHORITY`, `NOT_AUTHORITY`, `LOAD_WHEN`, `CLASS`. |
 | Reference layer | Hold product constitution, architecture, schema, API, security, and workflow rules. | `PRODUCT.md`, root reference docs, `tasks/reference/`. |
-| Source-evidence layer | Keep raw notes, documents, screenshots, research, and links evidence-only until reviewed conclusions are promoted. | `project-evidence/PROJECT-EVIDENCE-GUIDE.md`, Local Source Intake. |
+| Source-evidence layer | Keep raw notes, documents, screenshots, research, links, queue entries, memory claims, and durable chat analyses evidence-only until reviewed conclusions are promoted through a named owner. | `project-evidence/PROJECT-EVIDENCE-GUIDE.md`, Local Source Intake, Source-To-Promotion Hygiene Review. |
 | Discovery validation layer | Test worth-building uncertainty before product definition hardens into tasks. | `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, Discovery Summary, proceed/pause/narrow/kill recommendation. |
 | Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |

@@ -1,28 +1,28 @@
 # PrecodeOS -- Review Lanes Protocol
 <!-- ANCHOR: review-lanes-protocol -->
 
-> AUTHORITY: Optional advisory review lane templates for one active bead or one draft PRD.
+> AUTHORITY: Optional advisory review lane templates for one active bead, one draft PRD, or one bounded package documentation/reference surface.
 > NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
-> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Review Lanes review for one active bead or one draft PRD.
+> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, Cross-Reference / Staleness Review Lane, or Review Lanes review for one active bead, one draft PRD, or one bounded package documentation/reference surface.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-07-04
+Document version: v0.1.6
+Last updated: 2026-07-10
 
 ## Purpose
 
 Review Lanes help a builder ask specialist review questions without managing fake specialist personas.
 
-A lane attaches to one active bead or one draft PRD and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, approve PRDs, create work, replace Review mode, replace Release Readiness, replace Work Graph evidence, replace Requirements Gap And Conflict Review, or override owner files.
+A lane attaches to one active bead, one draft PRD, or one bounded package documentation/reference surface and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, approve PRDs, create work, replace Review mode, replace Release Readiness, replace Work Graph evidence, replace Requirements Gap And Conflict Review, or override owner files.
 
 When a lane reviews proof quality, it may ask for a requirement-to-proof trace: requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; and remaining uncertainty. The trace is review input only. It must not treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, or generated reports as complete proof by themselves.
 
 ## When To Use Review Lanes
 
-Use a Review Lane when one active bead is complete or nearly complete and the review would benefit from a named specialist lens, or when one draft PRD needs a named pre-approval product-quality lens.
+Use a Review Lane when one active bead is complete or nearly complete and the review would benefit from a named specialist lens, when one draft PRD needs a named pre-approval product-quality lens, or when a bounded package documentation/reference surface needs a named cross-reference and freshness review.
 
 Use the Security Review Lane when the bead touches or may affect:
 
@@ -63,6 +63,16 @@ Use the PRD Quality Review Lane when the draft PRD needs pre-approval review of:
 - unresolved open questions, handoff readiness, or smallest first slice
 - whether PRD approval review should proceed, pause, split, or return to product-definition work
 
+Use the Cross-Reference / Staleness Review Lane when a bounded package documentation/reference surface needs review of:
+
+- stale, deleted, renamed, or superseded file references, alias names, prompt names, or owner pointers
+- missing links, missing backlinks, missing owner pointers, or stale generated-surface pointers that could misroute a builder or agent
+- duplicate concept labels or contradictory guidance across public docs and reference protocols
+- public/private boundary drift, especially public package guidance that appears to depend on maintainer-only material
+- generated reading surfaces that may need refresh from Markdown authority instead of hand edits
+
+For v1, run this lane over a small named file family such as `docs/*.md` and `tasks/reference/*.md`. Treat semantic drift, duplicate concepts, and contradiction risk as manual review prompts that require current owner-file comparison; do not claim a generated stale-fact decision as authority.
+
 `scripts/prd-handoff-readiness.py --prd <path> --target review` may be used as PRD-review evidence when handoff readiness is the narrow question. Treat the packet as cited generated evidence only. It can inform findings, missing proof, acceptance questions, and recommendation, but it does not approve the PRD, create tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, or replace the Markdown PRD.
 
 Do not use a Review Lane as a general brainstorming step, a task planner, a second active bead, a required gate for every task, a substitute for normal acceptance review, a code-quality score, or a substitute for human PRD approval.
@@ -83,10 +93,11 @@ Load only the sources needed for the lane:
 - relevant PRD, bead, dependency, blocker, follow-up, transition, or team-collaboration references when their `LOAD_WHEN` applies
 - relevant owner files, such as `SECURITY.md`, `ACCEPTANCE.md`, `docs/*.md`, or the owning PRD, only when their `LOAD_WHEN` applies
 - `tasks/reference/PRD-PROTOCOL.md`, relevant source inputs, acceptance oracles, open questions, proof expectations, and handoff context when PRD quality is being reviewed
+- selected `docs/*.md`, `tasks/reference/*.md`, public inventory rows, generated-doc freshness results, and current owner files when cross-reference or staleness is being reviewed
 - PRD handoff readiness packet output when the review question is whether a PRD is ready for decomposition, design, engineering, or review handoff
 - `tasks/prds/PRD-038-engineering-quality-review-lane.md` when implementing, validating, or changing the Engineering Quality Review Lane package capability
 
-If the active bead, draft PRD, primary authority, recorded evidence, or changed-file summary needed for the selected lane is missing, stop and ask for the missing source instead of inventing a review.
+If the active bead, draft PRD, package surface, primary authority, recorded evidence, source file family, or changed-file summary needed for the selected lane is missing, stop and ask for the missing source instead of inventing a review.
 
 ## Output Contract
 
@@ -191,6 +202,22 @@ The Engineering Quality Review Lane complements the Engineering Quality Standard
 
 The Engineering Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, certify code quality, certify production readiness, score code, create checker authority, create scorecard authority, replace linters, replace tests, inspect app code, add repo heuristics, add language-aware analysis, create follow-up tasks, rewrite owner files, activate beads, approve release, mutate GitHub, mutate external systems, or turn review output into generated proof.
 
+## Cross-Reference / Staleness Review Lane
+
+Use this lane to inspect whether a bounded documentation/reference surface still points to the right package authorities and current generated reading surfaces.
+
+Focus on:
+
+- stale, deleted, renamed, or superseded file references, alias names, prompt names, command names, and owner pointers
+- missing links, missing backlinks, missing owner pointers, stale generated-surface pointers, or public/private boundary drift
+- duplicate concept labels, contradictory guidance, and semantic drift that need manual owner-file comparison before any claim is treated as current
+- whether `docs-html/`, PRD HTML, roadmap HTML, Work Graph, or other generated surfaces should be refreshed from source Markdown rather than hand edited
+- whether findings belong in an owner-file update, PRD amendment, protocol update, public package inventory update, generated-surface refresh, Candidate Queue entry, reviewed memory review, maintainer changelog entry, or maintainer roadmap follow-up
+
+The Cross-Reference / Staleness Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not edit stale references automatically, declare stale claims authoritative, create tasks, approve review, accept implementation, approve PRDs, approve release, approve transitions, rewrite owner files, rewrite generated output as source truth, create a generated report family, create checker authority, become a required gate for every docs change, inspect private maintainer files as public package authority, mutate GitHub, mutate external systems, or replace the current owner files.
+
+Use existing freshness and generated-surface checks before proposing new machinery. A future broad doc graph, orphan-page, backlink, contradiction, duplicate-concept, or semantic-lint system belongs in a separate roadmap candidate unless real review examples prove that this lane needs it.
+
 For any lane, `Missing proof` should name the requirement, bug behavior, acceptance criterion, or release risk that lacks a recorded source. Avoid vague findings such as "needs more tests" when the real gap is that no evidence is tied to the claim being accepted.
 
 ## Promotion Path
@@ -212,6 +239,7 @@ Stop if:
 
 - the active bead or primary authority is unclear
 - the draft PRD or PRD authority is unclear for PRD Quality Review Lane
+- the package surface or source file family is unclear for Cross-Reference / Staleness Review Lane
 - recorded checks or manual verification are missing for the risk being reviewed
 - the changed-file summary cannot be inspected
 - a sensitive surface appears without an approval gate
@@ -220,6 +248,7 @@ Stop if:
 - the answer would certify code quality, production readiness, scalability, reliability, or maintainability
 - the answer would approve a PRD, certify PRD quality, create scorecard authority, rewrite the PRD, or turn PRD review findings into implementation tasks
 - the answer would treat generated Work Graph reports as authority, proof, task selection, or transition approval
+- the answer would treat generated HTML, generated reports, or review findings as source authority instead of evidence
 - the answer would approve parallel execution instead of routing through branch/worktree isolation and coordinator review
 - findings would need a new PRD, bead, owner-file update, release action, GitHub mutation, external mutation, or destructive command before user review
 
@@ -244,6 +273,7 @@ Review Lanes must not:
 - create implementation tasks
 - rewrite owner files
 - rewrite PRDs
+- rewrite generated output as source truth
 - choose tasks
 - run tasks from graph output
 - approve parallel execution

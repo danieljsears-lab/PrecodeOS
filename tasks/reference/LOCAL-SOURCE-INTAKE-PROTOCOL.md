@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-06-29
+Document version: v0.1.17
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -73,6 +73,8 @@ Source inputs are evidence, not authority.
 
 Do not let local notes, screenshots, exports, or generated summaries drive active task selection directly. Promote only stable conclusions into the owning Precode file.
 
+When source material may move toward an owner file, PRD, decision, Candidate Queue entry, reviewed memory card, protocol update, or bead proposal, run a Source-To-Promotion Hygiene Review before promotion. The review must name source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition. This is a read-only review shape. It does not approve PRDs, promote owner-file facts, create beads, choose tasks, update `tasks/todo.md`, accept implementation, or make generated summaries authoritative.
+
 Public GitHub feedback issues, package-bug issues, comments, labels, pull requests, reviews, checks, and project-board status are source evidence. They may inform intake, bug triage, PRD amendment, protocol updates, package docs, decisions, or candidate beads only after review. They must not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, approve package release, authorize GitHub mutation, or replace maintainer review.
 
 If raw source material conflicts with `PRODUCT.md`, `DECISIONS.md`, an approved PRD, the active bead, or another owner file, current owner files win until the user reviews and approves an amendment.
@@ -110,6 +112,12 @@ Source summary:
 - Conflicts or stale inputs:
 - Privacy or secrets redactions:
 - Open questions that could change implementation:
+- Source refs:
+- Open conflicts:
+- Proposed owner:
+- Promotion action:
+- Approval required:
+- Stop condition:
 - Candidate requirements:
 - Candidate non-goals:
 - Candidate acceptance signals:

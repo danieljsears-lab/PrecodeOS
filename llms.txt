@@ -16,6 +16,7 @@ This file is a navigation aid only. It points to canonical Markdown files and mu
 Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. Do not present them as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
 
 Use the Plan Mode Candidate Craft Loop when candidate or implementation-plan commitment is at issue: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex use `/plan`, in Claude Code use Plan Mode, and in other agents use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate; neither output authorizes implementation.
+Use Source-To-Promotion Hygiene Review before turning a source summary, Candidate Queue entry, memory claim, or durable chat analysis into authority. It checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition; it does not promote files, approve PRDs, choose tasks, update `tasks/todo.md`, or activate beads.
 
 ## Start Here
 

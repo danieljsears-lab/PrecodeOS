@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-30
+Document version: v0.1.3
+Last updated: 2026-07-10
 
 ## Purpose
 
@@ -59,6 +59,7 @@ Candidate Queue shaping may add reviewed metadata that helps a user decide what 
 - likely authority
 - likely verification
 - weakest assumption
+- source-to-promotion hygiene: source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition
 
 This shaping is not product approval. It does not approve a PRD, activate a bead, reserve a bead ID, choose the next task, mutate `tasks/todo.md`, or authorize implementation.
 
@@ -124,6 +125,11 @@ Every queue entry should include:
 - Learning outcome
 - Stale or untested signals
 - Evidence strength
+- Open conflicts
+- Proposed owner
+- Promotion action
+- Approval required
+- Stop condition
 - Weakest assumption
 - Blocked or stale reason when relevant
 - Promotion target
@@ -212,6 +218,8 @@ Preview output must say:
 
 Raw-note import is minimal capture only: title, source pointer, short summary, open questions, and privacy warning. It is not a Local Source Intake replacement.
 
+Preview and shaping output may report Source-To-Promotion Hygiene Review gaps. Those warnings are advisory only: they help the user see whether source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition are present before promotion. They do not approve Local Source Intake, Product Discovery, PRDs, owner-file edits, decomposition, bead activation, implementation, or queue writeback.
+
 The script must not call an LLM/API, use the network, mutate external systems, create generated authority, write directly without approved action IDs, edit files other than `CANDIDATE-QUEUE.md`, mutate `tasks/todo.md`, approve PRDs, activate beads, or authorize implementation.
 
 Apply must refuse missing approvals, unknown action IDs, malformed queue entries, duplicate candidate IDs, unknown candidate IDs, forbidden `B###` IDs, and any target file other than `CANDIDATE-QUEUE.md`.
@@ -239,6 +247,7 @@ When reviewing the Candidate Queue, return:
 - Cannot answer:
 - Recommended next path:
 - Promotion target:
+- Source-to-promotion hygiene:
 - User approval needed:
 - Stop condition:
 - Generated-report warning:

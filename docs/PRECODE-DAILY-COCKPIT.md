@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.39
-Last updated: 2026-07-04
+Document version: v0.1.40
+Last updated: 2026-07-10
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
@@ -104,6 +104,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
+| Is this source ready to promote? | Source-To-Promotion Hygiene Review in Prompt Patterns | Checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. It does not promote files, approve PRDs, choose tasks, or activate beads. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 | Which artifact, idea, or path do I need? | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | A mapped workflow, artifact, or rough-idea path. Artifact Chooser remains an index only; use Workflow Selection when the answer depends on current state. |
 | I only have a rough idea. | `Ideation: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |

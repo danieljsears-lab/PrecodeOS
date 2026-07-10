@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-23
+# Version: v0.1.1
+# Last updated: 2026-07-10
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -28,6 +28,15 @@ VALID_PRODUCT_VALUE_RATINGS = {"P0", "P1", "P2", "P3", "unrated"}
 VALID_SHAPING_STATUSES = {"unshaped", "proposed", "reviewed", "needs_research", "blocked", "stale", "deferred"}
 BEAD_ID_RE = re.compile(r"\bB\d{3}\b")
 QUEUE_HEADING_RE = re.compile(r"^### (CQ-(\d{3})-[a-z0-9][a-z0-9-]*)\b", re.MULTILINE)
+HYGIENE_FIELDS = [
+    "source_refs",
+    "evidence_strength",
+    "open_conflicts",
+    "proposed_owner",
+    "promotion_action",
+    "approval_required",
+    "stop_condition",
+]
 
 
 class QueueError(ValueError):
@@ -155,6 +164,11 @@ def build_import_entry(candidate_id: str, title: str, source_pointer: str, summa
   - What evidence supports it?
   - What promotion path fits: intake, discovery, PRD, decision, decomposition review, defer, or kill?
 - Evidence strength: `unknown`
+- Open conflicts: Not reviewed.
+- Proposed owner: Local Source Intake
+- Promotion action: review before any PRD, decision, owner-file update, decomposition, defer, or kill decision
+- Approval required: explicit user approval before any promotion or queue writeback
+- Stop condition: stop if source refs are weak, conflicts are unresolved, the owner is unclear, or the requested action would auto-promote the queue entry
 - Weakest assumption:
 - Blocked or stale reason:
 - Promotion target: `Local Source Intake`
@@ -199,6 +213,16 @@ def preview_import(raw_path: Path, queue_path: Path = DEFAULT_QUEUE_PATH) -> lis
                 "title": title,
                 "source_pointer": source_pointer,
                 "short_summary": summary,
+                "promotion_target": "Local Source Intake",
+                "source_to_promotion_hygiene": {
+                    "source_refs": source_pointer,
+                    "evidence_strength": "unknown",
+                    "open_conflicts": "not reviewed",
+                    "proposed_owner": "Local Source Intake",
+                    "promotion_action": "review before any PRD, decision, owner-file update, decomposition, defer, or kill decision",
+                    "approval_required": "explicit user approval before any promotion or queue writeback",
+                    "stop_condition": "stop if source refs are weak, conflicts are unresolved, the owner is unclear, or the requested action would auto-promote the queue entry",
+                },
                 "open_questions": [
                     "What user problem is this solving?",
                     "What evidence supports it?",
@@ -265,6 +289,9 @@ def validate_shaping_proposal(data: dict[str, Any], queue_text: str) -> dict[str
             }
         )
     weakest_assumption = data.get("weakest_assumption", "")
+    hygiene = data.get("source_to_promotion_hygiene", {})
+    if hygiene is not None and not isinstance(hygiene, dict):
+        raise QueueError("source_to_promotion_hygiene must be an object when provided")
     return {
         "candidate_id": candidate_id,
         "shaping_status": shaping_status,
@@ -273,6 +300,39 @@ def validate_shaping_proposal(data: dict[str, Any], queue_text: str) -> dict[str
         "themes": [item.strip() for item in themes],
         "near_bead_sketches": normalized_sketches,
         "weakest_assumption": weakest_assumption.strip() if isinstance(weakest_assumption, str) else "",
+        "source_to_promotion_hygiene": {
+            field: str((hygiene or {}).get(field, "")).strip()
+            for field in HYGIENE_FIELDS
+        },
+    }
+
+
+def hygiene_review(payload: dict[str, Any]) -> dict[str, Any]:
+    hygiene = payload.get("source_to_promotion_hygiene")
+    if not isinstance(hygiene, dict):
+        hygiene = {}
+    values = {field: str(hygiene.get(field, "")).strip() for field in HYGIENE_FIELDS}
+    missing = [field for field, value in values.items() if not value]
+    return {
+        "review_shape": "Source-To-Promotion Hygiene Review",
+        "source_refs": values["source_refs"] or str(payload.get("source_pointer") or ""),
+        "evidence_strength": values["evidence_strength"] or "unknown",
+        "open_conflicts": values["open_conflicts"] or "not reviewed",
+        "proposed_owner": values["proposed_owner"] or str(payload.get("promotion_target") or "Local Source Intake"),
+        "promotion_action": values["promotion_action"] or "review before any PRD, decision, owner-file update, decomposition, defer, or kill decision",
+        "approval_required": values["approval_required"] or "explicit user approval before promotion or queue writeback",
+        "stop_condition": values["stop_condition"] or "stop if source refs are weak, conflicts are unresolved, the owner is unclear, or the requested action would auto-promote the queue entry",
+        "missing_fields": missing,
+        "advisory_only": True,
+        "does_not_approve": [
+            "Local Source Intake",
+            "PRD approval",
+            "owner-file promotion",
+            "decomposition",
+            "bead activation",
+            "implementation",
+            "queue writeback",
+        ],
     }
 
 
@@ -292,6 +352,7 @@ def build_shaping_block(proposal: dict[str, Any]) -> str:
     else:
         rows.append("| None reviewed. |  |  |  |  |  |  |")
     weakest = proposal["weakest_assumption"] or "Not reviewed."
+    hygiene = hygiene_review(proposal)
     return f"""Shaping review:
 
 - Shaping status: `{proposal["shaping_status"]}`
@@ -301,6 +362,7 @@ def build_shaping_block(proposal: dict[str, Any]) -> str:
 - Weakest assumption: {weakest}
 - Rating boundary: Product value only; not review order, implementation priority, task selection, or permission to code.
 - Sketch boundary: Near-bead sketches are not bead files, do not reserve `B###` IDs, and do not activate beads.
+- Source-to-promotion hygiene: source refs: {hygiene["source_refs"]}; evidence strength: {hygiene["evidence_strength"]}; open conflicts: {hygiene["open_conflicts"]}; proposed owner: {hygiene["proposed_owner"]}; promotion action: {hygiene["promotion_action"]}; approval required: {hygiene["approval_required"]}; stop condition: {hygiene["stop_condition"]}.
 
 Near-bead sketches:
 
@@ -419,6 +481,13 @@ def preview_contract() -> dict[str, Any]:
     }
 
 
+def action_hygiene_review(action: Action) -> dict[str, Any]:
+    review = hygiene_review(action.payload)
+    review["action_id"] = action.action_id
+    review["candidate_id"] = action.candidate_id
+    return review
+
+
 def output_result(kind: str, actions: list[Action], args: argparse.Namespace, applied: dict[str, Any] | None = None) -> None:
     result = {
         "tool": "scripts/candidate-queue.py",
@@ -430,8 +499,10 @@ def output_result(kind: str, actions: list[Action], args: argparse.Namespace, ap
             "Apply requires explicit --approve-action.",
             "Product-value rating is not implementation priority.",
             "Near-bead sketches are not bead files.",
+            "Source-To-Promotion Hygiene Review warnings are advisory and do not approve promotion.",
             privacy_warning(),
         ],
+        "source_to_promotion_hygiene": [action_hygiene_review(action) for action in actions],
         "actions": [action.to_json() for action in actions],
         "apply_result": applied,
     }
@@ -448,12 +519,22 @@ def output_result(kind: str, actions: list[Action], args: argparse.Namespace, ap
     print("near_bead_sketch_boundary: Near-bead sketches are not bead files and do not reserve B### IDs.")
     print(f"privacy_warning: {privacy_warning()}")
     for action in actions:
+        hygiene = action_hygiene_review(action)
         print()
         print(f"action_id: {action.action_id}")
         print(f"action_type: {action.action_type}")
         print(f"candidate_id: {action.candidate_id}")
         print(f"target_file: {action.target_file}")
         print("approval_required: true")
+        print("source_to_promotion_hygiene:")
+        print(f"- source_refs: {hygiene['source_refs']}")
+        print(f"- evidence_strength: {hygiene['evidence_strength']}")
+        print(f"- open_conflicts: {hygiene['open_conflicts']}")
+        print(f"- proposed_owner: {hygiene['proposed_owner']}")
+        print(f"- promotion_action: {hygiene['promotion_action']}")
+        print(f"- approval_required: {hygiene['approval_required']}")
+        print(f"- stop_condition: {hygiene['stop_condition']}")
+        print(f"- missing_fields: {', '.join(hygiene['missing_fields']) if hygiene['missing_fields'] else 'none'}")
         print("preview_text:")
         print(action.preview_text.rstrip())
     if applied:

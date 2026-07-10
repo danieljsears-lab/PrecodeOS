@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-06-23
+# Version: v0.1.5
+# Last updated: 2026-07-10
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -64,6 +64,43 @@ def demotion_reason(card: dict[str, Any]) -> str:
     return "; ".join(reasons) if reasons else "none"
 
 
+def source_pointers(card: dict[str, Any]) -> list[str]:
+    citation = card.get("citation") if isinstance(card.get("citation"), dict) else {}
+    pointers = citation.get("source_pointers") if isinstance(citation.get("source_pointers"), list) else []
+    return [str(pointer) for pointer in pointers if str(pointer).strip()]
+
+
+def promotion_hygiene(card: dict[str, Any]) -> dict[str, Any]:
+    pointers = source_pointers(card)
+    owner = str(card.get("authority_owner_if_promoted") or "none").strip() or "none"
+    needs_promotion = card.get("status") == "needs_promotion"
+    missing: list[str] = []
+    if not pointers:
+        missing.append("source_refs")
+    if needs_promotion and owner.lower() in {"", "none", "not applicable", "n/a"}:
+        missing.append("proposed_owner")
+    return {
+        "review_shape": "Source-To-Promotion Hygiene Review",
+        "source_refs": pointers,
+        "evidence_strength": str(card.get("confidence") or "unknown"),
+        "open_conflicts": demotion_reason(card),
+        "proposed_owner": owner,
+        "promotion_action": "run manual Memory Promotion Review before any owner-file edit" if needs_promotion else "keep as reviewed memory unless a promotion need is approved",
+        "approval_required": "explicit user approval before any memory-card write, owner-file edit, PRD amendment, protocol update, bead change, or active-memory change",
+        "stop_condition": "stop if source evidence is weak, the owner is unclear, memory conflicts with current authority, or the requested action would auto-promote memory",
+        "missing_fields": missing,
+        "generated_evidence_only": True,
+        "does_not_approve": [
+            "card_creation",
+            "owner_file_promotion",
+            "PRD approval",
+            "bead activation",
+            "task_selection",
+            "active_memory_change",
+        ],
+    }
+
+
 def card_reference(card: dict[str, Any]) -> dict[str, Any]:
     return {
         "path": card.get("path"),
@@ -75,6 +112,7 @@ def card_reference(card: dict[str, Any]) -> dict[str, Any]:
         "authority_owner_if_promoted": card.get("authority_owner_if_promoted", "none"),
         "demotion": demotion_reason(card),
         "citation": card.get("citation"),
+        "source_to_promotion_hygiene": promotion_hygiene(card),
     }
 
 
@@ -112,6 +150,7 @@ def selective_recall(cards: list[dict[str, Any]], args: argparse.Namespace) -> d
                 "snippet": recall_snippet(card, terms),
                 "citation": card.get("citation"),
                 "demotion": demotion_reason(card),
+                "source_to_promotion_hygiene": promotion_hygiene(card),
                 "generated_evidence_only": True,
             }
         )
@@ -282,6 +321,14 @@ def filtered_payload(payload: dict[str, Any], args: argparse.Namespace) -> dict[
         card for card in selected if card.get("freshness") in {"current", "watch"} and card.get("status") == "reviewed"
     ]
     next_details["promotion_needed_cards"] = [card for card in selected if card.get("status") == "needs_promotion"]
+    next_details["source_to_promotion_hygiene"] = [
+        {
+            "path": card.get("path"),
+            "title": card.get("title"),
+            **promotion_hygiene(card),
+        }
+        for card in next_details["promotion_needed_cards"]
+    ]
     next_details["stale_or_superseded_cards"] = [
         card for card in selected if card.get("freshness") in {"stale", "superseded"} or card.get("status") in {"superseded", "archived"}
     ]
@@ -303,6 +350,7 @@ def filtered_payload(payload: dict[str, Any], args: argparse.Namespace) -> dict[
         "token_budget": token_budget,
         "generated_evidence_only": True,
         "safe_next_step": "Cite matching cards, then verify against active memory, the active bead, and the relevant owner file before acting. If a result may need promotion, name the proposed owner and approval required, but do not create cards or edit owner files without approval.",
+        "source_to_promotion_hygiene_warning": "Promotion hygiene output is advisory generated evidence only. It does not create cards, edit owner files, approve PRDs, activate beads, choose tasks, or change active memory.",
     }
     if args.recall:
         next_payload["recall"] = selective_recall(selected, args)
@@ -412,6 +460,13 @@ def self_test() -> int:
         return 1
     if "needs owner-file promotion" not in str(glossary_recalls[0].get("demotion") or ""):
         print("memory-check self-test failed: glossary promotion need was not demoted")
+        return 1
+    hygiene = glossary_recalls[0].get("source_to_promotion_hygiene") if isinstance(glossary_recalls[0], dict) else {}
+    if not isinstance(hygiene, dict) or hygiene.get("proposed_owner") != "tasks/prds/PRD-123-example.md":
+        print("memory-check self-test failed: promotion hygiene did not name proposed owner")
+        return 1
+    if "owner_file_promotion" not in hygiene.get("does_not_approve", []):
+        print("memory-check self-test failed: promotion hygiene did not preserve non-approval boundary")
         return 1
     review_details = {
         "by_space": {"default": 3, "product": 1},
