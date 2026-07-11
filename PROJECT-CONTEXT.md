@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.10
-Last updated: 2026-06-24
+Document version: v0.2.11
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -91,7 +91,8 @@ Current project integrations:
 - Issue tracker: public GitHub Issues are open for narrow feedback and package-bug intake only. Issues, labels, comments, pull requests, reviews, checks, and project boards are evidence until reviewed and promoted into Precode owner files or maintainer decisions.
 - Deployment provider: none for an app runtime.
 - Monitoring or error tracking: none configured.
-- Safe health URLs for read-only uptime checks: none.
+- Safe health URLs for read-only uptime checks:
+  - None configured for PrecodeOS itself.
 - Manual dashboards or setup surfaces: GitHub repository settings, Actions, Issues, Pull Requests, and project boards if enabled by the maintainer.
 
 If an integration boundary changes, record the product or technical decision in `DECISIONS.md` and update the owning reference file.
@@ -102,10 +103,10 @@ Enabled project-specific Precode extensions:
 
 - Enabled adapters: `adapters/CLAUDE.md`, `adapters/CODEX.md`, `adapters/CURSOR.md`, `adapters/GEMINI.md`, `adapters/ANTIGRAVITY.md`, plus shim files `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md`.
 - Enabled importers: `scripts/import-agent-spend.py` and `scripts/import-github-sources.py`.
-- Enabled audits: `scripts/github-audit.py`, `scripts/scheduled-audit.sh`, `scripts/scheduled-audit.py`, and advisory `scripts/*-check.py` commands.
+- Enabled audits: `scripts/external-status.py`, `scripts/github-audit.py`, `scripts/scheduled-audit.sh`, `scripts/scheduled-audit.py`, and advisory `scripts/*-check.py` commands.
 - Enabled generated reports: `OS-HEALTH.md`, `PROGRESS.md`, `logs/*.json`, `logs/*.jsonl`, `logs/*.md`, `logs/check-output/*`, and `logs/scheduled-audit-output/*`.
-- Enabled external integrations: GitHub read-only audit/import when configured; no write integration is required for B000.
-- Extension owner files: `tasks/reference/EXTENSION-PROTOCOL.md`, `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md`, `tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md`, `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, and `docs/PRECODE-FILE-INVENTORY.md`.
+- Enabled external integrations: Provider-neutral external status evidence through `scripts/external-status.py`, GitHub read-only audit/import when configured, and safe health URL checks only when reviewed URLs are listed in this file; no write integration is required for B000.
+- Extension owner files: `tasks/reference/EXTENSION-PROTOCOL.md`, `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`, `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md`, `tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md`, `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`, `adapters/ADAPTER-INDEX.md`, and `docs/PRECODE-FILE-INVENTORY.md`.
 
 Use `tasks/reference/EXTENSION-PROTOCOL.md` before adding new adapters, protocols, importers, audits, generated reports, bead templates, or external integrations.
 
@@ -126,7 +127,7 @@ Scheduled audits are opt-in read-only checks. They may report external system st
 - Issue tracker audit configured: optional.
 - Dependency/security audit configured: no package dependency audit is configured because B000 has no package manager manifest.
 - Monitoring audit configured: no.
-- Uptime audit configured: no.
+- Uptime audit configured: no; add only public, non-secret, unauthenticated `GET` health URLs to the reviewed safe health URL list above.
 - Dashboard setup audit configured: no.
 
 ## Project-Specific Checks

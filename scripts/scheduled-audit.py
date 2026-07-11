@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-04-27
+# Version: v0.1.3
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -312,10 +312,54 @@ def read_github_audit(root: Path, rel_path: str, exit_code: int) -> list[dict[st
     return [status("GitHub Repository Audit", "info", "GitHub audit completed with no detailed audit rows", {"output": rel_path})]
 
 
+def read_external_status(root: Path, rel_path: str) -> list[dict[str, Any]]:
+    if not rel_path:
+        return []
+    path = root / rel_path
+    if not path.is_file():
+        return [status("External Status Audit", "not_configured", "external status output is missing", {"output": rel_path})]
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [status("External Status Audit", "warning", f"external status output was not valid JSON: {exc}", {"output": rel_path})]
+
+    rows = payload.get("rows")
+    if not isinstance(rows, list):
+        return [status("External Status Audit", "warning", "external status output did not contain provider rows", {"output": rel_path})]
+    normalized: list[dict[str, Any]] = []
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        details = dict(item.get("details") or {})
+        details.update(
+            {
+                "provider": item.get("provider"),
+                "configured": item.get("configured"),
+                "advisory_only": item.get("advisory_only"),
+                "source": item.get("source"),
+                "warnings": item.get("warnings") or [],
+                "forbidden_uses": item.get("forbidden_uses") or [],
+            }
+        )
+        normalized.append(
+            status(
+                str(item.get("check_name") or "External Status Audit"),
+                str(item.get("status") or "info"),
+                str(item.get("summary") or "external status returned evidence"),
+                details,
+            )
+        )
+    return normalized
+
+
 def external_audits(root: Path, args: argparse.Namespace) -> list[dict[str, Any]]:
     audits: list[dict[str, Any]] = []
-    audits.extend(read_github_audit(root, args.github_output, args.github_exit))
+    external = read_external_status(root, args.external_status_output)
+    if external:
+        audits.extend(external)
+        return audits
 
+    audits.extend(read_github_audit(root, args.github_output, args.github_exit))
     audits.append(status("Deployment Status Audit", "not_configured", "no deployment provider audit configured"))
     audits.append(status("Issue Tracker Audit", "not_configured", "no issue tracker audit configured"))
     audits.append(status("Dependency/Security Advisory Audit", "not_configured", "no read-only dependency or advisory source configured"))
@@ -380,6 +424,7 @@ def main() -> int:
     parser.add_argument("--spend-output", required=True)
     parser.add_argument("--github-exit", type=int, required=True)
     parser.add_argument("--github-output", required=True)
+    parser.add_argument("--external-status-output", default="")
     args = parser.parse_args()
 
     root = repo_root()

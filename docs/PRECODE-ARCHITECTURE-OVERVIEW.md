@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.34
-Last updated: 2026-07-10
+Document version: v0.3.35
+Last updated: 2026-07-11
 
 ## Executive Summary
 
@@ -162,7 +162,7 @@ This architectural layer model explains how PrecodeOS fits together. For operati
 | Goal-frame layer | Preserve reviewed durable intent without turning it into backlog or active work. | `PRODUCT.md`, PRDs, beads, or `DECISIONS.md` `Goal Frame` sections, `tasks/reference/GOAL-FRAME-PROTOCOL.md`, `scripts/goal-frame-check.py`, `logs/goal-frame.json`. |
 | Product Definition Gate | Prevent vague ideas from becoming implementation beads. | `PRODUCT.md` fit check, alignment/grilling, destination PRD protocol, PRD shards, `FEATURES.md`. |
 | Shared-language layer | Keep user terms, aliases, avoid terms, UI labels, code/test/doc/support names, and stale vocabulary visible without expanding active memory. | `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md`, PRD `Domain Language`, `memory/cards/` category `project_glossary`, and generated memory-index glossary excerpts as evidence only. |
-| Reviewed-memory recall layer | Preserve durable lessons as reviewed plain files while keeping context loading selective, cited, and subordinate to owner files. | `memory/cards/`, `logs/memory-index.md/json`, `scripts/memory-check.py --recall`, `scripts/memory-check.py --needs-promotion`, and `scripts/memory-check.py --retrieval-review`; promotion review is manual, and retrieval review is generated evidence only that does not approve semantic search or a shared backend. |
+| Reviewed-memory recall layer | Preserve durable lessons as reviewed plain files while keeping context loading selective, cited, and subordinate to owner files. | `memory/cards/`, `logs/memory-index.md/json`, exact-match `scripts/memory-check.py --recall`, `scripts/memory-check.py --needs-promotion`, and `scripts/memory-check.py --retrieval-review`; weak matches are leads only, promotion review is manual, and retrieval review is generated evidence only that does not approve semantic search or a shared backend. |
 | Session Friction Review layer | Review repeated tool failures, stale evidence, generated-refresh gaps, and memory/context pressure without turning them into automatic learning. | `scripts/session-friction-check.py` and `logs/session-friction-review.json`; findings require citations, confidence, freshness, proposed destination, and manual promotion. |
 | Workflow-selection layer | Route rough ideas, source intake, PRDs, architecture shaping, review, repair, and closeout to the right protocol before work starts. | `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md`, `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md`, `tasks/reference/PLANNING-PROTOCOL.md`. |
 | Setup-intake layer | Keep first-run confidence and existing-repo intake read-only until a user explicitly chooses a setup path. | `tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md`, `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md`, `scripts/bootstrap-check.py`, `scripts/existing-repo-intake.py`. |
@@ -577,10 +577,10 @@ The script layer has these families:
 | Evidence and state | `record-check.sh`, `update-bead-closeout.py`, `execution-state.py`, `log-loop-event.sh`, `log-tool-run.sh`, `log-agent-spend.sh`, `import-agent-spend.py` | Record what happened without relying on chat memory. |
 | Compilation and reports | `os_compiler.py`, `precode_state.py`, `precode_outputs.py`, `precode_routing.py`, `os-health.py`, `progress.py`, `next-step.py`, `update-learning-diary.py`, `update-memory-index.py`, `scheduled-audit.py` | Compile markdown/log state into generated evidence, render sidecars, and route the next human decision behind stable command paths. |
 | Advisory checks | `context-check.py`, `state-check.py`, `workflow-check.py`, `goal-frame-check.py`, `completion-check.py`, `files-in-play-check.py`, `run-contract-check.py`, `public-repo-check.py`, `local-hygiene-check.py`, and related checkers | Surface likely drift without mutating active memory. |
-| Setup and intake checks | `bootstrap-check.py`, `existing-repo-intake.py`, `github-audit.py`, `import-github-sources.py` | Inspect adoption targets or external source material while keeping mutation explicit and gated. |
+| Setup, intake, and status checks | `bootstrap-check.py`, `existing-repo-intake.py`, `external-status.py`, `github-audit.py`, `import-github-sources.py` | Inspect adoption targets, external source material, or read-only external status while keeping mutation explicit and gated. |
 | Maintenance helpers | `validate-memory.sh`, `version-check.py`, `file-inventory.py`, `pre-commit-validate.sh`, `install-git-hooks.sh`, `write-guard.sh`, `os-integrity-check.py`, `os-checkpoint.py` | Protect package structure, provenance, inventory, scoped writes, protected OS-owned source surfaces, and explicit restore points. |
 
-Generated sidecars should stay under `logs/` unless an existing generated report or committed docs-reading surface owns the output. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, file-inventory, local-hygiene, bootstrap, existing-repo intake, scheduled-audit, progress, next-step, and health outputs. They are evidence only.
+Generated sidecars should stay under `logs/` unless an existing generated report or committed docs-reading surface owns the output. Important sidecars include readiness, authority, adapter, shim, orchestration, workflow, goal-frame, long-horizon, handoff, pattern, run-contract, file-inventory, local-hygiene, bootstrap, existing-repo intake, external-status audit output, scheduled-audit, progress, next-step, and health outputs. They are evidence only.
 
 ### Validator And Hook Detail
 

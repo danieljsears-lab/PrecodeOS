@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.44
-# Last updated: 2026-07-10
+# Version: v0.1.45
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -225,6 +225,14 @@ def assert_recovery_flow(name: str, payload: dict[str, Any], expected: str, fail
         failures.append({"scenario": f"{name} protocol", "expected": "tasks/reference/RECOVERY-PROTOCOL.md", "actual": protocol})
     if expected != "none" and not prompt:
         failures.append({"scenario": f"{name} prompt", "expected": "beginner prompt", "actual": prompt})
+
+
+def assert_file_terms(path: Path, terms: list[str], failures: list[dict[str, str]], scenario: str) -> int:
+    text = path.read_text(encoding="utf-8")
+    for term in terms:
+        if term not in text:
+            failures.append({"scenario": scenario, "expected": term, "actual": "missing"})
+    return len(terms)
 
 
 def assert_required_keys(
@@ -518,6 +526,91 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
                 failures.append({"scenario": f"onboarding authority consolidation forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
 
     return len(required_terms_by_path) + 1 + len(forbidden_terms_by_path)
+
+
+def assert_question_to_artifact_filing_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Question-To-Artifact Filing",
+            "Source question:",
+            "Answer worth preserving:",
+            "Recommend the smallest destination: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, DECISIONS.md, owner-file update, decomposition review, defer, kill, or maintainer roadmap note.",
+            "source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and forbidden uses",
+            "Do not file automatically, edit owner files, create memory cards, approve a PRD, choose tasks, activate beads, update tasks/todo.md, update active memory, create a generated report, or treat generated summaries as authority.",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Question-To-Artifact Filing",
+            "valuable answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis",
+            "stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, `DECISIONS.md`, owner-file update, decomposition review, defer, kill, or maintainer roadmap note",
+            "does not file automatically",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "Question-To-Artifact Filing",
+            "stay in chat, Local Source Intake, Candidate Queue update, Memory Promotion Review",
+            "does not file automatically",
+        ],
+        Path("tasks/reference/MEMORY-PROTOCOL.md"): [
+            "Question-To-Artifact Filing",
+            "before Memory Promotion Review",
+            "memory is not clearly the right destination",
+        ],
+        Path("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md"): [
+            "Question-To-Artifact Filing",
+            "might not belong in the queue",
+            "does not approve queue writeback",
+        ],
+        Path("CANDIDATE-QUEUE.md"): [
+            "Question-To-Artifact Filing",
+            "destination is unclear",
+            "does not file automatically",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Where should this answer live?",
+            "Use Question-To-Artifact Filing for this answer.",
+            "It does not file automatically, approve promotion, choose tasks, or activate beads.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Question-To-Artifact Filing",
+            "Name the source question, the answer worth preserving, the smallest durable destination",
+            "Do not file automatically, edit owner files, create memory cards, approve a PRD, choose tasks, activate beads, update tasks/todo.md, update active memory, create generated reports, or code.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Question-To-Artifact Filing",
+            "smallest destination for valuable answers that should survive",
+            "does not write files, approve promotion, choose tasks, activate beads, update active memory, or create generated-report authority",
+        ],
+        Path("llms.txt"): [
+            "Use Question-To-Artifact Filing",
+            "stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review",
+            "does not file automatically, approve promotion, choose tasks, approve PRDs, activate beads, update active memory, create generated reports, or make generated summaries authoritative",
+        ],
+    }
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Question-To-Artifact Filing command",
+            "automatically file this answer",
+            "filing approval",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Question-To-Artifact Filing approves",
+            "Question-To-Artifact Filing updates",
+        ],
+        Path("llms.txt"): [
+            "filing command",
+            "automatic promotion",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"question-to-artifact filing contract: {path}", "expected": term, "actual": "missing"})
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"question-to-artifact filing forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
 def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
@@ -826,7 +919,7 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
             "`PRECODE-USER-GUIDE.md` is the deeper operating manual",
             "`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge",
             "stable-docs question",
-            "Late-stage release-prep evidence and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, or approve release.",
+            "Late-stage release-prep evidence, release-quality cues, and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, certify production readiness, or approve release.",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.",
@@ -979,6 +1072,10 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
 def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md"): [
+            "Engineering Quality Standards Taxonomy",
+            "Precode-native routing questions",
+            "External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness",
+            "The Standards Taxonomy is now implemented as beginner-readable teaching and routing guidance",
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -987,9 +1084,12 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "does not approve implementation",
             "does not create a scorecard",
             "repo-shape risk only",
-            "Standards Taxonomy remains deferred",
+            "does not validate application code against external frameworks",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Use the Engineering Quality Standards Taxonomy",
+            "Translate the relevant standard into a plain Precode routing question",
+            "Do not use external frameworks as public package authority",
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -998,12 +1098,19 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "does not create proof",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Quality map",
+            "Use the Engineering Quality Standards Taxonomy",
+            "does not make external frameworks public package authority",
             "Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.",
             "python3 scripts/engineering-quality-check.py --check",
             "advisory only",
             "does not approve coding, review, release, or generated proof",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use The Engineering Quality Standards Taxonomy",
+            "Translate the relevant standard into a plain Precode routing question",
+            "External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness",
+            "does not make those frameworks public package authority",
             "Check The Engineering Quality Text Contract",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -1013,6 +1120,8 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "scripts/engineering-quality-check.py",
+            "Engineering Quality Standards Taxonomy",
+            "external-framework code validation",
             "Engineering Quality Text-Contract Checker",
             "--repo-heuristics-preview",
             "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
@@ -1021,6 +1130,7 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         ],
         Path("llms.txt"): [
             "scripts/engineering-quality-check.py",
+            "Engineering Quality Standards Taxonomy",
             "Engineering Quality Text-Contract Checker",
             "--repo-heuristics-preview",
             "advisory only",
@@ -1037,18 +1147,23 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "the checker approves implementation",
             "the checker creates proof",
             "the checker scores code quality",
+            "external frameworks are public package authority",
+            "the taxonomy certifies production readiness",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "passing result grants permission to build",
-            "Engineering Quality Standards Taxonomy is implemented",
+            "external frameworks are public package authority",
+            "taxonomy approval",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "checker approval",
             "quality score",
+            "taxonomy approval",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "passing result grants permission to build",
             "certifies production readiness",
+            "taxonomy approval",
         ],
     }
     for path, forbidden_terms in forbidden_terms_by_path.items():
@@ -2083,6 +2198,102 @@ def assert_source_to_promotion_hygiene_contract(failures: list[dict[str, str]]) 
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"source-to-promotion hygiene contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_skill_playbook_ergonomics_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Beginner Invocation And Review Ergonomics",
+            "Skill playbooks should be easy to invoke without becoming a beginner-facing catalog",
+            "Daily Cockpit alias or Prompt Patterns entry that routes to the owner protocol",
+            "Skill playbook with manifest fields, owner protocol, stop conditions, and approval gates",
+            "Owner protocol update",
+            "Existing checker or narrow script after the owner protocol defines the rule",
+            "Adapter or `.agents/README.md` boundary note",
+            "Docs or Prompt Patterns",
+            "Beginner naming rule",
+            "Review recommendation rule",
+            "does not approve the extension, install a skill, authorize implementation",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog",
+            "Use Skill Playbook Ergonomics",
+            "Map my request to the smallest existing Precode invocation",
+            "Ask Precode, Workflow Selection, Ideation / First PRD Walkthrough, Review / Acceptance Skill, Skill / Extension Review Skill",
+            "a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface",
+            "Do not show me a skill catalog",
+            "approve extension implementation",
+            "treat skill output as authority",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "skill-style help",
+            "Which skill-style prompt should I use?",
+            "Use Skill Playbook Ergonomics.",
+            "One recommended invocation or owner surface",
+            "It does not show a skill catalog, install skills, approve extension implementation, add registries, create optional packs, run mutating commands, or replace owner protocols.",
+            "Skill map",
+            "treat skill output as authority",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "ask for Skill Playbook Ergonomics instead of browsing a skill catalog",
+            "Skill playbooks are read-only prompt playbooks",
+            "Use Skill Playbook Ergonomics. Map my request",
+            "Do not show me a skill catalog",
+            "approve extension implementation",
+            "treat skill output as authority",
+        ],
+        Path(".agents/README.md"): [
+            "Use `.agents/skills/` as host-discoverable packaging only",
+            "Skill Playbook Ergonomics guidance",
+            "do not turn the host skill folder into a beginner-facing skill catalog",
+            "Do not use `.agents/skills/` as a Precode skill catalog, optional-pack list, marketplace, install/update surface, command wrapper, or package-manager surface.",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "Use Skill Playbook Ergonomics",
+            "it must not become a skill catalog, registry, optional pack, command wrapper, approval gate, or implementation path",
+            "Keep beginner skill ergonomics behind existing workflow moments and owner protocols",
+            "do not create a beginner-facing skill catalog, registry, marketplace, optional-pack, install/update, package-manager, or hidden task-selection surface",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Skill Playbook Ergonomics decision aid",
+            "maps confusing skill-style requests to the smallest existing invocation or owner surface",
+            "without exposing a beginner skill catalog",
+            "skill catalog behavior",
+            "create a beginner-facing skill catalog",
+        ],
+        Path("llms.txt"): [
+            "Use Skill Playbook Ergonomics when a user is unsure which skill-style prompt to invoke",
+            "It maps the request to Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review",
+            "It is not a skill catalog, registry, optional pack, command wrapper, approval gate, implementation path, or replacement for owner protocols.",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"skill playbook ergonomics contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "skill catalog approves",
+            "Skill Playbook Ergonomics installs",
+            "Skill Playbook Ergonomics creates optional packs",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "skill catalog approves",
+            "Skill map approves extension implementation",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "skill catalog approval",
+            "Skill Playbook Ergonomics authorizes implementation",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"skill playbook ergonomics forbidden wording: {path}", "expected": "absent", "actual": term})
     return len(required_terms_by_path)
 
 
@@ -3236,6 +3447,51 @@ def release_evidence_fixture(closeout_lines: list[str], **overrides: Any) -> Bea
     )
 
 
+def assert_external_status_integration_contract(failures: list[dict[str, str]]) -> int:
+    scenarios = {
+        Path("tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md"): [
+            "External status is evidence only.",
+            "Provider-neutral status rows should include",
+            "Safe health URLs must be recorded in `PROJECT-CONTEXT.md`",
+            "must not choose tasks",
+            "Generated status rows and scheduled audit summaries are evidence only.",
+        ],
+        Path("scripts/external-status.py"): [
+            "\"provider\"",
+            "\"check_name\"",
+            "\"advisory_only\"",
+            "\"not_configured\"",
+            "\"external mutation\"",
+            "PROJECT-CONTEXT.md",
+        ],
+        Path("tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md"): [
+            "tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md",
+            "python3 scripts/external-status.py",
+            "Those helpers are read-only and write no authority files.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "provider-neutral external-status rows",
+            "deployment approval",
+            "owner-file mutation",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "scripts/external-status.py",
+            "no secrets",
+            "no dashboard mutation",
+            "no task selection",
+        ],
+        Path("llms.txt"): [
+            "EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md",
+            "scripts/external-status.py",
+            "not proof, approval, deployment, merge, release",
+        ],
+    }
+    count = 0
+    for path, terms in scenarios.items():
+        count += assert_file_terms(path, terms, failures, f"external status contract: {path.as_posix()}")
+    return count
+
+
 def assert_verification_release_evidence_contract(failures: list[dict[str, str]]) -> int:
     release_protocol = Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md").read_text(encoding="utf-8").lower()
     verification_protocol = Path("tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md").read_text(encoding="utf-8").lower()
@@ -3251,6 +3507,9 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
         "recorded check, closeout evidence, or manual verification source",
         "missing traceability means `needs evidence`",
         "not release approval",
+        "release quality cues",
+        "not applicable because",
+        "not production-readiness certification",
     ):
         if term not in release_protocol:
             failures.append({"scenario": "verification release evidence protocol contract", "expected": term, "actual": "missing"})
@@ -3265,10 +3524,13 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
         "review input only",
         "missing traceability means needs evidence",
         "ready for human release decision as release approval",
+        "release quality cues",
+        "not applicable with a reason",
+        "production-readiness certification",
     ):
         if term not in prompt_text:
             failures.append({"scenario": "verification release evidence prompt contract", "expected": term, "actual": "missing"})
-    for term in ("review verification and release evidence", "requirement or behavior proven", "completion-check.py", "approval to ship"):
+    for term in ("review verification and release evidence", "requirement or behavior proven", "completion-check.py", "approval to ship", "release quality cues"):
         if term not in user_guide_text:
             failures.append({"scenario": "verification release evidence user guidance", "expected": term, "actual": "missing"})
     for term in ("verification and release evidence", "not as required frontmatter", "does not approve release"):
@@ -3281,6 +3543,14 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
             "- Smoke path and result: Opened changed flow and completed checkout smoke path.",
             "- Docs or support freshness: User guide and support notes reviewed.",
             "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "Release quality cues:",
+            "- CI or status checks: python3 scripts/clarity-scenario-check.py passed.",
+            "- Logs or observability signal: not applicable because static fixture.",
+            "- Configuration or environment parity: not applicable because static fixture.",
+            "- Performance or scalability expectation: not applicable because static fixture.",
+            "- Data retention/privacy/security expectation: not applicable because static fixture.",
+            "- Dependency or runtime freshness: not applicable because static fixture.",
+            "- Monitoring or support owner: not applicable because static fixture.",
             "- Approvals still required: Human release approval still required.",
             "- Decision state: ready for human release decision",
             "Release Candidate Evidence Profile:",
@@ -3293,6 +3563,14 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
             "- Browser or manual verification status: not applicable because static fixture",
             "- Docs or support freshness: User guide and support notes reviewed.",
             "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "Release quality cues:",
+            "- CI or status checks: python3 scripts/clarity-scenario-check.py passed.",
+            "- Logs or observability signal: not applicable because static fixture.",
+            "- Configuration or environment parity: not applicable because static fixture.",
+            "- Performance or scalability expectation: not applicable because static fixture.",
+            "- Data retention/privacy/security expectation: not applicable because static fixture.",
+            "- Dependency or runtime freshness: not applicable because static fixture.",
+            "- Monitoring or support owner: not applicable because static fixture.",
             "- Known risks and remaining uncertainty: none for fixture",
             "- Approvals still required: Human release approval still required.",
             "- Decision state: ready for human release decision",
@@ -3303,6 +3581,14 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
             "- Smoke path and result: Opened changed flow and completed checkout smoke path.",
             "- Docs or support freshness: User guide and support notes reviewed.",
             "- Rollback path or blocked escape: Revert the bead changes before release.",
+            "Release quality cues:",
+            "- CI or status checks: python3 scripts/clarity-scenario-check.py passed.",
+            "- Logs or observability signal: not applicable because static fixture.",
+            "- Configuration or environment parity: not applicable because static fixture.",
+            "- Performance or scalability expectation: not applicable because static fixture.",
+            "- Data retention/privacy/security expectation: not applicable because static fixture.",
+            "- Dependency or runtime freshness: not applicable because static fixture.",
+            "- Monitoring or support owner: not applicable because static fixture.",
             "- Approvals still required: Human release approval still required.",
             "- Decision state: ready for human release decision",
             "- Remaining uncertainty: none for fixture",
@@ -3331,6 +3617,8 @@ def assert_verification_release_evidence_contract(failures: list[dict[str, str]]
         failures.append({"scenario": "release profile missing proof warning", "expected": "warning", "actual": str(incomplete_payload)})
     if not any("missing fields" in warning.lower() for warning in incomplete_payload.get("warnings") or []):
         failures.append({"scenario": "release profile missing fields warning", "expected": "missing fields warning", "actual": str(incomplete_payload)})
+    if not any("release quality cues" in warning.lower() for warning in incomplete_payload.get("warnings") or []):
+        failures.append({"scenario": "release quality cues missing fields warning", "expected": "release quality cues warning", "actual": str(incomplete_payload)})
 
     review_input_only = release_evidence_fixture(
         [
@@ -4246,6 +4534,7 @@ def main() -> int:
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
     onboarding_authority_scenario_count = assert_onboarding_authority_consolidation_contract(failures)
+    question_to_artifact_filing_scenario_count = assert_question_to_artifact_filing_contract(failures)
     first_product_spine_scenario_count = assert_first_product_spine_contract(failures)
     workbook_handoff_scenario_count = assert_workbook_handoff_tightening_contract(failures)
     many_bead_rhythm_scenario_count = assert_many_bead_operating_rhythm_contract(failures)
@@ -4266,6 +4555,7 @@ def main() -> int:
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
     reviewed_memory_promotion_scenario_count = assert_reviewed_memory_promotion_contract(failures)
     source_to_promotion_hygiene_scenario_count = assert_source_to_promotion_hygiene_contract(failures)
+    skill_playbook_ergonomics_scenario_count = assert_skill_playbook_ergonomics_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
@@ -4277,6 +4567,7 @@ def main() -> int:
     session_friction_scenario_count = assert_session_friction_review_contract(failures)
     build_attribution_scenario_count = assert_build_attribution_contract(failures)
     prd_handoff_scenario_count = assert_prd_handoff_readiness_contract(failures)
+    external_status_scenario_count = assert_external_status_integration_contract(failures)
     release_evidence_scenario_count = assert_verification_release_evidence_contract(failures)
     requirement_to_proof_scenario_count = assert_requirement_to_proof_contract(failures)
     reversal_scenario_count = assert_implemented_bead_reversal_contract(failures)
@@ -4802,6 +5093,7 @@ def main() -> int:
         + daily_prompt_alias_scenario_count
         + artifact_chooser_scenario_count
         + onboarding_authority_scenario_count
+        + question_to_artifact_filing_scenario_count
         + first_product_spine_scenario_count
         + workbook_handoff_scenario_count
         + many_bead_rhythm_scenario_count
@@ -4823,6 +5115,7 @@ def main() -> int:
         + ubiquitous_language_scenario_count
         + reviewed_memory_promotion_scenario_count
         + source_to_promotion_hygiene_scenario_count
+        + skill_playbook_ergonomics_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
         + first_prd_walkthrough_scenario_count
@@ -4841,6 +5134,7 @@ def main() -> int:
         + session_friction_scenario_count
         + build_attribution_scenario_count
         + prd_handoff_scenario_count
+        + external_status_scenario_count
         + boundary_scenario_count
         + len(freshness_scenarios)
         + len(loop_scenarios),

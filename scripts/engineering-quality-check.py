@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-07-04
+# Version: v0.1.2
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -21,7 +21,7 @@ from os_parser import parse_sections, split_frontmatter
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = (
     "Engineering Quality Text-Contract Checker inspects Precode artifact text for quality-risk, "
-    "simplest-shape, boundary, proof, stop-condition, and routing signals only."
+    "simplest-shape, boundary, proof, stop-condition, routing, and Standards Taxonomy signals only."
 )
 GENERATED_WARNING = (
     "engineering-quality-check output is advisory only; it does not approve implementation, "
@@ -38,6 +38,7 @@ DOES_NOT = [
     "accept review",
     "score code quality",
     "certify production readiness, security, compliance, scalability, reliability, or accessibility",
+    "validate application code against external engineering frameworks",
     "create generated proof",
     "create a checker gate",
     "inspect Engineering Quality Review Lane output",
@@ -76,6 +77,10 @@ OWNER_PROTOCOL_ROUTES = {
 }
 REQUIRED_TERMS_BY_PATH = {
     "tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md": [
+        "Engineering Quality Standards Taxonomy",
+        "Precode-native routing questions",
+        "External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness",
+        "They do not replace the owner protocols",
         "Engineering Quality Text-Contract Checker",
         "python3 scripts/engineering-quality-check.py --check",
         "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -91,9 +96,14 @@ REQUIRED_TERMS_BY_PATH = {
         "does not inspect app code",
         "does not add repo heuristics",
         "does not add language-aware analysis",
-        "Standards Taxonomy remains deferred",
+        "The Standards Taxonomy is now implemented as beginner-readable teaching and routing guidance",
+        "does not validate application code against external frameworks",
     ],
     "tasks/reference/PROMPT-PATTERNS.md": [
+        "Use the Engineering Quality Standards Taxonomy",
+        "Translate the relevant standard into a plain Precode routing question",
+        "Do not use external frameworks as public package authority",
+        "certify production readiness",
         "Engineering Quality Text-Contract Checker",
         "python3 scripts/engineering-quality-check.py --check",
         "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -106,12 +116,19 @@ REQUIRED_TERMS_BY_PATH = {
         "create checker authority",
     ],
     "docs/PRECODE-DAILY-COCKPIT.md": [
+        "Quality map",
+        "Use the Engineering Quality Standards Taxonomy",
+        "does not make external frameworks public package authority",
         "Check quality text contract",
         "python3 scripts/engineering-quality-check.py --check",
         "advisory only",
         "does not approve coding, review, release, or generated proof",
     ],
     "docs/PRECODE-USER-GUIDE.md": [
+        "Use The Engineering Quality Standards Taxonomy",
+        "Translate the relevant standard into a plain Precode routing question",
+        "External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness",
+        "does not make those frameworks public package authority",
         "Check The Engineering Quality Text Contract",
         "python3 scripts/engineering-quality-check.py --check",
         "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
@@ -124,6 +141,8 @@ REQUIRED_TERMS_BY_PATH = {
     ],
     "docs/PRECODE-PACKAGE-FILE-INVENTORY.md": [
         "scripts/engineering-quality-check.py",
+        "Engineering Quality Standards Taxonomy",
+        "external-framework code validation",
         "Engineering Quality Text-Contract Checker",
         "--repo-heuristics-preview",
         "Engineering Quality Review Lane",
@@ -134,6 +153,7 @@ REQUIRED_TERMS_BY_PATH = {
     ],
     "llms.txt": [
         "scripts/engineering-quality-check.py",
+        "Engineering Quality Standards Taxonomy",
         "Engineering Quality Text-Contract Checker",
         "--repo-heuristics-preview",
         "Engineering Quality Review Lane",

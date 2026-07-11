@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.15
-Last updated: 2026-06-23
+Document version: v0.1.16
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -39,7 +39,7 @@ Use these tier names in bead `verification_type` whenever possible:
 | `integration` | Tests that exercise connected modules, APIs, databases, queues, auth flows, or service boundaries |
 | `browser` | Browser, Playwright, visual, responsive, accessibility, or end-to-end UI verification |
 | `manual` | Human verification with a clear environment, checked behavior, result, and remaining uncertainty |
-| `external` | Read-only status from GitHub, CI, deployment, uptime, monitoring, security advisory, or dashboard systems |
+| `external` | Read-only status from GitHub, CI, deployment, uptime, monitoring, security advisory, or dashboard systems under `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` |
 
 Legacy labels such as `doc validation` are acceptable during migration, but new beads should use the tier names.
 
@@ -107,7 +107,7 @@ Requirement-to-proof trace:
 - Remaining uncertainty:
 ```
 
-Use the trace to explain evidence, not to create proof. A generated test, generated property, trace table, screenshot, browser note, AI critique, external status summary, or generated report is not complete proof by itself. It becomes evidence only when tied to recorded checks, structured manual verification, Closeout Evidence, accepted review, or a promoted follow-up path. Tiny docs-only or low-risk work does not need traceability ceremony unless proof drift would affect acceptance confidence.
+Use the trace to explain evidence, not to create proof. A generated test, generated property, trace table, screenshot, browser note, AI critique, external status row or summary, or generated report is not complete proof by itself. It becomes evidence only when tied to recorded checks, structured manual verification, Closeout Evidence, accepted review, or a promoted follow-up path. Tiny docs-only or low-risk work does not need traceability ceremony unless proof drift would affect acceptance confidence.
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when the active bead is testable enough for bounded retry against a validator set. Ralph attempt results are evidence inputs; they do not replace recorded checks, closeout evidence, review, or acceptance.
 

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-23
+Document version: v0.1.5
+Last updated: 2026-07-11
 
 This directory stores reviewed Precode memory as plain files.
 
@@ -49,6 +49,8 @@ Use selective recall when whole-card loading would waste context:
 python3 scripts/memory-check.py --query "topic words" --recall
 ```
 
+Selective recall returns snippets only when every query term matches the reviewed card search text. If there is no exact match, weak-match examples are leads only; do not load them as memory or treat them as recall.
+
 Use retrieval-readiness review before discussing any optional semantic or shared memory backend:
 
 ```bash
@@ -57,6 +59,6 @@ python3 scripts/memory-check.py --retrieval-review --query "topic words"
 
 Search results and generated indexes are evidence only. Cite the card path, title, category, freshness, status, source pointers, and promotion owner before using a result. Demote stale, superseded, archived, or low-confidence cards, then return to active memory, the active bead, and the owner file before recommending action.
 
-Retrieval-readiness review may recommend staying filesystem-first, splitting/promoting cards first, or running Extension Review. It does not approve semantic search, a shared backend, card creation, owner-file promotion, task selection, or active-memory changes.
+Retrieval-readiness review may recommend staying filesystem-first, splitting/promoting cards first, or running Extension Review. `extension_review_required` means repeated no-match or weak-match evidence after card cleanup may justify a separate review; it does not approve semantic search, a shared backend, card creation, owner-file promotion, task selection, or active-memory changes.
 
 Use `tasks/reference/MEMORY-PROTOCOL.md` for the full rules.

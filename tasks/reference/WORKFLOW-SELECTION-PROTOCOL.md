@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-04
+Document version: v0.1.24
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -31,6 +31,8 @@ Before routing a user or agent toward implementation, ask the task-suitability q
 Keep student-facing workflow selection subordinate to the document-role split: README is the public compass, Guided Setup is setup-only, Daily Cockpit is the operating home, User Guide is the annex, How-To is the educational bridge, Troubleshooting is symptom lookup, Ask Precode and Artifact Chooser are conditional helpers, and Release Readiness is release-prep rather than deployment automation.
 
 If the user asks for the Workflow Selection Skill, a "Precode skill", or a "skill-style workflow," use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` to keep the skill as a read-only prompt playbook. Stable documentation questions should route to Ask Precode. Current-state or next-work questions should route through Workflow Selection, Session Start, Troubleshooting, or the relevant owner workflow.
+
+When a valuable answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis should survive but its destination is unclear, use Question-To-Artifact Filing from `tasks/reference/PROMPT-PATTERNS.md`. Recommend the smallest existing destination: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, `DECISIONS.md`, owner-file update, decomposition review, defer, kill, or maintainer roadmap note. This is filing guidance only: it does not file automatically, approve promotion, choose tasks, approve PRDs, activate beads, update active memory, or make generated summaries authoritative.
 
 Active memory remains exactly:
 
@@ -60,6 +62,7 @@ Choose the workflow that matches the current situation:
 | PrecodeOS adoption target already has app code, docs, CI, product history, or active work | Existing Repo Intake | read-only repo intake evidence and setup/adaptation path |
 | Broad, risky, market-facing, paid, evidence-poor, or solution-first idea where worth-building uncertainty blocks the First PRD path | Product Discovery Validation inside or before First PRD Walkthrough | Discovery Summary with `proceed | pause | narrow | kill` recommendation |
 | Scattered notes, screenshots, research, chat summary, or issue export for an existing Precode project | Local Source Intake | reviewed source summary |
+| Valuable answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis may need a durable destination | Question-To-Artifact Filing | filing recommendation only: stay in chat, intake, queue, memory review, PRD/owner-file work, decision, decomposition review, defer, kill, or maintainer roadmap note |
 | User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop in Plan Mode | Plan Packet |
 | User selects a Candidate Queue entry and asks for an implementation plan | Plan Mode Candidate Craft Loop, then the owner workflow | Implementation plan draft only; no activation before PRD/authority/decomposition approval |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-07-10
+# Version: v0.1.6
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -49,6 +49,17 @@ def recall_snippet(card: dict[str, Any], terms: list[str], limit: int = 420) -> 
     prefix = "..." if start > 0 else ""
     suffix = "..." if end < len(source) else ""
     return f"{prefix}{source[start:end]}{suffix}"
+
+
+def term_match_summary(card: dict[str, Any], terms: list[str]) -> dict[str, Any]:
+    search_text = str(card.get("search_text") or "").lower()
+    matched_terms = [term for term in terms if term in search_text]
+    missing_terms = [term for term in terms if term not in search_text]
+    return {
+        "matched_terms": matched_terms,
+        "missing_terms": missing_terms,
+        "all_query_terms_matched": bool(terms) and not missing_terms,
+    }
 
 
 def demotion_reason(card: dict[str, Any]) -> str:
@@ -116,7 +127,29 @@ def card_reference(card: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def selective_recall(cards: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
+def weak_match_examples(cards: list[dict[str, Any]], terms: list[str], limit: int) -> list[dict[str, Any]]:
+    partial_matches: list[tuple[int, dict[str, Any]]] = []
+    for card in cards:
+        score = recall_score(card, terms)
+        if score > 0 and score < len(terms):
+            partial_matches.append((score, card))
+    partial_matches.sort(key=lambda item: (-item[0], str(item[1].get("path") or "")))
+    return [
+        {
+            **card_reference(card),
+            "score": score,
+            "match": term_match_summary(card, terms),
+            "snippet": recall_snippet(card, terms, limit=260),
+        }
+        for score, card in partial_matches[: max(1, limit)]
+    ]
+
+
+def selective_recall(
+    cards: list[dict[str, Any]],
+    args: argparse.Namespace,
+    all_cards: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     terms = query_terms(args.query or "")
     if not terms:
         return {
@@ -147,6 +180,7 @@ def selective_recall(cards: list[dict[str, Any]], args: argparse.Namespace) -> d
                 "status": card.get("status"),
                 "authority_owner_if_promoted": card.get("authority_owner_if_promoted", "none"),
                 "score": score,
+                "match": term_match_summary(card, terms),
                 "snippet": recall_snippet(card, terms),
                 "citation": card.get("citation"),
                 "demotion": demotion_reason(card),
@@ -165,12 +199,22 @@ def selective_recall(cards: list[dict[str, Any]], args: argparse.Namespace) -> d
         "returned_snippets": len(recalls),
         "no_useful_memory_found": not recalls,
         "recalls": recalls,
+        "no_match_guidance": "No exact reviewed-memory match was found. Do not force weak memory into context; try narrower terms, inspect weak_match_examples as leads only, or create/promote reviewed memory through the normal approval path." if not recalls else "",
+        "weak_match_examples": [] if recalls else weak_match_examples(all_cards or cards, terms, args.limit),
         "search_method": {
-            "keyword": "implemented",
+            "keyword": "implemented; recall requires every query term to match the reviewed card search text before returning snippets",
             "semantic": "deferred_optional_extension",
             "hybrid_backend": "deferred; no Postgres, pgvector, Docker, MCP, REST API, or shared backend required",
         },
-        "safe_next_step": "Use only the cited snippets, then verify against active memory, the active bead, and the relevant owner file before acting. If a result may need promotion, run a manual Memory Promotion Review and get approval before creating cards or editing owner files.",
+        "safe_next_step": "Use only exact-match cited snippets. Treat weak matches as leads, not recall. Verify against active memory, the active bead, and the relevant owner file before acting. If a result may need promotion, run a manual Memory Promotion Review and get approval before creating cards or editing owner files.",
+        "does_not_approve": [
+            "card_creation",
+            "owner_file_promotion",
+            "task_selection",
+            "active_memory_expansion",
+            "semantic_search",
+            "shared_backend",
+        ],
         "generated_evidence_only": True,
     }
 
@@ -252,6 +296,7 @@ def retrieval_readiness_review(
                 {
                     **card_reference(card),
                     "score": score,
+                    "match": term_match_summary(card, terms),
                     "snippet": recall_snippet(card, terms, limit=260),
                 }
                 for score, card in partial_matches[: max(1, args.limit)]
@@ -260,6 +305,11 @@ def retrieval_readiness_review(
         },
         "recommendation": recommendation,
         "rationale": rationale,
+        "recommendation_meanings": {
+            "stay_filesystem_first": "Use reviewed cards, exact-match search, selective recall, and owner-file verification; no backend work is justified by this evidence.",
+            "split_or_promote_cards_first": "Fix card hygiene, token pressure, stale/low-confidence cards, or manual owner-file promotion before discussing richer retrieval.",
+            "extension_review_required": "Only repeated no-match or weak-match evidence after cleanup may justify a separate Extension Review; this result is not backend approval.",
+        },
         "search_method": {
             "keyword": "implemented",
             "semantic": "not_implemented; extension_review_required_before_any_backend",
@@ -353,7 +403,7 @@ def filtered_payload(payload: dict[str, Any], args: argparse.Namespace) -> dict[
         "source_to_promotion_hygiene_warning": "Promotion hygiene output is advisory generated evidence only. It does not create cards, edit owner files, approve PRDs, activate beads, choose tasks, or change active memory.",
     }
     if args.recall:
-        next_payload["recall"] = selective_recall(selected, args)
+        next_payload["recall"] = selective_recall(selected, args, all_cards=cards)
     if args.retrieval_review:
         next_payload["retrieval_review"] = retrieval_readiness_review(cards, selected, details, args)
     return next_payload
@@ -448,12 +498,21 @@ def self_test() -> int:
     if not miss.get("no_useful_memory_found"):
         print("memory-check self-test failed: weak miss was not rejected")
         return 1
+    weak_args = argparse.Namespace(query="selective backend", limit=5)
+    weak = selective_recall([], weak_args, all_cards=cards)
+    weak_examples = weak.get("weak_match_examples") if isinstance(weak.get("weak_match_examples"), list) else []
+    if not weak.get("no_useful_memory_found") or not weak_examples:
+        print("memory-check self-test failed: no-match recall did not provide weak leads")
+        return 1
+    if not weak_examples[0].get("match", {}).get("missing_terms"):
+        print("memory-check self-test failed: weak lead did not name missing terms")
+        return 1
     glossary_args = argparse.Namespace(query="client intake", category="project_glossary", freshness=None, status=None, needs_promotion=False, recall=False)
     glossary_matches = filter_cards(cards, glossary_args)
     if len(glossary_matches) != 1 or glossary_matches[0].get("category") != "project_glossary":
         print("memory-check self-test failed: glossary category filter did not isolate the card")
         return 1
-    glossary_recall = selective_recall(glossary_matches, argparse.Namespace(query="client intake", limit=5))
+    glossary_recall = selective_recall(glossary_matches, argparse.Namespace(query="client intake", limit=5), all_cards=cards)
     glossary_recalls = glossary_recall.get("recalls") if isinstance(glossary_recall.get("recalls"), list) else []
     if not glossary_recalls or "Client intake" not in str(glossary_recalls[0].get("snippet") or ""):
         print("memory-check self-test failed: glossary recall did not include the glossary excerpt")

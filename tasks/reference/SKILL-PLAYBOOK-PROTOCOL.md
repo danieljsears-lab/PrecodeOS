@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-06-30
+Document version: v0.1.21
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -44,6 +44,25 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when de
 | Optional pack | Defer | Useful only after the kernel, setup path, manifest, and update boundaries are quieter. |
 
 A prompt playbook may tell an agent to inspect files and summarize. It must not tell an agent to edit files, write generated evidence, approve transitions, run installers, mutate external systems, or treat command output as authority.
+
+## Beginner Invocation And Review Ergonomics
+
+Skill playbooks should be easy to invoke without becoming a beginner-facing catalog. Keep beginner language behind the Daily Cockpit aliases, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist.
+
+Use this decision aid before adding or changing a skill-style surface:
+
+| Need | Prefer | Do not use |
+|---|---|---|
+| A beginner needs a shorter way to ask for an existing workflow. | Daily Cockpit alias or Prompt Patterns entry that routes to the owner protocol. | A new skill name, registry, optional pack, or command wrapper. |
+| A host agent needs a bounded invocation contract. | Skill playbook with manifest fields, owner protocol, stop conditions, and approval gates. | A tool-specific hidden rule that becomes authority over Precode owner files. |
+| Core Precode behavior needs durable rules. | Owner protocol update. | Skill text as the source of truth. |
+| A repeated validation gap needs deterministic checking. | Existing checker or narrow script after the owner protocol defines the rule. | A skill that claims proof, approval, or enforcement. |
+| Tool-specific packaging or discovery is confusing. | Adapter or `.agents/README.md` boundary note. | Shared-kernel registry, marketplace, optional-pack, install/update, or package-manager behavior. |
+| The gain is only wording, teaching, or copyable language. | Docs or Prompt Patterns. | New maintained skill surface. |
+
+Beginner naming rule: reuse the user-facing workflow name whenever one already exists. For rough ideas, use `First PRD Walkthrough` or the Daily `Ideation` alias; do not promote Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, workbook, Product Brief, Challenge And Clarity, Local Source Intake, or PRD shaping into competing beginner commands.
+
+Review recommendation rule: Skill / Extension Review output is advisory review input only. A recommendation of `accept-shape` does not approve the extension, install a skill, authorize implementation, edit files, add a registry, create optional packs, run commands, mutate external systems, or bypass the Extension Protocol.
 
 ## Daily Prompt Alias Boundary
 

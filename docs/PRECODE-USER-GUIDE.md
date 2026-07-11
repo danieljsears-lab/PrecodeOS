@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.83
-Last updated: 2026-07-10
+Document version: v0.7.85
+Last updated: 2026-07-11
 
 
 
@@ -66,6 +66,18 @@ If the choice depends on active memory, the active bead, current repo state, gen
 
 ```text
 Ideation: map my current moment to the right Precode path before PRD shaping or coding. If this is an artifact-routing question, use Artifact Chooser as an index and name the required owner source and stop condition. If this depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, route me to Workflow Selection instead of choosing for me. Do not create tasks, approve a PRD, activate a bead, accept implementation, approve release, or code.
+```
+
+When a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis should survive but the destination is unclear, ask for Question-To-Artifact Filing. The answer may recommend staying in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, `DECISIONS.md`, owner-file update, decomposition review, defer, kill, or maintainer roadmap note. It must not file automatically, approve promotion, choose tasks, approve PRDs, activate beads, update active memory, create generated reports, or treat generated summaries as authority.
+
+```text
+Use Question-To-Artifact Filing for this answer. Name the source question, the answer worth preserving, the smallest durable destination, source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and forbidden uses. Do not file automatically, edit owner files, create memory cards, approve a PRD, choose tasks, activate beads, update tasks/todo.md, update active memory, create generated reports, or code.
+```
+
+If you are unsure which skill-style prompt to use, ask for Skill Playbook Ergonomics instead of browsing a skill catalog. It should map your request to the smallest existing invocation: Ask Precode, Workflow Selection, Ideation / First PRD Walkthrough, Review / Acceptance Skill, Skill / Extension Review Skill, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. Skill playbooks are read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
+
+```text
+Use Skill Playbook Ergonomics. Map my request to the smallest existing Precode invocation or owner surface, name the owner protocol or document, name the stop condition, and say what still requires human approval. Do not show me a skill catalog, create a new skill name, install a skill, add a registry, create an optional pack, run mutating commands, approve PRDs, activate beads, accept review, approve extension implementation, or treat skill output as authority.
 ```
 
 ## Use The Every-Bead Rhythm
@@ -530,6 +542,27 @@ For low-risk work, this should be one short quality-floor statement. For riskier
 
 This is not a production-readiness certification, code-quality score, or new required stage for every bead.
 
+## Use The Engineering Quality Standards Taxonomy
+
+Use this when the agent names a professional standard, the quality floor sounds too abstract, or you want to know which existing Precode protocol should own the risk.
+
+Say this:
+
+```text
+Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval.
+```
+
+Expect a short answer that maps the risk to one of these questions:
+
+- Is this the simplest change that satisfies the active bead and proof path?
+- Where should this behavior, durable fact, state change, provider call, or business rule live?
+- Are secrets, config, dependencies, dashboard values, or environment assumptions being changed safely?
+- What check, test, manual verification, or evidence proves this specific change?
+- Is the work complete enough for a named advisory review lens?
+- Is this really release, deployment, rollback, smoke evidence, docs freshness, or external status work?
+
+External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness are teaching references only. The taxonomy should translate them into Precode routing guidance; it does not make those frameworks public package authority, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.
+
 ## Check The Engineering Quality Text Contract
 
 Use this when the engineering quality floor sounds vague, skips proof, skips stop conditions, or claims low risk while naming architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system work.
@@ -538,7 +571,7 @@ Use this when the engineering quality floor sounds vague, skips proof, skips sto
 python3 scripts/engineering-quality-check.py --check
 ```
 
-Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation and does not certify production readiness.
+Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, routing, or Standards Taxonomy signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, validate application code against external frameworks, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation and does not certify production readiness.
 
 If the checker warns, revise the quality-floor answer or route to the owner protocol before coding. Do not treat a passing result as permission to build.
 
@@ -966,13 +999,14 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
 | Agent is about to code and you want a thin quality check | Engineering quality floor | `Before coding, show me the engineering quality standard you are applying here. Tell me the quality risk, simplest acceptable shape, boundary or owner file, evidence to prove it, and what would make you stop or ask for approval. If this reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.` |
+| Agent names a professional standard and you need plain routing | Engineering quality standards taxonomy | `Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval. Do not use external frameworks as public package authority, create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.` |
 | Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
 | Security, release, docs freshness, dependency, engineering-quality, draft-PRD quality, or package cross-reference/staleness risk needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, code quality, production readiness, transitions, parallel execution, declare stale claims authoritative, rewrite owner files, or create tasks.` |
 | A requirement, bug behavior, or acceptance criterion has unclear proof | Requirement-to-proof review | `Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.` |
-| Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, risks, approvals still required, and decision state. Do not approve release or mutate anything.` |
+| Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, release quality cues, risks, approvals still required, and decision state. Do not approve release, certify production readiness, or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
 | Logs, caches, or generated files look messy | Local hygiene check | `Use the Local Hygiene Protocol. Tell me what is truth, evidence, cache, generated output, protected, unexpected-review, not-candidate, or cleanup candidate. Do not delete anything.` |
 | Future work needs review | Long-horizon review | `Show approved, blocked, deferred, or ready work without activating anything.` |
@@ -1028,8 +1062,8 @@ A bead is ready to accept only when the evidence fits the risk:
 - the every-bead rhythm is clear: Active, Changed, Proven, Parked, Approval, and Next
 - review decision is `accepted`, `revise`, `split`, or `blocked`
 - release-relevant work has a release-readiness note with smoke evidence, docs freshness when relevant, rollback or blocked escape, known uncertainty, and approval still required before release action
-- nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, remaining risks, approvals, and decision state
-- release confidence names the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty when traceability matters
+- nearly shippable release-relevant work has a Release Candidate Evidence Profile when one compact candidate view would clarify changed surfaces, proof, release-quality cues, remaining risks, approvals, and decision state
+- release confidence names the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, release quality cues, approvals still required, decision state, and remaining uncertainty when traceability matters
 - next-bead transition is still separate and user-approved
 
 Say this:
@@ -1118,15 +1152,17 @@ Say this:
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, release quality cues, known risks and remaining uncertainty, approvals still required, and decision state.
+For release quality cues, include CI/status checks, logs or observability signal, configuration/environment parity, performance or scalability expectation, data retention/privacy/security expectation, dependency/runtime freshness, and monitoring/support owner. Use recorded evidence or not applicable with a reason.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+Do not treat release quality cues as a release gate, production-readiness certification, compliance certification, provider checklist, generated proof, checker gate, deployment approval, rollback approval, release-channel behavior, or package-manager behavior.
 ```
 
 To review an existing profile, say this:
 
 ```text
 Review this Release Candidate Evidence Profile against Closeout Evidence and recorded checks.
-Tell me what is recorded evidence, what is review input only, what evidence is missing, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
+Tell me what is recorded evidence, what is review input only, what release quality cue evidence is missing or not applicable with a reason, whether the rollback or blocked escape is specific enough, which approvals are still required, and whether the decision state should be candidate, needs evidence, blocked, or ready for human release decision.
 Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
 ```
 
@@ -1198,9 +1234,9 @@ Use reports for learning and audit. Before work resumes, return to active memory
 | `memory/cards/*.md` | Reviewed lessons, preferences, glossary terms, risks, and source pointers. | Replacing `DECISIONS.md`, PRDs, beads, or active memory. |
 | `logs/memory-index.md` | Searching reviewed memory cards. | Choosing or approving work. |
 | `logs/handoff-packet.md` | Orienting another agent. | Transition approval. |
-| `logs/scheduled-audit.md` | Background read-only audit findings. | Automatic action. |
+| `logs/scheduled-audit.md` | Background read-only audit findings, including provider-neutral external-status rows when configured. | Automatic action, release approval, merge approval, deployment approval, dashboard mutation, or owner-file mutation. |
 | `logs/goal-frame.json` | Checking whether a Goal Frame is fresh, stale, missing fields, or conflicting. | Workflow authority, task approval, or bead activation. |
-| GitHub audit/source intake | External status or issue/PR evidence. | Replacing PRDs, decisions, or beads. |
+| External status, GitHub audit, or source intake | Read-only GitHub, CI, safe health URL, issue/PR, or missing-provider evidence. | Replacing PRDs, decisions, beads, release-readiness review, human approval, or external-system approval. |
 | Spend telemetry | Known token/cost visibility. | Billing truth when telemetry is incomplete. |
 
 Say this:
@@ -1350,10 +1386,16 @@ You can also ask for a read-only filtered search:
 Run python3 scripts/memory-check.py --query "topic words". Cite card path, title, category, freshness, status, source pointers, and promotion owner. Tell me whether each useful result should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, or another owner file. Do not promote anything without my approval.
 ```
 
+Use selective recall when loading whole cards would waste context:
+
+```text
+Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite paths, titles, memory spaces, freshness, status, source pointers, demotion reasons, and promotion owners before recommending action.
+```
+
 Before discussing semantic search or a shared memory backend, ask for a retrieval-readiness review:
 
 ```text
-Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required. Treat the result as evidence only and do not add backend infrastructure, create cards, promote owner files, choose work, or expand active memory.
+Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, explain the recommendation meaning, and name any token-pressure, demoted-card, no-match, or weak-match evidence. Treat the result as evidence only and do not add backend infrastructure, create cards, promote owner files, choose work, or expand active memory.
 ```
 
 Stop if: the agent treats memory as a decision, requirement, next task, implementation instruction, backend approval, or permission to create a new memory service.
@@ -1441,10 +1483,22 @@ Choose the workflow:
 Use the Workflow Selection Skill. Read active memory and the workflow selection protocol, then return the current situation, recommended workflow, next artifact, required authority source, user approval needed, run contract needed, stop condition, and generated-report warning. Make no edits and do not code yet.
 ```
 
+Map a skill-style request:
+
+```text
+Use Skill Playbook Ergonomics. Map my request to Ask Precode, Workflow Selection, Ideation / First PRD Walkthrough, Review / Acceptance Skill, Skill / Extension Review Skill, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. Name the owner protocol, stop condition, and approval still required. Do not create a skill catalog, install skills, add registries, create optional packs, approve extension implementation, run mutating commands, or treat skill output as authority.
+```
+
 Ask for the engineering quality floor:
 
 ```text
 Before coding, show me the engineering quality standard you are applying here.
+```
+
+Ask for the standards taxonomy when the answer needs a plain routing map:
+
+```text
+Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval.
 ```
 
 Draft or reaffirm a Goal Frame:

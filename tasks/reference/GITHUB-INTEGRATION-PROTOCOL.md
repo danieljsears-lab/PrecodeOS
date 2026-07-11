@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-06-24
+Document version: v0.1.8
+Last updated: 2026-07-11
 
 ## Purpose
 
 GitHub can help PrecodeOS see repository status, CI status, pull request context, and issue context.
 
 GitHub must not become a second operating system. GitHub issues, pull requests, checks, comments, labels, project boards, and Actions are evidence or external status until a user promotes stable conclusions into the correct Precode owner file.
+
+Use `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` for provider-neutral external status row shape, safe health URL rules, missing-configuration behavior, and promotion paths across non-GitHub providers.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` before any GitHub tool call that mutates issues, pull requests, labels, branches, checks, comments, workflows, or repository settings.
 
@@ -126,7 +128,7 @@ Creating, editing, labeling, assigning, commenting on, closing, transferring, pi
 
 ## Audit Path
 
-`scripts/github-audit.py` is a read-only helper for scheduled audits.
+`scripts/github-audit.py` is a read-only GitHub-specific helper for scheduled audits and compatibility with existing command lists. `scripts/external-status.py` is the provider-neutral external status surface and may include GitHub rows using the same read-only boundaries.
 
 It should report:
 

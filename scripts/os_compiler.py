@@ -220,6 +220,15 @@ RELEASE_PROFILE_FIELDS = {
     "approvals_still_required": "Approvals still required",
     "decision_state": "Decision state",
 }
+RELEASE_QUALITY_CUE_FIELDS = {
+    "ci_or_status_checks": "CI or status checks",
+    "logs_or_observability_signal": "Logs or observability signal",
+    "configuration_or_environment_parity": "Configuration or environment parity",
+    "performance_or_scalability_expectation": "Performance or scalability expectation",
+    "data_retention_privacy_security_expectation": "Data retention/privacy/security expectation",
+    "dependency_or_runtime_freshness": "Dependency or runtime freshness",
+    "monitoring_or_support_owner": "Monitoring or support owner",
+}
 RELEASE_DECISION_STATES = {"candidate", "needs evidence", "blocked", "ready for human release decision"}
 REVERSAL_WORKFLOW_FIELDS = {
     "superseded_bead": "Superseded bead",
@@ -2489,6 +2498,15 @@ def release_evidence_quality(bead: BeadRecord | None, check_results: list[dict[s
         if release_readiness_missing:
             warnings.append(f"release-readiness evidence is missing fields: {release_readiness_missing}")
 
+    release_quality_invoked = "release quality cues" in lower_text
+    release_quality_missing: list[str] = []
+    if has_release_evidence_block or has_profile or release_readiness_present or release_quality_invoked:
+        release_quality_missing = [
+            label for key, label in RELEASE_QUALITY_CUE_FIELDS.items() if not release_field_present(values.get(key))
+        ]
+        if release_quality_missing:
+            warnings.append(f"release quality cues are missing fields: {release_quality_missing}")
+
     review_input_terms = ("screenshot", "browser note", "github status", "generated report", "dashboard observation")
     review_input_claimed = sorted(term for term in review_input_terms if term in lower_text)
     if review_input_claimed and not passing_rows and not manual_verification_structured(bead.closeout.get("manual_verification", "")):
@@ -2517,12 +2535,14 @@ def release_evidence_quality(bead: BeadRecord | None, check_results: list[dict[s
             "has_release_evidence_block": has_release_evidence_block,
             "has_release_candidate_profile": has_profile,
             "release_readiness_present": release_readiness_present,
+            "release_quality_cues_present": release_quality_invoked,
             "known_tiers": known_tiers,
             "recorded_pass_commands": passing_commands,
             "review_input_claimed": review_input_claimed,
             "missing_release_evidence_fields": missing_release_fields,
             "missing_profile_fields": missing_profile_fields,
             "missing_release_readiness_fields": release_readiness_missing,
+            "missing_release_quality_cue_fields": release_quality_missing,
             "proof_trace_present": proof_trace_present,
             "decision_state": decision_value or "not recorded",
             "generated_report_warning": "Release evidence warnings are advisory only; they do not approve release, accept work, or become proof.",
@@ -5587,10 +5607,10 @@ def memory_summary(root: Path) -> dict[str, Any]:
             "index_warning_card_count": MEMORY_INDEX_CONTEXT_WARNING_CARDS,
             "oversized_cards": oversized_cards,
             "card_count_warning": len(cards) > MEMORY_INDEX_CONTEXT_WARNING_CARDS,
-            "guidance": "Use selective recall and citations instead of loading whole memory files when cards or indexes grow large.",
+            "guidance": "Use exact-match selective recall and citations instead of loading whole memory files when cards or indexes grow large; weak matches are leads only.",
         },
         "next_human_review_prompt": "Search reviewed memory for relevant lessons, then return to active memory and the active bead before acting. If a lesson may need promotion, run Memory Promotion Review before any card write or owner-file edit.",
-        "safe_usage_prompt": "Search reviewed memory, recall concise cited snippets, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action. Say whether useful results should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file; do not promote anything without approval.",
+        "safe_usage_prompt": "Search reviewed memory, recall exact-match cited snippets, treat weak matches as leads only, treat the result as evidence only, then verify against active memory, the active bead, and the owner file before recommending action. Say whether useful results should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file; do not promote anything without approval.",
     }
     return {"status": "warning" if warnings else "pass", "generated_report_warning": MEMORY_GENERATED_WARNING, "warnings": warnings, "details": details}
 

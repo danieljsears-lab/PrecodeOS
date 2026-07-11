@@ -1,16 +1,16 @@
 # PrecodeOS -- Engineering Quality Standards Protocol
 <!-- ANCHOR: engineering-quality-standards-protocol -->
 
-> AUTHORITY: Lightweight pre-coding engineering quality floor, proportional risk routing, agent explanation contract, human approval questions, and stop conditions before implementation.
-> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, implementation acceptance, production readiness certification, security certification, compliance approval, generated proof, code-quality scoring, lint replacement, release approval, or a required stage for every bead.
-> LOAD_WHEN: A user asks what engineering quality standard the agent is applying before coding, an active bead is about to move into implementation, or a simple implementation request may hide architecture, security, data, dependency, deployment, or multi-system risk.
+> AUTHORITY: Lightweight pre-coding engineering quality floor, beginner-readable standards taxonomy, proportional risk routing, agent explanation contract, human approval questions, and stop conditions before implementation.
+> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, implementation acceptance, production readiness certification, security certification, compliance approval, generated proof, code-quality scoring, external engineering framework authority, lint replacement, release approval, or a required stage for every bead.
+> LOAD_WHEN: A user asks what engineering quality standard or standards taxonomy applies before coding, an active bead is about to move into implementation, or a simple implementation request may hide architecture, security, data, dependency, deployment, or multi-system risk.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-07-04
+Document version: v0.1.4
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -67,6 +67,24 @@ Route to existing protocols when the quality-floor answer reveals higher risk:
 
 This protocol should point to those owner protocols. It should not duplicate them.
 
+## Standards Taxonomy
+
+The Engineering Quality Standards Taxonomy translates professional engineering standards into Precode-native routing questions. Use it when the quality-floor answer feels vague, when a user asks which standard applies, or when an agent names a professional concept without showing the owner surface or proof path.
+
+This taxonomy is teaching and routing guidance. It is not a checklist required for every bead, a scorecard, a production-readiness certification, a code-quality certification, or public package authority for external frameworks.
+
+| Plain standard concept | Beginner question | Precode route |
+|---|---|---|
+| Small, bounded change | Is this the simplest change that satisfies the active bead and proof path? | Continue with the Engineering Quality floor when scope, files, proof, and stop conditions are clear. |
+| Clear ownership and boundaries | Where should the behavior, durable fact, state change, provider call, or business rule live? | Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when implementation shape or owner boundary needs explanation. |
+| Configuration and environment discipline | Are secrets, config, dashboard values, dependencies, or environment assumptions being hard-coded or changed without an owner? | Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` for dependency, integration, migration, API, data, or multi-system shaping; use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` for secrets, command risk, dashboards, or external mutation. |
+| Reviewable proof | What check, test, manual verification, or evidence will prove this specific change without pretending it proves more? | Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when proof quality, test strategy, rollback, or false-done risk is unclear. |
+| Review discipline | Is the work complete enough for a named advisory review lens, and what approval is still human? | Use `tasks/reference/REVIEW-LANES-PROTOCOL.md`; use Engineering Quality Review Lane only when the narrow question is whether completed work respected this floor. |
+| Release and deployment caution | Is this about user-facing shipping, deployment, rollback, smoke evidence, docs freshness, or external status? | Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md`; do not turn the pre-coding quality floor into release approval. |
+| Maintainable code shape | Is the agent using names, structure, and local patterns that a future maintainer can read without importing a new architecture? | Continue with the Engineering Quality floor for low-risk work; route to System Design Pattern or Architecture Shaping when the shape affects shared modules, APIs, state, data, dependencies, or multiple systems. |
+
+External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness may be named only as educational source concepts translated into these Precode routing questions. They do not replace the owner protocols, project tests, linters, code review, release readiness, human approval, or the active bead.
+
 ## Output Contract
 
 Use this shape when the user asks for the engineering quality standard:
@@ -98,7 +116,7 @@ Repo heuristics preview is repo-shape risk only. If git metadata is unavailable,
 
 For post-implementation review, use Engineering Quality Review Lane in the Review Lanes Protocol. That lane is owned by `tasks/prds/PRD-038-engineering-quality-review-lane.md` and reviews whether completed or nearly completed work respected this floor. It is advisory review input only; it does not accept implementation, approve review, certify code quality, certify production readiness, create follow-up tasks, replace tests or linters, inspect app code, add repo heuristics, add language-aware analysis, or expand this protocol into a full standards taxonomy. It does not add repo heuristics and does not add language-aware analysis.
 
-Standards Taxonomy remains deferred. Use repeated checker warning patterns to decide which engineering-standard concepts need beginner-readable teaching later. Do not import external engineering frameworks into this protocol as public package authority before that evidence exists.
+The Standards Taxonomy is now implemented as beginner-readable teaching and routing guidance in this protocol. The checker may validate that public package text preserves the taxonomy contract, but it does not validate application code against external frameworks, create a scorecard, approve implementation, approve review, approve release, certify production readiness, or certify code quality.
 
 ## Standards In Plain English
 
@@ -110,6 +128,7 @@ Use these as prompts for judgment, not as a broad checklist:
 - Keep configuration, secrets, dashboard values, and environment assumptions out of code unless the owner file and active bead explicitly allow the change.
 - Prove behavior with the narrowest useful recorded check or structured manual verification.
 - Stop when the work touches sensitive surfaces, broad architecture, new dependencies, external mutation, production actions, or unclear acceptance.
+- Ask the Standards Taxonomy question when an agent uses a professional standard name without saying what it means for this bead, which owner protocol applies, and what proof is enough.
 
 "Production-grade" is a direction for judgment. It is not a certification claim. Passing this quality floor does not prove the software is production-ready, secure, compliant, scalable, or released.
 

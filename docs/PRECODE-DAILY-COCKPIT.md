@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.40
-Last updated: 2026-07-10
+Document version: v0.1.41
+Last updated: 2026-07-11
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
@@ -59,7 +59,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 3. If PrecodeOS is set up and work exists, run Start, Check, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
-Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, or explicit user question calls for one.
+Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, skill-style help, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, proposed extension, or explicit user question calls for one.
 
 ## Plan Mode Candidate Craft Loop
 
@@ -104,11 +104,13 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
+| Where should this answer live? | `Use Question-To-Artifact Filing for this answer.` | A filing recommendation only: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD/owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, or activate beads. |
 | Is this source ready to promote? | Source-To-Promotion Hygiene Review in Prompt Patterns | Checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. It does not promote files, approve PRDs, choose tasks, or activate beads. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 | Which artifact, idea, or path do I need? | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | A mapped workflow, artifact, or rough-idea path. Artifact Chooser remains an index only; use Workflow Selection when the answer depends on current state. |
 | I only have a rough idea. | `Ideation: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
-| What happens before release? | `Release: prepare release evidence without release action.` | Late-stage release-prep evidence and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, or approve release. |
+| Which skill-style prompt should I use? | `Use Skill Playbook Ergonomics.` | One recommended invocation or owner surface: Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal protocol, a prompt pattern, an adapter note, a script/check, or no new surface. It does not show a skill catalog, install skills, approve extension implementation, add registries, create optional packs, run mutating commands, or replace owner protocols. |
+| What happens before release? | `Release: prepare release evidence without release action.` | Late-stage release-prep evidence, release-quality cues, and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, certify production readiness, or approve release. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
 
@@ -116,7 +118,7 @@ If you only remember three checks, ask: what is active, where should future inte
 
 These prompt aliases are the lean daily surface. Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
 
-Advanced aliases are still available, but they are conditional. Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
+Advanced aliases are still available, but they are conditional. Skill map is for mapping a confusing skill-style request to the smallest existing invocation, Quality map is for translating named engineering standards into Precode routing questions, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
 
 Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 
@@ -128,6 +130,8 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` | Clearer expected behavior for PRD or acceptance review. Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. |
 | Review candidates | `Queue: review Candidate Queue as parked intent.` | Candidate status, evidence, research needs, promotion target, and what cannot be decided from the queue. If the candidate is being developed or turned into an implementation plan, use Plan Mode first. |
 | Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.` | Confirm, Task Suitability, Engineering Quality Floor, Vibe-To-Agentic Boundary, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
+| Skill map | `Use Skill Playbook Ergonomics.` | One existing invocation or owner surface, owner protocol, stop condition, and approval reminder. Do not create a skill catalog, install skills, add a registry, create optional packs, approve extension implementation, run mutating commands, or treat skill output as authority. |
+| Quality map | `Quality map: translate the relevant engineering standard into a Precode routing question.` | Engineering Quality Standards Taxonomy guidance only: owner protocol or continue path, proof needed, and human approval still required. Do not create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, Engineering Quality Review Lane, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
@@ -146,7 +150,7 @@ Use these only when the current stage, risk, evidence gap, support role, or expl
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Delegation re-entry | `Re-entry: review delegated work before continuing.` | Evidence-only return review for solo AFK, teammate branch/worktree, or cloud-agent/PR work; not acceptance, merge approval, transition approval, or external mutation. |
-| Release prep | `Release: prepare release evidence without release action.` | Shipping evidence and approval questions without deployment, merge, rollback, external mutation, or release approval. |
+| Release prep | `Release: prepare release evidence without release action.` | Shipping evidence, release-quality cues, and approval questions without deployment, merge, rollback, external mutation, certification, or release approval. |
 | Trace proof | `Trace: map this requirement or bug behavior to proof.` | A compact proof trace without acceptance or generated-proof authority. |
 | Review attribution | `Attribution: review who-built-what evidence.` | A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior. |
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | A safe reversal plan or candidate bead shape without rollback automation or history rewriting. |
@@ -228,6 +232,14 @@ python3 scripts/engineering-quality-check.py --check
 ```
 
 Expected output: Check quality text contract warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals. The Engineering Quality Text-Contract Checker is advisory only; it does not approve coding, review, release, or generated proof, does not inspect app code, and does not create a scorecard or checker gate.
+
+If the agent names a professional standard and you need a plain routing map, use the Standards Taxonomy:
+
+```text
+Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval.
+```
+
+Expected output: a plain Precode routing question, owner protocol or continue path, proof needed, and approval still required. The Standards Taxonomy does not make external frameworks public package authority, certify code quality, certify production readiness, approve coding, approve review, approve release, create a scorecard, or add a new command.
 
 If the text contract looks complete but changed files appear broader than the active bead claims, use the repo-shape preview:
 
@@ -399,8 +411,10 @@ Use when a release-relevant bead is nearly ready and you need one compact view b
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, release quality cues, known risks and remaining uncertainty, approvals still required, and decision state.
+For release quality cues, include CI/status checks, logs or observability signal, configuration/environment parity, performance or scalability expectation, data retention/privacy/security expectation, dependency/runtime freshness, and monitoring/support owner. Use recorded evidence or not applicable with a reason.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+Do not treat release quality cues as a release gate, production-readiness certification, compliance certification, provider checklist, generated proof, checker gate, deployment approval, rollback approval, release-channel behavior, or package-manager behavior.
 ```
 
 Expected output: a human-authored evidence profile. It prepares a release decision; it does not approve release, deploy, merge, roll back, or mutate external systems.
@@ -590,6 +604,7 @@ Learning matters because Precode should make you more capable over time, not jus
 | Read the lesson | `Read the generated learning diary and explain what I should understand from the last session. Do not use the diary as active memory, a task plan, or implementation instructions.` | A plain-English session lesson from `logs/learning-diary.md`. |
 | Understand build changes | `Read the generated bead build journal if it exists. Tell me the path of already-worked beads, what changed for the current bead, what evidence supports it, and what remains uncertain. Do not use the journal as active memory, Candidate Queue authority, or acceptance.` | A plain-English implemented-bead path and build-change summary from `logs/bead-build-journal.md` when available. |
 | Search reviewed memory | `Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.` | Relevant reviewed memory cards with source pointers. |
+| Recall reviewed memory | `Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. Treat weak_match_examples as search leads, not memory to load.` | Concise cited snippets, or explicit no-match guidance without forcing weak memory into context. |
 | Propose memory | `Turn this diary lesson into a proposed memory card for my approval. Do not write it until I approve, and tell me whether it should stay reviewed memory, become a card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file.` | A proposed memory card or promotion recommendation. |
 | Review memory promotion | `Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.` | A manual promotion review that keeps memory evidence-only until an owner-file change is approved. |
 | Check memory quality | `Run the memory index and memory check. Tell me whether any memory is stale, missing source pointers, acting like authority, or needs promotion.` | Memory warnings or confirmation. |

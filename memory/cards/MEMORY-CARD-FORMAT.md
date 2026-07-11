@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-07-04
+Document version: v0.1.8
+Last updated: 2026-07-11
 
 Each memory card captures one reusable piece of reviewed knowledge.
 
@@ -58,6 +58,6 @@ Promotion review must not create cards, edit owner files, approve PRDs, activate
 
 For `project_glossary` cards, search and recall may surface term excerpts and demotion warnings. The agent must still verify the term against current active memory, active bead, approved PRD, code, and owner files before using it to name UI, modules, routes, tests, or docs.
 
-Prefer short cards with focused summaries. If a card grows large enough that loading it would waste context, use selective recall through `scripts/memory-check.py --query "<topic>" --recall`, split the card, or promote durable truth into the correct owner file.
+Prefer short cards with focused summaries. If a card grows large enough that loading it would waste context, use selective recall through `scripts/memory-check.py --query "<topic>" --recall`, split the card, or promote durable truth into the correct owner file. Selective recall only returns snippets for exact query-term matches; weak-match examples are leads for follow-up search or card cleanup, not memory that should be loaded as context.
 
-Use `scripts/memory-check.py --retrieval-review` before considering any optional retrieval backend. The review may expose oversized cards, token pressure, stale or low-confidence cards, promotion-needed cards, memory spaces, and query misses, but it remains generated evidence only. It does not approve semantic search, shared storage, new dependencies, card creation, owner-file promotion, task selection, or active-memory expansion.
+Use `scripts/memory-check.py --retrieval-review` before considering any optional retrieval backend. The review may expose oversized cards, token pressure, stale or low-confidence cards, promotion-needed cards, memory spaces, query misses, weak-match examples, and recommendation meanings, but it remains generated evidence only. `extension_review_required` means a separate review may be warranted after cleanup; it does not approve semantic search, shared storage, new dependencies, card creation, owner-file promotion, task selection, or active-memory expansion.

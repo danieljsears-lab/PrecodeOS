@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-07-10
+Document version: v0.1.26
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -23,6 +23,8 @@ Use `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when an extension packages a na
 Use `.agents/README.md` when inspecting host-discoverable skill files under `.agents/skills/`. Those files are host skill contracts, not PrecodeOS skill playbooks, and they do not expand active memory, approve commands, create a package registry, or replace the Skill Playbook Protocol.
 
 Use the Skill / Extension Review Skill in `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md` when the user wants a structured advisory review of a proposed skill or extension before implementation. The review output is input to this protocol; it does not approve the extension, install a skill, mutate files, add a registry, or create optional-pack behavior.
+
+Use Skill Playbook Ergonomics in `tasks/reference/PROMPT-PATTERNS.md` when the question is which existing invocation to use. It maps a request to Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface; it must not become a skill catalog, registry, optional pack, command wrapper, approval gate, or implementation path.
 
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes commands, touches external systems, logs non-check tool runs, wraps existing commands, or needs tool-call approval boundaries.
 
@@ -48,7 +50,7 @@ Future optional packs are governed by this protocol before any pack distribution
 
 The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over existing prompts and artifacts, not an extension type. Do not treat it as a template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, skill playbook, command wrapper, or approval surface. If artifact selection depends on active state, route through Workflow Selection or the owning protocol.
 
-Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, embedding layer, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior. `memory-check.py --retrieval-review` is a readiness review only: it may show token pressure, card hygiene, and query miss evidence, but it does not approve a backend.
+Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, embedding layer, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior. `memory-check.py --recall` returns exact-match cited snippets and demotes weak matches to leads only. `memory-check.py --retrieval-review` is a readiness review only: it may show token pressure, card hygiene, query miss evidence, and weak-match examples, but it does not approve a backend.
 
 ## Extension Types
 
@@ -66,7 +68,7 @@ Future retrieval-backed memory is governed by this protocol before any database,
 | Future retrieval-backed memory | Deferred optional retrieval layer for reviewed memory cards or approved memory exports | `tasks/reference/MEMORY-PROTOCOL.md`, this protocol, and a future extension review |
 | Bead template | Repeatable task shape with the standard bead contract | `tasks/beads/BEAD-SCHEMA.md` |
 | Bounded attempt engine | Opt-in local loop that runs one explicit attempt command, validators, and generated attempt evidence for one active bead | `tasks/reference/RALPH-LOOP-PROTOCOL.md` plus `scripts/ralph-loop.py` |
-| External integration | Read-only or approved interaction with outside systems | Integration protocol plus `PROJECT-CONTEXT.md` |
+| External integration | Read-only or approved interaction with outside systems | `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`, provider-specific protocol, plus `PROJECT-CONTEXT.md` |
 | Role contract | Compact mode card for bounded agent behavior | `modes/*.md` |
 | Future optional pack | Deferred package of related PrecodeOS reference surfaces, examples, or checks that must pass extension review before distribution | `tasks/reference/EXTENSION-PROTOCOL.md` plus the specific owning protocols or adapters |
 
@@ -80,6 +82,7 @@ Every extension must preserve these boundaries:
 - Do not mutate external systems unless the active bead explicitly allows it and the user approves the manual gate.
 - Keep extension rules in one owning protocol or adapter.
 - Keep skill playbooks read-only unless a later approved extension explicitly defines command-wrapper boundaries.
+- Keep beginner skill ergonomics behind existing workflow moments and owner protocols; do not create a beginner-facing skill catalog, registry, marketplace, optional-pack, install/update, package-manager, or hidden task-selection surface.
 - Keep docs-help playbooks limited to stable documentation questions; they must cite canonical docs/protocols and stop before current-state diagnosis.
 - Keep extension findings as evidence until promoted into a PRD, `DECISIONS.md`, an owning authority file, or an approved bead.
 - Keep bounded engines subordinate to one active bead, explicit user approval gates, and generated-evidence demotion.
@@ -174,7 +177,7 @@ ZYAL-like export belongs in an adapter or extension that maps the generic Precod
 
 ## Mutation Rules
 
-External integrations start read-only.
+External integrations start read-only. Provider-neutral status checks use `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` and must keep missing providers, missing authentication, and missing safe health URLs visible as `not_configured` or warning evidence rather than silent inference.
 
 Mutation requires all of these:
 
@@ -236,3 +239,5 @@ Rollback or removal note:
 GitHub is the first concrete example of this pattern.
 
 `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md` owns the rules. `scripts/github-audit.py` and `scripts/import-github-sources.py` read GitHub status or source material and write generated evidence. GitHub issues, pull requests, checks, and Actions remain external evidence until a user promotes conclusions into Precode-owned files.
+
+`tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` owns the provider-neutral status contract. `scripts/external-status.py` reads GitHub status, safe health URLs from `PROJECT-CONTEXT.md`, and configured-provider absence as external evidence only; it must not approve work, mutate provider systems, store secrets, or replace owner-file review.

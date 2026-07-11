@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-06
+Document version: v0.1.1
+Last updated: 2026-07-11
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
@@ -34,6 +34,7 @@ Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 - `python3 scripts/next-step.py [--json]`
 - `python3 scripts/os-health.py`
 - `python3 scripts/import-agent-spend.py`
+- `python3 scripts/external-status.py`
 - `python3 scripts/github-audit.py`
 - `python3 scripts/import-github-sources.py`
 - `python3 scripts/extension-check.py`

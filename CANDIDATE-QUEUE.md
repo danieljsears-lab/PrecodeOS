@@ -52,6 +52,7 @@ Active memory remains exactly:
 - Near-bead sketch IDs use `CQ-###-short-name-S##`, for example `CQ-001-owner-dashboard-S01`. They are sketches only, not bead files.
 - Do not copy raw notes wholesale into this file. Link or name the source and summarize only the decision-relevant parts.
 - Do not store secrets, credentials, dashboard values, billing details, or private raw transcripts here.
+- Use Question-To-Artifact Filing first when a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis might belong here but its destination is unclear. The recommendation does not file automatically, approve promotion, choose tasks, approve PRDs, activate beads, or update active memory.
 - Promote only reviewed conclusions through Local Source Intake, Product Discovery, PRDs, decisions, authority-file updates, decomposition review, defer, or kill decisions.
 
 ## Product-Value Ratings

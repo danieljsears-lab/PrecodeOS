@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-07-10
+Document version: v0.1.4
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -62,6 +62,8 @@ Candidate Queue shaping may add reviewed metadata that helps a user decide what 
 - source-to-promotion hygiene: source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition
 
 This shaping is not product approval. It does not approve a PRD, activate a bead, reserve a bead ID, choose the next task, mutate `tasks/todo.md`, or authorize implementation.
+
+When a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis might be parked but might not belong in the queue, use Question-To-Artifact Filing first. It can recommend Candidate Queue only when the answer is future intent or candidate evidence; otherwise it may route to stay in chat, Local Source Intake, Memory Promotion Review, PRD or owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap note. This recommendation does not approve queue writeback, promotion, task selection, PRD approval, bead activation, or generated-summary authority.
 
 Use Plan Mode before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. If the user later selects a candidate for implementation planning, use Plan Mode again before drafting the implementation plan. The resulting Plan Packet, queue entry, or implementation plan is evidence only and must still move through Local Source Intake, Product Discovery, PRD work, decisions, owner-file updates, Architecture Shaping, Decomposition, defer, kill, or stop.
 
@@ -180,6 +182,7 @@ Use the smallest promotion path that matches the candidate:
 
 | Candidate condition | Next path |
 |---|---|
+| Useful chat, planning, review, discovery, source intake, memory, or maintainer answer whose destination is unclear | Question-To-Artifact Filing recommendation before any queue write |
 | Raw idea, note, screenshot, issue, or research lead | Local Source Intake |
 | Worth-building uncertainty is material | Product Discovery Validation |
 | Durable orientation is needed but not a task | Goal Frame proposal or reaffirmation |

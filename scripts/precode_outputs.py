@@ -129,7 +129,7 @@ Generated at: `{datetime.now(timezone.utc).isoformat()}`
 
 Use this index to find reviewed memory cards. Before acting, return to active memory, the active bead, and the primary authority file.
 
-Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets; search misses should stay explicit instead of forcing weak memory into context.
+Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets for exact query-term matches; search misses should stay explicit and weak matches should remain leads instead of being forced into context.
 
 If a card may need promotion, use Memory Promotion Review: name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Search results may identify a proposed owner, but they must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
 

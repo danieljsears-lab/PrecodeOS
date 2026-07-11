@@ -598,10 +598,16 @@ Use memory carefully:
 Search reviewed memory for what we have learned about this topic. Do not treat memory as authority. Tell me whether anything should be promoted to DECISIONS.md, a PRD, or another owner file.
 ```
 
+When context cost matters, ask for selective recall:
+
+```text
+Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. Treat weak_match_examples as search leads, not memory to load.
+```
+
 If memory search starts feeling too large or too weak, review readiness before asking for new retrieval infrastructure:
 
 ```text
-Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether we should stay filesystem-first, split or promote cards first, or run Extension Review before any backend work.
+Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether we should stay filesystem-first, split or promote cards first, or run Extension Review before any backend work, and name any no-match or weak-match evidence.
 ```
 
 ## Common Beginner Failure Modes

@@ -1,7 +1,7 @@
 # PrecodeOS -- Scheduled Audit Protocol
 <!-- ANCHOR: scheduled-audit-protocol -->
 
-> AUTHORITY: Scheduled audit rules, allowed read-only checks, forbidden automation, generated audit output, external status audit boundaries, scheduler examples, secret-handling rules, and finding-promotion paths.
+> AUTHORITY: Scheduled audit rules, allowed read-only checks, forbidden automation, generated audit output, provider-neutral external status audit boundaries, scheduler examples, secret-handling rules, and finding-promotion paths.
 > NOT_AUTHORITY: Active memory, task selection, product decisions, implementation plans, external system mutation, deployment policy, or generated progress state.
 > LOAD_WHEN: Adding, reviewing, running, or configuring scheduled audits for PrecodeOS.
 > CLASS: reference
@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-06-04
+Document version: v0.1.3
+Last updated: 2026-07-11
 
 ## Purpose
 
 Scheduled audits help a builder notice quiet drift without letting automation move the project forward.
 
 They may refresh generated reports and surface warnings. They must not edit active memory, change bead state, approve transitions, create work, merge pull requests, deploy, or mutate external systems.
+
+Use `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` for the provider-neutral external status row shape, safe health URL rules, forbidden external-status uses, and promotion path.
 
 ## Allowed Scheduled Actions
 
@@ -28,7 +30,7 @@ Scheduled audits may:
 - dry-run spend telemetry import
 - read existing logs and generated sidecars
 - read local Git metadata
-- read external system status when configured through read-only tools
+- read external system status when configured through read-only tools and the External Status Integration Protocol
 - write generated audit reports under `logs/`
 
 ## Forbidden Scheduled Actions
@@ -71,7 +73,8 @@ Common audits:
 
 - GitHub repository status through authenticated `gh`
 - CI/check status for the current branch or PR
-- deployment status for configured providers such as Vercel, Netlify, or a generic health URL
+- provider-neutral external status through `python3 scripts/external-status.py`
+- deployment status for configured providers such as Vercel, Netlify, or a generic health URL when a read-only check exists
 - linked issue status for GitHub, Linear, or Jira references
 - dependency or security advisory status where a read-only source is available
 - monitoring or observability status when configured
@@ -121,6 +124,6 @@ Do not promote findings directly from the generated audit report without user ap
 
 ## GitHub Support
 
-Use `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md` for GitHub-specific setup, audit, source-intake, and GitHub Actions rules.
+Use `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md` for provider-neutral status checks and safe health URL rules. Use `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md` for GitHub-specific setup, audit, source-intake, and GitHub Actions rules.
 
-Scheduled audits may call `python3 scripts/github-audit.py`. That helper is read-only and writes no authority files.
+Scheduled audits may call `python3 scripts/external-status.py` and `python3 scripts/github-audit.py`. Those helpers are read-only and write no authority files.

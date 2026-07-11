@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-29
+Document version: v0.1.7
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -58,10 +58,11 @@ Before release approval, prepare a short release-readiness note with:
 - recorded checks and their results
 - smoke test path and result
 - browser or manual verification, when relevant
-- external status evidence, when relevant and read-only
+- external status evidence, when relevant and read-only under `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`
 - docs freshness or user-facing instruction changes
 - rollback path or blocked escape
 - known risks and remaining uncertainty
+- release quality cues, when release confidence depends on broader quality evidence
 - post-release follow-up or observation plan
 - explicit approval still needed before deployment, promotion, rollback, merge, migration, dashboard change, secret change, or external mutation
 - accessibility advisory status when the Accessibility Advisor was invoked, an owner file required it, or release confidence depends on it
@@ -72,7 +73,7 @@ Use existing Closeout Evidence where possible. Do not duplicate proof in a separ
 
 Use a Release Candidate Evidence Profile when release-relevant work is nearly ready for a human release decision and the builder needs one compact view of what changed, what is proven, what is still uncertain, and which approvals remain.
 
-The profile is human-authored evidence framing. It is not a generated report, release approval, deployment approval, review acceptance, merge approval, rollback approval, GitHub action, provider action, package-release checkpoint, CLI command, release-channel behavior, or package-manager behavior.
+The profile is human-authored evidence framing. It may cite provider-neutral external-status rows as evidence, but those rows are not proof or approval by themselves. The profile is not a generated report, release approval, deployment approval, review acceptance, merge approval, rollback approval, GitHub action, provider action, package-release checkpoint, CLI command, release-channel behavior, or package-manager behavior.
 
 Profile fields:
 
@@ -86,6 +87,7 @@ Profile fields:
 - docs or support freshness
 - rollback path or blocked escape
 - known risks and remaining uncertainty
+- release quality cues
 - accessibility advisory status when invoked or required
 - explicit approvals still required before release, deployment, promotion, merge, migration, dashboard change, secret change, GitHub mutation, provider mutation, rollback, external mutation, or post-release owner action
 - decision state
@@ -113,10 +115,41 @@ Release Candidate Evidence Profile:
 - Docs or support freshness:
 - Rollback path or blocked escape:
 - Known risks and remaining uncertainty:
+- Release quality cues:
+- CI or status checks:
+- Logs or observability signal:
+- Configuration or environment parity:
+- Performance or scalability expectation:
+- Data retention/privacy/security expectation:
+- Dependency or runtime freshness:
+- Monitoring or support owner:
 - Accessibility advisory status:
 - Approvals still required:
 - Decision state: candidate | needs evidence | blocked | ready for human release decision
 ```
+
+## Release Quality Cues
+
+Use release quality cues when release confidence depends on broader quality evidence beyond the narrow smoke path.
+
+Release quality cues are human-authored evidence prompts. They are not production-readiness certification, compliance certification, generated proof, a release gate, a provider checklist, deployment automation, monitoring integration, dashboard inspection, app-code analysis, linter replacement, test execution, or a new checker surface.
+
+Each cue may cite recorded evidence, name a recorded source, or say `not applicable because ...` with a reason. Missing cues mean `needs evidence` pressure before release review; they do not block release by themselves, approve release, certify quality, or mutate anything.
+
+Use this block inside a release-readiness note, Release Candidate Evidence Profile, or Verification and Release Evidence when relevant:
+
+```text
+Release quality cues:
+- CI or status checks:
+- Logs or observability signal:
+- Configuration or environment parity:
+- Performance or scalability expectation:
+- Data retention/privacy/security expectation:
+- Dependency or runtime freshness:
+- Monitoring or support owner:
+```
+
+Keep sensitive values out of release-quality evidence. Do not paste secrets, tokens, credentials, personal data samples, private dashboard values, provider configuration values, production logs with sensitive data, or hidden environment values. Redacted manual observations are acceptable when the source and remaining uncertainty are clear.
 
 ## Verification And Release Evidence Review
 
@@ -132,6 +165,7 @@ Release evidence should name:
 - smoke path and result
 - docs or support freshness
 - rollback path or blocked escape
+- release quality cues, when broader release-adjacent quality evidence matters
 - approvals still required
 - decision state
 - remaining uncertainty
@@ -148,6 +182,14 @@ Verification and release evidence:
 - Smoke path and result:
 - Docs or support freshness:
 - Rollback path or blocked escape:
+- Release quality cues:
+- CI or status checks:
+- Logs or observability signal:
+- Configuration or environment parity:
+- Performance or scalability expectation:
+- Data retention/privacy/security expectation:
+- Dependency or runtime freshness:
+- Monitoring or support owner:
 - Approvals still required:
 - Decision state: candidate | needs evidence | blocked | ready for human release decision
 - Remaining uncertainty:
@@ -217,6 +259,7 @@ If approval is granted, record the exact allowed action, expected effect, eviden
 Prepare release readiness for this bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate external services, or activate the next bead.
 Show changed behavior, affected users, release target, recorded checks, smoke test path, browser or manual verification needed, docs freshness, rollback or blocked escape, known uncertainty, post-release follow-up, and exactly what I must approve before any release action.
+If broader release confidence matters, include release quality cues for CI/status checks, logs or observability, configuration/environment parity, performance or scalability, data retention/privacy/security, dependency/runtime freshness, and monitoring/support owner. Use recorded evidence or `not applicable because ...`; missing cues mean needs evidence, not release approval or certification.
 ```
 
 ## Release Candidate Prompt
@@ -225,6 +268,7 @@ Show changed behavior, affected users, release target, recorded checks, smoke te
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
 Use the profile fields from the Release Readiness Protocol: candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Include release quality cues for CI/status checks, logs or observability, configuration/environment parity, performance or scalability, data retention/privacy/security, dependency/runtime freshness, and monitoring/support owner. Each cue can cite evidence or say not applicable with a reason.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision.
 Make clear that ready for human release decision is not release approval.
 ```

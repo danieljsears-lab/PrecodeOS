@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.64
-Last updated: 2026-07-10
+Document version: v0.1.65
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -21,6 +21,8 @@ They are prompts, not authority. The agent must still follow active memory, the 
 Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
 
 Advanced surfaces are conditional "only when this happens" prompts. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
+
+Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog. Use Ask Precode for stable docs questions, Workflow Selection when the next path depends on current state, Ideation for rough ideas and artifact routing, Review for acceptance or advisory review moments, and Skill / Extension Review only when a proposed skill, adapter, protocol, generated report, command wrapper, or integration needs maintainer-style shape review. Skill playbooks remain read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 
 For rough ideas, use one user-facing invocation: `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
 
@@ -62,6 +64,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Rough idea before a repo exists | First PRD Walkthrough | Product Brief, Conviction Packet, and Local Source Intake handoff | Product Ideation Workbook as a step inside First PRD Walkthrough, plus Idea-to-PRD Workflow | User, painful moment, current workaround, evidence, hypothesis, or first slice is unclear. |
 | Unsure what to do next | Workflow Selection Skill | Workflow recommendation and next artifact | Workflow Selection Protocol plus active memory when a repo exists | Multiple workflows remain plausible or authority is missing. |
 | New notes, research, issue, handoff, or source material | Local Source Intake | Stable facts, assumptions, conflicts, open questions, candidate requirements, and possible beads | Local Source Intake Protocol | Source material is being treated as authority or includes sensitive data. |
+| Valuable answer from chat, planning, review, discovery, or maintainer analysis | Question-To-Artifact Filing | Filing recommendation only: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD/owner-file amendment, `DECISIONS.md`, or maintainer roadmap note | Workflow Selection plus the destination owner protocol | The answer is being filed automatically, treated as authority, or used to approve promotion. |
 | Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |
 | Future idea not ready for PRD or bead | Candidate Queue | Candidate Queue entry or shaping proposal | Candidate Queue Protocol | Ranking is treated as implementation priority or task authority. |
 | Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
@@ -71,6 +74,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
 | Something feels broken or confusing | Recovery Protocol or No-Engineer Fallback Prompt Pack | Symptom, first safe move, owner surface, and next safe action | Recovery Protocol | Repair, rollback, overwrite, setup mutation, or app-code change is being requested without approval. |
 | Stable docs question | Ask Precode | Cited docs/protocol answer | README, public docs, and relevant reference protocols | The question depends on current state or what to do next. |
+| Proposed skill or extension needs review | Skill / Extension Review Skill | Advisory recommendation only: accept-shape, revise, split, defer, or reject | Extension Protocol, Skill Playbook Protocol, and the proposed material | Review output is treated as extension approval, implementation approval, installation permission, or registry behavior. |
 
 Copyable prompt:
 
@@ -81,6 +85,30 @@ If this depends on active memory, the active bead, current repo state, generated
 
 Do not create a template registry, marketplace, optional pack, package-manager behavior, hidden task selector, automatic artifact generator, PRD approval, bead activation, review acceptance, release approval, transition approval, or implementation permission.
 ```
+
+## Question-To-Artifact Filing
+
+Use this prompt when a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis should not disappear, but its durable destination is unclear.
+
+It is filing guidance only. It recommends the smallest existing destination and the review gate before any write. It does not create files, mutate owner surfaces, approve promotion, choose tasks, approve PRDs, activate beads, update active memory, create a generated report, or make generated summaries authoritative.
+
+Copyable prompt:
+
+```text
+Use Question-To-Artifact Filing for this answer.
+
+Source question:
+Answer worth preserving:
+Why it may need to survive:
+
+Recommend the smallest destination: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, DECISIONS.md, owner-file update, decomposition review, defer, kill, or maintainer roadmap note.
+
+For the recommendation, show source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and forbidden uses.
+
+Do not file automatically, edit owner files, create memory cards, approve a PRD, choose tasks, activate beads, update tasks/todo.md, update active memory, create a generated report, or treat generated summaries as authority.
+```
+
+Expected output: a short filing recommendation with one primary destination, any acceptable alternate destination, approval required before mutation, and the reason to stop if the source is weak, conflicting, private, stale, or already covered by an owner file.
 
 ## Daily Prompt Aliases
 
@@ -112,6 +140,22 @@ Alias guardrail floor:
 ### Advanced / Conditional Surfaces
 
 Use these aliases only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points.
+
+### Skill Playbook Ergonomics
+
+Use this prompt when a beginner or host agent is unsure whether to ask for Ask Precode, Workflow Selection, Ideation, Review, Skill / Extension Review, or no skill-style surface at all.
+
+```text
+Use Skill Playbook Ergonomics.
+
+Map my request to the smallest existing Precode invocation: Ask Precode, Workflow Selection, Ideation / First PRD Walkthrough, Review / Acceptance Skill, Skill / Extension Review Skill, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface.
+
+Explain why in plain language, name the owner protocol or document, name the stop condition, and say what still requires human approval.
+
+Do not show me a skill catalog, create a new skill name, install a skill, add a registry, create an optional pack, run mutating commands, approve PRDs, activate beads, accept review, approve extension implementation, or treat skill output as authority.
+```
+
+Expected output: one recommended invocation or owner surface, one reason, one stop condition, and a guardrail reminder that skill playbooks are read-only prompt playbooks.
 
 | Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
 |---|---|---|
@@ -722,7 +766,13 @@ Check the text contract when the quality-floor answer seems hand-wavy or riskier
 Run the Engineering Quality Text-Contract Checker with `python3 scripts/engineering-quality-check.py --check`. Treat it as advisory only. Use it to find missing quality-risk, simplest-shape, boundary, proof, stop-condition, or routing signals, and do not treat the result as proof, implementation approval, review acceptance, code-quality score, or a checker gate.
 ```
 
-The checker does not approve implementation, does not create proof, does not inspect app code, and does not make Standards Taxonomy implemented. It only helps decide whether the quality-floor text is complete enough to continue or whether an owner protocol should be loaded first.
+The checker does not approve implementation, does not create proof, does not inspect app code, and does not validate application code against the Standards Taxonomy. It only helps decide whether the quality-floor or taxonomy text is complete enough to continue or whether an owner protocol should be loaded first.
+
+Ask for the standards taxonomy when the agent names a professional standard or when the quality risk is hard to translate:
+
+```text
+Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval. Do not use external frameworks as public package authority, create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.
+```
 
 If the quality-floor text looks complete but the changed files look broader than the bead claims, run the repo-shape preview:
 
@@ -1285,8 +1335,10 @@ Do not accept implementation, approve review, approve PRDs, approve release, cer
 ```text
 Prepare a Release Candidate Evidence Profile for this release-relevant bead.
 Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, known risks and remaining uncertainty, approvals still required, and decision state.
+Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, requirement or behavior proven, evidence lane, recorded source, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, release quality cues, known risks and remaining uncertainty, approvals still required, and decision state.
+For release quality cues, include CI/status checks, logs or observability signal, configuration/environment parity, performance or scalability expectation, data retention/privacy/security expectation, dependency/runtime freshness, and monitoring/support owner. Use recorded evidence or not applicable with a reason.
 Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+Do not treat release quality cues as a release gate, production-readiness certification, compliance certification, provider checklist, generated proof, checker gate, deployment approval, rollback approval, release-channel behavior, or package-manager behavior.
 ```
 
 ## Verification And Release Evidence Review
@@ -1294,9 +1346,10 @@ Use only one decision state: candidate, needs evidence, blocked, or ready for hu
 ```text
 Review verification and release evidence for this release-relevant bead.
 Do not approve release, deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, accept implementation, or activate the next bead.
-Show requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs or support freshness, rollback or blocked escape, approvals still required, decision state, and remaining uncertainty.
+Show requirement or behavior proven, evidence lane, recorded source, smoke path and result, docs or support freshness, rollback or blocked escape, release quality cues, approvals still required, decision state, and remaining uncertainty.
+For release quality cues, include CI/status checks, logs or observability signal, configuration/environment parity, performance or scalability expectation, data retention/privacy/security expectation, dependency/runtime freshness, and monitoring/support owner. Each cue may cite recorded evidence or say not applicable with a reason.
 Tell me what is durable recorded evidence, what is review input only, and what missing traceability means needs evidence before release review.
-Do not treat screenshots, browser notes, GitHub status, generated reports, smoke checks, or ready for human release decision as release approval.
+Do not treat screenshots, browser notes, GitHub status, logs, dashboard observations, generated reports, smoke checks, release quality cues, or ready for human release decision as release approval, certification, generated proof, or a checker gate.
 ```
 
 ## Release Candidate Review
@@ -1427,12 +1480,18 @@ Read the generated learning diary and explain what I should understand from the 
 Search reviewed memory for what we have learned about this topic. Cite the memory cards you used, treat memory as evidence only, and return to active memory and the active bead before recommending action.
 ```
 
+Use selective recall when context cost matters:
+
+```text
+Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite paths, titles, memory spaces, freshness, status, source pointers, demotion reasons, and promotion owners before recommending action.
+```
+
 ```text
 Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Tell me whether it should stay reviewed memory, become a proposed memory card, be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.
 ```
 
 ```text
-Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, and do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
+Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, explain the recommendation meaning, and name any token-pressure, demoted-card, no-match, or weak-match evidence. Do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
 ```
 
 ```text

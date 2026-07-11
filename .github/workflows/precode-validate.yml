@@ -1,5 +1,5 @@
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 name: Precode Validate
 
@@ -34,6 +34,9 @@ jobs:
 
       - name: Dry-run spend import
         run: python3 scripts/import-agent-spend.py --dry-run
+
+      - name: Provider-neutral external status audit
+        run: python3 scripts/external-status.py
 
       - name: Read-only GitHub audit
         run: python3 scripts/github-audit.py

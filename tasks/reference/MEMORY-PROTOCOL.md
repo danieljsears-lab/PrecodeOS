@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-07-10
+Document version: v0.1.10
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -54,6 +54,8 @@ When the distinction is unclear, run a Memory Promotion Review before editing an
 
 Memory Promotion Review is a reasoning shape, not a new workflow authority. It must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, expand active memory, or treat generated indexes as source truth.
 
+When a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis should survive but memory is not clearly the right destination, run Question-To-Artifact Filing before Memory Promotion Review. The filing recommendation may keep the answer in chat, route it to Local Source Intake, Candidate Queue, PRD or owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap history. It does not create memory cards, approve promotion, update active memory, or make generated summaries authoritative.
+
 Memory Promotion Review is the reviewed-memory instance of Source-To-Promotion Hygiene Review. When a memory claim may move to an owner file, check source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. `scripts/memory-check.py` may surface missing promotion-hygiene fields for `needs_promotion` cards, but that output is generated evidence only and must not perform the promotion.
 
 ## Storage Shape
@@ -67,7 +69,7 @@ Generated memory indexes live under `logs/`:
 
 The generated indexes must declare `CLASS: generated` and must not be treated as active memory, task plans, owner files, or promotion approval.
 
-`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, `--recall` may return concise cited snippets for selective recall, and `--retrieval-review` may summarize whether filesystem memory hygiene is good enough before any optional retrieval-backend discussion. It does not create cards, edit owner files, promote memory, select tasks, approve work, or approve a backend.
+`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, `--recall` may return concise cited snippets for selective recall, and `--retrieval-review` may summarize whether filesystem memory hygiene is good enough before any optional retrieval-backend discussion. Recall snippets require every query term to match the reviewed card search text; weak matches are leads only and must not be forced into context as memory. The command does not create cards, edit owner files, promote memory, select tasks, approve work, or approve a backend.
 
 Memory cards may include `memory_space` metadata to group project, domain, team, or topic memories. Memory spaces are retrieval labels only. They must not become a new authority tree, active-memory partition, task selector, permission boundary, registry, optional pack, or package-manager surface.
 
@@ -75,7 +77,7 @@ Generated memory summaries may include line counts, character counts, estimated 
 
 Session Friction Review may inspect repeated command failures, wrong-path attempts, stale evidence warnings, missing proof patterns, memory/context pressure, or tool-run classifications to propose reviewed memory cards or protocol follow-ups. It must remain read-only and recommendation-only with manual promotion: `python3 scripts/session-friction-check.py` must cite the source evidence, proposed destination, confidence, and freshness, and it must not create memory cards, auto-promote owner files, or write to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, root shims, reviewed memory cards, generated reports, or owner files.
 
-`memory-check.py --retrieval-review` returns generated evidence only. It may recommend `stay_filesystem_first`, `split_or_promote_cards_first`, or `extension_review_required`. `split_or_promote_cards_first` means oversized cards, token pressure, stale/superseded cards, low-confidence cards, or `needs_promotion` cards should be cleaned up before richer retrieval is considered. `extension_review_required` means repeated no-match or weak-match evidence may justify a separate Extension Review; it is not approval to add semantic search or a shared backend.
+`memory-check.py --retrieval-review` returns generated evidence only. It may recommend `stay_filesystem_first`, `split_or_promote_cards_first`, or `extension_review_required`. `stay_filesystem_first` means reviewed cards, exact-match search, selective recall, and owner-file verification are enough for the current evidence. `split_or_promote_cards_first` means oversized cards, token pressure, stale/superseded cards, low-confidence cards, or `needs_promotion` cards should be cleaned up before richer retrieval is considered. `extension_review_required` means repeated no-match or weak-match evidence after cleanup may justify a separate Extension Review; it is not approval to add semantic search or a shared backend.
 
 Future retrieval-backed memory may use semantic search, hybrid keyword/semantic retrieval, a shared database, MCP, or dashboard-like browsing only after extension review. The default package posture remains filesystem-first: no Postgres, pgvector, Docker, REST API, shared backend, semantic index, embeddings, automatic agent write access, cross-machine memory store, or MCP server is required for normal Precode memory.
 
@@ -185,9 +187,9 @@ When searching memory, agents must return citations with:
 
 Search results with `freshness: stale`, `freshness: superseded`, `status: archived`, `status: superseded`, or `confidence: low` are demoted signals. Use them only to find context, conflicts, or history, then verify against current active memory, the active bead, and the relevant owner file before recommending action.
 
-Selective recall results must return short snippets with card citations rather than whole-card dumps. If no reviewed memory matches well enough, the agent or script should say no useful memory was found instead of forcing weak recall into the context window.
+Selective recall results must return short snippets with card citations rather than whole-card dumps. If no reviewed memory matches every query term, the agent or script should say no useful exact memory was found instead of forcing weak recall into the context window. Weak-match examples may be used as search leads only; verify them against active memory, the active bead, and the owner file before recommending action.
 
-Retrieval-readiness review results must name the recommendation, token-pressure signals, memory spaces, demoted stale/superseded/low-confidence/promotion-needed cards, and any query miss or weak-match examples. If no reviewed cards exist, the result should keep the project filesystem-first and point back to reviewed card creation rather than backend work.
+Retrieval-readiness review results must name the recommendation, token-pressure signals, memory spaces, demoted stale/superseded/low-confidence/promotion-needed cards, recommendation meanings, and any query miss or weak-match examples. If no reviewed cards exist, the result should keep the project filesystem-first and point back to reviewed card creation rather than backend work.
 
 Session-friction findings are also demoted signals until reviewed. They may suggest path corrections, command-pattern notes, search-scope improvements, or protocol gaps, but they must cite the source evidence and name the owner file or memory card destination before any human-approved promotion.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-07-10
+Document version: v0.1.18
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -74,6 +74,8 @@ Source inputs are evidence, not authority.
 Do not let local notes, screenshots, exports, or generated summaries drive active task selection directly. Promote only stable conclusions into the owning Precode file.
 
 When source material may move toward an owner file, PRD, decision, Candidate Queue entry, reviewed memory card, protocol update, or bead proposal, run a Source-To-Promotion Hygiene Review before promotion. The review must name source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition. This is a read-only review shape. It does not approve PRDs, promote owner-file facts, create beads, choose tasks, update `tasks/todo.md`, accept implementation, or make generated summaries authoritative.
+
+When the source is a useful answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis and its durable destination is unclear, run Question-To-Artifact Filing before promotion. It may recommend stay in chat, Local Source Intake, Candidate Queue update, Memory Promotion Review, PRD work, `DECISIONS.md`, owner-file update, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, activate beads, update active memory, or make generated summaries authoritative.
 
 Public GitHub feedback issues, package-bug issues, comments, labels, pull requests, reviews, checks, and project-board status are source evidence. They may inform intake, bug triage, PRD amendment, protocol updates, package docs, decisions, or candidate beads only after review. They must not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, approve package release, authorize GitHub mutation, or replace maintainer review.
 
@@ -168,7 +170,7 @@ Use `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when the intake question is 
 8. If an existing codebase or external plan is present, summarize repo topology, app directories, existing checks, implementation constraints, sprint-plan inputs, conflicts, and stale assumptions.
 9. Name the primary hypothesis or learning target when source material includes a hunch, unproven assumption, discovery summary, Candidate Queue entry, or experiment claim.
 10. When the source includes learning evidence, classify the hypothesis review status as `untested`, `tested`, `narrowed`, `killed`, `promoted`, `stale`, or `not applicable`, and summarize the learning outcome without treating it as authority.
-11. Decide whether the next step is Candidate Queue update, Goal Frame reaffirmation, Product Discovery Validation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, defer, kill, or no action.
+11. Decide whether the next step is stay in chat, Question-To-Artifact Filing, Candidate Queue update, Memory Promotion Review, Goal Frame reaffirmation, Product Discovery Validation, PRFAQ-lite, PRD drafting, PRD amendment, design or architecture impact review, client engagement intake, decision logging, architecture/security/schema/API update, decomposition into candidate beads, a narrow unblocker, defer, kill, or no action.
 12. Treat `scripts/candidate-queue.py --preview-import <path>` output as minimal queue capture only. It may park a title, source pointer, short summary, open questions, and privacy warning, but it does not replace Local Source Intake, approve promotion, or authorize coding.
 
 Stop before PRD drafting if the source material lacks:
@@ -186,6 +188,7 @@ Promote stable conclusions only after user review.
 
 | Intake finding | Destination |
 |---|---|
+| Useful chat, planning, review, discovery, memory, or maintainer answer whose destination is unclear | Question-To-Artifact Filing recommendation before any write |
 | Parked intent that is not ready for source intake, PRD shaping, or decomposition | `CANDIDATE-QUEUE.md` |
 | Product promise, users and jobs, strategy, non-goals, current bets, success signals, design or voice pointers | `PRODUCT.md` |
 | Reviewed and reaffirmed product-level Goal Frame candidate | `PRODUCT.md` `## Goal Frame` section |
