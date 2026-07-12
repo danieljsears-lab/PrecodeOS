@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
+# Version: v0.1.1
 # Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -19,7 +19,7 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-from os_compiler import repo_root
+from os_compiler import discover_git_remote_context, repo_root
 
 
 FORBIDDEN_USES = [
@@ -104,16 +104,14 @@ def github_rows(root: Path) -> list[dict[str, Any]]:
         ]
 
     branch_code, branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"], root)
-    remote_code, remote_url = run(["git", "remote", "get-url", "origin"], root)
-    default_code, default_ref = run(["git", "symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], root)
+    remote_context, remote_warnings = discover_git_remote_context(root)
     status_code, worktree_status = run(["git", "status", "--porcelain=v1"], root)
     upstream_code, upstream_counts = run(["git", "rev-list", "--left-right", "--count", "@{u}...HEAD"], root)
     context.update(
         {
             "branch": branch if branch_code == 0 else "unknown",
-            "remote_url": remote_url if remote_code == 0 else None,
-            "default_branch": default_ref.removeprefix("origin/") if default_code == 0 else None,
             "worktree_dirty": bool(worktree_status) if status_code == 0 else None,
+            **remote_context,
         }
     )
     if upstream_code == 0 and upstream_counts:
@@ -125,14 +123,31 @@ def github_rows(root: Path) -> list[dict[str, Any]]:
     gh = shutil.which("gh")
     if not gh:
         return [
-            row("github", "GitHub Repository Audit", "not_configured", "`gh` CLI not found; local git metadata only", configured=False, details=context, source="git"),
+            row(
+                "github",
+                "GitHub Repository Audit",
+                "not_configured",
+                "`gh` CLI not found; local git metadata only",
+                configured=False,
+                details=context,
+                warnings=remote_warnings,
+                source="git",
+            ),
             row("github", "CI Status Audit", "not_configured", "`gh` CLI not found", source="gh"),
         ]
 
     auth_code, auth_text = run(["gh", "auth", "status"], root)
     if auth_code != 0:
         return [
-            row("github", "GitHub Repository Audit", "not_configured", "`gh` CLI is not authenticated", details={"auth_status": auth_text, **context}, source="gh"),
+            row(
+                "github",
+                "GitHub Repository Audit",
+                "not_configured",
+                "`gh` CLI is not authenticated",
+                details={"auth_status": auth_text, **context},
+                warnings=remote_warnings,
+                source="gh",
+            ),
             row("github", "CI Status Audit", "not_configured", "`gh` CLI is not authenticated", source="gh"),
         ]
 
@@ -170,7 +185,7 @@ def github_rows(root: Path) -> list[dict[str, Any]]:
             "read-only GitHub repository status collected" if not repo_warnings else "; ".join(repo_warnings),
             configured=True,
             details=details,
-            warnings=repo_warnings,
+            warnings=repo_warnings + remote_warnings,
             source="gh",
         )
     )

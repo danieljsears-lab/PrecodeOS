@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-04-26
+# Version: v0.1.1
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -13,7 +13,7 @@ import shutil
 import subprocess
 from typing import Any
 
-from os_compiler import repo_root
+from os_compiler import discover_git_remote_context, repo_root
 
 
 def run(args: list[str], root: Path, timeout: int = 20) -> tuple[int, str]:
@@ -61,19 +61,18 @@ def main() -> int:
         return 0
 
     branch_code, branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"], root)
-    remote_code, remote_url = run(["git", "remote", "get-url", "origin"], root)
-    default_code, default_ref = run(["git", "symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], root)
+    remote_context, remote_warnings = discover_git_remote_context(root)
     status_code, worktree_status = run(["git", "status", "--porcelain=v1"], root)
     upstream_code, upstream_counts = run(["git", "rev-list", "--left-right", "--count", "@{u}...HEAD"], root)
 
     context.update(
         {
             "branch": branch if branch_code == 0 else "unknown",
-            "remote_url": remote_url if remote_code == 0 else None,
-            "default_branch": default_ref.removeprefix("origin/") if default_code == 0 else None,
             "worktree_dirty": bool(worktree_status) if status_code == 0 else None,
+            **remote_context,
         }
     )
+    warnings.extend(remote_warnings)
     if upstream_code == 0 and upstream_counts:
         parts = upstream_counts.split()
         if len(parts) == 2:

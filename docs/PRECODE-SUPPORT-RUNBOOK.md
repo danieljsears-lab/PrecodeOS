@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.37
-Last updated: 2026-07-09
+Document version: v0.1.39
+Last updated: 2026-07-11
 
 ## Purpose
 
 Use this runbook when you are helping someone else adopt PrecodeOS.
 
 This runbook is helper-facing. It does not replace Guided Setup for setup, Daily Cockpit for normal operation, Troubleshooting for symptom lookup, or the Recovery Protocol for the recovery contract.
+
+For a self-serve builder, route first by situation: not installed goes to Guided Setup, installed or working goes to Daily Cockpit, rough ideas use Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.`, and broken or confusing state goes to Troubleshooting or `I am stuck, help me.` Support uses this runbook to coach that route, not to create another start path.
 
 The support posture is:
 
@@ -135,6 +137,8 @@ Ask one blocking question at a time. Wait for the student's answer before asking
 Before activating a new bead or starting a new support session, check git status and tell us whether current changes are clean, committed, generated evidence, or unfinished work from the current bead.
 
 Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the student's repo has a remote and the bootcamp support workflow expects remote backup or collaboration.
+
+Use `origin` as the conventional remote name when possible. If a student is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
 
 Do not treat this chat instruction as durable state by itself. If the rule needs to persist, put it in the appropriate Precode owner or support document.
 ```

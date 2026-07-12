@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Build Software Using PrecodeOS + AI Coding Agents</h1>
   <p class="lede">Start Here: You Are Not Just Prompting</p>
-  <p class="meta"><a href="../docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md">Source Markdown</a><span>v0.1.39</span><span>Updated 2026-06-30</span></p>
+  <p class="meta"><a href="../docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md">Source Markdown</a><span>v0.1.41</span><span>Updated 2026-07-11</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -265,7 +265,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>For the philosophical anchor behind those choices, read <code>docs/PRECODE-MANIFESTO.md</code>.</p>
 <blockquote><p>Plain-English term: A repo is the project folder that holds your app code and the Precode files that guide the agent.</p></blockquote>
 <blockquote><p>Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.</p></blockquote>
-<p>This document is the educational bridge, not the operating home. Use <code>README.md</code> as the document compass, <code>docs/PRECODE-GUIDED-SETUP.md</code> for setup, and <code>docs/PRECODE-DAILY-COCKPIT.md</code> as the student operating home once PrecodeOS is in the project.</p>
+<p>This document is the educational bridge, not the operating home. Use <code>README.md</code> as the document compass, <code>docs/PRECODE-GUIDED-SETUP.md</code> for setup, and <code>docs/PRECODE-DAILY-COCKPIT.md</code> as the student operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit <code>Ideation: use First PRD Walkthrough for my rough idea.</code> path. If setup, state, checks, or generated reports feel broken, use <code>docs/PRECODE-TROUBLESHOOTING.md</code> or say <code>I am stuck, help me.</code></p>
 <h3 id="if-you-only-have-an-idea-start-with-research-and-exploration"><a class="heading-anchor" href="#if-you-only-have-an-idea-start-with-research-and-exploration" aria-label="Link to If You Only Have An Idea, Start With Research And Exploration">#</a>If You Only Have An Idea, Start With Research And Exploration</h3>
 <p>If you are a non-technical builder starting with a net-new rough idea, use First PRD Walkthrough before asking Precode to update <code>PRODUCT.md</code>, write a PRD, create beads, or code. The Product Ideation Workbook is the first worksheet inside that path, not a separate entry point.</p>
 <p>The workbook is a thinking space. You can use Claude Cowork, Claude, Claude Code, Codex, or another agent as a coach to research, challenge, and organize your idea, but the workbook itself is evidence, not authority. Its job is to produce a reviewed packet with Local Source Intake readiness self-check that you can later bring into Local Source Intake, including a Candidate Goal Frame when your durable direction is clear enough to review.</p>
@@ -305,7 +305,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Traditional software teams split work across roles. With Precode and AI agents, those roles become questions and checkpoints.</p>
 <div class="table-wrap"><table><thead><tr><th>Traditional role</th><th>What that role protects</th><th>How it appears in Precode</th></tr></thead><tbody><tr><td>Product manager</td><td>The team builds the right thing for the right user.</td><td>PRDs, non-goals, before/after user moments, acceptance criteria.</td></tr><tr><td>Designer</td><td>The experience makes sense to a real person.</td><td>Screenshots, user flows, manual verification, design review notes.</td></tr><tr><td>Engineer</td><td>The code is correct, maintainable, and scoped.</td><td>Active bead, files in play, implementation checks, closeout evidence.</td></tr><tr><td>Architect</td><td>The system shape can handle risk and future change.</td><td>Architecture docs, system design pattern guidance, project context, and the simplest direct shape when no pattern is needed.</td></tr><tr><td>QA</td><td>Done means proven, not guessed.</td><td>Recorded checks, browser checks, manual verification, review decision.</td></tr><tr><td>DevOps</td><td>Releases, secrets, dashboards, and production are safe.</td><td>Deployment approval, external setup notes, scheduled audits, rollback thinking.</td></tr></tbody></table></div>
 <p>Precode does not make you personally expert in all of these roles. It gives you a safe way to ask the agent to cover the role and show its reasoning.</p>
+<p>Use role lenses when the role name is easier than the protocol name. A role lens is a prompt, not a role skill or persona agent: it maps the role to an existing Precode workflow, owner source, stop condition, proof expectation, and human approval gate.</p>
 <pre><code class="language-text">Before coding, explain which traditional software role this task is touching: product, design, engineering, architecture, QA, deployment, or security. Tell me what I need to approve and what evidence will prove the work.</code></pre>
+<pre><code class="language-text">Role lens: use the [product manager / researcher / designer / architect / developer / QA reviewer / security / deployment] lens and route me to the existing Precode workflow.
+
+Tell me what the role is protecting, which owner protocol or document applies, what proof is needed, what stop condition applies, and what still requires my approval.
+
+Do not create a new skill, persona agent, approval shortcut, task runner, command wrapper, PRD approval, bead activation, review acceptance, release approval, external mutation, or coding permission.</code></pre>
 <h2 id="from-idea-to-working-software-with-precode"><a class="heading-anchor" href="#from-idea-to-working-software-with-precode" aria-label="Link to From Idea To Working Software With Precode">#</a>From Idea To Working Software With Precode</h2>
 <p>Precode turns rough intent into verified work through a file-based path.</p>
 <pre><code class="language-text">idea or notes

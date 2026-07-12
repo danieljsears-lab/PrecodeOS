@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.39
-Last updated: 2026-06-30
+Document version: v0.1.41
+Last updated: 2026-07-11
 
 ## Start Here: You Are Not Just Prompting
 
@@ -45,7 +45,7 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 > Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.
 
-This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the student operating home once PrecodeOS is in the project.
+This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the student operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or say `I am stuck, help me.`
 
 ### If You Only Have An Idea, Start With Research And Exploration
 
@@ -186,8 +186,18 @@ Traditional software teams split work across roles. With Precode and AI agents, 
 
 Precode does not make you personally expert in all of these roles. It gives you a safe way to ask the agent to cover the role and show its reasoning.
 
+Use role lenses when the role name is easier than the protocol name. A role lens is a prompt, not a role skill or persona agent: it maps the role to an existing Precode workflow, owner source, stop condition, proof expectation, and human approval gate.
+
 ```text
 Before coding, explain which traditional software role this task is touching: product, design, engineering, architecture, QA, deployment, or security. Tell me what I need to approve and what evidence will prove the work.
+```
+
+```text
+Role lens: use the [product manager / researcher / designer / architect / developer / QA reviewer / security / deployment] lens and route me to the existing Precode workflow.
+
+Tell me what the role is protecting, which owner protocol or document applies, what proof is needed, what stop condition applies, and what still requires my approval.
+
+Do not create a new skill, persona agent, approval shortcut, task runner, command wrapper, PRD approval, bead activation, review acceptance, release approval, external mutation, or coding permission.
 ```
 
 ## From Idea To Working Software With Precode

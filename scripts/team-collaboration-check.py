@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-23
+# Version: v0.1.1
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -226,7 +226,11 @@ def self_test(root: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Show read-only Small Team Collaboration Lane preview evidence.")
     parser.add_argument("--github", action="store_true", help="include optional read-only GitHub branch, PR, review, and check evidence")
-    parser.add_argument("--integration-branch", default="", help="integration branch to compare against; defaults to origin HEAD or upstream when available")
+    parser.add_argument(
+        "--integration-branch",
+        default="",
+        help="integration branch to compare against; defaults to conventional origin HEAD, another discoverable remote HEAD, or upstream when available",
+    )
     parser.add_argument("--self-test", action="store_true", help="run deterministic team-collaboration scenario fixture checks")
     args = parser.parse_args()
 

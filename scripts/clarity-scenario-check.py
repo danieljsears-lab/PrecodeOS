@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.45
+# Version: v0.1.47
 # Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -467,17 +467,17 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "Use First PRD Walkthrough as the beginner-facing rough-idea path name",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
-            "Daily Cockpit as the first working surface",
+            "Daily Cockpit for installed or active work",
             "beginner-facing operating home base",
             "Deeper hands-on operating manual",
             "First PRD Walkthrough when a first-time rough idea needs pre-repo product thinking",
             "Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping as ordered support inside that path",
         ],
         Path("llms.txt"): [
-            "beginner-facing operating home base, rough-idea entry prompt, first-product spine, and safe next prompts",
+            "beginner-facing operating home base, rough-idea `Ideation:` entry prompt, first-product spine, and safe next prompts",
             "conceptual Builder OS explainer",
             "deeper operating manual behind the Daily Cockpit",
-            "setup-only adoption path before normal work starts",
+            "setup-only adoption path when PrecodeOS is not installed in the target project",
         ],
     }
     for path, required_terms in required_terms_by_path.items():
@@ -492,12 +492,12 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
         "This README is the public package compass",
         "PRECODE-GUIDED-SETUP.md",
         "PRECODE-DAILY-COCKPIT.md",
-        "PRECODE-USER-GUIDE.md",
-        "PRECODE-OS-README.md",
+        "Ideation: use First PRD Walkthrough for my rough idea.",
+        "PRECODE-TROUBLESHOOTING.md",
     ]
     positions = [start_here.find(marker) for marker in ordered_markers]
     if any(position == -1 for position in positions) or positions != sorted(positions):
-        failures.append({"scenario": "onboarding authority consolidation: README order", "expected": "setup -> Daily Cockpit -> User Guide -> OS README", "actual": str(positions)})
+        failures.append({"scenario": "onboarding authority consolidation: README order", "expected": "setup -> Daily Cockpit -> rough idea -> Troubleshooting", "actual": str(positions)})
 
     forbidden_terms_by_path = {
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
@@ -939,8 +939,8 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
             "provider configuration",
         ],
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
-            "Keep student-facing workflow selection subordinate to the document-role split",
-            "Daily Cockpit is the operating home",
+            "Keep student-facing workflow selection subordinate to the first-reader route",
+            "installed or working goes to Daily Cockpit",
             "Ask Precode and Artifact Chooser are conditional helpers",
             "Release Readiness is release-prep rather than deployment automation",
         ],
@@ -955,7 +955,7 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "Student-facing document roles are intentionally contracted.",
-            "`docs/PRECODE-DAILY-COCKPIT.md` is the student operating home",
+            "installed or working goes to `docs/PRECODE-DAILY-COCKPIT.md`",
             "Ask Precode and Artifact Chooser are conditional helpers",
             "`tasks/reference/RELEASE-READINESS-PROTOCOL.md` is release-prep rather than deployment automation",
         ],
@@ -4893,6 +4893,10 @@ def main() -> int:
         ("database migration", command_classification("prisma migrate deploy", bead()).get("user_decision"), "approval needed"),
         ("production deploy", command_classification("vercel deploy --prod", bead()).get("user_decision"), "approval needed"),
         ("git push", command_classification("git push origin feature-branch", bead()).get("user_decision"), "approval needed"),
+        ("git remote inspect", command_classification("git remote -v", bead()).get("user_decision"), "continue"),
+        ("git remote rename", command_classification("git remote rename q3d origin", bead()).get("user_decision"), "approval needed"),
+        ("git remote set-url", command_classification("git remote set-url origin https://github.com/example/repo.git", bead()).get("user_decision"), "approval needed"),
+        ("git upstream change", command_classification("git branch --set-upstream-to=origin/main main", bead()).get("user_decision"), "approval needed"),
         ("release publish", command_classification("npm publish", bead()).get("user_decision"), "approval needed"),
         ("secret access", command_classification("cat .env", bead()).get("user_decision"), "approval needed"),
         ("api key access", command_classification("print API key from dashboard", bead()).get("user_decision"), "approval needed"),

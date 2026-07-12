@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.19
-Last updated: 2026-07-02
+Document version: v0.1.20
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -28,6 +28,8 @@ The safe troubleshooting posture is:
 - validate before resuming
 
 This guide helps route common first-time issues. It does not approve destructive commands, broad overwrites, task transitions, app-code changes, external mutations, or edits to secrets and private data.
+
+First-reader route: use Guided Setup when PrecodeOS is not installed, Daily Cockpit when normal work is ready, Daily Cockpit `Ideation:` when the only issue is a rough idea, and this guide when setup, state, checks, generated reports, or first-session behavior feel broken or confusing.
 
 ## First Move
 

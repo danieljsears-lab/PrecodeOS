@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.19
-Last updated: 2026-06-30
+Document version: v0.1.20
+Last updated: 2026-07-11
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -18,6 +18,8 @@ Companion to: `docs/PRECODE-USER-GUIDE.md`
 ## How to use this guide
 
 This guide is for first-time students and non-technical builders using Claude Code inside a project that already has PrecodeOS installed. You do not need to understand the codebase before you begin. You do need to know how to slow the agent down, confirm the task, and ask for proof.
+
+This is a Claude Code companion, not the PrecodeOS start page. If PrecodeOS is not installed, use `docs/PRECODE-GUIDED-SETUP.md`. If it is installed or you are resuming work, use `docs/PRECODE-DAILY-COCKPIT.md` first. If you only have a rough idea, use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.`
 
 Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The **Prompt Cookbook** and **Quick Reference Card** are the sections you'll reach for most.
 

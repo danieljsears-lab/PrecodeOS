@@ -9,12 +9,21 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.41
+Document version: v0.1.42
 Last updated: 2026-07-11
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
+
+First-reader route:
+
+| Situation | Go here |
+|---|---|
+| PrecodeOS is not installed in the target project | `PRECODE-GUIDED-SETUP.md` |
+| PrecodeOS is installed or work is resuming | Stay in this Daily Cockpit |
+| You only have a rough idea | `Ideation: use First PRD Walkthrough for my rough idea.` |
+| Setup, state, checks, or generated reports feel broken | `PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.` |
 
 This page is prompt-first. When a command exists, the command is shown too, but the safest daily habit is to ask the agent to explain what it is doing before it changes anything.
 
@@ -59,7 +68,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 3. If PrecodeOS is set up and work exists, run Start, Check, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
-Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, skill-style help, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, proposed extension, or explicit user question calls for one.
+Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, role lenses, skill-style help, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, proposed extension, or explicit user question calls for one.
 
 ## Plan Mode Candidate Craft Loop
 
@@ -110,6 +119,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | Which artifact, idea, or path do I need? | `Ideation: map my current moment to the right Precode path before PRD shaping or coding.` | A mapped workflow, artifact, or rough-idea path. Artifact Chooser remains an index only; use Workflow Selection when the answer depends on current state. |
 | I only have a rough idea. | `Ideation: use First PRD Walkthrough for my rough idea.` | The single beginner-facing path through Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. These are steps in the path, not competing commands. |
 | Which skill-style prompt should I use? | `Use Skill Playbook Ergonomics.` | One recommended invocation or owner surface: Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal protocol, a prompt pattern, an adapter note, a script/check, or no new surface. It does not show a skill catalog, install skills, approve extension implementation, add registries, create optional packs, run mutating commands, or replace owner protocols. |
+| Which software role should the agent cover? | `Role lens: use the [role] lens and route me to the existing Precode workflow.` | A role-to-workflow mapping for product manager, researcher, designer, architect, developer, QA/reviewer, security, or deployment language. Role lenses are prompt ergonomics only; they do not create role skills, approve work, activate beads, accept review, or authorize coding. |
 | What happens before release? | `Release: prepare release evidence without release action.` | Late-stage release-prep evidence, release-quality cues, and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, certify production readiness, or approve release. |
 
 If you only remember three checks, ask: what is active, where should future intent live, and what proof still needs review or approval?
@@ -118,7 +128,7 @@ If you only remember three checks, ask: what is active, where should future inte
 
 These prompt aliases are the lean daily surface. Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
 
-Advanced aliases are still available, but they are conditional. Skill map is for mapping a confusing skill-style request to the smallest existing invocation, Quality map is for translating named engineering standards into Precode routing questions, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
+Advanced aliases are still available, but they are conditional. Skill map is for mapping a confusing skill-style request to the smallest existing invocation, Quality map is for translating named engineering standards into Precode routing questions, Role lens is for translating product manager, researcher, designer, architect, developer, QA/reviewer, security, or deployment language into existing workflows, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
 
 Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 
@@ -148,6 +158,7 @@ Use these only when the current stage, risk, evidence gap, support role, or expl
 |---|---|---|
 | Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
+| Role lens | `Role lens: use the [role] lens and route me to the existing Precode workflow.` | A role-to-workflow map plus owner source, stop condition, proof or approval needed, and forbidden uses. Role lenses are not role skills, persona agents, approval shortcuts, task runners, or coding permission. |
 | Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
 | Delegation re-entry | `Re-entry: review delegated work before continuing.` | Evidence-only return review for solo AFK, teammate branch/worktree, or cloud-agent/PR work; not acceptance, merge approval, transition approval, or external mutation. |
 | Release prep | `Release: prepare release evidence without release action.` | Shipping evidence, release-quality cues, and approval questions without deployment, merge, rollback, external mutation, certification, or release approval. |

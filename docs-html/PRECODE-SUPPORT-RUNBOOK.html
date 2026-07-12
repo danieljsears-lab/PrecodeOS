@@ -247,13 +247,14 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Purpose</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.37</span><span>Updated 2026-07-09</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.39</span><span>Updated 2026-07-11</span></p>
 </section>
 <section class="content layout">
   <article class="article">
     <h2 id="purpose"><a class="heading-anchor" href="#purpose" aria-label="Link to Purpose">#</a>Purpose</h2>
 <p>Use this runbook when you are helping someone else adopt PrecodeOS.</p>
 <p>This runbook is helper-facing. It does not replace Guided Setup for setup, Daily Cockpit for normal operation, Troubleshooting for symptom lookup, or the Recovery Protocol for the recovery contract.</p>
+<p>For a self-serve builder, route first by situation: not installed goes to Guided Setup, installed or working goes to Daily Cockpit, rough ideas use Daily Cockpit <code>Ideation: use First PRD Walkthrough for my rough idea.</code>, and broken or confusing state goes to Troubleshooting or <code>I am stuck, help me.</code> Support uses this runbook to coach that route, not to create another start path.</p>
 <p>The support posture is:</p>
 <ul><li>the user owns product facts, approvals, and risk decisions</li><li>support asks, reflects, challenges, and routes</li><li>the agent may inspect, summarize, propose, and validate</li><li>durable state belongs in Precode owner files, beads, recorded checks, and generated evidence</li><li>no separate support handoff artifact is required</li></ul>
 <p>PrecodeOS is not an app to launch. It is a repo-native operating layer: Markdown authority files, task contracts, adapters, scripts, and generated-evidence rules that live inside a project folder.</p>
@@ -302,6 +303,8 @@ Do not start intake, create files, write code, or move project material until yo
 <pre><code class="language-text">Before activating a new bead or starting a new support session, check git status and tell us whether current changes are clean, committed, generated evidence, or unfinished work from the current bead.
 
 Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the student&#x27;s repo has a remote and the bootcamp support workflow expects remote backup or collaboration.
+
+Use `origin` as the conventional remote name when possible. If a student is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
 
 Do not treat this chat instruction as durable state by itself. If the rule needs to persist, put it in the appropriate Precode owner or support document.</code></pre>
 <h3 id="build-stage-error-and-control-layer-protocol"><a class="heading-anchor" href="#build-stage-error-and-control-layer-protocol" aria-label="Link to Build Stage Error And Control Layer Protocol">#</a>Build-Stage Error And Control-Layer Protocol</h3>

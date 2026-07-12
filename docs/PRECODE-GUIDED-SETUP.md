@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.19
-Last updated: 2026-07-09
+Document version: v0.1.20
+Last updated: 2026-07-11
 
 ## What This Guide Is For
 
@@ -21,6 +21,8 @@ PrecodeOS is not an app you launch. It is a small repo-native operating layer fo
 This guide owns setup only. If PrecodeOS is already installed, stop using this as the operating manual and go to `docs/PRECODE-DAILY-COCKPIT.md`. If the issue is a rough product idea, use First PRD Walkthrough from the Daily Cockpit; the Product Ideation Workbook is a step inside that rough-idea path, not a second setup guide.
 
 If you are helping someone else through setup, use `docs/PRECODE-SUPPORT-RUNBOOK.md` alongside this guide. If setup state, copied files, validation output, or generated reports become confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+
+First-reader route: not installed means this setup guide; installed or working means Daily Cockpit; rough idea means Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.`; broken or confusing state means Troubleshooting or `I am stuck, help me.`
 
 The safest setup path is manual and visible:
 

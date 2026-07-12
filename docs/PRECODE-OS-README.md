@@ -9,12 +9,12 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.8.32
-Last updated: 2026-07-04
+Document version: v0.8.33
+Last updated: 2026-07-11
 
 PrecodeOS is a Builder OS for working with AI coding agents inside a real project folder.
 
-This document explains the model. It is not the daily start page: use `../README.md` as the public compass, `PRECODE-GUIDED-SETUP.md` for setup, and `PRECODE-DAILY-COCKPIT.md` as the first working surface after setup.
+This document explains the model. It is not the daily start page: use `../README.md` as the public compass, `PRECODE-GUIDED-SETUP.md` for setup, and `PRECODE-DAILY-COCKPIT.md` as the first working surface after setup. Rough ideas use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. Broken or confusing setup, state, checks, or generated reports go to `PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.`
 
 It helps a non-technical builder answer five questions before the project runs away:
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.85
+Document version: v0.7.87
 Last updated: 2026-07-11
 
 
@@ -26,7 +26,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
+For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit `Ideation:` prompt, and broken/confusing state goes to Troubleshooting or `I am stuck, help me.` For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts. If PrecodeOS is already embedded in your project and you want to refresh package-owned surfaces, use the Existing Precode Refresh prompt in Guided Setup or `tasks/reference/PROMPT-PATTERNS.md`; it previews first and stops before approved `UP-ID` copy actions.
 
@@ -78,6 +78,12 @@ If you are unsure which skill-style prompt to use, ask for Skill Playbook Ergono
 
 ```text
 Use Skill Playbook Ergonomics. Map my request to the smallest existing Precode invocation or owner surface, name the owner protocol or document, name the stop condition, and say what still requires human approval. Do not show me a skill catalog, create a new skill name, install a skill, add a registry, create an optional pack, run mutating commands, approve PRDs, activate beads, accept review, approve extension implementation, or treat skill output as authority.
+```
+
+If a role name is easier than a protocol name, use a role lens. Role lenses map product manager, researcher, designer, architect, developer, QA/reviewer, security, or deployment language to existing Precode workflows. They are not role skills, persona agents, task runners, approval shortcuts, or coding permission.
+
+```text
+Role lens: use the [role] lens and route me to the existing Precode workflow. Name what the role is protecting, the owner protocol or document, the stop condition, the proof or approval needed, and the forbidden uses. Do not create a new skill, persona agent, task runner, approval shortcut, command wrapper, PRD approval, bead activation, review acceptance, release approval, external mutation, or coding permission.
 ```
 
 ## Use The Every-Bead Rhythm
@@ -1586,6 +1592,8 @@ Start every serious session with `bash scripts/session-start.sh`, then make the 
 `session-start.sh` now also displays the `next-step` router decision. If you run `python3 scripts/next-step.py` separately, it should tell the same story: what human decision is needed, which one protocol or mode to load next, and why more context is not needed yet. The machine-readable shape is kept stable for key fields and categories, but the generated prose may change to stay clear.
 
 After a checked slice is accepted, commit it before starting the next slice. Push when your repo has a remote and you need remote backup or collaboration. Name the commit for the visible outcome, such as `add onboarding checklist` or `repair login redirect`, not a vague label like `updates`.
+
+Use `origin` as the conventional remote name when you can. If you need to move the project to another GitHub repository, consolidate multiple remotes, rename remotes, or move the folder, stop before changing anything and use the Repository Topology Migration prompt in `tasks/reference/PROMPT-PATTERNS.md`. Precode status helpers can inspect `origin`, another discoverable upstream, or a missing remote as evidence, but they do not approve remote changes, pushes, folder moves, or GitHub mutation.
 
 #### What if I do not understand a file?
 

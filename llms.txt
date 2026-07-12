@@ -8,13 +8,16 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.18
+Document version: v0.1.19
 Last updated: 2026-07-11
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
+Use the compact first-reader route. If PrecodeOS is not installed in the target project, use Guided Setup. If PrecodeOS is installed or work is resuming, use Daily Cockpit. If the user only has a rough idea, use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, generated reports, or first-session behavior feel broken or confusing, use Troubleshooting or `I am stuck, help me.`
+
 Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. Do not present them as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
 Use Skill Playbook Ergonomics when a user is unsure which skill-style prompt to invoke. It maps the request to Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. It is not a skill catalog, registry, optional pack, command wrapper, approval gate, implementation path, or replacement for owner protocols.
+Use Role Lens Prompt Map when a user asks for product manager, product strategist, researcher, designer, architect, developer, QA/reviewer, security, or deployment help. Role lenses map familiar role language to existing Precode workflows and owner protocols; they are not role skills, persona agents, task runners, approval shortcuts, command wrappers, registries, optional packs, or coding permission.
 
 Use the Plan Mode Candidate Craft Loop when candidate or implementation-plan commitment is at issue: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex use `/plan`, in Claude Code use Plan Mode, and in other agents use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate; neither output authorizes implementation.
 Use Question-To-Artifact Filing when a valuable answer from chat, planning, review, discovery, source intake, memory recall, or maintainer analysis should survive but its destination is unclear. It recommends the smallest existing destination: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD draft or amendment, `DECISIONS.md`, owner-file update, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, approve PRDs, activate beads, update active memory, create generated reports, or make generated summaries authoritative.
@@ -23,10 +26,11 @@ Use Source-To-Promotion Hygiene Review before turning a source summary, Candidat
 ## Start Here
 
 - `README.md`: public package compass, usage fit, setup path, and high-level navigation.
-- `docs/PRECODE-GUIDED-SETUP.md`: setup-only adoption path before normal work starts.
-- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; also covers the every-bead rhythm and conditional advanced-surface routing.
+- `docs/PRECODE-GUIDED-SETUP.md`: setup-only adoption path when PrecodeOS is not installed in the target project.
+- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea `Ideation:` entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; also covers the every-bead rhythm and conditional advanced-surface routing.
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
 - `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, not a second start page.
+- `docs/PRECODE-TROUBLESHOOTING.md`: symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
 - `CANDIDATE-QUEUE.md`: parked candidate intent, product-value ratings, themes, near-bead sketches, and promotion review surface; not task authority.
 
@@ -47,7 +51,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md`: park ideas, review candidate intent, assign product-value ratings, group themes, sketch near-beads, route candidates to intake/discovery/PRD/decomposition, and preserve non-authority boundaries.
 - `tasks/reference/EXTENSION-PROTOCOL.md`: review adapters, protocols, skill playbooks, generated reports, wrappers, indexes, and integrations.
 - `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`: provider-neutral external status, safe health URL, missing-configuration, and evidence-only promotion rules.
-- `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents, including Skill Playbook Ergonomics decision guidance that keeps beginner invocation behind existing workflow moments.
+- `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents, including Skill Playbook Ergonomics and role lens boundary guidance that keeps beginner invocation behind existing workflow moments.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
 - `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
 - `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: thin pre-coding engineering quality floor, beginner-readable Engineering Quality Standards Taxonomy, optional Engineering Quality Text-Contract Checker routing, post-implementation Engineering Quality Review Lane routing, and proportional routing when implementation risk appears.

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
+Document version: v0.1.9
 Last updated: 2026-07-11
 
 ## Purpose
@@ -130,10 +130,12 @@ Creating, editing, labeling, assigning, commenting on, closing, transferring, pi
 
 `scripts/github-audit.py` is a read-only GitHub-specific helper for scheduled audits and compatibility with existing command lists. `scripts/external-status.py` is the provider-neutral external status surface and may include GitHub rows using the same read-only boundaries.
 
+`origin` is the recommended conventional remote name. Audit helpers should prefer `origin` when it exists, fall back to the current branch upstream when `origin` is absent, and report missing remote or default-branch state as visible `not_configured` or warning evidence. They must not silently invent a remote, rename remotes, change upstream tracking, push, pull, delete repository history, or mutate GitHub.
+
 It should report:
 
 - current branch
-- remote and default branch when discoverable
+- remote name, remote URL, remote source, default branch, and default-branch source when discoverable
 - local working tree drift
 - local branch ahead/behind state when an upstream exists
 - open pull request for the current branch

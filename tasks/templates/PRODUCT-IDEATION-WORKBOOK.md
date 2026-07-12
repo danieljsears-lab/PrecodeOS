@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears
-Document version: v0.2.5
-Last updated: 2026-06-29
+Document version: v0.2.6
+Last updated: 2026-07-11
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Use this workbook before you ask Precode to update `PRODUCT.md`, write a PRD, cr
 
 The dominant outcome is a reviewed Conviction Packet / Precode Ingestion Packet ready for Precode Local Source Intake. This workbook tightens the handoff; it does not create a second workflow, a readiness gate, a PRD shortcut, a backlog, a bead, or permission to code.
 
-This workbook is the default PrecodeOS beginner idea path. It can be invoked directly, through Precode Idea Coach, or as the start of First PRD Walkthrough. First PRD Walkthrough is a plain-language entrypoint, not a new protocol, PRD shortcut, backlog, bead approval, or coding permission.
+This workbook is the worksheet step inside the PrecodeOS beginner idea path. The user-facing route is `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit. Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that route, not separate commands to choose between. First PRD Walkthrough is a plain-language entrypoint, not a new protocol, PRD shortcut, backlog, bead approval, or coding permission.
 
 The path is:
 

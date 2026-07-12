@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.41
-# Last updated: 2026-07-04
+# Version: v0.1.42
+# Last updated: 2026-07-11
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -516,6 +516,15 @@ COMMAND_EXTERNAL_MUTATION_TERMS = {
     "firebase deploy",
     "gcloud",
     "aws ",
+}
+COMMAND_REPO_TOPOLOGY_MUTATION_TERMS = {
+    "git remote add",
+    "git remote rename",
+    "git remote remove",
+    "git remote set-url",
+    "git branch --set-upstream-to",
+    "git config remote.",
+    "git config branch.",
 }
 COMMAND_LOCAL_MUTATION_TERMS = {
     "apply_patch",
@@ -4078,7 +4087,12 @@ def command_classification(command: str, bead: BeadRecord | None) -> dict[str, A
         ).lower()
     sensitive_surface = any(term in lower or term in bead_text for term in SENSITIVE_SURFACE_TERMS | COMMAND_SENSITIVE_TERMS)
 
-    if any(term in lower for term in COMMAND_DESTRUCTIVE_TERMS):
+    if any(term in lower for term in COMMAND_REPO_TOPOLOGY_MUTATION_TERMS):
+        tool_class = "local_mutation"
+        user_decision = "approval needed"
+        summary = "Ask before running this. It changes repository topology, remotes, or upstream tracking."
+        approval_prompt = "Ask the user to approve the exact repo-topology change, canonical remote, rollback or blocked escape path, and validation plan."
+    elif any(term in lower for term in COMMAND_DESTRUCTIVE_TERMS):
         tool_class = "destructive"
         user_decision = "stop"
         summary = "Stop before running this. It may delete, reset, drop, force-push, or otherwise cause hard-to-reverse damage."
@@ -4219,12 +4233,70 @@ def git_read(args: list[str], root: Path, timeout: int = 10) -> tuple[int, str]:
     return result.returncode, output
 
 
+def discover_git_remote_context(root: Path) -> tuple[dict[str, Any], list[str]]:
+    context: dict[str, Any] = {
+        "remote_name": None,
+        "remote_url": None,
+        "remote_source": "not_configured",
+        "default_branch": None,
+        "default_branch_source": "not_configured",
+    }
+    warnings: list[str] = []
+
+    origin_code, origin_url = git_read(["remote", "get-url", "origin"], root)
+    upstream_code, upstream_ref = git_read(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], root)
+    upstream_remote = ""
+    upstream_branch = ""
+    if upstream_code == 0 and "/" in upstream_ref:
+        upstream_remote, upstream_branch = upstream_ref.split("/", 1)
+
+    if origin_code == 0 and origin_url:
+        context.update({"remote_name": "origin", "remote_url": origin_url, "remote_source": "origin"})
+    elif upstream_remote:
+        remote_code, remote_url = git_read(["remote", "get-url", upstream_remote], root)
+        context.update(
+            {
+                "remote_name": upstream_remote,
+                "remote_url": remote_url if remote_code == 0 else None,
+                "remote_source": "upstream",
+            }
+        )
+        warnings.append("origin remote is not configured; using current branch upstream as repository context")
+    else:
+        warnings.append("no origin remote or current branch upstream is configured")
+
+    if context["remote_name"]:
+        remote_name = str(context["remote_name"])
+        default_code, default_ref = git_read(["symbolic-ref", "--quiet", "--short", f"refs/remotes/{remote_name}/HEAD"], root)
+        if default_code == 0 and default_ref:
+            prefix = f"{remote_name}/"
+            context.update(
+                {
+                    "default_branch": default_ref.removeprefix(prefix),
+                    "default_branch_source": f"{remote_name}_head",
+                }
+            )
+        elif upstream_branch and upstream_remote == remote_name:
+            context.update({"default_branch": upstream_branch, "default_branch_source": "upstream"})
+        else:
+            warnings.append(f"default branch is not discoverable for remote {remote_name}")
+
+    return context, warnings
+
+
 def detect_integration_branch(root: Path, requested: str = "") -> tuple[str, str]:
     if requested:
         return requested, "requested"
-    default_code, default_ref = git_read(["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], root)
-    if default_code == 0 and default_ref:
-        return default_ref.removeprefix("origin/"), "origin_head"
+    remote_context, _warnings = discover_git_remote_context(root)
+    default_branch = str(remote_context.get("default_branch") or "")
+    remote_name = str(remote_context.get("remote_name") or "")
+    default_source = str(remote_context.get("default_branch_source") or "")
+    if default_branch and remote_name:
+        if default_source.endswith("_head"):
+            if remote_name == "origin":
+                return default_branch, "origin_head"
+            return f"{remote_name}/{default_branch}", "remote_head"
+        return f"{remote_name}/{default_branch}", default_source
     upstream_code, upstream_ref = git_read(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], root)
     if upstream_code == 0 and upstream_ref:
         return upstream_ref, "upstream"

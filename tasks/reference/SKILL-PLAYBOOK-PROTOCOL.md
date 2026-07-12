@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.21
+Document version: v0.1.22
 Last updated: 2026-07-11
 
 ## Purpose
@@ -61,6 +61,8 @@ Use this decision aid before adding or changing a skill-style surface:
 | The gain is only wording, teaching, or copyable language. | Docs or Prompt Patterns. | New maintained skill surface. |
 
 Beginner naming rule: reuse the user-facing workflow name whenever one already exists. For rough ideas, use `First PRD Walkthrough` or the Daily `Ideation` alias; do not promote Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, workbook, Product Brief, Challenge And Clarity, Local Source Intake, or PRD shaping into competing beginner commands.
+
+Role lens rule: if a beginner asks for a product manager, product strategist, researcher, designer, architect, developer, QA/reviewer, security, or deployment role, route through `tasks/reference/PROMPT-PATTERNS.md` Role Lens Prompt Map or the smallest existing owner workflow. Do not create role-named skills, persona agents, role catalogs, task runners, command wrappers, registries, optional packs, approval shortcuts, or implementation permission from role language.
 
 Review recommendation rule: Skill / Extension Review output is advisory review input only. A recommendation of `accept-shape` does not approve the extension, install a skill, authorize implementation, edit files, add a registry, create optional packs, run commands, mutate external systems, or bypass the Extension Protocol.
 

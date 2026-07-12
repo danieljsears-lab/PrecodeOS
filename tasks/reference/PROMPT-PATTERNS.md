@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.65
+Document version: v0.1.67
 Last updated: 2026-07-11
 
 ## Purpose
@@ -24,7 +24,11 @@ Advanced surfaces are conditional "only when this happens" prompts. Keep Review 
 
 Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog. Use Ask Precode for stable docs questions, Workflow Selection when the next path depends on current state, Ideation for rough ideas and artifact routing, Review for acceptance or advisory review moments, and Skill / Extension Review only when a proposed skill, adapter, protocol, generated report, command wrapper, or integration needs maintainer-style shape review. Skill playbooks remain read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 
+Role lenses are prompt ergonomics for asking the agent to cover a familiar software-team responsibility without creating persona skills. A role lens maps to an existing Precode workflow, owner protocol, stop condition, and approval gate. It is not a role skill, second operating model, task selector, approval surface, or permission to code.
+
 For rough ideas, use one user-facing invocation: `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps inside that path, not separate commands to choose between.
+
+For first-reader routing, keep the public path compact: not installed goes to Guided Setup; installed or working goes to Daily Cockpit; rough ideas use the Daily Cockpit `Ideation:` prompt; broken or confusing setup, state, checks, or generated reports go to Troubleshooting or `I am stuck, help me.`
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
 
@@ -157,10 +161,39 @@ Do not show me a skill catalog, create a new skill name, install a skill, add a 
 
 Expected output: one recommended invocation or owner surface, one reason, one stop condition, and a guardrail reminder that skill playbooks are read-only prompt playbooks.
 
+### Role Lens Prompt Map
+
+Use a role lens when a beginner knows the kind of professional help they want but does not know the Precode protocol name. The role label is plain-language routing only. It must not become a new skill name, role agent, task runner, approval shortcut, or command wrapper.
+
+| Role lens | Use when | Route to | Must not decide |
+|---|---|---|---|
+| Product manager / product strategist | The idea, user, non-goal, first slice, or requirement shape is unclear. | First PRD Walkthrough, Product Discovery Validation, Idea-to-PRD, PRD Protocol, or Workflow Selection. | Product approval, PRD approval, task selection, or implementation permission. |
+| Researcher | Evidence, current workaround, market signal, source quality, or assumption strength is uncertain. | Product Discovery Validation, Local Source Intake, Source-To-Promotion Hygiene Review, or Question-To-Artifact Filing. | Validation proof, demand proof, source promotion, PRD approval, or coding permission. |
+| Designer | The visible user flow, screen behavior, copy, or manual user experience proof is unclear. | PRD shaping, acceptance clarification, Review Lanes, manual verification, or browser/screenshot evidence when the active bead calls for it. | Design approval, implementation acceptance, or release approval. |
+| Architect | Auth, data, API, dependency, integration, workflow, migration, or multi-system risk needs shaping before decomposition or implementation. | Architecture Shaping, System Design Pattern, Project Context, Decomposition, or Engineering Quality Floor. | Architecture approval, PRD approval, bead activation, or broad refactor permission. |
+| Developer / engineer | One approved active bead is ready for scoped implementation. | Builder mode, active bead, Tool Execution Protocol, Verification Guardrail Protocol, and recorded checks. | Scope expansion, task selection, sensitive action approval, or next-bead activation. |
+| QA / reviewer | A completed bead, draft PRD, requirement, or proof set needs review before a human decision. | Review / Acceptance Skill, Requirements Gap And Conflict Review, Review Lanes, Closeout Evidence, or Requirement-To-Proof Review. | Acceptance, release approval, follow-up task creation, or generated-proof authority. |
+| Security / deployment | Secrets, privacy, external systems, production, dashboards, release, rollback, or provider setup may be affected. | Tool Execution Protocol, Security owner file, Release Readiness, External Status Integration, or Verification Guardrail Protocol. | External mutation, deploy, rollback, provider configuration, release approval, or compliance certification. |
+
+Copyable prompt:
+
+```text
+Use the [role] lens for this Precode moment.
+
+Map the role to the existing Precode workflow or owner protocol, name what the role is protecting, name the stop condition, and tell me what still requires human approval.
+
+If this should be Ask Precode, Workflow Selection, Ideation, Product Discovery, Architecture Shaping, Builder mode, Review / Acceptance, Review Lanes, Tool Execution, Release Readiness, or no special surface, route me there.
+
+Do not create a new skill name, persona agent, task runner, approval shortcut, command wrapper, registry, optional pack, PRD approval, bead activation, review acceptance, release approval, external mutation, or implementation permission.
+```
+
+Expected output: role lens, recommended workflow, owner source, stop condition, proof or approval needed, and forbidden uses.
+
 | Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
 |---|---|---|
 | Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
 | Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | Build-React-Learn |
+| Role lens | `Role lens: use the [role] lens and route me to the existing Precode workflow.` | Role Lens Prompt Map |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
 | Re-entry | `Re-entry: review delegated work before continuing.` | Delegation Re-Entry Evidence Pack |
 | Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
@@ -348,6 +381,20 @@ Before starting a new bead or session, check git status and tell me whether curr
 
 If completed checked work is uncommitted, propose a concise commit summary before moving on. Push only when a remote exists and this project expects remote backup or collaboration.
 ```
+
+### Repository Topology Migration
+
+```text
+I may need to move this PrecodeOS project to a different GitHub repository, rename remotes, consolidate multiple remotes, or change the folder path.
+
+First inspect only: show `git remote -v`, current branch, upstream tracking, default remote branch when discoverable, repo root path, editor/workspace path assumptions, and any project-local command or agent files that mention old remotes or push/pull behavior.
+
+Then recommend the smallest safe plan. Name the canonical repository and remote name, what must be changed manually, what must not be changed, what validation should run, rollback or blocked escape path, support-access impact, and what still requires my approval before any mutation.
+
+Do not change remotes, push, pull, move folders, edit command wrappers, rewrite memory, mutate GitHub, delete an old repository, or treat generated audit output as authority without explicit approval.
+```
+
+Expected output: current topology, risks, recommended canonical remote, affected local command or support files, approval gates, validation, and rollback or blocked escape path.
 
 ### Evidence Is Not Authority
 
