@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.87
-Last updated: 2026-07-11
+Document version: v0.7.89
+Last updated: 2026-07-18
 
 
 
@@ -789,12 +789,19 @@ Do this instead:
 | Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
 | Remember something for later | Propose a reviewed memory card under `memory/cards/`. |
 | Add future work | Use `CANDIDATE-QUEUE.md`, a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
+| Create a new bead or repair a bead ID | Run `python3 scripts/next-id.py bead --scan-references` and ask the agent to explain duplicate, mismatch, stale-reference, and next-ID findings before assigning the ID. |
 | Fix an accidental edit or move | Stop work, identify the damage, restore structure, then run validation. |
 
 Say this before changing Markdown:
 
 ```text
 I want to change a Precode Markdown file. Tell me which file owns this fact, what structure must be preserved, and what validation to run before editing.
+```
+
+Say this before creating a new bead or when the next bead number looks wrong:
+
+```text
+Before creating a new bead, run python3 scripts/next-id.py bead --scan-references and explain duplicate, mismatch, stale-reference, and next-ID findings. Derive next work from active bead state, approved PRD decomposition, and current bead files, not memory, generated reports, partner labels, Candidate Queue IDs, or old prose.
 ```
 
 Say this before moving or renaming anything:
@@ -1425,6 +1432,7 @@ Use the result to decide whether a command-pattern note, reviewed memory candida
 Do this:
 
 - Open the repo.
+- If the full Daily Cockpit feels too large, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` for the first-session prompt and checklist.
 - Ask the agent to load active memory.
 - Run session start.
 - Confirm the active bead.

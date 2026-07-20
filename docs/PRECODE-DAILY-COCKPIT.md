@@ -9,10 +9,10 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.42
-Last updated: 2026-07-11
+Document version: v0.1.44
+Last updated: 2026-07-20
 
-Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface.
+Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear student build-order card, then return here.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
 
@@ -31,7 +31,9 @@ If the optional local `precode` console command is installed, treat it as a shor
 
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
-Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-GUIDED-SETUP.md` is setup-only, this cockpit is the beginner-facing operating home base, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-GUIDED-SETUP.md` is setup-only, this cockpit is the beginner-facing operating home base, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For a compact first-session aid, see `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
+
+`../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` is a small aid behind this cockpit. It is useful when a new builder needs one page of prompts, checks, and build-order guidance, but it does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement.
 
 ## Command Surface Triage
 
@@ -113,6 +115,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
+| I need a smaller first-session card. | `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` | A compact student build-order checklist and prompt card after setup validates. It reinforces this cockpit and does not choose work, approve setup, activate beads, or replace protocols. |
 | Where should this answer live? | `Use Question-To-Artifact Filing for this answer.` | A filing recommendation only: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD/owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, or activate beads. |
 | Is this source ready to promote? | Source-To-Promotion Hygiene Review in Prompt Patterns | Checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. It does not promote files, approve PRDs, choose tasks, or activate beads. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |

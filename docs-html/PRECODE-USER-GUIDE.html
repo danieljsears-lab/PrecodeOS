@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-11">
+  <meta name="generated-at" content="2026-07-20">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">What This Guide Helps You Do</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.87</span><span>Updated 2026-07-11</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.89</span><span>Updated 2026-07-18</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -587,9 +587,11 @@ Do not create B### IDs, approve a PRD, activate a bead, update tasks/todo.md, or
 <p>Hard rules:</p>
 <ul><li>Do not rename the project root folder casually. That folder is the repo that mirrors GitHub and contains both the app code and the Precode operating files.</li><li>Do not move Markdown files.</li><li>Do not rename Markdown files.</li><li>Do not directly edit Markdown files until the agent has identified which file owns the fact and what structure must be preserved.</li><li>Do not edit generated Markdown reports such as <code>OS-HEALTH.md</code>, <code>PROGRESS.md</code>, <code>logs/learning-diary.md</code>, <code>logs/memory-index.md</code>, <code>logs/handoff-packet.md</code>, or <code>logs/scheduled-audit.md</code>.</li><li>Do not change frontmatter, anchors, authority contracts, headings, bead state, or Closeout Evidence fields casually.</li><li>Do not add a new active-memory file.</li><li>Do not put backlog, roadmap, Candidate Queue, someday, or future-work lists into <code>tasks/todo.md</code>.</li><li>Do not paste secrets, tokens, credentials, dashboard values, billing details, or private notes into Precode files.</li></ul>
 <p>Do this instead:</p>
-<div class="table-wrap"><table><thead><tr><th>You want to...</th><th>Do this instead</th></tr></thead><tbody><tr><td>Change a Precode file</td><td>Ask the agent which owner file should change and what validation should run.</td></tr><tr><td>Rename or reorganize files</td><td>Create a dedicated maintenance bead first.</td></tr><tr><td>Rename the project folder</td><td>Stop and ask an engineer or maintainer how the local folder, Git remote, GitHub repo, and editor workspace should stay connected.</td></tr><tr><td>Edit a generated report</td><td>Regenerate it with the correct script instead of editing it by hand.</td></tr><tr><td>Record a decision</td><td>Put it in <code>DECISIONS.md</code> or ask which owner file should hold it.</td></tr><tr><td>Clarify product direction</td><td>Update <code>PRODUCT.md</code> or ask whether the fact belongs in a PRD or <code>DECISIONS.md</code>.</td></tr><tr><td>Remember something for later</td><td>Propose a reviewed memory card under <code>memory/cards/</code>.</td></tr><tr><td>Add future work</td><td>Use <code>CANDIDATE-QUEUE.md</code>, a PRD, bead proposal, decision, or long-horizon review, not <code>tasks/todo.md</code>.</td></tr><tr><td>Fix an accidental edit or move</td><td>Stop work, identify the damage, restore structure, then run validation.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>You want to...</th><th>Do this instead</th></tr></thead><tbody><tr><td>Change a Precode file</td><td>Ask the agent which owner file should change and what validation should run.</td></tr><tr><td>Rename or reorganize files</td><td>Create a dedicated maintenance bead first.</td></tr><tr><td>Rename the project folder</td><td>Stop and ask an engineer or maintainer how the local folder, Git remote, GitHub repo, and editor workspace should stay connected.</td></tr><tr><td>Edit a generated report</td><td>Regenerate it with the correct script instead of editing it by hand.</td></tr><tr><td>Record a decision</td><td>Put it in <code>DECISIONS.md</code> or ask which owner file should hold it.</td></tr><tr><td>Clarify product direction</td><td>Update <code>PRODUCT.md</code> or ask whether the fact belongs in a PRD or <code>DECISIONS.md</code>.</td></tr><tr><td>Remember something for later</td><td>Propose a reviewed memory card under <code>memory/cards/</code>.</td></tr><tr><td>Add future work</td><td>Use <code>CANDIDATE-QUEUE.md</code>, a PRD, bead proposal, decision, or long-horizon review, not <code>tasks/todo.md</code>.</td></tr><tr><td>Create a new bead or repair a bead ID</td><td>Run <code>python3 scripts/next-id.py bead --scan-references</code> and ask the agent to explain duplicate, mismatch, stale-reference, and next-ID findings before assigning the ID.</td></tr><tr><td>Fix an accidental edit or move</td><td>Stop work, identify the damage, restore structure, then run validation.</td></tr></tbody></table></div>
 <p>Say this before changing Markdown:</p>
 <pre><code class="language-text">I want to change a Precode Markdown file. Tell me which file owns this fact, what structure must be preserved, and what validation to run before editing.</code></pre>
+<p>Say this before creating a new bead or when the next bead number looks wrong:</p>
+<pre><code class="language-text">Before creating a new bead, run python3 scripts/next-id.py bead --scan-references and explain duplicate, mismatch, stale-reference, and next-ID findings. Derive next work from active bead state, approved PRD decomposition, and current bead files, not memory, generated reports, partner labels, Candidate Queue IDs, or old prose.</code></pre>
 <p>Say this before moving or renaming anything:</p>
 <pre><code class="language-text">I want to rename or move a Precode file. Stop and tell me what scripts, anchors, links, authority contracts, or active-memory rules this could break.</code></pre>
 <p>Say this before renaming the project folder:</p>
@@ -802,7 +804,7 @@ Do not accept implementation, approve review, approve release, activate the next
 <h2 id="first-30-minutes-first-day-first-week"><a class="heading-anchor" href="#first-30-minutes-first-day-first-week" aria-label="Link to First 30 Minutes / First Day / First Week">#</a>First 30 Minutes / First Day / First Week</h2>
 <h3 id="first-30-minutes"><a class="heading-anchor" href="#first-30-minutes" aria-label="Link to First 30 Minutes">#</a>First 30 Minutes</h3>
 <p>Do this:</p>
-<ul><li>Open the repo.</li><li>Ask the agent to load active memory.</li><li>Run session start.</li><li>Confirm the active bead.</li><li>Do not code until the bead is clear.</li><li>Close the session if anything feels confusing.</li></ul>
+<ul><li>Open the repo.</li><li>If the full Daily Cockpit feels too large, use <code>tasks/templates/PRECODE-FIRST-SESSION-CARD.md</code> for the first-session prompt and checklist.</li><li>Ask the agent to load active memory.</li><li>Run session start.</li><li>Confirm the active bead.</li><li>Do not code until the bead is clear.</li><li>Close the session if anything feels confusing.</li></ul>
 <p>Goal: run one safe session, even if no code changes.</p>
 <h3 id="first-day"><a class="heading-anchor" href="#first-day" aria-label="Link to First Day">#</a>First Day</h3>
 <p>Do this:</p>

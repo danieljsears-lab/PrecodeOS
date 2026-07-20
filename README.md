@@ -209,6 +209,8 @@ Do not read the docs as competing start pages. `README.md` is the compass, Guide
 
 For students, the practical path is the Daily Cockpit path: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`, then `Active -> Changed -> Proven -> Parked -> Approval -> Next` after the first bead. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
 
+If the first working session feels like too much, use [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) as a compact checklist and prompt card after setup validates. It reinforces the Daily Cockpit; it is not a new start page, setup guide, task selector, or approval shortcut.
+
 If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
 
 For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually. Acceptance criteria may use optional EARS-style wording when it clarifies expected behavior; the syntax is not required and generated HTML does not approve or persist it.
@@ -298,6 +300,7 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 | Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
 | Start or resume daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
 | Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Use a compact first-session checklist after setup validates | [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
 | Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
 | Start from a rough idea | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then `Ideation: use First PRD Walkthrough for my rough idea.` |
@@ -392,8 +395,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.52
-Last updated: 2026-07-10
+Document version: v0.1.53
+Last updated: 2026-07-18
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.

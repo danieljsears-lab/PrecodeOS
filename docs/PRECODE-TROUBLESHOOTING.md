@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-07-11
+Document version: v0.1.22
+Last updated: 2026-07-18
 
 ## Purpose
 
@@ -30,6 +30,8 @@ The safe troubleshooting posture is:
 This guide helps route common first-time issues. It does not approve destructive commands, broad overwrites, task transitions, app-code changes, external mutations, or edits to secrets and private data.
 
 First-reader route: use Guided Setup when PrecodeOS is not installed, Daily Cockpit when normal work is ready, Daily Cockpit `Ideation:` when the only issue is a rough idea, and this guide when setup, state, checks, generated reports, or first-session behavior feel broken or confusing.
+
+If troubleshooting shows that setup is valid and the user is only overwhelmed by the first working session, route back to `docs/PRECODE-DAILY-COCKPIT.md` or the compact `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`. The card is a prompt/checklist aid only, not recovery authority or setup approval.
 
 ## First Move
 
@@ -261,6 +263,24 @@ Safe path:
 During support-assisted package refresh, duplicate PRD/bead IDs are a refresh blocker. Run `bootstrap-check.py --upgrade-preview` before copying package files, preserve the target project's existing PRDs/beads, and do not copy incoming package development PRDs or beads that collide with target IDs.
 
 Do not patch generated reports as a substitute for fixing active memory.
+
+### Bead ID Or Next Bead Looks Wrong
+
+Likely causes:
+
+- stale memory or old PRD prose named a bead that is already done or superseded
+- an external partner reused a `B###` label that does not match local Precode bead files
+- a generated report, Candidate Queue entry, or near-bead sketch was treated as identity authority
+- the agent guessed the next number instead of checking the live bead files
+
+Safe path:
+
+- run `python3 scripts/next-id.py bead --scan-references`
+- compare the suggested next monotonic ID, duplicate warnings, filename/frontmatter mismatch warnings, and advisory stale-reference warnings
+- derive next work from `tasks/todo.md`, the active bead, approved PRD decomposition or owner-file decision, and current `tasks/beads/*.md`
+- do not reuse gaps, old labels, partner labels, Candidate Queue IDs, generated-report hints, or memory-only `B###` references as bead IDs
+
+The reference scan is advisory. It can surface stale or external labels, but it does not reserve an ID, prove what should be built next, approve a transition, or make prose references authoritative.
 
 ### `file-inventory --check` Fails Or Warns
 

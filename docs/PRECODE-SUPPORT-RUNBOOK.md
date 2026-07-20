@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.39
-Last updated: 2026-07-11
+Document version: v0.1.40
+Last updated: 2026-07-20
 
 ## Purpose
 
@@ -19,6 +19,8 @@ Use this runbook when you are helping someone else adopt PrecodeOS.
 This runbook is helper-facing. It does not replace Guided Setup for setup, Daily Cockpit for normal operation, Troubleshooting for symptom lookup, or the Recovery Protocol for the recovery contract.
 
 For a self-serve builder, route first by situation: not installed goes to Guided Setup, installed or working goes to Daily Cockpit, rough ideas use Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.`, and broken or confusing state goes to Troubleshooting or `I am stuck, help me.` Support uses this runbook to coach that route, not to create another start path.
+
+When a student needs a linear view of what happens when, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact student build-order card behind Guided Setup and Daily Cockpit. Do not create or maintain a separate side doc for the same path.
 
 The support posture is:
 
@@ -42,7 +44,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
 5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
-7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next.
+7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next. If the student is lost in the doc sequence, route them to the first-session card as the build-order index, then back to the owning doc for the actual prompt or command.
 
 ## Support Command Triage
 
@@ -112,6 +114,14 @@ Official bootcamp scaffold:
 - `frontend/` exists at repo root and contains the Next.js app.
 - `precode/` exists at repo root and contains the Precode control layer only.
 - `backend/` is created at repo root only when the first approved backend bead activates; generated backend application code belongs there.
+
+In this scaffold, checks run from inside `precode/` resolve `--cwd` relative to the Precode control-layer folder. If the active backend lives in sibling `backend/`, record backend checks from `precode/` with:
+
+```bash
+bash scripts/record-check.sh --cwd ../backend -- pytest -q
+```
+
+If PrecodeOS lives at the target repo root instead, use the repo-root-relative app path, such as `--cwd backend`. This is repo-layout-specific support guidance, not a universal PrecodeOS topology rule.
 
 ### Scaffold Confirmation
 

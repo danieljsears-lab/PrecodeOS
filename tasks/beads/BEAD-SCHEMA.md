@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-07-04
+Document version: v0.1.25
+Last updated: 2026-07-13
 
 ## Purpose
 
@@ -33,7 +33,7 @@ For small team work, the one-active-bead rule still applies inside each checkout
 - `checks`
 - `verification_type`
 
-`bead_id` values are unique, never reused, monotonic, and gap-tolerant. A skipped number is acceptable; a duplicate is not. Use `python3 scripts/next-id.py bead` to suggest the next free bead ID before creating or repairing a bead. The helper is read-only: it does not reserve IDs, rename files, approve beads, activate work, or update references.
+`bead_id` values are unique, never reused, monotonic, and gap-tolerant. A skipped number is acceptable; a duplicate is not. Before creating or repairing a bead, run `python3 scripts/next-id.py bead` to suggest the next monotonic free bead ID. Use `python3 scripts/next-id.py bead --scan-references` when old plans, external partner labels, or memory mention `B###` IDs that may be stale. The helper is read-only: it does not reserve IDs, rename files, approve beads, activate work, or update references. Prose-only references are advisory context, not identity authority.
 
 ## Recommended Bead Kind Menu
 

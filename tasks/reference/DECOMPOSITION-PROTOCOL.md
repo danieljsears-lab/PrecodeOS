@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-07-04
+Document version: v0.1.17
+Last updated: 2026-07-13
 
 ## Purpose
 
@@ -178,7 +178,7 @@ Execution beads should not reshape product definition. If new product scope appe
 
 Exploratory prototype beads may edit app code, but their purpose is learning. They must state what option is being tested, what evidence would make the student keep or discard it, and what should happen after review. Keeping the prototype as retained product work requires normal evidence and review. Rebuilding or discarding it is not failure; route the learning to PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or a new candidate bead.
 
-When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. A Candidate Queue ID may explain where the intent came from, and near-bead sketch IDs like `CQ-001-short-name-S01` may explain early shaping, but the queue does not replace parent PRD, requirement IDs, primary authority, checks, stop conditions, or final bead IDs. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
+When deriving beads from a PRD, treat the PRD as the destination document and each bead as one journey unit. A Candidate Queue ID may explain where the intent came from, and near-bead sketch IDs like `CQ-001-short-name-S01` may explain early shaping, but the queue does not replace parent PRD, requirement IDs, primary authority, checks, stop conditions, or final bead IDs. Before assigning a final bead ID, run `python3 scripts/next-id.py bead` and use current bead files as the identity source. Do not rely on stale memory, old PRD prose, external partner labels, generated reports, Candidate Queue IDs, or near-bead sketches for the final bead ID. Use Architecture Shaping first when architecture-sensitive risk could change owner files, approval gates, verification, or decomposition. `tasks/todo.md` remains the active journey pointer; do not activate proposed journey units without the normal transition gate.
 
 A Plan Packet may explain the explored angle, options considered, risks, and a stage-appropriate first-slice sketch. It does not replace the parent PRD, Architecture Brief, owner-file decision, or Bead Decomposition Test. If the Plan Packet still contains implementation-changing uncertainty, mark the candidate `not a bead yet` and route back to PRD amendment, Architecture Shaping, owner-file update, Product Discovery, Candidate Queue, or stop.
 

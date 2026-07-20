@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-07-11
+Document version: v0.1.22
+Last updated: 2026-07-20
 
 ## What This Guide Is For
 
@@ -34,7 +34,7 @@ The safest setup path is manual and visible:
 6. Validate memory before letting an agent build.
 7. Stop for human review.
 
-After setup validates, stop here. Start normal work from `docs/PRECODE-DAILY-COCKPIT.md`.
+After setup validates, stop here. If a new builder needs one visible build-order path before opening the full cockpit, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact student checklist, then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`. The card does not approve setup, choose work, activate beads, or replace the cockpit.
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
 
@@ -530,5 +530,6 @@ After guided setup, use:
 - `docs/PRECODE-OS-README.md` for the Builder OS mental model
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` for the public package file dictionary
 - `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` if the product idea is still rough
+- `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` if setup validates but the first working session needs a compact build-order checklist before the Daily Cockpit
 
 Do not use private local files as public setup instructions. Do not treat generated reports as authority. Do not approve implementation until the setup bead and checks are clear.

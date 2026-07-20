@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.47
-# Last updated: 2026-07-11
+# Version: v0.1.49
+# Last updated: 2026-07-20
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1788,6 +1788,119 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"candidate queue contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_bead_identity_preflight_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("scripts/next-id.py"): [
+            "--scan-references",
+            "safe_to_use",
+            "safety_reason",
+            "undeclared_references",
+            "advisory_only",
+            "No files were changed",
+        ],
+        Path("tasks/beads/BEAD-SCHEMA.md"): [
+            "unique, never reused, monotonic, and gap-tolerant",
+            "Before creating or repairing a bead, run `python3 scripts/next-id.py bead`",
+            "`python3 scripts/next-id.py bead --scan-references`",
+            "Prose-only references are advisory context, not identity authority",
+        ],
+        Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
+            "Before assigning a final bead ID",
+            "current bead files as the identity source",
+            "stale memory",
+            "old PRD prose",
+            "external partner labels",
+            "generated reports",
+            "Candidate Queue IDs",
+            "near-bead sketches",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "derive it from active bead state",
+            "approved PRD decomposition",
+            "current `tasks/beads/*.md` files",
+            "before naming a bead ID",
+            "Stale memory",
+            "external partner labels",
+            "generated reports",
+            "Candidate Queue IDs",
+        ],
+        Path("docs/PRECODE-TROUBLESHOOTING.md"): [
+            "Bead ID Or Next Bead Looks Wrong",
+            "`python3 scripts/next-id.py bead --scan-references`",
+            "duplicate warnings",
+            "filename/frontmatter mismatch warnings",
+            "advisory stale-reference warnings",
+            "do not reuse gaps",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Before creating a new bead",
+            "duplicate, mismatch, stale-reference, and next-ID findings",
+            "Derive next work from active bead state",
+            "not memory, generated reports, partner labels, Candidate Queue IDs, or old prose",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "optional `--scan-references`",
+            "`safe_to_use`",
+            "safety reason",
+            "advisory undeclared-reference warnings",
+            "no file mutation, ID reservation",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"bead identity preflight contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/templates/PRECODE-FIRST-SESSION-CARD.md"): [
+            "Student Build Order",
+            "Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next",
+            "This table is an index in build order",
+            "does not approve setup, PRDs, beads, review, transition, or coding",
+            "not a new start page",
+            "command wrapper",
+            "package manager",
+        ],
+        Path("docs/PRECODE-GUIDED-SETUP.md"): [
+            "After setup validates, stop here",
+            "compact student checklist",
+            "then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`",
+            "does not approve setup, choose work, activate beads, or replace the cockpit",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "compact linear student build-order card",
+            "one page of prompts, checks, and build-order guidance",
+            "does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement",
+        ],
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "compact student build-order card behind Guided Setup and Daily Cockpit",
+            "Do not create or maintain a separate side doc",
+            "support guidance, not a universal PrecodeOS topology rule",
+            "bash scripts/record-check.sh --cwd ../backend -- pytest -q",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "compact post-setup student build-order checklist",
+            "not a fifth route",
+            "Compact first-session student build-order checklist",
+        ],
+        Path("llms.txt"): [
+            "compact first-session student build-order checklist",
+            "reinforces Guided Setup and the Daily Cockpit",
+            "does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"first-session card contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
 
 
@@ -4550,6 +4663,8 @@ def main() -> int:
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
+    bead_identity_preflight_scenario_count = assert_bead_identity_preflight_contract(failures)
+    first_session_card_scenario_count = assert_first_session_card_contract(failures)
     hypothesis_guidance_scenario_count = assert_hypothesis_guidance_contract(failures)
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
@@ -5114,6 +5229,8 @@ def main() -> int:
         + len(recovery_scenarios)
         + len(recovery_fixture_scenarios)
         + candidate_queue_scenario_count
+        + bead_identity_preflight_scenario_count
+        + first_session_card_scenario_count
         + hypothesis_guidance_scenario_count
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
