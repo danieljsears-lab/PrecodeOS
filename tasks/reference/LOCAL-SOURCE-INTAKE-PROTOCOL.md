@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-07-11
+Document version: v0.1.19
+Last updated: 2026-07-22
 
 ## Purpose
 
@@ -154,6 +154,8 @@ Keep the summary short. If the material is large, summarize the decision-relevan
 
 Use the design fields only when the source includes design files, screenshots, wireframes, Figma exports, or UI references. If a design detail would change implementation, treat it as an open question until the user or owning PRD confirms it.
 
+When source material includes a completed frontend and the user asks for backend-only work, summarize the frontend as existing evidence and an integration boundary. Capture routes, UI states, data needs, API expectations, auth/session assumptions, design-system constraints, and verification touchpoints, then mark frontend implementation as preserved unless a frontend touch is needed to connect, adapt, or verify backend behavior or the user explicitly approves a frontend scope change.
+
 Use the existing-codebase and external-plan fields only when the source includes a repository, codebase snapshot, backend plan, sprint plan, or implementation task list. Inspect those sources read-only during intake and treat conflicts with current code, active memory, approved current PRDs, or owner files as open questions or amendment candidates.
 
 Use `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when the intake question is specifically whether a hypothesis or learning target was tested, narrowed, killed, promoted, stale, or still untested. Hypothesis review status is evidence only; it does not approve product direction, approve PRDs, rank Candidate Queue entries, activate beads, choose tasks, require analytics, create a database, or promote findings automatically.
@@ -165,7 +167,7 @@ Use `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when the intake question is 
 3. Extract stable facts, assumptions, conflicts, and open questions.
 4. Name candidate requirements and non-goals only as candidates.
 5. If a Candidate Goal Frame is present, summarize whether it is stable, conflicting, incomplete, stale, or too task-like.
-6. If design files are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, and unresolved design decisions.
+6. If design files or completed frontend evidence are present, summarize visual intent, screens, states, flows, interaction notes, responsive expectations, design-system constraints, accessibility concerns, unresolved design decisions, and any backend integration touchpoints.
 7. Identify affected authority files.
 8. If an existing codebase or external plan is present, summarize repo topology, app directories, existing checks, implementation constraints, sprint-plan inputs, conflicts, and stale assumptions.
 9. Name the primary hypothesis or learning target when source material includes a hunch, unproven assumption, discovery summary, Candidate Queue entry, or experiment claim.

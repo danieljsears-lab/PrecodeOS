@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.49
-# Last updated: 2026-07-20
+# Version: v0.1.50
+# Last updated: 2026-07-22
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1862,6 +1862,8 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         Path("tasks/templates/PRECODE-FIRST-SESSION-CARD.md"): [
             "Student Build Order",
             "Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next",
+            "shareable as the student's official first-session flow",
+            "Linear Setup-To-First-Bead Prompt",
             "This table is an index in build order",
             "does not approve setup, PRDs, beads, review, transition, or coding",
             "not a new start page",
@@ -1882,6 +1884,9 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
             "compact student build-order card behind Guided Setup and Daily Cockpit",
             "Do not create or maintain a separate side doc",
+            "Backend-Only With Existing Frontend",
+            "Treat the completed frontend as existing source evidence and an integration boundary",
+            "Do not create frontend beads just because frontend files exist",
             "support guidance, not a universal PrecodeOS topology rule",
             "bash scripts/record-check.sh --cwd ../backend -- pytest -q",
         ],
@@ -1892,6 +1897,7 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("llms.txt"): [
             "compact first-session student build-order checklist",
+            "shareable as the student's official compact flow",
             "reinforces Guided Setup and the Daily Cockpit",
             "does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page",
         ],
@@ -1901,6 +1907,57 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"first-session card contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_backend_only_existing_frontend_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "Backend-Only With Existing Frontend",
+            "Frontend is already completed. Orient Precode toward backend work first.",
+            "Treat the existing frontend as source evidence and an integration boundary",
+            "Bias owner-file mapping, PRD shaping, architecture/API/data/security review, and candidate bead derivation toward backend, API, data model, auth, integration, and verification work.",
+            "Preserve the existing frontend unless a frontend touch is needed to connect, adapt, or verify backend behavior",
+            "Do not create frontend beads just because frontend files exist.",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Backend-Only With Existing Frontend",
+            "Frontend is already completed. Orient Precode toward backend work first.",
+            "Treat the existing frontend as source evidence and an integration boundary",
+            "Bias owner-file mapping, PRD shaping, architecture/API/data/security review, and candidate bead derivation toward backend, API, data model, auth, integration, and verification work.",
+            "Preserve the existing frontend unless a frontend touch is needed to connect, adapt, or verify backend behavior",
+            "Do not create frontend beads just because frontend files exist.",
+        ],
+        Path("tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md"): [
+            "completed frontend as existing source evidence and an integration boundary",
+            "must not automatically create frontend implementation scope or frontend beads",
+            "bias toward backend, API, data model, auth, integration, and verification work",
+            "Frontend changes remain valid only when needed to connect, adapt, or verify backend behavior",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "completed frontend and the user asks for backend-only work",
+            "frontend as existing evidence and an integration boundary",
+            "mark frontend implementation as preserved unless a frontend touch is needed to connect, adapt, or verify backend behavior",
+            "backend integration touchpoints",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "completed frontend evidence",
+            "backend-only work",
+            "backend/API/data/auth/integration",
+            "approved connection, adaptation, or verification needs only",
+        ],
+        Path("llms.txt"): [
+            "Backend-Only With Existing Frontend prompt",
+            "frontend as source evidence and an integration boundary",
+            "bias candidate beads toward backend/API/data/auth/integration work",
+            "frontend touches only for approved connection, adaptation, or verification needs",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"backend-only existing frontend contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
 
 
@@ -4665,6 +4722,7 @@ def main() -> int:
     candidate_queue_scenario_count = assert_candidate_queue_contract(failures)
     bead_identity_preflight_scenario_count = assert_bead_identity_preflight_contract(failures)
     first_session_card_scenario_count = assert_first_session_card_contract(failures)
+    backend_only_existing_frontend_scenario_count = assert_backend_only_existing_frontend_contract(failures)
     hypothesis_guidance_scenario_count = assert_hypothesis_guidance_contract(failures)
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
@@ -5231,6 +5289,7 @@ def main() -> int:
         + candidate_queue_scenario_count
         + bead_identity_preflight_scenario_count
         + first_session_card_scenario_count
+        + backend_only_existing_frontend_scenario_count
         + hypothesis_guidance_scenario_count
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count

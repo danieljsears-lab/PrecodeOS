@@ -9,14 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-07-20
+Document version: v0.1.2
+Last updated: 2026-07-22
 
 ## Purpose
 
 Use this card after PrecodeOS is installed or when a first working session feels too heavy.
 
-This card gives a compact build-order path for students. It reinforces Guided Setup and the Daily Cockpit by pointing to them at the right moment. It is not a new start page, workflow, command wrapper, setup helper, generated report, skill catalog, registry, optional pack, installer, updater, release channel, or package manager.
+This card gives a compact build-order path for students. It is shareable as the student's official first-session flow when a live call or first solo session needs steps in one place. It reinforces Guided Setup and the Daily Cockpit by pointing to them at the right moment. It is not a new start page, workflow, command wrapper, setup helper, generated report, skill catalog, registry, optional pack, installer, updater, release channel, or package manager.
 
 ## What To Open
 
@@ -51,6 +51,25 @@ Use this order when you need one visible path:
 | Next | Start a fresh session or approve the next transition only through the normal gate. | Daily Cockpit / `next-step.py` route |
 
 This table is an index in build order. Read the linked doc for the actual prompt or command. The table does not approve setup, PRDs, beads, review, transition, or coding.
+
+## Linear Setup-To-First-Bead Prompt
+
+Use this during a support call when the student needs the whole flow stated linearly before opening deeper docs:
+
+```text
+Walk me through my first Precode session linearly.
+
+Use the official build order: Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next.
+
+First tell me which stage I am in, which owning doc or prompt to use, and the next one action I should take. Keep the answer short enough to follow on a live call.
+
+If setup is not validated, route me to Guided Setup and stop before product work.
+If setup is validated, route me to the Daily Cockpit or First Safe Prompt.
+If my idea or source packet is not reviewed, route me to Ideation or Intake before PRD work.
+If there is no approved PRD or active bead, stop before coding and tell me what approval is missing.
+
+Do not approve setup, choose work, approve a PRD, create or activate beads, approve review or transition, write code, overwrite files, run app commands, or treat this card as a replacement for Guided Setup, Daily Cockpit, or the owning protocols.
+```
 
 ## First Safe Prompt
 

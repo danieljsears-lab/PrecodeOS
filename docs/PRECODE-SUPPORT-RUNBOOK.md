@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.40
-Last updated: 2026-07-20
+Document version: v0.1.41
+Last updated: 2026-07-22
 
 ## Purpose
 
@@ -566,6 +566,26 @@ For design-heavy inputs, the engineer should explicitly identify:
 - unresolved design decisions that could change implementation
 
 Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, `PRODUCT.md`, `PROJECT-CONTEXT.md`, or another owner file, current authority wins until the user approves an amendment.
+
+### Backend-Only With Existing Frontend
+
+Use this when the student or client says the frontend is already completed and Precode should help build the backend only.
+
+Treat the completed frontend as existing source evidence and an integration boundary. It can show current routes, UI states, design-system conventions, API expectations, and user flows, but it does not automatically create frontend implementation scope.
+
+Support can say:
+
+```text
+Frontend is already completed. Orient Precode toward backend work first.
+
+Treat the existing frontend as source evidence and an integration boundary, not automatic frontend implementation scope. During intake, identify the current frontend routes, UI states, data needs, API expectations, auth/session assumptions, and integration points that the backend must support.
+
+Bias owner-file mapping, PRD shaping, architecture/API/data/security review, and candidate bead derivation toward backend, API, data model, auth, integration, and verification work.
+
+Preserve the existing frontend unless a frontend touch is needed to connect, adapt, or verify backend behavior, or unless I explicitly approve a frontend scope change.
+
+Do not create frontend beads just because frontend files exist. Do not treat this prompt as PRD approval, bead activation, implementation acceptance, repo-topology approval, or permission to code.
+```
 
 ### Bootcamp Experience Design To Claude Code
 

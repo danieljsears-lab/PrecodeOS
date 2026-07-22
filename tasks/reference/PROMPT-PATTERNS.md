@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.67
-Last updated: 2026-07-11
+Document version: v0.1.68
+Last updated: 2026-07-22
 
 ## Purpose
 
@@ -884,6 +884,20 @@ Tell me whether the next safe action is setup validation, owner-file adaptation,
 Stop before updating authority files, approving a PRD, activating a bead, or coding.
 ```
 
+### Backend-Only With Existing Frontend
+
+```text
+Frontend is already completed. Orient Precode toward backend work first.
+
+Treat the existing frontend as source evidence and an integration boundary, not automatic frontend implementation scope. During intake, identify the current frontend routes, UI states, data needs, API expectations, auth/session assumptions, and integration points that the backend must support.
+
+Bias owner-file mapping, PRD shaping, architecture/API/data/security review, and candidate bead derivation toward backend, API, data model, auth, integration, and verification work.
+
+Preserve the existing frontend unless a frontend touch is needed to connect, adapt, or verify backend behavior, or unless I explicitly approve a frontend scope change.
+
+Do not create frontend beads just because frontend files exist. Do not treat this prompt as PRD approval, bead activation, implementation acceptance, repo-topology approval, or permission to code.
+```
+
 ## Client Engagement Intake
 
 ```text
@@ -899,6 +913,8 @@ Client materials:
 Treat all client materials as evidence, not authority. Do not write code, approve a PRD, create or activate beads, change repo topology, run installers, mutate external systems, or overwrite project files.
 
 First classify the entry state, repo topology, existing codebase facts, source conflicts, privacy or secrets redactions, owner files likely affected, and whether the client PRD needs normalization into a Precode PRD shard.
+
+If the frontend is already completed and the intended work is backend-only, treat the frontend as source evidence and an integration boundary. Bias the next safe action toward backend/API/data/auth/integration owner-file updates and candidate beads, while allowing frontend touches only for approved connection, adaptation, or verification needs.
 
 Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, PRD amendment, architecture/API/data/security owner-file update, decomposition into candidate beads, or a narrow unblocker.
 ```

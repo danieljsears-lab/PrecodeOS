@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-06-23
+# Version: v0.1.5
+# Last updated: 2026-07-20
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -172,6 +172,15 @@ def first_paragraph(markdown: str) -> str:
     body = re.sub(r"^# .+\n", "", body, count=1).strip()
     parts = re.split(r"\n\s*\n", body)
     for part in parts:
+        candidate = part.strip()
+        if not candidate:
+            continue
+        if re.match(r"^#{1,6}\s+", candidate):
+            continue
+        if re.fullmatch(r"<!--\s*ANCHOR:\s*[a-z0-9_-]+\s*-->", candidate, re.IGNORECASE):
+            continue
+        if candidate in {"---", "***", "___"}:
+            continue
         clean = plain_text(part)
         if clean:
             return clean[:230].rstrip()

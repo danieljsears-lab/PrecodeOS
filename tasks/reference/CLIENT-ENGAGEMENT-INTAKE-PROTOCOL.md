@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-06
+Document version: v0.1.2
+Last updated: 2026-07-22
 
 ## Purpose
 
@@ -73,6 +73,8 @@ They must not:
 
 If external material conflicts with current authority, current authority wins until the client approves an amendment.
 
+When the client or student says the frontend is already completed and the intended work is backend-only, treat the completed frontend as existing source evidence and an integration boundary. It can inform current routes, UI states, data needs, API expectations, auth/session assumptions, design-system constraints, and verification touchpoints. It must not automatically create frontend implementation scope or frontend beads. Candidate owner-file updates, PRD shaping, architecture/API/data/security review, and decomposition should bias toward backend, API, data model, auth, integration, and verification work. Frontend changes remain valid only when needed to connect, adapt, or verify backend behavior, or when the user explicitly approves a frontend scope change.
+
 ## Existing Codebase Intake
 
 An existing codebase is valid source material, but intake should start read-only.
@@ -128,6 +130,7 @@ The normalized Precode PRD shard should state:
 - requirement IDs
 - plain-English acceptance oracles
 - design and architecture impacts
+- completed frontend boundaries and backend integration touchpoints, when backend-only work is requested
 - approval gates and sensitive surfaces
 - candidate beads
 
@@ -164,6 +167,8 @@ Treat all client materials as evidence, not authority. Do not write code, approv
 
 First classify the entry state, repo topology, existing codebase facts, source conflicts, privacy or secrets redactions, owner files likely affected, and whether the client PRD needs normalization into a Precode PRD shard.
 
+If the frontend is already completed and the intended work is backend-only, treat the frontend as source evidence and an integration boundary, not automatic frontend implementation scope. Bias owner-file mapping, PRD shaping, architecture/API/data/security review, and decomposition toward backend/API/data/auth/integration work. Preserve frontend changes for approved backend connection, adaptation, or verification needs only.
+
 Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, PRD amendment, architecture/API/data/security owner-file update, decomposition into candidate beads, or a narrow unblocker.
 ```
 
@@ -176,6 +181,7 @@ Stop before implementation when:
 - external sprint items are being treated as activated beads
 - existing code conflicts with the client PRD or design
 - design files imply requirements not present in the PRD
+- completed frontend evidence is being treated as automatic frontend bead scope for a backend-only request
 - backend plans imply API, schema, auth, secret, deployment, or security decisions without owner-file coverage
 - the codebase inspection requires secrets, private dashboards, credentials, production access, or destructive commands
 - the next bead would need multiple primary authority files
