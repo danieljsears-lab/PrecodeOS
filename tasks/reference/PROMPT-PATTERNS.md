@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.68
+Document version: v0.1.69
 Last updated: 2026-07-22
 
 ## Purpose
@@ -870,8 +870,10 @@ I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
 - Conviction Packet / Precode Ingestion Packet: [path or pasted reviewed summary]
-- Frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
+- Frontend design files, screenshots, Figma export, discarded prototype as design/source evidence only, or design-system notes: [paths or links, or `None / not provided`]
 - Existing PRD, if any: [path]
+
+If a prototype exists but should be discarded as implementation, label it: `Prototype: [path/link]. Use as design/source evidence only. Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority, or treat it as PRD, bead, review, transition, or acceptance approval.`
 
 Treat these inputs as evidence, not authority. Do not write code yet.
 

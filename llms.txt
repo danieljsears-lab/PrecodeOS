@@ -8,7 +8,7 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
+Document version: v0.1.23
 Last updated: 2026-07-22
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
@@ -18,6 +18,8 @@ Use the compact first-reader route. If PrecodeOS is not installed in the target 
 Use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` only as a compact first-session student build-order checklist after setup validates or when the Daily Cockpit feels too large for a new builder. It is shareable as the student's official compact flow, reinforces Guided Setup and the Daily Cockpit, and does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page.
 
 Use the Backend-Only With Existing Frontend prompt in `tasks/reference/PROMPT-PATTERNS.md` or `docs/PRECODE-SUPPORT-RUNBOOK.md` when a student or client says the frontend is already completed and Precode should build the backend first. Treat the frontend as source evidence and an integration boundary, bias candidate beads toward backend/API/data/auth/integration work, and allow frontend touches only for approved connection, adaptation, or verification needs.
+
+When an artifact prompt asks for Experience artifacts, frontend design files, screenshots, Figma export, prototype, or design-system notes, use `None / not provided` if there are none. A discarded prototype may be listed only as design/source evidence when useful, and must be labeled non-authoritative: no code reuse, no coding evidence, no implementation authority, no PRD approval, no bead activation, no review or transition approval, and no validation proof.
 
 Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. Do not present them as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
 Use Skill Playbook Ergonomics when a user is unsure which skill-style prompt to invoke. It maps the request to Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. It is not a skill catalog, registry, optional pack, command wrapper, approval gate, implementation path, or replacement for owner protocols.

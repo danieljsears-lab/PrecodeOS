@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.3
 Last updated: 2026-07-22
 
 ## Purpose
@@ -55,12 +55,14 @@ Stop before implementation if the chosen topology would change deployment, auth,
 External artifacts include:
 
 - client PRDs, product specs, feature briefs, and acceptance notes
-- frontend design files, Figma exports, screenshots, wireframes, and design-system notes
+- frontend design files, Figma exports, screenshots, wireframes, design-system notes, and discarded prototypes labeled as design/source evidence only
 - Ember Handover Agent artifacts such as `Backend-dev-plan.md`
 - backend plans, sprint plans, implementation task lists, and technical handoff docs
 - existing repositories, codebase snapshots, README files, package manifests, route trees, schemas, tests, and CI configs
 
 Treat these as evidence, not authority.
+
+If there are no frontend design files, screenshots, Figma exports, prototypes, or design-system notes, record `None / not provided` instead of inventing design evidence. If a prototype exists but the team has decided to discard it as implementation, include it only when it has useful UI, flow, screen, copy, state, or integration clues, and label it as design/source evidence only. A discarded prototype must not become code to preserve, coding evidence, implementation authority, PRD approval, bead activation, review acceptance, transition approval, or proof that the product is validated.
 
 They must not:
 
@@ -159,9 +161,11 @@ Use the Client Engagement Intake Protocol.
 Client materials:
 - Existing project or repository: [path/link/status]
 - Client PRD or product spec: [path/link]
-- Frontend design files, screenshots, Figma export, or design-system notes: [path/link]
+- Frontend design files, screenshots, Figma export, discarded prototype as design/source evidence only, or design-system notes: [path/link or `None / not provided`]
 - Ember Handover Agent or backend plan, including Backend-dev-plan.md if present: [path/link]
 - Sprint plan or implementation task list: [path/link]
+
+If a prototype exists but should be discarded as implementation, label it: `Prototype: [path/link]. Use as design/source evidence only. Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority, or treat it as PRD, bead, review, transition, or acceptance approval.`
 
 Treat all client materials as evidence, not authority. Do not write code, approve a PRD, create or activate beads, change repo topology, run installers, mutate external systems, or overwrite project files.
 

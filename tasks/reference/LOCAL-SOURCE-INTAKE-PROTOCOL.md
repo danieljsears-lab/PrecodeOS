@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-07-22
 
 ## Purpose
@@ -46,7 +46,7 @@ Supported source types include:
 - notes and markdown docs
 - Candidate Queue entries from `CANDIDATE-QUEUE.md`, including reviewed shaping fields, product-value ratings, themes, and near-bead sketches
 - text files and manual drafts
-- screenshots, wireframes, design images, frontend design files, Figma exports, and design-system notes
+- screenshots, wireframes, design images, frontend design files, Figma exports, discarded prototypes labeled as design/source evidence only, and design-system notes
 - chat transcript summaries
 - public GitHub feedback issues, package-bug issues, pull requests, Linear items, or issue-tracker exports
 - research notes and PDFs summarized by the user or agent
@@ -153,6 +153,8 @@ Source summary:
 Keep the summary short. If the material is large, summarize the decision-relevant parts and link or name the local source path instead of copying it wholesale.
 
 Use the design fields only when the source includes design files, screenshots, wireframes, Figma exports, or UI references. If a design detail would change implementation, treat it as an open question until the user or owning PRD confirms it.
+
+If no design artifacts are available, record `None / not provided` rather than inventing or substituting design evidence. If a prototype exists but the user has discarded it as implementation, include it only when it gives useful UI, flow, screen, copy, state, or integration clues. Label it as design/source evidence only, not reusable code, coding evidence, implementation authority, PRD approval, bead activation, review acceptance, transition approval, or validation proof.
 
 When source material includes a completed frontend and the user asks for backend-only work, summarize the frontend as existing evidence and an integration boundary. Capture routes, UI states, data needs, API expectations, auth/session assumptions, design-system constraints, and verification touchpoints, then mark frontend implementation as preserved unless a frontend touch is needed to connect, adapt, or verify backend behavior or the user explicitly approves a frontend scope change.
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.41
+Document version: v0.1.42
 Last updated: 2026-07-22
 
 ## Purpose
@@ -540,6 +540,8 @@ Inputs:
 - Experience artifacts, frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
 
+If there are no Experience artifacts, frontend design files, screenshots, Figma export, prototype, or design-system notes, write `None / not provided` for that input. Do not invent or substitute an artifact to satisfy the prompt.
+
 Treat these inputs as evidence, not automatic implementation authority. Do not write code yet.
 
 First classify the entry state: fresh Precode setup, existing non-Precode project, or existing Precode project.
@@ -566,6 +568,18 @@ For design-heavy inputs, the engineer should explicitly identify:
 - unresolved design decisions that could change implementation
 
 Do not let frontend design files become implementation instructions until design facts are mapped to owner files and PRD requirements. If a design conflicts with current code, active memory, an approved PRD, `PRODUCT.md`, `PROJECT-CONTEXT.md`, or another owner file, current authority wins until the user approves an amendment.
+
+### Discarded Prototype As Design Evidence
+
+Use this when a prototype exists but the team has decided not to preserve it as implementation.
+
+If the prototype has useful UI, flow, screen, copy, state, or integration clues, list it under Experience artifacts or frontend design files only as source/design evidence. Label it explicitly:
+
+```text
+Prototype: [path/link]. Use as design/source evidence only. Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority, or treat it as PRD, bead, review, transition, or acceptance approval.
+```
+
+If the prototype is misleading, obsolete, low-signal, or likely to confuse the agent, write `None / not provided` and proceed from the Conviction Packet, intake facts, or approved PRD-like input instead.
 
 ### Backend-Only With Existing Frontend
 

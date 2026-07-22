@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.50
+# Version: v0.1.51
 # Last updated: 2026-07-22
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -1958,6 +1958,51 @@ def assert_backend_only_existing_frontend_contract(failures: list[dict[str, str]
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"backend-only existing frontend contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_discarded_prototype_design_evidence_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
+            "Discarded Prototype As Design Evidence",
+            "If there are no Experience artifacts, frontend design files, screenshots, Figma export, prototype, or design-system notes, write `None / not provided`",
+            "Use as design/source evidence only",
+            "Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority",
+            "PRD, bead, review, transition, or acceptance approval",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "discarded prototype as design/source evidence only",
+            "`None / not provided`",
+            "Use as design/source evidence only",
+            "Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority",
+            "PRD, bead, review, transition, or acceptance approval",
+        ],
+        Path("tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md"): [
+            "discarded prototypes labeled as design/source evidence only",
+            "`None / not provided`",
+            "must not become code to preserve, coding evidence, implementation authority, PRD approval, bead activation, review acceptance, transition approval, or proof that the product is validated",
+        ],
+        Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
+            "discarded prototypes labeled as design/source evidence only",
+            "record `None / not provided` rather than inventing or substituting design evidence",
+            "not reusable code, coding evidence, implementation authority, PRD approval, bead activation, review acceptance, transition approval, or validation proof",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "discarded prototypes labeled as design/source evidence only",
+            "discarded prototypes can contribute design clues only when labeled non-authoritative",
+            "coding evidence, implementation authority",
+        ],
+        Path("llms.txt"): [
+            "`None / not provided`",
+            "A discarded prototype may be listed only as design/source evidence when useful",
+            "no code reuse, no coding evidence, no implementation authority",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"discarded prototype design evidence contract: {path}", "expected": term, "actual": "missing"})
     return len(required_terms_by_path)
 
 
@@ -4723,6 +4768,7 @@ def main() -> int:
     bead_identity_preflight_scenario_count = assert_bead_identity_preflight_contract(failures)
     first_session_card_scenario_count = assert_first_session_card_contract(failures)
     backend_only_existing_frontend_scenario_count = assert_backend_only_existing_frontend_contract(failures)
+    discarded_prototype_design_evidence_scenario_count = assert_discarded_prototype_design_evidence_contract(failures)
     hypothesis_guidance_scenario_count = assert_hypothesis_guidance_contract(failures)
     ears_acceptance_scenario_count = assert_ears_acceptance_guidance_contract(failures)
     ubiquitous_language_scenario_count = assert_ubiquitous_language_contract(failures)
@@ -5290,6 +5336,7 @@ def main() -> int:
         + bead_identity_preflight_scenario_count
         + first_session_card_scenario_count
         + backend_only_existing_frontend_scenario_count
+        + discarded_prototype_design_evidence_scenario_count
         + hypothesis_guidance_scenario_count
         + ears_acceptance_scenario_count
         + ubiquitous_language_scenario_count
