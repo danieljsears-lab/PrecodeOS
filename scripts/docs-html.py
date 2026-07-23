@@ -43,7 +43,7 @@ DOC_ORDER = [
 COMPASS = [
     {
         "label": "Setup And Daily Work",
-        "summary": "Start here for orientation, daily operation, student guidance, setup, and the plain-English software-building path.",
+        "summary": "Start here for orientation, daily operation, builder guidance, setup, and the plain-English software-building path.",
         "home": True,
         "docs": [
             "PRECODE-DAILY-COCKPIT.md",

@@ -16,7 +16,8 @@ from typing import Any
 
 
 PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
-    {"group": "active_memory", "paths": ["AGENT.md", "DECISIONS.md", "tasks/todo.md"]},
+    {"group": "active_memory", "paths": ["AGENT.md", "DECISIONS.md", "OPERATING-CONSTRAINTS.md"]},
+    {"group": "active_work_state", "paths": ["tasks/todo.md"]},
     {"group": "candidate_queue", "paths": ["CANDIDATE-QUEUE.md"]},
     {
         "group": "product_and_project_owner_files",
@@ -42,7 +43,15 @@ PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
     },
     {
         "group": "work_structure",
-        "paths": ["tasks/beads/", "tasks/prds/", "tasks/reference/", "tasks/templates/", "modes/", "memory/"],
+        "paths": [
+            "tasks/beads/BEAD-SCHEMA.md",
+            "tasks/prds/PRD-000-template.md",
+            "tasks/prds/PRD-SHARD-SCHEMA.md",
+            "tasks/reference/",
+            "tasks/templates/",
+            "modes/",
+            "memory/",
+        ],
     },
     {"group": "project_evidence_guide", "paths": ["project-evidence/PROJECT-EVIDENCE-GUIDE.md"]},
     {"group": "scripts_and_checks", "paths": ["scripts/", ".githooks/", ".github/workflows/"]},
@@ -77,7 +86,13 @@ EXCLUDED_PATHS = [
     "local virtual environments",
 ]
 
-SOURCE_REQUIRED_PATHS = ["AGENT.md", "DECISIONS.md", "tasks/todo.md", "docs/PRECODE-GUIDED-SETUP.md"]
+SOURCE_REQUIRED_PATHS = [
+    "AGENT.md",
+    "DECISIONS.md",
+    "OPERATING-CONSTRAINTS.md",
+    "tasks/todo.md",
+    "docs/PRECODE-GUIDED-SETUP.md",
+]
 CONFLICT_PATHS = [
     "README.md",
     "CANDIDATE-QUEUE.md",
@@ -127,7 +142,7 @@ DEFERRED_SETUP_PATHS = {
     ".github/workflows/",
 }
 APPLY_ALLOWED_TARGET_KINDS = {"empty", "nearly_empty"}
-OWNER_GROUPS = {"active_memory", "product_and_project_owner_files"}
+OWNER_GROUPS = {"active_memory", "active_work_state", "product_and_project_owner_files"}
 UPGRADE_DEFERRED_PATHS = {".githooks/", ".github/workflows/"}
 SECRET_OR_LOCAL_PARTS = {
     ".agent-state",
@@ -476,6 +491,15 @@ def build_manifest_preview(payload: dict[str, Any]) -> dict[str, Any]:
                         group_name,
                     )
                 )
+            elif group_name == "active_work_state":
+                actions.append(
+                    preview_action(
+                        "adapt_candidate",
+                        path,
+                        "fresh target active-work state must be created for this project, not copied from the package source",
+                        group_name,
+                    )
+                )
             else:
                 actions.append(
                     preview_action(
@@ -634,6 +658,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
     identity_collisions: list[dict[str, str]] = []
     deferred_identity_paths: list[str] = []
     target_identity = identity_index(target_root)
+    action_paths: set[str] = set()
     action_index = 1
 
     for group in payload["public_file_groups"]:
@@ -697,6 +722,41 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
             if category == "blocked_identity_collision":
                 action.update(identity_collision)
             actions.append(action)
+            action_paths.add(path)
+            action_index += 1
+
+    for source_identity_paths in identity_index(source_root).values():
+        for path in sorted(source_identity_paths):
+            if path in action_paths or not is_package_dev_identity_path(path):
+                continue
+            source_path = source_root / path
+            target_path = target_root / path
+            if not source_path.exists():
+                continue
+            if not target_path.exists():
+                identity_collision = upgrade_identity_collision(source_root, target_identity, path)
+                if identity_collision:
+                    identity_collisions.append(identity_collision)
+                    category = "blocked_identity_collision"
+                    reason = (
+                        f"incoming {identity_collision['identity_field']} {identity_collision['incoming_id']} "
+                        f"already exists at {identity_collision['existing_target_path']}; preserve target identity and do not copy"
+                    )
+                else:
+                    deferred_identity_paths.append(path)
+                    category = "deferred_package_dev_identity"
+                    reason = (
+                        "package dev PRD/bead files are not upgrade-copy candidates for existing Precode targets; "
+                        "preserve target PRDs/beads"
+                    )
+            else:
+                category = "preserve_existing"
+                reason = "target package development PRD/bead identity path is present; preserve during package upgrade"
+            action = numbered_action("UP", action_index, category, path, reason, "package_dev_identity")
+            if category == "blocked_identity_collision":
+                action.update(identity_collision)
+            actions.append(action)
+            action_paths.add(path)
             action_index += 1
 
     if blockers:
@@ -777,7 +837,7 @@ def build_recovery_guidance(payload: dict[str, Any]) -> dict[str, Any]:
         ],
         "validation_next_steps": [
             "Run `bash scripts/validate-memory.sh` in an existing Precode target when active memory is present.",
-            "Run `python3 scripts/file-inventory.py --check` only after package files exist in the target.",
+            "Run `python3 scripts/file-inventory.py --check` only after package files exist in the installed Precode root.",
             "Run target-specific checks only after owner files name them.",
         ],
         "forbidden_actions": [
@@ -796,8 +856,8 @@ def validation_steps_for_plan(kind: str) -> list[str]:
     if kind in {"empty", "nearly_empty"}:
         return [
             "After approved manual setup, inspect target git status.",
-            "After Precode files exist in the target, run `bash scripts/validate-memory.sh` from the target.",
-            "When package files are present, run `python3 scripts/file-inventory.py --check` from the target.",
+            "After Precode files exist, run `bash scripts/validate-memory.sh` from the installed Precode root.",
+            "When package files are present, run `python3 scripts/file-inventory.py --check` from the installed Precode root.",
             "Run target-specific project checks only after owner files name them.",
         ]
     if kind == "existing_project":
@@ -1006,7 +1066,7 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
         "skipped": skipped,
         "blocked": blocked,
         "validation_next_step": (
-            "Inspect target git status, then run `bash scripts/validate-memory.sh` from the target after copied files are present."
+            "Inspect target git status, then run `bash scripts/validate-memory.sh` from the installed Precode root after copied files are present."
             if status == "applied"
             else "Resolve blockers and rerun the supervised setup plan before applying setup actions."
         ),
@@ -1472,6 +1532,19 @@ def self_test() -> int:
 
         empty_target = base / "empty-target"
         empty_target.mkdir()
+        (source / "tasks" / "prds").mkdir(parents=True, exist_ok=True)
+        (source / "tasks" / "beads").mkdir(parents=True, exist_ok=True)
+        (source / "tasks" / "prds" / "PRD-000-template.md").write_text("fixture template\n", encoding="utf-8")
+        (source / "tasks" / "prds" / "PRD-SHARD-SCHEMA.md").write_text("fixture schema\n", encoding="utf-8")
+        (source / "tasks" / "beads" / "BEAD-SCHEMA.md").write_text("fixture schema\n", encoding="utf-8")
+        (source / "tasks" / "prds" / "PRD-001-package-dev.md").write_text(
+            "---\nprd_id: PRD-001\n---\n# Package Dev PRD\n",
+            encoding="utf-8",
+        )
+        (source / "tasks" / "beads" / "B000-package-dev.md").write_text(
+            "---\nbead_id: B000\n---\n# Package Dev Bead\n",
+            encoding="utf-8",
+        )
         empty_payload = build_payload(source.as_posix(), empty_target.as_posix())
         assert empty_payload["target_kind"] == "empty"
         assert empty_payload["status"] == "pass"
@@ -1553,8 +1626,8 @@ def self_test() -> int:
         existing_precode_payload["install_update_preview"] = build_manifest_preview(existing_precode_payload)
         existing_precode_payload["supervised_setup_plan"] = build_supervised_setup_plan(existing_precode_payload)
         (source / "docs" / "NEW-PACKAGE-DOC.md").write_text("new package doc\n", encoding="utf-8")
-        (source / "tasks" / "prds").mkdir(parents=True)
-        (source / "tasks" / "beads").mkdir(parents=True)
+        (source / "tasks" / "prds").mkdir(parents=True, exist_ok=True)
+        (source / "tasks" / "beads").mkdir(parents=True, exist_ok=True)
         (existing_precode_target / "tasks" / "prds").mkdir(parents=True)
         (existing_precode_target / "tasks" / "beads").mkdir(parents=True)
         (source / "tasks" / "prds" / "PRD-002-bootstrap-confidence-lane.md").write_text(
@@ -1664,6 +1737,21 @@ def self_test() -> int:
             for action in empty_payload["supervised_setup_plan"]["actions"]
             if action["category"] == "review_copy_candidate"
         }
+        setup_adaptation_paths = {
+            action["path"]
+            for action in empty_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_adaptation_candidate"
+        }
+        assert "OPERATING-CONSTRAINTS.md" in preview_copy_paths
+        assert "OPERATING-CONSTRAINTS.md" in setup_copy_paths
+        assert "tasks/todo.md" not in preview_copy_paths
+        assert "tasks/todo.md" not in setup_copy_paths
+        assert "tasks/todo.md" in setup_adaptation_paths
+        assert "tasks/prds/PRD-000-template.md" in setup_copy_paths
+        assert "tasks/prds/PRD-SHARD-SCHEMA.md" in setup_copy_paths
+        assert "tasks/beads/BEAD-SCHEMA.md" in setup_copy_paths
+        assert "tasks/prds/PRD-001-package-dev.md" not in setup_copy_paths
+        assert "tasks/beads/B000-package-dev.md" not in setup_copy_paths
         for excluded_path in excluded_fixture_paths:
             assert excluded_path not in preview_copy_paths
             assert excluded_path not in setup_copy_paths

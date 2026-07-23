@@ -3,7 +3,7 @@
 
 > AUTHORITY: Client-engagement intake rules for external PRDs, design files, backend handover plans, sprint plans, existing repositories, repo topology choices, normalization into Precode owner files, and candidate-bead derivation.
 > NOT_AUTHORITY: Active memory, final client product decisions, repository topology decisions, implementation plans, PRD approval, bead activation, external project management authority, or generated progress state.
-> LOAD_WHEN: A client arrives with an existing project, external PRD, frontend design files, Ember Handover Agent artifacts, backend plans, sprint plans, or an existing codebase that must be adapted into PrecodeOS.
+> LOAD_WHEN: A client arrives with an existing project, external PRD, frontend design files, external handoff agent artifacts, backend plans, sprint plans, or an existing codebase that must be adapted into PrecodeOS.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
@@ -32,7 +32,7 @@ Active memory remains exactly:
 | Existing non-Precode repo | Run Bootstrap Confidence, then Existing Repo Intake before copying or adapting Precode files. | Read-only repo intake evidence plus owner-file map and setup/adaptation plan. |
 | Existing Precode repo | Load active memory, active bead, and primary authority before ingesting new client material. | Intake summary plus PRD amendment or bead path. |
 | External PRD/design handoff | Run Local Source Intake on the external PRD and design materials. | Normalized PRD-ready source summary. |
-| Ember/backend handoff | Treat `Backend-dev-plan.md`, sprint plans, and backend architecture notes as external source evidence. | Backend source summary plus candidate PRD/decomposition inputs. |
+| External backend handoff | Treat `backend implementation plan`, sprint plans, and backend architecture notes as external source evidence. | Backend source summary plus candidate PRD/decomposition inputs. |
 
 ## Repo Topology
 
@@ -56,7 +56,7 @@ External artifacts include:
 
 - client PRDs, product specs, feature briefs, and acceptance notes
 - frontend design files, Figma exports, screenshots, wireframes, design-system notes, and discarded prototypes labeled as design/source evidence only
-- Ember Handover Agent artifacts such as `Backend-dev-plan.md`
+- external handoff agent artifacts such as `backend implementation plan`
 - backend plans, sprint plans, implementation task lists, and technical handoff docs
 - existing repositories, codebase snapshots, README files, package manifests, route trees, schemas, tests, and CI configs
 
@@ -75,7 +75,7 @@ They must not:
 
 If external material conflicts with current authority, current authority wins until the client approves an amendment.
 
-When the client or student says the frontend is already completed and the intended work is backend-only, treat the completed frontend as existing source evidence and an integration boundary. It can inform current routes, UI states, data needs, API expectations, auth/session assumptions, design-system constraints, and verification touchpoints. It must not automatically create frontend implementation scope or frontend beads. Candidate owner-file updates, PRD shaping, architecture/API/data/security review, and decomposition should bias toward backend, API, data model, auth, integration, and verification work. Frontend changes remain valid only when needed to connect, adapt, or verify backend behavior, or when the user explicitly approves a frontend scope change.
+When the client or builder says the frontend is already completed and the intended work is backend-only, treat the completed frontend as existing source evidence and an integration boundary. It can inform current routes, UI states, data needs, API expectations, auth/session assumptions, design-system constraints, and verification touchpoints. It must not automatically create frontend implementation scope or frontend beads. Candidate owner-file updates, PRD shaping, architecture/API/data/security review, and decomposition should bias toward backend, API, data model, auth, integration, and verification work. Frontend changes remain valid only when needed to connect, adapt, or verify backend behavior, or when the user explicitly approves a frontend scope change.
 
 ## Existing Codebase Intake
 
@@ -136,9 +136,9 @@ The normalized Precode PRD shard should state:
 - approval gates and sensitive surfaces
 - candidate beads
 
-## Ember And Sprint Plans
+## backend And Sprint Plans
 
-Ember Handover Agent outputs, including `Backend-dev-plan.md`, are external source evidence.
+External handoff outputs, including `backend implementation plan`, are external source evidence.
 
 They feed:
 
@@ -162,7 +162,7 @@ Client materials:
 - Existing project or repository: [path/link/status]
 - Client PRD or product spec: [path/link]
 - Frontend design files, screenshots, Figma export, discarded prototype as design/source evidence only, or design-system notes: [path/link or `None / not provided`]
-- Ember Handover Agent or backend plan, including Backend-dev-plan.md if present: [path/link]
+- external handoff agent or backend plan, including backend implementation plan if present: [path/link]
 - Sprint plan or implementation task list: [path/link]
 
 If a prototype exists but should be discarded as implementation, label it: `Prototype: [path/link]. Use as design/source evidence only. Do not reuse the code, preserve the implementation, treat it as coding evidence, treat it as implementation authority, or treat it as PRD, bead, review, transition, or acceptance approval.`

@@ -16,7 +16,7 @@ Last updated: 2026-07-22
 
 Use this card after PrecodeOS is installed or when a first working session feels too heavy.
 
-This card gives a compact build-order path for students. It is shareable as the student's official first-session flow when a live call or first solo session needs steps in one place. It reinforces Guided Setup and the Daily Cockpit by pointing to them at the right moment. It is not a new start page, workflow, command wrapper, setup helper, generated report, skill catalog, registry, optional pack, installer, updater, release channel, or package manager.
+This card gives a compact build-order path for builders. It is shareable as the builder's official first-session flow when a live call or first solo session needs steps in one place. It reinforces Guided Setup and the Daily Cockpit by pointing to them at the right moment. It is not a new start page, workflow, command wrapper, setup helper, generated report, skill catalog, registry, optional pack, installer, updater, release channel, or package manager.
 
 ## What To Open
 
@@ -31,7 +31,7 @@ Open only what matches your moment:
 
 Do not browse every protocol first. The Daily Cockpit or troubleshooting route will name deeper files only when needed.
 
-## Student Build Order
+## Builder Build Order
 
 Use this order when you need one visible path:
 
@@ -54,7 +54,7 @@ This table is an index in build order. Read the linked doc for the actual prompt
 
 ## Linear Setup-To-First-Bead Prompt
 
-Use this during a support call when the student needs the whole flow stated linearly before opening deeper docs:
+Use this during a support call when the builder needs the whole flow stated linearly before opening deeper docs:
 
 ```text
 Walk me through my first Precode session linearly.

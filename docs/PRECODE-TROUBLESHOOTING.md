@@ -433,9 +433,9 @@ If the project has known package scripts, inspect them before running anything t
 
 Safe path:
 
-- confirm whether this is the PrecodeOS package source or the student's target app
+- confirm whether this is the PrecodeOS package source or the builder's target app
 - identify the app directory and expected dev command from `PROJECT-CONTEXT.md`, package files, or existing docs
-- restart or rerun only the narrow local command needed for the student's app
+- restart or rerun only the narrow local command needed for the builder's app
 - record any missing setup fact in the proper owner file after user approval
 
 Do not install dependencies, change package files, rewrite configuration, or edit app code unless the user approves a narrow technical fix.
@@ -458,9 +458,9 @@ git status
 Safe path:
 
 - ask whether auth or onboarding is core to the product being demonstrated
-- if not core, help the student reach the value-bearing screen without changing product scope
+- if not core, help the builder reach the value-bearing screen without changing product scope
 - if credentials, dashboard setup, or secrets are involved, stop and ask for explicit user-controlled handling
-- if the auth flow itself is the feature, route scope and acceptance questions back to the student or instructor
+- if the auth flow itself is the feature, route scope and acceptance questions back to the builder or instructor
 
 Do not paste secrets into prompts, commit credentials, bypass security casually, or decide that onboarding should be removed from the product.
 
@@ -469,7 +469,7 @@ Do not paste secrets into prompts, commit credentials, bypass security casually,
 Likely causes:
 
 - the blocker mixes product uncertainty with technical setup
-- the student is asking support to choose scope, evidence, or acceptance
+- the builder is asking support to choose scope, evidence, or acceptance
 - a mentor, instructor, and support engineer are each seeing a different part of the issue
 - the agent is widening a support request into implementation
 
@@ -482,10 +482,10 @@ python3 scripts/next-step.py
 
 Safe path:
 
-- if the blocked decision is product direction, scope, user evidence, or acceptance, route back to student-owned product work with instructor support
+- if the blocked decision is product direction, scope, user evidence, or acceptance, route back to builder-owned product work with instructor support
 - if the blocked issue is local setup, repo state, validation, runtime, auth, or a narrow implementation failure, keep it with support
 - if the blocked issue is PrecodeOS package behavior or unclear official guidance, escalate rather than inventing policy
-- name the route in the support closeout so the student knows where to go next
+- name the route in the support closeout so the builder knows where to go next
 
 Do not let technical support become hidden product ownership.
 

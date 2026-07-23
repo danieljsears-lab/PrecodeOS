@@ -101,6 +101,8 @@ Apply mode must refuse:
 - app commands
 - app-code edits
 - generated reports or generated logs
+- the package source's `tasks/todo.md`
+- package development PRDs or beads such as numbered `tasks/prds/PRD-001...` or `tasks/beads/B000...`
 - local agent, editor, cache, virtualenv, environment, secret, credential, key, or certificate paths
 - release channels, pinned versions, package-manager updates, rollback automation, registry behavior, optional packs, or an installable `precode` CLI
 
@@ -113,8 +115,8 @@ The package keeps fixture coverage for the refusal contract in `scripts/bootstra
 After an applied setup copy:
 
 - inspect target Git status
-- run `bash scripts/validate-memory.sh` from the target after copied files are present
-- run `python3 scripts/file-inventory.py --check` from the target when package files are present
+- run `bash scripts/validate-memory.sh` from the installed Precode root after copied files are present
+- run `python3 scripts/file-inventory.py --check` from the installed Precode root when package files are present
 - adapt owner files manually before product implementation starts
 - run target-specific checks only after owner files name them
 

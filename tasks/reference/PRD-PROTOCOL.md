@@ -22,7 +22,7 @@ It sits between the product reference layer and the execution bead layer:
 Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close
 ```
 
-This is the student journey spine, not a new start page. README remains the public compass, Daily Cockpit remains the student operating home, and this protocol owns the PRD gate inside that path.
+This is the builder journey spine, not a new start page. README remains the public compass, Daily Cockpit remains the builder operating home, and this protocol owns the PRD gate inside that path.
 
 For first-time non-technical builders, this path may be invoked as the First PRD Walkthrough. The walkthrough is a discoverability layer over existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping guidance. Brief means Product Brief after at most three high-level questions; Packet means reviewed Conviction Packet / Precode Ingestion Packet; Intake means Local Source Intake before PRD shaping. It does not draft or approve PRDs by itself, mutate owner files, create a roadmap or backlog, create or activate beads, compile features, or authorize implementation. Product Briefs, Conviction Packets, workbook output, research, and source summaries remain evidence only until reviewed conclusions are promoted through the normal PRD workflow.
 
@@ -38,7 +38,7 @@ Use `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md` when the idea is sourced f
 
 Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the idea starts from `CANDIDATE-QUEUE.md`. A Candidate Queue entry may be cited in PRD `Source Inputs`, including product-value rating, themes, and near-bead sketch IDs when they helped shape the PRD, but it is evidence and origin trace only; it does not approve the PRD, compile requirements, reserve `B###` IDs, or authorize beads.
 
-Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a client PRD, existing codebase, frontend design handoff, Ember/backend plan, sprint plan, or repo-topology decision.
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when the source is a client PRD, existing codebase, frontend design handoff, external backend plan, sprint plan, or repo-topology decision.
 
 Use `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` when the idea is rough, ambiguous, customer-facing, or still needs guided framing.
 

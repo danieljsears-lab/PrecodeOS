@@ -46,7 +46,7 @@ We believe non-traditional builders are the future.
 
 AI coding agents have changed who gets to build software. It's a magical moment in history. People once locked-out of building by lack of experience, technical fluency, knowledge role, tooling, process, or budget can now turn ideas into working software.
 
-Founders. Operators. Creators. Domain Experts. Students. Curious beginners.
+Founders. Operators. Creators. Domain Experts. Builders. Curious beginners.
 
 They are the reason Precode exists. Precode exists to enable them, empower them, support them, and protect their momentum without taking away their agency.
 

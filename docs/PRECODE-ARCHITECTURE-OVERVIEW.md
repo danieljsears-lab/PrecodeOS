@@ -133,7 +133,7 @@ repo/
   tasks/beads/*.md         execution contracts
   tasks/prds/*.md          product definition shards
   tasks/reference/*.md     protocols and playbooks
-  tasks/templates/*.md     reusable evidence and student/workflow templates
+  tasks/templates/*.md     reusable evidence and builder/workflow templates
   modes/*.md               navigator, explorer, builder, review roles
   adapters/*.md            tool-specific shims
   AGENTS.md, CLAUDE.md,

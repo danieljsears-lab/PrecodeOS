@@ -1,9 +1,9 @@
-# Student Experience Ingestion Packet
-<!-- ANCHOR: student-experience-ingestion-packet -->
+# Builder Experience Ingestion Packet
+<!-- ANCHOR: builder-experience-ingestion-packet -->
 
-> AUTHORITY: Student-facing template for packaging an approved bootcamp PRD input and Experience design artifacts before Claude Code creates a bounded Precode bead.
+> AUTHORITY: Builder-facing template for packaging approved PRD-like input and Experience design artifacts before Claude Code creates a bounded Precode bead.
 > NOT_AUTHORITY: Product approval, PRD approval, active task selection, implementation plan, bead activation, generated progress state, or permission to code.
-> LOAD_WHEN: A bootcamp student has shaped an idea, created a visual core-spine experience in Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas, and is ready to hand context to Claude Code.
+> LOAD_WHEN: A builder has shaped an idea, created a visual core-spine experience in Claude Design, an AI-assisted UI builder, or an equivalent AI-assisted UI/UX canvas, and is ready to hand context to Claude Code.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
@@ -14,12 +14,12 @@ Last updated: 2026-06-14
 
 ## Purpose
 
-Use this packet after idea shaping, approved PRD-like input, and Experience design, before Claude Code starts implementation. A raw Product Brief or Conviction Packet is not enough for this step until it has gone through Local Source Intake and the bootcamp has approved the PRD-like input for Experience work.
+Use this packet after idea shaping, approved PRD-like input, and Experience design, before Claude Code starts implementation. A raw Product Brief or Conviction Packet is not enough for this step until it has gone through Local Source Intake and the builder has approved the PRD-like input for Experience work.
 
 The packet combines:
 
-- the student-approved bootcamp PRD or PRD-like input from the first product-shaping step
-- the Experience artifacts created in Claude Design, Ember UI Builder, or another AI-assisted UI/UX canvas
+- the builder-approved PRD or PRD-like input from the first product-shaping step
+- the Experience artifacts created in Claude Design, an AI-assisted UI builder, or another AI-assisted UI/UX canvas
 - the core workflow spine that should become the first coded experience
 - target-user or customer feedback gathered before coding, when available
 
@@ -30,14 +30,14 @@ Claude Code should not infer missing scope from an incomplete packet. If the han
 ## Flow
 
 ```text
-Student Idea-to-MVE or bootcamp PRD input
+Builder Idea-to-MVE or approved PRD-like input
   -> design-tool brief from this packet
   -> Experience design canvas
   -> Core Spine Gate
   -> target-user feedback when feasible
-  -> Student Experience Ingestion Packet
+  -> Builder Experience Ingestion Packet
   -> Claude Code creates one Precode bead
-  -> student approves the bead
+  -> builder approves the bead
   -> coding begins
   -> prototype demo and Experience review evidence
 ```
@@ -48,7 +48,7 @@ Support engineers may help set up the local environment and scaffold in parallel
 
 Before pasting this packet into Claude Code, make sure these items are filled in. If one is unknown, write `unknown` and explain what decision or evidence is missing.
 
-- [ ] Approved bootcamp PRD or PRD-like input is named or linked.
+- [ ] Approved PRD or PRD-like input is named or linked.
 - [ ] Design-tool brief or source notes used for the Experience artifact are included or summarized.
 - [ ] Experience design tool and artifact links, paths, screenshots, or pasted summaries are included.
 - [ ] Target user, problem, promise, and minimum value moment are written in plain language.
@@ -63,7 +63,7 @@ Claude Code handoff rule: incomplete required fields block bead creation. Claude
 
 ## Design Canvas Input Prompt
 
-Use this after the bootcamp PRD input is approved and before opening Claude Design, Ember UI Builder, or another AI-assisted design canvas. The goal is a rough core-spine artifact, not polished screens or extra features.
+Use this after the PRD-like input is approved and before opening Claude Design, an AI-assisted UI builder, or another AI-assisted design canvas. The goal is a rough core-spine artifact, not polished screens or extra features.
 
 ```text
 Turn these idea-shaping notes and reference images into a design-tool brief.
@@ -142,7 +142,7 @@ Feedback is evidence, not automatic authority. If feedback changes scope, route 
 
 ### Source Inputs
 
-Approved bootcamp PRD or PRD-like input:
+Approved PRD or PRD-like input:
 
 - 
 
@@ -152,7 +152,7 @@ Idea-shaping or workbook source:
 
 Experience design tool used:
 
-- `Claude Design | Ember UI Builder | other:`
+- `Claude Design | an AI-assisted UI builder | other:`
 
 Design-tool brief used:
 
@@ -327,7 +327,7 @@ Completion evidence packet needed:
 Paste this into Claude Code with the completed packet.
 
 ```text
-Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
+Use this approved PRD-like input and Builder Experience Ingestion Packet to create one Precode bead for the core spine implementation.
 
 First inspect the "Complete Before Claude Code Handoff" checklist and the packet fields.
 
@@ -335,7 +335,7 @@ If any required field is missing, ambiguous, or marked unknown in a way that cha
 
 If this packet has a formal Precode PRD shard in tasks/prds/, you may draft one ready candidate bead file for the core spine. Do not update tasks/todo.md, activate the bead, or code.
 
-If this packet only has a bootcamp-approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
+If this packet only has approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
 
 In the candidate bead or proposal, summarize:
 - the core scope
@@ -360,7 +360,7 @@ Do not code until I approve the bead through the normal Precode workflow.
 Use this when support is helping with environment or scaffold readiness in parallel with Experience handoff work.
 
 ```text
-Check that the student's local environment and scaffold are ready for Claude Code implementation.
+Check that the builder's local environment and scaffold are ready for Claude Code implementation.
 
 You may inspect setup, repo shape, scaffold boundaries, dependency/runtime blockers, auth or local-demo blockers, and validation state.
 
@@ -372,7 +372,7 @@ Report:
 - local runtime or auth blockers
 - blockers
 - exact next technical unblock
-- anything the student must decide before implementation
+- anything the builder must decide before implementation
 - confirmation that support did not change product scope, design direction, acceptance, or feedback interpretation
 ```
 

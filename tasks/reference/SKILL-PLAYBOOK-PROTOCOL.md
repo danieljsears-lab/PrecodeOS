@@ -68,7 +68,7 @@ Review recommendation rule: Skill / Extension Review output is advisory review i
 
 ## Daily Prompt Alias Boundary
 
-Daily prompt aliases are a compact invocation layer for students using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
+Daily prompt aliases are a compact invocation layer for builders using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
 
 Aliases are not command wrappers, packaged skills, optional packs, registries, active memory, generated evidence, approval surfaces, or task-selection surfaces. They do not reduce the Skill Surface Model: v1 remains prompt playbook first, with read-only command wrappers deferred until a separate package decision.
 
@@ -449,7 +449,7 @@ Product Conviction Packet Skill is the skill-playbook form of the coaching step 
 ```text
 Name: Product Conviction Packet Skill
 Purpose: Help a first-time non-technical builder run a guided product-coach interview that researches, explores, challenges, clarifies, and packages a rough idea before Precode Local Source Intake.
-Load when: The user asks for an idea coach, Product Conviction Packet, pre-repo discovery, first-time founder discovery, SnapCamp/bootcamp idea shaping, or a skill-style product-discovery request before PRD creation.
+Load when: The user asks for an idea coach, Product Conviction Packet, pre-repo discovery, first-time founder discovery, guided-cohort idea shaping, or a skill-style product-discovery request before PRD creation.
 Owner protocol or adapter: `tasks/reference/IDEA-TO-PRD-WORKFLOW.md`, `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md`, and `tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md`
 Allowed actions: Interview one question at a time, help the builder choose the closest lens without creating a separate workflow, produce a Product Brief after at most three high-level product or business questions, guide source-cited research, separate facts from assumptions, run a Challenge And Clarity pass, challenge broad audience/missing workaround/risky scope/weak evidence supportively but firmly, rate evidence strength, optionally use visible-iteration/MVE framing to name the smallest complete useful payoff and core workflow spine, translate possible features into candidate capabilities, classify Local Source Intake readiness, and produce a Conviction Packet plus Local Source Intake handoff prompt.
 Forbidden actions: Edit files, write `PRODUCT.md`, draft or approve a PRD, create or activate beads, create a roadmap or backlog, start implementation, run mutating commands, treat research as validation, promote findings into authority, or decide the product for the builder.
@@ -525,7 +525,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Maintainer Package Review Skill | Implemented | Maintainer package-analysis prompt; keep it read-only, Plan Mode-oriented when available, and subordinate to maintainer notes, roadmap authority, Skill Playbook Protocol, and Extension Protocol. |
 | Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |
 | No-Engineer Fallback Prompt Pack | Implemented outside skill set | Implemented as Prompt Patterns and user/support docs, not a skill playbook; keep it subordinate to Recovery Protocol and approval gates. |
-| Product Conviction Packet Skill | P2 | Useful for first-time builders and SnapCamp cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
+| Product Conviction Packet Skill | P2 | Useful for first-time builders and guided cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
 | Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
 
 ## Better Alternatives

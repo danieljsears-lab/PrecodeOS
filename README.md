@@ -9,6 +9,19 @@
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
+## Start Here
+
+This README is the public package compass: use it to decide whether PrecodeOS fits, how to adopt it, and which canonical document to open next. It is not the daily operating surface once work has started.
+
+Use this first-reader route and stop at the first surface that matches your situation:
+
+1. If PrecodeOS is not installed in the target project, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
+2. If PrecodeOS is installed or you are already working in a PrecodeOS repo, use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface.
+3. If you only have a rough idea, still start from the Daily Cockpit and use `Ideation: use First PRD Walkthrough for my rough idea.`
+4. If setup, state, checks, or generated reports feel broken or confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) or say `I am stuck, help me.`
+
+Do not read the docs as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, OS README is the concept explainer, Troubleshooting is symptom lookup, and Support Runbook is helper-facing.
+
 ## What It Is
 
 Learn more: `https://www.precodeos.org`.
@@ -19,7 +32,7 @@ PrecodeOS brings proven engineering discipline, practices and patterns to AI-ass
 
 It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. 
 
-PrecodeOS keeps its active AI-agent context to 219 lines across three files. Yep, it's super tiny.
+PrecodeOS keeps active AI-agent context intentionally tiny across three small files.
 
 PrecodeOS cares about:
 
@@ -42,9 +55,7 @@ It lives inside a repository as Markdown owner files, execution contracts, valid
 
 Taken together, those files form an advisory repo-native harness for agentic work: owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades make the work inspectable without becoming approval authority. The harness is not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
 
-Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps software work human-owned by making intent, scope, authority, approval, proof, and recovery explicit repo surfaces instead of hidden chat assumptions.
-
-PrecodeOS treats product intent, design judgment, acceptance, and proof as durable repo-owned control surfaces for AI coding work. The agent can move quickly, but the reasons for the work, the bounds of the work, and the evidence for accepting it stay readable in the repository.
+Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps product intent, design judgment, acceptance, proof, and recovery as durable repo-owned control surfaces instead of hidden chat assumptions.
 
 ## Who It's For
 
@@ -84,7 +95,7 @@ PrecodeOS is worth it when the cost of getting lost is bigger than the cost of a
 
 **The bright line**: quick sketches, tiny demos, and throwaway experiments can stay loose. Switch to PrecodeOS when the work is durable, user-facing, sensitive, multi-file, hard to prove, or something you expect to revisit. If a mistake would be expensive to understand, undo, explain, or trust later, do not let vibe coding harden into production code.
 
-## Technical Summary
+## Core Invariants
 
 PrecodeOS treats the repository as the control surface for AI-assisted software work. Its core architecture is built around a few invariants:
 
@@ -99,40 +110,29 @@ PrecodeOS treats the repository as the control surface for AI-assisted software 
 
 That is the line PrecodeOS holds: a lightweight governance kernel for agentic development that determines how agents can inspect, draft, build, explain, and propose, while the builder remains the authority for direction, risk, acceptance, and the next approved step.
 
-## How It Works In Practice
-
-PrecodeOS gives AI-assisted work a shared operating model. It uses repeated working "build loops" to keep the agent pointed at one bounded "bead" contract at a time (smallest logical unit of work to prevent scope creep).
-
-It uses tiny active memory to prevent stale context, forces authority into named repo files, records durable evidence as proof (instead of trusting agent claims), and requires the human to approve transitions. It uses generated reports to help the builder see what is going on and to inspect health.
-
-Ralph-style iteration is opt-in and bounded by the active bead. 
-
-`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, product-value ratings, themes, and near-bead sketches. It says, "Here are intents we have not lost, with enough evidence/status to decide what, if anything, deserves promotion." It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code. `python3 scripts/candidate-queue.py` can preview raw-note import or shaping proposals, but apply requires explicit `--approve-action` and may write only to `CANDIDATE-QUEUE.md`.
-
-When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
-
 ## What You Can Build
 
 - MVPs with clearer product intent before code.
 - Existing projects with safer agent boundaries.
 - Multi-session agent work with durable handoff.
-- Founder or student projects that need structure without heavyweight process.
+- Founder or builder projects that need structure without heavyweight process.
 - Product discovery, PRDs, small execution beads, and recorded proof.
 
-## Why It Exists
+## Capability Snapshot
 
-| Layer | What it gives you |
+| Builder job | PrecodeOS capability |
 |---|---|
-| Active Memory | A tiny current starting point. |
-| Authority | One owner for each durable fact. |
-| Product Context | Product and project truth outside chat. |
-| PRDs | A destination before feature work. |
-| Beads | One bounded unit of execution. |
-| Checks | Proof over agent confidence. |
-| Reports | Readable status and graph visibility without authority drift. |
-| Recovery | A way to stop, repair, and resume. |
+| Adopt | Guided setup, existing repo intake, supervised setup plans, upgrade preview, and recovery guidance. |
+| Orient | Tiny active memory, session start, next-step guidance, file inventory, and docs compass. |
+| Decide | Product discovery, First PRD Walkthrough, Local Source Intake, Candidate Queue, and Plan Mode candidate shaping. |
+| Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages. |
+| Build | One active bead, files-in-play guardrails, bounded Ralph attempts, and tool-neutral adapters. |
+| Prove | Recorded checks, verification guidance, closeout evidence, proof tracing, and generated health/progress reports. |
+| Review | Review lanes, PRD handoff readiness, engineering-quality guidance, release-readiness evidence, and human approval gates. |
+| Recover | Troubleshooting, recovery protocol routing, OS checkpoints, state checks, and safe stuck-user prompts. |
+| Collaborate | Small-team coordination, branch/worktree re-entry guidance, GitHub evidence intake, and build attribution evidence. |
 
-The active-memory kernel limits startup context. Authority contracts show what each file owns and must not own. Beads constrain execution to one current unit of work. Recorded checks turn proof into durable evidence. Generated reports improve visibility without becoming authority. Human gates preserve ownership of risk, acceptance, and transitions.
+Capability surfaces are advisory unless their owning Markdown file or explicit human gate says otherwise. Generated reports, generated HTML, command facades, adapters, and preview outputs improve visibility; they do not choose work, approve PRDs, activate beads, accept review, approve transitions, or provide package-manager behavior.
 
 ## Quickstart Install
 
@@ -194,44 +194,13 @@ To adapt PrecodeOS into a target project, start with these files:
 
 Do not add more active-memory files. If a topic needs durable detail, give it a clear owner file or use the existing reference map.
 
-## Start Here
-
-This README is the public package compass: use it to decide whether PrecodeOS fits, how to adopt it, and which canonical document to open next. It is not the daily operating surface once work has started.
-
-Use this first-reader route and stop at the first surface that matches your situation:
-
-1. If PrecodeOS is not installed in the target project, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
-2. If PrecodeOS is installed or you are already working in a PrecodeOS repo, use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface.
-3. If you only have a rough idea, still start from the Daily Cockpit and use `Ideation: use First PRD Walkthrough for my rough idea.`
-4. If setup, state, checks, or generated reports feel broken or confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) or say `I am stuck, help me.`
-
-Do not read the docs as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, OS README is the concept explainer, Troubleshooting is symptom lookup, and Support Runbook is helper-facing.
-
-For students, the practical path is the Daily Cockpit path: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`, then `Active -> Changed -> Proven -> Parked -> Approval -> Next` after the first bead. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
-
-If the first working session feels like too much, use [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) as a compact checklist and prompt card after setup validates. It reinforces the Daily Cockpit; it is not a new start page, setup guide, task selector, or approval shortcut.
-
-If you prefer a browseable reading surface with progress cues, section links, and source Markdown links, open [`docs-html/index.html`](docs-html/index.html). The Markdown docs remain canonical.
-
-For PRD review, use [`tasks/prds-html/index.html`](tasks/prds-html/index.html) as a generated scan surface for status, requirements, blockers, risks, and bead proposals. Generated PRD pages may include an export-only Acceptance Oracle Matrix cockpit for drafting a proposed Markdown replacement block, but Markdown PRDs in [`tasks/prds/`](tasks/prds/) remain canonical and must be edited manually. Acceptance criteria may use optional EARS-style wording when it clarifies expected behavior; the syntax is not required and generated HTML does not approve or persist it.
-
-For parked ideas and future candidate visibility, use [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md). A generated reading page is available at [`docs-html/CANDIDATE-QUEUE.html`](docs-html/CANDIDATE-QUEUE.html), and public users can refresh it with `python3 scripts/docs-html.py`, but the Markdown queue remains canonical. Candidate ranking is review order only; it does not choose what the agent builds next, approve PRDs, activate beads, or reserve bead IDs.
-
-For stable documentation questions, ask your agent to `Use Ask Precode.` The prompt lives in [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md) and tells the agent to answer from public docs and relevant protocols with source citations. Ask Precode is conditional docs help, not a start page. If the question depends on current project state, Ask Precode should stop and route you to the right workflow instead.
-
-Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent check the active bead, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
-
-If you are helping someone else adopt PrecodeOS, use [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md). It gives support engineers the first-call flow, setup posture, and handoff language.
-
-If you are still learning what PrecodeOS is, use the compass below.
-
 ## How PrecodeOS Works
 
 PrecodeOS keeps three small files as active memory:
 
-- `AGENT.md` (99 lines of code)
-- `DECISIONS.md` (37 lines of code)
-- `tasks/todo.md` (83 lines of code)
+- `AGENT.md`
+- `DECISIONS.md`
+- `tasks/todo.md`
 
 Everything else is reference, template, evidence, adapter, archive, or generated output.
 
@@ -240,6 +209,10 @@ Normal work follows a simple path:
 ```text
 orient -> decide -> plan -> build -> prove -> recover when needed
 ```
+
+For builders, the practical path is the Daily Cockpit path: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`, then `Active -> Changed -> Proven -> Parked -> Approval -> Next` after the first bead. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
+
+Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent check the active bead, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 For implementation work, PrecodeOS uses beads: small execution contracts that name the current task, primary authority, files in play, checks, stop conditions, and proof needed.
 
@@ -266,7 +239,7 @@ bash scripts/record-check.sh -- <command>
 
 Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop.
 
-`precode_cli.py` and the optional `precode` console command are local facades over the canonical commands below. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
+`precode_cli.py` and the optional `precode` console command are local facades over documented repo scripts. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
 
 `session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only.
 
@@ -277,6 +250,10 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 `os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters, gives a plain-English safe ask and do-not-approve warning, and points to the owner command or protocol.
 
 `ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
+
+`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, product-value ratings, themes, and near-bead sketches. It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code.
+
+When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
 
 ## Project Map
 
@@ -307,12 +284,18 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 | Work with an agent right now | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
 | Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
-| Use Claude Code in a first-session or bootcamp setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
+| Use Claude Code in a first-session or guided cohort setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
+| Browse the generated docs reading surface | [`docs-html/index.html`](docs-html/index.html) |
+| Review generated PRD scan pages | [`tasks/prds-html/index.html`](tasks/prds-html/index.html) |
+| Review parked ideas and future candidates | [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md) |
+| Ask a stable documentation question | [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md), then `Use Ask Precode.` |
 | Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
 | Find the exact public package owner file, script, protocol, skill playbook, or relationship | [`PRECODE-PACKAGE-FILE-INVENTORY.md`](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
 | Take a maintainer or contributor action | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`GOVERNANCE.md`](GOVERNANCE.md), or [`TRADEMARK.md`](TRADEMARK.md) |
 
 Do not start by browsing `tasks/reference/`. Protocols are loaded when the user guide, the README compass, active memory, or an agent prompt such as "use workflow selection" calls for one.
+
+Ask Precode is conditional docs help, not a start page.
 
 ## For Reviewers And Contributors
 
@@ -395,10 +378,10 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.53
-Last updated: 2026-07-18
+Document version: v0.1.54
+Last updated: 2026-07-22
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
-NOT_AUTHORITY: Active memory, product decisions, feature requirements, route structure, schema definitions, generated progress, task selection, or implementation acceptance.
-LOAD_WHEN: First opening the public repository, evaluating PrecodeOS, navigating major docs, or adapting PrecodeOS into a target project.
+NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.
+LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific PrecodeOS guide or protocol.
 CLASS: reference

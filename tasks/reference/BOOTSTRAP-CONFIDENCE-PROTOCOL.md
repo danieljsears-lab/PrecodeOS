@@ -111,14 +111,17 @@ Public file groups:
 
 | File group | Include |
 |---|---|
-| Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
+| Active memory templates | `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md` |
+| Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
 | Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
-| Work structure | `tasks/beads/`, `tasks/prds/`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
+| Work structure | `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, `tasks/prds/PRD-SHARD-SCHEMA.md`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
 | Scripts and checks | `scripts/`, `.githooks/`, `.github/workflows/` when approved |
 | Public generated-log guide | `logs/LOG-EVIDENCE-TAXONOMY.md` |
+
+Fresh setup must not copy PrecodeOS's package development PRDs, package development beads, or package source `tasks/todo.md` into the target project. The target project creates its own active work state and future PRD/bead IDs.
 
 Excluded paths:
 

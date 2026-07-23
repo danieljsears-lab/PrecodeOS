@@ -54,7 +54,7 @@ Supported source types include:
 - user-provided implementation packets that bundle an ingestion packet, design files, and PRD-like notes
 - existing PRDs or product specs that need Precode review, amendment, or adaptation
 - existing codebases, repository snapshots, route trees, package manifests, tests, CI configs, and README conventions inspected read-only
-- client backend handover plans, Ember Handover Agent artifacts such as `Backend-dev-plan.md`, sprint plans, and implementation task lists
+- client backend handover plans, external handoff agent artifacts such as `backend implementation plan`, sprint plans, and implementation task lists
 - customer quotes or feedback snippets
 - existing feature, architecture, API, schema, security, or acceptance docs
 - hand-written task lists or migration notes
@@ -85,7 +85,7 @@ Use `tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md` when deciding whether sourc
 
 Use `tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md` before Local Source Intake when the source material is an app repository that already has code, docs, CI, product history, or active work and PrecodeOS has not yet been safely adapted into it.
 
-Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when source material comes from a client engagement, existing repo, external PRD, Ember/backend handoff, sprint plan, or repo-topology decision.
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when source material comes from a client engagement, existing repo, external PRD, external backend handoff, sprint plan, or repo-topology decision.
 
 Examples:
 
@@ -258,7 +258,7 @@ Do not update authority files, approve or amend a PRD, create or activate beads,
 ```
 
 ```text
-Use Local Source Intake on this approved bootcamp PRD input and Student Experience Ingestion Packet.
+Use Local Source Intake on this approved PRD-like input and Builder Experience Ingestion Packet.
 Treat the packet as context for bead creation, not permission to code.
 Summarize the target user, minimum value moment, core workflow spine, Core Spine Gate status, screens and states, reference artifacts, feedback gathered, feedback still needed, open questions, candidate acceptance checks, affected owner files, and the next safe Precode action.
 If this is ready for implementation, propose one narrow core-spine bead and stop before activation or coding.

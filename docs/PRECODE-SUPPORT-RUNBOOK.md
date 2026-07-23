@@ -20,7 +20,7 @@ This runbook is helper-facing. It does not replace Guided Setup for setup, Daily
 
 For a self-serve builder, route first by situation: not installed goes to Guided Setup, installed or working goes to Daily Cockpit, rough ideas use Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.`, and broken or confusing state goes to Troubleshooting or `I am stuck, help me.` Support uses this runbook to coach that route, not to create another start path.
 
-When a student needs a linear view of what happens when, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact student build-order card behind Guided Setup and Daily Cockpit. Do not create or maintain a separate side doc for the same path.
+When a builder needs a linear view of what happens when, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact builder build-order card behind Guided Setup and Daily Cockpit. Do not create or maintain a separate side doc for the same path.
 
 The support posture is:
 
@@ -41,16 +41,16 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 1. Name the case in plain English: new project, existing project, first-use confusion, local app blocker, auth/demo blocker, or damaged setup.
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
-4. In an Ember bootcamp setting, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
+4. If the user is unsure whether PrecodeOS belongs in the project yet, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
 5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
-7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the student should go next. If the student is lost in the doc sequence, route them to the first-session card as the build-order index, then back to the owning doc for the actual prompt or command.
+7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the builder should go next. If the builder is lost in the doc sequence, route them to the first-session card as the build-order index, then back to the owning doc for the actual prompt or command.
 
 ## Support Command Triage
 
-Keep the student's daily command surface small. Start normal work in the Daily Cockpit with `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and recorded checks. Move to the support command family only when setup, active state, file scope, proof, or transition readiness is the actual blocker.
+Keep the builder's daily command surface small. Start normal work in the Daily Cockpit with `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and recorded checks. Move to the support command family only when setup, active state, file scope, proof, or transition readiness is the actual blocker.
 
-Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`. They are diagnostic or advisory unless their owning protocol and explicit user approval allow a narrow mutation. In refresh work, run `validate-memory.sh` before the student's first Start; duplicate PRD/bead IDs after a refresh are a refresh blocker, not normal first-session work. Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.
+Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`. They are diagnostic or advisory unless their owning protocol and explicit user approval allow a narrow mutation. In refresh work, run `validate-memory.sh` before the builder's first Start; duplicate PRD/bead IDs after a refresh are a refresh blocker, not normal first-session work. Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.
 
 ## Recurring Existing Precode Refresh
 
@@ -95,50 +95,32 @@ Support can say:
 I am going to separate product questions from technical blockers. If this is about who the product serves or what should be built, I will route you back to product coaching. If this is about setup, repo state, validation, local runtime, or auth blocking a demo, I will help diagnose and unblock it narrowly.
 ```
 
-## Ember Bootcamp Precode Fit Check
+## Precode Fit Check
 
-Use this short check when a student is unsure whether to use PrecodeOS or stay in plain VS Code with Claude Code.
+Use this short check when a builder is unsure whether to use PrecodeOS or stay in plain VS Code with Claude Code.
 
-Route the student to PrecodeOS now when the work is a real product build, customer-facing or collaborator-supported, multi-step, likely to continue across sessions, or in need of scope control, evidence, recovery, or handoff.
+Route the builder to PrecodeOS now when the work is a real product build, customer-facing or collaborator-supported, multi-step, likely to continue across sessions, or in need of scope control, evidence, recovery, or handoff.
 
-Let the student stay in plain VS Code and Claude Code for now when the work is a throwaway prototype, a first-time coding practice session, a learning-only demo, early design exploration, or when setup basics are still blocking confidence.
+Let the builder stay in plain VS Code and Claude Code for now when the work is a throwaway prototype, a first-time coding practice session, a learning-only demo, early design exploration, or when setup basics are still blocking confidence.
 
-Name the decision as reversible: the student can practice basics first and add PrecodeOS later, but should add PrecodeOS before serious multi-session product development. Once real development starts in VS Code, coach the student to keep development there instead of switching the product back and forth between design, prototype, web chat, and local coding surfaces.
+Name the decision as reversible: the builder can practice basics first and add PrecodeOS later, but should add PrecodeOS before serious multi-session product development. Once real development starts in VS Code, coach the builder to keep development there instead of switching the product back and forth between design, prototype, web chat, and local coding surfaces.
 
-## Bootcamp Safe Prompt Pack
+## Repo-Layout-Specific Support Notes
 
-Use this pack when an Ember bootcamp student is working in the official bootcamp scaffold. This scaffold is a bootcamp support convention, not a universal PrecodeOS requirement.
+Some target projects intentionally keep PrecodeOS files in a subfolder or keep app code in sibling folders. That can be a valid project-specific convention, but it is not a universal PrecodeOS topology rule and must be recorded in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md` before support treats it as durable state.
 
-Official bootcamp scaffold:
+When the repo layout differs from the default target-root setup, support should first confirm:
 
-- `frontend/` exists at repo root and contains the Next.js app.
-- `precode/` exists at repo root and contains the Precode control layer only.
-- `backend/` is created at repo root only when the first approved backend bead activates; generated backend application code belongs there.
+1. The installed Precode root where `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md`, `tasks/`, and `scripts/` live.
+2. The app directories that checks should run against.
+3. Whether any expected app directory is intentionally absent until an approved bead creates it.
 
-In this scaffold, checks run from inside `precode/` resolve `--cwd` relative to the Precode control-layer folder. If the active backend lives in sibling `backend/`, record backend checks from `precode/` with:
-
-```bash
-bash scripts/record-check.sh --cwd ../backend -- pytest -q
-```
-
-If PrecodeOS lives at the target repo root instead, use the repo-root-relative app path, such as `--cwd backend`. This is repo-layout-specific support guidance, not a universal PrecodeOS topology rule.
-
-### Scaffold Confirmation
-
-```text
-Before intake, planning, or implementation, confirm the bootcamp scaffold:
-
-1. frontend/ exists at repo root and contains the Next.js app.
-2. precode/ exists at repo root and contains the Precode control layer only.
-3. backend/ is absent until an approved backend bead activates, or exists because that bead has already activated.
-
-Do not start intake, create files, write code, or move project material until you confirm these boundaries. If the scaffold conflicts with active memory, PROJECT-CONTEXT.md, or the current bead, surface the conflict now.
-```
+Do not start intake, create files, write code, move project material, or adapt owner files until these boundaries are clear. If the layout conflicts with active memory, `PROJECT-CONTEXT.md`, `CODEBASE-GUIDE.md`, or the current bead, surface the conflict before editing.
 
 ### One Question At A Time
 
 ```text
-Ask one blocking question at a time. Wait for the student's answer before asking the next one. Include a recommended answer when useful, but do not decide product direction, scope, acceptance, or repo topology for the student.
+Ask one blocking question at a time. Wait for the builder's answer before asking the next one. Include a recommended answer when useful, but do not decide product direction, scope, acceptance, or repo topology for the builder.
 ```
 
 ### Bead And Git Hygiene
@@ -146,9 +128,9 @@ Ask one blocking question at a time. Wait for the student's answer before asking
 ```text
 Before activating a new bead or starting a new support session, check git status and tell us whether current changes are clean, committed, generated evidence, or unfinished work from the current bead.
 
-Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the student's repo has a remote and the bootcamp support workflow expects remote backup or collaboration.
+Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the builder's repo has a remote and the support workflow expects remote backup or collaboration.
 
-Use `origin` as the conventional remote name when possible. If a student is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
+Use `origin` as the conventional remote name when possible. If a builder is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
 
 Do not treat this chat instruction as durable state by itself. If the rule needs to persist, put it in the appropriate Precode owner or support document.
 ```
@@ -165,7 +147,7 @@ Do not modify files inside precode/ except when the active bead explicitly allow
 
 ### Commit-Hook Or OS-Integrity Triage
 
-If a student shows a screenshot or agent summary that claims the commit hook, `write-guard.sh`, or `os-integrity-check.py` is broken, treat it as indirect evidence until the current terminal output is available. Do not recommend reinstalling PrecodeOS, overwriting files, using `--no-verify`, or patching hook scripts from a screenshot alone.
+If a builder shows a screenshot or agent summary that claims the commit hook, `write-guard.sh`, or `os-integrity-check.py` is broken, treat it as indirect evidence until the current terminal output is available. Do not recommend reinstalling PrecodeOS, overwriting files, using `--no-verify`, or patching hook scripts from a screenshot alone.
 
 Support can say:
 
@@ -185,7 +167,7 @@ bash scripts/pre-commit-validate.sh
 Then send me the full terminal output. If you installed Git hooks and the failure happens during commit, say that too. Git hooks are not part of normal first setup unless explicitly approved.
 ```
 
-If hooks were installed and the failure is a strict OS Integrity warning, explain that protected PrecodeOS-owned source edits require a scoped checkpoint. That warning is not package-manager behavior, auto-repair permission, or evidence that the student's project should be reinstalled.
+If hooks were installed and the failure is a strict OS Integrity warning, explain that protected PrecodeOS-owned source edits require a scoped checkpoint. That warning is not package-manager behavior, auto-repair permission, or evidence that the builder's project should be reinstalled.
 
 ## Case Priority
 
@@ -308,14 +290,17 @@ Use `docs/PRECODE-GUIDED-SETUP.md` as the setup guide and `docs/PRECODE-PACKAGE-
 
 For a new project, copy public package files by supervised group, not by blind overwrite:
 
-- active memory: `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`
+- active memory templates: `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md`
+- active work state: create a fresh target `tasks/todo.md`; do not copy the package source's active work file
 - product and project owner files
 - public orientation docs
 - agent shims and adapters
-- tasks, modes, memory templates, and reference protocols
+- PRD/bead schemas and templates, modes, memory templates, and reference protocols
 - `project-evidence/PROJECT-EVIDENCE-GUIDE.md` as the marker and user guidance for project-owned raw evidence
 - scripts, hooks, and workflows only when approved for the target repo
 - `logs/LOG-EVIDENCE-TAXONOMY.md`
+
+Do not copy PrecodeOS's package development PRDs or beads into the target project. Numbered package files such as `tasks/prds/PRD-001...` or `tasks/beads/B000...` describe PrecodeOS itself and can collide with the target project's own future PRD and bead IDs.
 
 Exclude private local planning material, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.
 
@@ -334,7 +319,7 @@ Support may draft, but the user approves the facts. If a fact is uncertain, mark
 
 ### 6. Validate Before First Use
 
-From the target project root, run:
+From the installed Precode root, run:
 
 ```bash
 bash scripts/validate-memory.sh
@@ -425,7 +410,7 @@ If the user feels lost, use `docs/PRECODE-TROUBLESHOOTING.md` before editing fil
 
 ### Claude Checkpoint False Approval
 
-Use this procedure when a student reports that Claude ran a checkpoint, claimed a bead was complete, invented manual verification, or seemed to approve its own work.
+Use this procedure when a builder reports that Claude ran a checkpoint, claimed a bead was complete, invented manual verification, or seemed to approve its own work.
 
 First separate the three actions:
 
@@ -433,7 +418,7 @@ First separate the three actions:
 - `python3 scripts/bead-transition.py` proposes whether a next bead is eligible.
 - `python3 scripts/bead-transition.py --approve` mutates bead state and must require explicit human approval.
 
-Ask the student for the exact Claude transcript around the checkpoint, especially lines where Claude claimed checks passed, manual verification happened, or the bead was approved. Then run only read-only diagnostics from the project root:
+Ask the builder for the exact Claude transcript around the checkpoint, especially lines where Claude claimed checks passed, manual verification happened, or the bead was approved. Then run only read-only diagnostics from the project root:
 
 ```bash
 python3 scripts/bead-transition.py --json
@@ -451,7 +436,7 @@ A checkpoint is a status report, not approval. We are going to compare Claude's 
 
 ### Accepted-Hold Re-entry
 
-Use this procedure when a student reports that every new session re-discovers that the previous bead was already accepted, but cannot transition because the next bead is missing or not ready.
+Use this procedure when a builder reports that every new session re-discovers that the previous bead was already accepted, but cannot transition because the next bead is missing or not ready.
 
 First separate the state from the next action:
 
@@ -466,11 +451,11 @@ python3 scripts/next-step.py
 python3 scripts/bead-transition.py --json
 ```
 
-If `next-step.py` says to author the next bead, stop re-reviewing the accepted bead. Help the student scope or author the next bead, then show the transition proposal. Do not approve the transition or activate the next bead without explicit user approval.
+If `next-step.py` says to author the next bead, stop re-reviewing the accepted bead. Help the builder scope or author the next bead, then show the transition proposal. Do not approve the transition or activate the next bead without explicit user approval.
 
 ### Implemented Bead Reversal Support
 
-Use this when a student or builder says already-implemented work needs to be undone, removed, or superseded.
+Use this when a builder or builder says already-implemented work needs to be undone, removed, or superseded.
 
 First keep history intact:
 
@@ -488,9 +473,9 @@ Do not approve rollback, destructive commands, setup/update mutation, transition
 
 ## Engineer Initiation From User Packet
 
-Use this section when an engineer receives a user's Conviction Packet / Precode Ingestion Packet, Student Experience Ingestion Packet, frontend design files, and optional existing PRD.
+Use this section when an engineer receives a user's Conviction Packet / Precode Ingestion Packet, Builder Experience Ingestion Packet, frontend design files, and optional existing PRD.
 
-Treat the packet, Experience artifacts, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence unless the bootcamp explicitly marks a PRD-like input as student-approved product direction. Even then, the combined packet does not automatically activate a bead or authorize coding.
+Treat the packet, Experience artifacts, design files, screenshots, Figma exports, design-system notes, and existing PRDs as source evidence unless the guided cohort explicitly marks a PRD-like input as builder-approved product direction. Even then, the combined packet does not automatically activate a bead or authorize coding.
 
 The initiation path is:
 
@@ -522,10 +507,10 @@ Before closing, confirm:
 - the entry state was classified
 - setup validation ran, or the exact validation blocker is named
 - source inputs were treated as evidence, not authority
-- Local Source Intake or Client Engagement Intake was completed when packets, design files, Ember handoffs, backend plans, sprint plans, or existing PRDs are present
+- Local Source Intake or Client Engagement Intake was completed when packets, design files, backend handoffs, backend plans, sprint plans, or existing PRDs are present
 - affected owner files or the next safe action are named
 - no PRD, bead, implementation, repo topology, or product decision was approved by implication
-- in bootcamp Experience handoffs, Claude Code creates or proposes a bounded bead before coding starts
+- in guided cohort Experience handoffs, Claude Code creates or proposes a bounded bead before coding starts
 
 If any item is missing, close on the blocker and next safe prompt instead of calling setup done.
 
@@ -536,7 +521,7 @@ I am initiating PrecodeOS from user-provided source inputs.
 
 Inputs:
 - Conviction Packet / Precode Ingestion Packet: [path or pasted reviewed summary]
-- Student Experience Ingestion Packet, if present: [path or pasted reviewed summary]
+- Builder Experience Ingestion Packet, if present: [path or pasted reviewed summary]
 - Experience artifacts, frontend design files, screenshots, Figma export, or design-system notes: [paths or links]
 - Existing PRD, if any: [path]
 
@@ -583,7 +568,7 @@ If the prototype is misleading, obsolete, low-signal, or likely to confuse the a
 
 ### Backend-Only With Existing Frontend
 
-Use this when the student or client says the frontend is already completed and Precode should help build the backend only.
+Use this when the builder or client says the frontend is already completed and Precode should help build the backend only.
 
 Treat the completed frontend as existing source evidence and an integration boundary. It can show current routes, UI states, design-system conventions, API expectations, and user flows, but it does not automatically create frontend implementation scope.
 
@@ -601,20 +586,20 @@ Preserve the existing frontend unless a frontend touch is needed to connect, ada
 Do not create frontend beads just because frontend files exist. Do not treat this prompt as PRD approval, bead activation, implementation acceptance, repo-topology approval, or permission to code.
 ```
 
-### Bootcamp Experience Design To Claude Code
+### Experience Design To Claude Code
 
-Use this path when a student has an approved bootcamp PRD input and Experience artifacts from Claude Design, Ember UI Builder, or an equivalent AI-assisted UI/UX canvas.
+Use this path when a builder has approved PRD-like input and Experience artifacts from Claude Design, an AI-assisted UI builder, or an equivalent AI-assisted UI/UX canvas.
 
-Before the student opens the design canvas, have them use the packet's Design Canvas Input Prompt to turn approved PRD input, idea-shaping notes, reference images, workflow examples, and not-yet boundaries into a short design-tool brief. The brief should focus the rough artifact on the minimum workflow that gives the target user value; it is not approval for extra screens, visual polish, or future platform scope.
+Before the builder opens the design canvas, have them use the packet's Design Canvas Input Prompt to turn approved PRD input, idea-shaping notes, reference images, workflow examples, and not-yet boundaries into a short design-tool brief. The brief should focus the rough artifact on the minimum workflow that gives the target user value; it is not approval for extra screens, visual polish, or future platform scope.
 
-The student-facing output is `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md`. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.
+The builder-facing output is `tasks/templates/BUILDER-EXPERIENCE-INGESTION-PACKET.md`. The first Claude Code action should be creating one bounded Precode bead for the core spine, not immediate coding.
 
 Support engineers may work in parallel on local environment and scaffold readiness. They should not own product direction, PRD decisions, Experience artifacts, acceptance, feedback interpretation, or scope.
 
 Copyable parallel-readiness support prompt:
 
 ```text
-Check whether this student's local environment and scaffold are ready for Claude Code implementation.
+Check whether this builder's local environment and scaffold are ready for Claude Code implementation.
 
 You may inspect:
 - local environment setup
@@ -632,16 +617,16 @@ Report:
 - runtime or auth blockers
 - setup validation status
 - exact next technical unblock
-- student-owned product or acceptance decisions still blocking implementation
+- builder-owned product or acceptance decisions still blocking implementation
 - confirmation that support did not change product scope, design direction, acceptance, or feedback interpretation
 ```
 
 Before Claude Code creates or proposes the bead, the packet should record the Core Spine Gate status and any target-user feedback gathered before coding. If the gate is blocked, stop on the missing workflow evidence instead of turning the design into implementation scope.
 
-Copyable student handoff prompt:
+Copyable builder handoff prompt:
 
 ```text
-Use this approved bootcamp PRD input and Student Experience Ingestion Packet to create one Precode bead for the core spine implementation.
+Use this approved PRD-like input and Builder Experience Ingestion Packet to create one Precode bead for the core spine implementation.
 
 First inspect the "Complete Before Claude Code Handoff" checklist and the packet fields.
 
@@ -649,7 +634,7 @@ If any required field is missing, ambiguous, or marked unknown in a way that cha
 
 If this packet has a formal Precode PRD shard in tasks/prds/, you may draft one ready candidate bead file for the core spine. Do not update tasks/todo.md, activate the bead, or code.
 
-If this packet only has a bootcamp-approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
+If this packet only has approved PRD-like input and no formal Precode PRD shard, produce a candidate bead proposal only and stop. Tell me that normal Precode intake or PRD promotion is required before activation.
 
 Summarize the core scope, minimum value moment, Core Spine Gate status, files likely in play, acceptance checks, key screen states, responsive behavior to verify, feedback gathered before coding, manual verification steps, stop conditions, and what is explicitly not included.
 
@@ -658,17 +643,17 @@ Preserve the approved PRD intent and Experience core spine.
 Do not code until I approve the bead through Precode.
 ```
 
-After the coded prototype exists, route demo notes, target-user feedback, and minimum-value observations into the Student Completion Evidence Packet or normal closeout evidence. Do not treat demo notes as implementation acceptance or product validation by themselves.
+After the coded prototype exists, route demo notes, target-user feedback, and minimum-value observations into the Builder Completion Evidence Packet or normal closeout evidence. Do not treat demo notes as implementation acceptance or product validation by themselves.
 
 ## Client Engagement Intake
 
-Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when a client arrives with an existing project, external PRD, frontend design files, Ember Handover Agent artifacts, `Backend-dev-plan.md`, backend sprint plans, or an existing codebase.
+Use `tasks/reference/CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md` when a client arrives with an existing project, external PRD, frontend design files, external handoff agent artifacts, `backend implementation plan`, backend sprint plans, or an existing codebase.
 
 Support and engineers should answer immediate engagement questions this way:
 
 - Separate backend repo, monorepo, or single repo is a client-owned topology decision. Precode records the decision in `PROJECT-CONTEXT.md` and layout conventions in `CODEBASE-GUIDE.md`; it does not prescribe the topology.
 - External PRDs and product specs feed Local Source Intake and PRD normalization. They do not replace Precode PRD shards.
-- Ember handover artifacts and backend sprint plans feed Local Source Intake and Decomposition. They do not become parallel Precode execution tracks by default.
+- Backend handoff artifacts and backend sprint plans feed Local Source Intake and Decomposition. They do not become parallel Precode execution tracks by default.
 - Existing codebases are valid source inputs, inspected read-only first, then mapped to owner files, conflicts, and setup or PRD/adaptation needs.
 - Client PRDs that do not match Precode's PRD shape are normalized through Local Source Intake first, then the PRD Protocol creates or amends a Precode PRD shard.
 
@@ -681,7 +666,7 @@ Client materials:
 - Existing project or repository: [path/link/status]
 - Client PRD or product spec: [path/link]
 - Frontend design files, screenshots, Figma export, or design-system notes: [path/link]
-- Ember Handover Agent or backend plan, including Backend-dev-plan.md if present: [path/link]
+- external handoff agent or backend plan, including backend implementation plan if present: [path/link]
 - Sprint plan or implementation task list: [path/link]
 
 Treat all client materials as evidence, not authority. Do not write code, approve a PRD, create or activate beads, change repo topology, run installers, mutate external systems, or overwrite project files.
@@ -693,7 +678,7 @@ Tell me the next safe action: setup/adaptation, Local Source Intake, PRD draft, 
 
 ## Demo And Engineering Readiness
 
-Use this section when a student is preparing to show or hand off a prototype during a cohort, workshop, or support slot.
+Use this section when a builder is preparing to show or hand off a prototype during a cohort, workshop, or support slot.
 
 Before a demo or engineer session:
 
@@ -701,20 +686,20 @@ Before a demo or engineer session:
 - have auth, login, and required test accounts ready
 - skip onboarding during the demo unless onboarding is the product being tested
 - keep the demo focused on the value proposition and feedback-worthy slice
-- ask the student what exact feedback or technical unblock they need
+- ask the builder what exact feedback or technical unblock they need
 - separate "prototype runs" from "idea is validated"
 
 If the app does not start, loads slowly, or auth blocks the demo, move to `docs/PRECODE-TROUBLESHOOTING.md`. Do not use a demo deadline as a reason to skip active memory, validation, secrets boundaries, or user approval.
 
-For student-by-student completion evidence, use `tasks/templates/STUDENT-COMPLETION-EVIDENCE-PACKET.md`. The packet is the shared progress artifact for the student, instructor, and support engineer. It should stay short, public-safe, and evidence-only: instructors can help summarize product evidence, support engineers can note narrow technical unblocks, and the student owns product decisions, approvals, acceptance, and next direction.
+For builder-by-builder completion evidence, use `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md`. The packet is the shared progress artifact for the builder, instructor, and support engineer. It should stay short, public-safe, and evidence-only: instructors can help summarize product evidence, support engineers can note narrow technical unblocks, and the builder owns product decisions, approvals, acceptance, and next direction.
 
-## Bootcamp Role Boundaries
+## Guided Cohort Role Boundaries
 
-Use this section when PrecodeOS adoption is happening inside a guided bootcamp, workshop, or cohort.
+Use this section when PrecodeOS adoption is happening inside a guided cohort, workshop, or similar learning program.
 
 ### Beginner Discovery Routing
 
-Use this routing when a student arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.
+Use this routing when a builder arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
 
@@ -722,28 +707,28 @@ Support should translate that spine plainly: rough idea or messy notes become a 
 
 Advanced support surfaces such as Release Readiness, Goal Frames, Ralph, Attribution, Artifact Chooser, reversal, team coordination, and proof tracing are also conditional. Use them only when the current stage, risk, support role, recovery path, or explicit user question calls for one.
 
-| Student state | Support response | Do not do yet |
+| Builder state | Support response | Do not do yet |
 |---|---|---|
 | Messy idea or scattered notes | Route to First PRD Walkthrough. Use the Product Ideation Workbook, Precode Idea Coach, Product Brief, and Conviction Packet as ordered steps inside that path. | Do not create a PRD, bead, or code. |
-| Product Brief exists but evidence is weak | Ask the student/instructor to name current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
+| Product Brief exists but evidence is weak | Ask the builder/instructor to name current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest learning step, and whether to proceed, pause, narrow, or kill. | Do not treat excitement or online research as validation. |
 | Conviction Packet exists | Bring the reviewed packet into Local Source Intake as evidence. | Do not route directly to PRD drafting or Claude Code implementation. |
-| Approved PRD-like input plus Experience artifacts exist | Use `tasks/templates/STUDENT-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates one bounded bead. | Do not let raw discovery notes substitute for approved PRD-like input. |
+| Approved PRD-like input plus Experience artifacts exist | Use `tasks/templates/BUILDER-EXPERIENCE-INGESTION-PACKET.md` before Claude Code creates one bounded bead. | Do not let raw discovery notes substitute for approved PRD-like input. |
 
 Conviction means MVP-ready clarity, not validated demand. A good packet names intended user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and sensitive surfaces.
 
 Instructors own the learning and product-thinking layer:
 
-- help students move from rough ideas to prototype progress
+- help builders move from rough ideas to prototype progress
 - ask clarifying and challenging questions
-- help the student summarize evidence
+- help the builder summarize evidence
 - explain PrecodeOS concepts in plain language
-- protect student ownership of product decisions, approvals, and acceptance
+- protect builder ownership of product decisions, approvals, and acceptance
 - preserve the distinction between "prototype works" and "idea is validated"
-- help students turn messy notes into a Product Brief or Conviction Packet before PRD shaping
+- help builders turn messy notes into a Product Brief or Conviction Packet before PRD shaping
 
-The Student owns the product direction, decisions, approvals, and acceptance for their prototype.
+The Builder owns the product direction, decisions, approvals, and acceptance for their prototype.
 
-The Student should:
+The Builder should:
 
 - explain the intended user, painful before moment, better after moment, and first useful slice in plain language
 - distinguish MVP-ready conviction from validated demand
@@ -754,32 +739,32 @@ The Student should:
 - ask support engineers for technical help when system setup, troubleshooting, or implementation blockers stop progress
 - avoid treating "the prototype works" as proof that the idea is validated
 
-Mentors are past bootcamp students who help first-time students navigate the cohort as guides, advisors, connectors, peers, and role models.
+Mentors are past guided cohort builders who help first-time builders navigate the cohort as guides, advisors, connectors, peers, and role models.
 
 Mentors should:
 
-- help students build confidence by sharing lived experience from the bootcamp
+- help builders build confidence by sharing lived experience from the guided cohort
 - provide light product idea support without owning product direction, scope, approval, acceptance, or evidence interpretation
-- help students understand which role to ask for help: instructor for product thinking, support engineer for technical unblocking
-- encourage students through uncertainty, stuck points, and normal first-time-builder discomfort
+- help builders understand which role to ask for help: instructor for product thinking, support engineer for technical unblocking
+- encourage builders through uncertainty, stuck points, and normal first-time-builder discomfort
 - model good PrecodeOS habits such as asking clarifying questions, keeping scope small, and separating working prototypes from validated ideas
-- connect students to relevant cohort resources, examples, instructors, support engineers, or peers
+- connect builders to relevant cohort resources, examples, instructors, support engineers, or peers
 - avoid replacing instructors, performing technical troubleshooting, or becoming the hidden product owner
 
 Support engineers own technical support and unblocking when needed:
 
-- help students with system requirements installation and maintenance
+- help builders with system requirements installation and maintenance
 - perform technical troubleshooting and diagnosis
-- implement narrow technical fixes when a student is blocked
+- implement narrow technical fixes when a builder is blocked
 - manage the escalation workflow, ensuring that issues are resolved promptly and efficiently
 - explain the technical change plainly
 - avoid owning product direction, scope, acceptance, or evidence interpretation
 
-When routing is unclear, ask what decision is actually blocked. Product direction, scope, user evidence, and acceptance go back to the student with instructor support. Cohort navigation and confidence can involve mentors. Local setup, repo state, validation failures, local runtime, auth, and implementation blockers belong with support engineers. PrecodeOS package defects or unclear official guidance should be escalated to the Precode maintainer or lead support channel.
+When routing is unclear, ask what decision is actually blocked. Product direction, scope, user evidence, and acceptance go back to the builder with instructor support. Cohort navigation and confidence can involve mentors. Local setup, repo state, validation failures, local runtime, auth, and implementation blockers belong with support engineers. PrecodeOS package defects or unclear official guidance should be escalated to the Precode maintainer or lead support channel.
 
-Mentor involvement may be lightly noted when it materially affects student confidence, navigation, or routing. Do not turn mentorship into heavy evidence overhead.
+Mentor involvement may be lightly noted when it materially affects builder confidence, navigation, or routing. Do not turn mentorship into heavy evidence overhead.
 
-For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. The Student should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction. Use `tasks/templates/STUDENT-COMPLETION-EVIDENCE-PACKET.md` when the cohort needs a consistent completion snapshot.
+For cohort completion, do not count a working prototype as strong PrecodeOS evidence by itself. The Builder should also be able to explain the problem, user, narrowed first useful slice, at least one non-goal, what was verified or demoed, and what evidence supports continuing, narrowing, pausing, or changing direction. Use `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` when the cohort needs a consistent completion snapshot.
 
 ## Repair Path For Incorrect Setup
 

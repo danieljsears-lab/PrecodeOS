@@ -15,9 +15,9 @@ This file is a navigation aid only. It points to canonical Markdown files and mu
 
 Use the compact first-reader route. If PrecodeOS is not installed in the target project, use Guided Setup. If PrecodeOS is installed or work is resuming, use Daily Cockpit. If the user only has a rough idea, use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, generated reports, or first-session behavior feel broken or confusing, use Troubleshooting or `I am stuck, help me.`
 
-Use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` only as a compact first-session student build-order checklist after setup validates or when the Daily Cockpit feels too large for a new builder. It is shareable as the student's official compact flow, reinforces Guided Setup and the Daily Cockpit, and does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page.
+Use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` only as a compact first-session builder build-order checklist after setup validates or when the Daily Cockpit feels too large for a new builder. It is shareable as the builder's official compact flow, reinforces Guided Setup and the Daily Cockpit, and does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page.
 
-Use the Backend-Only With Existing Frontend prompt in `tasks/reference/PROMPT-PATTERNS.md` or `docs/PRECODE-SUPPORT-RUNBOOK.md` when a student or client says the frontend is already completed and Precode should build the backend first. Treat the frontend as source evidence and an integration boundary, bias candidate beads toward backend/API/data/auth/integration work, and allow frontend touches only for approved connection, adaptation, or verification needs.
+Use the Backend-Only With Existing Frontend prompt in `tasks/reference/PROMPT-PATTERNS.md` or `docs/PRECODE-SUPPORT-RUNBOOK.md` when a builder or client says the frontend is already completed and Precode should build the backend first. Treat the frontend as source evidence and an integration boundary, bias candidate beads toward backend/API/data/auth/integration work, and allow frontend touches only for approved connection, adaptation, or verification needs.
 
 When an artifact prompt asks for Experience artifacts, frontend design files, screenshots, Figma export, prototype, or design-system notes, use `None / not provided` if there are none. A discarded prototype may be listed only as design/source evidence when useful, and must be labeled non-authoritative: no code reuse, no coding evidence, no implementation authority, no PRD approval, no bead activation, no review or transition approval, and no validation proof.
 
@@ -37,7 +37,7 @@ Use Source-To-Promotion Hygiene Review before turning a source summary, Candidat
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
 - `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, not a second start page.
 - `docs/PRECODE-TROUBLESHOOTING.md`: symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior.
-- `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`: compact first-session student build-order checklist and prompt card behind Guided Setup and Daily Cockpit; shareable as the student's official compact flow, but not a start page, approval shortcut, setup helper, or task selector.
+- `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`: compact first-session builder build-order checklist and prompt card behind Guided Setup and Daily Cockpit; shareable as the builder's official compact flow, but not a start page, approval shortcut, setup helper, or task selector.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
 - `CANDIDATE-QUEUE.md`: parked candidate intent, product-value ratings, themes, near-bead sketches, and promotion review surface; not task authority.
 

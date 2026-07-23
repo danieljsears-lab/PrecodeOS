@@ -128,8 +128,8 @@ The setup plan should name these gates before mutation:
 For fresh or nearly empty targets, the plan should recommend validation after approved manual setup:
 
 - inspect target Git status
-- run `bash scripts/validate-memory.sh` from the target after Precode files exist
-- run `python3 scripts/file-inventory.py --check` from the target when package files are present
+- run `bash scripts/validate-memory.sh` from the installed Precode root after Precode files exist
+- run `python3 scripts/file-inventory.py --check` from the installed Precode root when package files are present
 - run target-specific project checks only after owner files name them
 
 These steps are validation suggestions, not proof that setup occurred.
@@ -146,6 +146,8 @@ These steps are validation suggestions, not proof that setup occurred.
 - It must not edit active memory.
 - It must not run app commands.
 - It must not write app code.
+- It must not copy the package source's `tasks/todo.md`.
+- It must not copy package development PRDs or beads such as numbered `tasks/prds/PRD-001...` or `tasks/beads/B000...`.
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.

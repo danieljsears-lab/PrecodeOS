@@ -153,14 +153,14 @@ Use `python3 scripts/run-contract-check.py` when a bead has or should have a ris
 
 ## Exploratory Prototype Beads
 
-Use an exploratory prototype bead when a student needs to build a tiny reversible option or vertical slice in the real repo before deciding whether that path should be kept, revised, rebuilt, discarded, split, or promoted into product direction.
+Use an exploratory prototype bead when a builder needs to build a tiny reversible option or vertical slice in the real repo before deciding whether that path should be kept, revised, rebuilt, discarded, split, or promoted into product direction.
 
 This is a bead pattern, not a new mode, schema enum, approval path, or permission to code. The bead still needs normal activation, one active bead, one primary authority, bounded files in play, checks, stop conditions, and Closeout Evidence.
 
 Build-React-Learn means:
 
 - Build: implement one tiny reversible prototype option inside the current PRD, PRD draft, Plan Packet, or approved exploratory scope.
-- React: review what the student or user saw, what worked, what failed, what changed their mind, what evidence exists, and what the prototype does not prove.
+- React: review what the builder or user saw, what worked, what failed, what changed their mind, what evidence exists, and what the prototype does not prove.
 - Learn: decide whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review / Learning Loop, park a Candidate Queue item, or propose the next candidate bead.
 
 Closeout Evidence for an exploratory prototype bead should include `Prototype decision: keep | revise | rebuild | discard | split | promote learning to PRD/decision`, plus a short reason and the next safe Precode workflow. A working prototype proves only that the prototype can work; it does not approve product direction, accept implementation, or activate another bead.

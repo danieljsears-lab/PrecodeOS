@@ -906,10 +906,10 @@ def assert_many_bead_operating_rhythm_contract(failures: list[dict[str, str]]) -
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
-def assert_student_journey_authority_consolidation_contract(failures: list[dict[str, str]]) -> int:
+def assert_builder_journey_authority_consolidation_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("README.md"): [
-            "For students, the practical path is the Daily Cockpit path",
+            "For builders, the practical path is the Daily Cockpit path",
             "Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.",
             "Ask Precode is conditional docs help, not a start page.",
         ],
@@ -922,39 +922,39 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
             "Late-stage release-prep evidence, release-quality cues, and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, certify production readiness, or approve release.",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
-            "For the student journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.",
+            "For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.",
             "start with the Daily Cockpit's `Ideation:` alias",
             "not as a start page or task approval",
             "Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action.",
         ],
         Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
             "This document is the educational bridge, not the operating home.",
-            "`docs/PRECODE-DAILY-COCKPIT.md` as the student operating home",
+            "`docs/PRECODE-DAILY-COCKPIT.md` as the builder operating home",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "not separate start pages",
             "stable-docs question",
-            "It is a prompt index only, not the student start page.",
+            "It is a prompt index only, not the builder start page.",
             "Release evidence and approval questions, not deployment action",
             "provider configuration",
         ],
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
-            "Keep student-facing workflow selection subordinate to the first-reader route",
+            "Keep builder-facing workflow selection subordinate to the first-reader route",
             "installed or working goes to Daily Cockpit",
             "Ask Precode and Artifact Chooser are conditional helpers",
             "Release Readiness is release-prep rather than deployment automation",
         ],
         Path("tasks/reference/PRD-PROTOCOL.md"): [
-            "This is the student journey spine, not a new start page.",
-            "Daily Cockpit remains the student operating home",
+            "This is the builder journey spine, not a new start page.",
+            "Daily Cockpit remains the builder operating home",
             "this protocol owns the PRD gate inside that path",
         ],
         Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md"): [
-            "In the student journey, deployment means this release-prep checkpoint",
+            "In the builder journey, deployment means this release-prep checkpoint",
             "PrecodeOS does not provide platform-specific deployment playbooks, configure providers, mutate dashboards, or execute deploys through this protocol.",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
-            "Student-facing document roles are intentionally contracted.",
+            "Builder-facing document roles are intentionally contracted.",
             "installed or working goes to `docs/PRECODE-DAILY-COCKPIT.md`",
             "Ask Precode and Artifact Chooser are conditional helpers",
             "`tasks/reference/RELEASE-READINESS-PROTOCOL.md` is release-prep rather than deployment automation",
@@ -964,7 +964,7 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
         text = path.read_text(encoding="utf-8")
         for term in required_terms:
             if term not in text:
-                failures.append({"scenario": f"student journey authority consolidation: {path}", "expected": term, "actual": "missing"})
+                failures.append({"scenario": f"builder journey authority consolidation: {path}", "expected": term, "actual": "missing"})
 
     forbidden_terms_by_path = {
         Path("README.md"): [
@@ -976,11 +976,11 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
             "Release prep deploys",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
-            "Artifact Chooser is the student start page",
+            "Artifact Chooser is the builder start page",
             "Release Candidate Evidence Profile deploys",
         ],
         Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md"): [
-            "platform-specific deployment playbooks for students",
+            "platform-specific deployment playbooks for builders",
             "approves deployment",
         ],
     }
@@ -988,7 +988,7 @@ def assert_student_journey_authority_consolidation_contract(failures: list[dict[
         text = path.read_text(encoding="utf-8")
         for term in forbidden_terms:
             if term in text:
-                failures.append({"scenario": f"student journey authority forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+                failures.append({"scenario": f"builder journey authority forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
@@ -1014,7 +1014,7 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
         ],
         Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
             "## Support Command Triage",
-            "Keep the student's daily command surface small.",
+            "Keep the builder's daily command surface small.",
             "Support setup and recovery commands include `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json`.",
             "Do not use support command triage to approve repair, accept implementation, activate beads, approve transitions, install hooks, run app commands, or create package-manager behavior.",
         ],
@@ -1469,7 +1469,7 @@ def assert_package_knowledge_lint_contract(failures: list[dict[str, str]]) -> in
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "`package-knowledge-lint.py --check`",
-            "These are package-maintenance checks, not the normal student daily surface.",
+            "These are package-maintenance checks, not the normal builder daily surface.",
         ],
         Path("README.md"): [
             "python3 scripts/package-knowledge-lint.py --check",
@@ -1860,9 +1860,9 @@ def assert_bead_identity_preflight_contract(failures: list[dict[str, str]]) -> i
 def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/templates/PRECODE-FIRST-SESSION-CARD.md"): [
-            "Student Build Order",
+            "Builder Build Order",
             "Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next",
-            "shareable as the student's official first-session flow",
+            "shareable as the builder's official first-session flow",
             "Linear Setup-To-First-Bead Prompt",
             "This table is an index in build order",
             "does not approve setup, PRDs, beads, review, transition, or coding",
@@ -1872,32 +1872,33 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("docs/PRECODE-GUIDED-SETUP.md"): [
             "After setup validates, stop here",
-            "compact student checklist",
+            "compact builder checklist",
             "then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`",
             "does not approve setup, choose work, activate beads, or replace the cockpit",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "compact linear student build-order card",
+            "compact linear builder build-order card",
             "one page of prompts, checks, and build-order guidance",
             "does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement",
         ],
         Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
-            "compact student build-order card behind Guided Setup and Daily Cockpit",
+            "compact builder build-order card behind Guided Setup and Daily Cockpit",
             "Do not create or maintain a separate side doc",
             "Backend-Only With Existing Frontend",
             "Treat the completed frontend as existing source evidence and an integration boundary",
             "Do not create frontend beads just because frontend files exist",
-            "support guidance, not a universal PrecodeOS topology rule",
-            "bash scripts/record-check.sh --cwd ../backend -- pytest -q",
+            "not a universal PrecodeOS topology rule",
+            "From the installed Precode root, run:",
+            "python3 scripts/file-inventory.py --check",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
-            "compact post-setup student build-order checklist",
+            "compact post-setup builder build-order checklist",
             "not a fifth route",
-            "Compact first-session student build-order checklist",
+            "Compact first-session builder build-order checklist",
         ],
         Path("llms.txt"): [
-            "compact first-session student build-order checklist",
-            "shareable as the student's official compact flow",
+            "compact first-session builder build-order checklist",
+            "shareable as the builder's official compact flow",
             "reinforces Guided Setup and the Daily Cockpit",
             "does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page",
         ],
@@ -4753,7 +4754,7 @@ def main() -> int:
     first_product_spine_scenario_count = assert_first_product_spine_contract(failures)
     workbook_handoff_scenario_count = assert_workbook_handoff_tightening_contract(failures)
     many_bead_rhythm_scenario_count = assert_many_bead_operating_rhythm_contract(failures)
-    student_journey_authority_scenario_count = assert_student_journey_authority_consolidation_contract(failures)
+    builder_journey_authority_scenario_count = assert_builder_journey_authority_consolidation_contract(failures)
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
@@ -5320,7 +5321,7 @@ def main() -> int:
         + first_product_spine_scenario_count
         + workbook_handoff_scenario_count
         + many_bead_rhythm_scenario_count
-        + student_journey_authority_scenario_count
+        + builder_journey_authority_scenario_count
         + command_surface_triage_scenario_count
         + engineering_quality_scenario_count
         + public_objection_scenario_count

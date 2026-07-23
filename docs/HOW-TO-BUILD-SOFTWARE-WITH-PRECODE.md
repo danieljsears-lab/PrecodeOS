@@ -45,7 +45,7 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 > Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.
 
-This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the student operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or say `I am stuck, help me.`
+This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the builder operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or say `I am stuck, help me.`
 
 ### If You Only Have An Idea, Start With Research And Exploration
 
@@ -212,8 +212,8 @@ idea or notes
   -> guided research/challenge
   -> Conviction Packet / Precode Ingestion Packet
   -> Design Canvas Input Prompt for a focused design-tool brief
-  -> Experience design canvas for bootcamp visual core-spine work
-  -> Student Experience Ingestion Packet for Claude Code handoff
+  -> Experience design canvas for focused visual core-spine work
+  -> Builder Experience Ingestion Packet for Claude Code handoff
   -> Core Spine Gate and target-user feedback when feasible
   -> Candidate Goal Frame when durable intent needs orientation
   -> Product Discovery Validation when worth-building is uncertain
@@ -241,8 +241,8 @@ idea or notes
 | Product Ideation Workbook | You think through one product idea as a worksheet step inside First PRD Walkthrough before Precode turns it into project material. | "Ask only high-level product or business questions at first." |
 | Product Brief | The agent shows early progress before deeper discovery or PRD shaping. | "After at most three questions, summarize the idea, user, before/after moment, evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question." |
 | Conviction Packet / Precode Ingestion Packet | A concise packet from the workbook that Local Source Intake can review, including primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, and smallest learning step. | "Treat this as evidence, not authority." |
-| Design Canvas Input Prompt | A short prompt inside the Student Experience Ingestion Packet that turns approved product input, references, workflow examples, and not-yet boundaries into a design-tool brief. | "Focus the design canvas on the minimum workflow that gives the target user value." |
-| Student Experience Ingestion Packet | A bootcamp handoff packet combining the approved PRD input, Experience artifacts, Core Spine Gate, feedback status, and not-yet boundaries before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
+| Design Canvas Input Prompt | A short prompt inside the Builder Experience Ingestion Packet that turns approved product input, references, workflow examples, and not-yet boundaries into a design-tool brief. | "Focus the design canvas on the minimum workflow that gives the target user value." |
+| Builder Experience Ingestion Packet | A handoff packet combining the approved PRD input, Experience artifacts, Core Spine Gate, feedback status, and not-yet boundaries before Claude Code creates the core-spine bead. | "Create one Precode bead from this packet. Do not code until I approve it." |
 | Experience review / demo evidence | A lightweight post-prototype record of what was demoed, whether the minimum value moment worked, what feedback changed, and what remains uncertain. | "Treat this as evidence for the next decision, not automatic acceptance." |
 | Candidate Goal Frame | A reviewed-in-waiting direction extracted from the workbook. | "Tell me whether this is stable enough to reaffirm before updating PRODUCT.md." |
 | Product Discovery Validation | The agent checks evidence, current alternatives, assumptions, demand signals, and the smallest non-code learning step before PRD shaping. | "Recommend proceed, pause, narrow, or kill, but do not approve work." |

@@ -1,9 +1,9 @@
 # PrecodeOS Daily Cockpit
 <!-- ANCHOR: precode-daily-cockpit -->
 
-> AUTHORITY: Student-first daily command, prompt, report, recovery, check, and learning reference for operating PrecodeOS during normal work.
+> AUTHORITY: Builder-first daily command, prompt, report, recovery, check, and learning reference for operating PrecodeOS during normal work.
 > NOT_AUTHORITY: Active memory, product decisions, feature requirements, task selection, PRD approval, bead activation, implementation acceptance, generated progress state, destructive repair approval, or deep architecture guidance.
-> LOAD_WHEN: A student is starting, steering, checking, closing, recovering, or learning from a PrecodeOS session and needs one practical daily surface.
+> LOAD_WHEN: A builder is starting, steering, checking, closing, recovering, or learning from a PrecodeOS session and needs one practical daily surface.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
@@ -12,7 +12,7 @@ Copyright: (c) 2026 Dan Sears / Recode
 Document version: v0.1.44
 Last updated: 2026-07-20
 
-Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear student build-order card, then return here.
+Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
 
 PrecodeOS gives you a small daily control surface: prompts to paste, reports to run, checks to understand, recovery paths to use, and learning loops to keep the project improving.
 
@@ -115,7 +115,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
-| I need a smaller first-session card. | `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` | A compact student build-order checklist and prompt card after setup validates. It reinforces this cockpit and does not choose work, approve setup, activate beads, or replace protocols. |
+| I need a smaller first-session card. | `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` | A compact builder build-order checklist and prompt card after setup validates. It reinforces this cockpit and does not choose work, approve setup, activate beads, or replace protocols. |
 | Where should this answer live? | `Use Question-To-Artifact Filing for this answer.` | A filing recommendation only: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD/owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, or activate beads. |
 | Is this source ready to promote? | Source-To-Promotion Hygiene Review in Prompt Patterns | Checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. It does not promote files, approve PRDs, choose tasks, or activate beads. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
@@ -504,7 +504,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `logs/build-attribution-ledger.md` | You need a readable who-built-what evidence view. | Generated attribution ledger; closeout-reviewed attribution is strongest, while Git authorship remains a hint. |
 | `python3 scripts/update-memory-index.py` | Reviewed memory cards changed. | Refreshes the searchable memory index. Memory remains evidence only. |
 
-## Checks By Student Question
+## Checks By Builder Question
 
 ### Is My State Okay?
 

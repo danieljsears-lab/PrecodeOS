@@ -28,7 +28,7 @@ rough idea or source evidence
 
 The protocol does not validate an idea in the strong sense. It produces evidence and an advisory recommendation. The user still owns judgment, product direction, PRD approval, and task activation.
 
-For first-time non-technical builders and bootcamp students, discovery often aims for MVP-ready conviction rather than validated demand. MVP-ready conviction means the builder can define a small, safe first version while naming the weak evidence, riskiest assumption, current workaround, not-yet scope, and smallest learning step. It does not prove that users will adopt, pay, return, switch, or change behavior.
+For first-time non-technical builders, discovery often aims for MVP-ready conviction rather than validated demand. MVP-ready conviction means the builder can define a small, safe first version while naming the weak evidence, riskiest assumption, current workaround, not-yet scope, and smallest learning step. It does not prove that users will adopt, pay, return, switch, or change behavior.
 
 ## When To Use
 
@@ -39,7 +39,7 @@ Good triggers:
 - new product direction
 - market-facing feature
 - paid, pricing, or revenue assumption
-- broad audience such as "everyone", "small businesses", or "students"
+- broad audience such as "everyone", "small businesses", or "builders"
 - weak or mostly internal evidence
 - no named current workaround
 - solution-first request with unclear pain

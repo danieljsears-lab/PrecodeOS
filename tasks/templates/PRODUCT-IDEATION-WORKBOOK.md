@@ -1,9 +1,9 @@
 # Product Ideation Workbook
 <!-- ANCHOR: product-ideation-workbook -->
 
-> AUTHORITY: Reusable student and builder workbook for gathering product thoughts, research, assumptions, risks, capability candidates, and Conviction Packet evidence before Precode Local Source Intake.
+> AUTHORITY: Reusable builder and builder workbook for gathering product thoughts, research, assumptions, risks, capability candidates, and Conviction Packet evidence before Precode Local Source Intake.
 > NOT_AUTHORITY: Product decisions, approved requirements, active task selection, `PRODUCT.md` content, PRD approval, implementation plans, bead activation, generated progress state, or permission to code.
-> LOAD_WHEN: A new user, student, founder, operator, or creator wants to research, challenge, narrow, and package one rough product idea with Claude, Claude Code, Codex, or another agent before ingesting it into Precode.
+> LOAD_WHEN: A new user, builder, founder, operator, or creator wants to research, challenge, narrow, and package one rough product idea with Claude, Claude Code, Codex, or another agent before ingesting it into Precode.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
@@ -173,7 +173,7 @@ Use this section for thoughts that might later affect `PRODUCT.md`.
 
 ### Real Person Test
 
-Use this when your audience sounds broad, such as "small businesses," "students," or "busy people."
+Use this when your audience sounds broad, such as "small businesses," "builders," or "busy people."
 
 - They are:
 - They are trying to:
@@ -329,7 +329,7 @@ What result would make me pause, narrow, or kill:
 
 ## Optional Learning/MVE Framing
 
-Use this section when the idea is still too abstract, too large, or too feature-shaped. It imports the useful parts of the older Student Idea To MVE path without creating a separate workflow.
+Use this section when the idea is still too abstract, too large, or too feature-shaped. It imports the useful parts of the older Builder Idea To MVE path without creating a separate workflow.
 
 ### Visible Iteration
 

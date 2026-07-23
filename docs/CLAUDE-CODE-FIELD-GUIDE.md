@@ -1,7 +1,7 @@
-# Claude Code Field Guide For Students
+# Claude Code Field Guide For Builders
 <!-- ANCHOR: claude-code-field-guide -->
 
-## A Bootcamp Companion For Claude Code + PrecodeOS
+## A First-Session Companion For Claude Code + PrecodeOS
 
 > AUTHORITY: Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently.
 > NOT_AUTHORITY: Active memory, product decisions, task selection, PRD approval, bead activation, generated evidence truth, or private roadmap planning.
@@ -17,13 +17,13 @@ Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ## How to use this guide
 
-This guide is for first-time students and non-technical builders using Claude Code inside a project that already has PrecodeOS installed. You do not need to understand the codebase before you begin. You do need to know how to slow the agent down, confirm the task, and ask for proof.
+This guide is for first-time builders and non-technical builders using Claude Code inside a project that already has PrecodeOS installed. You do not need to understand the codebase before you begin. You do need to know how to slow the agent down, confirm the task, and ask for proof.
 
 This is a Claude Code companion, not the PrecodeOS start page. If PrecodeOS is not installed, use `docs/PRECODE-GUIDED-SETUP.md`. If it is installed or you are resuming work, use `docs/PRECODE-DAILY-COCKPIT.md` first. If you only have a rough idea, use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.`
 
 Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The **Prompt Cookbook** and **Quick Reference Card** are the sections you'll reach for most.
 
-This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another school-provided surface. If you cannot find Claude Code or open your project folder, ask your instructor or engineer before starting.
+This guide assumes your project and Claude Code are already installed. Claude Code may appear as a VS Code panel, a terminal-style chat, or another organization-provided surface. If you cannot find Claude Code or open your project folder, ask the person supporting your setup before starting.
 
 If you are still exploring an idea before the project exists, use First PRD Walkthrough in Claude Cowork, Claude, or an equivalent planning surface. Product Ideation Workbook and Precode Idea Coach are steps inside that route, not separate commands to choose between.
 
@@ -104,7 +104,7 @@ Field rule: one bead, one feature slice, one chat. When you finish and accept a 
 - [ ] I have not asked Claude to work on two things at once
 - [ ] I am in the project root folder, and I have not renamed it
 
-If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved bootcamp PRD input and completed Student Experience Ingestion Packet, then ask Claude to create one bead before coding. The packet should include the design-tool brief used to create the rough Experience artifact, plus the artifact itself. Before you paste it in, complete the packet's "Complete Before Claude Code Handoff" checklist and Core Spine Gate. If required fields are missing or the Core Spine Gate is blocked, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.
+If this is your first coding session after Experience design, you may not have a bead yet. In that case, bring Claude Code your approved PRD-like input and completed Builder Experience Ingestion Packet, then ask Claude to create one bead before coding. The packet should include the design-tool brief used to create the rough Experience artifact, plus the artifact itself. Before you paste it in, complete the packet's "Complete Before Claude Code Handoff" checklist and Core Spine Gate. If required fields are missing or the Core Spine Gate is blocked, Claude should ask for the missing information and stop. Do not ask Claude to start building directly from a design canvas.
 
 The safe path is:
 
@@ -120,7 +120,7 @@ completed Experience packet
 
 Target-user feedback, screenshots, and demo notes are evidence. They can shape the next safe question or follow-up bead, but they do not approve a PRD, accept implementation, or let Claude skip the normal Precode review decision.
 
-If your packet has a bootcamp-approved PRD-like input but no formal Precode PRD shard yet, Claude should produce a candidate bead proposal only and stop. It should not activate work or code until the normal Precode intake or PRD promotion path has happened.
+If your packet has approved PRD-like input but no formal Precode PRD shard yet, Claude should produce a candidate bead proposal only and stop. It should not activate work or code until the normal Precode intake or PRD promotion path has happened.
 
 If this is your first Claude Code session after idea discovery, you may have a Conviction Packet but no PRD or bead yet. Bring the packet into Local Source Intake first. Do not ask Claude Code to turn the packet directly into code, and do not let it skip from discovery evidence to implementation.
 
@@ -240,7 +240,7 @@ If no: correct Claude before it writes a single line of code.
 
 ### When Claude Over-Challenges A 4-Week MVP
 
-Claude is useful when it catches real risks. It becomes unhelpful when it treats a bootcamp MVP like a company-scale product, keeps adding future features, or keeps asking questions after the first version is clear enough.
+Claude is useful when it catches real risks. It becomes unhelpful when it treats a small MVP like a company-scale product, keeps adding future features, or keeps asking questions after the first version is clear enough.
 
 For a 4-week MVP, your job is not to remove every uncertainty. Your job is to choose a small, safe first version, defer the rest, and keep Precode authority boundaries intact.
 
@@ -738,7 +738,7 @@ previous approach.
 
 ### 6. Over-Challenged MVP
 
-**What happened:** Claude keeps challenging a small bootcamp idea, adding future features, or asking questions after the first version is good enough to define.
+**What happened:** Claude keeps challenging a small MVP idea, adding future features, or asking questions after the first version is good enough to define.
 
 **Why it happens:** Claude is trying to be careful, but it is optimizing for exhaustive product critique instead of a 4-week MVP.
 

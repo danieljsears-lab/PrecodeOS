@@ -34,7 +34,7 @@ The safest setup path is manual and visible:
 6. Validate memory before letting an agent build.
 7. Stop for human review.
 
-After setup validates, stop here. If a new builder needs one visible build-order path before opening the full cockpit, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact student checklist, then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`. The card does not approve setup, choose work, activate beads, or replace the cockpit.
+After setup validates, stop here. If a new builder needs one visible build-order path before opening the full cockpit, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact builder checklist, then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`. The card does not approve setup, choose work, activate beads, or replace the cockpit.
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
 
@@ -143,7 +143,7 @@ For a target that already has PrecodeOS active memory, use upgrade preview befor
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 ```
 
-The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the student's existing ID, and preserve target PRDs/beads. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
+The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
 
 If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
 
@@ -200,9 +200,9 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.
 
-## Ember Bootcamp Fit Check: PrecodeOS Or Plain VS Code?
+## Fit Check: PrecodeOS Or Plain VS Code?
 
-Use this fit check if you are in an Ember bootcamp and are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.
+Use this fit check if you are unsure whether to set up PrecodeOS now or keep practicing in plain VS Code with Claude Code.
 
 Use PrecodeOS now when:
 
@@ -222,7 +222,7 @@ Stay in plain VS Code and Claude Code for now when:
 
 This is a two-way door. It is okay to practice basics first and add PrecodeOS later. Before you begin serious multi-session product development, especially work you want engineers or instructors to support, add PrecodeOS so the repo has a clear task, scope, and proof trail.
 
-Once real development starts in VS Code, keep development there. You may use design or prototype tools to explore ideas, but do not keep bouncing the product between Ember, Claude Design, Claude Code web, and local VS Code. Bring the chosen design or handoff material into the project, then develop locally from the project folder.
+Once real development starts in VS Code, keep development there. You may use design or prototype tools to explore ideas, but do not keep bouncing the product between design tools, web chat, and local coding surfaces. Bring the chosen design or handoff material into the project, then develop locally from the project folder.
 
 ## Step 1: Pull PrecodeOS From GitHub
 
@@ -319,22 +319,25 @@ For a new project, the setup should include:
 
 | File group | Include |
 |---|---|
-| Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
+| Active memory templates | `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md` |
+| Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
 | Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
-| Work structure | `tasks/beads/`, `tasks/prds/`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
+| Work structure | `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, `tasks/prds/PRD-SHARD-SCHEMA.md`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` |
 | Scripts and checks | `scripts/`, `.githooks/`, `.github/workflows/` when the target repo wants GitHub validation |
 | Public generated-log guide | `logs/LOG-EVIDENCE-TAXONOMY.md` |
+
+Do not copy PrecodeOS's package development PRDs or beads into the target project. Numbered package files such as `tasks/prds/PRD-001...` or `tasks/beads/B000...` describe PrecodeOS itself and can collide with the target project's own future PRD and bead IDs.
 
 Then adapt these files before starting product work:
 
 - `PRODUCT.md`: product promise, users, strategy, bets, success signals, and voice
 - `PROJECT-CONTEXT.md`: app directory, stack, conventions, checks, integrations, and sensitive boundaries
 - `DECISIONS.md`: hard decisions already known for this project
-- `tasks/todo.md`: the first setup bead and current state
+- `tasks/todo.md`: the fresh first setup bead and current state
 
 ### Path B: Existing Project
 
@@ -409,7 +412,7 @@ Keep `project-evidence/PROJECT-EVIDENCE-GUIDE.md` if the package includes it. Af
 
 ## Step 5: Validate Before Work Starts
 
-After the files are in place and owner files have been adapted, run the first validation command from the target project root:
+After the files are in place and owner files have been adapted, run the first validation command from the installed Precode root. In the default setup this is the target project root; if your project intentionally keeps PrecodeOS in a subfolder, run validation from that subfolder.
 
 ```bash
 bash scripts/validate-memory.sh
