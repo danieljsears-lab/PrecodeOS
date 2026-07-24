@@ -60,7 +60,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. The optional npm command delegates to the same plan from the package source. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, or app-code edits.
 
-The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison plus advisory local release-reference metadata, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files.
+The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison plus advisory local release-reference metadata, `--update-plan-preview` for grouped read-only update planning over current `UP-ID` evidence, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files.
 
 ## Required Preview Shape
 
@@ -130,10 +130,10 @@ The classifier must not turn manifest output into copy permission, owner-file ad
 - It must not run app commands.
 - It must not write app code.
 - It must not read or print secret file contents.
-- It must not define executable release channels, package-manager updates, rollback automation, or an installable `precode` CLI. Stable/latest/pinned language may appear only as advisory release-reference metadata in upgrade preview and must not approve mutation.
+- It must not define executable release channels, package-manager updates, rollback automation, or an installable `precode` CLI. Stable/latest/pinned language may appear only as advisory release-reference metadata in upgrade preview and must not approve mutation. Updater compatibility policy is governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md` and remains evidence interpretation only. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and remains grouped generated evidence only.
 - It must not treat the optional npm `precodeos` preview entry as copy permission, setup approval, executable release-channel behavior, package-manager update behavior, broad install behavior, or target-project mutation.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
-- It must route package upgrades through Bootstrap Closeout before any existing Precode target receives missing package-owned files, and dirty package-owned files must stay manual-review only.
+- It must route package upgrades through Bootstrap Closeout before any existing Precode target receives missing package-owned files, and dirty package-owned files must stay manual-review only. `npm Update Plan Preview` may group current preview evidence, but `npm Approved Package-Owned Apply` remains a future roadmap candidate, not behavior created by this protocol.
 
 ## Next Setup Layer
 

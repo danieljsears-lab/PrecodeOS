@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.51
-# Last updated: 2026-07-22
+# Version: v0.1.52
+# Last updated: 2026-07-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -4227,6 +4227,13 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         if term not in upgrade_preview_text:
             failures.append({"scenario": "local upgrade preview facade", "expected": term, "actual": upgrade_preview_text})
 
+    update_plan_preview_args = parser.parse_args(["--dry-run", "update-plan-preview", "--target", "target"])
+    update_plan_preview_commands = precode_cli.build_commands(update_plan_preview_args, parser)
+    update_plan_preview_text = precode_cli.command_text(update_plan_preview_commands[0])
+    for term in ("scripts/bootstrap-check.py", "--source", ".", "--target", "target", "--update-plan-preview"):
+        if term not in update_plan_preview_text:
+            failures.append({"scenario": "local update-plan preview facade", "expected": term, "actual": update_plan_preview_text})
+
     package_json = json.loads(Path("package.json").read_text(encoding="utf-8"))
     if package_json.get("scripts", {}).get("postinstall"):
         failures.append({"scenario": "npm preview entry postinstall", "expected": "no postinstall", "actual": "postinstall present"})
@@ -4236,9 +4243,11 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
     for term in (
         "setup-preview",
         "upgrade-preview",
+        "update-plan-preview",
         "scripts/bootstrap-check.py",
         "--supervised-setup-plan",
         "--upgrade-preview",
+        "--update-plan-preview",
         "No postinstall behavior",
         "target mutation",
         "executable release-channel behavior",
@@ -4276,6 +4285,96 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         failures.append({"scenario": "npm release reference latest boundary", "expected": "latest is not overwrite permission", "actual": latest_definition})
     if "npm updater behavior" not in str(release_reference.get("boundary") or ""):
         failures.append({"scenario": "npm release reference updater boundary", "expected": "npm updater behavior", "actual": str(release_reference.get("boundary"))})
+    compatibility_policy = bootstrap_check.UPDATER_COMPATIBILITY_POLICY
+    expected_policy_keys = {
+        "policy_name",
+        "policy_prd",
+        "evidence_threshold",
+        "compatible_only_when",
+        "blocked_update_cases",
+        "clone_first_support",
+        "not_authority_for",
+    }
+    missing_policy_keys = sorted(expected_policy_keys - set(compatibility_policy))
+    if missing_policy_keys:
+        failures.append({
+            "scenario": "npm updater compatibility policy metadata",
+            "expected": f"keys {missing_policy_keys}",
+            "actual": str(sorted(compatibility_policy)),
+        })
+    if "PRD-041-npm-updater-evidence-and-compatibility-policy.md" not in str(compatibility_policy.get("policy_prd") or ""):
+        failures.append({"scenario": "npm updater compatibility policy PRD", "expected": "PRD-041 policy surface", "actual": str(compatibility_policy.get("policy_prd"))})
+    compatible_text = " ".join(str(item) for item in compatibility_policy.get("compatible_only_when", []))
+    for term in ("existing_precode", "package state is clean", "missing package-owned", "UP-ID"):
+        if term not in compatible_text:
+            failures.append({"scenario": "npm updater compatible-only policy", "expected": term, "actual": compatible_text})
+    blocked_text = " ".join(str(item) for item in compatibility_policy.get("blocked_update_cases", []))
+    for term in ("dirty_package_edits", "mixed_or_unknown", "blocked_identity_collision", "owner-file adaptation", "registry", "dist-tag", "package-manager"):
+        if term not in blocked_text:
+            failures.append({"scenario": "npm updater blocked-update policy", "expected": term, "actual": blocked_text})
+    not_authority_text = " ".join(str(item) for item in compatibility_policy.get("not_authority_for", []))
+    for forbidden in ("package update permission", "npm registry freshness", "dist-tag resolution", "package-manager behavior", "generated-output authority"):
+        if forbidden not in not_authority_text:
+            failures.append({"scenario": "npm updater non-authority policy", "expected": forbidden, "actual": not_authority_text})
+    update_plan_payload = {
+        "package_upgrade_preview": {
+            "preview_kind": "package_upgrade_preview",
+            "status": "warning",
+            "source_root": ".",
+            "target_root": "target",
+            "target_kind": "existing_precode",
+            "package_state_classification": "clean",
+            "release_reference": release_reference,
+            "updater_compatibility_policy": compatibility_policy,
+            "actions": [
+                {
+                    "id": "UP-001",
+                    "category": "review_package_copy_candidate",
+                    "path": "docs/NEW.md",
+                    "reason": "fixture",
+                    "requires_user_approval": True,
+                }
+            ],
+            "dirty_package_paths": [],
+            "dirty_project_or_owner_paths": [],
+            "missing_package_paths": ["docs/NEW.md"],
+            "identity_collisions": [],
+            "deferred_package_dev_identity_paths": [],
+            "blockers": [],
+        }
+    }
+    update_plan = bootstrap_check.build_update_plan_preview(update_plan_payload)
+    expected_update_plan_keys = {
+        "plan_kind",
+        "action_summary",
+        "grouped_action_ids",
+        "same_session_requirement",
+        "validation_prompts",
+        "optional_registry_metadata",
+        "target_mutation_allowed",
+        "generated_evidence_only",
+        "not_authority_for",
+    }
+    missing_update_plan_keys = sorted(expected_update_plan_keys - set(update_plan))
+    if missing_update_plan_keys:
+        failures.append({
+            "scenario": "npm update-plan preview metadata",
+            "expected": f"keys {missing_update_plan_keys}",
+            "actual": str(sorted(update_plan)),
+        })
+    if update_plan.get("target_mutation_allowed") is not False:
+        failures.append({"scenario": "npm update-plan preview mutation", "expected": "false", "actual": str(update_plan.get("target_mutation_allowed"))})
+    registry_metadata = update_plan.get("optional_registry_metadata") or {}
+    if registry_metadata.get("registry_lookup_performed") is not False:
+        failures.append({"scenario": "npm update-plan preview registry lookup", "expected": "false", "actual": str(registry_metadata)})
+    if registry_metadata.get("dist_tag_resolution_performed") is not False:
+        failures.append({"scenario": "npm update-plan preview dist-tag lookup", "expected": "false", "actual": str(registry_metadata)})
+    if "UP-001" not in update_plan.get("grouped_action_ids", {}).get("candidate_package_copy", []):
+        failures.append({"scenario": "npm update-plan preview action grouping", "expected": "UP-001", "actual": str(update_plan.get("grouped_action_ids"))})
+    update_plan_not_authority = " ".join(str(item) for item in update_plan.get("not_authority_for", []))
+    for forbidden in ("package update permission", "copy approval", "npm apply behavior", "registry freshness", "dist-tag resolution"):
+        if forbidden not in update_plan_not_authority:
+            failures.append({"scenario": "npm update-plan preview non-authority", "expected": forbidden, "actual": update_plan_not_authority})
 
     return 6
 

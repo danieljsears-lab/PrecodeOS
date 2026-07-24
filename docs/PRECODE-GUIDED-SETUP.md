@@ -38,7 +38,7 @@ After setup validates, stop here. If a new builder needs one visible build-order
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
-The optional npm entry is only a read-only acquisition and preview path. It can run first-install setup preview or existing-Precode upgrade preview from the package source, but it has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
+The optional npm entry is only a read-only acquisition and preview path. It can run first-install setup preview, existing-Precode upgrade preview, or existing-Precode update-plan preview from the package source, but it has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
@@ -145,10 +145,12 @@ For a target that already has PrecodeOS active memory, use upgrade preview befor
 
 ```bash
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 ```
 
-The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It may show advisory release-reference metadata from the local package source: package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It writes nothing by default, performs no npm registry lookup or dist-tag resolution, and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, or rollback.
+The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It may show advisory release-reference metadata from the local package source: package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. The update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. These previews write nothing by default, perform no npm registry lookup or dist-tag resolution, and do not approve package updates, npm apply behavior, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, or rollback.
 
 If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
 
@@ -177,7 +179,7 @@ First confirm the source path, target path, current folder, current git status, 
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 
-Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, updater compatibility blocked cases, and candidate `UP-ID` actions.
 
 Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, provide package-manager behavior, or automate rollback. Treat `latest` as a reference to inspect, not overwrite permission.
 

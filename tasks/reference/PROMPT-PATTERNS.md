@@ -320,7 +320,7 @@ npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 
-Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, and candidate `UP-ID` actions.
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, updater compatibility policy metadata, and candidate `UP-ID` actions.
 
 Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, provide package-manager behavior, or automate rollback. Treat `latest` as a package reference to inspect, not overwrite permission.
 
@@ -331,7 +331,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.
 ```
 
-Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, candidate `UP-ID` actions, validation next steps, and explicit stop-before-mutation status.
+Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, validation next steps, and explicit stop-before-mutation status.
 
 This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, or permission to overwrite.
 
@@ -343,7 +343,7 @@ Use the PrecodeOS checkout as the source and my project folder as the target.
 If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison.
 Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
-Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission.
+Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission. Show updater compatibility policy metadata as evidence-threshold and blocked-case guidance only; do not treat it as an update plan, registry freshness result, or apply permission.
 Show action IDs and wait for my explicit approval before any missing package-owned file copy.
 Treat the preview as evidence only, not package update permission.
 ```

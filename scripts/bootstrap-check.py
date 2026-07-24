@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.5.4
+# Version: v0.5.6
 # Last updated: 2026-07-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -191,6 +191,49 @@ RELEASE_REFERENCE_BOUNDARY = (
     "channel selection, package update permission, dirty-file overwrite, owner-file adaptation approval, "
     "rollback automation, or npm updater behavior is performed."
 )
+UPDATER_COMPATIBILITY_POLICY = {
+    "policy_name": "npm Updater Evidence And Compatibility Policy",
+    "policy_prd": "tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md",
+    "evidence_threshold": (
+        "Run upgrade preview against the package source and existing Precode target, review package-state "
+        "classification, identity collisions, dirty paths, deferred package development identities, release "
+        "reference metadata, and action IDs before any package-owned copy action is considered."
+    ),
+    "compatible_only_when": [
+        "target kind is existing_precode",
+        "package state is clean for any approved package-owned copy action",
+        "the action is a missing package-owned review_package_copy_candidate",
+        "the approved UP-ID exists in the current preview",
+        "the source file exists and the target path does not exist",
+        "target PRDs, beads, owner files, active memory, app code, hooks, CI, and generated evidence are preserved",
+    ],
+    "blocked_update_cases": [
+        "blocked preview state",
+        "dirty_package_edits",
+        "mixed_or_unknown",
+        "blocked_identity_collision",
+        "dirty owner or project truth requiring manual review",
+        "package development PRD or bead identity copy",
+        "existing target path or overwrite request",
+        "owner-file adaptation request",
+        "hook, CI, app command, app-code, rollback, registry, dist-tag, or package-manager request",
+    ],
+    "clone_first_support": (
+        "For important active work, known local Precode changes, or unclear recovery state, preserve the current "
+        "environment and run preview against a fresh clone before any approved copy action."
+    ),
+    "not_authority_for": [
+        "package update permission",
+        "npm registry freshness",
+        "dist-tag resolution",
+        "channel selection",
+        "dirty-file overwrite",
+        "owner-file adaptation",
+        "rollback automation",
+        "package-manager behavior",
+        "generated-output authority",
+    ],
+}
 
 
 def resolve_candidate(raw: str) -> Path:
@@ -844,6 +887,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
         "target_kind": kind,
         "package_state_classification": classification,
         "release_reference": source_release_reference(source_root),
+        "updater_compatibility_policy": UPDATER_COMPATIBILITY_POLICY,
         "actions": actions,
         "dirty_package_paths": dirty_package,
         "dirty_project_or_owner_paths": dirty_owner,
@@ -866,6 +910,100 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
             "npm updater behavior",
         ],
         "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review, identity collisions block copying, and latest is not overwrite permission.",
+    }
+
+
+def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    preview = payload.get("package_upgrade_preview") or build_upgrade_preview(payload)
+    actions = list(preview["actions"])
+    grouped_action_ids: dict[str, list[str]] = {
+        "candidate_package_copy": [
+            str(action["id"]) for action in actions if action["category"] == "review_package_copy_candidate"
+        ],
+        "manual_review": [
+            str(action["id"])
+            for action in actions
+            if action["category"] in {"manual_package_review", "preserve_owner_edit", "review_owner_creation_candidate"}
+        ],
+        "blocked": [str(action["id"]) for action in actions if action["category"] == "blocked_identity_collision"],
+        "deferred": [str(action["id"]) for action in actions if action["category"] == "deferred_package_dev_identity"],
+    }
+    validation_prompts = [
+        "Confirm source package root and target existing-Precode root before interpreting this plan.",
+        "Review package-state classification, dirty paths, identity collisions, and deferred package-development identities.",
+        "Run the plan again in the same session before considering any separately approved package-owned copy action.",
+        "Use clone-first support review for important active work, known local package edits, or unclear recovery state.",
+    ]
+    same_session_requirement = (
+        "Action IDs are advisory and must come from the current same-session preview; rerun update-plan preview before "
+        "any separate approved package-owned copy action is considered."
+    )
+    next_manual_gate = (
+        "Review the update plan with the user. Missing package-owned action IDs may inform a separate Python "
+        "upgrade-preview apply decision, but this update-plan preview does not approve or perform copying."
+    )
+    if preview["blockers"]:
+        next_manual_gate = "Resolve blockers and rerun update-plan preview before considering package refresh work."
+    elif preview["package_state_classification"] != "clean":
+        next_manual_gate = "Review dirty or unknown package state manually; do not copy package files from this plan."
+    elif grouped_action_ids["candidate_package_copy"]:
+        next_manual_gate = (
+            "If the user explicitly approves a current missing package-owned UP-ID, use the Python upgrade-preview "
+            "apply path; the npm facade still exposes no apply behavior."
+        )
+
+    return {
+        "plan_kind": "npm_update_plan_preview",
+        "status": preview["status"],
+        "source_root": preview["source_root"],
+        "target_root": preview["target_root"],
+        "target_kind": preview["target_kind"],
+        "package_state_classification": preview["package_state_classification"],
+        "release_reference": preview["release_reference"],
+        "updater_compatibility_policy": preview["updater_compatibility_policy"],
+        "optional_registry_metadata": {
+            "requested": False,
+            "registry_lookup_performed": False,
+            "dist_tag_resolution_performed": False,
+            "status": "not_requested_in_v1",
+            "boundary": "V1 update-plan preview uses local package metadata only; registry lookup and dist-tag resolution remain deferred.",
+        },
+        "action_summary": {
+            "total_actions": len(actions),
+            "candidate_package_copy_count": len(grouped_action_ids["candidate_package_copy"]),
+            "manual_review_count": len(grouped_action_ids["manual_review"]),
+            "blocked_count": len(grouped_action_ids["blocked"]),
+            "deferred_count": len(grouped_action_ids["deferred"]),
+        },
+        "grouped_action_ids": grouped_action_ids,
+        "actions": actions,
+        "blockers": preview["blockers"],
+        "dirty_package_paths": preview["dirty_package_paths"],
+        "dirty_project_or_owner_paths": preview["dirty_project_or_owner_paths"],
+        "missing_package_paths": preview["missing_package_paths"],
+        "identity_collisions": preview["identity_collisions"],
+        "deferred_package_dev_identity_paths": preview["deferred_package_dev_identity_paths"],
+        "same_session_requirement": same_session_requirement,
+        "validation_prompts": validation_prompts,
+        "next_manual_gate": next_manual_gate,
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "package update permission",
+            "copy approval",
+            "overwriting target material",
+            "owner-file adaptation",
+            "installing hooks",
+            "changing CI",
+            "registry freshness",
+            "dist-tag resolution",
+            "executable release-channel behavior",
+            "package-manager updates",
+            "rollback automation",
+            "npm apply behavior",
+            "generated-output authority",
+        ],
     }
 
 
@@ -1464,6 +1602,9 @@ def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
         f"- Source package: `{release['source_package_name']}` `{release['source_package_version']}`",
         f"- Inferred source release label: `{release['inferred_source_release_label']}`",
         "- Registry lookup performed: no",
+        f"- Compatibility policy: {preview['updater_compatibility_policy']['policy_name']}",
+        f"- Compatibility threshold: {preview['updater_compatibility_policy']['evidence_threshold']}",
+        f"- Clone-first support case: {preview['updater_compatibility_policy']['clone_first_support']}",
         "- Release terms: stable is the maintainer-reviewed default acquisition reference when available; latest is the newest package reference to inspect, not overwrite permission; pinned is an explicit version or source checkout for comparison.",
         "- Target mutation allowed: no",
         "- Writes by default: no",
@@ -1495,6 +1636,51 @@ def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
         lines.append(f"- {action['id']} {action['category']}: `{action['path']}`{group} -- {action['reason']} [{approval}]")
     lines.append(
         "\nUpgrade warning: only missing package-owned files marked review_package_copy_candidate can be copied by apply mode; dirty files require manual review."
+    )
+    return "\n".join(lines)
+
+
+def render_update_plan_preview_plain(payload: dict[str, Any]) -> str:
+    plan = payload["npm_update_plan_preview"]
+    release = plan["release_reference"]
+    summary = plan["action_summary"]
+    lines = [
+        render_upgrade_preview_plain(payload),
+        "\nNpm Update Plan Preview:",
+        f"- Plan kind: `{plan['plan_kind']}`",
+        f"- Plan status: `{plan['status']}`",
+        f"- Package state classification: `{plan['package_state_classification']}`",
+        f"- Source package: `{release['source_package_name']}` `{release['source_package_version']}`",
+        "- Target mutation allowed: no",
+        "- Writes by default: no",
+        "- Generated evidence only: yes",
+        "- Registry lookup performed: no",
+        "- Dist-tag resolution performed: no",
+        f"- Same-session requirement: {plan['same_session_requirement']}",
+        f"- Next manual gate: {plan['next_manual_gate']}",
+        "\nUpdate-plan action summary:",
+        f"- Total actions: {summary['total_actions']}",
+        f"- Candidate package-copy actions: {summary['candidate_package_copy_count']}",
+        f"- Manual-review actions: {summary['manual_review_count']}",
+        f"- Blocked actions: {summary['blocked_count']}",
+        f"- Deferred actions: {summary['deferred_count']}",
+    ]
+    if plan["grouped_action_ids"]["candidate_package_copy"]:
+        lines.append("\nCandidate package-copy IDs:")
+        lines.extend(f"- {item}" for item in plan["grouped_action_ids"]["candidate_package_copy"])
+    if plan["grouped_action_ids"]["manual_review"]:
+        lines.append("\nManual-review IDs:")
+        lines.extend(f"- {item}" for item in plan["grouped_action_ids"]["manual_review"])
+    if plan["grouped_action_ids"]["blocked"]:
+        lines.append("\nBlocked IDs:")
+        lines.extend(f"- {item}" for item in plan["grouped_action_ids"]["blocked"])
+    if plan["grouped_action_ids"]["deferred"]:
+        lines.append("\nDeferred IDs:")
+        lines.extend(f"- {item}" for item in plan["grouped_action_ids"]["deferred"])
+    lines.append("\nValidation prompts:")
+    lines.extend(f"- {item}" for item in plan["validation_prompts"])
+    lines.append(
+        "\nUpdate-plan warning: this preview is evidence only; it is not package update permission, copy approval, npm apply behavior, registry freshness, dist-tag resolution, release-channel behavior, package-manager behavior, rollback automation, or generated-output authority."
     )
     return "\n".join(lines)
 
@@ -1549,6 +1735,8 @@ def write_evidence(payload: dict[str, Any]) -> None:
     (logs / "bootstrap-check.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     if "package_upgrade_apply" in payload:
         renderer = render_upgrade_apply_plain
+    elif "npm_update_plan_preview" in payload:
+        renderer = render_update_plan_preview_plain
     elif "package_upgrade_preview" in payload:
         renderer = render_upgrade_preview_plain
     elif "existing_project_adaptation_plan" in payload:
@@ -1728,6 +1916,7 @@ def self_test() -> int:
             encoding="utf-8",
         )
         existing_precode_payload["package_upgrade_preview"] = build_upgrade_preview(existing_precode_payload)
+        existing_precode_payload["npm_update_plan_preview"] = build_update_plan_preview(existing_precode_payload)
         existing_precode_payload["bootstrap_recovery_guidance"] = build_recovery_guidance(existing_precode_payload)
         assert existing_precode_payload["target_kind"] == "existing_precode"
         assert any(
@@ -1741,6 +1930,7 @@ def self_test() -> int:
         )
         assert existing_precode_payload["package_upgrade_preview"]["package_state_classification"] == "dirty_project_or_owner_edits"
         release_reference = existing_precode_payload["package_upgrade_preview"]["release_reference"]
+        compatibility_policy = existing_precode_payload["package_upgrade_preview"]["updater_compatibility_policy"]
         assert release_reference["source_package_name"] == "@precodeos/precodeos"
         assert release_reference["source_package_version"] == "1.0.0-beta.1"
         assert release_reference["inferred_source_release_label"] == "beta"
@@ -1748,6 +1938,21 @@ def self_test() -> int:
         assert release_reference["dist_tag_resolution_performed"] is False
         assert "latest is not safe-to-overwrite permission" in release_reference["term_definitions"]["latest"]
         assert "npm updater behavior" in release_reference["boundary"]
+        assert compatibility_policy["policy_name"] == "npm Updater Evidence And Compatibility Policy"
+        assert compatibility_policy["policy_prd"] == "tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md"
+        assert "package state is clean" in " ".join(compatibility_policy["compatible_only_when"])
+        assert "dirty_package_edits" in compatibility_policy["blocked_update_cases"]
+        assert "blocked_identity_collision" in compatibility_policy["blocked_update_cases"]
+        assert "package-manager behavior" in compatibility_policy["not_authority_for"]
+        update_plan = existing_precode_payload["npm_update_plan_preview"]
+        assert update_plan["plan_kind"] == "npm_update_plan_preview"
+        assert update_plan["target_mutation_allowed"] is False
+        assert update_plan["writes_by_default"] is False
+        assert update_plan["generated_evidence_only"] is True
+        assert update_plan["optional_registry_metadata"]["registry_lookup_performed"] is False
+        assert update_plan["optional_registry_metadata"]["dist_tag_resolution_performed"] is False
+        assert "same-session preview" in update_plan["same_session_requirement"]
+        assert "npm apply behavior" in update_plan["not_authority_for"]
         prd_collision_actions = [
             action
             for action in existing_precode_payload["package_upgrade_preview"]["actions"]
@@ -1785,6 +1990,12 @@ def self_test() -> int:
             if action["category"] == "review_package_copy_candidate" and action["path"] == "docs/NEW-PACKAGE-DOC.md"
         ]
         assert len(upgrade_copy_ids) == 1
+        assert upgrade_copy_ids[0] in update_plan["grouped_action_ids"]["candidate_package_copy"]
+        assert update_plan["action_summary"]["candidate_package_copy_count"] == 1
+        rendered_update_plan = render_update_plan_preview_plain(existing_precode_payload)
+        assert "Npm Update Plan Preview" in rendered_update_plan
+        assert "Registry lookup performed: no" in rendered_update_plan
+        assert "not package update permission" in rendered_update_plan
         collision_apply = apply_upgrade_preview(existing_precode_payload, [prd_collision_actions[0]["id"]])
         assert collision_apply["status"] == "blocked"
         assert any("identity collision" in item["reason"] for item in collision_apply["blocked"])
@@ -1967,6 +2178,11 @@ def main() -> int:
         help="include non-mutating package upgrade preview output for existing Precode targets",
     )
     parser.add_argument(
+        "--update-plan-preview",
+        action="store_true",
+        help="include non-mutating npm update-plan preview output for existing Precode targets; implies --upgrade-preview",
+    )
+    parser.add_argument(
         "--recovery-guidance",
         action="store_true",
         help="include non-mutating bootstrap recovery guidance output",
@@ -2008,8 +2224,10 @@ def main() -> int:
         payload["supervised_setup_plan"] = build_supervised_setup_plan(payload)
     if args.existing_project_adaptation_plan:
         payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(payload)
-    if args.upgrade_preview:
+    if args.upgrade_preview or args.update_plan_preview:
         payload["package_upgrade_preview"] = build_upgrade_preview(payload)
+    if args.update_plan_preview:
+        payload["npm_update_plan_preview"] = build_update_plan_preview(payload)
     if args.recovery_guidance:
         payload["bootstrap_recovery_guidance"] = build_recovery_guidance(payload)
     if args.apply_supervised_setup:
@@ -2027,6 +2245,8 @@ def main() -> int:
     else:
         if args.apply_upgrade_preview:
             print(render_upgrade_apply_plain(payload))
+        elif args.update_plan_preview:
+            print(render_update_plan_preview_plain(payload))
         elif args.upgrade_preview:
             print(render_upgrade_preview_plain(payload))
         elif args.existing_project_adaptation_plan:

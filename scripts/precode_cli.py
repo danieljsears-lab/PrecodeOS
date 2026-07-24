@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
+# Version: v0.1.3
 # Last updated: 2026-07-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -108,6 +108,13 @@ def build_parser() -> argparse.ArgumentParser:
     ))
     upgrade_preview.add_argument("--target", required=True, help="existing Precode target path")
     upgrade_preview.add_argument("--json", action="store_true", help="print JSON output")
+
+    update_plan_preview = add_dry_run(subparsers.add_parser(
+        "update-plan-preview",
+        help="run read-only existing-Precode update-plan preview through bootstrap-check.py",
+    ))
+    update_plan_preview.add_argument("--target", required=True, help="existing Precode target path")
+    update_plan_preview.add_argument("--json", action="store_true", help="print JSON output")
     return parser
 
 
@@ -173,6 +180,19 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             "--target",
             args.target,
             "--upgrade-preview",
+        ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "update-plan-preview":
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--update-plan-preview",
         ]
         if args.json:
             command.append("--json")

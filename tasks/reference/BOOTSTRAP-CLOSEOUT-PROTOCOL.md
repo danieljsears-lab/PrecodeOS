@@ -34,11 +34,13 @@ Use these modes from the PrecodeOS package checkout after source and target are 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-The optional npm upgrade preview delegates to the same non-mutating package-state comparison from the package source. It exposes no apply flags and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json`; it must not query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
+The optional npm upgrade and update-plan previews delegate to the same non-mutating package-state comparison from the package source. They expose no apply flags and do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. Neither preview may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 
@@ -67,6 +69,27 @@ The plan is not copy approval or edit approval.
 `--upgrade-preview` applies to targets that already contain Precode active memory.
 
 For support-assisted upgrades of an existing Precode target with important active work, known local package edits, or unclear recovery state, prefer a clone-first preview: preserve the current environment as the backup, run `--upgrade-preview` against a fresh clone, and review dirty or customized paths before any approved copy action. This is a support safety posture, not rollback automation or package-update permission.
+
+Updater compatibility policy is governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`. Compatibility exists only as review evidence when upgrade preview has source/target confirmation, package-state classification, release-reference metadata, dirty-path lists, identity-collision checks, deferred package-development identities, candidate `UP-ID` actions, and explicit non-authority warnings. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it adds grouped planning evidence, same-session freshness, optional registry metadata status, and validation prompts, but it does not add npm apply behavior. `npm Approved Package-Owned Apply` remains a separate future roadmap candidate.
+
+## npm Update Plan Preview
+
+`--update-plan-preview` applies to targets that already contain Precode active memory. It implies upgrade-preview evidence and adds an `npm_update_plan_preview` object.
+
+The plan must include:
+
+- package-state classification
+- advisory release-reference metadata
+- updater compatibility policy metadata
+- optional registry metadata status with `registry_lookup_performed: false` and `dist_tag_resolution_performed: false`
+- action summary counts
+- grouped current `UP-ID` lists for candidate package copy, manual review, blocked, and deferred actions
+- same-session freshness requirement
+- validation prompts
+- next manual gate
+- generated-evidence and non-authority warnings
+
+The plan is not copy approval, package update permission, npm apply behavior, registry freshness, dist-tag resolution, release-channel behavior, package-manager behavior, rollback automation, owner-file adaptation approval, or generated-output authority.
 
 Upgrade preview is ID-aware for PRD and bead Markdown files. It reads incoming `prd_id` / `bead_id` values and target IDs before proposing copy actions. If an incoming package file declares an ID that already exists at another target path, the action must be `blocked_identity_collision`, name the incoming path, incoming ID, and existing target path, and remain non-copyable.
 
@@ -106,7 +129,7 @@ Preview actions use stable IDs and categories:
 - each approved action is for a missing package-owned file
 - the source file exists and the target path does not exist
 
-It must refuse dirty package states, unknown action IDs, non-copy actions, identity-collision actions, package dev PRD/bead copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation.
+It must refuse dirty package states, unknown action IDs, non-copy actions, identity-collision actions, package dev PRD/bead copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, rollback automation, registry lookup, dist-tag resolution, and channel selection.
 
 The package keeps fixture coverage for these upgrade-apply refusals in `scripts/bootstrap-check.py --self-test`, including missing approval, unknown IDs, dirty or unknown package state, missing source files, and overwrite refusal. The fixtures are regression evidence only; they do not approve package updates or dirty-file replacement.
 
@@ -125,7 +148,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
 - No command in this protocol creates executable release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
-- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, or support-only hidden install process.
+- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, registry freshness source, dist-tag resolver, channel selector, or support-only hidden install process.
 
 ## Builder Prompt
 

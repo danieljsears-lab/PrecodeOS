@@ -37,9 +37,10 @@ Optional npm preview entry:
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 ```
 
-The npm entry delegates to this protocol's `--supervised-setup-plan` or `--upgrade-preview` modes from the package source. It has no postinstall behavior, writes nothing by default, exposes no apply flags, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may show advisory local release-reference metadata, but it performs no npm registry lookup or dist-tag resolution.
+The npm entry delegates to this protocol's `--supervised-setup-plan`, `--upgrade-preview`, or `--update-plan-preview` modes from the package source. It has no postinstall behavior, writes nothing by default, exposes no apply flags, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade and update-plan previews may show advisory local release-reference metadata and updater compatibility policy metadata, but they perform no npm registry lookup or dist-tag resolution.
 
 Optional modes:
 
@@ -50,6 +51,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
@@ -65,7 +67,7 @@ Default mode prints a plain-English report and writes nothing.
 
 `--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and CLI installation.
 
-`--existing-project-adaptation-plan`, `--upgrade-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, ID-aware package upgrade preview, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only. Upgrade preview must report PRD/bead identity collisions instead of marking incoming package dev PRDs or beads copyable.
+`--existing-project-adaptation-plan`, `--upgrade-preview`, `--update-plan-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, ID-aware package upgrade preview, grouped update-plan preview evidence, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only. Upgrade preview must report PRD/bead identity collisions instead of marking incoming package dev PRDs or beads copyable.
 
 `--write-evidence` writes generated evidence only under the source Precode workspace:
 
@@ -97,7 +99,9 @@ When `--preview-manifest` is used, output should also include an `install_update
 
 When `--supervised-setup-plan` is used, output should also include a `supervised_setup_plan` object. The setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`.
 
-When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, advisory `release_reference` metadata from the local package source, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable. `release_reference` must report that registry lookup and dist-tag resolution were not performed, and that `latest` is not overwrite permission.
+When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, advisory `release_reference` metadata from the local package source, read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable. `release_reference` must report that registry lookup and dist-tag resolution were not performed, and that `latest` is not overwrite permission. Compatibility policy metadata explains evidence thresholds and blocked cases; it does not add an npm update-plan preview, npm apply behavior, registry lookup, dist-tag resolution, or package-manager behavior.
+
+When `--update-plan-preview` is used, output should also include `package_upgrade_preview` and `npm_update_plan_preview` objects. The update plan is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and should include action summary counts, grouped current `UP-ID` lists, same-session freshness requirements, validation prompts, optional registry metadata status, and non-authority warnings. It must report `registry_lookup_performed: false` and `dist_tag_resolution_performed: false`, and it must not approve copying, expose npm apply behavior, create package-manager behavior, or make generated output authoritative.
 
 ## Target Kinds
 

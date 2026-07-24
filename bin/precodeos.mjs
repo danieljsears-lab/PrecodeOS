@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Version: v0.1.0
+// Version: v0.1.1
 // Last updated: 2026-07-24
 // Owner: PrecodeOS
 // Created by Dan Sears / Recode.
@@ -11,18 +11,21 @@ import { spawnSync } from "node:child_process";
 const BIN_DIR = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(BIN_DIR, "..");
 const BOUNDARY_NOTE =
-  "precodeos is an optional npm entry for read-only PrecodeOS setup and upgrade previews. " +
-  "It delegates to scripts/bootstrap-check.py; preview output is generated evidence only.";
+  "precodeos is an optional npm entry for read-only PrecodeOS setup, upgrade, and update-plan previews. " +
+  "It delegates to scripts/bootstrap-check.py; preview output, including updater compatibility policy metadata, " +
+  "is generated evidence only.";
 
 function usage() {
   return `Usage:
   precodeos setup-preview --target <target-project-root> [--json]
   precodeos upgrade-preview --target <existing-precode-root> [--json]
+  precodeos update-plan-preview --target <existing-precode-root> [--json]
 
 Boundary:
   No postinstall behavior, target mutation, owner-file adaptation, hook installation,
   CI mutation, app commands, app-code edits, executable release-channel behavior, package-manager
-  updates, rollback automation, task selection, PRD approval, or bead activation.
+  updates, npm registry lookup, dist-tag resolution, npm apply behavior, rollback automation,
+  task selection, PRD approval, or bead activation.
 `;
 }
 
@@ -31,7 +34,7 @@ function parseArgs(argv) {
   if (!command || command === "--help" || command === "-h" || command === "help") {
     return { command: "help", target: "", json: false };
   }
-  if (!["setup-preview", "upgrade-preview"].includes(command)) {
+  if (!["setup-preview", "upgrade-preview", "update-plan-preview"].includes(command)) {
     throw new Error(`unknown command: ${command}`);
   }
   let target = "";
@@ -66,6 +69,8 @@ function commandFor(parsed) {
     command.push("--supervised-setup-plan");
   } else if (parsed.command === "upgrade-preview") {
     command.push("--upgrade-preview");
+  } else if (parsed.command === "update-plan-preview") {
+    command.push("--update-plan-preview");
   }
   if (parsed.json) {
     command.push("--json");

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-041 -- npm Updater Evidence And Compatibility Policy</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-041 -- npm Updater Evidence And Compatibility Policy</h1>
+  <p class="muted">Static HTML generated from <code>PRD-041-npm-updater-evidence-and-compatibility-policy.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md#prd-041-npm-updater-evidence-and-compatibility-policy">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>npm Updater Evidence And Compatibility Policy</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-24</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public policy for interpreting npm-assisted PrecodeOS upgrade-preview evidence, compatibility thresholds, blocked-update cases, and support expectations before any richer npm updater behavior exists.</p>
+    <p><strong>Not authority:</strong> Active memory, target-project truth, package update permission, npm registry freshness, dist-tag resolution, release-channel selection, npm apply behavior, postinstall mutation, dirty-file overwrite, owner-file adaptation approval, rollback automation, package-manager behavior, generated-output authority, PRD approval, bead activation, or implementation acceptance.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 5</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-041-FR01</code></td><td>Bootstrap Closeout and Install/Update Manifest must name this compatibility policy before any richer npm updater behavior.</td><td>P0</td><td>Policy owns interpretation, not command behavior.</td></tr><tr><td><code>PRD-041-FR02</code></td><td>Upgrade-preview output must expose read-only policy metadata naming evidence threshold, compatible-only cases, blocked cases, clone-first support, and non-authority limits.</td><td>P0</td><td>Existing command only; no new flags.</td></tr><tr><td><code>PRD-041-FR03</code></td><td>Public setup, support, troubleshooting, user, package-inventory, and AI-readable navigation surfaces must frame npm refresh as compatibility evidence, not update permission.</td><td>P0</td><td>Keeps support language consistent.</td></tr><tr><td><code>PRD-041-FR04</code></td><td>Clarity fixtures must reject wording drift that implies npm updater permission, package-manager behavior, registry lookup, dist-tag resolution, or <code>latest</code> overwrite permission.</td><td>P0</td><td>Text-contract and payload regression only.</td></tr><tr><td><code>PRD-041-FR05</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <ul><li>Stop if source package root, target root, target kind, package-state classification, release-reference status, dirty paths, identity collisions, deferred identities, or candidate action IDs are unclear.</li><li>Stop if the target has important active work, known local Precode changes, unclear support history, or recovery risk and no clone-first preview has been run.</li><li>Stop if a user asks npm to overwrite, adapt owner files, renumber PRDs/beads, install hooks, change CI, run app commands, edit app code, query registry freshness, resolve dist-tags, select a channel, or roll back.</li><li>Approval for a specific <code>UP-ID</code> is still only approval to copy an eligible missing package-owned file through the existing Python closeout path; it is not approval to update the project, overwrite dirty files, adapt owner truth, or accept generated output as proof.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></li><li>Parent PRDs:</li><li><code>tasks/prds/PRD-013-installable-precode-cli-wrapper.md</code></li><li><code>tasks/prds/PRD-016-installer-bootstrap-closeout.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/bootstrap-check.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>bin/precodeos.mjs</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>llms.txt</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package-manager mutation</li><li>npm registry integration</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>new npm commands or apply flags</li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-041-npm-updater-evidence-and-compatibility-policy">PRD-041 -- npm Updater Evidence And Compatibility Policy</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS now has an optional npm <code>precodeos</code> entry and upgrade preview may show advisory release-reference metadata from local <code>package.json</code>. That improves acquisition and support visibility, but it can also invite a dangerous assumption: that <code>latest</code>, npm acquisition, or a clean-looking preview means an active project can be overwritten.</p>
+<p>This PRD defines the compatibility policy before any richer npm updater exists. The policy is intentionally conservative: upgrade preview evidence may explain package state, blocked cases, and safe manual review gates, but it does not create an updater, package-manager flow, executable release channel, or mutation authority.</p>
+<h2 id="problem">Problem</h2>
+<p>Existing Precode targets can contain local package edits, active-memory changes, owner-file truth, active PRDs, active beads, generated evidence, hooks, CI, support recovery state, and app-specific code. A package source can also be acquired through GitHub, local checkout, or npm.</p>
+<p>Without a public compatibility policy, users and support helpers may treat npm acquisition, package version, <code>latest</code>, or upgrade-preview output as permission to overwrite project truth. That would collapse the staged npm pathway before the read-only update-plan preview and approved package-owned apply candidates have earned trust.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Define the evidence threshold before any existing-Precode refresh decision.</li><li>Name compatible, blocked, dirty, identity-collision, and clone-first support states.</li><li>Keep owner files, active memory, active PRDs/beads, app code, hooks, CI, and generated evidence protected.</li><li>Make the policy inspectable through read-only upgrade-preview metadata and clarity fixtures.</li><li>Preserve the staged roadmap path: policy first, read-only update-plan preview later, approved package-owned apply last.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No npm registry lookup, dist-tag resolution, channel selection, package-manager update behavior, postinstall target mutation, new npm command, npm apply flag, automatic package update, dirty-file overwrite, owner-file adaptation approval, hook or CI mutation, app command, app-code edit, PRD/bead renumbering, rollback automation, support-only hidden shortcut, generated-output authority, task selection, PRD approval, bead activation, review acceptance, release approval, registry behavior, optional-pack behavior, or public promise that <code>latest</code> is safe to apply.</li></ul>
+<h2 id="compatibility-policy">Compatibility Policy</h2>
+<p>Before any existing-Precode refresh is considered, the user or support helper must have same-source evidence from upgrade preview:</p>
+<ul><li>source package root and target root</li><li>target kind</li><li>package-state classification</li><li>release-reference metadata, including registry lookup and dist-tag lookup status</li><li>dirty package paths</li><li>dirty owner or project paths</li><li>missing package-owned paths</li><li>identity collisions</li><li>deferred package-development PRD or bead identities</li><li>candidate <code>UP-ID</code> actions</li><li>explicit non-authority warnings</li></ul>
+<p>Compatibility exists only when all of these are true:</p>
+<ul><li>target kind is <code>existing_precode</code></li><li>package state is <code>clean</code> for any approved package-owned copy action</li><li>the action is a missing package-owned <code>review_package_copy_candidate</code></li><li>the approved <code>UP-ID</code> exists in the current preview</li><li>the source file exists and the target path does not exist</li><li>target PRDs, beads, owner files, active memory, app code, hooks, CI, generated evidence, and private/local state are preserved</li></ul>
+<p>Anything else is review evidence, not compatibility.</p>
+<h2 id="target-state-taxonomy">Target-State Taxonomy</h2>
+<div class="table-wrap"><table><thead><tr><th>State</th><th>Meaning</th><th>Policy</th></tr></thead><tbody><tr><td><code>clean</code></td><td>Package-owned files match the source except possible missing package-owned candidates.</td><td>Only missing package-owned <code>review_package_copy_candidate</code> actions may be considered after explicit <code>UP-ID</code> approval.</td></tr><tr><td><code>dirty_package_edits</code></td><td>Existing package-owned files differ from the source package.</td><td>Block automatic update/apply; review manually.</td></tr><tr><td><code>dirty_project_or_owner_edits</code></td><td>Owner, active-memory, or project-truth surfaces differ from package templates or need review.</td><td>Preserve target truth; do not adapt or overwrite through upgrade preview.</td></tr><tr><td><code>mixed_or_unknown</code></td><td>Package-owned and owner/project surfaces both need review, or path shape is unclear.</td><td>Block automatic update/apply; use support review or recovery guidance.</td></tr><tr><td><code>blocked</code></td><td>Source, target, target kind, or stop condition prevents safe preview.</td><td>Resolve blockers and rerun preview before considering any action.</td></tr><tr><td><code>blocked_identity_collision</code></td><td>Incoming PRD/bead ID exists at another target path.</td><td>Do not copy or renumber; preserve target identity.</td></tr><tr><td>clone-first support case</td><td>Important active work, known local Precode changes, or unclear recovery state.</td><td>Preserve the current environment and run preview against a fresh clone before any approved copy action.</td></tr></tbody></table></div>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-041-FR01</code></td><td>Bootstrap Closeout and Install/Update Manifest must name this compatibility policy before any richer npm updater behavior.</td><td>P0</td><td>Policy owns interpretation, not command behavior.</td></tr><tr><td><code>PRD-041-FR02</code></td><td>Upgrade-preview output must expose read-only policy metadata naming evidence threshold, compatible-only cases, blocked cases, clone-first support, and non-authority limits.</td><td>P0</td><td>Existing command only; no new flags.</td></tr><tr><td><code>PRD-041-FR03</code></td><td>Public setup, support, troubleshooting, user, package-inventory, and AI-readable navigation surfaces must frame npm refresh as compatibility evidence, not update permission.</td><td>P0</td><td>Keeps support language consistent.</td></tr><tr><td><code>PRD-041-FR04</code></td><td>Clarity fixtures must reject wording drift that implies npm updater permission, package-manager behavior, registry lookup, dist-tag resolution, or <code>latest</code> overwrite permission.</td><td>P0</td><td>Text-contract and payload regression only.</td></tr><tr><td><code>PRD-041-FR05</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-041-FR01</code></td><td>Bootstrap Closeout and Install/Update Manifest point to this policy and keep npm update-plan/apply deferred.</td><td>Protocol source review.</td></tr><tr><td><code>PRD-041-FR02</code></td><td><code>bootstrap-check.py --upgrade-preview --json</code> includes <code>updater_compatibility_policy</code> and <code>--self-test</code> checks the policy fields.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code>.</td></tr><tr><td><code>PRD-041-FR03</code></td><td>User/support docs and package inventory describe compatibility evidence without saying npm updates the target.</td><td>Docs review and docs HTML freshness.</td></tr><tr><td><code>PRD-041-FR04</code></td><td>Clarity scenarios pin no registry lookup, no dist-tag lookup, blocked cases, compatible-only cases, and non-authority warnings.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-041-FR05</code></td><td>Roadmap, journal, changelog, PRD HTML, docs HTML, and roadmap HTML are current and rendered shortstats are numeric.</td><td>Maintainer checks and rendered roadmap inspection.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Stop if source package root, target root, target kind, package-state classification, release-reference status, dirty paths, identity collisions, deferred identities, or candidate action IDs are unclear.</li><li>Stop if the target has important active work, known local Precode changes, unclear support history, or recovery risk and no clone-first preview has been run.</li><li>Stop if a user asks npm to overwrite, adapt owner files, renumber PRDs/beads, install hooks, change CI, run app commands, edit app code, query registry freshness, resolve dist-tags, select a channel, or roll back.</li><li>Approval for a specific <code>UP-ID</code> is still only approval to copy an eligible missing package-owned file through the existing Python closeout path; it is not approval to update the project, overwrite dirty files, adapt owner truth, or accept generated output as proof.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>scripts/bootstrap-check.py</code></td><td>Existing <code>--upgrade-preview</code> JSON/plain output.</td><td>Adds read-only <code>updater_compatibility_policy</code> metadata; no new command behavior.</td><td>Self-test and manual JSON/plain review.</td><td><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></td></tr><tr><td><code>bin/precodeos.mjs</code></td><td>Existing npm <code>setup-preview</code> and <code>upgrade-preview</code> facade.</td><td>Still exposes no apply flags and delegates visibly to Bootstrap Confidence.</td><td>Clarity scenario no-apply fixture.</td><td><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></td></tr><tr><td>Bootstrap/setup protocols</td><td>Policy references and support wording.</td><td>Explain compatibility evidence before update-plan or apply candidates.</td><td>Source review and docs checks.</td><td><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></li><li>Parent PRDs:</li><li><code>tasks/prds/PRD-013-installable-precode-cli-wrapper.md</code></li><li><code>tasks/prds/PRD-016-installer-bootstrap-closeout.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/bootstrap-check.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>bin/precodeos.mjs</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>llms.txt</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package-manager mutation</li><li>npm registry integration</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>new npm commands or apply flags</li></ul>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --self-test
+python3 scripts/clarity-scenario-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/version-check.py
+python3 scripts/prd-html.py --check
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If implementation adds a new npm command, npm apply flag, registry lookup, dist-tag resolution, channel selection, postinstall mutation, or package-manager behavior, it violates this PRD.</li><li>If <code>latest</code> or package version is treated as overwrite permission, it violates this PRD.</li><li>If dirty package files, owner files, active memory, PRDs, beads, hooks, CI, app code, or generated evidence are updated automatically, it violates this PRD.</li><li>If generated preview output is treated as target-project truth, compatibility proof, or implementation acceptance, it violates this PRD.</li></ul>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B041-npm-updater-evidence-and-compatibility-policy</code></td><td><code>PRD-041-FR01</code> through <code>PRD-041-FR05</code></td><td>PRD policy, read-only upgrade-preview metadata, protocol/docs/navigation wording, clarity coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></td><td>bootstrap self-test, clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-07-24.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#compatibility-policy">Compatibility Policy</a><a class="level-2" href="#target-state-taxonomy">Target-State Taxonomy</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>
