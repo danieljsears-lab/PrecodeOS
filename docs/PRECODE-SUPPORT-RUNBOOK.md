@@ -283,7 +283,7 @@ After Bootstrap Confidence, choose the first adoption fork:
 
 - Fresh install for empty or nearly empty targets.
 - Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
-- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` or the equivalent `bootstrap-check.py --upgrade-preview` before any approved `UP-ID` copy action. Treat its release-reference metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, or updater permission.
+- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, or the equivalent `bootstrap-check.py` preview mode before any approved `UP-ID` copy action. Treat release-reference, compatibility-policy, and update-plan metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, copy approval, or updater permission.
 
 For existing apps, run:
 
@@ -463,6 +463,8 @@ python3 scripts/bead-transition.py --json
 ```
 
 If `next-step.py` says to author the next bead, stop re-reviewing the accepted bead. Help the builder scope or author the next bead, then show the transition proposal. Do not approve the transition or activate the next bead without explicit user approval.
+
+If `next-step.py` or `bead-transition.py --json` shows next-work source reconciliation, compare the router-proposed next bead, Closeout `next_bead`, Handback or Noticed recommendation, and existing bead-file readiness before naming the next action. A conflict means the support step is reconciliation with the builder, not more implementation on the accepted bead and not transition approval.
 
 ### Implemented Bead Reversal Support
 

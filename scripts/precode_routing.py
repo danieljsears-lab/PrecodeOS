@@ -152,12 +152,16 @@ def next_step_guidance(
             approval_prompt = "Ask the user whether to revert, split, or explicitly approve the scope change."
         elif accepted_hold.get("eligible"):
             category = "accepted-hold"
-            action = "author or propose the next bead before transition; do not continue implementation or repeat acceptance review"
+            source_reconciliation = (completion_state.get("details") or {}).get("next_work_source_reconciliation") or {}
+            if source_reconciliation.get("reconciliation_required"):
+                action = "reconcile next-work sources with the user before authoring a bead or requesting transition approval"
+            else:
+                action = "author or propose the next bead before transition; do not continue implementation or repeat acceptance review"
             blockers.extend(str(item) for item in promotion_blockers[:6])
             user_decision = "author next bead"
-            summary = "The active bead is accepted and held; scope or author the next bead before asking for transition approval."
-            stop_if = "Stop if the agent treats the accepted hold as unfinished implementation, repeats acceptance review, or activates a next bead without approval."
-            approval_prompt = "Ask the agent to scope or author the next bead, then show the transition proposal without approving it."
+            summary = "The active bead is accepted and held; compare next-work sources, then scope or author the next bead before asking for transition approval."
+            stop_if = "Stop if the agent treats source conflict as unfinished implementation, repeats acceptance review, or activates a next bead without approval."
+            approval_prompt = "Ask the agent to show the next-work source comparison, scope or author the next bead, then show the transition proposal without approving it."
         elif promotion_state.get("eligible"):
             category = "transition-approval"
             action = "review the transition proposal; user approval is required before activating the next bead"
@@ -295,6 +299,7 @@ def next_step_guidance(
             "needs_transition": bool(promotion_state.get("eligible")),
             "next_bead": promotion_state.get("next_bead") or "not recorded",
             "accepted_hold": accepted_hold,
+            "next_work_source_reconciliation": (completion_state.get("details") or {}).get("next_work_source_reconciliation") or promotion_state.get("next_work_source_reconciliation") or {},
             "goal_frame": current_goal or {},
             "goal_frame_advisory": "Goal Frames can guide workflow selection only; they cannot choose tasks, approve transitions, or override active memory.",
             "stable_fix_eligibility": stable_fix_details,

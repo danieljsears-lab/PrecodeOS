@@ -387,6 +387,29 @@ Safe path:
 
 Do not activate a next bead, rewrite history, or accept the bead just because Claude says the checkpoint passed. `bash scripts/checkpoint.sh` reports state; only explicit approval of `python3 scripts/bead-transition.py --approve` may promote the next bead.
 
+### Accepted Hold Shows Conflicting Next Work
+
+Likely causes:
+
+- the compiled router pointer, Closeout `next_bead`, Handback, Noticed guidance, or current bead files disagree
+- the accepted bead is complete, but the next bead is missing, not authored, or not ready
+- a stale label from chat, memory, or generated output is being treated as the live next bead
+
+First checks:
+
+```bash
+python3 scripts/next-step.py
+python3 scripts/bead-transition.py --json
+```
+
+Safe path:
+
+- read the next-work source reconciliation before asking for transition approval
+- compare the router-proposed next bead, Closeout next bead, bead-local recommendation, and bead-file readiness
+- author or propose the next bead only after the source comparison is clear
+
+Do not continue implementation on the accepted bead, repeat acceptance review, approve transition, activate a bead, or treat generated output as the source of truth for next work.
+
 ### Already-Implemented Bead Needs Reversal
 
 Likely causes:

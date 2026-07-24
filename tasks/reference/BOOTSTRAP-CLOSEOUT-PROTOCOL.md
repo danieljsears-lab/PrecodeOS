@@ -148,7 +148,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
 - No command in this protocol creates executable release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
-- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, registry freshness source, dist-tag resolver, channel selector, or support-only hidden install process.
+- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade/update-plan preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, registry freshness source, dist-tag resolver, channel selector, or support-only hidden install process.
 
 ## Builder Prompt
 

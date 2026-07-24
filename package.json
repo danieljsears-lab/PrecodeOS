@@ -1,7 +1,7 @@
 {
   "name": "@precodeos/precodeos",
   "version": "1.0.0-beta.1",
-  "description": "Optional PrecodeOS npm entry for read-only setup and upgrade previews.",
+  "description": "Optional PrecodeOS npm entry for read-only setup, upgrade, and update-plan previews.",
   "license": "Apache-2.0",
   "author": "Dan Sears / Recode",
   "homepage": "https://www.precodeos.org",

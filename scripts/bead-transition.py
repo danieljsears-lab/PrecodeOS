@@ -57,6 +57,8 @@ class FileSnapshot:
 def transition_assessment(root: Path) -> dict[str, object]:
     payload = compile_state(root)
     readiness = payload["readiness"]["current_promotion"]
+    completion = payload.get("completion_handoff") or {}
+    completion_details = completion.get("details") or {}
     current = payload.get("current_bead")
     next_bead = readiness.get("next_bead")
 
@@ -82,8 +84,40 @@ def transition_assessment(root: Path) -> dict[str, object]:
         "current_status": payload.get("current_bead_status"),
         "next": next_bead,
         "next_summary": next_summary,
+        "next_work_source_reconciliation": readiness.get("next_work_source_reconciliation")
+        or completion_details.get("next_work_source_reconciliation")
+        or {},
         "latest_results": payload.get("active_bead_checks", []),
     }
+
+
+def short_text(value: object, limit: int = 140) -> str:
+    cleaned = " ".join(str(value or "not recorded").split())
+    if len(cleaned) <= limit:
+        return cleaned
+    return cleaned[: limit - 3].rstrip() + "..."
+
+
+def print_reconciliation(reconciliation: object) -> None:
+    if not isinstance(reconciliation, dict) or reconciliation.get("state") == "not_applicable":
+        return
+    print("\nNext-work source reconciliation:")
+    print(f"- State: `{reconciliation.get('state', 'unknown')}`")
+    print(f"- Reconciliation required: `{reconciliation.get('reconciliation_required', False)}`")
+    print(f"- Router proposed: `{reconciliation.get('router_proposed_next_bead', 'not recorded')}`")
+    print(f"- Closeout next bead: `{reconciliation.get('closeout_next_bead', 'not recorded')}`")
+    print(f"- Bead-local recommendation: {short_text(reconciliation.get('bead_local_recommendation', 'not recorded'))}")
+    print(f"- Next safe action: {reconciliation.get('next_safe_action', 'compare sources before transition approval')}")
+    sources = reconciliation.get("sources") or []
+    if sources:
+        print("- Sources:")
+    for source in sources[:4]:
+        if not isinstance(source, dict):
+            continue
+        label = source.get("parsed_bead")
+        if label == "not recorded":
+            label = source.get("unresolved_label", "not recorded")
+        print(f"  - {source.get('source', 'unknown')}: `{label}` (file exists: `{source.get('file_exists', False)}`)")
 
 
 def print_proposal(assessment: dict[str, object]) -> None:
@@ -94,6 +128,7 @@ def print_proposal(assessment: dict[str, object]) -> None:
     if blockers:
         print("No bead promotion proposal is available yet.")
         print(f"Current bead: {current}")
+        print_reconciliation(assessment.get("next_work_source_reconciliation"))
         print("\nBlockers:")
         for blocker in blockers:
             print(f"- {blocker}")
@@ -104,6 +139,7 @@ def print_proposal(assessment: dict[str, object]) -> None:
     print("Next Bead Proposal")
     print(f"From: {current}")
     print(f"To: {next_bead}")
+    print_reconciliation(assessment.get("next_work_source_reconciliation"))
     print("\nWhy proposed:")
     print("- Current bead passes the compiled promotion readiness model")
     print("- Review decision is accepted and manual verification is clear")

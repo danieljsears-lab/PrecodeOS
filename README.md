@@ -184,11 +184,13 @@ python3 scripts/existing-repo-intake.py --source <precode-package-root> --target
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
 ```
 
-For existing Precode targets, use upgrade preview before any package repair or update copy. Treat compatibility policy metadata as blocked-case guidance only. Only missing package-owned files marked `review_package_copy_candidate` can be copied, and only by approved action ID:
+For existing Precode targets, use upgrade preview before any package repair or update copy, and use update-plan preview when grouped current `UP-ID` evidence and validation prompts would clarify the refresh discussion. Treat compatibility policy and update-plan metadata as evidence only. Only missing package-owned files marked `review_package_copy_candidate` can be copied, and only by approved action ID:
 
 ```bash
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```
 
@@ -255,7 +257,7 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 
 `precode_cli.py` and the optional `precode` console command are local facades over documented repo scripts. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
 
-`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only.
+`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only. When accepted-hold output shows next-work source reconciliation, compare the router pointer, Closeout next bead, Handback or Noticed recommendation, and existing bead-file readiness before transition approval.
 
 `loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
 

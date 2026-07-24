@@ -24,6 +24,7 @@ from os_compiler import (
     completion_session_freshness,
     memory_summary,
     next_step_guidance,
+    next_work_source_reconciliation,
     reference_followthrough_quality,
     release_evidence_quality,
     reversal_workflow_quality,
@@ -91,6 +92,7 @@ ROUTER_DETAILS_KEYS = {
     "needs_review",
     "needs_transition",
     "stable_fix_eligibility",
+    "next_work_source_reconciliation",
     "recovery_flow",
     "recovery_protocol",
     "beginner_prompt",
@@ -191,13 +193,20 @@ def next_payload(
     goal_frame: dict[str, Any] | None = None,
     stable_fix: dict[str, Any] | None = None,
     accepted_hold: dict[str, Any] | None = None,
+    source_reconciliation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return next_step_guidance(
         Path("."),
         {"sections": {"Open Questions": "- none"}, "current_bead": "tasks/beads/B999-clarity-fixture.md"},
         current,
         promotion or {"eligible": False, "blockers": [], "next_bead": "not recorded"},
-        {"details": {"closeout_blockers": closeout_blockers or [], "accepted_hold": accepted_hold or {}}},
+        {
+            "details": {
+                "closeout_blockers": closeout_blockers or [],
+                "accepted_hold": accepted_hold or {},
+                "next_work_source_reconciliation": source_reconciliation or {},
+            }
+        },
         {"details": {}},
         depth or {"status": "pass", "warnings": [], "details": {}},
         guardrail or {"status": "pass", "warnings": [], "details": {"out_of_scope_paths": []}},
@@ -225,6 +234,19 @@ def assert_recovery_flow(name: str, payload: dict[str, Any], expected: str, fail
         failures.append({"scenario": f"{name} protocol", "expected": "tasks/reference/RECOVERY-PROTOCOL.md", "actual": protocol})
     if expected != "none" and not prompt:
         failures.append({"scenario": f"{name} prompt", "expected": "beginner prompt", "actual": prompt})
+
+
+def assert_source_reconciliation(name: str, payload: dict[str, Any], expected_state: str, required: bool, failures: list[dict[str, str]]) -> None:
+    actual_state = str(payload.get("state") or "")
+    actual_required = bool(payload.get("reconciliation_required"))
+    if payload.get("advisory_only") is not True:
+        failures.append({"scenario": f"{name} advisory", "expected": "advisory_only true", "actual": str(payload.get("advisory_only"))})
+    if actual_state != expected_state:
+        failures.append({"scenario": f"{name} state", "expected": expected_state, "actual": actual_state})
+    if actual_required != required:
+        failures.append({"scenario": f"{name} required", "expected": str(required), "actual": str(actual_required)})
+    if payload.get("does_not_select_next_bead") is not True or payload.get("does_not_approve_transition") is not True:
+        failures.append({"scenario": f"{name} guardrails", "expected": "no selection or transition approval", "actual": str(payload)})
 
 
 def assert_file_terms(path: Path, terms: list[str], failures: list[dict[str, str]], scenario: str) -> int:
@@ -4865,6 +4887,83 @@ def main() -> int:
     ]
     for name, payload, expected_category in router_contract_scenarios:
         assert_router_contract(f"router contract: {name}", payload, failures, expected_category)
+
+    ready_next = bead(
+        rel_path="tasks/beads/B000-install-precode-kernel.md",
+        bead_id="B000",
+        status="ready",
+        primary_authority="AGENT.md",
+        files_in_play=["AGENT.md"],
+        checks=["bash scripts/validate-memory.sh"],
+    )
+    other_next = bead(
+        rel_path="tasks/beads/B001-ubiquitous-language-glossary-hardening.md",
+        bead_id="B001",
+        status="ready",
+        primary_authority="DECISIONS.md",
+        files_in_play=["DECISIONS.md"],
+        checks=["bash scripts/validate-memory.sh"],
+    )
+    source_bead_map = {ready_next.rel_path: ready_next, other_next.rel_path: other_next}
+    accepted_current = bead(
+        status="review",
+        closeout={
+            "manual_verification": "Who checked: fixture. What was checked: source reconciliation. Environment: synthetic. Result: pass. Remaining uncertainty: none.",
+            "review_decision": "accepted",
+        },
+    )
+    source_reconciliation_scenarios = [
+        (
+            "accepted hold no named next bead",
+            next_work_source_reconciliation(
+                Path("."),
+                {"sections": {"Noticed": ""}},
+                accepted_current,
+                source_bead_map,
+                {"eligible": False, "blockers": ["next bead is not named in Closeout Evidence or Handback"], "next_bead": None},
+            ),
+            "missing_next_bead",
+            True,
+        ),
+        (
+            "accepted hold source conflict",
+            next_work_source_reconciliation(
+                Path("."),
+                {"sections": {"Noticed": "Author B001 follow-up before transition."}},
+                accepted_current,
+                source_bead_map,
+                {"eligible": False, "blockers": ["current bead status must be review before promotion"], "next_bead": "tasks/beads/B000-install-precode-kernel.md"},
+            ),
+            "conflict",
+            True,
+        ),
+        (
+            "accepted hold proposed file missing",
+            next_work_source_reconciliation(
+                Path("."),
+                {"sections": {"Noticed": ""}},
+                bead(closeout={"next_bead": "B998"}),
+                source_bead_map,
+                {"eligible": False, "blockers": ["next bead file is missing: B998"], "next_bead": None},
+            ),
+            "missing_next_bead",
+            True,
+        ),
+        (
+            "transition ready sources aligned",
+            next_work_source_reconciliation(
+                Path("."),
+                {"sections": {"Noticed": ""}},
+                bead(closeout={"next_bead": "tasks/beads/B000-install-precode-kernel.md"}),
+                source_bead_map,
+                {"eligible": True, "blockers": [], "next_bead": "tasks/beads/B000-install-precode-kernel.md"},
+            ),
+            "aligned",
+            False,
+        ),
+    ]
+    for name, payload, expected_state, required in source_reconciliation_scenarios:
+        assert_source_reconciliation(f"source reconciliation: {name}", payload, expected_state, required, failures)
     assert_session_start_router_delegation(failures)
 
     review_trigger_terms = [

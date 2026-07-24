@@ -51,6 +51,7 @@ def render(payload: dict[str, object]) -> str:
             lines.extend(f"  - Fit blocker: {blocker}" for blocker in fit_blockers[:3])
     approval_prompt = details.get("approval_prompt")
     stable_fix = details.get("stable_fix_eligibility") or {}
+    reconciliation = details.get("next_work_source_reconciliation") or {}
     load_plan = details.get("load_plan") or {}
     footprint = details.get("context_footprint") or {}
     if approval_prompt:
@@ -65,6 +66,30 @@ def render(payload: dict[str, object]) -> str:
                 f"  - Advisory only: `{stable_fix.get('advisory_only', True)}`",
             ]
         )
+    if reconciliation and reconciliation.get("state") != "not_applicable":
+        lines.extend(
+            [
+                "- Next-work source reconciliation:",
+                f"  - State: `{reconciliation.get('state', 'unknown')}`",
+                f"  - Reconciliation required: `{reconciliation.get('reconciliation_required', False)}`",
+                f"  - Router proposed: `{reconciliation.get('router_proposed_next_bead', 'not recorded')}`",
+                f"  - Closeout next bead: `{reconciliation.get('closeout_next_bead', 'not recorded')}`",
+                f"  - Bead-local recommendation: {short_text(str(reconciliation.get('bead_local_recommendation', 'not recorded')))}",
+                f"  - Next safe action: {reconciliation.get('next_safe_action', 'compare sources before transition approval')}",
+            ]
+        )
+        sources = reconciliation.get("sources") or []
+        for source in sources[:4]:
+            if not isinstance(source, dict):
+                continue
+            label = source.get("parsed_bead")
+            if label == "not recorded":
+                label = source.get("unresolved_label", "not recorded")
+            lines.append(
+                "  - "
+                f"{source.get('source', 'unknown')}: `{label}` "
+                f"(file exists: `{source.get('file_exists', False)}`)"
+            )
     if load_plan:
         lines.extend(
             [
@@ -102,6 +127,13 @@ def render(payload: dict[str, object]) -> str:
         lines.append("\nWarnings:")
         lines.extend(f"- {warning}" for warning in warnings)
     return "\n".join(lines)
+
+
+def short_text(value: str, limit: int = 140) -> str:
+    cleaned = " ".join(str(value or "not recorded").split())
+    if len(cleaned) <= limit:
+        return cleaned
+    return cleaned[: limit - 3].rstrip() + "..."
 
 
 def main() -> int:

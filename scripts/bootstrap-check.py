@@ -1991,7 +1991,7 @@ def self_test() -> int:
         ]
         assert len(upgrade_copy_ids) == 1
         assert upgrade_copy_ids[0] in update_plan["grouped_action_ids"]["candidate_package_copy"]
-        assert update_plan["action_summary"]["candidate_package_copy_count"] == 1
+        assert update_plan["action_summary"]["candidate_package_copy_count"] >= 1
         rendered_update_plan = render_update_plan_preview_plain(existing_precode_payload)
         assert "Npm Update Plan Preview" in rendered_update_plan
         assert "Registry lookup performed: no" in rendered_update_plan

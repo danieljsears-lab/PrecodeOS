@@ -2793,12 +2793,13 @@ def completion_handoff_quality(
 
     close_state = close_readiness(bead, current_checks)
     accepted_hold = accepted_hold_reentry_state(bead, close_state, promotion_state)
+    source_reconciliation = next_work_source_reconciliation(root, todo, bead, bead_map, promotion_state)
     if bead.status in {"needs_info", "manual_testing"}:
         next_safe_action = "record exact blocked escape path or create a narrow unblocker bead"
     elif accepted_hold.get("eligible"):
-        next_safe_action = accepted_hold["next_safe_action"]
+        next_safe_action = source_reconciliation.get("next_safe_action") or accepted_hold["next_safe_action"]
     elif close_state.get("eligible") and review_decision_accepted(closeout.get("review_decision", "")):
-        next_safe_action = "review transition proposal; user approval is still required"
+        next_safe_action = source_reconciliation.get("next_safe_action") or "review transition proposal; user approval is still required"
     elif bead_rows:
         next_safe_action = "complete manual verification and review decision before transition"
     else:
@@ -2848,6 +2849,7 @@ def completion_handoff_quality(
         "next_bead": next_rel or next_value or "not recorded",
         "next_bead_start_readiness": next_start,
         "accepted_hold": accepted_hold,
+        "next_work_source_reconciliation": source_reconciliation,
         "handoff_context_missing": missing_context,
         "next_safe_action": next_safe_action,
         "release_evidence": release_evidence,
@@ -3400,6 +3402,129 @@ def find_next_bead(bead: BeadRecord, root: Path) -> str | None:
             return next_bead
 
     return parse_next_bead_reference(bead.handback, root)
+
+
+def first_bead_label(value: str) -> str:
+    path_match = re.search(r"`?(tasks/beads/[^`\s)]+\.md)`?", value or "")
+    if path_match:
+        return path_match.group(1)
+    id_match = re.search(r"\b(BL\d+|B\d{3})\b", value or "")
+    return id_match.group(1) if id_match else ""
+
+
+def next_work_source(
+    root: Path,
+    bead_map: dict[str, BeadRecord],
+    source: str,
+    raw_value: str,
+) -> dict[str, Any]:
+    cleaned = normalize_optional(raw_value)
+    rel = parse_next_bead_reference(cleaned, root) if cleaned else None
+    unresolved_label = "" if rel else first_bead_label(cleaned)
+    exists = bool(rel and rel in bead_map)
+    readiness = start_readiness(bead_map[rel], bead_map) if exists else None
+    return {
+        "source": source,
+        "raw": cleaned or "not recorded",
+        "parsed_bead": rel or "not recorded",
+        "unresolved_label": unresolved_label or "not recorded",
+        "file_exists": exists,
+        "start_readiness": readiness,
+    }
+
+
+def next_work_signal(value: str) -> str:
+    cleaned = normalize_optional(value)
+    if not cleaned:
+        return ""
+    lower = cleaned.lower()
+    has_destination = bool(re.search(r"`?tasks/beads/[^`\s)]+\.md`?|\b(BL\d+|B\d{3})\b", cleaned))
+    has_next_work_language = bool(
+        re.search(
+            r"\b(next bead|follow-up|follow up|author|propose|transition|next work|fix bead)\b",
+            lower,
+        )
+    )
+    return cleaned if has_destination and has_next_work_language else ""
+
+
+def next_work_source_reconciliation(
+    root: Path,
+    todo: dict[str, Any],
+    bead: BeadRecord | None,
+    bead_map: dict[str, BeadRecord],
+    promotion_state: dict[str, Any],
+) -> dict[str, Any]:
+    if bead is None:
+        return {
+            "advisory_only": True,
+            "state": "not_applicable",
+            "current_bead": "missing",
+            "current_bead_status": "missing",
+            "sources": [],
+            "reconciliation_required": False,
+            "next_safe_action": "repair active bead pointer before reconciling next work",
+        }
+
+    router_next = normalize_optional(str(promotion_state.get("next_bead") or ""))
+    closeout_next = normalize_optional(bead.closeout.get("next_bead", ""))
+    handback_next = next_work_signal(bead.handback)
+    todo_noticed = normalize_optional(str((todo.get("sections") or {}).get("Noticed", "")))
+    bead_noticed = normalize_optional(bead.sections.get("Noticed", ""))
+    noticed_next = next_work_signal(bead_noticed) or next_work_signal(todo_noticed)
+
+    candidates = [
+        next_work_source(root, bead_map, "compiled_router", router_next),
+        next_work_source(root, bead_map, "bead_closeout_next_bead", closeout_next),
+        next_work_source(root, bead_map, "bead_handback", handback_next),
+        next_work_source(root, bead_map, "noticed", noticed_next),
+    ]
+    sources = [
+        item
+        for item in candidates
+        if item["parsed_bead"] != "not recorded" or item["unresolved_label"] != "not recorded" or item["raw"] != "not recorded"
+    ]
+    destinations = {
+        item["parsed_bead"] if item["parsed_bead"] != "not recorded" else item["unresolved_label"]
+        for item in sources
+        if item["parsed_bead"] != "not recorded" or item["unresolved_label"] != "not recorded"
+    }
+    missing_file = any(
+        item["unresolved_label"] != "not recorded" and item["parsed_bead"] == "not recorded"
+        for item in sources
+    )
+
+    if not sources or not destinations:
+        state = "missing_next_bead"
+        required = True
+        next_safe_action = "author or propose the next bead before transition approval"
+    elif len(destinations) > 1:
+        state = "conflict"
+        required = True
+        next_safe_action = "compare next-work sources with the user before authoring a bead or requesting transition approval"
+    elif missing_file:
+        state = "missing_next_bead"
+        required = True
+        next_safe_action = "author the referenced next bead or choose a different existing ready bead before transition approval"
+    else:
+        state = "aligned"
+        required = False
+        next_safe_action = "show the transition proposal; explicit user approval is still required before activation"
+
+    return {
+        "advisory_only": True,
+        "state": state,
+        "current_bead": bead.rel_path,
+        "current_bead_status": bead.status,
+        "router_proposed_next_bead": router_next or "not recorded",
+        "closeout_next_bead": closeout_next or "not recorded",
+        "bead_local_recommendation": noticed_next or handback_next or "not recorded",
+        "sources": sources,
+        "reconciliation_required": required,
+        "next_safe_action": next_safe_action,
+        "does_not_select_next_bead": True,
+        "does_not_approve_transition": True,
+    }
 
 
 def promotion_readiness(
@@ -5742,6 +5867,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         verification_quality = evidence_quality(root, current_bead, check_results, changed)
         current_decomposition_quality = decomposition_quality(current_bead)
         promotion_state = promotion_readiness(root, current_bead, bead_map, current_checks)
+        promotion_state["next_work_source_reconciliation"] = next_work_source_reconciliation(root, todo, current_bead, bead_map, promotion_state)
         readiness_by_bead[current_bead.rel_path]["promote"] = promotion_state
         next_bead = promotion_state.get("next_bead") or find_next_bead(current_bead, root)
         learning = {
@@ -5758,6 +5884,7 @@ def compile_state(root: Path, command: str = "", edit_lock: bool = False) -> dic
         verification_quality = evidence_quality(root, None, check_results, changed)
         current_decomposition_quality = decomposition_quality(None)
         promotion_state = {"eligible": False, "blockers": ["current bead is missing"], "next_bead": None}
+        promotion_state["next_work_source_reconciliation"] = next_work_source_reconciliation(root, todo, None, bead_map, promotion_state)
         learning = {
             "drift_observed": "not recorded",
             "lesson_to_promote": "not recorded",
