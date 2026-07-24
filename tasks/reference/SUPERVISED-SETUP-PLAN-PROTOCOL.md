@@ -29,8 +29,11 @@ This protocol is intentionally non-mutating. It produces setup-plan evidence onl
 Use the setup plan from the PrecodeOS package checkout after Bootstrap Confidence:
 
 ```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 ```
+
+The optional npm command is a read-only preview entry over the same setup plan. It has no postinstall behavior, writes nothing by default, and exposes no apply flags.
 
 Structured output is available with:
 
@@ -150,6 +153,7 @@ These steps are validation suggestions, not proof that setup occurred.
 - It must not copy package development PRDs or beads such as numbered `tasks/prds/PRD-001...` or `tasks/beads/B000...`.
 - It must not read or print secret file contents.
 - It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
+- It must not treat the optional npm `precodeos` preview entry as setup approval, copy permission, owner-file adaptation approval, release-channel behavior, package-manager update behavior, broad install behavior, or target-project mutation.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
 - It must not imply that `--apply-supervised-setup` can adapt owner files, overwrite target material, install hooks, change CI, mutate existing projects, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
 - It must not imply that existing-project adaptation, package upgrade preview, recovery guidance, or upgrade apply are part of the fresh-target setup plan.

@@ -28,7 +28,7 @@ Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token 
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when a host or user wants a bounded retry loop around one active bead. Ralph can record attempts and validators, but it is still subject to this protocol's command classes and approval rules.
 
-Use `scripts/precode_cli.py` or the optional local `precode` console command only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, or make generated output authoritative.
+Use `scripts/precode_cli.py`, the optional local `precode` console command, or the optional npm `precodeos` preview entry only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, define release-channel behavior, or make generated output authoritative. The npm entry is limited to read-only setup and upgrade previews and must not expose apply flags or postinstall target mutation.
 
 Command surface triage is reader guidance only. Grouping commands by beginner daily work, setup/support/recovery, advanced evidence/review, and maintainer validation does not change tool-call classes, approve commands, choose tasks, create a router or registry, expand wrapper behavior, or make generated output authoritative.
 

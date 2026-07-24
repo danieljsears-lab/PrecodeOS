@@ -281,6 +281,7 @@ Treat the output as evidence only, not permission to mutate.
 ```text
 Run the PrecodeOS supervised setup plan after Bootstrap Confidence and manifest preview.
 Use the PrecodeOS checkout as the package source and my project folder as the target.
+If using the optional npm entry, run `npx @precodeos/precodeos setup-preview --target <target-project-root>` for the same read-only setup checklist.
 Do not copy, edit, install hooks, change CI, run app commands, create active memory, adapt owner files, approve a PRD, activate a bead, or write code.
 Show the setup checklist, approval gates, exclusions, blockers, and validation steps.
 Treat the setup plan as evidence only, not permission to mutate.
@@ -315,6 +316,8 @@ Use my clean PrecodeOS package checkout as the source and my existing Precode pr
 
 First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. Then run:
 
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
@@ -337,6 +340,7 @@ This is a refresh prompt, not an automatic update, release channel, rollback pat
 ```text
 Run the PrecodeOS package upgrade preview for this existing Precode target.
 Use the PrecodeOS checkout as the source and my project folder as the target.
+If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison.
 Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
 Show action IDs and wait for my explicit approval before any missing package-owned file copy.

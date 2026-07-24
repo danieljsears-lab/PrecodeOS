@@ -144,6 +144,15 @@ cd PrecodeOS
 bash scripts/validate-memory.sh
 ```
 
+Optional npm preview entry:
+
+```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+```
+
+The npm entry is acquisition and preview only. It runs the same Bootstrap Confidence setup-plan or upgrade-preview checks from the package source, writes nothing by default, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release channels, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+
 Optional local command facade:
 
 ```bash
@@ -158,6 +167,7 @@ The optional facade, generated router output, run-contract sidecars, and recorde
 Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
 
 ```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
@@ -174,6 +184,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 For existing Precode targets, use upgrade preview before any package repair or update copy. Only missing package-owned files marked `review_package_copy_candidate` can be copied, and only by approved action ID:
 
 ```bash
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```

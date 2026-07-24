@@ -4126,7 +4126,42 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
     else:
         failures.append({"scenario": "local command facade missing approval", "expected": "parser error", "actual": "accepted"})
 
-    return 3
+    setup_preview_args = parser.parse_args(["--dry-run", "setup-preview", "--target", "target"])
+    setup_preview_commands = precode_cli.build_commands(setup_preview_args, parser)
+    setup_preview_text = precode_cli.command_text(setup_preview_commands[0])
+    for term in ("scripts/bootstrap-check.py", "--source", ".", "--target", "target", "--supervised-setup-plan"):
+        if term not in setup_preview_text:
+            failures.append({"scenario": "local setup preview facade", "expected": term, "actual": setup_preview_text})
+
+    upgrade_preview_args = parser.parse_args(["--dry-run", "upgrade-preview", "--target", "target"])
+    upgrade_preview_commands = precode_cli.build_commands(upgrade_preview_args, parser)
+    upgrade_preview_text = precode_cli.command_text(upgrade_preview_commands[0])
+    for term in ("scripts/bootstrap-check.py", "--source", ".", "--target", "target", "--upgrade-preview"):
+        if term not in upgrade_preview_text:
+            failures.append({"scenario": "local upgrade preview facade", "expected": term, "actual": upgrade_preview_text})
+
+    package_json = json.loads(Path("package.json").read_text(encoding="utf-8"))
+    if package_json.get("scripts", {}).get("postinstall"):
+        failures.append({"scenario": "npm preview entry postinstall", "expected": "no postinstall", "actual": "postinstall present"})
+    if package_json.get("bin", {}).get("precodeos") != "bin/precodeos.mjs":
+        failures.append({"scenario": "npm preview entry bin", "expected": "bin/precodeos.mjs", "actual": str(package_json.get("bin"))})
+    npm_bin = Path("bin/precodeos.mjs").read_text(encoding="utf-8")
+    for term in (
+        "setup-preview",
+        "upgrade-preview",
+        "scripts/bootstrap-check.py",
+        "--supervised-setup-plan",
+        "--upgrade-preview",
+        "No postinstall behavior",
+        "target mutation",
+    ):
+        if term not in npm_bin:
+            failures.append({"scenario": "npm preview entry boundary text", "expected": term, "actual": "missing"})
+    for forbidden in ("--apply-supervised-setup", "--apply-upgrade-preview", "--approve-action"):
+        if forbidden in npm_bin:
+            failures.append({"scenario": "npm preview entry apply exposure", "expected": f"no {forbidden}", "actual": "present"})
+
+    return 6
 
 
 def assert_ralph_command_boundaries(failures: list[dict[str, str]]) -> int:

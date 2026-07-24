@@ -38,6 +38,8 @@ After setup validates, stop here. If a new builder needs one visible build-order
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
 
+The optional npm entry is only a read-only acquisition and preview path. It can run first-install setup preview or existing-Precode upgrade preview from the package source, but it has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, release channels, rollback, or generated evidence as authority.
+
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
 ## Before You Start
@@ -77,10 +79,11 @@ The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`
 After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:
 
 ```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 ```
 
-The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. It does not approve copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
@@ -93,6 +96,7 @@ This apply mode copies only approved `review_copy_candidate` actions. It refuses
 The optional wrapper exposes the same apply gate and still requires approved action IDs:
 
 ```bash
+python3 scripts/precode_cli.py setup-preview --target <target-project-root>
 python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
@@ -140,6 +144,7 @@ The adaptation plan is non-mutating evidence. It names owner-file creation or ad
 For a target that already has PrecodeOS active memory, use upgrade preview before treating the work as setup repair or package update:
 
 ```bash
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 ```
 

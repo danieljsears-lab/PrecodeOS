@@ -30,7 +30,7 @@ Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes comma
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when an extension introduces a new integration boundary, provider abstraction, workflow state, audit trail, or other reusable implementation shape.
 
-PrecodeOS's existing owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades form an advisory repo-native harness contract. Treat harness hardening as boundary and contract work, not as permission to add a Harness Protocol, agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
+PrecodeOS's existing owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades form an advisory repo-native harness contract. Treat harness hardening as boundary and contract work, not as permission to add a Harness Protocol, agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer. The optional npm `precodeos` entry is allowed only as a transparent read-only setup/upgrade preview facade over Bootstrap Confidence; it must not add postinstall behavior, apply flags, target-project mutation, release-channel semantics, package-manager updates, or a support-only hidden install process.
 
 Use `llms.txt` only as a compact navigation index for stable canonical PrecodeOS documentation. It is not active memory, a generated evidence report, a runtime integration contract, a package registry, or permission to compress, proxy, wrap, install, update, or mutate tools.
 
@@ -208,9 +208,9 @@ Extension findings become action only after user review:
 
 ## Command Wrapper Rule
 
-The Doctor Dashboard health extension is allowed as generated OS Health evidence. The local `precode` CLI wrapper is allowed only as a facade over trusted commands that prints the exact underlying command, preserves exit codes, and keeps canonical scripts and Markdown owner files authoritative.
+The Doctor Dashboard health extension is allowed as generated OS Health evidence. The local `precode` CLI wrapper is allowed only as a facade over trusted commands that prints the exact underlying command, preserves exit codes, and keeps canonical scripts and Markdown owner files authoritative. The npm `precodeos` wrapper is allowed only for read-only `setup-preview` and `upgrade-preview` delegation to `scripts/bootstrap-check.py`.
 
-Do not introduce broad command runners, package-manager behavior, release channels, registries, optional-pack installation, hidden setup approval, standalone `precode doctor` behavior, or external mutation through a wrapper. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
+Do not introduce broad command runners, package-manager behavior, release channels, registries, optional-pack installation, postinstall target mutation, hidden setup approval, standalone `precode doctor` behavior, or external mutation through a wrapper. Wrappers should compose trusted commands, not become the place where Precode discovers its operating model.
 
 ## Extension Checklist
 

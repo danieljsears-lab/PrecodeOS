@@ -27,7 +27,7 @@ First-reader route:
 
 This page is prompt-first. When a command exists, the command is shown too, but the safest daily habit is to ask the agent to explain what it is doing before it changes anything.
 
-If the optional local `precode` console command is installed, treat it as a shortcut over the shown commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, or generated evidence as authority.
+If the optional local `precode` console command is installed, treat it as a shortcut over the shown commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, or generated evidence as authority. If the optional npm `precodeos` entry is used, keep it in the setup or existing-Precode refresh lane only; it runs read-only previews and is not the normal cockpit surface.
 
 Generated reports are evidence only. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 

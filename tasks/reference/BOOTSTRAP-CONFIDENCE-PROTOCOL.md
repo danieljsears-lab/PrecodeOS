@@ -32,6 +32,15 @@ Use the helper from the PrecodeOS package checkout:
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 ```
 
+Optional npm preview entry:
+
+```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
+```
+
+The npm entry delegates to this protocol's `--supervised-setup-plan` or `--upgrade-preview` modes from the package source. It has no postinstall behavior, writes nothing by default, exposes no apply flags, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release-channel semantics, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+
 Optional modes:
 
 ```bash
@@ -166,6 +175,7 @@ Use plain recommendations:
 - It must not treat existing-project adaptation planning, upgrade preview, or recovery guidance as owner-file edit approval, package update permission, dirty-file overwrite approval, rollback approval, release-channel metadata, or package-manager behavior.
 - It must not treat upgrade apply as permission to replace dirty package files, adapt owner files, install hooks, change CI, automate rollback, or update through a package manager.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
+- It must not make the optional npm `precodeos` preview entry a broad installer, updater, release-channel surface, postinstall mutation path, target-project mutation path, or prerequisite for normal repo-local use.
 
 ## Builder Prompt
 

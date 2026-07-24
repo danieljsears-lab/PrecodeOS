@@ -1,0 +1,54 @@
+{
+  "name": "@precodeos/precodeos",
+  "version": "1.0.0-beta.1",
+  "description": "Optional PrecodeOS npm entry for read-only setup and upgrade previews.",
+  "license": "Apache-2.0",
+  "author": "Dan Sears / Recode",
+  "homepage": "https://www.precodeos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieljsears-lab/PrecodeOS.git"
+  },
+  "type": "module",
+  "bin": {
+    "precodeos": "bin/precodeos.mjs"
+  },
+  "files": [
+    "AGENT.md",
+    "DECISIONS.md",
+    "OPERATING-CONSTRAINTS.md",
+    "README.md",
+    "docs/",
+    "docs-html/",
+    "tasks/",
+    "scripts/",
+    "adapters/",
+    "modes/",
+    "memory/",
+    "project-evidence/",
+    "logs/LOG-EVIDENCE-TAXONOMY.md",
+    "CANDIDATE-QUEUE.md",
+    "PRODUCT.md",
+    "PROJECT-CONTEXT.md",
+    "FEATURES.md",
+    "ACCEPTANCE.md",
+    "ARCHITECTURE.md",
+    "API.md",
+    "DATA-MODELS.md",
+    "SECURITY.md",
+    "CODEBASE-GUIDE.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    ".github/copilot-instructions.md",
+    "CONTRIBUTING.md",
+    "GOVERNANCE.md",
+    "TRADEMARK.md",
+    "NOTICE",
+    "LICENSE",
+    "bin/precodeos.mjs"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

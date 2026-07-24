@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-06-19
+# Version: v0.1.2
+# Last updated: 2026-07-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -95,6 +95,19 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help="approved supervised setup action ID; required for apply mode",
     )
+    setup_preview = add_dry_run(subparsers.add_parser(
+        "setup-preview",
+        help="run read-only first-install setup preview through bootstrap-check.py",
+    ))
+    setup_preview.add_argument("--target", required=True, help="target project path")
+    setup_preview.add_argument("--json", action="store_true", help="print JSON output")
+
+    upgrade_preview = add_dry_run(subparsers.add_parser(
+        "upgrade-preview",
+        help="run read-only existing-Precode upgrade preview through bootstrap-check.py",
+    ))
+    upgrade_preview.add_argument("--target", required=True, help="existing Precode target path")
+    upgrade_preview.add_argument("--json", action="store_true", help="print JSON output")
     return parser
 
 
@@ -135,6 +148,32 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             command.append("--apply-supervised-setup")
         for action_id in args.approve_action:
             command.extend(["--approve-action", action_id])
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "setup-preview":
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--supervised-setup-plan",
+        ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "upgrade-preview":
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--upgrade-preview",
+        ]
         if args.json:
             command.append("--json")
         return [command]

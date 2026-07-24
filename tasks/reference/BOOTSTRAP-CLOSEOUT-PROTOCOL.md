@@ -33,9 +33,12 @@ Use these modes from the PrecodeOS package checkout after source and target are 
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
+
+The optional npm upgrade preview delegates to the same non-mutating package-state comparison from the package source. It exposes no apply flags and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 
@@ -122,6 +125,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
 - No command in this protocol creates release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
+- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, release channel, package-manager flow, or support-only hidden install process.
 
 ## Builder Prompt
 

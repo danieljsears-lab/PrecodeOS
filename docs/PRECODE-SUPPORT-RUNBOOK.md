@@ -255,6 +255,14 @@ Stop if the source package and target project are unclear. Mixing them up is the
 
 Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.
 
+When the builder does not yet have a clean package checkout or the support call needs one visible preview command, use the optional npm entry for the same read-only setup checklist:
+
+```bash
+npx @precodeos/precodeos setup-preview --target <target-project-root>
+```
+
+This is not a support-only install path. It has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release channels, package-manager updates, rollback, task selection, PRD approval, or bead activation.
+
 When the user needs the next setup checklist before approving manual work, run:
 
 ```bash
@@ -275,6 +283,7 @@ After Bootstrap Confidence, choose the first adoption fork:
 
 - Fresh install for empty or nearly empty targets.
 - Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
+- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` or the equivalent `bootstrap-check.py --upgrade-preview` before any approved `UP-ID` copy action.
 
 For existing apps, run:
 
