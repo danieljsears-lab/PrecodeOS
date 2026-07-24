@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.3
-# Last updated: 2026-07-02
+# Version: v0.5.4
+# Last updated: 2026-07-24
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -35,7 +35,16 @@ PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
     },
     {
         "group": "public_orientation_docs",
-        "paths": ["README.md", "docs/", "CONTRIBUTING.md", "GOVERNANCE.md", "TRADEMARK.md", "NOTICE", "LICENSE"],
+        "paths": [
+            "README.md",
+            "docs/",
+            "docs-html/",
+            "CONTRIBUTING.md",
+            "GOVERNANCE.md",
+            "TRADEMARK.md",
+            "NOTICE",
+            "LICENSE",
+        ],
     },
     {
         "group": "agent_shims_and_adapters",
@@ -1545,6 +1554,12 @@ def self_test() -> int:
             "---\nbead_id: B000\n---\n# Package Dev Bead\n",
             encoding="utf-8",
         )
+        (source / "docs-html").mkdir(parents=True, exist_ok=True)
+        (source / "docs-html" / "index.html").write_text("<h1>PrecodeOS Docs</h1>\n", encoding="utf-8")
+        (source / "docs-html" / "PRECODE-GUIDED-SETUP.html").write_text(
+            "<h1>PrecodeOS Guided Setup</h1>\n",
+            encoding="utf-8",
+        )
         empty_payload = build_payload(source.as_posix(), empty_target.as_posix())
         assert empty_payload["target_kind"] == "empty"
         assert empty_payload["status"] == "pass"
@@ -1744,6 +1759,8 @@ def self_test() -> int:
         }
         assert "OPERATING-CONSTRAINTS.md" in preview_copy_paths
         assert "OPERATING-CONSTRAINTS.md" in setup_copy_paths
+        assert "docs-html/" in preview_copy_paths
+        assert "docs-html/" in setup_copy_paths
         assert "tasks/todo.md" not in preview_copy_paths
         assert "tasks/todo.md" not in setup_copy_paths
         assert "tasks/todo.md" in setup_adaptation_paths
@@ -1788,6 +1805,23 @@ def self_test() -> int:
         assert apply_payload["supervised_setup_apply"]["status"] == "applied"
         assert (apply_target / "AGENT.md").is_file()
         assert not (apply_target / "DECISIONS.md").exists()
+
+        docs_html_copy_ids = [
+            action["id"]
+            for action in apply_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_copy_candidate" and action["path"] == "docs-html/"
+        ]
+        assert len(docs_html_copy_ids) == 1
+        docs_apply_target = base / "docs-html-apply-target"
+        docs_apply_target.mkdir()
+        docs_apply_payload = build_payload(source.as_posix(), docs_apply_target.as_posix())
+        docs_apply_payload["install_update_preview"] = build_manifest_preview(docs_apply_payload)
+        docs_apply_payload["supervised_setup_plan"] = build_supervised_setup_plan(docs_apply_payload)
+        docs_apply_payload["supervised_setup_apply"] = apply_supervised_setup(docs_apply_payload, docs_html_copy_ids)
+        assert docs_apply_payload["supervised_setup_apply"]["status"] == "applied"
+        assert (docs_apply_target / "docs-html" / "index.html").is_file()
+        assert (docs_apply_target / "docs-html" / "PRECODE-GUIDED-SETUP.html").is_file()
+        assert not (docs_apply_target / "docs").exists()
 
         blocked_no_approval = apply_supervised_setup(apply_payload, [])
         assert blocked_no_approval["status"] == "blocked"

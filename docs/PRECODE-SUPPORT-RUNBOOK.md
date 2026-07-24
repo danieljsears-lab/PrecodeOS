@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.42
-Last updated: 2026-07-22
+Document version: v0.1.43
+Last updated: 2026-07-24
 
 ## Purpose
 
@@ -293,12 +293,14 @@ For a new project, copy public package files by supervised group, not by blind o
 - active memory templates: `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md`
 - active work state: create a fresh target `tasks/todo.md`; do not copy the package source's active work file
 - product and project owner files
-- public orientation docs
+- public orientation docs, including committed `docs-html/` generated reading pages
 - agent shims and adapters
 - PRD/bead schemas and templates, modes, memory templates, and reference protocols
 - `project-evidence/PROJECT-EVIDENCE-GUIDE.md` as the marker and user guidance for project-owned raw evidence
 - scripts, hooks, and workflows only when approved for the target repo
 - `logs/LOG-EVIDENCE-TAXONOMY.md`
+
+If a fresh install has `docs/` but no `docs-html/`, treat that as a Precode package-copy bug or incomplete supervised setup copy, not as client error. `docs-html/` is a committed reading surface; do not regenerate it during setup unless a maintainer is repairing the package source.
 
 Do not copy PrecodeOS's package development PRDs or beads into the target project. Numbered package files such as `tasks/prds/PRD-001...` or `tasks/beads/B000...` describe PrecodeOS itself and can collide with the target project's own future PRD and bead IDs.
 

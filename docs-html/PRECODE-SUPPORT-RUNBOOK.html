@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-22">
+  <meta name="generated-at" content="2026-07-24">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -247,7 +247,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Use this runbook when you are helping someone else adopt PrecodeOS.</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.42</span><span>Updated 2026-07-22</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.43</span><span>Updated 2026-07-24</span></p>
 </section>
 <section class="content layout">
   <article class="article">
@@ -370,7 +370,8 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 <h3 id="4-set-up-by-supervised-file-group"><a class="heading-anchor" href="#4-set-up-by-supervised-file-group" aria-label="Link to 4. Set Up By Supervised File Group">#</a>4. Set Up By Supervised File Group</h3>
 <p>Use <code>docs/PRECODE-GUIDED-SETUP.md</code> as the setup guide and <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> as the public package file dictionary.</p>
 <p>For a new project, copy public package files by supervised group, not by blind overwrite:</p>
-<ul><li>active memory templates: <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>OPERATING-CONSTRAINTS.md</code></li><li>active work state: create a fresh target <code>tasks/todo.md</code>; do not copy the package source&#x27;s active work file</li><li>product and project owner files</li><li>public orientation docs</li><li>agent shims and adapters</li><li>PRD/bead schemas and templates, modes, memory templates, and reference protocols</li><li><code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code> as the marker and user guidance for project-owned raw evidence</li><li>scripts, hooks, and workflows only when approved for the target repo</li><li><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></li></ul>
+<ul><li>active memory templates: <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>OPERATING-CONSTRAINTS.md</code></li><li>active work state: create a fresh target <code>tasks/todo.md</code>; do not copy the package source&#x27;s active work file</li><li>product and project owner files</li><li>public orientation docs, including committed <code>docs-html/</code> generated reading pages</li><li>agent shims and adapters</li><li>PRD/bead schemas and templates, modes, memory templates, and reference protocols</li><li><code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code> as the marker and user guidance for project-owned raw evidence</li><li>scripts, hooks, and workflows only when approved for the target repo</li><li><code>logs/LOG-EVIDENCE-TAXONOMY.md</code></li></ul>
+<p>If a fresh install has <code>docs/</code> but no <code>docs-html/</code>, treat that as a Precode package-copy bug or incomplete supervised setup copy, not as client error. <code>docs-html/</code> is a committed reading surface; do not regenerate it during setup unless a maintainer is repairing the package source.</p>
 <p>Do not copy PrecodeOS&#x27;s package development PRDs or beads into the target project. Numbered package files such as <code>tasks/prds/PRD-001...</code> or <code>tasks/beads/B000...</code> describe PrecodeOS itself and can collide with the target project&#x27;s own future PRD and bead IDs.</p>
 <p>Exclude private local planning material, generated reports, generated logs, local agent/editor state, caches, virtual environments, env files, secrets, credentials, keys, and certificates.</p>
 <p>If Bootstrap Confidence reports blockers, stop setup until they are resolved. If it reports conflicts, name each conflict and get user approval before adapting or copying anything.</p>

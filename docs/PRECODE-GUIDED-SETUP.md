@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-07-20
+Document version: v0.1.23
+Last updated: 2026-07-24
 
 ## What This Guide Is For
 
@@ -323,12 +323,14 @@ For a new project, the setup should include:
 | Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
-| Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
+| Public orientation docs | `README.md`, `docs/`, `docs-html/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
 | Work structure | `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, `tasks/prds/PRD-SHARD-SCHEMA.md`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` |
 | Scripts and checks | `scripts/`, `.githooks/`, `.github/workflows/` when the target repo wants GitHub validation |
 | Public generated-log guide | `logs/LOG-EVIDENCE-TAXONOMY.md` |
+
+`docs-html/` is committed generated reading output and should be copied with the public orientation docs for a fresh install. It is easier to browse, but `docs/*.md` and selected root Markdown files remain the canonical source.
 
 Do not copy PrecodeOS's package development PRDs or beads into the target project. Numbered package files such as `tasks/prds/PRD-001...` or `tasks/beads/B000...` describe PrecodeOS itself and can collide with the target project's own future PRD and bead IDs.
 
