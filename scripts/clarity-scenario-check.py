@@ -317,7 +317,7 @@ def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
             "Prove: show recorded evidence",
             "Close: run session close",
             "I am stuck, help me.",
-            "Advanced / Conditional Surfaces",
+            "Advanced Trigger Summaries",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Daily Prompt Aliases",
@@ -1066,6 +1066,93 @@ def assert_command_surface_triage_contract(failures: list[dict[str, str]]) -> in
         for term in forbidden_terms:
             if term in text:
                 failures.append({"scenario": f"command surface triage forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
+def assert_beginner_advanced_surface_relocation_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("README.md"): [
+            "For beginner-facing docs, give trigger summaries and route detailed use to Prompt Patterns or the owner protocol",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Advanced Trigger Summaries",
+            "this cockpit only gives trigger summaries",
+            "Use `../tasks/reference/PROMPT-PATTERNS.md` for copyable advanced prompts and the named owner protocol for detailed rules.",
+            "Use An Advanced Owner Surface",
+            "why this is not a beginner starting route",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Advanced review, release, team, proof, attribution, reversal, Ralph, or PRD handoff surfaces should appear here only as trigger summaries",
+            "Advanced rows are trigger summaries, not a menu",
+        ],
+        Path("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md"): [
+            "Advanced surfaces in this educational guide are trigger summaries only",
+        ],
+        Path("docs/CLAUDE-CODE-FIELD-GUIDE.md"): [
+            "Beginner-facing docs should show only the trigger summary",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "`docs/PRECODE-DAILY-COCKPIT.md` is the operating home with trigger summaries for advanced surfaces",
+            "`tasks/reference/PROMPT-PATTERNS.md` and owner protocols hold detailed advanced prompts",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Beginner-facing docs should show trigger summaries and route here or to the owner protocol for detailed use.",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "Beginner-facing docs may show advanced trigger summaries",
+            "detailed advanced prompts belong in Prompt Patterns or the owner protocol",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "Beginner-facing command surfaces should expose advanced command families as trigger summaries",
+        ],
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Daily Cockpit should provide trigger summaries for advanced surfaces",
+        ],
+        Path("llms.txt"): [
+            "In beginner-facing docs, present only trigger summaries and route detailed prompts to Prompt Patterns or the owner protocol.",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"beginner advanced-surface relocation contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("README.md"): [
+            "Advanced surfaces are the menu",
+            "Artifact Chooser is the start page",
+            "Release Readiness deploys",
+            "Ralph is part of the beginner daily loop",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Advanced / Conditional Surfaces",
+            "Prepare A Release Candidate Evidence Profile",
+            "Run A Bounded Ralph Attempt",
+            "Coordinate A Small Team",
+            "Advanced surfaces are the menu",
+            "Artifact Chooser is the start page",
+            "Release prep deploys",
+            "Ralph is part of the beginner daily loop",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Advanced rows are the menu",
+            "Release Readiness deploys",
+            "Artifact Chooser is the start page",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Artifact Chooser is the builder start page",
+            "Release Candidate Evidence Profile deploys",
+        ],
+        Path("llms.txt"): [
+            "advanced surfaces are peer routes",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"beginner advanced-surface relocation forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
@@ -3156,9 +3243,9 @@ def assert_team_collaboration_preview_contract(failures: list[dict[str, str]]) -
             "generated preview output is evidence only",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Coordinate A Small Team",
-            "team-collaboration-check.py",
-            "does not approve merge",
+            "Multiple people or delegated work may affect one product",
+            "TEAM-COLLABORATION-PROTOCOL",
+            "owner protocol",
         ],
         Path("docs/PRECODE-OS-README.md"): [
             "Small Team Collaboration Lane",
@@ -4791,6 +4878,7 @@ def main() -> int:
     many_bead_rhythm_scenario_count = assert_many_bead_operating_rhythm_contract(failures)
     builder_journey_authority_scenario_count = assert_builder_journey_authority_consolidation_contract(failures)
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
+    beginner_advanced_surface_relocation_scenario_count = assert_beginner_advanced_surface_relocation_contract(failures)
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
     vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
@@ -5358,6 +5446,7 @@ def main() -> int:
         + many_bead_rhythm_scenario_count
         + builder_journey_authority_scenario_count
         + command_surface_triage_scenario_count
+        + beginner_advanced_surface_relocation_scenario_count
         + engineering_quality_scenario_count
         + public_objection_scenario_count
         + vibe_to_agentic_boundary_scenario_count

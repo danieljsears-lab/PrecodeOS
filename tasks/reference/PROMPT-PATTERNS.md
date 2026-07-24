@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.69
-Last updated: 2026-07-22
+Document version: v0.1.70
+Last updated: 2026-07-24
 
 ## Purpose
 
@@ -20,7 +20,7 @@ They are prompts, not authority. The agent must still follow active memory, the 
 
 Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
 
-Advanced surfaces are conditional "only when this happens" prompts. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
+Advanced surfaces are conditional "only when this happens" prompts. Beginner-facing docs should show trigger summaries and route here or to the owner protocol for detailed use. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
 
 Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog. Use Ask Precode for stable docs questions, Workflow Selection when the next path depends on current state, Ideation for rough ideas and artifact routing, Review for acceptance or advisory review moments, and Skill / Extension Review only when a proposed skill, adapter, protocol, generated report, command wrapper, or integration needs maintainer-style shape review. Skill playbooks remain read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 

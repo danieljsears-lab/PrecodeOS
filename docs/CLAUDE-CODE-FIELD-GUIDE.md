@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-07-11
+Document version: v0.1.21
+Last updated: 2026-07-24
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -33,7 +33,7 @@ Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packe
 
 When an idea should become future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Claude Code, use Plan Mode. If you are in Codex, use `/plan`; in another agent, ask for an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan for a selected candidate. Neither output approves a PRD, chooses tasks, activates a bead, updates `tasks/todo.md`, or permits code.
 
-Do not start a beginner session by choosing among advanced surfaces. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are conditional support tools. Use them only when the active stage, risk, support role, recovery path, or explicit question calls for one.
+Do not start a beginner session by choosing among advanced surfaces. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are conditional support tools. Beginner-facing docs should show only the trigger summary; use Prompt Patterns or the owner protocol for full prompts when the active stage, risk, support role, recovery path, or explicit question calls for one.
 
 ---
 

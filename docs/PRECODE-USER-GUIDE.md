@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.89
-Last updated: 2026-07-18
+Document version: v0.7.90
+Last updated: 2026-07-24
 
 
 
@@ -60,7 +60,7 @@ Why this matters: vibe coding is fine for reversible learning. It becomes danger
 
 If you have a rough idea, a path-choice question, or an artifact-routing question, start with the Daily Cockpit's `Ideation:` alias. It can route you to First PRD Walkthrough, Workflow Selection, or the Artifact Chooser without making any of them a competing start page.
 
-Use Artifact Chooser as an index, not as a start page or task approval. If your current moment is specifically an artifact-routing question, Ideation may route there; otherwise stay with the Daily Cockpit or Workflow Selection. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake. Product or requirement shaping goes to PRD Shaping. Future ideas go to Candidate Queue. Small repairs go to Bugfix Spec Lane. Advisory review goes to Review Lanes. PRD handoff checks go to PRD Handoff Readiness. Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action. Multiple-person work goes to Small Team Collaboration Lane. Broken or confusing state goes to Recovery.
+Use Artifact Chooser as an index, not as a start page or task approval. If your current moment is specifically an artifact-routing question, Ideation may route there; otherwise stay with the Daily Cockpit or Workflow Selection. Rough ideas go to First PRD Walkthrough. In that path, Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are ordered steps, not competing commands. New notes, research, GitHub issues, or handoffs go to Local Source Intake; product or requirement shaping goes to PRD Shaping; future ideas go to Candidate Queue; small repairs go to Bugfix Spec Lane; broken or confusing state goes to Recovery. Shipping risk goes to Release Readiness for evidence and approval questions, not deployment action. Advanced review, release, team, proof, attribution, reversal, Ralph, or PRD handoff surfaces should appear here only as trigger summaries; use Prompt Patterns or the owner protocol for the full prompt and rules.
 
 If the choice depends on active memory, the active bead, current repo state, generated reports, local errors, or what work should happen next, ask for Workflow Selection instead.
 
@@ -988,7 +988,7 @@ Why this matters: You should not have to sound technical to operate Precode. The
 
 Use this table when you are unsure what kind of request to make.
 
-Read this table from the top down. The first-product spine, every-bead rhythm, active-bead prompts, proof, review, closeout, and recovery are the normal daily path. Advanced surfaces are conditional "only when this happens" tools: use them when a specific stage, risk, evidence gap, support role, or explicit user question calls for one, not as peer routes for ordinary beginner work.
+Read this table from the top down. The first-product spine, every-bead rhythm, active-bead prompts, proof, review, closeout, and recovery are the normal daily path. Advanced rows are trigger summaries, not a menu: use them only when a specific stage, risk, evidence gap, support role, or explicit user question calls for one, then open Prompt Patterns or the owner protocol for the full instructions.
 
 | Situation | Ask for | Copyable request |
 |---|---|---|

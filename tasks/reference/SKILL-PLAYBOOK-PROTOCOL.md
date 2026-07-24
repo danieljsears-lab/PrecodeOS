@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-07-11
+Document version: v0.1.23
+Last updated: 2026-07-24
 
 ## Purpose
 
@@ -47,7 +47,7 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 
 ## Beginner Invocation And Review Ergonomics
 
-Skill playbooks should be easy to invoke without becoming a beginner-facing catalog. Keep beginner language behind the Daily Cockpit aliases, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist.
+Skill playbooks should be easy to invoke without becoming a beginner-facing catalog. Keep beginner language behind the Daily Cockpit aliases, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. Daily Cockpit should provide trigger summaries for advanced surfaces; Prompt Patterns or the owner protocol should carry the detailed prompt body.
 
 Use this decision aid before adding or changing a skill-style surface:
 

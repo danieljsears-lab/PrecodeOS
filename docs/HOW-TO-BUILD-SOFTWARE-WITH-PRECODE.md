@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.41
-Last updated: 2026-07-11
+Document version: v0.1.42
+Last updated: 2026-07-24
 
 ## Start Here: You Are Not Just Prompting
 
@@ -45,7 +45,7 @@ For the philosophical anchor behind those choices, read `docs/PRECODE-MANIFESTO.
 
 > Plain-English term: “Precode” names the work before code: clarifying intent, context, decisions, language, proof, and approval. “OS” means the small operating layer around the agent and the repo, not a replacement for the agent, app, or builder judgment.
 
-This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the builder operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or say `I am stuck, help me.`
+This document is the educational bridge, not the operating home. Use `README.md` as the document compass, `docs/PRECODE-GUIDED-SETUP.md` for setup, and `docs/PRECODE-DAILY-COCKPIT.md` as the builder operating home once PrecodeOS is in the project. If you only have a rough idea, go through the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or say `I am stuck, help me.` Advanced surfaces in this educational guide are trigger summaries only; full prompts and rules belong in Prompt Patterns and the owner protocols.
 
 ### If You Only Have An Idea, Start With Research And Exploration
 

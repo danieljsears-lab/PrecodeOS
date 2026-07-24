@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.44
-Last updated: 2026-07-20
+Document version: v0.1.45
+Last updated: 2026-07-24
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
 
@@ -131,7 +131,7 @@ If you only remember three checks, ask: what is active, where should future inte
 
 These prompt aliases are the lean daily surface. Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal first-read loop. The expanded prompt wording lives in `../tasks/reference/PROMPT-PATTERNS.md` and the owning protocols.
 
-Advanced aliases are still available, but they are conditional. Skill map is for mapping a confusing skill-style request to the smallest existing invocation, Quality map is for translating named engineering standards into Precode routing questions, Role lens is for translating product manager, researcher, designer, architect, developer, QA/reviewer, security, or deployment language into existing workflows, Hypothesis is for an existing learning target, Build-react-learn is for a tiny approved exploratory prototype bead, Team is for 2-5 person coordination, Release is for user-facing shipping risk, Trace is for unclear proof, Attribution is for accountability review, Reverse is for implemented-bead reversal, and Ralph is for a testable Ralph-enabled bead.
+Advanced aliases are still available, but this cockpit only gives trigger summaries. Use `../tasks/reference/PROMPT-PATTERNS.md` for copyable advanced prompts and the named owner protocol for detailed rules.
 
 Aliases do not reduce the guardrails: active memory and owner files stay authoritative, generated reports stay evidence only, and explicit approval is still required before PRD approval, bead activation, review acceptance, transition approval, setup/update mutation, destructive commands, external mutation, merge, release, rollback, or scope expansion.
 
@@ -153,22 +153,18 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 
 If the generated next-step decision is `author next bead`, treat it as an accepted hold: the current bead is accepted, but transition still needs a next bead proposal or authored bead. Do not continue implementation, repeat acceptance review, approve transition, or activate a bead from that generated classification.
 
-### Advanced / Conditional Surfaces
+### Advanced Trigger Summaries
 
-Use these only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points.
+Use these only when the current stage, risk, evidence gap, support role, or explicit question calls for one. They are not daily starting points. This cockpit names the trigger; the full prompt lives in Prompt Patterns and the owner protocol.
 
-| Moment | Conditional alias | What it should produce |
+| Trigger | Use | Owner surface |
 |---|---|---|
-| Review hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Evidence-only learning status and next workflow, not approval or task selection; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable. |
-| Build-react-learn | `Build-react-learn: run one tiny reversible prototype bead.` | A bounded prototype-bead path plus evidence-only learning decision; not PRD approval, implementation acceptance, task selection, or transition approval. |
-| Role lens | `Role lens: use the [role] lens and route me to the existing Precode workflow.` | A role-to-workflow map plus owner source, stop condition, proof or approval needed, and forbidden uses. Role lenses are not role skills, persona agents, approval shortcuts, task runners, or coding permission. |
-| Team lane | `Team: use the Small Team Collaboration Lane before anyone edits.` | Team coordination guidance without automatic activation, merge, GitHub mutation, or multiple active beads in one checkout. |
-| Delegation re-entry | `Re-entry: review delegated work before continuing.` | Evidence-only return review for solo AFK, teammate branch/worktree, or cloud-agent/PR work; not acceptance, merge approval, transition approval, or external mutation. |
-| Release prep | `Release: prepare release evidence without release action.` | Shipping evidence, release-quality cues, and approval questions without deployment, merge, rollback, external mutation, certification, or release approval. |
-| Trace proof | `Trace: map this requirement or bug behavior to proof.` | A compact proof trace without acceptance or generated-proof authority. |
-| Review attribution | `Attribution: review who-built-what evidence.` | A who-built-what evidence review without approval, blame, scoring, telemetry, or registry behavior. |
-| Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | A safe reversal plan or candidate bead shape without rollback automation or history rewriting. |
-| Ralph | `Ralph: run a bounded dry run only.` | Retry evidence for one active bead without accepting work or activating anything. |
+| Review hypothesis or existing learning target | `Hypothesis` | `../tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md`; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable |
+| Tiny reversible prototype bead is explicitly approved | `Build-react-learn` | `../tasks/reference/PROMPT-PATTERNS.md` and the active bead |
+| Familiar role language would clarify the current workflow | `Role lens` | `../tasks/reference/PROMPT-PATTERNS.md` |
+| Multiple people or delegated work may affect one product | `Team` or `Re-entry` | `../tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` and Prompt Patterns |
+| User-facing shipping risk is near | `Release` | `../tasks/reference/RELEASE-READINESS-PROTOCOL.md` |
+| Proof, Review attribution, reversal, review-lane, or Ralph evidence is specifically needed | `Trace`, `Attribution`, `Reverse`, `Review`, or `Ralph` | The matching owner protocol and Prompt Patterns |
 
 ## Core Prompts
 
@@ -309,51 +305,15 @@ Do not update active memory, approve a PRD, activate a bead, reserve B### bead I
 
 Expected output: candidate status, evidence used, recommended next path, promotion target, user approval needed, stop condition, and generated-report warning.
 
-### Coordinate A Small Team
+### Use An Advanced Owner Surface
 
-Use when 2-5 people need to work on the same product build.
-
-```text
-Use the Small Team Collaboration Lane.
-
-We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
-```
-
-Expected output: the team situation, coordinator and decision owner, branch/worktree rule, candidate parallel beads, teammate startup prompt, review and merge evidence, approval gates, stop conditions, promotion path, and generated-report warning. The lane does not activate multiple beads in one checkout, approve merge, mutate GitHub, or turn pull requests and teammate notes into authority.
-
-For a read-only team-state preview, run:
+Use this only after a trigger summary points away from the daily loop.
 
 ```text
-python3 scripts/team-collaboration-check.py
+Use the smallest advanced owner surface for this moment. Name the trigger, owner protocol or Prompt Patterns section, stop condition, proof or approval still needed, and why this is not a beginner starting route.
 ```
 
-Use `--github` only for optional read-only GitHub evidence through `gh`. The preview can help a coordinator see branch/worktree state, owner-file impact candidates, stale re-entry risks, and merge/re-entry packet fields, but it does not approve merge, accept implementation, activate beads, mutate GitHub, or replace coordinator review.
-
-### Review Delegated Re-Entry Evidence
-
-Use when work returns from solo AFK, a teammate branch/worktree, or a cloud-agent/PR context.
-
-```text
-Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
-```
-
-Expected output: returned scope, changed files, checks, manual verification, approvals still required, unresolved risks, external evidence if any, forbidden actions not taken, and one next human action. This does not approve implementation, merge, transition, GitHub mutation, or external mutation.
-
-### Step Away From A Bounded Agent Task
-
-Use this only when the active bead is already scoped, has files in play, checks, stop conditions, and you want to know whether it is safe to step away.
-
-```text
-Before I step away, confirm whether this bead is only afk_candidate or truly bounded-afk. Show allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence. Do not treat AFK metadata as autonomous execution approval.
-```
-
-When you return:
-
-```text
-I am back. Re-enter this bead safely: reload active memory, active bead, primary authority, changed files, recorded checks, Run Contract if present, stop conditions, proof still missing, and approval still required. Recommend only continue, review, split, or block.
-```
-
-Expected output: what changed, what was proven, what stopped or should have stopped, what still needs approval, and the next safe decision. This does not accept implementation, approve commands, activate another bead, or approve small-team merge/re-entry.
+Expected output: one owner surface and one stop condition. Do not choose among advanced surfaces by taste; if several fit, use Workflow Selection first.
 
 ### When You Are Stuck
 
@@ -418,36 +378,7 @@ Do not require EARS syntax, reject clear non-EARS criteria, approve the PRD, acc
 
 Expected output: clearer observable expected behavior, unresolved questions, and any stop conditions. This is writing guidance only, not PRD approval or proof.
 
-### Prepare A Release Candidate Evidence Profile
-
-Use when a release-relevant bead is nearly ready and you need one compact view before a human release decision.
-
-```text
-Prepare a Release Candidate Evidence Profile for this release-relevant bead.
-Do not deploy, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external services, approve review, accept implementation, or activate the next bead.
-Show candidate label, release target, changed surfaces, affected users or workflows, recorded checks and results, smoke path and result, browser or manual verification status, docs or support freshness, rollback or blocked escape, release quality cues, known risks and remaining uncertainty, approvals still required, and decision state.
-For release quality cues, include CI/status checks, logs or observability signal, configuration/environment parity, performance or scalability expectation, data retention/privacy/security expectation, dependency/runtime freshness, and monitoring/support owner. Use recorded evidence or not applicable with a reason.
-Use only one decision state: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
-Do not treat release quality cues as a release gate, production-readiness certification, compliance certification, provider checklist, generated proof, checker gate, deployment approval, rollback approval, release-channel behavior, or package-manager behavior.
-```
-
-Expected output: a human-authored evidence profile. It prepares a release decision; it does not approve release, deploy, merge, roll back, or mutate external systems.
-
-### Run A Bounded Ralph Attempt
-
-Use when the active bead is testable, has clear checks, and you want bounded retry evidence instead of a disappearing chat attempt.
-
-```text
-Run a bounded Ralph dry run for this bead. Show the attempt budget, validator set, decision, failure category, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.
-```
-
-Command:
-
-```bash
-python3 scripts/ralph-loop.py --dry-run
-```
-
-Expected output: a Ralph decision such as `retry`, `ask`, `review`, or `stop`. Without `--dry-run`, Ralph writes `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` as generated evidence only.
+For release or Ralph detail, leave this cockpit and use `../tasks/reference/PROMPT-PATTERNS.md` plus `../tasks/reference/RELEASE-READINESS-PROTOCOL.md` or `../tasks/reference/RALPH-LOOP-PROTOCOL.md`. Those owner surfaces keep the full prompt, command, evidence, and approval boundaries.
 
 ### Checkpoint Mid-Session
 
@@ -542,13 +473,7 @@ Green means recorded evidence and closeout are closer to review-ready. Missing o
 
 ### Should Ralph Retry?
 
-Command:
-
-```bash
-python3 scripts/ralph-loop.py --dry-run
-```
-
-Use Ralph only for one active bead with clear checks and retry boundaries. A `review` decision means evidence may be ready for human review; it does not mean accepted.
+Use this only when the active bead is already Ralph-enabled and testable. For the prompt and command details, go to Prompt Patterns and `../tasks/reference/RALPH-LOOP-PROTOCOL.md`. A `review` decision means evidence may be ready for human review; it does not mean accepted.
 
 ### Is The Workflow Right?
 
