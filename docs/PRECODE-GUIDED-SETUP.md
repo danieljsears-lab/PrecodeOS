@@ -36,9 +36,9 @@ The safest setup path is manual and visible:
 
 After setup validates, stop here. If a new builder needs one visible build-order path before opening the full cockpit, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact builder checklist, then continue normal work from `docs/PRECODE-DAILY-COCKPIT.md`. The card does not approve setup, choose work, activate beads, or replace the cockpit.
 
-The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, release channels, rollback, or generated evidence as authority.
+The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
-The optional npm entry is only a read-only acquisition and preview path. It can run first-install setup preview or existing-Precode upgrade preview from the package source, but it has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, release channels, rollback, or generated evidence as authority.
+The optional npm entry is only a read-only acquisition and preview path. It can run first-install setup preview or existing-Precode upgrade preview from the package source, but it has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
@@ -74,7 +74,7 @@ After the basic check, use the install/update manifest dry-run preview when you 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest
 ```
 
-The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
+The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:
 
@@ -83,7 +83,7 @@ npx @precodeos/precodeos setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 ```
 
-The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, release channels, package-manager updates, rollback automation, or CLI-driven setup approval.
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
@@ -91,7 +91,7 @@ For an empty or nearly empty target, you may apply specific reviewed copy action
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
 
-This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
+This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
 
 The optional wrapper exposes the same apply gate and still requires approved action IDs:
 
@@ -148,7 +148,7 @@ npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 ```
 
-The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It writes nothing by default and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, or rollback.
+The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It may show advisory release-reference metadata from the local package source: package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It writes nothing by default, performs no npm registry lookup or dist-tag resolution, and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, or rollback.
 
 If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
 
@@ -158,7 +158,7 @@ If the preview shows a missing package-owned file marked `review_package_copy_ca
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```
 
-This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation.
 
 ## Existing Precode Refresh
 
@@ -179,7 +179,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
 
-Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, provide package-manager behavior, or automate rollback.
+Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, provide package-manager behavior, or automate rollback. Treat `latest` as a reference to inspect, not overwrite permission.
 
 If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
 

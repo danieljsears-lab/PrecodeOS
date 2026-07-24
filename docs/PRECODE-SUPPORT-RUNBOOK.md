@@ -65,7 +65,7 @@ Start with the Existing Precode Refresh prompt in `tasks/reference/PROMPT-PATTER
 - stop before mutation unless the user approves specific `UP-ID` actions
 - run validation before the user's first normal Start after a refresh
 
-Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, create package-manager behavior, or automate rollback.
+Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, create package-manager behavior, or automate rollback. Upgrade preview may show advisory package version and stable/latest/pinned language from the local source package, but that metadata is evidence only; `latest` is not overwrite permission.
 
 ## Stuck User Recovery
 
@@ -261,7 +261,7 @@ When the builder does not yet have a clean package checkout or the support call 
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 ```
 
-This is not a support-only install path. It has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release channels, package-manager updates, rollback, task selection, PRD approval, or bead activation.
+This is not a support-only install path. It has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback, task selection, PRD approval, or bead activation.
 
 When the user needs the next setup checklist before approving manual work, run:
 
@@ -283,7 +283,7 @@ After Bootstrap Confidence, choose the first adoption fork:
 
 - Fresh install for empty or nearly empty targets.
 - Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
-- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` or the equivalent `bootstrap-check.py --upgrade-preview` before any approved `UP-ID` copy action.
+- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` or the equivalent `bootstrap-check.py --upgrade-preview` before any approved `UP-ID` copy action. Treat its release-reference metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, or updater permission.
 
 For existing apps, run:
 

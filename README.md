@@ -151,7 +151,9 @@ npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 ```
 
-The npm entry is acquisition and preview only. It runs the same Bootstrap Confidence setup-plan or upgrade-preview checks from the package source, writes nothing by default, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release channels, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+The npm entry is acquisition and preview only. It runs the same Bootstrap Confidence setup-plan or upgrade-preview checks from the package source, writes nothing by default, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+
+Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It does not query npm, resolve dist-tags, select a channel, or make `latest` safe to overwrite into an active Precode project. Package state is generated evidence, not authority or update permission.
 
 Optional local command facade:
 
@@ -172,7 +174,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
 
-The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define executable release channels, or automate rollback.
 
 For existing projects, run Existing Repo Intake first, then use the adaptation plan only as a non-mutating checklist:
 
@@ -189,7 +191,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```
 
-If setup is partial or confusing, use recovery guidance. It is diagnostic only and does not automate rollback, destructive cleanup, dirty-file overwrites, hooks, CI, release channels, or package-manager behavior:
+If setup is partial or confusing, use recovery guidance. It is diagnostic only and does not automate rollback, destructive cleanup, dirty-file overwrites, hooks, CI, executable release-channel behavior, or package-manager behavior:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance

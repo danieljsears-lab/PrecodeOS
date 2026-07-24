@@ -172,6 +172,26 @@ IDENTITY_FILE_RULES = {
     "tasks/beads/": {"field": "bead_id", "schema": "tasks/beads/BEAD-SCHEMA.md"},
 }
 
+RELEASE_TERM_DEFINITIONS = {
+    "stable": (
+        "the maintainer-reviewed package line that should be treated as the default acquisition reference "
+        "once a stable release exists; not overwrite permission"
+    ),
+    "latest": (
+        "the newest package reference a user or support helper may inspect; latest is not safe-to-overwrite "
+        "permission for an active Precode project"
+    ),
+    "pinned": (
+        "an explicitly named package version or source checkout used for comparison; pinning does not approve "
+        "target mutation"
+    ),
+}
+RELEASE_REFERENCE_BOUNDARY = (
+    "Release reference metadata is advisory generated evidence only. No registry lookup, dist-tag resolution, "
+    "channel selection, package update permission, dirty-file overwrite, owner-file adaptation approval, "
+    "rollback automation, or npm updater behavior is performed."
+)
+
 
 def resolve_candidate(raw: str) -> Path:
     return Path(raw).expanduser().resolve(strict=False)
@@ -236,6 +256,37 @@ def file_digest(path: Path) -> str:
         for chunk in iter(lambda: handle.read(65536), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def prerelease_label(version: str) -> str:
+    if "-" not in version:
+        return "stable"
+    suffix = version.split("-", 1)[1]
+    label = suffix.split(".", 1)[0].strip()
+    return label or "prerelease"
+
+
+def source_release_reference(source_root: Path) -> dict[str, Any]:
+    package_path = source_root / "package.json"
+    package_name = "not recorded"
+    package_version = "not recorded"
+    if package_path.is_file():
+        try:
+            metadata = json.loads(package_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            metadata = {}
+        if isinstance(metadata, dict):
+            package_name = str(metadata.get("name") or package_name)
+            package_version = str(metadata.get("version") or package_version)
+    return {
+        "source_package_name": package_name,
+        "source_package_version": package_version,
+        "inferred_source_release_label": prerelease_label(package_version) if package_version != "not recorded" else "not recorded",
+        "registry_lookup_performed": False,
+        "dist_tag_resolution_performed": False,
+        "term_definitions": RELEASE_TERM_DEFINITIONS,
+        "boundary": RELEASE_REFERENCE_BOUNDARY,
+    }
 
 
 def frontmatter(text: str) -> dict[str, str]:
@@ -547,7 +598,7 @@ def build_manifest_preview(payload: dict[str, Any]) -> dict[str, Any]:
             "editing active memory",
             "running app commands",
             "writing app code",
-            "release channels",
+            "executable release-channel behavior",
             "package-manager updates",
             "rollback automation",
         ],
@@ -792,6 +843,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
         "target_root": payload["target_root"],
         "target_kind": kind,
         "package_state_classification": classification,
+        "release_reference": source_release_reference(source_root),
         "actions": actions,
         "dirty_package_paths": dirty_package,
         "dirty_project_or_owner_paths": dirty_owner,
@@ -808,11 +860,12 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
             "owner-file adaptation",
             "installing hooks",
             "changing CI",
-            "release channels",
+            "executable release-channel behavior",
             "package-manager updates",
             "rollback automation",
+            "npm updater behavior",
         ],
-        "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review and identity collisions block copying.",
+        "next_setup_gate": "Only missing package-owned files marked review_package_copy_candidate may be copied with explicit action approval; dirty files require manual review, identity collisions block copying, and latest is not overwrite permission.",
     }
 
 
@@ -967,7 +1020,7 @@ def build_supervised_setup_plan(payload: dict[str, Any]) -> dict[str, Any]:
             "editing active memory",
             "running app commands",
             "writing app code",
-            "release channels",
+            "executable release-channel behavior",
             "package-manager updates",
             "rollback automation",
             "installable precode CLI",
@@ -1087,7 +1140,7 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
             "changing CI",
             "running app commands",
             "writing app code",
-            "release channels",
+            "executable release-channel behavior",
             "package-manager updates",
             "rollback automation",
             "installable precode CLI",
@@ -1199,7 +1252,7 @@ def apply_upgrade_preview(payload: dict[str, Any], approved_action_ids: list[str
             "owner-file adaptation",
             "installing hooks",
             "changing CI",
-            "release channels",
+            "executable release-channel behavior",
             "package-manager updates",
             "rollback automation",
         ],
@@ -1254,7 +1307,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "deferred": [
             "mutating installer",
             "installable precode CLI",
-            "package-manager release channels",
+            "package-manager update mechanics",
             "full install/update manifest",
             "Git hook installation",
             "CI mutation",
@@ -1308,7 +1361,7 @@ def render_preview_plain(payload: dict[str, Any]) -> str:
         f"- Preview kind: `{preview['manifest_kind']}`",
         "- Target mutation allowed: no",
         "- Writes by default: no",
-        "- This preview is not a release channel, package-manager update, rollback plan, CLI contract, or install permission.",
+        "- This preview is not executable release-channel behavior, a package-manager update, a rollback plan, a CLI contract, or install permission.",
         f"- Next setup gate: {preview['next_setup_gate']}",
         "\nPreview actions:",
     ]
@@ -1330,7 +1383,7 @@ def render_setup_plan_plain(payload: dict[str, Any]) -> str:
         f"- Plan status: `{plan['status']}`",
         "- Target mutation allowed: no",
         "- Generated evidence only: yes",
-        "- This plan is not an installer, update command, release channel, package-manager operation, rollback plan, CLI contract, copy approval, or edit approval.",
+        "- This plan is not an installer, update command, executable release channel, package-manager operation, rollback plan, CLI contract, copy approval, or edit approval.",
         f"- Next manual gate: {plan['next_manual_gate']}",
     ]
     if plan["blockers"]:
@@ -1359,7 +1412,7 @@ def render_apply_plain(payload: dict[str, Any]) -> str:
         f"- Apply kind: `{summary['apply_kind']}`",
         f"- Apply status: `{summary['status']}`",
         "- Scope: approved setup-plan copy actions for empty or nearly empty targets only.",
-        "- This apply mode does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, define release channels, provide rollback automation, install a CLI, or provide package-manager behavior.",
+        "- This apply mode does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, define executable release channels, provide rollback automation, install a CLI, or provide package-manager behavior.",
     ]
     if summary["copied"]:
         lines.append("\nCopied:")
@@ -1401,15 +1454,20 @@ def render_existing_project_adaptation_plain(payload: dict[str, Any]) -> str:
 
 def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
     preview = payload["package_upgrade_preview"]
+    release = preview["release_reference"]
     lines = [
         render_plain(payload),
         "\nPackage Upgrade Preview:",
         f"- Preview kind: `{preview['preview_kind']}`",
         f"- Preview status: `{preview['status']}`",
         f"- Package state classification: `{preview['package_state_classification']}`",
+        f"- Source package: `{release['source_package_name']}` `{release['source_package_version']}`",
+        f"- Inferred source release label: `{release['inferred_source_release_label']}`",
+        "- Registry lookup performed: no",
+        "- Release terms: stable is the maintainer-reviewed default acquisition reference when available; latest is the newest package reference to inspect, not overwrite permission; pinned is an explicit version or source checkout for comparison.",
         "- Target mutation allowed: no",
         "- Writes by default: no",
-        "- This preview is not package update permission, overwrite approval, owner-file adaptation, release-channel metadata, package-manager behavior, hook/CI setup, or rollback automation.",
+        "- This preview is not package update permission, overwrite approval, owner-file adaptation, executable release-channel behavior, package-manager behavior, hook/CI setup, rollback automation, or npm updater behavior.",
         f"- Next setup gate: {preview['next_setup_gate']}",
     ]
     if preview["blockers"]:
@@ -1449,7 +1507,7 @@ def render_upgrade_apply_plain(payload: dict[str, Any]) -> str:
         f"- Apply kind: `{summary['apply_kind']}`",
         f"- Apply status: `{summary['status']}`",
         "- Scope: approved missing package-owned files only.",
-        "- This apply mode does not overwrite dirty files, adapt owner files, install hooks, change CI, define release channels, provide rollback automation, or provide package-manager behavior.",
+        "- This apply mode does not overwrite dirty files, adapt owner files, install hooks, change CI, define executable release channels, provide rollback automation, or provide package-manager behavior.",
     ]
     if summary["copied"]:
         lines.append("\nCopied:")
@@ -1511,6 +1569,10 @@ def make_source(root: Path) -> None:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n", encoding="utf-8")
+    (root / "package.json").write_text(
+        json.dumps({"name": "@precodeos/precodeos", "version": "1.0.0-beta.1"}, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def make_secret_local_and_generated_fixture_paths(root: Path) -> list[str]:
@@ -1678,6 +1740,14 @@ def self_test() -> int:
             for action in existing_precode_payload["supervised_setup_plan"]["actions"]
         )
         assert existing_precode_payload["package_upgrade_preview"]["package_state_classification"] == "dirty_project_or_owner_edits"
+        release_reference = existing_precode_payload["package_upgrade_preview"]["release_reference"]
+        assert release_reference["source_package_name"] == "@precodeos/precodeos"
+        assert release_reference["source_package_version"] == "1.0.0-beta.1"
+        assert release_reference["inferred_source_release_label"] == "beta"
+        assert release_reference["registry_lookup_performed"] is False
+        assert release_reference["dist_tag_resolution_performed"] is False
+        assert "latest is not safe-to-overwrite permission" in release_reference["term_definitions"]["latest"]
+        assert "npm updater behavior" in release_reference["boundary"]
         prd_collision_actions = [
             action
             for action in existing_precode_payload["package_upgrade_preview"]["actions"]

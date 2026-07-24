@@ -39,7 +39,7 @@ npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 ```
 
-The npm entry delegates to this protocol's `--supervised-setup-plan` or `--upgrade-preview` modes from the package source. It has no postinstall behavior, writes nothing by default, exposes no apply flags, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, release-channel semantics, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+The npm entry delegates to this protocol's `--supervised-setup-plan` or `--upgrade-preview` modes from the package source. It has no postinstall behavior, writes nothing by default, exposes no apply flags, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may show advisory local release-reference metadata, but it performs no npm registry lookup or dist-tag resolution.
 
 Optional modes:
 
@@ -63,7 +63,7 @@ Default mode prints a plain-English report and writes nothing.
 
 `--supervised-setup-plan` adds the manifest preview plus a non-mutating setup checklist with action IDs, approval gates, exclusions, blockers, and validation steps. It still writes nothing by default and does not approve setup mutation.
 
-`--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, release channels, package-manager behavior, rollback automation, and CLI installation.
+`--apply-supervised-setup` requires `--supervised-setup-plan` and one or more explicit `--approve-action <SP-ID>` flags. It copies only approved `review_copy_candidate` actions into empty or nearly empty targets. It is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md` and refuses owner-file adaptation, existing-repo mutation, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and CLI installation.
 
 `--existing-project-adaptation-plan`, `--upgrade-preview`, `--apply-upgrade-preview`, and `--recovery-guidance` are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. They close the P0 bootstrap lane with non-mutating existing-project adaptation planning, ID-aware package upgrade preview, support-assisted recovery guidance, and a narrow apply path for explicitly approved missing package-owned files only. Upgrade preview must report PRD/bead identity collisions instead of marking incoming package dev PRDs or beads copyable.
 
@@ -97,7 +97,7 @@ When `--preview-manifest` is used, output should also include an `install_update
 
 When `--supervised-setup-plan` is used, output should also include a `supervised_setup_plan` object. The setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`.
 
-When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable.
+When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, advisory `release_reference` metadata from the local package source, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable. `release_reference` must report that registry lookup and dist-tag resolution were not performed, and that `latest` is not overwrite permission.
 
 ## Target Kinds
 
@@ -114,7 +114,7 @@ Use these labels:
 
 ## Thin Manifest
 
-V1 uses a thin public package manifest to teach setup shape. It is not an update manifest, release channel, package-manager contract, or install permission.
+V1 uses a thin public package manifest to teach setup shape. It is not an update manifest, executable release channel, package-manager contract, or install permission.
 
 Public file groups:
 
@@ -171,8 +171,8 @@ Use plain recommendations:
 - It must not treat a thin manifest as update, channel, package-manager, or release metadata.
 - It must not treat manifest preview output as copy, update, or install approval.
 - It must not treat supervised setup-plan output as copy, update, install, or owner-file adaptation approval.
-- It must not treat supervised setup apply as a broad installer, owner-file adaptation engine, update flow, rollback flow, hook installer, CI installer, package manager, release channel, or CLI.
-- It must not treat existing-project adaptation planning, upgrade preview, or recovery guidance as owner-file edit approval, package update permission, dirty-file overwrite approval, rollback approval, release-channel metadata, or package-manager behavior.
+- It must not treat supervised setup apply as a broad installer, owner-file adaptation engine, update flow, rollback flow, hook installer, CI installer, package manager, executable release channel, or CLI.
+- It must not treat existing-project adaptation planning, upgrade preview, or recovery guidance as owner-file edit approval, package update permission, dirty-file overwrite approval, rollback approval, executable release-channel behavior, or package-manager behavior.
 - It must not treat upgrade apply as permission to replace dirty package files, adapt owner files, install hooks, change CI, automate rollback, or update through a package manager.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
 - It must not make the optional npm `precodeos` preview entry a broad installer, updater, release-channel surface, postinstall mutation path, target-project mutation path, or prerequisite for normal repo-local use.
@@ -208,6 +208,6 @@ To apply a reviewed fresh-project copy action, ask:
 ```text
 Apply only the supervised setup action IDs I explicitly approve.
 Use the PrecodeOS checkout as the source and my empty or nearly empty project folder as the target.
-Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define executable release channels, or automate rollback.
 Show copied, skipped, blocked, and validation next steps.
 ```

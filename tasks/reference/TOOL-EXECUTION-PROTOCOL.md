@@ -84,7 +84,7 @@ Use a bead Run Contract when sensitive, external, destructive, or `bounded-afk` 
 
 The lease is advisory contract state. It does not override sandbox permissions, approve commands automatically, widen `files_in_play`, skip recorded proof, accept review, merge work, or bypass user approval. `python3 scripts/run-contract-check.py` warns when allowed actions are broader than the active bead or when risky or bounded-AFK work lacks proof, re-entry evidence, approval, stop, or recovery details.
 
-Future host adapters may consume `logs/run-contract.json` or `logs/run-contract.yaml` more strictly after real use proves the advisory contract is stable. That future path would still require extension review and must not silently create command approval, runtime enforcement, package-manager behavior, or generated-output authority.
+Future host adapters may consume `logs/run-contract.json` or `logs/run-contract.yaml` more strictly after real use proves the advisory contract is stable. That future path would still require extension review and must not silently create command approval, runtime enforcement, package-manager behavior, executable release-channel behavior, or generated-output authority.
 
 ## Evidence Distinction
 

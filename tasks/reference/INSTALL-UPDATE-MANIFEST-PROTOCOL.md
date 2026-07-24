@@ -22,7 +22,7 @@ It answers:
 What would PrecodeOS consider doing, and what must stay stopped, before I approve setup changes?
 ```
 
-This protocol is intentionally non-mutating. It produces a dry-run preview of setup action categories and keeps every result as generated evidence only. It does not copy files, adapt owner files, install hooks, change CI, create active memory, run app commands, write app code, define release channels, update packages, install a CLI, or provide rollback automation.
+This protocol is intentionally non-mutating. It produces a dry-run preview of setup action categories and keeps every result as generated evidence only. It does not copy files, adapt owner files, install hooks, change CI, create active memory, run app commands, write app code, define executable release channels, update packages, install a CLI, or provide rollback automation.
 
 ## Command
 
@@ -60,7 +60,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. The optional npm command delegates to the same plan from the package source. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, or app-code edits.
 
-The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files.
+The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison plus advisory local release-reference metadata, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files.
 
 ## Required Preview Shape
 
@@ -116,7 +116,7 @@ If an existing target looks like setup, repair, or update work, keep the manifes
 - `recovery_repair` means stop setup/update interpretation and use the Recovery Protocol.
 - `broader_change` means a supervised setup plan, release-readiness note, PRD, or normal bead is needed.
 
-The classifier must not turn manifest output into copy permission, owner-file adaptation approval, install permission, package update behavior, rollback automation, release-channel metadata, hook setup, CI setup, active-memory edits, or app-code edits.
+The classifier must not turn manifest output into copy permission, owner-file adaptation approval, install permission, package update behavior, rollback automation, executable release-channel behavior, hook setup, CI setup, active-memory edits, or app-code edits.
 
 ## Guardrails
 
@@ -130,8 +130,8 @@ The classifier must not turn manifest output into copy permission, owner-file ad
 - It must not run app commands.
 - It must not write app code.
 - It must not read or print secret file contents.
-- It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
-- It must not treat the optional npm `precodeos` preview entry as copy permission, setup approval, release-channel metadata, package-manager update behavior, broad install behavior, or target-project mutation.
+- It must not define executable release channels, package-manager updates, rollback automation, or an installable `precode` CLI. Stable/latest/pinned language may appear only as advisory release-reference metadata in upgrade preview and must not approve mutation.
+- It must not treat the optional npm `precodeos` preview entry as copy permission, setup approval, executable release-channel behavior, package-manager update behavior, broad install behavior, or target-project mutation.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
 - It must route package upgrades through Bootstrap Closeout before any existing Precode target receives missing package-owned files, and dirty package-owned files must stay manual-review only.
 

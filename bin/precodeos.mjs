@@ -21,7 +21,7 @@ function usage() {
 
 Boundary:
   No postinstall behavior, target mutation, owner-file adaptation, hook installation,
-  CI mutation, app commands, app-code edits, release-channel semantics, package-manager
+  CI mutation, app commands, app-code edits, executable release-channel behavior, package-manager
   updates, rollback automation, task selection, PRD approval, or bead activation.
 `;
 }

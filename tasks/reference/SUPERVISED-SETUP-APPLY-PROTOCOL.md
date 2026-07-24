@@ -22,7 +22,7 @@ It answers:
 Which already-reviewed setup-plan copy actions may be copied into this fresh target now?
 ```
 
-This protocol is deliberately narrow. It applies only to empty or nearly empty target projects, and only to setup-plan actions marked `review_copy_candidate` and explicitly approved by action ID. It does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, define release channels, update packages, install a CLI, or provide rollback automation.
+This protocol is deliberately narrow. It applies only to empty or nearly empty target projects, and only to setup-plan actions marked `review_copy_candidate` and explicitly approved by action ID. It does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, define executable release channels, update packages, install a CLI, or provide rollback automation.
 
 ## Command
 
@@ -104,7 +104,7 @@ Apply mode must refuse:
 - the package source's `tasks/todo.md`
 - package development PRDs or beads such as numbered `tasks/prds/PRD-001...` or `tasks/beads/B000...`
 - local agent, editor, cache, virtualenv, environment, secret, credential, key, or certificate paths
-- release channels, pinned versions, package-manager updates, rollback automation, registry behavior, optional packs, or an installable `precode` CLI
+- executable release channels, package-manager updates, rollback automation, registry behavior, optional packs, or an installable `precode` CLI
 
 No refusal should fall back to a broader copy command. Blocked output should name the shortest safe next action.
 
@@ -137,7 +137,7 @@ Apply mode does not provide rollback automation. If copied files are wrong, use 
 - It must not run app commands.
 - It must not write app code.
 - It must not read or print secret file contents.
-- It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
+- It must not define executable release channels, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
 - It must not replace package upgrade preview, dirty package-file review, support-assisted recovery guidance, or existing-project adaptation planning.
 
@@ -147,6 +147,6 @@ Apply mode does not provide rollback automation. If copied files are wrong, use 
 Apply only the supervised setup actions I explicitly approve.
 Use the PrecodeOS checkout as the source and my empty or nearly empty project folder as the target.
 Run the supervised setup plan first, then apply only the approved review_copy_candidate action IDs I name.
-Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, create release-channel behavior, install a CLI, provide package-manager behavior, or automate rollback.
+Do not adapt owner files, overwrite files, install hooks, change CI, run app commands, write app code, create executable release-channel behavior, install a CLI, provide package-manager behavior, or automate rollback.
 After copying, show copied, skipped, blocked, and validation next steps.
 ```

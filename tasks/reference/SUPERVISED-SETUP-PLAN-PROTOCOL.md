@@ -22,7 +22,7 @@ It answers:
 What exact setup checklist should I review before I approve any manual changes?
 ```
 
-This protocol is intentionally non-mutating. It produces setup-plan evidence only. It does not copy files, adapt owner files, install hooks, change CI, create active memory, run app commands, write app code, define release channels, update packages, install a CLI, or provide rollback automation.
+This protocol is intentionally non-mutating. It produces setup-plan evidence only. It does not copy files, adapt owner files, install hooks, change CI, create active memory, run app commands, write app code, define executable release channels, update packages, install a CLI, or provide rollback automation.
 
 ## Command
 
@@ -152,10 +152,10 @@ These steps are validation suggestions, not proof that setup occurred.
 - It must not copy the package source's `tasks/todo.md`.
 - It must not copy package development PRDs or beads such as numbered `tasks/prds/PRD-001...` or `tasks/beads/B000...`.
 - It must not read or print secret file contents.
-- It must not define release channels, pinned versions, package-manager updates, rollback automation, or an installable `precode` CLI.
+- It must not define executable release channels, package-manager updates, rollback automation, or an installable `precode` CLI.
 - It must not treat the optional npm `precodeos` preview entry as setup approval, copy permission, owner-file adaptation approval, release-channel behavior, package-manager update behavior, broad install behavior, or target-project mutation.
 - It must route existing projects through Existing Repo Intake before any copy or owner-file adaptation becomes actionable.
-- It must not imply that `--apply-supervised-setup` can adapt owner files, overwrite target material, install hooks, change CI, mutate existing projects, run app commands, write app code, install a CLI, provide package-manager behavior, define release channels, or automate rollback.
+- It must not imply that `--apply-supervised-setup` can adapt owner files, overwrite target material, install hooks, change CI, mutate existing projects, run app commands, write app code, install a CLI, provide package-manager behavior, define executable release channels, or automate rollback.
 - It must not imply that existing-project adaptation, package upgrade preview, recovery guidance, or upgrade apply are part of the fresh-target setup plan.
 
 ## Builder Prompt

@@ -37,7 +37,7 @@ Confirmed package constraints:
 
 - Runtime dependencies: none declared in `pyproject.toml`.
 - Local CLI: `scripts/precode_cli.py` is a facade over curated repo commands and must print underlying commands before running them.
-- Setup mutation: `scripts/bootstrap-check.py` apply modes must require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, release channels, package-manager behavior, and rollback automation.
+- Setup mutation: `scripts/bootstrap-check.py` apply modes must require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. Advisory release-reference metadata in upgrade preview is generated evidence only; it is not update permission or npm updater behavior.
 - Generated evidence: files under `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, generated docs, and generated PRD review pages must not approve tasks, commands, transitions, releases, or implementation acceptance.
 - External systems: GitHub helpers and scheduled audits are read-only by default unless a separate approved path explicitly allows mutation.
 - CI: GitHub Actions should use least privilege, preserve read-only validation unless an explicit maintainer decision changes it, and must not require secrets for ordinary package validation.
@@ -53,7 +53,7 @@ For package-facing changes, review whether the change affects:
 - secrets, credentials, env files, private keys, certificates, dashboards, production config, or sensitive raw evidence
 - GitHub, CI, external status, importers, scheduled audits, or other external systems
 - generated reports, sidecars, HTML surfaces, or evidence ledgers that could be mistaken for authority
-- package install/update boundaries, release channels, optional packs, registries, or package-manager semantics
+- package install/update boundaries, executable release channels, optional packs, registries, or package-manager semantics
 
 Use this baseline for repeatable package-security review:
 

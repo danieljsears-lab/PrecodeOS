@@ -302,7 +302,7 @@ After copying, show copied, skipped, blocked, and validation next steps.
 ```text
 Run the PrecodeOS existing-project adaptation plan after Existing Repo Intake.
 Use the PrecodeOS checkout as the source and my existing app repo as the target.
-Do not copy, edit, overwrite, install hooks, change CI, run app commands, write app code, approve a PRD, activate a bead, define release channels, provide package-manager behavior, or automate rollback.
+Do not copy, edit, overwrite, install hooks, change CI, run app commands, write app code, approve a PRD, activate a bead, define executable release channels, provide package-manager behavior, or automate rollback.
 Show owner-file creation or adaptation candidates, preserved project material, approval gates, blockers, and deferred actions.
 Treat the plan as evidence only, not permission to mutate or adapt owner files.
 ```
@@ -320,9 +320,9 @@ npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 
-Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, and candidate `UP-ID` actions.
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, and candidate `UP-ID` actions.
 
-Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define release channels, provide package-manager behavior, or automate rollback.
+Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, provide package-manager behavior, or automate rollback. Treat `latest` as a package reference to inspect, not overwrite permission.
 
 If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
 
@@ -331,9 +331,9 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.
 ```
 
-Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, candidate `UP-ID` actions, validation next steps, and explicit stop-before-mutation status.
+Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, candidate `UP-ID` actions, validation next steps, and explicit stop-before-mutation status.
 
-This is a refresh prompt, not an automatic update, release channel, rollback path, package manager, owner-file adaptation engine, or permission to overwrite.
+This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, or permission to overwrite.
 
 ### Package Upgrade Preview
 
@@ -341,8 +341,9 @@ This is a refresh prompt, not an automatic update, release channel, rollback pat
 Run the PrecodeOS package upgrade preview for this existing Precode target.
 Use the PrecodeOS checkout as the source and my project folder as the target.
 If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison.
-Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or automate rollback.
+Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
+Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission.
 Show action IDs and wait for my explicit approval before any missing package-owned file copy.
 Treat the preview as evidence only, not package update permission.
 ```
@@ -352,7 +353,7 @@ Treat the preview as evidence only, not package update permission.
 ```text
 Apply only the package upgrade action IDs I explicitly approve.
 Run the upgrade preview first, then copy only approved review_package_copy_candidate files that are missing from the existing Precode target.
-Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or automate rollback.
+Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 If the package state is dirty, mixed, unknown, or blocked, refuse mutation and show the manual review path.
 ```
 
@@ -361,7 +362,7 @@ If the package state is dirty, mixed, unknown, or blocked, refuse mutation and s
 ```text
 Give bootstrap recovery guidance for this setup state.
 Use the PrecodeOS checkout as the source and my project folder as the target.
-Do not delete, overwrite, regenerate, roll back, copy files, adapt owner files, install hooks, change CI, run app commands, write app code, define release channels, provide package-manager behavior, or mutate setup.
+Do not delete, overwrite, regenerate, roll back, copy files, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or mutate setup.
 Name the likely recovery path, support steps, validation next steps, and forbidden actions.
 Treat the guidance as evidence only, not repair approval.
 ```

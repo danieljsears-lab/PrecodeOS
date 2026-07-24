@@ -1410,7 +1410,7 @@ def assert_harness_contract_hardening(failures: list[dict[str, str]]) -> int:
             "advisory repo-native harness contract",
             "Command classes, run contracts, generated sidecars, recorded checks, and transparent facades make agent work inspectable",
             "Future host adapters may consume `logs/run-contract.json` or `logs/run-contract.yaml` more strictly",
-            "must not silently create command approval, runtime enforcement, package-manager behavior, or generated-output authority",
+            "must not silently create command approval, runtime enforcement, package-manager behavior, executable release-channel behavior, or generated-output authority",
         ],
         Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
             "advisory repo-native harness contract",
@@ -4241,12 +4241,41 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         "--upgrade-preview",
         "No postinstall behavior",
         "target mutation",
+        "executable release-channel behavior",
     ):
         if term not in npm_bin:
             failures.append({"scenario": "npm preview entry boundary text", "expected": term, "actual": "missing"})
     for forbidden in ("--apply-supervised-setup", "--apply-upgrade-preview", "--approve-action"):
         if forbidden in npm_bin:
             failures.append({"scenario": "npm preview entry apply exposure", "expected": f"no {forbidden}", "actual": "present"})
+
+    bootstrap_check = load_script_module("bootstrap_check_fixture", "bootstrap-check.py")
+    release_reference = bootstrap_check.source_release_reference(Path("."))
+    expected_release_reference = {
+        "source_package_name",
+        "source_package_version",
+        "inferred_source_release_label",
+        "registry_lookup_performed",
+        "dist_tag_resolution_performed",
+        "term_definitions",
+        "boundary",
+    }
+    missing_release_keys = sorted(expected_release_reference - set(release_reference))
+    if missing_release_keys:
+        failures.append({
+            "scenario": "npm release reference metadata",
+            "expected": f"keys {missing_release_keys}",
+            "actual": str(sorted(release_reference)),
+        })
+    if release_reference.get("registry_lookup_performed") is not False:
+        failures.append({"scenario": "npm release reference registry lookup", "expected": "false", "actual": str(release_reference.get("registry_lookup_performed"))})
+    if release_reference.get("dist_tag_resolution_performed") is not False:
+        failures.append({"scenario": "npm release reference dist-tag lookup", "expected": "false", "actual": str(release_reference.get("dist_tag_resolution_performed"))})
+    latest_definition = str((release_reference.get("term_definitions") or {}).get("latest") or "")
+    if "not safe-to-overwrite permission" not in latest_definition:
+        failures.append({"scenario": "npm release reference latest boundary", "expected": "latest is not overwrite permission", "actual": latest_definition})
+    if "npm updater behavior" not in str(release_reference.get("boundary") or ""):
+        failures.append({"scenario": "npm release reference updater boundary", "expected": "npm updater behavior", "actual": str(release_reference.get("boundary"))})
 
     return 6
 

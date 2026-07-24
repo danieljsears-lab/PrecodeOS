@@ -25,7 +25,7 @@ What recovery guidance should support give when setup is partial or confusing?
 Which missing package-owned files may be copied after explicit action approval?
 ```
 
-All preview and guidance modes are non-mutating generated evidence. They do not approve setup mutation, owner-file adaptation, package updates, hook installation, CI changes, app commands, app-code edits, release channels, package-manager behavior, or rollback automation.
+All preview and guidance modes are non-mutating generated evidence. They do not approve setup mutation, owner-file adaptation, package updates, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager behavior, or rollback automation.
 
 ## Commands
 
@@ -38,7 +38,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-The optional npm upgrade preview delegates to the same non-mutating package-state comparison from the package source. It exposes no apply flags and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, release channels, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation.
+The optional npm upgrade preview delegates to the same non-mutating package-state comparison from the package source. It exposes no apply flags and does not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json`; it must not query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 
@@ -106,7 +106,7 @@ Preview actions use stable IDs and categories:
 - each approved action is for a missing package-owned file
 - the source file exists and the target path does not exist
 
-It must refuse dirty package states, unknown action IDs, non-copy actions, identity-collision actions, package dev PRD/bead copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, release channels, package-manager behavior, and rollback automation.
+It must refuse dirty package states, unknown action IDs, non-copy actions, identity-collision actions, package dev PRD/bead copy actions, existing target paths, owner-file adaptation, overwrites, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation.
 
 The package keeps fixture coverage for these upgrade-apply refusals in `scripts/bootstrap-check.py --self-test`, including missing approval, unknown IDs, dirty or unknown package state, missing source files, and overwrite refusal. The fixtures are regression evidence only; they do not approve package updates or dirty-file replacement.
 
@@ -124,8 +124,8 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Owner and active-memory files preserve project truth and are never automatically adapted.
 - Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
-- No command in this protocol creates release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
-- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, release channel, package-manager flow, or support-only hidden install process.
+- No command in this protocol creates executable release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
+- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, or support-only hidden install process.
 
 ## Builder Prompt
 
@@ -133,7 +133,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 Close out PrecodeOS bootstrap safely.
 Use the PrecodeOS checkout as the source and my project folder as the target.
 Run the relevant non-mutating preview first: existing-project adaptation plan, upgrade preview, or recovery guidance.
-Do not copy, edit, overwrite, install hooks, change CI, run app commands, adapt owner files, define release channels, provide package-manager behavior, or automate rollback.
+Do not copy, edit, overwrite, install hooks, change CI, run app commands, adapt owner files, define executable release channels, provide package-manager behavior, or automate rollback.
 If a missing package-owned file can be copied, show the action ID and wait for my explicit approval.
 Treat all preview output as evidence only, not authority or permission to mutate.
 ```
