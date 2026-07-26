@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.46
+Document version: v0.1.48
 Last updated: 2026-07-26
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
@@ -71,7 +71,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 3. If PrecodeOS is set up and work exists, run Start, Check, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
-Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, Ask Precode, role lenses, skill-style help, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, proposed extension, or explicit user question calls for one.
+Advanced surfaces are conditional support, not parallel starting points. Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Agent Access Level Check, Artifact Chooser, Ask Precode, role lenses, skill-style help, team coordination, reversal, and proof tracing are available only when the current stage, risk, recovery path, support role, stable-docs question, proposed extension, or explicit user question calls for one.
 
 ## Plan Mode Candidate Craft Loop
 
@@ -146,7 +146,9 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Check | `Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.` | Confirm, Task Suitability, Engineering Quality Floor, Vibe-To-Agentic Boundary, and Every-Bead Rhythm behavior without coding, task selection, Candidate Queue ranking, implementation-plan approval, review acceptance, transition approval, or a new report. |
 | Skill map | `Use Skill Playbook Ergonomics.` | One existing invocation or owner surface, owner protocol, stop condition, and approval reminder. Do not create a skill catalog, install skills, add a registry, create optional packs, approve extension implementation, run mutating commands, or treat skill output as authority. |
 | Quality map | `Quality map: translate the relevant engineering standard into a Precode routing question.` | Engineering Quality Standards Taxonomy guidance only: owner protocol or continue path, proof needed, and human approval still required. Do not create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command. |
+| Access check | `Access: tell me what the agent may do before this command or work starts.` | Agent Access Level Check: `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, or `destructive`, plus allowed actions, proof needed, approval required before, and stop condition. It does not approve commands, enforce permissions, or widen scope. |
 | Build | `Build: work only on the active bead.` | Scoped implementation inside the approved files and task boundary. |
+| Approved handoff | `Use Approved-Bead Handoff for the current approved bead.` | A scoped host-agent build handoff with active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning. It does not activate a bead, choose tasks, accept review, approve transition, or create generated handoff output. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, Engineering Quality Review Lane, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
 | Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
@@ -160,8 +162,10 @@ Use these only when the current stage, risk, evidence gap, support role, or expl
 
 | Trigger | Use | Owner surface |
 |---|---|---|
+| One approved bead needs a scoped host-agent build handoff | `Approved handoff` | `../tasks/reference/PROMPT-PATTERNS.md` and `../tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` |
 | Review hypothesis or existing learning target | `Hypothesis` | `../tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md`; status may be untested, tested, narrowed, killed, promoted, stale, or not applicable |
 | Tiny reversible prototype bead is explicitly approved | `Build-react-learn` | `../tasks/reference/PROMPT-PATTERNS.md` and the active bead |
+| Sensitive, external, destructive, secret-bearing, dependency, deployment, release, shared-branch, or broad local mutation work appears | `Access check` | `../tasks/reference/PROMPT-PATTERNS.md` and `../tasks/reference/TOOL-EXECUTION-PROTOCOL.md` |
 | Familiar role language would clarify the current workflow | `Role lens` | `../tasks/reference/PROMPT-PATTERNS.md` |
 | Multiple people or delegated work may affect one product | `Team` or `Re-entry` | `../tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` and Prompt Patterns |
 | User-facing shipping risk is near | `Release` | `../tasks/reference/RELEASE-READINESS-PROTOCOL.md` |

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-07-24
+Document version: v0.1.18
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -27,6 +27,8 @@ Tool execution is part of PrecodeOS's advisory repo-native harness contract. Com
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token read-only tools, browser or screenshot-heavy tools, delegated agents, and external mutation tools.
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when a host or user wants a bounded retry loop around one active bead. Ralph can record attempts and validators, but it is still subject to this protocol's command classes and approval rules.
+
+Use `tasks/prds/PRD-043-agent-access-level-guidance.md` when changing the plain-language access model itself. Access levels are guidance over the existing tool-call classes, `files_in_play`, Run Contracts, approval gates, and stop conditions. They are not permission grants, runtime enforcement, sandbox policy, command approval, schema-backed access metadata, or host-plugin configuration.
 
 Use `scripts/precode_cli.py`, the optional local `precode` console command, or the optional npm `precodeos` preview entry only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, define release-channel behavior, or make generated output authoritative. The npm entry is limited to read-only setup, upgrade, and update-plan previews and must not expose apply flags or postinstall target mutation. Any updater compatibility policy metadata is evidence interpretation governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview metadata is grouped generated evidence governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`. Neither metadata path is a new command class, registry lookup, dist-tag resolver, channel selector, or package-manager permission.
 
@@ -53,6 +55,21 @@ Use these classes when describing important tool calls:
 | `external_mutation` | Changes GitHub, CI, deployments, dashboards, hosted services, issue trackers, or other external systems. |
 | `destructive` | Deletes, resets, drops, force-pushes, rolls back, migrates destructively, or otherwise risks irreversible loss. |
 | `secret_bearing` | Handles secrets, tokens, credentials, dashboard values, private exports, or sensitive raw output. |
+
+## Agent Access Levels
+
+Use these plain access levels when a builder asks what an agent may do right now. They translate command risk into beginner-readable language while preserving the existing tool-call classes as the canonical machine-readable vocabulary.
+
+| Access level | Plain meaning | Existing Precode mapping | Human gate |
+|---|---|---|---|
+| `inspect` | The agent may read local or external information without changing it. | `read_only`; active memory, owner files, source evidence, and generated reports as evidence only. | Ask if the source may contain secrets or private data. |
+| `verify` | The agent may run checks intended to prove behavior or package integrity. | `verification`; record through `record-check.sh` when used as proof. | Ask if the check is expensive, external, secret-bearing, or mutating. |
+| `local-change` | The agent may change local files inside the approved bead boundary. | `local_mutation`; `files_in_play`; active bead scope. | Ask before dependency installs, generated authority-like rewrites, scope widening, or sensitive surfaces. |
+| `sensitive` | The agent may prepare or inspect sensitive work only after the risk and proof path are explicit. | `secret_bearing` or sensitive-surface local mutation; `SECURITY.md`; Run Contract when needed. | Explicit approval before secrets, credentials, auth, private data, payments, security config, or dashboard values. |
+| `external-change` | The agent may change a hosted service, GitHub, CI, deployment, dashboard, issue tracker, release, or shared branch only after approval. | `external_mutation`; external mutation rules; Run Contract when needed. | Explicit approval naming action, affected system, recovery path, and evidence. |
+| `destructive` | The agent must stop before irreversible or hard-to-reverse work. | `destructive`; deletion, reset, drop, force-push, destructive migration, rollback. | Stop until the user explicitly approves the exact command, expected effect, rollback or blocked escape, and evidence plan. |
+
+If multiple levels apply, use the highest-risk level. For example, a local edit in `SECURITY.md` is not merely `local-change`; it is sensitive work and needs the matching approval and proof path. Access levels do not override sandbox permissions, broaden `files_in_play`, approve commands, accept implementation, approve review, merge work, deploy, release, or activate another bead.
 
 ## Command Policy In Beads
 
@@ -108,7 +125,7 @@ Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scri
 
 `python3 scripts/candidate-queue.py` is an approval-gated local Candidate Queue helper. Preview modes are read-only evidence and must say `mutates_now: false`. Apply mode is local mutation and requires explicit `--apply --approve-action <ID>`; that approval is approval for queue writeback only, not PRD approval, bead activation, `tasks/todo.md` mutation, implementation permission, external mutation, or `B###` reservation.
 
-`python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop`. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command. If it says continue for a local mutation, keep the mutation inside `files_in_play` and stop if the command would install dependencies, widen scope, touch sensitive surfaces, or rewrite generated evidence as if it were authority.
+`python3 scripts/files-in-play-check.py --command "<command summary>"` may classify a command as `continue`, `approval needed`, or `stop` and may expose the matching access level. That classification is a beginner-facing stop sign, not permission. If it says approval is needed or stop, the agent must pause and ask for explicit user approval or a narrower path before running the command. If it says continue for a local mutation, keep the mutation inside `files_in_play` and stop if the command would install dependencies, widen scope, touch sensitive surfaces, or rewrite generated evidence as if it were authority.
 
 `python3 scripts/files-in-play-check.py --edit-lock` is also advisory. It compares current changed paths with the active bead's `files_in_play` and generated-output exceptions. It does not create a filesystem lock, approve edits, or replace human review.
 

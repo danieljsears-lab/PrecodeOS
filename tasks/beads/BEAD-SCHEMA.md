@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-07-13
+Document version: v0.1.26
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -81,6 +81,8 @@ These keys are optional for backward compatibility but recommended for new or am
 
 `complexity`, `required_planning_depth`, and `autonomy_level` are advisory adaptive-depth fields. They help Precode scale ceremony up or down without changing the one-active-bead rule. Existing beads may omit them; Precode infers beginner-readable defaults for backward compatibility. `python3 scripts/bead-depth-check.py` reports advisory warnings when declared depth looks inconsistent with risk, files in play, checks, stop conditions, proof strength, or human approval gates. Treat warnings as routing prompts: fix the metadata, add rationale, strengthen proof, ask for approval, or split the bead.
 
+Agent access levels are plain-language Tool Execution guidance, not bead-schema values. Keep `autonomy_level` limited to `supervised`, `bounded-afk`, and `human-only`. If a bead needs `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, or `destructive` handling, express that in the Run Contract, allowed actions, proof needed, approval required before, and stop conditions rather than inventing a new frontmatter field.
+
 `run_contract` is optional for ordinary beads and expected only when work is sensitive, external, destructive, or `bounded-afk`. Because Precode's frontmatter parser is intentionally simple, new beads should usually express this as a `Run Contract` section unless a richer adapter emits structured frontmatter. Bounded-AFK Run Contracts should make re-entry review possible by naming allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and the evidence a returning builder should inspect.
 
 Ralph fields are optional and should appear only when a bead is testable enough for bounded retry. Ralph opt-in does not run automatically, approve attempts, widen files in play, accept review, or activate the next bead.
@@ -114,7 +116,7 @@ When release confidence depends on a specific requirement, behavior, or non-func
 
 Use the Review Lanes Protocol, `tasks/reference/REVIEW-LANES-PROTOCOL.md`, when a completed or nearly completed bead needs a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane. Keep review lane output in the bead body or closeout, not as required frontmatter. Review lanes produce findings, missing proof, acceptance questions, a recommendation, approvals still required, and a promotion path. They do not accept implementation, approve review decisions, approve release, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks, override owner files, create scorecard or checker authority, or activate another bead.
 
-Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
+Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when a bead expects approval-required, external, destructive, secret-bearing, or important non-check tool calls. Its access levels help explain what the agent may do right now, but they do not approve commands, enforce permissions, add sandbox behavior, or create schema-backed access metadata. Logged tool runs are not passing verification unless also recorded through `record-check.sh` or accepted in Closeout Evidence.
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when enabling, running, or reviewing bounded Ralph attempts for one active bead.
 

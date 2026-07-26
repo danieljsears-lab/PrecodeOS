@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-043 -- Agent Access Level Guidance</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-043 -- Agent Access Level Guidance</h1>
+  <p class="muted">Static HTML generated from <code>PRD-043-agent-access-level-guidance.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-043-agent-access-level-guidance.md#prd-043-agent-access-level-guidance">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Agent Access Level Guidance</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-26</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for plain-language agent access level guidance across Tool Execution, Run Contracts, routing, prompts, and user docs.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation acceptance, command approval, runtime permission enforcement, sandbox behavior, package-manager behavior, host-plugin dependency, generated-output authority, external mutation approval, or schema-backed access metadata.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 6</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-043-FR01</code></td><td>Tool Execution must define guidance-only agent access levels for read-only inspection, verification, scoped local mutation, sensitive or secret-bearing work, external mutation, and destructive or irreversible action.</td><td>P0</td><td>Existing tool-call classes remain canonical.</td></tr><tr><td><code>PRD-043-FR02</code></td><td>Run Contract and Agent Routing guidance must map access levels to allowed actions, proof needed, approval required before risky actions, stop conditions, and re-entry evidence.</td><td>P0</td><td>No new enforcement layer.</td></tr><tr><td><code>PRD-043-FR03</code></td><td>Bead Schema and System Design guidance must keep <code>autonomy_level</code> unchanged while explaining when access risk requires human-only handling or a Run Contract.</td><td>P0</td><td>Schema-backed metadata is deferred.</td></tr><tr><td><code>PRD-043-FR04</code></td><td>Prompt and reader surfaces must give builders a copyable way to ask what access level applies before work or risky commands.</td><td>P0</td><td>Beginner docs should stay compact.</td></tr><tr><td><code>PRD-043-FR05</code></td><td>Script fixture coverage must prove access-level wording remains advisory and does not approve commands, enforce permissions, add schema requirements, or create package-manager behavior.</td><td>P0</td><td>Use existing clarity scenario checks.</td></tr><tr><td><code>PRD-043-FR06</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <ul><li>Stop if an agent treats access levels as permission grants, sandbox policy, command approval, or runtime enforcement.</li><li>Stop if sensitive, external, destructive, dependency, deployment, migration, release, shared-branch, secret, auth, private-data, payment, or dashboard work lacks explicit approval and a proof path.</li><li>Stop if the change adds new <code>autonomy_level</code> values or schema-backed access metadata in this slice.</li><li>Stop if generated reports, command facades, checkers, adapters, or host tools are treated as access authority.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-043-agent-access-level-guidance.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/AGENT-ROUTING-PROTOCOL.md</code></li><li><code>tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/os_compiler.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li><code>llms.txt</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>active memory</li><li>target app code</li><li>host-plugin configuration</li><li>access enforcement or sandbox integration</li><li>new commands or new checkers</li><li>schema-backed access metadata</li><li>package-manager behavior</li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-043-agent-access-level-guidance">PRD-043 -- Agent Access Level Guidance</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS already has tool-call classes, bead autonomy metadata, files in play, Run Contracts, and approval gates. Builders still need a plain answer to &quot;what can the agent do right now?&quot; before commands, sensitive work, external systems, or long-running delegated work begin.</p>
+<p>This PRD adds guidance-only access levels that translate existing command and risk rules into beginner-readable language. The levels do not enforce permissions, approve commands, add sandbox behavior, or create schema-backed access metadata.</p>
+<h2 id="problem">Problem</h2>
+<p>Agent-native tools often make capability feel like permission. A model or coding agent may be able to inspect files, edit code, read external state, push branches, touch secrets, or deploy, but PrecodeOS needs the repository to say which of those actions are appropriate for the active bead and which require explicit human approval.</p>
+<p>Without a shared access vocabulary, Tool Execution classes, Run Contracts, approval gates, autonomy levels, and re-entry evidence can feel like separate rules. That increases permission drift and makes sensitive or external work harder for a non-technical builder to supervise.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Define a compact access ladder in plain English.</li><li>Map the ladder to existing tool-call classes, <code>files_in_play</code>, Run Contracts, approval gates, and bead autonomy metadata.</li><li>Keep <code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code> as the primary owner for command/access classification.</li><li>Refresh routing, bead schema, system-design, prompt, reader-doc, inventory, and AI-index surfaces so they use the same language.</li><li>Add deterministic clarity fixture coverage for the guidance-only boundary.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No runtime access enforcement, sandbox behavior, command approval layer, host-plugin dependency, new checker, new command, new router, registry, optional pack, package-manager behavior, release-channel behavior, install/update semantics, automatic external mutation approval, or generated-output authority.</li><li>No new <code>autonomy_level</code> values.</li><li>No schema-backed access metadata in this slice.</li><li>No claim that an agent receives full developer parity by default.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-043-FR01</code></td><td>Tool Execution must define guidance-only agent access levels for read-only inspection, verification, scoped local mutation, sensitive or secret-bearing work, external mutation, and destructive or irreversible action.</td><td>P0</td><td>Existing tool-call classes remain canonical.</td></tr><tr><td><code>PRD-043-FR02</code></td><td>Run Contract and Agent Routing guidance must map access levels to allowed actions, proof needed, approval required before risky actions, stop conditions, and re-entry evidence.</td><td>P0</td><td>No new enforcement layer.</td></tr><tr><td><code>PRD-043-FR03</code></td><td>Bead Schema and System Design guidance must keep <code>autonomy_level</code> unchanged while explaining when access risk requires human-only handling or a Run Contract.</td><td>P0</td><td>Schema-backed metadata is deferred.</td></tr><tr><td><code>PRD-043-FR04</code></td><td>Prompt and reader surfaces must give builders a copyable way to ask what access level applies before work or risky commands.</td><td>P0</td><td>Beginner docs should stay compact.</td></tr><tr><td><code>PRD-043-FR05</code></td><td>Script fixture coverage must prove access-level wording remains advisory and does not approve commands, enforce permissions, add schema requirements, or create package-manager behavior.</td><td>P0</td><td>Use existing clarity scenario checks.</td></tr><tr><td><code>PRD-043-FR06</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+<h2 id="access-level-ladder">Access Level Ladder</h2>
+<div class="table-wrap"><table><thead><tr><th>Level</th><th>Plain meaning</th><th>Existing Precode mapping</th><th>Human gate</th></tr></thead><tbody><tr><td><code>inspect</code></td><td>The agent may read local or external information without changing it.</td><td><code>read_only</code>; active memory, owner files, source evidence, generated reports as evidence only.</td><td>Ask if the source may contain secrets or private data.</td></tr><tr><td><code>verify</code></td><td>The agent may run checks intended to prove behavior or package integrity.</td><td><code>verification</code>; recorded through <code>record-check.sh</code> when used as proof.</td><td>Ask if the check is expensive, external, secret-bearing, or mutating.</td></tr><tr><td><code>local-change</code></td><td>The agent may change local files inside the approved bead boundary.</td><td><code>local_mutation</code>; <code>files_in_play</code>; active bead scope.</td><td>Ask before dependency installs, generated authority-like rewrites, scope widening, or sensitive surfaces.</td></tr><tr><td><code>sensitive</code></td><td>The agent may prepare or inspect sensitive work only after the risk and proof path are explicit.</td><td><code>secret_bearing</code> or sensitive-surface local mutation; <code>SECURITY.md</code>; Run Contract when needed.</td><td>Explicit approval before secrets, credentials, auth, private data, payments, security config, or dashboard values.</td></tr><tr><td><code>external-change</code></td><td>The agent may change a hosted service, GitHub, CI, deployment, dashboard, issue tracker, release, or shared branch only after approval.</td><td><code>external_mutation</code>; Tool Execution external mutation rules; Run Contract when needed.</td><td>Explicit approval naming action, affected system, recovery path, and evidence.</td></tr><tr><td><code>destructive</code></td><td>The agent must stop before irreversible or hard-to-reverse work.</td><td><code>destructive</code>; deletion, reset, drop, force-push, destructive migration, rollback.</td><td>Stop until the user explicitly approves the exact command, expected effect, rollback or blocked escape, and evidence plan.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-043-FR01</code></td><td>Tool Execution contains the ladder and says access levels are guidance over existing tool-call classes.</td><td>Source review and clarity scenario.</td></tr><tr><td><code>PRD-043-FR02</code></td><td>Run Contract and routing language name allowed actions, proof needed, approval required before, stop conditions, re-entry evidence, and non-enforcement limits.</td><td>Source review and <code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-043-FR03</code></td><td>Bead Schema still lists only <code>supervised</code>, <code>bounded-afk</code>, and <code>human-only</code>; schema-backed access metadata is named as deferred.</td><td>Source review and clarity scenario.</td></tr><tr><td><code>PRD-043-FR04</code></td><td>Daily Cockpit, User Guide, Prompt Patterns, README, and <code>llms.txt</code> expose compact access-level routing without making it a new workflow.</td><td>Docs review and docs HTML freshness.</td></tr><tr><td><code>PRD-043-FR05</code></td><td>Existing command classification reports guidance-only access-level metadata and fixture checks fail if it becomes command approval, enforcement, schema requirement, or package-manager behavior.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-043-FR06</code></td><td>Roadmap, journal, changelog, PRD HTML, docs HTML, and roadmap HTML are current and rendered shortstats are numeric.</td><td>Maintainer checks and rendered roadmap inspection.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Stop if an agent treats access levels as permission grants, sandbox policy, command approval, or runtime enforcement.</li><li>Stop if sensitive, external, destructive, dependency, deployment, migration, release, shared-branch, secret, auth, private-data, payment, or dashboard work lacks explicit approval and a proof path.</li><li>Stop if the change adds new <code>autonomy_level</code> values or schema-backed access metadata in this slice.</li><li>Stop if generated reports, command facades, checkers, adapters, or host tools are treated as access authority.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>Tool Execution Protocol</td><td>Access ladder plus command class mapping.</td><td>Guidance only; classes remain canonical.</td><td>Source review and clarity fixture.</td><td><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></td></tr><tr><td>Run Contract guidance</td><td>Allowed actions, proof needed, approval gates, stop conditions, re-entry evidence.</td><td>Advisory contract state, not enforcement.</td><td><code>python3 scripts/run-contract-check.py</code> via compiler and clarity scenario.</td><td><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></td></tr><tr><td>Command classification metadata</td><td>Existing <code>command_classification</code> payload may include access-level explanation.</td><td>Advisory generated evidence only.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td><td><code>scripts/os_compiler.py</code></td></tr><tr><td>Prompt and reader docs</td><td>Copyable &quot;what access level applies?&quot; prompt.</td><td>Routing help only; no task or command approval.</td><td>Docs HTML and source review.</td><td><code>tasks/reference/PROMPT-PATTERNS.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-043-agent-access-level-guidance.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/AGENT-ROUTING-PROTOCOL.md</code></li><li><code>tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>scripts/os_compiler.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>tasks/beads/BEAD-SCHEMA.md</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>docs/PRECODE-DAILY-COCKPIT.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>README.md</code></li><li><code>llms.txt</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>active memory</li><li>target app code</li><li>host-plugin configuration</li><li>access enforcement or sandbox integration</li><li>new commands or new checkers</li><li>schema-backed access metadata</li><li>package-manager behavior</li></ul>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/version-check.py
+python3 scripts/prd-html.py --check
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If implementation treats access levels as approval, enforcement, or sandbox policy, it violates this PRD.</li><li>If implementation adds new <code>autonomy_level</code> values or a required access schema, it violates this PRD.</li><li>If implementation adds a command, checker, registry, optional pack, host-plugin dependency, install/update behavior, release-channel behavior, package-manager behavior, or generated-output authority, it violates this PRD.</li></ul>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B043-agent-access-level-guidance</code></td><td><code>PRD-043-FR01</code> through <code>PRD-043-FR06</code></td><td>Access ladder guidance, protocol/docs/navigation wording, clarity coverage, generated docs/PRD surfaces, maintainer changelog, roadmap history, and generated roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-043-agent-access-level-guidance.md</code></td><td>clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-07-26.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#access-level-ladder">Access Level Ladder</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

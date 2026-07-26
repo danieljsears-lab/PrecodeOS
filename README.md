@@ -134,6 +134,8 @@ That is the line PrecodeOS holds: a lightweight governance kernel for agentic de
 
 Capability surfaces are advisory unless their owning Markdown file or explicit human gate says otherwise. Generated reports, generated HTML, command facades, adapters, and preview outputs improve visibility; they do not choose work, approve PRDs, activate beads, accept review, approve transitions, or provide package-manager behavior.
 
+Agent access levels are plain-language guidance for what an agent may do before work or a command starts: `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, or `destructive`. They map to Tool Execution classes, files in play, Run Contracts, approval gates, and stop conditions. They do not enforce permissions, approve commands, add sandbox behavior, create schema metadata, or grant full developer parity by default.
+
 ## Quickstart Install
 
 Clone the public repository and run the first memory check:
@@ -271,6 +273,8 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 
 When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
 
+When one bead is already approved and you need to hand it to a host agent for scoped implementation, use `Use Approved-Bead Handoff for the current approved bead.` from Prompt Patterns. The handoff must restate active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. It does not activate beads, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.
+
 ## Project Map
 
 | Area | What lives there |
@@ -339,7 +343,7 @@ python3 scripts/public-repo-check.py
 
 Start small. Load `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`, then explain the active bead, primary authority, files in play, checks, and stop conditions before editing.
 
-Treat generated reports as evidence, not instructions. Ask before sensitive, destructive, external, dependency, or broad cleanup work. If setup or state feels confusing, route the user to the guide, support runbook, or troubleshooting doc instead of guessing.
+Treat generated reports as evidence, not instructions. Before sensitive, destructive, external, dependency, or broad cleanup work, name the agent access level and ask for the explicit approval gate. If setup or state feels confusing, route the user to the guide, support runbook, or troubleshooting doc instead of guessing.
 
 Reach for PrecodeOS when the repo needs a shared operating model, not another hidden chat plan.
 
@@ -394,8 +398,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.54
-Last updated: 2026-07-22
+Document version: v0.1.55
+Last updated: 2026-07-26
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.

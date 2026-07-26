@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-06-14
+Document version: v0.1.6
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -19,6 +19,8 @@ This protocol helps non-technical builders ask for the right implementation shap
 Use it when a feature feels bigger than a text or styling change, when an agent proposes a design pattern, or when business rules could become scattered across the app.
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` first when an approved PRD needs a founder-readable risk and boundary bridge before bead proposals. Architecture Shaping asks what risks and boundaries must be clear; this protocol answers what implementation shape may fit that risk.
+
+Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` for agent access levels when the question is about what the coding agent may inspect, verify, mutate locally, handle as sensitive, change externally, or stop before doing. Do not confuse those guidance-only access levels with target-application auth, roles, permissions, or runtime enforcement.
 
 Active memory remains exactly:
 
@@ -36,7 +38,7 @@ Start with these defaults:
 | Feature has steps, approvals, statuses, or blocked states | State flow | The agent must know what can happen next, what cannot happen, and what each status means. | `ARCHITECTURE.md`, `USER-FLOWS.md`, or a PRD | "List the states and allowed transitions before implementation." | Statuses and transitions are named; verification covers at least one valid and one invalid transition when risk warrants it. |
 | Feature has multiple modes, providers, pricing rules, routing rules, or policies | Strategy-style boundary | Changeable rules stay behind one decision point instead of being copied into many places. | `ARCHITECTURE.md` or `PROJECT-CONTEXT.md` | "Where should the interchangeable rule or provider decision live?" | The chosen rule/provider can change without editing unrelated UI or data code. |
 | Feature needs to know who did what, when, or why | Audit trail | Irreversible or important actions stay explainable later. | `DATA-MODELS.md`, `SECURITY.md`, or `ARCHITECTURE.md` | "What action history should be recorded and where?" | Evidence records the action, actor, timestamp, result, and relevant object without storing secrets. |
-| Feature involves login, roles, permissions, private data, uploads, billing, or security config | Auth/access boundary | Sensitive decisions must be centralized and reviewed before users can be exposed. | `SECURITY.md` and `ARCHITECTURE.md` | "Define the access boundary and approval gate before coding." | Verification proves allowed and denied access paths, plus manual approval for sensitive changes. |
+| Feature involves login, roles, permissions, private data, uploads, billing, or security config | Auth/access boundary | Sensitive decisions must be centralized and reviewed before users can be exposed. | `SECURITY.md` and `ARCHITECTURE.md` | "Define the target-app access boundary and the agent access level before coding." | Verification proves allowed and denied app access paths, plus manual approval for sensitive agent actions. |
 | Feature is a one-off copy, layout, styling, or small local behavior change | Direct change using existing conventions | A named pattern would add ceremony without reducing risk. | active bead | "Is this simple enough to build directly?" | The changed file stays narrow, checks pass, and no new architecture is introduced. |
 | Feature needs meaningful internal logic, cross-layer behavior, or repeatable business rules | Deep module with interface-first design | The human keeps the codebase shape in mind while the agent can implement internals behind a stable boundary. | `ARCHITECTURE.md`, `PROJECT-CONTEXT.md`, or PRD | "Define the public interface, behavior contract, and test boundary before coding internals." | Tests exercise the module through its public interface; callers do not depend on scattered helper details. |
 
@@ -104,6 +106,7 @@ Use `tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md` when naming a boundary req
 - `API.md` owns API, webhook, external service, and server boundary patterns.
 - `DATA-MODELS.md` owns entity relationships, audit trail storage, and schema implications.
 - `SECURITY.md` owns auth, role, permission, privacy, and sensitive-surface boundaries.
+- `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` owns guidance-only agent access levels for command and tool risk.
 - PRDs own product workflow shape, user acceptance behavior, and requirement-level intent.
 - `DECISIONS.md` owns durable choices to introduce, reject, or defer a pattern.
 - The active bead owns scoped execution only.
@@ -131,6 +134,7 @@ Stop for user approval before:
 
 - introducing a new architecture boundary across multiple modules
 - changing auth, roles, permissions, billing, private data, uploads, deployments, or security config
+- allowing an agent to move beyond `inspect` or `verify` on sensitive, external, destructive, or secret-bearing work
 - replacing an existing provider or external service boundary
 - adding a state machine or audit trail that changes user-visible behavior
 - promoting generated pattern guidance into an owner file

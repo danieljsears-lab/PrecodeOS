@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.43
+# Version: v0.1.44
 # Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -424,6 +424,16 @@ TOOL_FAILURE_CATEGORIES = {
     "unknown",
 }
 TOOL_APPROVAL_CLASSES = {"external_mutation", "destructive", "secret_bearing"}
+TOOL_ACCESS_LEVEL_BY_CLASS = {
+    "read_only": "inspect",
+    "verification": "verify",
+    "generated_refresh": "inspect",
+    "local_mutation": "local-change",
+    "external_mutation": "external-change",
+    "destructive": "destructive",
+    "secret_bearing": "sensitive",
+}
+TOOL_ACCESS_LEVELS = {"inspect", "verify", "local-change", "sensitive", "external-change", "destructive"}
 RUN_CONTRACT_PROOF_LANES = VERIFICATION_TIERS
 RUN_CONTRACT_REQUIRED_REASONS = {
     "bounded_afk",
@@ -4246,27 +4256,39 @@ def command_classification(command: str, bead: BeadRecord | None) -> dict[str, A
     elif any(term in lower for term in COMMAND_LOCAL_MUTATION_TERMS):
         tool_class = "local_mutation"
         if sensitive_surface:
+            access_level = "sensitive"
             user_decision = "approval needed"
             summary = "Ask before running this. It may change local files while the bead involves a sensitive surface."
             approval_prompt = "Ask the user to approve the sensitive local mutation, expected files, rollback or escape path, and proof plan."
         else:
+            access_level = TOOL_ACCESS_LEVEL_BY_CLASS[tool_class]
             user_decision = "continue"
             summary = "This may change local project files. Continue only if the expected paths stay inside files_in_play."
             approval_prompt = "Ask for approval first if the command widens scope, installs dependencies, changes generated authority-like files, or touches sensitive surfaces."
     else:
         tool_class = "read_only"
+        access_level = TOOL_ACCESS_LEVEL_BY_CLASS[tool_class]
         user_decision = "continue"
         summary = "This command does not look destructive or sensitive from its summary."
         approval_prompt = "No special approval suggested."
 
+    if "access_level" not in locals():
+        access_level = TOOL_ACCESS_LEVEL_BY_CLASS.get(tool_class, "inspect")
+    access_level_warning = (
+        "Access levels are advisory routing language over existing tool-call classes, files_in_play, Run Contracts, approval gates, "
+        "and stop conditions; they do not approve commands, enforce permissions, add sandbox behavior, or create schema-backed access metadata."
+    )
+
     return {
         "command": command_text,
         "class": tool_class,
+        "access_level": access_level,
         "user_decision": user_decision,
         "plain_english_summary": summary,
         "why_this_matters": "Non-technical builders need command risk translated before a tool mutates files, services, secrets, or production state.",
         "stop_if": "Stop if the command deletes, force-resets, migrates, deploys, exposes secrets, or touches production without explicit approval.",
         "approval_prompt": approval_prompt,
+        "access_level_warning": access_level_warning,
         "sensitive_surface_detected": sensitive_surface,
         "advisory_only": True,
     }

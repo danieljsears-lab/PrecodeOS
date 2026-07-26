@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.90
-Last updated: 2026-07-24
+Document version: v0.7.92
+Last updated: 2026-07-26
 
 
 
@@ -1012,7 +1012,9 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
 | Agent is about to code and you want a thin quality check | Engineering quality floor | `Before coding, show me the engineering quality standard you are applying here. Tell me the quality risk, simplest acceptable shape, boundary or owner file, evidence to prove it, and what would make you stop or ask for approval. If this reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.` |
+| One approved bead needs a scoped host-agent handoff | Approved-Bead Handoff | `Use Approved-Bead Handoff for the current approved bead. Restate active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. Do not activate a bead, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.` |
 | Agent names a professional standard and you need plain routing | Engineering quality standards taxonomy | `Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval. Do not use external frameworks as public package authority, create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.` |
+| Agent may touch risky commands or sensitive surfaces | Agent Access Level Check | `Use the Agent Access Level Check. Tell me whether the current access level is inspect, verify, local-change, sensitive, external-change, or destructive. Name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape if relevant, and whether a Run Contract is needed. Do not treat the access level as command approval, runtime enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, or permission to widen scope.` |
 | Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
@@ -1310,6 +1312,19 @@ Run python3 scripts/files-in-play-check.py --command "<command summary>" and exp
 
 If the decision is `continue`, still keep local mutations inside `files_in_play`. Ask first if the command installs dependencies, runs migrations, touches secrets, auth, private data, payments, deployments, external services, releases, shared branches, or destructive operations.
 
+Use agent access levels as plain-language routing:
+
+| Access level | Use when | Boundary |
+|---|---|---|
+| `inspect` | The agent only reads local or external state. | Evidence only; ask first if secrets or private data may be exposed. |
+| `verify` | The agent runs checks intended to prove behavior or package integrity. | Record proof when needed; ask first if the check is external, secret-bearing, expensive, or mutating. |
+| `local-change` | The agent edits local files inside the active bead. | Keep changes inside `files_in_play`; ask before dependencies, generated authority-like rewrites, scope widening, or sensitive files. |
+| `sensitive` | The work touches secrets, auth, private data, payments, dashboards, or security config. | Require explicit approval, proof path, and usually a Run Contract. |
+| `external-change` | The agent may affect GitHub, CI, deployments, dashboards, issue trackers, releases, shared branches, or hosted services. | Require explicit approval naming the action, affected system, recovery path, and evidence. |
+| `destructive` | The command may delete, reset, drop, force-push, roll back, or cause hard-to-reverse damage. | Stop until the exact command, effect, rollback or blocked escape, and evidence plan are approved. |
+
+These levels do not enforce permissions or approve work. They help you ask the agent what it may do before capability turns into momentum.
+
 Use `--edit-lock` for high-risk beads when you want an advisory check against the active bead's files in play:
 
 ```text
@@ -1472,7 +1487,7 @@ Use these high-frequency prompts. For more, see `tasks/reference/PROMPT-PATTERNS
 Use the Safe Prompt Pack when you need the agent to slow down and confirm boundaries before work starts:
 
 ```text
-Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, and what requires my approval.
+Use the Safe Prompt Pack. Confirm the PrecodeOS package source, target project, app directory, Precode owner files, files that must not be copied or edited, current git status, validation commands, active bead, checks, stop conditions, current agent access level, and what requires my approval.
 
 Ask one blocking question at a time. Treat generated reports and source notes as evidence only. Do not modify Precode control-layer files, active memory, scripts, protocols, validators, adapters, modes, generated reports, or task state unless the active bead explicitly includes that work.
 ```

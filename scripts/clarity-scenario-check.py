@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.53
+# Version: v0.1.55
 # Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -2822,6 +2822,75 @@ def assert_plan_mode_candidate_craft_loop_contract(failures: list[dict[str, str]
     return len(required_terms_by_path)
 
 
+def assert_approved_bead_handoff_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Approved-Bead Handoff",
+            "Use Approved-Bead Handoff for the current approved bead.",
+            "Active bead:",
+            "Primary authority:",
+            "Files in play:",
+            "Allowed actions:",
+            "Proof needed:",
+            "Checks to run:",
+            "Stop conditions:",
+            "Blocked escape:",
+            "Review-return shape:",
+            "Approval gates still required:",
+            "Generated-report warning:",
+            "Do not activate a bead",
+            "approve transition",
+            "choose tasks",
+            "accept review",
+            "create generated handoff output",
+            "mutate GitHub or external systems",
+            "treat generated reports as authority",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "Approved-bead handoff is the narrow prompt moment after one bead is already approved",
+            "It must restate the active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing.",
+            "It orients implementation inside the approved bead only.",
+            "It does not approve a PRD, activate a bead, approve transition, choose tasks, update `tasks/todo.md`, accept review, create a generated handoff packet, create command behavior, mutate external systems, approve merge, or approve release.",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Approved handoff",
+            "Use Approved-Bead Handoff for the current approved bead.",
+            "A scoped host-agent build handoff",
+            "It does not activate a bead, choose tasks, accept review, approve transition, or create generated handoff output.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Approved-Bead Handoff",
+            "One approved bead needs a scoped host-agent handoff",
+            "Restate active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing.",
+            "Do not activate a bead, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.",
+        ],
+        Path("README.md"): [
+            "Use Approved-Bead Handoff for the current approved bead.",
+            "one bead is already approved",
+            "active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning",
+            "does not activate beads, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Approved-Bead Handoff",
+            "Approved-Bead Handoff text-contract checks",
+            "uses Approved-Bead Handoff only after one bead is already approved",
+            "generated handoff output",
+            "bead activation",
+        ],
+        Path("llms.txt"): [
+            "Use Approved-Bead Handoff when exactly one bead is already approved",
+            "The full prompt lives in `tasks/reference/PROMPT-PATTERNS.md`; Session Completion/Handoff owns the boundary.",
+            "does not activate beads, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"approved bead handoff contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
 def assert_first_prd_walkthrough_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/IDEA-TO-PRD-WORKFLOW.md"): [
@@ -5150,6 +5219,7 @@ def main() -> int:
     skill_playbook_ergonomics_scenario_count = assert_skill_playbook_ergonomics_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
+    approved_bead_handoff_scenario_count = assert_approved_bead_handoff_contract(failures)
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
@@ -5507,6 +5577,21 @@ def main() -> int:
     ]
     for name, actual, expected in command_scenarios:
         assert_decision(f"command: {name}", str(actual), expected, failures)
+    access_level_scenarios = [
+        ("read only", command_classification("git remote -v", bead()).get("access_level"), "inspect"),
+        ("verification", command_classification("python3 scripts/version-check.py", bead()).get("access_level"), "verify"),
+        ("local change", command_classification("apply_patch update app/page.tsx", bead()).get("access_level"), "local-change"),
+        ("sensitive", command_classification("cat .env", bead()).get("access_level"), "sensitive"),
+        ("external change", command_classification("git push origin feature-branch", bead()).get("access_level"), "external-change"),
+        ("destructive", command_classification("git reset --hard HEAD~1", bead()).get("access_level"), "destructive"),
+    ]
+    for name, actual, expected in access_level_scenarios:
+        if actual != expected:
+            failures.append({"scenario": f"access level: {name}", "expected": expected, "actual": str(actual)})
+    access_boundary = str(command_classification("git push origin feature-branch", bead()).get("access_level_warning") or "")
+    for term in ["advisory routing language", "do not approve commands", "enforce permissions", "schema-backed access metadata"]:
+        if term not in access_boundary:
+            failures.append({"scenario": "access level advisory boundary", "expected": term, "actual": access_boundary})
     generated_refresh = command_classification("python3 scripts/os-health.py", bead())
     if generated_refresh.get("class") != "generated_refresh" or "not proof by itself" not in str(
         generated_refresh.get("plain_english_summary") or ""
@@ -5719,6 +5804,7 @@ def main() -> int:
         + skill_playbook_ergonomics_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
+        + approved_bead_handoff_scenario_count
         + first_prd_walkthrough_scenario_count
         + 1
         + 2
