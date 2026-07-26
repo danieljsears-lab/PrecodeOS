@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.11
-Last updated: 2026-06-23
+Document version: v0.1.12
+Last updated: 2026-07-26
 
 Generated logs live here.
 
@@ -41,6 +41,7 @@ Generated logs live here.
 - `handoff-packet.md`
 - `pattern-guidance.json`
 - `file-inventory.json`
+- `package-knowledge-lint.json`
 - `local-hygiene-preview.json`
 - `local-hygiene-preview.md`
 - `os-checkpoints/`

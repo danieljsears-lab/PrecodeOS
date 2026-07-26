@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-24
+Document version: v0.1.24
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -64,7 +64,7 @@ Beginner naming rule: reuse the user-facing workflow name whenever one already e
 
 Role lens rule: if a beginner asks for a product manager, product strategist, researcher, designer, architect, developer, QA/reviewer, security, or deployment role, route through `tasks/reference/PROMPT-PATTERNS.md` Role Lens Prompt Map or the smallest existing owner workflow. Do not create role-named skills, persona agents, role catalogs, task runners, command wrappers, registries, optional packs, approval shortcuts, or implementation permission from role language.
 
-Review recommendation rule: Skill / Extension Review output is advisory review input only. A recommendation of `accept-shape` does not approve the extension, install a skill, authorize implementation, edit files, add a registry, create optional packs, run commands, mutate external systems, or bypass the Extension Protocol.
+Review recommendation rule: Skill / Extension Review output is advisory review input only. A recommendation of `accept-shape` does not approve the extension, install a skill, authorize implementation, edit files, add a registry, create optional packs, run commands, mutate external systems, or bypass the Extension Protocol. Pack-shaped proposals must also satisfy the packaging-oriented contribution thresholds in `CONTRIBUTING.md` and the Future Pack Boundary Spec in `tasks/reference/EXTENSION-PROTOCOL.md`.
 
 ## Daily Prompt Alias Boundary
 
@@ -538,7 +538,7 @@ Use an adapter when behavior is tool-specific.
 
 Use docs or prompt patterns when the main need is teaching, onboarding, or copyable user language.
 
-Use optional packs only after the kernel, setup path, install/update manifest, and package-health boundaries are stable enough that extension packaging will clarify rather than compete.
+Use optional packs only after contributor packaging thresholds, the kernel, setup path, install/update manifest, and package-health boundaries are stable enough that extension packaging will clarify rather than compete.
 
 ## Review Questions
 

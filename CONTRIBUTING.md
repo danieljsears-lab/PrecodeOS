@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-24
+Document version: v0.1.5
+Last updated: 2026-07-26
 
 ## Contribution Policy
 
@@ -37,6 +37,23 @@ Contributions should preserve:
 
 Do not turn PrecodeOS into an autonomous agent, a PM framework, a hidden-memory system, or a specialist-team simulator.
 
+## Packaging-Oriented Contributions
+
+A packaging-oriented contribution is any change that affects extension shape, adapter or shim promises, command facades, setup or update previews, generated evidence surfaces, optional-pack review language, public package metadata, release guidance, or contributor-facing package trust.
+
+Keep these contributions small enough to review:
+
+- one logical packaging change per pull request
+- named owner protocols, adapters, docs, scripts, and generated surfaces affected
+- relevant validation evidence included in the pull request
+- docs, protocol, inventory, and generated-surface updates when behavior or boundaries change
+- no scope expansion after review starts without maintainer agreement
+- no registry, marketplace, plugin installer, optional-pack installation, release-channel execution, package-manager behavior, hidden setup path, postinstall mutation, or target-project mutation
+
+Optional-pack proposals are review artifacts until a separate approved package change defines distribution. A proposed pack must declare included surfaces, owner protocols or adapters, generated evidence, validation, forbidden effects, removal or rollback notes, and active-memory impact. It must not add active memory, approve work, install host plugins, or make generated metadata authoritative.
+
+For packaging-style work, use `tasks/reference/EXTENSION-PROTOCOL.md` before implementation or merge. Extension review output is advisory review input only; it does not approve the change, install a skill, create a registry, or create optional-pack behavior.
+
 ## Review Expectations
 
 Meaningful changes should include the relevant validation evidence, such as:
@@ -46,7 +63,7 @@ Meaningful changes should include the relevant validation evidence, such as:
 - `python3 scripts/file-inventory.py --check`
 - targeted script checks for changed behavior
 
-Maintainer review is required for changes touching governance, trademark, licensing, public positioning, active memory, authority ownership, generated-output demotion, package install/update boundaries, core workflow semantics, or beginner-facing safety language.
+Maintainer review is required for changes touching governance, trademark, licensing, public positioning, active memory, authority ownership, generated-output demotion, extension or optional-pack boundaries, package install/update boundaries, core workflow semantics, or beginner-facing safety language.
 
 Use `tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md` before implementation or merge when a contribution may change those semantic boundaries. The proposal is review evidence only; it does not approve code, accept implementation, publish a release, or grant contributor governance rights.
 

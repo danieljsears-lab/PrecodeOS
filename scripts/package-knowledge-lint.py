@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-07-10
+# Version: v0.1.2
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -61,10 +61,84 @@ SOURCE_GLOBS = [
 ]
 ORPHAN_PREFIXES = ("docs/", "tasks/reference/", "adapters/")
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
+PLAIN_PATH_PATTERN = re.compile(r"`((?:docs|tasks/reference|adapters)/[A-Za-z0-9_.-]+\.md)`")
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$", re.MULTILINE)
 HTML_ANCHOR_PATTERN = re.compile(r"<a\s+[^>]*id=[\"']([^\"']+)[\"']", re.IGNORECASE)
 COMMENT_ANCHOR_PATTERN = re.compile(r"<!--\s*ANCHOR:\s*([a-zA-Z0-9_.:-]+)\s*-->")
 CONTRACT_PATTERN = re.compile(r"^>\s*AUTHORITY:\s*(.+)$", re.MULTILINE)
+REVIEWED_DUPLICATE_HEADING_PATTERNS = {
+    ("accessibility advisor fit interview", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+    ("action categories", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
+    ("advisory check", ("tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md", "tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md", "tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md", "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md", "tasks/reference/TOOL-EXECUTION-PROTOCOL.md", "tasks/reference/VERSIONING-PROTOCOL.md", "tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md")),
+    ("allowed read only uses", ("tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md", "tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md")),
+    ("approval gates", ("tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md")),
+    ("ask for the engineering quality floor", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("backend only with existing frontend", ("docs/PRECODE-SUPPORT-RUNBOOK.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("before you start", ("docs/PRECODE-GUIDED-SETUP.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("branch rules", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
+    ("builder prompt", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md", "tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
+    ("check task suitability before work", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("check the vibe to agentic boundary", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("client engagement intake", ("docs/PRECODE-SUPPORT-RUNBOOK.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("close the session", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("command", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
+    ("command surface triage", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("commands", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md")),
+    ("context budget", ("adapters/CLAUDE.md", "tasks/reference/AGENT-ROUTING-PROTOCOL.md", "tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md")),
+    ("cross reference staleness review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("dependency graph review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("engineering quality review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("entry shape", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md")),
+    ("every bead rhythm", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("exclusions", ("tasks/reference/LEARNING-DIARY-PROTOCOL.md", "tasks/reference/MEMORY-PROTOCOL.md")),
+    ("existing precode refresh", ("docs/PRECODE-GUIDED-SETUP.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("existing project adaptation plan", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("failure categories", ("tasks/reference/RALPH-LOOP-PROTOCOL.md", "tasks/reference/TOOL-EXECUTION-PROTOCOL.md")),
+    ("failure modes", ("tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md", "tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md")),
+    ("faq", ("README.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("first move", ("docs/PRECODE-TROUBLESHOOTING.md", "tasks/reference/RECOVERY-PROTOCOL.md")),
+    ("forbidden uses", ("tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md", "tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md", "tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md")),
+    ("generated outputs", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md", "tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md")),
+    ("guardrails", ("llms.txt", "tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md", "tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
+    ("maintainer package review skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+    ("make acceptance criteria testable", ("docs/PRECODE-USER-GUIDE.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("one question at a time", ("docs/PRECODE-SUPPORT-RUNBOOK.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("output contract", ("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md", "tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("package upgrade preview", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("plan mode candidate craft loop", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("prd quality review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("product discovery interview skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+    ("project glossary cards", ("tasks/reference/MEMORY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
+    ("release candidate evidence profile", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),
+    ("required inputs", ("tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("required output", ("tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md")),
+    ("review acceptance skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+    ("routing mapping", ("adapters/ANTIGRAVITY.md", "adapters/CLAUDE.md", "adapters/CODEX.md", "adapters/COPILOT.md", "adapters/CURSOR.md", "adapters/GEMINI.md")),
+    ("session close behavior", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md")),
+    ("shared command surface", ("adapters/ADAPTER-INDEX.md", "adapters/ANTIGRAVITY.md", "adapters/CLAUDE.md", "adapters/CODEX.md", "adapters/COPILOT.md", "adapters/CURSOR.md", "adapters/GEMINI.md")),
+    ("skill extension review skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+    ("source inputs", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
+    ("start here", ("README.md", "llms.txt")),
+    ("team merge and re entry review pack", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/TEAM-COLLABORATION-PROTOCOL.md")),
+    ("the line precode holds", ("docs/PRECODE-MANIFESTO.md", "docs/PRECODE-OS-README.md")),
+    ("v1 command", ("tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md")),
+    ("verification and release evidence review", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),
+    ("what is a bead", ("README.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("when to use", ("tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
+    ("where to go next", ("docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md", "docs/PRECODE-GUIDED-SETUP.md", "docs/PRECODE-OS-README.md")),
+    ("why only three active memory files", ("README.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("won t a more capable model just do this natively", ("README.md", "docs/PRECODE-USER-GUIDE.md")),
+    ("workflow selection skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
+}
+REVIEWED_PRIVATE_BOUNDARY_SOURCES = {
+    "llms.txt",
+    "docs/PRECODE-PACKAGE-FILE-INVENTORY.md",
+    "tasks/reference/PROMPT-PATTERNS.md",
+    "tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md",
+    "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+    "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md",
+    "logs/authority-map.json",
+}
 
 
 @dataclass(frozen=True)
@@ -184,6 +258,8 @@ def add_finding(
     message: str,
     recommended_destination: str,
     promotion_path: str,
+    disposition: str = "unreviewed",
+    review_required: bool = True,
 ) -> None:
     findings.append(
         {
@@ -194,6 +270,8 @@ def add_finding(
             "message": message,
             "recommended_destination": recommended_destination,
             "promotion_path": promotion_path,
+            "disposition": disposition,
+            "review_required": review_required,
             "forbidden_uses": FORBIDDEN_USES,
         }
     )
@@ -254,6 +332,16 @@ def link_findings(root: Path, sources: list[SourceFile], findings: list[dict[str
     return inbound
 
 
+def plain_reference_findings(sources: list[SourceFile], inbound: dict[str, set[str]]) -> None:
+    existing = {source.rel_path for source in sources}
+    for source in sources:
+        if not is_doc_like(source.rel_path):
+            continue
+        for target_rel in PLAIN_PATH_PATTERN.findall(source.text):
+            if target_rel in existing and target_rel != source.rel_path:
+                inbound[target_rel].add(source.rel_path)
+
+
 def heading_findings(sources: list[SourceFile], findings: list[dict[str, Any]]) -> None:
     headings: dict[str, list[str]] = defaultdict(list)
     for source in sources:
@@ -269,6 +357,7 @@ def heading_findings(sources: list[SourceFile], findings: list[dict[str, Any]]) 
             continue
         if normalized in {"purpose", "stop conditions", "promotion path", "document metadata"}:
             continue
+        reviewed = (normalized, tuple(unique_paths)) in REVIEWED_DUPLICATE_HEADING_PATTERNS
         add_finding(
             findings,
             category="duplicate_heading_label",
@@ -277,6 +366,8 @@ def heading_findings(sources: list[SourceFile], findings: list[dict[str, Any]]) 
             message=f"Repeated heading label may represent duplicate concept surface: {normalized}",
             recommended_destination="tasks/reference/REVIEW-LANES-PROTOCOL.md",
             promotion_path="Use Cross-Reference / Staleness Review before deciding whether any owner file needs consolidation.",
+            disposition="reviewed_intentional_structural_duplicate" if reviewed else "unreviewed",
+            review_required=not reviewed,
         )
 
 
@@ -293,7 +384,7 @@ def orphan_findings(sources: list[SourceFile], inbound: dict[str, set[str]], fin
                 category="orphan_public_reference",
                 severity="info",
                 source_refs=[source.rel_path],
-                message="Public reference surface has no inbound Markdown links from the checked public core source set.",
+                message="Public reference surface has no inbound links or path references from the checked public core source set.",
                 recommended_destination="docs/PRECODE-PACKAGE-FILE-INVENTORY.md or llms.txt",
                 promotion_path="Review whether the surface needs navigation, inventory coverage, or should remain intentionally discoverable only by direct protocol trigger.",
             )
@@ -370,6 +461,7 @@ def private_boundary_findings(sources: list[SourceFile], findings: list[dict[str
             continue
         if "_maintainer/" not in source.text:
             continue
+        reviewed = source.rel_path in REVIEWED_PRIVATE_BOUNDARY_SOURCES
         add_finding(
             findings,
             category="public_private_boundary_risk",
@@ -378,6 +470,8 @@ def private_boundary_findings(sources: list[SourceFile], findings: list[dict[str
             message="Public checked source mentions maintainer-local material; confirm the mention is boundary guidance, not a dependency.",
             recommended_destination="docs/PRECODE-PACKAGE-FILE-INVENTORY.md or tasks/reference/EXTENSION-PROTOCOL.md",
             promotion_path="If the public package depends on maintainer-local context, move the needed rule into a public owner file or remove the dependency.",
+            disposition="reviewed_intentional_boundary_guidance" if reviewed else "unreviewed",
+            review_required=not reviewed,
         )
 
 
@@ -385,6 +479,7 @@ def build_payload(root: Path) -> dict[str, Any]:
     sources = source_files(root)
     findings: list[dict[str, Any]] = []
     inbound = link_findings(root, sources, findings)
+    plain_reference_findings(sources, inbound)
     heading_findings(sources, findings)
     orphan_findings(sources, inbound, findings)
     authority_findings(sources, findings)
@@ -392,9 +487,13 @@ def build_payload(root: Path) -> dict[str, Any]:
     private_boundary_findings(sources, findings)
     category_counts = Counter(finding["category"] for finding in findings)
     severity_counts = Counter(finding["severity"] for finding in findings)
+    review_required_count = sum(1 for finding in findings if finding.get("review_required"))
+    reviewed_intentional_count = sum(
+        1 for finding in findings if not finding.get("review_required") and str(finding.get("disposition", "")).startswith("reviewed_intentional_")
+    )
     return {
         "tool": TOOL,
-        "status": "pass" if not findings else "warning",
+        "status": "pass" if review_required_count == 0 else "warning",
         "generated_warning": GENERATED_WARNING,
         "source_scope": {
             "included": SOURCE_GLOBS,
@@ -405,6 +504,8 @@ def build_payload(root: Path) -> dict[str, Any]:
         "summary": {
             "checked_file_count": len(sources),
             "finding_count": len(findings),
+            "review_required_count": review_required_count,
+            "reviewed_intentional_count": reviewed_intentional_count,
             "categories": dict(sorted(category_counts.items())),
             "severities": dict(sorted(severity_counts.items())),
         },
@@ -421,9 +522,9 @@ def self_test() -> dict[str, Any]:
     failures: list[dict[str, str]] = []
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
-        write_fixture(root / "README.md", "# Fixture\n\n[Broken](docs/MISSING.md)\n\n[Bad Anchor](docs/A.md#missing)\n")
-        write_fixture(root / "llms.txt", "- `docs/A.md`: fixture\n")
-        write_fixture(root / "docs" / "A.md", "# Shared Name\n\n> AUTHORITY: Duplicate fixture authority.\n> NOT_AUTHORITY: fixture\n> LOAD_WHEN: fixture\n> CLASS: reference\n\nSee [_maintainer](_maintainer/PRIVATE.md).\n")
+        write_fixture(root / "README.md", "# Start Here\n\n[Broken](docs/MISSING.md)\n\n[Bad Anchor](docs/A.md#missing)\n")
+        write_fixture(root / "llms.txt", "# Start Here\n\n- `docs/A.md`: fixture\n\nMention `_maintainer/` only as boundary guidance.\n")
+        write_fixture(root / "docs" / "A.md", "# Shared Name\n\n> AUTHORITY: Duplicate fixture authority.\n> NOT_AUTHORITY: fixture\n> LOAD_WHEN: fixture\n> CLASS: reference\n\nSee [_maintainer](../_maintainer/PRIVATE.md).\n")
         write_fixture(root / "docs" / "B.md", "# Shared Name\n\n> AUTHORITY: Duplicate fixture authority.\n> NOT_AUTHORITY: fixture\n> LOAD_WHEN: fixture\n> CLASS: reference\n")
         write_fixture(root / "tasks" / "reference" / "C.md", "# C\n")
         write_fixture(root / "adapters" / "ADAPTER-INDEX.md", "# Adapter Index\n")
@@ -451,12 +552,46 @@ def self_test() -> dict[str, Any]:
             failures.append({"scenario": "fixture category coverage", "expected": category, "actual": str(sorted(categories))})
     if payload["status"] != "warning":
         failures.append({"scenario": "advisory finding status", "expected": "warning", "actual": str(payload["status"])})
+    reviewed_duplicate = [
+        finding for finding in payload["findings"]
+        if finding["category"] == "duplicate_heading_label"
+        and finding["message"].endswith("start here")
+        and finding.get("review_required") is False
+        and finding.get("disposition") == "reviewed_intentional_structural_duplicate"
+    ]
+    if not reviewed_duplicate:
+        failures.append({"scenario": "reviewed duplicate heading classification", "expected": "start here reviewed", "actual": str(payload["findings"])})
+    unreviewed_duplicate = [
+        finding for finding in payload["findings"]
+        if finding["category"] == "duplicate_heading_label"
+        and finding["message"].endswith("shared name")
+        and finding.get("review_required") is True
+    ]
+    if not unreviewed_duplicate:
+        failures.append({"scenario": "new duplicate heading classification", "expected": "shared name review required", "actual": str(payload["findings"])})
+    reviewed_boundary = [
+        finding for finding in payload["findings"]
+        if finding["category"] == "public_private_boundary_risk"
+        and finding["source_refs"] == ["llms.txt"]
+        and finding.get("review_required") is False
+        and finding.get("disposition") == "reviewed_intentional_boundary_guidance"
+    ]
+    if not reviewed_boundary:
+        failures.append({"scenario": "reviewed public/private boundary classification", "expected": "llms boundary guidance reviewed", "actual": str(payload["findings"])})
+    direct_private_link = [
+        finding for finding in payload["findings"]
+        if finding["category"] == "public_private_boundary_risk"
+        and finding["message"].startswith("Public source links to maintainer-local material")
+        and finding.get("review_required") is True
+    ]
+    if not direct_private_link:
+        failures.append({"scenario": "direct maintainer link classification", "expected": "direct private link review required", "actual": str(payload["findings"])})
     warning = payload.get("generated_warning") or ""
     for term in ["advisory generated evidence only", "does not approve edits", "select tasks", "rewrite docs", "package-manager behavior"]:
         if term not in warning:
             failures.append({"scenario": "generated warning wording", "expected": term, "actual": warning})
     for finding in payload["findings"]:
-        for field in ["id", "category", "severity", "source_refs", "message", "recommended_destination", "promotion_path", "forbidden_uses"]:
+        for field in ["id", "category", "severity", "source_refs", "message", "recommended_destination", "promotion_path", "disposition", "review_required", "forbidden_uses"]:
             if field not in finding:
                 failures.append({"scenario": f"finding field: {finding.get('category')}", "expected": field, "actual": "missing"})
         forbidden = " ".join(finding.get("forbidden_uses") or [])

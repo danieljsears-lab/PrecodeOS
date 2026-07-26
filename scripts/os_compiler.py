@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.42
-# Last updated: 2026-07-11
+# Version: v0.1.43
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -358,6 +358,7 @@ LOCAL_HYGIENE_EXPECTED_LOG_FILES = {
     "logs/orchestration-map.json",
     "logs/os-events.jsonl",
     "logs/os-health.json",
+    "logs/package-knowledge-lint.json",
     "logs/pattern-guidance.json",
     "logs/progress.json",
     "logs/readiness.json",

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-05-07
+# Version: v0.1.2
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -40,9 +40,15 @@ def add_issue(issues: list[dict[str, Any]], path: str, message: str, severity: s
     issues.append({"path": path, "severity": severity, "message": message})
 
 
+def is_checkpoint_source_snapshot(name: str) -> bool:
+    return name.startswith("logs/os-checkpoints/") and "/files/" in name
+
+
 def check_markdown(path: Path, root: Path, issues: list[dict[str, Any]]) -> None:
     text = path.read_text(encoding="utf-8")
     name = rel(path, root)
+    if is_checkpoint_source_snapshot(name):
+        return
     values = contract(text)
     anchor_required = name.startswith("tasks/reference/") or (name.startswith("logs/") and name != "logs/LOG-EVIDENCE-TAXONOMY.md")
     if anchor_required and not anchor(text):

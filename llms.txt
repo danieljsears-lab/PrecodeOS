@@ -8,7 +8,7 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.24
+Document version: v0.1.26
 Last updated: 2026-07-26
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
@@ -62,6 +62,9 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`: provider-neutral external status, safe health URL, missing-configuration, and evidence-only promotion rules.
 - `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`: read-only prompt playbooks for host agents, including Skill Playbook Ergonomics and role lens boundary guidance that keeps beginner invocation behind existing workflow moments.
 - `tasks/reference/MEMORY-PROTOCOL.md`: reviewed memory search, citation, freshness, and promotion rules.
+- `tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md`: context loading order, context tiers, prompt-injection guardrails, and handoff context expectations.
+- `tasks/reference/STATE-MANAGEMENT-PROTOCOL.md`: state ownership, precedence, generated-state freshness, and stale-report recovery expectations.
+- `tasks/reference/LEARNING-DIARY-PROTOCOL.md`: generated learner-facing diary behavior and lesson-promotion boundaries.
 - `tasks/reference/TOOL-EXECUTION-PROTOCOL.md`: tool-call classes, command approval, failure categories, and proof-vs-tool-use boundaries.
 - `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: thin pre-coding engineering quality floor, beginner-readable Engineering Quality Standards Taxonomy, optional Engineering Quality Text-Contract Checker routing, post-implementation Engineering Quality Review Lane routing, and proportional routing when implementation risk appears.
 - `tasks/prds/PRD-040-release-readiness-quality-expansion.md`: release-quality cues inside existing Release Readiness and advisory completion-check output; not a new checker, release gate, production-readiness certification, provider checklist, deployment automation, release-channel behavior, or package-manager behavior.
@@ -88,7 +91,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 - `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
 - `scripts/engineering-quality-check.py`: Engineering Quality Text-Contract Checker; advisory only, including package text-contract coverage for Engineering Quality Review Lane references and explicit `--repo-heuristics-preview` changed-file repo-shape warnings; not implementation approval, review acceptance, generated proof, app-code parsing, AST analysis, linter replacement, test execution, scorecard, or checker gate.
 - `scripts/completion-check.py`: advisory completion and release-evidence readiness output, including release-quality cue warnings through `details.release_evidence`; not release approval, production-readiness certification, generated proof, deployment automation, or a checker gate.
-- `scripts/package-knowledge-lint.py`: Package Knowledge Lint over the public package core; advisory generated evidence only for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk; not edit approval, task selection, source promotion, automatic doc rewrite, stale-claim authority, proof, implementation acceptance, checker gate, registry, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.
+- `scripts/package-knowledge-lint.py`: Package Knowledge Lint over the public package core; advisory generated evidence only for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk, with reviewed-intentional dispositions and `review_required` counts for previously audited patterns; not edit approval, task selection, source promotion, automatic doc rewrite, stale-claim authority, proof, implementation acceptance, checker gate, registry, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.
 - `scripts/external-status.py`: provider-neutral read-only external status evidence for GitHub, safe health URLs from `PROJECT-CONTEXT.md`, and configured-provider absence; not proof, approval, deployment, merge, release, owner-file mutation, dashboard mutation, external mutation, registry, optional-pack behavior, install/update behavior, or package-manager behavior.
 - `scripts/task-suitability-check.py`: Task Suitability Checker; advisory continue/clarify/route/split/block/stop guidance only, not task selection, PRD approval, bead activation, implementation authorization, review acceptance, command approval, or generated proof.
 - `scripts/candidate-queue.py`: local Candidate Queue preview/apply helper; preview is non-authority and apply requires explicit `--approve-action`.

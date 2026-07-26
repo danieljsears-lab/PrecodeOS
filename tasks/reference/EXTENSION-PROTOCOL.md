@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-07-11
+Document version: v0.1.27
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -46,7 +46,7 @@ Future host shims and native rule-directory surfaces must start as advisory comp
 
 Future host-facing contract consumption may become stricter only after advisory run contracts, command classification, and wrapper boundaries prove stable in real use. Any stricter host adapter must remain subordinate to owner files, active beads, recorded proof, user approval gates, and the Tool Execution Protocol; it must not silently become runtime enforcement or command approval.
 
-Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
+Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec or pack review checklist may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
 
 The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over existing prompts and artifacts, not an extension type. Do not treat it as a template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, skill playbook, command wrapper, or approval surface. If artifact selection depends on active state, route through Workflow Selection or the owning protocol.
 
@@ -70,7 +70,7 @@ Future retrieval-backed memory is governed by this protocol before any database,
 | Bounded attempt engine | Opt-in local loop that runs one explicit attempt command, validators, and generated attempt evidence for one active bead | `tasks/reference/RALPH-LOOP-PROTOCOL.md` plus `scripts/ralph-loop.py` |
 | External integration | Read-only or approved interaction with outside systems | `tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md`, provider-specific protocol, plus `PROJECT-CONTEXT.md` |
 | Role contract | Compact mode card for bounded agent behavior | `modes/*.md` |
-| Future optional pack | Deferred package of related PrecodeOS reference surfaces, examples, or checks that must pass extension review before distribution | `tasks/reference/EXTENSION-PROTOCOL.md` plus the specific owning protocols or adapters |
+| Future optional pack | Deferred package of related PrecodeOS reference surfaces, examples, or checks that must pass extension review before distribution | `tasks/reference/EXTENSION-PROTOCOL.md` plus the specific owning protocols or adapters; `CONTRIBUTING.md` owns packaging-oriented contribution thresholds |
 
 ## Boundary Rules
 
@@ -98,6 +98,10 @@ Optional packs are deferred. This section defines boundary rules for discussing 
 
 A future pack may contain related reference protocols, templates, examples, scripts or checks, adapter notes, generated-evidence profile definitions, and documentation. Each included surface must keep its normal owner file, authority contract, validation path, and promotion path.
 
+Pack-shaped proposals should usually start as maintainer or contributor review artifacts, not installable modules. Review the contributor threshold first: one logical packaging change, named owner surfaces, included checks, docs/protocol/inventory/generated-surface impact, no scope expansion during review, and no registry, marketplace, installer, release-channel, package-manager, or target-project mutation behavior.
+
+Recommended initial official pack categories are release readiness, security review, docs/navigation review, UI or experience review, and existing-repo intake. A single exemplar pack may be documented as non-installable review evidence after contributor thresholds are clear; it must prove that packaging clarifies ownership and validation instead of competing with the core.
+
 A future pack must not:
 
 - add or replace active-memory files
@@ -108,30 +112,58 @@ A future pack must not:
 - mutate external systems or target projects unless a separate approved bead and user gate allow the exact mutation
 - make maintainer-local files public package authority
 
+Use this checklist before accepting a pack-shaped extension proposal:
+
+```text
+Pack name:
+Pack status: proposal | exemplar-review-shape | deferred
+Capability being grouped:
+Included surfaces:
+Owning protocols or adapters:
+Authority files affected:
+Generated evidence written:
+Validation commands:
+Active-memory impact:
+External systems touched:
+Read-only by default:
+User approval gates:
+Forbidden effects:
+Removal or rollback note:
+Distribution behavior: none
+Registry or marketplace behavior: none
+Install/update/package-manager behavior: none
+```
+
 Illustrative non-installable metadata shape:
 
 ```yaml
 pack:
-  id: example-readiness-pack
-  status: illustrative-only
+  id: release-readiness-review-pack
+  status: exemplar-review-shape
   owner_protocol: tasks/reference/EXTENSION-PROTOCOL.md
   included_surfaces:
-    - tasks/reference/EXAMPLE-PROTOCOL.md
-    - tasks/templates/EXAMPLE-TEMPLATE.md
+    - tasks/reference/RELEASE-READINESS-PROTOCOL.md
+    - tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md
+    - tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md
+  pack_categories:
+    - release-readiness
+    - verification
   generated_evidence: none
   active_memory_changes: none
   external_mutation: none
   validation:
     - python3 scripts/extension-check.py
+    - python3 scripts/file-inventory.py --check
   forbidden_effects:
     - task approval
     - command approval
     - installation
     - registry behavior
     - package-manager behavior
+    - release approval
 ```
 
-The example above is a review shape only. It is not a shipped pack, install manifest, registry record, package index, or permission to distribute optional packs.
+The example above is a review shape only. It is not a shipped pack, install manifest, registry record, package index, release-readiness approval, or permission to distribute optional packs.
 
 ## Authority Contract Rules
 
@@ -233,6 +265,8 @@ Validation command:
 Promotion path for findings:
 Rollback or removal note:
 ```
+
+For pack-shaped proposals, also apply the Future Pack Boundary Spec checklist above. Do not accept a pack proposal if it cannot name owner protocols, affected authority files, generated evidence, validation, forbidden effects, and distribution behavior of `none`.
 
 ## Current Example
 
