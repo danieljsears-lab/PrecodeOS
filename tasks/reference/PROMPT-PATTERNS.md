@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.70
-Last updated: 2026-07-24
+Document version: v0.1.71
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -872,6 +872,20 @@ Return: review target, source refs found or missing, evidence strength, open con
 Allowed recommendations are: keep as evidence, ask for more source refs, run Local Source Intake, update Candidate Queue, run Memory Promotion Review, draft or amend a PRD, update `DECISIONS.md`, update an owner file, route to decomposition review, defer, or kill.
 
 Do not approve a PRD, promote owner-file facts, create or activate beads, choose tasks, update tasks/todo.md, accept implementation, edit files, or treat generated summaries as authority.
+```
+
+### Owner-File Promotion Before PRD Shaping
+
+Use this after Local Source Intake and before PRD shaping when reviewed source facts may belong in `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, `tasks/todo.md`, or another owner file.
+
+```text
+Run the owner-file promotion check before PRD shaping.
+
+Use only the reviewed Local Source Intake summary and current owner files. Name the exact candidate owner-file updates, source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and validation command.
+
+If a fact is uncertain, label it as an assumption or open question. If no owner-file facts need promotion, say so and continue to PRD shaping only after I approve the next step.
+
+Do not invent facts, overwrite files, edit owner files without my approval, approve a PRD, create or activate beads, update tasks/todo.md as task approval, write code, or treat this check as automatic owner-file adaptation.
 ```
 
 ## Engineer Initiation

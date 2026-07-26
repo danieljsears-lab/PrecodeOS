@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.45
-Last updated: 2026-07-24
+Document version: v0.1.46
+Last updated: 2026-07-26
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
 
@@ -59,6 +59,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 - Packet: reviewed Conviction Packet / Precode Ingestion Packet.
 - Packet handoff: reviewed Conviction Packet / Precode Ingestion Packet with Local Source Intake readiness self-check.
 - Intake: Local Source Intake summary.
+- Owner-file promotion check: if intake found stable facts for owner files, run Source-To-Promotion Hygiene Review, get user approval, apply only approved facts, then re-validate before PRD shaping.
 - PRD: human-reviewed PRD shaping and approval.
 - Bead: candidate decomposition, then approved active bead.
 - Proof: recorded checks and manual evidence.
@@ -66,7 +67,7 @@ First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof 
 - Close: closeout evidence and explicit Close State.
 
 1. If PrecodeOS is not in the project yet, stop here and use `PRECODE-GUIDED-SETUP.md`.
-2. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping are steps in that path, not separate commands to choose between.
+2. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, the owner-file promotion check when stable facts need a home, and PRD shaping are steps in that path, not separate commands to choose between.
 3. If PrecodeOS is set up and work exists, run Start, Check, then use Build, Prove, Review, Close, or Recover from the loop below.
 4. If something feels broken or confusing, say `I am stuck, help me.` Use Troubleshooting for symptom lookup and the Recovery Protocol for the full repair contract.
 
@@ -115,7 +116,7 @@ Use this cockpit to find the right surface before asking an agent to continue.
 | What proof or status exists? | Recorded checks, `PROGRESS.md`, `OS-HEALTH.md`, and `logs/*` | Evidence for review. Generated reports and logs do not approve work, choose tasks, or replace owner files. |
 | What if something feels wrong? | `I am stuck, help me`, `PRECODE-TROUBLESHOOTING.md`, and the Recovery Protocol | A stop-and-diagnose path before repair, rollback, overwrite, setup mutation, or transition approval. |
 | What did we learn? | The learning diary, bead build journal, Build Attribution Ledger, and reviewed memory | Lessons, path visibility, and who-built-what evidence. These are evidence only until promoted through the right owner file or reviewed closeout. |
-| I need a smaller first-session card. | `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` | A compact builder build-order checklist and prompt card after setup validates. It reinforces this cockpit and does not choose work, approve setup, activate beads, or replace protocols. |
+| I need a smaller first-session card. | `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` | A compact builder build-order checklist and prompt card after setup validates, including the conditional `Owner Files?` gate before PRD shaping. It reinforces this cockpit and does not choose work, approve setup, activate beads, or replace protocols. |
 | Where should this answer live? | `Use Question-To-Artifact Filing for this answer.` | A filing recommendation only: stay in chat, Local Source Intake, Candidate Queue, Memory Promotion Review, PRD/owner-file work, `DECISIONS.md`, decomposition review, defer, kill, or maintainer roadmap note. It does not file automatically, approve promotion, choose tasks, or activate beads. |
 | Is this source ready to promote? | Source-To-Promotion Hygiene Review in Prompt Patterns | Checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition before any promotion. It does not promote files, approve PRDs, choose tasks, or activate beads. |
 | Was this hypothesis tested? | Hypothesis Review / Learning Loop | Learning status, outcome, stale or untested signals, and the next safe Precode workflow. It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |

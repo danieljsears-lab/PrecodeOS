@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.43
-Last updated: 2026-07-24
+Document version: v0.1.44
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -317,16 +317,20 @@ Exclude private local planning material, generated reports, generated logs, loca
 
 If Bootstrap Confidence reports blockers, stop setup until they are resolved. If it reports conflicts, name each conflict and get user approval before adapting or copying anything.
 
-### 5. Adapt Owner Files
+### 5. Adapt Owner Files And Re-Validate
 
-Use the captured user-owned facts to propose minimal setup adaptations:
+Use reviewed intake output and captured user-owned facts to propose minimal setup adaptations:
 
 - `PRODUCT.md`: product promise, users, smallest useful version, success signals, and voice
 - `PROJECT-CONTEXT.md`: app directory, stack if known, checks, conventions, integrations, and sensitive boundaries
 - `DECISIONS.md`: hard decisions already known
 - `tasks/todo.md`: first setup or orientation bead and current state
 
-Support may draft, but the user approves the facts. If a fact is uncertain, mark it as an assumption or open question in the proper owner file rather than presenting it as settled.
+Before editing, run Source-To-Promotion Hygiene Review or the owner-file promotion prompt from `tasks/reference/PROMPT-PATTERNS.md`. Name exact candidate owner-file changes, source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and validation command.
+
+Support may draft, but the user approves the facts. If a fact is uncertain, mark it as an assumption or open question in the proper owner file rather than presenting it as settled. Do not invent facts, overwrite owner files, adapt owner files automatically, approve a PRD, activate a bead, update `tasks/todo.md` as task approval, or code from intake evidence.
+
+After approved owner-file edits, re-run validation before PRD shaping or first use. If no owner-file facts need promotion, say so and continue only after the user approves the next step.
 
 ### 6. Validate Before First Use
 

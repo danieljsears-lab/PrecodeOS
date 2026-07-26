@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
-Last updated: 2026-07-22
+Document version: v0.1.3
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -35,7 +35,7 @@ Do not browse every protocol first. The Daily Cockpit or troubleshooting route w
 
 Use this order when you need one visible path:
 
-`Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next`
+`Setup -> Start -> Idea/Packet -> Intake -> Owner Files? -> PRD -> Bead -> Proof -> Review -> Close -> Next`
 
 | Stage | What to do | Where it lives |
 |---|---|---|
@@ -43,6 +43,7 @@ Use this order when you need one visible path:
 | Start | Begin the working session and make the agent explain the current state before editing. | `docs/PRECODE-DAILY-COCKPIT.md` |
 | Idea/Packet | If the idea is rough, use First PRD Walkthrough; if a packet exists, keep it as evidence for intake. | Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` |
 | Intake | Summarize reviewed source material before promoting anything into owner files or PRDs. | Daily Cockpit / Support Runbook route |
+| Owner Files? | If intake found stable facts for `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, `tasks/todo.md`, or another owner file, run Source-To-Promotion Hygiene Review, get user approval, apply only approved facts, then re-validate before PRD shaping. If no owner-file facts need promotion, say so and continue to PRD shaping. | Prompt Patterns / Support Runbook route |
 | PRD | Shape and review requirements before any build work starts. | Daily Cockpit / How-To route |
 | Bead | Break approved work into one bounded active slice. | Daily Cockpit route |
 | Proof | Record checks and manual evidence for the active bead. | Daily Cockpit `Prove` path |
@@ -59,16 +60,31 @@ Use this during a support call when the builder needs the whole flow stated line
 ```text
 Walk me through my first Precode session linearly.
 
-Use the official build order: Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next.
+Use the official build order: Setup -> Start -> Idea/Packet -> Intake -> Owner Files? -> PRD -> Bead -> Proof -> Review -> Close -> Next.
 
 First tell me which stage I am in, which owning doc or prompt to use, and the next one action I should take. Keep the answer short enough to follow on a live call.
 
 If setup is not validated, route me to Guided Setup and stop before product work.
 If setup is validated, route me to the Daily Cockpit or First Safe Prompt.
 If my idea or source packet is not reviewed, route me to Ideation or Intake before PRD work.
+If intake found stable facts that should live in owner files, run Source-To-Promotion Hygiene Review, ask for approval before edits, and re-validate before PRD shaping.
 If there is no approved PRD or active bead, stop before coding and tell me what approval is missing.
 
 Do not approve setup, choose work, approve a PRD, create or activate beads, approve review or transition, write code, overwrite files, run app commands, or treat this card as a replacement for Guided Setup, Daily Cockpit, or the owning protocols.
+```
+
+## Owner-File Promotion Prompt
+
+Use this after Local Source Intake and before PRD shaping when reviewed source facts may belong in owner files:
+
+```text
+Run the owner-file promotion check before PRD shaping.
+
+Use only the reviewed Local Source Intake summary and current owner files. Name the exact candidate owner-file updates, source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, stop condition, and validation command.
+
+If a fact is uncertain, label it as an assumption or open question. If no owner-file facts need promotion, say so and continue to PRD shaping only after I approve the next step.
+
+Do not invent facts, overwrite files, edit owner files without my approval, approve a PRD, create or activate beads, update tasks/todo.md as task approval, write code, or treat this check as automatic owner-file adaptation.
 ```
 
 ## First Safe Prompt

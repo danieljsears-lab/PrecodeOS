@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-22
+Document version: v0.1.24
+Last updated: 2026-07-26
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -17,7 +17,7 @@ Use the compact first-reader route. If PrecodeOS is not installed in the target 
 
 Optional npm commands such as `npx @precodeos/precodeos setup-preview --target <target-project-root>`, `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, and `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>` are read-only setup/refresh preview entries. Upgrade preview may show advisory release-reference metadata from the local package source, including package version, inferred prerelease label, and stable/latest/pinned term guidance, plus updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and may group current `UP-ID` evidence with same-session freshness and validation prompts. These previews do not query npm, resolve dist-tags, install PrecodeOS into the target, expose npm apply behavior, approve copying, overwrite files, adapt owner files, install hooks, change CI, run app commands, define executable release channels, provide package-manager updates, automate rollback, choose tasks, approve PRDs, or activate beads. `latest` is not overwrite permission and compatibility policy/update-plan metadata is evidence only.
 
-Use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` only as a compact first-session builder build-order checklist after setup validates or when the Daily Cockpit feels too large for a new builder. It is shareable as the builder's official compact flow, reinforces Guided Setup and the Daily Cockpit, and does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page.
+Use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` only as a compact first-session builder build-order checklist after setup validates or when the Daily Cockpit feels too large for a new builder. It is shareable as the builder's official compact flow, includes a conditional `Owner Files?` gate after intake and before PRD shaping, reinforces Guided Setup and the Daily Cockpit, and does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page.
 
 Use the Backend-Only With Existing Frontend prompt in `tasks/reference/PROMPT-PATTERNS.md` or `docs/PRECODE-SUPPORT-RUNBOOK.md` when a builder or client says the frontend is already completed and Precode should build the backend first. Treat the frontend as source evidence and an integration boundary, bias candidate beads toward backend/API/data/auth/integration work, and allow frontend touches only for approved connection, adaptation, or verification needs.
 
@@ -39,7 +39,7 @@ Use Source-To-Promotion Hygiene Review before turning a source summary, Candidat
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
 - `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, not a second start page.
 - `docs/PRECODE-TROUBLESHOOTING.md`: symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior.
-- `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`: compact first-session builder build-order checklist and prompt card behind Guided Setup and Daily Cockpit; shareable as the builder's official compact flow, but not a start page, approval shortcut, setup helper, or task selector.
+- `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`: compact first-session builder build-order checklist and prompt card behind Guided Setup and Daily Cockpit, including the conditional `Owner Files?` promotion/re-validation gate before PRD shaping; shareable as the builder's official compact flow, but not a start page, approval shortcut, setup helper, or task selector.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.
 - `CANDIDATE-QUEUE.md`: parked candidate intent, product-value ratings, themes, near-bead sketches, and promotion review surface; not task authority.
 

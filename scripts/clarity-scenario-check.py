@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.52
-# Last updated: 2026-07-24
+# Version: v0.1.53
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1970,7 +1970,13 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/templates/PRECODE-FIRST-SESSION-CARD.md"): [
             "Builder Build Order",
-            "Setup -> Start -> Idea/Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close -> Next",
+            "Setup -> Start -> Idea/Packet -> Intake -> Owner Files? -> PRD -> Bead -> Proof -> Review -> Close -> Next",
+            "Owner Files?",
+            "Source-To-Promotion Hygiene Review",
+            "then re-validate before PRD shaping",
+            "Owner-File Promotion Prompt",
+            "Do not invent facts",
+            "automatic owner-file adaptation",
             "shareable as the builder's official first-session flow",
             "Linear Setup-To-First-Bead Prompt",
             "This table is an index in build order",
@@ -1987,12 +1993,17 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "compact linear builder build-order card",
+            "conditional `Owner Files?` gate before PRD shaping",
+            "owner-file promotion check",
             "one page of prompts, checks, and build-order guidance",
             "does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement",
         ],
         Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
             "compact builder build-order card behind Guided Setup and Daily Cockpit",
             "Do not create or maintain a separate side doc",
+            "Adapt Owner Files And Re-Validate",
+            "Source-To-Promotion Hygiene Review",
+            "After approved owner-file edits, re-run validation before PRD shaping or first use",
             "Backend-Only With Existing Frontend",
             "Treat the completed frontend as existing source evidence and an integration boundary",
             "Do not create frontend beads just because frontend files exist",
@@ -2002,14 +2013,25 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "compact post-setup builder build-order checklist",
+            "conditional `Owner Files?` promotion/re-validation gate",
+            "automatic owner-file adaptation",
             "not a fifth route",
             "Compact first-session builder build-order checklist",
         ],
         Path("llms.txt"): [
             "compact first-session builder build-order checklist",
+            "conditional `Owner Files?` gate after intake and before PRD shaping",
+            "promotion/re-validation gate before PRD shaping",
             "shareable as the builder's official compact flow",
             "reinforces Guided Setup and the Daily Cockpit",
             "does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Owner-File Promotion Before PRD Shaping",
+            "Run the owner-file promotion check before PRD shaping.",
+            "validation command",
+            "Do not invent facts",
+            "automatic owner-file adaptation",
         ],
     }
     for path, required_terms in required_terms_by_path.items():
