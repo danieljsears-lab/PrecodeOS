@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-30
+Document version: v0.1.6
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -76,6 +76,8 @@ Capture:
 - changed-path summary
 - implementation changes, separated from generated evidence changes
 - latest recorded checks and result
+- Closeout Evidence work digest when available
+- Closeout Evidence suggested commit message when available
 - manual verification state
 - build-readiness state based on evidence, not confidence
 - blockers, remaining uncertainty, and approval still needed
@@ -98,7 +100,7 @@ The Daily Cockpit is the primary daily reader surface for this journal.
 When the bead build journal exists, Daily Cockpit report guidance should include it where a builder is trying to understand what changed or validate build status:
 
 - Close: read the bead build journal alongside the learning diary when the question is "what path of work happened?" or "what code changed?"
-- Close: session close should update or point to the latest bead build journal entry after closeout evidence refresh.
+- Close: session close should update or point to the latest bead build journal entry after closeout evidence refresh, including the closeout work digest and suggested commit message when available.
 - Runnable reports: list the generated journal command or file once implemented.
 - Done/evidence prompts: ask the agent to summarize the latest journal entry without treating it as active memory.
 
@@ -125,9 +127,12 @@ The journal update should:
 
 - read existing evidence
 - append one structured entry per close event when appropriate
+- carry the closeout work digest forward as evidence only
+- carry the suggested commit message forward as advisory evidence only
 - regenerate the human-readable Markdown view
 - avoid changing active memory
 - avoid changing bead state
+- avoid staging files, committing, pushing, approving review, or approving transition
 - avoid proposing or activating the next task
 
 ## Relationship To Other Reports

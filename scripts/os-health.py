@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.15
-# Last updated: 2026-06-23
+# Version: v0.1.16
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -348,6 +348,8 @@ Generated at: `{payload['generated_at']}`
 ## Completion And Handoff
 
 - Status: {completion.get('status', 'missing')}
+- Work digest: {completion_details.get('work_digest', 'not recorded')}
+- Suggested commit subject: {(completion_details.get('commit_message_suggestion') or {}).get('subject', 'not recorded')}
 - Closeout status: {completion_details.get('closeout_status', 'unknown')}
 - Promotion status: {completion_details.get('promotion_status', 'unknown')}
 - Manual verification: {completion_details.get('manual_verification', 'unknown')}

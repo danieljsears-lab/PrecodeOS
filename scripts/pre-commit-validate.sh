@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.1
-# Last updated: 2026-06-14
+# Version: v0.1.2
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -52,7 +52,7 @@ bash scripts/validate-memory.sh
 echo "pre-commit: running advisory public repo check"
 python3 scripts/public-repo-check.py
 
-echo "pre-commit: running advisory file inventory check"
+echo "pre-commit: running enforced file inventory check"
 python3 scripts/file-inventory.py --check
 
 echo "pre-commit: running advisory completion check"

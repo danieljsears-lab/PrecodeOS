@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-23
+# Version: v0.1.3
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -10,13 +10,26 @@ import json
 import subprocess
 from pathlib import Path
 
-from os_compiler import close_readiness, follow_up_suggestion, latest_by_command, load_jsonl, read_bead, read_todo_state, repo_root
+from os_compiler import (
+    advisory_commit_message_suggestion,
+    close_readiness,
+    closeout_work_digest,
+    follow_up_suggestion,
+    inline_commit_message_suggestion,
+    latest_by_command,
+    load_jsonl,
+    read_bead,
+    read_todo_state,
+    repo_root,
+)
 from os_parser import replace_labeled_bullets
 
 
 CLOSEOUT_LABELS = [
     ("Checks run", "checks_run"),
     ("Result", "result"),
+    ("Work digest", "work_digest"),
+    ("Suggested commit message", "suggested_commit_message"),
     ("Manual verification", "manual_verification"),
     ("Files changed", "files_changed"),
     ("Next bead", "next_bead"),
@@ -101,6 +114,7 @@ def main() -> int:
         else f"not needed while status is `{bead.status}`"
     )
 
+    files_changed = f"{git_changed_summary(root)} at last evidence update"
     values = {
         "checks_run": render_check_summary(bead_results),
         "result": (
@@ -108,8 +122,21 @@ def main() -> int:
             if bead_results
             else "no recorded command results yet"
         ),
+        "work_digest": closeout_work_digest(
+            bead,
+            check_results=bead_results,
+            changed_summary=files_changed,
+        ),
+        "suggested_commit_message": inline_commit_message_suggestion(
+            advisory_commit_message_suggestion(
+                bead,
+                check_results=bead_results,
+                changed_summary=files_changed,
+                next_safe_action=bead.closeout.get("next_bead", "not evaluated"),
+            )
+        ),
         "manual_verification": bead.closeout.get("manual_verification", "not recorded"),
-        "files_changed": f"{git_changed_summary(root)} at last evidence update",
+        "files_changed": files_changed,
         "next_bead": bead.closeout.get("next_bead", "not evaluated"),
         "review_decision": bead.closeout.get("review_decision", "not reviewed"),
         "drift_observed": bead.closeout.get("drift_observed", "none recorded"),

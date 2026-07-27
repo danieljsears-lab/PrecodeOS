@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.8
-# Last updated: 2026-06-27
+# Version: v0.1.9
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -244,6 +244,7 @@ bead_required = {
 closeout_markers = [
     "Checks run",
     "Result",
+    "Work digest",
     "Manual verification",
     "Files changed",
     "Next bead",

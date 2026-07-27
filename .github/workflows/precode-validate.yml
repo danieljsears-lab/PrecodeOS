@@ -1,5 +1,5 @@
-# Version: v0.1.1
-# Last updated: 2026-07-11
+# Version: v0.1.2
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 name: Precode Validate
 
@@ -20,13 +20,13 @@ jobs:
       - name: Validate Precode memory
         run: bash scripts/validate-memory.sh
 
-      - name: Advisory version check
+      - name: Enforced version check
         run: python3 scripts/version-check.py
 
       - name: Advisory public repo check
         run: python3 scripts/public-repo-check.py
 
-      - name: Advisory file inventory check
+      - name: Enforced file inventory check
         run: python3 scripts/file-inventory.py --check
 
       - name: Advisory completion check

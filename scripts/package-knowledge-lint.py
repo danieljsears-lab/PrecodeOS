@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
+# Version: v0.1.3
 # Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -332,14 +332,21 @@ def link_findings(root: Path, sources: list[SourceFile], findings: list[dict[str
     return inbound
 
 
-def plain_reference_findings(sources: list[SourceFile], inbound: dict[str, set[str]]) -> None:
+def plain_reference_findings(sources: list[SourceFile], inbound: dict[str, set[str]]) -> dict[str, Any]:
     existing = {source.rel_path for source in sources}
+    references: list[dict[str, str]] = []
     for source in sources:
         if not is_doc_like(source.rel_path):
             continue
         for target_rel in PLAIN_PATH_PATTERN.findall(source.text):
             if target_rel in existing and target_rel != source.rel_path:
                 inbound[target_rel].add(source.rel_path)
+                references.append({"source": source.rel_path, "target": target_rel})
+    return {
+        "reference_count": len(references),
+        "target_count": len({reference["target"] for reference in references}),
+        "references": references,
+    }
 
 
 def heading_findings(sources: list[SourceFile], findings: list[dict[str, Any]]) -> None:
@@ -479,7 +486,7 @@ def build_payload(root: Path) -> dict[str, Any]:
     sources = source_files(root)
     findings: list[dict[str, Any]] = []
     inbound = link_findings(root, sources, findings)
-    plain_reference_findings(sources, inbound)
+    plain_references = plain_reference_findings(sources, inbound)
     heading_findings(sources, findings)
     orphan_findings(sources, inbound, findings)
     authority_findings(sources, findings)
@@ -506,9 +513,12 @@ def build_payload(root: Path) -> dict[str, Any]:
             "finding_count": len(findings),
             "review_required_count": review_required_count,
             "reviewed_intentional_count": reviewed_intentional_count,
+            "plain_path_reference_count": plain_references["reference_count"],
+            "plain_path_reference_target_count": plain_references["target_count"],
             "categories": dict(sorted(category_counts.items())),
             "severities": dict(sorted(severity_counts.items())),
         },
+        "plain_path_references": plain_references["references"],
         "findings": findings,
     }
 
@@ -523,7 +533,7 @@ def self_test() -> dict[str, Any]:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         write_fixture(root / "README.md", "# Start Here\n\n[Broken](docs/MISSING.md)\n\n[Bad Anchor](docs/A.md#missing)\n")
-        write_fixture(root / "llms.txt", "# Start Here\n\n- `docs/A.md`: fixture\n\nMention `_maintainer/` only as boundary guidance.\n")
+        write_fixture(root / "llms.txt", "# Start Here\n\n- `docs/A.md`: fixture\n- `tasks/reference/C.md`: fixture\n\nMention `_maintainer/` only as boundary guidance.\n")
         write_fixture(root / "docs" / "A.md", "# Shared Name\n\n> AUTHORITY: Duplicate fixture authority.\n> NOT_AUTHORITY: fixture\n> LOAD_WHEN: fixture\n> CLASS: reference\n\nSee [_maintainer](../_maintainer/PRIVATE.md).\n")
         write_fixture(root / "docs" / "B.md", "# Shared Name\n\n> AUTHORITY: Duplicate fixture authority.\n> NOT_AUTHORITY: fixture\n> LOAD_WHEN: fixture\n> CLASS: reference\n")
         write_fixture(root / "tasks" / "reference" / "C.md", "# C\n")
@@ -552,6 +562,34 @@ def self_test() -> dict[str, Any]:
             failures.append({"scenario": "fixture category coverage", "expected": category, "actual": str(sorted(categories))})
     if payload["status"] != "warning":
         failures.append({"scenario": "advisory finding status", "expected": "warning", "actual": str(payload["status"])})
+    plain_reference_targets = {
+        item.get("target")
+        for item in payload.get("plain_path_references", [])
+        if isinstance(item, dict)
+    }
+    if {"docs/A.md", "tasks/reference/C.md"} - plain_reference_targets:
+        failures.append({
+            "scenario": "plain path reference tracking",
+            "expected": "docs/A.md and tasks/reference/C.md",
+            "actual": str(sorted(plain_reference_targets)),
+        })
+    orphan_refs = {
+        finding["source_refs"][0]
+        for finding in payload["findings"]
+        if finding["category"] == "orphan_public_reference" and finding.get("source_refs")
+    }
+    if "tasks/reference/C.md" in orphan_refs:
+        failures.append({
+            "scenario": "plain path reference suppresses orphan",
+            "expected": "tasks/reference/C.md not orphaned",
+            "actual": str(sorted(orphan_refs)),
+        })
+    if payload.get("summary", {}).get("plain_path_reference_count", 0) < 2:
+        failures.append({
+            "scenario": "plain path reference summary",
+            "expected": "at least 2",
+            "actual": str(payload.get("summary", {}).get("plain_path_reference_count")),
+        })
     reviewed_duplicate = [
         finding for finding in payload["findings"]
         if finding["category"] == "duplicate_heading_label"

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.72
+Document version: v0.1.73
 Last updated: 2026-07-26
 
 ## Purpose
@@ -139,7 +139,7 @@ Alias guardrail floor:
 | Build | `Build: work only on the active bead.` | Approved-Bead Handoff / Keep Implementation Bounded |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
 | Review | `Review: check this work or artifact before I accept it.` | Review / Acceptance Skill, Review Lanes, PRD Handoff Readiness, or Requirement-To-Proof Review when the artifact or risk calls for one |
-| Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Close The Session / Daily Learning Loop |
+| Close | `Close: run session close, summarize the work digest, suggested commit message, checks, blockers, approvals, learning context, and end with Close State.` | Close The Session / Daily Learning Loop |
 | Recover | `Recover: I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
 
 ### Advanced / Conditional Surfaces
@@ -408,7 +408,7 @@ Before editing, load active memory, the active bead, and the primary authority. 
 ```text
 Before starting a new bead or session, check git status and tell me whether current changes are clean, already committed, generated evidence, or unfinished work from the current bead.
 
-If completed checked work is uncommitted, propose a concise commit summary before moving on. Push only when a remote exists and this project expects remote backup or collaboration.
+If completed checked work is uncommitted, use the Closeout Evidence suggested commit message when present or propose a concise commit summary from the active bead, work digest, changed-file summary, recorded checks, manual verification, review decision, and next safe action. The suggestion is advisory only; it does not stage files, commit, push, accept review, approve transition, or activate another bead. Push only when a remote exists and this project expects remote backup or collaboration.
 ```
 
 ### Repository Topology Migration
@@ -815,7 +815,7 @@ Run the Precode session start. Explain the Context Pack in plain English: curren
 ## Close The Session
 
 ```text
-Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
+Run session close. Summarize the closeout work digest, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 ```
 
 The Close State line is human-facing handback guidance only. It does not approve review, promote a bead, activate the next bead, commit, push, deploy, release, rollback, certify external sync, or manage the host tab.

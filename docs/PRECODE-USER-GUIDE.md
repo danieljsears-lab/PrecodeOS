@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.92
+Document version: v0.7.93
 Last updated: 2026-07-26
 
 
@@ -95,7 +95,7 @@ After the first product slice, the repeated Precode habit is:
 Use it when a session is starting, closing, or feels like it is drifting into too many surfaces.
 
 - Active: ask for the active bead, `tasks/todo.md`, primary authority, files in play, checks, and stop conditions.
-- Changed: ask what changed in the active bead and what files or behavior were touched.
+- Changed: ask for the closeout work digest, the advisory suggested commit message when present, what changed in the active bead, and what files or behavior were touched.
 - Proven: ask for recorded checks, manual verification, Closeout Evidence, proof traces, and review evidence.
 - Parked: ask whether future intent belongs in `CANDIDATE-QUEUE.md`, PRD amendment, `DECISIONS.md`, a follow-up bead proposal, defer, or kill.
 - Approval: ask what still needs your review decision, transition approval, release or merge approval, or manual input.
@@ -106,7 +106,7 @@ Say this:
 ```text
 Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
 
-Use existing sources only: tasks/todo.md, the active bead, primary authority, recorded checks, Closeout Evidence, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
+Use existing sources only: tasks/todo.md, the active bead, primary authority, recorded checks, Closeout Evidence including the work digest and suggested commit message, Candidate Queue or explicit defer/kill destination, review decision, transition proposal, session start, Workflow Selection, or next-step guidance.
 
 Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.
 ```
@@ -914,7 +914,7 @@ Follow these steps in order.
 | Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
 | Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
 | Record checks | `Run the relevant checks through record-check.sh.` | Recorded command result and log path. | Checks are missing, failing, or not recorded. |
-| Close | `Run bash scripts/session-close.sh and summarize what changed, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
+| Close | `Run bash scripts/session-close.sh and summarize the work digest, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
 | Review outcome | `Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence or tries to accept the work for you. |
 
 Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.
@@ -1575,7 +1575,7 @@ Check: show Active, Changed, Proven, Parked, Approval, and Next for the current 
 Close safely:
 
 ```text
-Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
+Run session close. Summarize the work digest, suggested commit message, what checks ran, what remains blocked, and what still requires my approval. Treat the commit message as advisory only: do not stage, commit, push, accept review, approve transition, or activate another bead from it. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 ```
 
 Search memory:

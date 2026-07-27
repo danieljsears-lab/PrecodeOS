@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-06-23
+# Version: v0.1.3
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -344,6 +344,8 @@ def build_entry(root: Path, existing_entries: list[dict[str, Any]]) -> dict[str,
             "unverified_possible_implementation": possible_implementation,
             "unverified_possible_generated_evidence": possible_generated,
         },
+        "work_digest": bead.closeout.get("work_digest", "not recorded"),
+        "suggested_commit_message": bead.closeout.get("suggested_commit_message", "not recorded"),
         "checks": check_summary,
         "manual_verification": bead.closeout.get("manual_verification", "not recorded"),
         "review_decision": review_decision,
@@ -411,6 +413,8 @@ def render_entry(entry: dict[str, Any]) -> str:
         f"### {entry.get('timestamp', 'unknown time')}",
         "",
         f"- Outcome: {entry_plain_outcome(entry)}",
+        f"- Work digest: {entry.get('work_digest') or 'not recorded'}",
+        f"- Suggested commit message: {entry.get('suggested_commit_message') or 'not recorded'}",
         f"- Evidence state: {entry_evidence_state(entry)}",
         f"- Bead: `{entry.get('bead') or 'missing'}`",
         f"- Status: `{entry.get('bead_status') or 'missing'}`",

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
-# Last updated: 2026-07-24
+# Version: v0.1.4
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -71,6 +71,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     add_dry_run(subparsers.add_parser("start", help="run the Daily Cockpit session-start command"))
     add_dry_run(subparsers.add_parser("next", help="show advisory next-step guidance; does not choose work"))
+    add_dry_run(subparsers.add_parser("close", help="run the Daily Cockpit session-close command"))
     add_dry_run(subparsers.add_parser("health", help="show generated OS Health evidence; not authority"))
     add_dry_run(subparsers.add_parser("validate", help="validate active memory and package state"))
     add_dry_run(subparsers.add_parser("check", help="run the local package validation summary"))
@@ -123,6 +124,8 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
         return [["bash", "scripts/session-start.sh"]]
     if args.command == "next":
         return [["python3", "scripts/next-step.py"]]
+    if args.command == "close":
+        return [["bash", "scripts/session-close.sh"]]
     if args.command == "health":
         return [["python3", "scripts/os-health.py"]]
     if args.command == "validate":

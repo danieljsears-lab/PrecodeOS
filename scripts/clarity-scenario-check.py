@@ -18,6 +18,7 @@ from typing import Any
 from os_compiler import (
     BeadRecord,
     accessibility_advisory_gate_quality,
+    advisory_commit_message_suggestion,
     bead_depth_quality,
     build_attribution_ledger,
     command_classification,
@@ -3135,6 +3136,51 @@ def assert_accessibility_advisory_gate_contract(failures: list[dict[str, str]]) 
             failures.append({"scenario": "accessibility advisor verification contract", "expected": term, "actual": "missing"})
 
 
+def assert_advisory_commit_message_contract(failures: list[dict[str, str]]) -> None:
+    fixture = bead(
+        title="B999 - Commit Message Fixture",
+        closeout={
+            "manual_verification": "Manual verification: inspected generated docs and protocol wording.",
+            "review_decision": "accepted",
+            "follow_up_bead_needed": "none",
+        },
+        sections={
+            "Objective": "Add advisory commit message suggestions to closeout evidence.",
+            "Done When": "The generated suggestion is advisory only.",
+            "Stop If": "The suggestion starts acting like git mutation.",
+        },
+    )
+    suggestion = advisory_commit_message_suggestion(
+        fixture,
+        changed_paths=["scripts/os_compiler.py", "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"],
+        check_results=[
+            {
+                "command": "python3 scripts/clarity-scenario-check.py",
+                "status": "pass",
+                "exit_code": 0,
+            }
+        ],
+        next_safe_action="review transition proposal; user approval is still required",
+    )
+    if suggestion.get("advisory_only") is not True or suggestion.get("generated_evidence_only") is not True:
+        failures.append({
+            "scenario": "advisory commit message flags",
+            "expected": "advisory generated evidence",
+            "actual": json.dumps(suggestion, sort_keys=True)[:240],
+        })
+    for key in ("subject", "body", "source_fields", "forbidden_actions"):
+        if not suggestion.get(key):
+            failures.append({"scenario": "advisory commit message shape", "expected": key, "actual": json.dumps(suggestion, sort_keys=True)[:240]})
+    body = str(suggestion.get("body") or "").lower()
+    for term in ("advisory draft only", "checks:", "manual verification:", "review decision:", "next safe action:"):
+        if term not in body:
+            failures.append({"scenario": "advisory commit message body", "expected": term, "actual": body[:240]})
+    forbidden = " ".join(str(item).lower() for item in suggestion.get("forbidden_actions") or [])
+    for term in ("stage files", "commit", "push", "approve review", "approve transition", "activate another bead"):
+        if term not in forbidden:
+            failures.append({"scenario": "advisory commit message forbidden action", "expected": term, "actual": forbidden})
+
+
 def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
     protocol_text = Path("tasks/reference/REVIEW-LANES-PROTOCOL.md").read_text(encoding="utf-8").lower()
     prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
@@ -5223,6 +5269,7 @@ def main() -> int:
     first_prd_walkthrough_scenario_count = assert_first_prd_walkthrough_contract(failures)
     assert_bugfix_spec_lane_contract(failures)
     assert_accessibility_advisory_gate_contract(failures)
+    assert_advisory_commit_message_contract(failures)
     assert_review_lanes_contract(failures)
     team_collaboration_scenario_count = assert_team_collaboration_preview_contract(failures)
     github_collaboration_scenario_count = assert_github_collaboration_hub_contract(failures)

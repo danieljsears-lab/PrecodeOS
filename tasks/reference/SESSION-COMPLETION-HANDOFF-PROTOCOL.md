@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-07-13
+Document version: v0.1.23
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -35,8 +35,8 @@ Active memory remains exactly:
 | Action | May do | Must not do |
 |---|---|---|
 | Checkpoint | validate memory, summarize current bead, log checkpoint, refresh health | accept work, approve transition, start another bead |
-| Session close | refresh closeout, record validation, assess promotion, log close, update learning diary | approve review, activate next bead, rewrite product scope |
-| Bead closeout | record checks, result, manual verification, changed files, drift, lesson, follow-up, blocked escape | replace review decision or user approval |
+| Session close | refresh closeout, print the bead work digest and advisory commit-message subject, record validation, assess promotion, log close, update learning diary | approve review, activate next bead, rewrite product scope, stage files, commit, or push |
+| Bead closeout | record checks, result, work digest, advisory commit-message suggestion, manual verification, changed files, drift, lesson, follow-up, blocked escape | replace review decision or user approval, stage files, commit, or push |
 | Review | decide `accepted`, `revise`, `split`, or `blocked` | bypass missing evidence or sensitive approval gates |
 | Transition proposal | show whether the compiled readiness model permits a next bead | mutate bead state or `tasks/todo.md` |
 | Transition approval | after user approval, move the current bead to `done` and the next bead to `in_progress` | run without explicit approval |
@@ -57,6 +57,8 @@ Closeout Evidence should include:
 - recorded checks
 - Ralph attempt summary when the bead used Ralph
 - result
+- work digest: a concise evidence-only summary of the bead theme or objective, changed files or behavior, recorded proof, manual verification, parked follow-ups, approval state, and next safe action
+- suggested commit message: an advisory subject/body draft derived from the active bead, work digest, changed-file summary, recorded checks, manual verification, review decision, parked follow-ups, and next safe action
 - manual verification
 - files changed
 - next bead
@@ -75,6 +77,8 @@ Closeout Evidence should include:
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
 - build attribution when accountability, teammate work, handoff, fresh-context review, or future traceability matters: human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty
 - every-bead rhythm when repeated bead work needs a compact handback: Active, Changed, Proven, Parked, Approval, and Next
+
+The work digest and suggested commit message are orientation only. They may be printed by session close, completion checks, OS Health, handoff packets, and the bead build journal, but they do not accept implementation, approve review, approve transition, activate the next bead, stage files, commit, push, or replace the detailed Closeout Evidence fields they summarize.
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.48
+Document version: v0.1.49
 Last updated: 2026-07-26
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
@@ -151,7 +151,7 @@ Aliases do not reduce the guardrails: active memory and owner files stay authori
 | Approved handoff | `Use Approved-Bead Handoff for the current approved bead.` | A scoped host-agent build handoff with active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning. It does not activate a bead, choose tasks, accept review, approve transition, or create generated handoff output. |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Recorded proof, failures or blockers, and any manual verification needed. |
 | Review | `Review: check this work or artifact before I accept it.` | Human review guidance; route to Review Lanes, Engineering Quality Review Lane, PRD Handoff Readiness, release review, or proof tracing only when the current artifact or risk calls for it. |
-| Close | `Close: run session close, summarize changes, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
+| Close | `Close: run session close, summarize the work digest, suggested commit message, checks, blockers, approvals, learning context, and end with Close State.` | Closeout readiness, the bead work digest, advisory commit-message subject, health, validation, transition blockers, learning diary update, bead build journal context, attribution evidence when present, and a final `Close State` line saying whether it is safe to close this tab/session or what input is still needed. |
 | Recover | `Recover: I am stuck, help me.` | A prescriptive recovery response plus named fallback prompt when a symptom is known: symptom, first safe move, owner surface, up to three read-only checks, next safe action, and forbidden actions before repair. |
 
 If the generated next-step decision is `author next bead`, treat it as an accepted hold: the current bead is accepted, but transition still needs a next bead proposal or authored bead. If the output shows next-work source reconciliation, compare the router pointer, Closeout next bead, Handback or Noticed recommendation, and existing bead-file readiness before transition. Do not continue implementation, repeat acceptance review, approve transition, or activate a bead from that generated classification.
@@ -406,7 +406,7 @@ Expected output: current bead state, done-when target, files in play, blockers, 
 Use when work is done for now or you need a clean stop.
 
 ```text
-Run session close. Summarize what changed, what checks ran, what remains blocked, and what still requires my approval. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
+Run session close. Summarize the work digest, suggested commit message, what checks ran, what remains blocked, and what still requires my approval. Treat the commit message as advisory only: do not stage, commit, push, accept review, approve transition, or activate another bead from it. End with `Close State: Safe to close this tab/session. Precode state is recorded; next session should start with session start.` or `Close State: Do not close yet. I still need your approval/input for <specific item>.`
 ```
 
 Command:
@@ -427,7 +427,7 @@ Only use these as evidence. They help you understand the project; they do not ch
 | `python3 scripts/next-step.py` | You ask "what now?" | Shows generated next-step guidance. It is not transition approval. |
 | `python3 scripts/os-health.py` | You need a refreshed health report. | Writes `OS-HEALTH.md`, `logs/os-health.json`, the Doctor Dashboard diagnostic summary with plain-English triage labels, and the generated work graph reports; warnings mean inspect source state and evidence. |
 | `bash scripts/checkpoint.sh` | Context is long, fuzzy, or ready to hand back. | Prints a checkpoint and Build Loop Health. Use it to pause or regain clarity. |
-| `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, validation, health, transition readiness, learning diary, and bead build journal when available. |
+| `bash scripts/session-close.sh` | Ending work or preparing review. | Refreshes closeout, prints the work digest, validation, health, transition readiness, learning diary, and bead build journal when available. |
 | `bash scripts/handoff.sh [next-agent]` | Switching tools or handing work to another agent. | Produces a context pack for the next agent. It does not activate the next bead. |
 | `python3 scripts/loop-health.py` | You want a compact loop-health signal. | Shows whether the current build loop is focused, stoppable, closeable, evidenced, and graph-coherent. |
 | `python3 scripts/task-suitability-check.py --check` | A task may be too vague, broad, proof-unclear, approval-gated, or not ready as one bead. | Prints advisory continue/clarify/route/split/block/stop guidance. It does not choose work or approve implementation. |

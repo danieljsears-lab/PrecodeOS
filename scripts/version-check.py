@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
-# Last updated: 2026-06-19
+# Version: v0.2.0
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 from typing import Any
 
 from os_compiler import repo_root
@@ -123,8 +125,7 @@ def check_script(path: Path, root: Path, issues: list[dict[str, Any]]) -> None:
         add(issues, name, "missing script Owner header")
 
 
-def main() -> int:
-    root = repo_root()
+def build_payload(root: Path) -> dict[str, Any]:
     issues: list[dict[str, Any]] = []
     markdown = markdown_files(root)
     scripts = script_files(root)
@@ -137,9 +138,9 @@ def main() -> int:
     for path in workflows:
         check_script(path, root, issues)
 
-    payload = {
+    return {
         "tool": "version-check",
-        "status": "pass" if not issues else "warning",
+        "status": "pass" if not issues else "fail",
         "checked": {
             "markdown": len(markdown),
             "scripts": len(scripts),
@@ -147,8 +148,74 @@ def main() -> int:
         },
         "issues": issues,
     }
+
+
+def exit_code(payload: dict[str, Any]) -> int:
+    return 0 if payload.get("status") == "pass" else 1
+
+
+def self_test() -> int:
+    failures: list[dict[str, str]] = []
+    with tempfile.TemporaryDirectory(prefix="precode-version-check-") as tmp:
+        root = Path(tmp)
+        good_doc = root / "GOOD.md"
+        bad_doc = root / "BAD.md"
+        good_script = root / "scripts" / "good.py"
+        bad_script = root / "scripts" / "bad.py"
+        good_doc.write_text(
+            "# Good\n\n"
+            "Creator: Dan Sears / Recode\n"
+            "Document version: v0.1.0\n"
+            "Last updated: 2026-07-26\n",
+            encoding="utf-8",
+        )
+        bad_doc.write_text("# Bad\n", encoding="utf-8")
+        good_script.parent.mkdir(parents=True, exist_ok=True)
+        good_script.write_text(
+            "#!/usr/bin/env python3\n"
+            "# Version: v0.1.0\n"
+            "# Last updated: 2026-07-26\n"
+            "# Owner: PrecodeOS\n",
+            encoding="utf-8",
+        )
+        bad_script.write_text("#!/usr/bin/env python3\n", encoding="utf-8")
+
+        pass_issues: list[dict[str, Any]] = []
+        check_doc(good_doc, root, pass_issues)
+        check_script(good_script, root, pass_issues)
+        pass_payload = {"status": "pass" if not pass_issues else "fail", "issues": pass_issues}
+        if exit_code(pass_payload) != 0:
+            failures.append({"scenario": "clean fixture exit", "expected": "0", "actual": str(exit_code(pass_payload))})
+
+        fail_issues: list[dict[str, Any]] = []
+        check_doc(bad_doc, root, fail_issues)
+        check_script(bad_script, root, fail_issues)
+        fail_payload = {"status": "pass" if not fail_issues else "fail", "issues": fail_issues}
+        if exit_code(fail_payload) == 0:
+            failures.append({"scenario": "drift fixture exit", "expected": "nonzero", "actual": "0"})
+        if len(fail_issues) < 5:
+            failures.append({"scenario": "drift fixture issues", "expected": "metadata issues", "actual": str(fail_issues)})
+
+    payload = {
+        "tool": "version-check",
+        "mode": "self-test",
+        "status": "pass" if not failures else "fail",
+        "scenario_count": 2,
+        "failures": failures,
+    }
     print(json.dumps(payload, indent=2, sort_keys=True))
-    return 0
+    return 0 if not failures else 1
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--self-test", action="store_true", help="run deterministic version-check enforcement fixtures")
+    args = parser.parse_args()
+    if args.self_test:
+        return self_test()
+    payload = build_payload(repo_root())
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return exit_code(payload)
 
 
 if __name__ == "__main__":

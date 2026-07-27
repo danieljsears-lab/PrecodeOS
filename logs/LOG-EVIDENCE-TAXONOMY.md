@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.12
+Document version: v0.1.14
 Last updated: 2026-07-26
 
 Generated logs live here.
@@ -67,9 +67,10 @@ Local Hygiene v1 is advisory only:
 
 Reversal work preserves evidence history.
 
-- `logs/bead-build-journal.md/jsonl` may show reversal or supersession provenance when a reversal bead records it.
+- `logs/bead-build-journal.md/jsonl` may show closeout work digests, advisory commit-message suggestions, reversal provenance, or supersession provenance when a bead records them.
 - `logs/build-attribution-ledger.md/json` may show reviewed human contributor, contributor role, agent/tool surface, reviewer, uncertainty, Git author hints, and missing-attribution warnings by bead.
 - Existing journal entries, check ledgers, loop events, handoffs, and transition logs remain historical evidence.
+- Advisory commit-message suggestions in generated logs do not stage files, commit, push, accept review, approve transition, or activate work.
 - Generated reversal warnings from `completion-check.py` are advisory evidence only.
 - Do not delete evidence, rewrite transition logs, reopen `done` beads, or treat Git revert as proof from generated output.
 
@@ -80,6 +81,8 @@ Generated extension evidence belongs under `logs/` unless an existing Precode ge
 Generated markdown must include an authority contract and `CLASS: generated`.
 
 Generated JSON and JSONL files are evidence only. They must not be treated as active memory, task selection, product decisions, implementation plans, or bead state.
+
+Package Knowledge Lint JSON may include reviewed-intentional dispositions, `review_required` counts, and plain backtick path-reference counts. Those fields help maintainers separate new review-required drift from intentional inventory or protocol references; they do not approve edits, promote sources, rewrite docs, or create a checker gate.
 
 Build attribution generated output must not be treated as acceptance, merge approval, release approval, blame, contributor scoring, telemetry, GitHub mutation, registry behavior, optional-pack behavior, or package-manager behavior.
 

@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.26
+Document version: v0.1.27
 Last updated: 2026-07-26
 
 ## Purpose
@@ -229,7 +229,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - Planning beads may produce PRDs, open questions, candidate requirements, architecture notes, source summaries, or candidate beads; they should not edit app code.
 - Execution beads may produce implementation changes and recorded evidence; they should not reshape product definition mid-flight.
 - Run checks through `bash scripts/record-check.sh -- <command>` so command output and exit codes are recorded.
-- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review.
+- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, work digest, advisory suggested commit message, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review.
 - Closeout Evidence should also record Build Attribution fields when contributor accountability or handoff traceability matters: `Human contributor`, `Contributor role`, `Agent/tool surface`, `Attribution reviewed by`, and `Attribution uncertainty`. These fields are reviewed attribution evidence only; they do not assign blame, score contributors, accept implementation, approve merge, or make agent/tool identity responsible for human decisions.
 - Requirement-to-proof traces should be included when requirement IDs, bug behavior, or acceptance criteria are central to review confidence. Generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, and generated reports are not complete proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 - Reference follow-through should be recorded as `Reference follow-through: resolved`, `deferred`, or `not applicable`, with a short reason. Use it to show whether public reference docs, protocols, package inventory, generated HTML freshness, maintainer changelog, or roadmap/journal history were reviewed; it is not acceptance, transition approval, or generated-output authority.

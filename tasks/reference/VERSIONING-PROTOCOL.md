@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-06-04
+Document version: v0.1.5
+Last updated: 2026-07-26
 
 ## Purpose
 
@@ -79,10 +79,10 @@ GitHub workflow YAML should include the same comment block at the top.
 - Generated files should not be manually bumped.
 - Version metadata must not conflict with the authority contract.
 
-## Advisory Check
+## Enforced Check
 
-`scripts/version-check.py` is advisory. It reports missing or malformed version metadata without mutating files.
+`scripts/version-check.py` enforces public package version metadata coverage. It reports missing or malformed version metadata as JSON and exits nonzero when drift is found, without mutating files.
 
 When Git is available, the check covers tracked files plus untracked, non-ignored public candidates. Git-ignored private, local, generated, and cache material is outside version-check scope. When Git is unavailable, the check falls back to filesystem discovery plus generated-output exclusions; ignored-path exclusion requires Git.
 
-Warnings are generated evidence only. They do not choose tasks, approve PRDs, activate beads, change bead state, or edit active memory.
+Findings are generated evidence only. They do not choose tasks, approve PRDs, activate beads, change bead state, or edit active memory.

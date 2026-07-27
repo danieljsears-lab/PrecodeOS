@@ -242,6 +242,8 @@ bash scripts/record-check.sh -- <command>
 
 Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, `logs/build-attribution-ledger.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, score contributors, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, plain-English triage labels, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
 
+Session close may print a Closeout Evidence work digest and suggested commit message. The suggestion is an advisory draft from bead evidence only; it does not stage files, commit, push, accept review, approve transition, or activate another bead.
+
 Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
 
 For the immediate "what now?" question, keep the command surface small:
@@ -322,7 +324,7 @@ Ask Precode is conditional docs help, not a start page.
 PrecodeOS is designed to be inspectable:
 
 - Markdown files hold human-readable authority.
-- Scripts validate memory, version metadata, file inventory, public-repo hygiene, files in play, and completion evidence.
+- Scripts validate memory, enforce version metadata and file inventory drift, and check public-repo hygiene, files in play, and completion evidence.
 - GitHub Actions runs read-only validation on pushes and pull requests.
 - Contribution policy is inbound = Apache-2.0.
 - Maintainer review is required for governance, trademark, licensing, public positioning, active memory, core workflow semantics, generated-output demotion, and beginner-facing safety language.
@@ -398,7 +400,7 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.55
+Document version: v0.1.56
 Last updated: 2026-07-26
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.

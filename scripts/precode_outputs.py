@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-06-23
+# Version: v0.1.5
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -265,6 +265,8 @@ Generated at: `{payload.get('generated_at')}`
 - Active bead: `{item('active bead')}`
 - State: `{item('state')}`
 - Primary authority: `{item('primary authority')}`
+- Work digest: {item('work digest')}
+- Suggested commit message: {(completion.get('details') or {}).get('commit_message_suggestion', {}).get('subject', 'not recorded')}
 - Next safe action: {item('next safe action')}
 - Generated-report warning: {item('generated-report warning')}
 
