@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.0
+Document version: v0.2.1
 Last updated: 2026-06-14
 
 ## Purpose
@@ -59,7 +59,7 @@ Any future delete, archive, move, compact, or rewrite behavior needs a separate 
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` | Never cleanup candidates. |
 | Authority docs | PRDs, beads, reference docs, owner files | Never cleanup candidates. |
 | Reviewed memory | `memory/cards/*.md` | Never cleanup candidates. |
-| Generated reports and sidecars | `OS-HEALTH.md`, `logs/*.json`, generated `logs/*.md` | Regeneratable evidence; not cleanup targets in v2. |
+| Generated reports and sidecars | `OS-HEALTH.md`, `logs/*.json`, generated `logs/*.md`, including `logs/package-knowledge-lint.json` | Regeneratable evidence; not cleanup targets in v2. |
 | Protected generated evidence families | `logs/os-checkpoints/*` | Protected generated evidence, not generic clutter. |
 | Append-only ledgers | `logs/*.jsonl` | Preserve; never mutate in v2. |
 | Bulky log outputs | `logs/check-output/*`, `logs/scheduled-audit-output/*` | Future archive candidates only when older than 90 days and not protected. |
@@ -141,6 +141,8 @@ When `git` status cannot prove ignored or untracked state, do not mark the path 
 The preview must clearly say it does not move, delete, archive, compact, or rewrite candidate files.
 
 Generated preview manifests are evidence only. They do not approve cleanup, choose tasks, prove completion, or override owner files.
+
+`logs/package-knowledge-lint.json` is an expected generated sidecar when Package Knowledge Lint runs. Its `review_required` and reviewed-intentional disposition fields help maintainers assess public package drift, but they do not approve cleanup, rewrite source files, declare stale claims authoritative, or create a checker gate.
 
 ## Commands
 

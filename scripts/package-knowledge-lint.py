@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
+# Version: v0.1.4
 # Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -69,7 +69,7 @@ CONTRACT_PATTERN = re.compile(r"^>\s*AUTHORITY:\s*(.+)$", re.MULTILINE)
 REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("accessibility advisor fit interview", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("action categories", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
-    ("advisory check", ("tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md", "tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md", "tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md", "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md", "tasks/reference/TOOL-EXECUTION-PROTOCOL.md", "tasks/reference/VERSIONING-PROTOCOL.md", "tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md")),
+    ("advisory check", ("tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md", "tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md", "tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md", "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md", "tasks/reference/TOOL-EXECUTION-PROTOCOL.md", "tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md")),
     ("allowed read only uses", ("tasks/reference/EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md", "tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md")),
     ("approval gates", ("tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md")),
     ("ask for the engineering quality floor", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md")),
@@ -108,6 +108,7 @@ REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("plan mode candidate craft loop", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("prd quality review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("multi-lane review invocation", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("polish product taste review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("product discovery interview skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("project glossary cards", ("tasks/reference/MEMORY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
     ("release candidate evidence profile", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),

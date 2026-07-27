@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.14
+Document version: v0.1.15
 Last updated: 2026-07-26
 
 Generated logs live here.
@@ -83,6 +83,8 @@ Generated markdown must include an authority contract and `CLASS: generated`.
 Generated JSON and JSONL files are evidence only. They must not be treated as active memory, task selection, product decisions, implementation plans, or bead state.
 
 Package Knowledge Lint JSON may include reviewed-intentional dispositions, `review_required` counts, and plain backtick path-reference counts. Those fields help maintainers separate new review-required drift from intentional inventory or protocol references; they do not approve edits, promote sources, rewrite docs, or create a checker gate.
+
+If Package Knowledge Lint reports stale generated sidecars, refresh the owning generated evidence through its source command and rerun the lint. Do not hand-edit generated JSON as authority, treat the stale-sidecar cue as cleanup approval, or convert advisory lint output into CI enforcement without a separate maintainer decision.
 
 Build attribution generated output must not be treated as acceptance, merge approval, release approval, blame, contributor scoring, telemetry, GitHub mutation, registry behavior, optional-pack behavior, or package-manager behavior.
 

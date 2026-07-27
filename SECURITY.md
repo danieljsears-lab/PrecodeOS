@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.2
+Document version: v0.2.3
 Last updated: 2026-06-19
 
 ## Purpose
@@ -66,6 +66,8 @@ Use this baseline for repeatable package-security review:
 - Keep generated reports, scanner output, and maintainer-local notes as evidence until a human promotes a conclusion.
 
 Security review does not certify that PrecodeOS is free of vulnerabilities. It does not approve release, compliance, production safety, external mutation, follow-up task creation, command execution, PRD approval, bead activation, or implementation acceptance.
+
+Package-security review is one part of package-health hardening. Non-security package drift should route to the existing owner checks and protocols, such as `python3 scripts/package-knowledge-lint.py --check`, `python3 scripts/file-inventory.py --check`, `python3 scripts/public-repo-check.py`, `python3 scripts/extension-check.py`, Local Hygiene, Extension, Tool Execution, and generated-surface freshness checks. Do not turn package-health findings into security certification, scanner authority, CI enforcement, cleanup approval, or a new hardening authority surface.
 
 ## Advisory Scanner Set
 
