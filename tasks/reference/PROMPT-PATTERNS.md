@@ -661,6 +661,18 @@ Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Mis
 Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify design quality or UX quality, certify code quality, certify production readiness, create product authority from reviewer taste, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, automatically edit stale references, declare stale claims authoritative, rewrite generated output as source truth, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, generated HTML, Work Graph reports, screenshots, browser notes, GitHub status, AI critique, AI confidence, or review output as proof.
 ```
 
+### Multi-Lane Review Invocation
+
+```text
+Use the Review Lanes Protocol for this one named active bead or draft PRD: [target].
+
+Use these 2-3 lanes: [named lanes], or recommend up to 3 lanes if I have not named them. If my requested bundle is too broad, recommend the smaller lane set before reviewing instead of running every lane.
+
+Run each selected lane under its existing rules. Return one merged advisory output with lane findings grouped by lane, deduplicated missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Do not create a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, or approval gate. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, create follow-up tasks or implementation tasks, certify security or compliance, certify design quality or UX quality, certify code quality, certify production readiness, create generated proof, create generated authority, or treat review output, screenshots, browser notes, AI critique, confidence, generated reports, generated HTML, Work Graph reports, or GitHub status as proof.
+```
+
 ### Precode Idea Coach
 
 Precode Idea Coach is the guided interview step inside First PRD Walkthrough. Invoke First PRD Walkthrough as the beginner-facing path; use this longer prompt when the user needs the full pre-repo coaching script.
@@ -1482,6 +1494,15 @@ Use the Review Lanes Protocol for this active bead or draft PRD.
 Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
 Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, certify design quality or UX quality, certify code quality, certify production readiness, create product authority from reviewer taste, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, screenshots, browser notes, AI critique, review output, or confidence as proof.
+```
+
+## Multi-Lane Review Invocation
+
+```text
+Use the Review Lanes Protocol for this one named active bead or draft PRD: [target].
+Use these 2-3 lanes: [named lanes], or recommend up to 3 lanes if I have not named them. If my requested bundle is too broad, recommend the smaller lane set before reviewing.
+Show one merged advisory output with findings grouped by lane, deduplicated missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+Do not create a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, approval gate, generated proof, or generated authority; do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, create tasks, or treat review output as proof.
 ```
 
 ## Release Candidate Evidence Profile

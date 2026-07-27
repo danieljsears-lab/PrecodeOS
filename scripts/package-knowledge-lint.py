@@ -107,6 +107,7 @@ REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("package upgrade preview", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("plan mode candidate craft loop", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("prd quality review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("multi-lane review invocation", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("product discovery interview skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("project glossary cards", ("tasks/reference/MEMORY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
     ("release candidate evidence profile", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),

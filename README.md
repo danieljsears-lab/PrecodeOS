@@ -128,7 +128,7 @@ That is the line PrecodeOS holds: a lightweight governance kernel for agentic de
 | Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages. |
 | Build | One active bead, files-in-play guardrails, bounded Ralph attempts, and tool-neutral adapters. |
 | Prove | Recorded checks, verification guidance, closeout evidence, proof tracing, and generated health/progress reports. |
-| Review | Review lanes, PRD handoff readiness, engineering-quality guidance, release-readiness evidence, and human approval gates. |
+| Review | Review lanes, prompt-only multi-lane review invocation, PRD handoff readiness, engineering-quality guidance, release-readiness evidence, and human approval gates. |
 | Recover | Troubleshooting, recovery protocol routing, OS checkpoints, state checks, and safe stuck-user prompts. |
 | Collaborate | Small-team coordination, branch/worktree re-entry guidance, GitHub evidence intake, and build attribution evidence. |
 

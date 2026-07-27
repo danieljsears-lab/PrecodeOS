@@ -3252,6 +3252,14 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "manual qa path",
         "remaining human taste judgment",
         "professional ux research",
+        "multi-lane review invocation is a prompt-only way",
+        "one named review target",
+        "up to 3 lanes",
+        "if the requested bundle is too broad",
+        "not a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, or approval gate",
+        "does not create proof",
+        "create generated authority",
+        "approve parallel-agent work",
     ]
     for term in required_terms:
         if term not in protocol_text:
@@ -3300,6 +3308,14 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "acceptance-oracle fit",
         "manual qa path",
         "remaining human taste judgment",
+        "multi-lane review invocation",
+        "one named active bead or draft prd",
+        "use these 2-3 lanes",
+        "recommend up to 3 lanes",
+        "requested bundle is too broad",
+        "new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, or approval gate",
+        "create generated proof",
+        "create generated authority",
     ]
     for term in prompt_terms:
         if term not in prompt_text:
@@ -3327,6 +3343,10 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "code-quality certification",
         "production-readiness certification",
         "reviewer taste product authority",
+        "multi-lane review invocation",
+        "one named active bead or draft prd",
+        "2-3 concrete review risks",
+        "not a new lane, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, approval gate, generated proof, generated authority, or parallel-agent authority",
     ):
         if term not in user_guide_text:
             failures.append({"scenario": "review lanes user guidance", "expected": term, "actual": "missing"})

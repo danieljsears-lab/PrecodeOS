@@ -1,9 +1,9 @@
 # PrecodeOS -- Review Lanes Protocol
 <!-- ANCHOR: review-lanes-protocol -->
 
-> AUTHORITY: Optional advisory review lane templates for one active bead, one draft PRD, or one bounded package documentation/reference surface.
+> AUTHORITY: Optional advisory review lane templates and prompt-only multi-lane invocation for one active bead, one draft PRD, or one bounded package documentation/reference surface.
 > NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, design certification, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, product authority, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
-> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, Cross-Reference / Staleness Review Lane, or Review Lanes review for one active bead, one draft PRD, or one bounded package documentation/reference surface.
+> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, Cross-Reference / Staleness Review Lane, Multi-Lane Review Invocation, or Review Lanes review for one active bead, one draft PRD, or one bounded package documentation/reference surface.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
@@ -19,6 +19,8 @@ Review Lanes help a builder ask specialist review questions without managing fak
 A lane attaches to one active bead, one draft PRD, or one bounded package documentation/reference surface and turns a narrow review concern into evidence, missing proof, acceptance questions, and a recommendation. It does not approve work, approve PRDs, create work, replace Review mode, replace Release Readiness, replace Work Graph evidence, replace Requirements Gap And Conflict Review, or override owner files.
 
 When a lane reviews proof quality, it may ask for a requirement-to-proof trace: requirement, bug behavior, or acceptance criterion; evidence lane; recorded source; what this proves; what this does not prove; and remaining uncertainty. The trace is review input only. It must not treat generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, or generated reports as complete proof by themselves.
+
+Multi-Lane Review Invocation is a prompt-only way to run a small named bundle of existing Review Lanes against one named review target. It is not a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, or approval gate.
 
 ## When To Use Review Lanes
 
@@ -83,6 +85,10 @@ For v1, run this lane over a small named file family such as `docs/*.md` and `ta
 
 `scripts/prd-handoff-readiness.py --prd <path> --target review` may be used as PRD-review evidence when handoff readiness is the narrow question. Treat the packet as cited generated evidence only. It can inform findings, missing proof, acceptance questions, and recommendation, but it does not approve the PRD, create tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, or replace the Markdown PRD.
 
+Use Multi-Lane Review Invocation when one named active bead or draft PRD has multiple concrete review risks and choosing exactly one lane would under-review the target. The user may name 2 or 3 lanes or ask the agent to recommend up to 3 lanes. If the requested bundle is too broad, recommend a smaller lane set before review instead of running every lane.
+
+For Multi-Lane Review Invocation, run each selected lane under its existing rules and recommendation values. Return one merged advisory output with lane findings grouped by lane and deduplicated missing proof, acceptance questions, recommendation, approval still required, and promotion path. The merged output does not create proof, approve review, accept implementation, approve PRDs, approve release, approve transitions, create tasks, score quality, certify anything, create generated authority, or approve parallel-agent work.
+
 Do not use a Review Lane as a general brainstorming step, a task planner, a second active bead, a required gate for every task, a substitute for normal acceptance review, a code-quality score, or a substitute for human PRD approval.
 
 ## Required Inputs
@@ -91,6 +97,7 @@ Load only the sources needed for the lane:
 
 - active memory and the active bead during normal Precode work
 - the draft PRD when PRD quality is being reviewed
+- one named review target before using Multi-Lane Review Invocation
 - primary authority file
 - files in play or changed-file summary
 - recorded checks and results
@@ -107,6 +114,8 @@ Load only the sources needed for the lane:
 - `tasks/prds/PRD-044-polish-product-taste-review-lane.md` when implementing, validating, or changing the Polish / Product-Taste Review Lane package capability
 
 If the active bead, draft PRD, package surface, primary authority, recorded evidence, source file family, or changed-file summary needed for the selected lane is missing, stop and ask for the missing source instead of inventing a review.
+
+If Multi-Lane Review Invocation is requested without one named active bead or draft PRD, stop and ask for the target. If more than 3 lanes are requested, narrow to the smallest useful lane set or explain why the review should be split.
 
 ## Output Contract
 
