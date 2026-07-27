@@ -74,6 +74,25 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -140,7 +159,7 @@
   <section class="notice">
     <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
-  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>unknown</strong></div><div class="metric"><span>Feature</span><strong>Product Artifact Template / Prompt Catalog</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-26</strong></div></section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Product Artifact Template / Prompt Catalog</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-26</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-27</strong></div></section>
   <section class="summary">
     <h2 id="review-cues">Review Cues</h2>
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
@@ -149,30 +168,71 @@
 
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
-      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
-      <p><strong>Requirements found:</strong> 0</p>
-      <p><strong>Acceptance rows found:</strong> 0</p>
-      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
-      <ul><li>no requirement IDs found</li><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 6</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
 
     <h3>Unresolved blockers and questions</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future artifact routing include a generated docs search aid?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-033-FR01</code></td><td><code>tasks/reference/PROMPT-PATTERNS.md</code> must include an Artifact Chooser that maps common moments to the artifact or prompt to use first.</td><td>P0</td><td>Prompt-catalog surface.</td></tr><tr><td><code>PRD-033-FR02</code></td><td>The chooser must cover rough idea, workflow choice, Local Source Intake, PRD shaping, Candidate Queue, bugfix spec, Review Lanes, PRD handoff readiness, release evidence, team coordination, and recovery.</td><td>P0</td><td>Existing artifact families only.</td></tr><tr><td><code>PRD-033-FR03</code></td><td>User-facing docs must expose a short chooser or prompt so beginners can find the right artifact without browsing every protocol.</td><td>P0</td><td>Daily Cockpit and User Guide.</td></tr><tr><td><code>PRD-033-FR04</code></td><td>Skill Playbook and Extension Protocol guidance must state that the chooser is an index/prompt aid, not a skill, registry, optional pack, command wrapper, task selector, or artifact generator.</td><td>P1</td><td>Boundary hardening.</td></tr><tr><td><code>PRD-033-FR05</code></td><td>Package inventory must describe the new PRD and updated prompt/protocol surfaces accurately.</td><td>P1</td><td>Public reference follow-through.</td></tr><tr><td><code>PRD-033-FR06</code></td><td><code>scripts/clarity-scenario-check.py</code> must enforce the chooser&#x27;s artifact coverage and anti-registry/anti-generator wording.</td><td>P1</td><td>Deterministic text contract.</td></tr><tr><td><code>PRD-033-FR07</code></td><td>Maintainer changelog, roadmap, roadmap journal, and generated reading surfaces must be refreshed after implementation.</td><td>P1</td><td>Maintainer-history follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-033-product-artifact-prompt-catalog.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-033-product-artifact-prompt-catalog.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-033-FR01` / `PRD-033-FR02`</textarea></td><td><textarea data-cockpit-cell>Prompt Patterns includes the Artifact Chooser with all required artifact families and owner-source routing.</textarea></td><td><textarea data-cockpit-cell>Source review and clarity scenario coverage.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-033-FR03`</textarea></td><td><textarea data-cockpit-cell>Daily Cockpit and User Guide expose concise artifact-selection guidance without crowding the main loops.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-033-FR04`</textarea></td><td><textarea data-cockpit-cell>Skill Playbook and Extension Protocol preserve prompt/index-only boundaries.</textarea></td><td><textarea data-cockpit-cell>Source review and clarity scenario coverage.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-033-FR05`</textarea></td><td><textarea data-cockpit-cell>Package inventory includes PRD-033 and updated prompt/protocol descriptions.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-033-FR06`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py` passes.</textarea></td><td><textarea data-cockpit-cell>Command output.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-033-FR07`</textarea></td><td><textarea data-cockpit-cell>Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current.</textarea></td><td><textarea data-cockpit-cell>Validation commands.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-033-product-artifact-prompt-catalog">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-033-product-artifact-prompt-catalog" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement | Acceptance check | Evidence |
+| --- | --- | --- |
+| `PRD-033-FR01` / `PRD-033-FR02` | Prompt Patterns includes the Artifact Chooser with all required artifact families and owner-source routing. | Source review and clarity scenario coverage. |
+| `PRD-033-FR03` | Daily Cockpit and User Guide expose concise artifact-selection guidance without crowding the main loops. | Source review. |
+| `PRD-033-FR04` | Skill Playbook and Extension Protocol preserve prompt/index-only boundaries. | Source review and clarity scenario coverage. |
+| `PRD-033-FR05` | Package inventory includes PRD-033 and updated prompt/protocol descriptions. | Source review. |
+| `PRD-033-FR06` | `python3 scripts/clarity-scenario-check.py` passes. | Command output. |
+| `PRD-033-FR07` | Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current. | Validation commands. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
     <h3>Risk and permission model</h3>
-    <p class="empty">None recorded.</p>
+    <p>The Artifact Chooser is a navigation aid over existing PrecodeOS workflows. It does not decide the next task, approve work, create artifacts automatically, replace Workflow Selection, or change the authority of templates, prompts, generated reports, owner files, PRDs, beads, Review Lanes, release evidence, or recovery guidance.</p>
+<p>When the next step depends on active memory, the active bead, generated evidence, local errors, current repo state, or what work should happen next, the chooser must route to Workflow Selection or the owning protocol instead of selecting work by itself.</p>
     <h3>Agent context</h3>
-    <p class="empty">None recorded.</p>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-033-product-artifact-prompt-catalog.md</code></li><li>Owner surfaces likely in play: Prompt Patterns, Daily Cockpit, User Guide, Skill Playbook Protocol, Extension Protocol, package inventory, and clarity scenario coverage.</li><li>Forbidden assumptions: do not create a registry, marketplace, optional pack, artifact generator, task selector, command wrapper, or package-manager surface.</li></ul>
     <h3>Bead proposals</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B033-product-artifact-prompt-catalog</code></td><td><code>PRD-033-FR01</code> through <code>PRD-033-FR07</code></td><td>Prompt chooser, docs/protocol boundaries, package inventory, clarity coverage, generated surfaces, and maintainer history are aligned.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
   </section>
   <div class="layout">
     <article>
       <h1 id="prd-033-product-artifact-template-prompt-catalog">PRD-033 -- Product Artifact Template / Prompt Catalog</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-033</code></li><li>Status: <code>approved</code></li><li>Owner: Dan Sears / Recode</li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-07-27</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: Product Artifact Template / Prompt Catalog</li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-031</code>, <code>PRD-029</code>, <code>PRD-030</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer roadmap evidence and prompt-surface discoverability needs</li><li>Source references: Prompt Patterns, Daily Cockpit, User Guide, Skill Playbook Protocol, Extension Protocol</li><li>Stable facts: Artifact Chooser is a navigation aid over existing workflows, not task selection or artifact generation.</li><li>Assumptions: beginners benefit from a compact prompt catalog when the next artifact is unclear.</li><li>Privacy or secrets redactions: source materials remain evidence and should not be auto-promoted.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: maintainer roadmap planning</li><li>Shared design concept: map user moments to existing artifacts and owner sources without creating a registry, marketplace, generator, or authority layer.</li><li>Key decisions reached: uncertain or current-state-dependent cases route to Workflow Selection.</li><li>Remaining implementation-changing questions: none for the approved v1 slice.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Status</th><th>Plain-English meaning</th><th>Aliases</th><th>Avoid/confusing terms</th><th>UI/code/test examples</th><th>Source pointer</th></tr></thead><tbody><tr><td>Artifact Chooser</td><td>introduced</td><td>Prompt/index aid that routes a user moment to an existing artifact or workflow.</td><td>product artifact catalog</td><td>template registry, artifact generator</td><td>Prompt Patterns entry</td><td>This PRD</td></tr><tr><td>Owner source</td><td>reused</td><td>Canonical file or protocol that governs the chosen artifact.</td><td>authority file</td><td>generated prompt output</td><td>chooser table</td><td>Package inventory</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS helps builders find the right artifact prompt without creating a hidden task selector.</li><li>Customer problem: users may know a prompt exists but not which one to invoke.</li><li>Customer FAQ: Does the chooser generate artifacts? No; it points to existing prompts and owner sources.</li><li>Internal FAQ: Does this replace Workflow Selection? No; current-state-dependent cases route there.</li><li>Appetite: compact prompt and docs guidance.</li><li>Kill or pause criteria: stop if the chooser becomes a registry, marketplace, generator, task selector, or package-manager surface.</li></ul>
 <h2 id="summary">Summary</h2>
 <p>PrecodeOS should help builders choose the right artifact or prompt without turning artifact selection into a hidden task selector.</p>
 <p>The Product Artifact Template / Prompt Catalog adds a compact Artifact Chooser to existing prompt and user-guide surfaces. It maps common user moments to the next Precode artifact, owner source, and stop condition while preserving Workflow Selection for current-state decisions.</p>
@@ -183,9 +243,17 @@
 <ul><li>Add a compact chooser that maps user moments to existing artifacts and prompts.</li><li>Keep artifact selection subordinate to active memory, owner files, owner protocols, and user approval.</li><li>Route uncertain or current-state-dependent cases to Workflow Selection instead of guessing.</li><li>Preserve evidence-only treatment for generated reports, source notes, imported issues, handoffs, journals, ledgers, and previews.</li><li>Keep the implementation in existing docs, prompt patterns, protocol boundary notes, package inventory, and deterministic text-contract coverage.</li></ul>
 <h2 id="non-goals">Non-Goals</h2>
 <ul><li>No template registry, marketplace, optional-pack system, or package-manager behavior.</li><li>No automatic artifact generation, prompt-output authority, task selection, PRD approval, bead activation, review acceptance, transition approval, release approval, or implementation permission.</li><li>No new command, checker command, generated catalog sidecar, hosted workspace, plugin registry, or external integration.</li><li>No new active-memory file and no private maintainer-file dependency in public docs.</li></ul>
-<h2 id="functional-requirements">Functional Requirements</h2>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: a user may browse many protocols to find the right artifact or prompt.</li><li>After: the user can start from a compact chooser and then load the owning protocol or prompt.</li><li>Why now: the package has many useful conditional artifacts and needs safer discoverability.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS provides prompt-catalog navigation over existing artifact workflows while preserving owner-file authority.</li><li>Definition of done: Prompt Patterns, docs, protocol boundary notes, inventory, validation, generated surfaces, and maintainer history are aligned.</li><li>First useful vertical slice: compact chooser over existing artifacts only.</li></ul>
+<h2 id="product-constitution-fit">Product Constitution Fit</h2>
+<ul><li><code>PRODUCT.md</code> loaded: not needed</li><li>Product promise fit: helps builders ask for the right artifact without surrendering task choice.</li><li>User and job fit: supports beginner artifact selection.</li><li>Strategy and non-goal fit: avoids registries, generators, marketplaces, and package-manager behavior.</li><li>Current bet or success signal affected: prompt discoverability.</li><li>Product constitution update needed: no</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: builder choosing the next product or workflow artifact.</li><li>Secondary user: AI assistant or support helper routing to the smallest relevant owner surface.</li><li>Excluded user: anyone expecting automatic artifact generation, task selection, PRD approval, bead activation, or registry behavior.</li></ul>
+<h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-033-FR01</code></td><td><code>tasks/reference/PROMPT-PATTERNS.md</code> must include an Artifact Chooser that maps common moments to the artifact or prompt to use first.</td><td>P0</td><td>Prompt-catalog surface.</td></tr><tr><td><code>PRD-033-FR02</code></td><td>The chooser must cover rough idea, workflow choice, Local Source Intake, PRD shaping, Candidate Queue, bugfix spec, Review Lanes, PRD handoff readiness, release evidence, team coordination, and recovery.</td><td>P0</td><td>Existing artifact families only.</td></tr><tr><td><code>PRD-033-FR03</code></td><td>User-facing docs must expose a short chooser or prompt so beginners can find the right artifact without browsing every protocol.</td><td>P0</td><td>Daily Cockpit and User Guide.</td></tr><tr><td><code>PRD-033-FR04</code></td><td>Skill Playbook and Extension Protocol guidance must state that the chooser is an index/prompt aid, not a skill, registry, optional pack, command wrapper, task selector, or artifact generator.</td><td>P1</td><td>Boundary hardening.</td></tr><tr><td><code>PRD-033-FR05</code></td><td>Package inventory must describe the new PRD and updated prompt/protocol surfaces accurately.</td><td>P1</td><td>Public reference follow-through.</td></tr><tr><td><code>PRD-033-FR06</code></td><td><code>scripts/clarity-scenario-check.py</code> must enforce the chooser&#x27;s artifact coverage and anti-registry/anti-generator wording.</td><td>P1</td><td>Deterministic text contract.</td></tr><tr><td><code>PRD-033-FR07</code></td><td>Maintainer changelog, roadmap, roadmap journal, and generated reading surfaces must be refreshed after implementation.</td><td>P1</td><td>Maintainer-history follow-through.</td></tr></tbody></table></div>
-<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
 <div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-033-FR01</code> / <code>PRD-033-FR02</code></td><td>Prompt Patterns includes the Artifact Chooser with all required artifact families and owner-source routing.</td><td>Source review and clarity scenario coverage.</td></tr><tr><td><code>PRD-033-FR03</code></td><td>Daily Cockpit and User Guide expose concise artifact-selection guidance without crowding the main loops.</td><td>Source review.</td></tr><tr><td><code>PRD-033-FR04</code></td><td>Skill Playbook and Extension Protocol preserve prompt/index-only boundaries.</td><td>Source review and clarity scenario coverage.</td></tr><tr><td><code>PRD-033-FR05</code></td><td>Package inventory includes PRD-033 and updated prompt/protocol descriptions.</td><td>Source review.</td></tr><tr><td><code>PRD-033-FR06</code></td><td><code>python3 scripts/clarity-scenario-check.py</code> passes.</td><td>Command output.</td></tr><tr><td><code>PRD-033-FR07</code></td><td>Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current.</td><td>Validation commands.</td></tr></tbody></table></div>
 <h2 id="required-validation">Required Validation</h2>
 <pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
@@ -194,13 +262,29 @@ python3 scripts/prd-html.py --check
 python3 _maintainer/scripts/roadmap-html.py --check
 python3 scripts/version-check.py
 git diff --check</code></pre>
-<h2 id="boundaries">Boundaries</h2>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
 <p>The Artifact Chooser is a navigation aid over existing PrecodeOS workflows. It does not decide the next task, approve work, create artifacts automatically, replace Workflow Selection, or change the authority of templates, prompts, generated reports, owner files, PRDs, beads, Review Lanes, release evidence, or recovery guidance.</p>
 <p>When the next step depends on active memory, the active bead, generated evidence, local errors, current repo state, or what work should happen next, the chooser must route to Workflow Selection or the owning protocol instead of selecting work by itself.</p>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li><code>PROJECT-CONTEXT.md</code> impact: none.</li><li>Architecture impact: none; prompt and docs navigation only.</li><li>Data model impact: none.</li><li>Security/privacy impact: no automatic source promotion or artifact generation.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>Artifact Chooser prompt</td><td>Prompt Patterns and user docs</td><td>Routes common moments to existing artifacts and owner sources.</td><td>clarity scenario and source review</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-033-product-artifact-prompt-catalog.md</code></li><li>Owner surfaces likely in play: Prompt Patterns, Daily Cockpit, User Guide, Skill Playbook Protocol, Extension Protocol, package inventory, and clarity scenario coverage.</li><li>Forbidden assumptions: do not create a registry, marketplace, optional pack, artifact generator, task selector, command wrapper, or package-manager surface.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>Does the chooser route current-state-dependent cases to Workflow Selection?</li><li>Does it preserve owner-source authority and evidence-only generated outputs?</li><li>Does it avoid automatic artifact creation, registry behavior, and task selection?</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B033-product-artifact-prompt-catalog</code></td><td><code>PRD-033-FR01</code> through <code>PRD-033-FR07</code></td><td>Prompt chooser, docs/protocol boundaries, package inventory, clarity coverage, generated surfaces, and maintainer history are aligned.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: Product Artifact Template / Prompt Catalog</li><li>Functional requirements to compile: <code>PRD-033-FR01</code> through <code>PRD-033-FR07</code></li><li>Acceptance updates needed: Artifact Chooser remains navigation only.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future artifact routing include a generated docs search aid?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-26</li><li>Approval notes: Approved as a prompt/index aid over existing workflows, not a registry, optional pack, artifact generator, task selector, PRD approval, bead activation, or package-manager behavior.</li></ul>
     </article>
     <nav class="toc" aria-label="Page contents">
       <strong>Contents</strong>
-      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#product-constitution-fit">Product Constitution Fit</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
     </nav>
   </div>
 </main>

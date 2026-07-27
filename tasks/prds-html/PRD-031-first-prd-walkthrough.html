@@ -74,6 +74,25 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -140,7 +159,7 @@
   <section class="notice">
     <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
-  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>unknown</strong></div><div class="metric"><span>Feature</span><strong>First PRD Walkthrough</strong></div><div class="metric"><span>Features status</span><strong>unknown</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-24</strong></div></section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>First PRD Walkthrough</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-24</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-27</strong></div></section>
   <section class="summary">
     <h2 id="review-cues">Review Cues</h2>
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
@@ -149,30 +168,68 @@
 
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
-      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
-      <p><strong>Requirements found:</strong> 0</p>
-      <p><strong>Acceptance rows found:</strong> 0</p>
-      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
-      <ul><li>no requirement IDs found</li><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 4</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
 
     <h3>Unresolved blockers and questions</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future tooling generate a PRD-readiness packet from the walkthrough?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-031-FR01</code></td><td>Public user and daily guide surfaces must include a named First PRD Walkthrough entrypoint.</td><td>P0</td><td>The path must be visible without reading the whole PRD protocol first.</td></tr><tr><td><code>PRD-031-FR02</code></td><td>Idea-to-PRD, PRD, Workflow Selection, and Prompt Patterns surfaces must route the walkthrough through the existing evidence-first sequence.</td><td>P0</td><td>No new protocol file for v1.</td></tr><tr><td><code>PRD-031-FR03</code></td><td>The walkthrough must state that Product Briefs, Conviction Packets, workbook output, and research are evidence only.</td><td>P0</td><td>These artifacts do not approve requirements or implementation.</td></tr><tr><td><code>PRD-031-FR04</code></td><td>The walkthrough must require Local Source Intake before PRD shaping when the builder brings a Conviction Packet, workbook output, notes, research, screenshots, or similar source material.</td><td>P0</td><td>Prevents direct packet-to-requirements promotion.</td></tr><tr><td><code>PRD-031-FR05</code></td><td>The walkthrough must preserve human PRD approval before feature compilation, decomposition, bead activation, or coding.</td><td>P0</td><td>PRD approval remains a separate human gate.</td></tr><tr><td><code>PRD-031-FR06</code></td><td><code>scripts/clarity-scenario-check.py</code> must include text-contract coverage for the walkthrough&#x27;s authority boundaries.</td><td>P1</td><td>Existing checker only; no new command.</td></tr><tr><td><code>PRD-031-FR07</code></td><td>Package inventory, maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer-history follow-through is part of done.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-031-first-prd-walkthrough.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-031-first-prd-walkthrough.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-031-FR01` / `PRD-031-FR02`</textarea></td><td><textarea data-cockpit-cell>User Guide, Daily Cockpit, How-To guide, Idea-to-PRD, PRD Protocol, Workflow Selection, and Prompt Patterns include the named walkthrough and route it through existing surfaces.</textarea></td><td><textarea data-cockpit-cell>Static review and generated docs.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-031-FR03` / `PRD-031-FR04` / `PRD-031-FR05`</textarea></td><td><textarea data-cockpit-cell>The text-contract fixture fails if required boundary language disappears from owner surfaces.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-031-FR06`</textarea></td><td><textarea data-cockpit-cell>The walkthrough fixture is part of the existing clarity scenario check and adds no standalone command.</textarea></td><td><textarea data-cockpit-cell>Code review and command output.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-031-FR07`</textarea></td><td><textarea data-cockpit-cell>PRD HTML, docs HTML, maintainer roadmap HTML, changelog, and roadmap journal reflect the shipped slice.</textarea></td><td><textarea data-cockpit-cell>Generated surface checks.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-031-first-prd-walkthrough">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-031-first-prd-walkthrough" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement | Acceptance check | Evidence |
+| --- | --- | --- |
+| `PRD-031-FR01` / `PRD-031-FR02` | User Guide, Daily Cockpit, How-To guide, Idea-to-PRD, PRD Protocol, Workflow Selection, and Prompt Patterns include the named walkthrough and route it through existing surfaces. | Static review and generated docs. |
+| `PRD-031-FR03` / `PRD-031-FR04` / `PRD-031-FR05` | The text-contract fixture fails if required boundary language disappears from owner surfaces. | `python3 scripts/clarity-scenario-check.py`. |
+| `PRD-031-FR06` | The walkthrough fixture is part of the existing clarity scenario check and adds no standalone command. | Code review and command output. |
+| `PRD-031-FR07` | PRD HTML, docs HTML, maintainer roadmap HTML, changelog, and roadmap journal reflect the shipped slice. | Generated surface checks. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
     <h3>Risk and permission model</h3>
-    <p class="empty">None recorded.</p>
+    <p>The First PRD Walkthrough is a discoverability and guidance layer over existing PrecodeOS workflows. It can help a builder ask for the right next artifact, but it cannot decide the product, approve a PRD, create or activate beads, mutate owner files, select tasks, or authorize implementation.</p>
     <h3>Agent context</h3>
-    <p class="empty">None recorded.</p>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-031-first-prd-walkthrough.md</code></li><li>Owner surfaces likely in play: PRD Protocol, Workflow Selection, Idea-to-PRD guidance, Prompt Patterns, Daily Cockpit, User Guide, and generated docs.</li><li>Forbidden assumptions: do not approve PRDs, create beads, mutate owner files, select tasks, or authorize implementation from walkthrough output.</li></ul>
     <h3>Bead proposals</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B031-first-prd-walkthrough</code></td><td><code>PRD-031-FR01</code> through <code>PRD-031-FR07</code></td><td>Public docs, protocols, prompts, clarity coverage, generated surfaces, and maintainer history expose the named walkthrough without approval shortcuts.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
   </section>
   <div class="layout">
     <article>
       <h1 id="prd-031-first-prd-walkthrough">PRD-031 -- First PRD Walkthrough</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-031</code></li><li>Status: <code>approved</code></li><li>Owner: Dan Sears / Recode</li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-07-27</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: First PRD Walkthrough</li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-001</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer roadmap evidence and beginner workflow friction</li><li>Source references: public first-reader route, PRD Protocol, Workflow Selection, Prompt Patterns</li><li>Stable facts: First PRD Walkthrough is discoverability guidance over existing evidence-first workflows.</li><li>Assumptions: beginner builders need one plain-language rough-idea entrypoint before PRD shaping.</li><li>Privacy or secrets redactions: source materials remain evidence and should be reviewed before promotion.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: maintainer roadmap planning</li><li>Shared design concept: route rough ideas through Product Brief, Conviction Packet, Local Source Intake, and PRD shaping without approving PRDs or coding.</li><li>Key decisions reached: no new protocol file, command, generated report, hosted workspace, or approval shortcut.</li><li>Remaining implementation-changing questions: none for the approved v1 slice.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Status</th><th>Plain-English meaning</th><th>Aliases</th><th>Avoid/confusing terms</th><th>UI/code/test examples</th><th>Source pointer</th></tr></thead><tbody><tr><td>First PRD Walkthrough</td><td>introduced</td><td>Beginner-facing request for the rough-idea-to-PRD-readiness path.</td><td>first PRD path</td><td>automatic PRD drafting, approval shortcut</td><td><code>Ideation: use First PRD Walkthrough for my rough idea.</code></td><td>This PRD</td></tr><tr><td>Conviction Packet</td><td>reused</td><td>Evidence packet that should go through Local Source Intake before PRD shaping.</td><td>packet</td><td>approved PRD</td><td>Product Definition Gate wording</td><td>PRD Protocol</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS gives first-time builders one safe path from rough idea to PRD readiness.</li><li>Customer problem: a builder may not know which product-definition prompt to use first.</li><li>Customer FAQ: Does the walkthrough approve coding? No; human PRD approval remains required.</li><li>Internal FAQ: Does this add a new protocol? No; it routes existing surfaces.</li><li>Appetite: public docs/protocol/prompt discoverability only.</li><li>Kill or pause criteria: stop if the walkthrough becomes automatic PRD drafting, task selection, or implementation permission.</li></ul>
 <h2 id="summary">Summary</h2>
 <p>PrecodeOS should give first-time non-technical builders one visible path from a rough idea to PRD readiness without pretending the path approves a PRD or authorizes coding.</p>
 <p>The First PRD Walkthrough packages existing Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and gentle PRD ramp guidance into a named walkthrough across current public docs and protocols.</p>
@@ -182,9 +239,17 @@
 <ul><li>Make the rough-idea-to-PRD-readiness path easy to find from daily and onboarding surfaces.</li><li>Name &quot;First PRD Walkthrough&quot; as a beginner-facing request that routes through existing protocols.</li><li>Preserve Product Brief, Conviction Packet, research notes, and workbook output as evidence only.</li><li>Keep Local Source Intake before PRD shaping when a Conviction Packet or source material is used.</li><li>Keep human PRD approval before feature compilation, decomposition, bead proposal activation, or coding.</li><li>Add narrow text-contract coverage so future edits do not turn the walkthrough into hidden authority.</li></ul>
 <h2 id="non-goals">Non-Goals</h2>
 <ul><li>No new public protocol file.</li><li>No new command, checker command, readiness score, or generated report.</li><li>No automatic PRD drafting or approval.</li><li>No generated PRD authoring surface, export hub, hosted workspace, MCP mutation, SaaS runtime, or external integration.</li><li>No PRD approval shortcut, bead activation path, task selection, roadmap or backlog creation, owner-file mutation, or implementation permission.</li><li>No command-wrapper, registry, optional-pack, install/update, release-channel, or package-manager behavior.</li><li>No edits to active memory or normal task state.</li></ul>
-<h2 id="functional-requirements">Functional Requirements</h2>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: a builder with a rough idea may browse multiple product-definition surfaces or let an agent jump too quickly.</li><li>After: the builder can ask for the named walkthrough and move through evidence-first product framing.</li><li>Why now: the public docs need a compact beginner-safe entry into the PRD gate.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS provides a named rough-idea walkthrough that leads to PRD readiness while preserving approval gates.</li><li>Definition of done: docs, protocols, prompt patterns, text-contract coverage, generated surfaces, and maintainer history agree.</li><li>First useful vertical slice: named prompt route plus authority-boundary wording.</li></ul>
+<h2 id="product-constitution-fit">Product Constitution Fit</h2>
+<ul><li><code>PRODUCT.md</code> loaded: not needed</li><li>Product promise fit: reinforces builder control before coding.</li><li>User and job fit: helps non-technical builders turn rough ideas into approved product definition.</li><li>Strategy and non-goal fit: keeps evidence and approval separate from implementation permission.</li><li>Current bet or success signal affected: beginner PRD readiness.</li><li>Product constitution update needed: no</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: first-time non-technical builder with a rough idea.</li><li>Secondary user: support helper or AI assistant routing the builder safely.</li><li>Excluded user: anyone seeking automatic PRD drafting, approval, bead activation, or implementation permission.</li></ul>
+<h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-031-FR01</code></td><td>Public user and daily guide surfaces must include a named First PRD Walkthrough entrypoint.</td><td>P0</td><td>The path must be visible without reading the whole PRD protocol first.</td></tr><tr><td><code>PRD-031-FR02</code></td><td>Idea-to-PRD, PRD, Workflow Selection, and Prompt Patterns surfaces must route the walkthrough through the existing evidence-first sequence.</td><td>P0</td><td>No new protocol file for v1.</td></tr><tr><td><code>PRD-031-FR03</code></td><td>The walkthrough must state that Product Briefs, Conviction Packets, workbook output, and research are evidence only.</td><td>P0</td><td>These artifacts do not approve requirements or implementation.</td></tr><tr><td><code>PRD-031-FR04</code></td><td>The walkthrough must require Local Source Intake before PRD shaping when the builder brings a Conviction Packet, workbook output, notes, research, screenshots, or similar source material.</td><td>P0</td><td>Prevents direct packet-to-requirements promotion.</td></tr><tr><td><code>PRD-031-FR05</code></td><td>The walkthrough must preserve human PRD approval before feature compilation, decomposition, bead activation, or coding.</td><td>P0</td><td>PRD approval remains a separate human gate.</td></tr><tr><td><code>PRD-031-FR06</code></td><td><code>scripts/clarity-scenario-check.py</code> must include text-contract coverage for the walkthrough&#x27;s authority boundaries.</td><td>P1</td><td>Existing checker only; no new command.</td></tr><tr><td><code>PRD-031-FR07</code></td><td>Package inventory, maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer-history follow-through is part of done.</td></tr></tbody></table></div>
-<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
 <div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-031-FR01</code> / <code>PRD-031-FR02</code></td><td>User Guide, Daily Cockpit, How-To guide, Idea-to-PRD, PRD Protocol, Workflow Selection, and Prompt Patterns include the named walkthrough and route it through existing surfaces.</td><td>Static review and generated docs.</td></tr><tr><td><code>PRD-031-FR03</code> / <code>PRD-031-FR04</code> / <code>PRD-031-FR05</code></td><td>The text-contract fixture fails if required boundary language disappears from owner surfaces.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-031-FR06</code></td><td>The walkthrough fixture is part of the existing clarity scenario check and adds no standalone command.</td><td>Code review and command output.</td></tr><tr><td><code>PRD-031-FR07</code></td><td>PRD HTML, docs HTML, maintainer roadmap HTML, changelog, and roadmap journal reflect the shipped slice.</td><td>Generated surface checks.</td></tr></tbody></table></div>
 <h2 id="required-validation">Required Validation</h2>
 <pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
@@ -194,12 +259,28 @@ python3 scripts/docs-html.py
 python3 scripts/docs-html.py --check
 python3 _maintainer/scripts/roadmap-html.py
 python3 _maintainer/scripts/roadmap-html.py --check</code></pre>
-<h2 id="boundaries">Boundaries</h2>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
 <p>The First PRD Walkthrough is a discoverability and guidance layer over existing PrecodeOS workflows. It can help a builder ask for the right next artifact, but it cannot decide the product, approve a PRD, create or activate beads, mutate owner files, select tasks, or authorize implementation.</p>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li><code>PROJECT-CONTEXT.md</code> impact: none.</li><li>Architecture impact: none; workflow guidance only.</li><li>Data model impact: none.</li><li>Security/privacy impact: source inputs remain evidence until reviewed and promoted.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>First PRD Walkthrough prompt route</td><td>Daily Cockpit and Prompt Patterns wording</td><td>Routes rough ideas through existing evidence-first workflow.</td><td>clarity scenario and generated docs review</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-031-first-prd-walkthrough.md</code></li><li>Owner surfaces likely in play: PRD Protocol, Workflow Selection, Idea-to-PRD guidance, Prompt Patterns, Daily Cockpit, User Guide, and generated docs.</li><li>Forbidden assumptions: do not approve PRDs, create beads, mutate owner files, select tasks, or authorize implementation from walkthrough output.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>Does the walkthrough preserve Local Source Intake before PRD shaping when source material exists?</li><li>Does the text keep Product Briefs and Conviction Packets evidence-only?</li><li>Does human PRD approval remain separate from feature compilation, decomposition, bead activation, and coding?</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B031-first-prd-walkthrough</code></td><td><code>PRD-031-FR01</code> through <code>PRD-031-FR07</code></td><td>Public docs, protocols, prompts, clarity coverage, generated surfaces, and maintainer history expose the named walkthrough without approval shortcuts.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: First PRD Walkthrough</li><li>Functional requirements to compile: <code>PRD-031-FR01</code> through <code>PRD-031-FR07</code></li><li>Acceptance updates needed: none beyond preserving approval gates.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future tooling generate a PRD-readiness packet from the walkthrough?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-24</li><li>Approval notes: Approved as discoverability guidance over existing product-definition surfaces, not automatic PRD drafting, PRD approval, bead activation, or implementation permission.</li></ul>
     </article>
     <nav class="toc" aria-label="Page contents">
       <strong>Contents</strong>
-      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#product-constitution-fit">Product Constitution Fit</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
     </nav>
   </div>
 </main>

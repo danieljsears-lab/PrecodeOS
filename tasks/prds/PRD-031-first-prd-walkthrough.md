@@ -3,8 +3,12 @@ prd_id: PRD-031
 status: approved
 owner: Dan Sears / Recode
 created: 2026-06-24
-last_updated: 2026-06-24
+risk_level: medium
 feature_link: First PRD Walkthrough
+features_status: not compiled
+related_prds:
+  - PRD-001
+last_updated: 2026-07-27
 ---
 
 # PRD-031 -- First PRD Walkthrough
@@ -18,8 +22,53 @@ feature_link: First PRD Walkthrough
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-24
+Document version: v0.1.1
+Last updated: 2026-07-27
+
+## State
+
+- ID: `PRD-031`
+- Status: `approved`
+- Owner: Dan Sears / Recode
+- Risk level: `medium`
+- Last updated: `2026-07-27`
+
+## Feature Link
+
+- Feature: First PRD Walkthrough
+- `FEATURES.md` status: `not compiled`
+- Related PRDs: `PRD-001`
+
+## Source Inputs
+
+- Source type: maintainer roadmap evidence and beginner workflow friction
+- Source references: public first-reader route, PRD Protocol, Workflow Selection, Prompt Patterns
+- Stable facts: First PRD Walkthrough is discoverability guidance over existing evidence-first workflows.
+- Assumptions: beginner builders need one plain-language rough-idea entrypoint before PRD shaping.
+- Privacy or secrets redactions: source materials remain evidence and should be reviewed before promotion.
+
+## Alignment / Grilling Summary
+
+- Alignment method: maintainer roadmap planning
+- Shared design concept: route rough ideas through Product Brief, Conviction Packet, Local Source Intake, and PRD shaping without approving PRDs or coding.
+- Key decisions reached: no new protocol file, command, generated report, hosted workspace, or approval shortcut.
+- Remaining implementation-changing questions: none for the approved v1 slice.
+
+## Domain Language
+
+| Term | Status | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Source pointer |
+|---|---|---|---|---|---|---|
+| First PRD Walkthrough | introduced | Beginner-facing request for the rough-idea-to-PRD-readiness path. | first PRD path | automatic PRD drafting, approval shortcut | `Ideation: use First PRD Walkthrough for my rough idea.` | This PRD |
+| Conviction Packet | reused | Evidence packet that should go through Local Source Intake before PRD shaping. | packet | approved PRD | Product Definition Gate wording | PRD Protocol |
+
+## PRFAQ-Lite
+
+- Press-release claim: PrecodeOS gives first-time builders one safe path from rough idea to PRD readiness.
+- Customer problem: a builder may not know which product-definition prompt to use first.
+- Customer FAQ: Does the walkthrough approve coding? No; human PRD approval remains required.
+- Internal FAQ: Does this add a new protocol? No; it routes existing surfaces.
+- Appetite: public docs/protocol/prompt discoverability only.
+- Kill or pause criteria: stop if the walkthrough becomes automatic PRD drafting, task selection, or implementation permission.
 
 ## Summary
 
@@ -50,7 +99,34 @@ PrecodeOS already has strong product-definition pieces, but a new builder can mi
 - No command-wrapper, registry, optional-pack, install/update, release-channel, or package-manager behavior.
 - No edits to active memory or normal task state.
 
-## Functional Requirements
+## User Moment
+
+- Before: a builder with a rough idea may browse multiple product-definition surfaces or let an agent jump too quickly.
+- After: the builder can ask for the named walkthrough and move through evidence-first product framing.
+- Why now: the public docs need a compact beginner-safe entry into the PRD gate.
+
+## Destination
+
+- Destination statement: PrecodeOS provides a named rough-idea walkthrough that leads to PRD readiness while preserving approval gates.
+- Definition of done: docs, protocols, prompt patterns, text-contract coverage, generated surfaces, and maintainer history agree.
+- First useful vertical slice: named prompt route plus authority-boundary wording.
+
+## Product Constitution Fit
+
+- `PRODUCT.md` loaded: not needed
+- Product promise fit: reinforces builder control before coding.
+- User and job fit: helps non-technical builders turn rough ideas into approved product definition.
+- Strategy and non-goal fit: keeps evidence and approval separate from implementation permission.
+- Current bet or success signal affected: beginner PRD readiness.
+- Product constitution update needed: no
+
+## Users
+
+- Primary user: first-time non-technical builder with a rough idea.
+- Secondary user: support helper or AI assistant routing the builder safely.
+- Excluded user: anyone seeking automatic PRD drafting, approval, bead activation, or implementation permission.
+
+## Requirements
 
 | ID | Requirement | Priority | Notes |
 |---|---|---:|---|
@@ -62,7 +138,7 @@ PrecodeOS already has strong product-definition pieces, but a new builder can mi
 | `PRD-031-FR06` | `scripts/clarity-scenario-check.py` must include text-contract coverage for the walkthrough's authority boundaries. | P1 | Existing checker only; no new command. |
 | `PRD-031-FR07` | Package inventory, maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated. | P1 | Maintainer-history follow-through is part of done. |
 
-## Acceptance Criteria
+## Acceptance Oracle Matrix
 
 | Requirement | Acceptance check | Evidence |
 |---|---|---|
@@ -83,7 +159,55 @@ python3 _maintainer/scripts/roadmap-html.py
 python3 _maintainer/scripts/roadmap-html.py --check
 ```
 
-## Boundaries
+## Risk And Permission Model
 
 The First PRD Walkthrough is a discoverability and guidance layer over existing PrecodeOS workflows. It can help a builder ask for the right next artifact, but it cannot decide the product, approve a PRD, create or activate beads, mutate owner files, select tasks, or authorize implementation.
 
+## Architecture / Project Context Impact
+
+- `PROJECT-CONTEXT.md` impact: none.
+- Architecture impact: none; workflow guidance only.
+- Data model impact: none.
+- Security/privacy impact: source inputs remain evidence until reviewed and promoted.
+
+## Module / Interface Candidates
+
+| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
+|---|---|---|---|---|
+| First PRD Walkthrough prompt route | Daily Cockpit and Prompt Patterns wording | Routes rough ideas through existing evidence-first workflow. | clarity scenario and generated docs review | This PRD |
+
+## Agent Context Contract
+
+- Primary authority file: `tasks/prds/PRD-031-first-prd-walkthrough.md`
+- Owner surfaces likely in play: PRD Protocol, Workflow Selection, Idea-to-PRD guidance, Prompt Patterns, Daily Cockpit, User Guide, and generated docs.
+- Forbidden assumptions: do not approve PRDs, create beads, mutate owner files, select tasks, or authorize implementation from walkthrough output.
+
+## Anti-Shallow Checks
+
+- Does the walkthrough preserve Local Source Intake before PRD shaping when source material exists?
+- Does the text keep Product Briefs and Conviction Packets evidence-only?
+- Does human PRD approval remain separate from feature compilation, decomposition, bead activation, and coding?
+
+## Bead Proposals
+
+| Bead | Requirement IDs | Done when | Delegation mode | Test strategy | Review context | Primary authority | Validation |
+|---|---|---|---|---|---|---|---|
+| `B031-first-prd-walkthrough` | `PRD-031-FR01` through `PRD-031-FR07` | Public docs, protocols, prompts, clarity coverage, generated surfaces, and maintainer history expose the named walkthrough without approval shortcuts. | `human_in_loop` | `static_and_fixture` | `same_session_ok` | This PRD | clarity and generated docs checks |
+
+## Compilation Notes
+
+- Feature entry: First PRD Walkthrough
+- Functional requirements to compile: `PRD-031-FR01` through `PRD-031-FR07`
+- Acceptance updates needed: none beyond preserving approval gates.
+
+## Open Questions
+
+| Question | Affects | Blocking? |
+|---|---|---|
+| Should future tooling generate a PRD-readiness packet from the walkthrough? | Follow-up scope | no |
+
+## Approval
+
+- Approved by: Dan Sears / Recode
+- Approved on: 2026-06-24
+- Approval notes: Approved as discoverability guidance over existing product-definition surfaces, not automatic PRD drafting, PRD approval, bead activation, or implementation permission.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.1
-# Last updated: 2026-06-26
+# Version: v0.2.2
+# Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -56,6 +56,47 @@ class Prd:
 class MarkdownTable:
     headers: list[str]
     rows: list[list[str]]
+
+
+@dataclass(frozen=True)
+class PrdCluster:
+    title: str
+    purpose: str
+    prd_ids: tuple[str, ...]
+
+
+PRD_CLUSTERS = (
+    PrdCluster(
+        title="Setup / Adoption",
+        purpose="First install, existing-project intake, setup previews, supervised copy actions, and package refresh policy.",
+        prd_ids=("PRD-002", "PRD-003", "PRD-004", "PRD-006", "PRD-010", "PRD-016", "PRD-041", "PRD-042"),
+    ),
+    PrdCluster(
+        title="PRD / Product-Definition Support",
+        purpose="Product discovery, bugfix specs, candidate shaping, acceptance wording, PRD handoff, PRD quality, first-PRD routing, and artifact choice.",
+        prd_ids=("PRD-001", "PRD-017", "PRD-021", "PRD-026", "PRD-029", "PRD-030", "PRD-031", "PRD-033", "PRD-036"),
+    ),
+    PrdCluster(
+        title="Review / Proof / Release Evidence",
+        purpose="Release readiness, review lanes, verification, proof traceability, attribution, engineering quality, release-quality cues, and polish review.",
+        prd_ids=("PRD-005", "PRD-009", "PRD-018", "PRD-020", "PRD-024", "PRD-028", "PRD-038", "PRD-040", "PRD-044"),
+    ),
+    PrdCluster(
+        title="Generated / Review Surfaces And Package Structure",
+        purpose="Generated PRD/doctor/authority-map surfaces, package-surface structure, session-friction review, and generated-output boundaries.",
+        prd_ids=("PRD-007", "PRD-008", "PRD-012", "PRD-014", "PRD-027"),
+    ),
+    PrdCluster(
+        title="Collaboration / Recovery / Operating Rhythm",
+        purpose="Recovery, dependency review, learning/reversal loops, team collaboration, GitHub intake, many-bead rhythm, AFK safety, and delegation re-entry.",
+        prd_ids=("PRD-015", "PRD-019", "PRD-022", "PRD-023", "PRD-025", "PRD-032", "PRD-034", "PRD-035", "PRD-037"),
+    ),
+    PrdCluster(
+        title="Command / Package Boundary",
+        purpose="Local hygiene, optional command facades, package access-level guidance, and no-package-manager boundaries.",
+        prd_ids=("PRD-011", "PRD-013", "PRD-039", "PRD-043"),
+    ),
+)
 
 
 def read_text(path: Path) -> str:
@@ -524,6 +565,49 @@ def guardrail_text() -> str:
     )
 
 
+def prd_id(prd: Prd) -> str:
+    return str(prd.frontmatter.get("prd_id") or prd.filename[:7])
+
+
+def render_clusters(prds: list[Prd]) -> str:
+    by_id = {prd_id(prd): prd for prd in prds}
+    clustered_ids = [identifier for cluster in PRD_CLUSTERS for identifier in cluster.prd_ids]
+    missing_ids = sorted(set(by_id) - set(clustered_ids))
+    unknown_ids = sorted(set(clustered_ids) - set(by_id))
+    duplicate_ids = sorted(identifier for identifier in set(clustered_ids) if clustered_ids.count(identifier) > 1)
+    if missing_ids or unknown_ids or duplicate_ids:
+        details = []
+        if missing_ids:
+            details.append("missing from clusters: " + ", ".join(missing_ids))
+        if unknown_ids:
+            details.append("unknown cluster IDs: " + ", ".join(unknown_ids))
+        if duplicate_ids:
+            details.append("duplicate cluster IDs: " + ", ".join(duplicate_ids))
+        raise RuntimeError("PRD cluster map mismatch; " + "; ".join(details))
+
+    cards: list[str] = []
+    for cluster in PRD_CLUSTERS:
+        links = []
+        for identifier in cluster.prd_ids:
+            prd = by_id[identifier]
+            short_title = prd.title.replace(identifier, "").strip(" -—")
+            links.append(
+                '<li>'
+                f'<a href="{h(prd.html_name)}">{h(identifier)}</a>'
+                f' <span>{h(short_title)}</span>'
+                f' <a class="source-mini" href="{h(source_href(prd, prd.anchor))}">Markdown</a>'
+                '</li>'
+            )
+        cards.append(
+            '<section class="cluster-card">'
+            f"<h3>{h(cluster.title)}</h3>"
+            f'<p class="muted">{h(cluster.purpose)}</p>'
+            f'<ul class="cluster-list">{"".join(links)}</ul>'
+            "</section>"
+        )
+    return '<section class="clusters" aria-labelledby="prd-clusters"><h2 id="prd-clusters">PRD Clusters</h2><p class="muted">Reader-facing navigation only. Clusters group valid destination PRD shards by common review intent; they do not merge, supersede, renumber, approve, or replace canonical Markdown PRDs.</p><div class="cluster-grid">' + "".join(cards) + "</div></section>"
+
+
 def style() -> str:
     return """
     :root {
@@ -595,6 +679,25 @@ def style() -> str:
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -748,6 +851,7 @@ def render_index(prds: list[Prd]) -> str:
     <div class="metric"><span>Source</span><strong>tasks/prds/*.md</strong></div>
     <div class="metric"><span>Generated output</span><strong>tasks/prds-html/*.html</strong></div>
   </section>
+  {render_clusters(prds)}
   {table}
 </main>
 """

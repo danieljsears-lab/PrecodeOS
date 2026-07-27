@@ -74,6 +74,25 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -140,7 +159,7 @@
   <section class="notice">
     <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
-  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>low</strong></div><div class="metric"><span>Feature</span><strong>Many-Bead Operating Rhythm</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-29</strong></div></section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>low</strong></div><div class="metric"><span>Feature</span><strong>Many-Bead Operating Rhythm</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-29</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-27</strong></div></section>
   <section class="summary">
     <h2 id="review-cues">Review Cues</h2>
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
@@ -149,30 +168,72 @@
 
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
-      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
       <p><strong>Requirements found:</strong> 8</p>
-      <p><strong>Acceptance rows found:</strong> 0</p>
-      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
-      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p><strong>Acceptance rows found:</strong> 6</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
 
     <h3>Unresolved blockers and questions</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future closeout output include richer rhythm summaries?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-034-FR01</code></td><td>Daily Cockpit must expose the every-bead rhythm <code>Active -&amp;gt; Changed -&amp;gt; Proven -&amp;gt; Parked -&amp;gt; Approval -&amp;gt; Next</code> near the beginner path and daily loop.</td><td>P0</td><td>Primary beginner surface.</td></tr><tr><td><code>PRD-034-FR02</code></td><td>User Guide must explain how the rhythm supports repeated work, done review, approval, and copyable prompts without becoming a workflow.</td><td>P0</td><td>Deeper manual.</td></tr><tr><td><code>PRD-034-FR03</code></td><td>Prompt Patterns must add a compact <code>Rhythm</code> alias or prompt that asks for the six fields without activating anything.</td><td>P0</td><td>Copyable invocation.</td></tr><tr><td><code>PRD-034-FR04</code></td><td>Workflow Selection Protocol must state that after the first product spine, repeated work can orient through the rhythm before choosing the next workflow.</td><td>P1</td><td>Protocol alignment.</td></tr><tr><td><code>PRD-034-FR05</code></td><td>Session Completion/Handoff Protocol must map changed, proven, parked, approval, and next fields to existing closeout, queue, review, transition, and handoff evidence.</td><td>P1</td><td>Completion/handoff alignment.</td></tr><tr><td><code>PRD-034-FR06</code></td><td>Package inventory must describe PRD-034 and the updated affected surfaces.</td><td>P1</td><td>Public reference follow-through.</td></tr><tr><td><code>PRD-034-FR07</code></td><td><code>scripts/clarity-scenario-check.py</code> must enforce rhythm wording and forbidden-action boundaries as a text contract only.</td><td>P1</td><td>No new user command.</td></tr><tr><td><code>PRD-034-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-034-many-bead-operating-rhythm.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-034-many-bead-operating-rhythm.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-034-FR01` / `PRD-034-FR02`</textarea></td><td><textarea data-cockpit-cell>Daily Cockpit and User Guide expose the rhythm and map it to active bead, changed files, proof, Candidate Queue, approval, and next guidance.</textarea></td><td><textarea data-cockpit-cell>Source review and generated docs HTML.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-034-FR03`</textarea></td><td><textarea data-cockpit-cell>Prompt Patterns includes a `Rhythm` alias or copyable prompt with explicit no-activation wording.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-034-FR04` / `PRD-034-FR05`</textarea></td><td><textarea data-cockpit-cell>Workflow Selection and Session Completion/Handoff preserve existing authority and approval gates while naming the rhythm.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-034-FR06`</textarea></td><td><textarea data-cockpit-cell>Package inventory lists PRD-034 and updated affected surfaces.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-034-FR07`</textarea></td><td><textarea data-cockpit-cell>Clarity scenario coverage fails if rhythm wording or forbidden-action boundaries disappear.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-034-FR08`</textarea></td><td><textarea data-cockpit-cell>Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current.</textarea></td><td><textarea data-cockpit-cell>Validation commands.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-034-many-bead-operating-rhythm">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-034-many-bead-operating-rhythm" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement | Acceptance check | Evidence |
+| --- | --- | --- |
+| `PRD-034-FR01` / `PRD-034-FR02` | Daily Cockpit and User Guide expose the rhythm and map it to active bead, changed files, proof, Candidate Queue, approval, and next guidance. | Source review and generated docs HTML. |
+| `PRD-034-FR03` | Prompt Patterns includes a `Rhythm` alias or copyable prompt with explicit no-activation wording. | Source review. |
+| `PRD-034-FR04` / `PRD-034-FR05` | Workflow Selection and Session Completion/Handoff preserve existing authority and approval gates while naming the rhythm. | Source review. |
+| `PRD-034-FR06` | Package inventory lists PRD-034 and updated affected surfaces. | Source review. |
+| `PRD-034-FR07` | Clarity scenario coverage fails if rhythm wording or forbidden-action boundaries disappear. | `python3 scripts/clarity-scenario-check.py`. |
+| `PRD-034-FR08` | Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current. | Validation commands. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
     <h3>Risk and permission model</h3>
-    <p class="empty">None recorded.</p>
+    <p>The rhythm is an orientation checklist over existing PrecodeOS surfaces:</p>
+<ul><li>Active: <code>tasks/todo.md</code>, active bead, and primary authority file.</li><li>Changed: changed-file summary and Closeout Evidence.</li><li>Proven: recorded checks, manual verification, proof traces, and review evidence.</li><li>Parked: Candidate Queue or explicit defer/kill destination for future intent.</li><li>Approval: review decision, transition proposal, and user approval still required.</li><li>Next: session start, Workflow Selection, <code>next-step.py</code>, or transition proposal guidance.</li></ul>
+<p><code>Parked</code> must not imply Candidate Queue chooses work. <code>Next</code> must not imply transition approval. The rhythm must not accept implementation, approve review, approve PRDs, activate beads, choose tasks, rank candidates, mutate owner files, or treat generated output as authority.</p>
     <h3>Agent context</h3>
-    <p class="empty">None recorded.</p>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-034-many-bead-operating-rhythm.md</code></li><li>Owner surfaces likely in play: Daily Cockpit, User Guide, Prompt Patterns, Workflow Selection, Session Completion/Handoff, package inventory, and clarity scenario coverage.</li><li>Forbidden assumptions: do not choose tasks, activate beads, approve review, approve transitions, rank Candidate Queue items, or replace generated/report/owner-file authority.</li></ul>
     <h3>Bead proposals</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B034-many-bead-operating-rhythm</code></td><td><code>PRD-034-FR01</code> through <code>PRD-034-FR08</code></td><td>Docs, prompt, protocols, package inventory, clarity coverage, generated surfaces, and maintainer history align around the every-bead rhythm.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
   </section>
   <div class="layout">
     <article>
       <h1 id="prd-034-many-bead-operating-rhythm">PRD-034 -- Many-Bead Operating Rhythm</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-034</code></li><li>Status: <code>approved</code></li><li>Owner: Dan Sears / Recode</li><li>Risk level: <code>low</code></li><li>Last updated: <code>2026-07-27</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: Many-Bead Operating Rhythm</li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-031</code>, <code>PRD-033</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer roadmap evidence and repeated bead-work friction</li><li>Source references: Daily Cockpit, Workflow Selection, Session Completion/Handoff, Prompt Patterns</li><li>Stable facts: repeated bead work should orient through existing sources and approval gates.</li><li>Assumptions: after the first product slice, a compact rhythm helps builders avoid routing confusion.</li><li>Privacy or secrets redactions: none.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: maintainer roadmap planning</li><li>Shared design concept: <code>Active -&amp;gt; Changed -&amp;gt; Proven -&amp;gt; Parked -&amp;gt; Approval -&amp;gt; Next</code> is an orientation checklist, not a workflow authority.</li><li>Key decisions reached: no new protocol, command, script behavior, generated report, schema field, or approval path.</li><li>Remaining implementation-changing questions: none for the approved v1 slice.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Status</th><th>Plain-English meaning</th><th>Aliases</th><th>Avoid/confusing terms</th><th>UI/code/test examples</th><th>Source pointer</th></tr></thead><tbody><tr><td>Every-bead rhythm</td><td>introduced</td><td>Compact repeated-work orientation checklist after the first product slice.</td><td>many-bead rhythm</td><td>task selector, workflow authority</td><td><code>Active -&amp;gt; Changed -&amp;gt; Proven -&amp;gt; Parked -&amp;gt; Approval -&amp;gt; Next</code></td><td>This PRD</td></tr><tr><td>Parked</td><td>reused</td><td>Future intent placed in Candidate Queue or a defer/kill destination after review.</td><td>deferred</td><td>selected next task</td><td>Candidate Queue</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS makes repeated bead work feel like a small evidence-backed rhythm.</li><li>Customer problem: after the first bead, daily work can feel spread across too many surfaces.</li><li>Customer FAQ: Does the rhythm choose the next task? No; it orients before normal approval gates.</li><li>Internal FAQ: Does this replace <code>next-step.py</code> or Workflow Selection? No.</li><li>Appetite: docs, prompt, protocol, and text-contract alignment.</li><li>Kill or pause criteria: stop if the rhythm becomes task selection, bead activation, transition approval, or generated authority.</li></ul>
 <h2 id="summary">Summary</h2>
 <p>PrecodeOS should make repeated work across many beads feel like one small daily rhythm instead of a tour through every report, prompt, review path, and queue.</p>
 <p>The Many-Bead Operating Rhythm adds a beginner-facing orientation checklist: <code>Active -&amp;gt; Changed -&amp;gt; Proven -&amp;gt; Parked -&amp;gt; Approval -&amp;gt; Next</code>. It points to existing sources and approval gates. It does not create a new workflow, report, command, script behavior, or authority layer.</p>
@@ -185,7 +246,7 @@
 <ul><li>No task selection, Candidate Queue ranking, PRD approval, bead activation, review acceptance, transition approval, or implementation acceptance.</li><li>No replacement for <code>next-step.py</code>, Workflow Selection, Work Graph, Daily Cockpit, closeout, or Session Completion/Handoff Protocol.</li><li>No new script, generated report, command wrapper, CLI alias, public protocol file, active-memory field, schema requirement, registry, optional pack, install/update behavior, release-channel behavior, or package-manager behavior.</li><li>No support-specific doc expansion in v1 unless core-surface validation reveals a direct contradiction.</li></ul>
 <h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-034-FR01</code></td><td>Daily Cockpit must expose the every-bead rhythm <code>Active -&amp;gt; Changed -&amp;gt; Proven -&amp;gt; Parked -&amp;gt; Approval -&amp;gt; Next</code> near the beginner path and daily loop.</td><td>P0</td><td>Primary beginner surface.</td></tr><tr><td><code>PRD-034-FR02</code></td><td>User Guide must explain how the rhythm supports repeated work, done review, approval, and copyable prompts without becoming a workflow.</td><td>P0</td><td>Deeper manual.</td></tr><tr><td><code>PRD-034-FR03</code></td><td>Prompt Patterns must add a compact <code>Rhythm</code> alias or prompt that asks for the six fields without activating anything.</td><td>P0</td><td>Copyable invocation.</td></tr><tr><td><code>PRD-034-FR04</code></td><td>Workflow Selection Protocol must state that after the first product spine, repeated work can orient through the rhythm before choosing the next workflow.</td><td>P1</td><td>Protocol alignment.</td></tr><tr><td><code>PRD-034-FR05</code></td><td>Session Completion/Handoff Protocol must map changed, proven, parked, approval, and next fields to existing closeout, queue, review, transition, and handoff evidence.</td><td>P1</td><td>Completion/handoff alignment.</td></tr><tr><td><code>PRD-034-FR06</code></td><td>Package inventory must describe PRD-034 and the updated affected surfaces.</td><td>P1</td><td>Public reference follow-through.</td></tr><tr><td><code>PRD-034-FR07</code></td><td><code>scripts/clarity-scenario-check.py</code> must enforce rhythm wording and forbidden-action boundaries as a text contract only.</td><td>P1</td><td>No new user command.</td></tr><tr><td><code>PRD-034-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
-<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
 <div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-034-FR01</code> / <code>PRD-034-FR02</code></td><td>Daily Cockpit and User Guide expose the rhythm and map it to active bead, changed files, proof, Candidate Queue, approval, and next guidance.</td><td>Source review and generated docs HTML.</td></tr><tr><td><code>PRD-034-FR03</code></td><td>Prompt Patterns includes a <code>Rhythm</code> alias or copyable prompt with explicit no-activation wording.</td><td>Source review.</td></tr><tr><td><code>PRD-034-FR04</code> / <code>PRD-034-FR05</code></td><td>Workflow Selection and Session Completion/Handoff preserve existing authority and approval gates while naming the rhythm.</td><td>Source review.</td></tr><tr><td><code>PRD-034-FR06</code></td><td>Package inventory lists PRD-034 and updated affected surfaces.</td><td>Source review.</td></tr><tr><td><code>PRD-034-FR07</code></td><td>Clarity scenario coverage fails if rhythm wording or forbidden-action boundaries disappear.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-034-FR08</code></td><td>Roadmap, changelog, journal, PRD HTML, docs HTML, and roadmap HTML are current.</td><td>Validation commands.</td></tr></tbody></table></div>
 <h2 id="required-validation">Required Validation</h2>
 <pre><code class="language-bash">bash scripts/validate-memory.sh
@@ -201,14 +262,30 @@ python3 _maintainer/scripts/roadmap-html.py
 python3 _maintainer/scripts/roadmap-html.py --check
 python3 _maintainer/scripts/roadmap-maintenance.py
 git diff --check</code></pre>
-<h2 id="boundaries">Boundaries</h2>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
 <p>The rhythm is an orientation checklist over existing PrecodeOS surfaces:</p>
 <ul><li>Active: <code>tasks/todo.md</code>, active bead, and primary authority file.</li><li>Changed: changed-file summary and Closeout Evidence.</li><li>Proven: recorded checks, manual verification, proof traces, and review evidence.</li><li>Parked: Candidate Queue or explicit defer/kill destination for future intent.</li><li>Approval: review decision, transition proposal, and user approval still required.</li><li>Next: session start, Workflow Selection, <code>next-step.py</code>, or transition proposal guidance.</li></ul>
 <p><code>Parked</code> must not imply Candidate Queue chooses work. <code>Next</code> must not imply transition approval. The rhythm must not accept implementation, approve review, approve PRDs, activate beads, choose tasks, rank candidates, mutate owner files, or treat generated output as authority.</p>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li><code>PROJECT-CONTEXT.md</code> impact: none.</li><li>Architecture impact: none; guidance and validation text only.</li><li>Data model impact: none.</li><li>Security/privacy impact: none.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>Every-bead rhythm prompt</td><td>Daily Cockpit, User Guide, Prompt Patterns</td><td>Orients repeated work through existing evidence and approval gates.</td><td>clarity scenario and source review</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-034-many-bead-operating-rhythm.md</code></li><li>Owner surfaces likely in play: Daily Cockpit, User Guide, Prompt Patterns, Workflow Selection, Session Completion/Handoff, package inventory, and clarity scenario coverage.</li><li>Forbidden assumptions: do not choose tasks, activate beads, approve review, approve transitions, rank Candidate Queue items, or replace generated/report/owner-file authority.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>Does <code>Parked</code> remain Candidate Queue or defer/kill evidence rather than task selection?</li><li>Does <code>Next</code> preserve transition approval and Workflow Selection boundaries?</li><li>Does the rhythm remain an orientation checklist over existing surfaces?</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B034-many-bead-operating-rhythm</code></td><td><code>PRD-034-FR01</code> through <code>PRD-034-FR08</code></td><td>Docs, prompt, protocols, package inventory, clarity coverage, generated surfaces, and maintainer history align around the every-bead rhythm.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and generated docs checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: Many-Bead Operating Rhythm</li><li>Functional requirements to compile: <code>PRD-034-FR01</code> through <code>PRD-034-FR08</code></li><li>Acceptance updates needed: rhythm remains orientation only.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future closeout output include richer rhythm summaries?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-29</li><li>Approval notes: Approved as a repeated-work orientation checklist over existing surfaces, not a new workflow, report, command, task selector, PRD approval, bead activation, transition approval, or generated authority.</li></ul>
     </article>
     <nav class="toc" aria-label="Page contents">
       <strong>Contents</strong>
-      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
     </nav>
   </div>
 </main>

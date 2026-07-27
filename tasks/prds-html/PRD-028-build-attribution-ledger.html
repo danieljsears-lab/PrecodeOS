@@ -74,6 +74,25 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -140,7 +159,7 @@
   <section class="notice">
     <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
-  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>unknown</strong></div><div class="metric"><span>Feature</span><strong>Build Attribution Ledger</strong></div><div class="metric"><span>Features status</span><strong>unknown</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-23</strong></div></section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Build Attribution Ledger</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-23</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-27</strong></div></section>
   <section class="summary">
     <h2 id="review-cues">Review Cues</h2>
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
@@ -149,30 +168,70 @@
 
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
-      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
-      <p><strong>Requirements found:</strong> 0</p>
-      <p><strong>Acceptance rows found:</strong> 0</p>
-      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
-      <ul><li>no requirement IDs found</li><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 6</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
 
     <h3>Unresolved blockers and questions</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future attribution evidence include richer external provider hints?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td>Add closeout fields for human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty.</td><td>P0</td><td>Existing reviewed values must be preserved by closeout refresh.</td></tr><tr><td><code>PRD-028-FR02</code></td><td>Add <code>scripts/build-attribution-ledger.py</code> as a read-only checker that prints JSON by default.</td><td>P0</td><td>Default command writes no files.</td></tr><tr><td><code>PRD-028-FR03</code></td><td>Add <code>--self-test</code> deterministic fixtures for reviewed closeout, partial closeout, missing attribution, generated warning, and forbidden uses.</td><td>P0</td><td>No network or external dependency.</td></tr><tr><td><code>PRD-028-FR04</code></td><td>Expose <code>build_attribution</code> in compiled state and generated OS Health sidecars.</td><td>P1</td><td>Sidecars are generated evidence only.</td></tr><tr><td><code>PRD-028-FR05</code></td><td>Generate <code>logs/build-attribution-ledger.json</code> and <code>logs/build-attribution-ledger.md</code>.</td><td>P1</td><td>Markdown must carry generated authority demotion.</td></tr><tr><td><code>PRD-028-FR06</code></td><td>Ledger entries must include bead identity, status, primary authority, human contributor, role, agent/tool surface, reviewer, uncertainty, source, confidence, Git author hint, journal timestamp, changed-path hints, and warnings.</td><td>P1</td><td>Git hints must not become contributor identity.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated.</td><td>P1</td><td>Maintainer-history follow-through is part of done.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-028-build-attribution-ledger.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-028-build-attribution-ledger.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-028-FR01`</textarea></td><td><textarea data-cockpit-cell>`scripts/update-bead-closeout.py` preserves attribution fields and fills explicit missing values.</textarea></td><td><textarea data-cockpit-cell>Code review and closeout refresh behavior.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-028-FR02`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/build-attribution-ledger.py` prints JSON and writes no files.</textarea></td><td><textarea data-cockpit-cell>Command output.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-028-FR03`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/build-attribution-ledger.py --self-test` passes.</textarea></td><td><textarea data-cockpit-cell>Command output.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-028-FR04` / `PRD-028-FR05`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/os-health.py` refreshes attribution sidecars.</textarea></td><td><textarea data-cockpit-cell>`logs/build-attribution-ledger.json/md`.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-028-FR06`</textarea></td><td><textarea data-cockpit-cell>Ledger entries expose attribution identity, source, confidence, hints, changed-path context, and warnings without treating Git hints as contributor identity.</textarea></td><td><textarea data-cockpit-cell>Source review and generated ledger review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-028-FR07`</textarea></td><td><textarea data-cockpit-cell>Scenario, inventory, docs, PRD HTML, roadmap HTML, memory, and version checks pass.</textarea></td><td><textarea data-cockpit-cell>Validation commands.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-028-build-attribution-ledger">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-028-build-attribution-ledger" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement | Acceptance check | Evidence |
+| --- | --- | --- |
+| `PRD-028-FR01` | `scripts/update-bead-closeout.py` preserves attribution fields and fills explicit missing values. | Code review and closeout refresh behavior. |
+| `PRD-028-FR02` | `python3 scripts/build-attribution-ledger.py` prints JSON and writes no files. | Command output. |
+| `PRD-028-FR03` | `python3 scripts/build-attribution-ledger.py --self-test` passes. | Command output. |
+| `PRD-028-FR04` / `PRD-028-FR05` | `python3 scripts/os-health.py` refreshes attribution sidecars. | `logs/build-attribution-ledger.json/md`. |
+| `PRD-028-FR06` | Ledger entries expose attribution identity, source, confidence, hints, changed-path context, and warnings without treating Git hints as contributor identity. | Source review and generated ledger review. |
+| `PRD-028-FR07` | Scenario, inventory, docs, PRD HTML, roadmap HTML, memory, and version checks pass. | Validation commands. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
     <h3>Risk and permission model</h3>
-    <p class="empty">None recorded.</p>
+    <p>The ledger answers attribution questions only as evidence. It must route any durable correction back to bead Closeout Evidence, owner files, recorded checks, coordinator review, or maintainer history. It must not become a second tracker, task registry, people registry, plugin registry, package registry, or authority surface.</p>
     <h3>Agent context</h3>
-    <p class="empty">None recorded.</p>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-028-build-attribution-ledger.md</code></li><li>Owner surfaces likely in play: closeout update script, OS compiler/health output, attribution ledger output, public docs/protocol references, and generated surfaces.</li><li>Forbidden assumptions: do not treat generated ledger output as task assignment, contributor scoring, blame, telemetry, merge approval, or implementation acceptance.</li></ul>
     <h3>Bead proposals</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B028-build-attribution-ledger</code></td><td><code>PRD-028-FR01</code> through <code>PRD-028-FR07</code></td><td>Closeout attribution fields, generated ledger, docs/protocol references, generated surfaces, and maintainer history are updated and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>attribution self-test and package checks</td></tr></tbody></table></div>
   </section>
   <div class="layout">
     <article>
       <h1 id="prd-028-build-attribution-ledger">PRD-028 -- Build Attribution Ledger</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-028</code></li><li>Status: <code>approved</code></li><li>Owner: Dan Sears / Recode</li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-07-27</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: Build Attribution Ledger</li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-025</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer roadmap evidence and existing bead closeout evidence needs</li><li>Source references: maintainer roadmap candidate and shipped implementation history</li><li>Stable facts: attribution belongs in reviewed bead closeout and generated ledger evidence, not task authority.</li><li>Assumptions: Git and journal hints are useful only after review into closeout evidence.</li><li>Privacy or secrets redactions: do not collect telemetry, private dashboard data, or unrelated contributor identity data.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: maintainer roadmap planning</li><li>Shared design concept: generated attribution evidence should help reviewers answer who contributed to a bead without becoming blame, scoring, telemetry, or task assignment.</li><li>Key decisions reached: closeout-reviewed attribution is the strongest source; Git and journal data remain evidence hints.</li><li>Remaining implementation-changing questions: none for the approved v1 slice.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Status</th><th>Plain-English meaning</th><th>Aliases</th><th>Avoid/confusing terms</th><th>UI/code/test examples</th><th>Source pointer</th></tr></thead><tbody><tr><td>Build Attribution Ledger</td><td>introduced</td><td>Generated evidence that summarizes contributor and agent/tool attribution by bead.</td><td>attribution ledger</td><td>task registry, people registry, blame ledger</td><td><code>logs/build-attribution-ledger.md</code></td><td>This PRD</td></tr><tr><td>Git author hint</td><td>introduced</td><td>Git-derived evidence that may inform attribution review but does not prove contributor identity by itself.</td><td>authorship hint</td><td>contributor identity proof</td><td><code>git_author_hint</code></td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS can show reviewed who-built-what evidence without turning collaboration into scoring or blame.</li><li>Customer problem: a future reviewer needs compact attribution context after handoffs or team work.</li><li>Customer FAQ: Does the ledger decide who owns the work? No; it is generated evidence only.</li><li>Internal FAQ: Does Git authorship prove attribution? No; reviewed closeout evidence wins.</li><li>Appetite: narrow generated evidence and protocol integration.</li><li>Kill or pause criteria: stop if the ledger becomes a task tracker, scoring layer, telemetry surface, or package registry.</li></ul>
 <h2 id="summary">Summary</h2>
 <p>PrecodeOS should help a builder answer &quot;who built what?&quot; without turning attribution into task authority, blame, scoring, telemetry, or a package registry.</p>
 <p>The Build Attribution Ledger compiles reviewed attribution evidence from beads and supporting Git/journal hints. Closeout-reviewed attribution is the strongest source. Git authorship, generated journal entries, branch names, tool logs, and teammate notes are evidence hints only until reviewed into bead Closeout Evidence.</p>
@@ -183,10 +242,18 @@
 <ul><li>Add reviewed build attribution fields to bead closeout.</li><li>Add generated ledger JSON and Markdown views for attribution by bead.</li><li>Preserve human contributor and agent/tool surface separately.</li><li>Label missing, partial, reviewed, and Git-hint-only attribution clearly.</li><li>Keep the ledger generated evidence only.</li><li>Record the shipped feature in maintainer roadmap history as an implemented candidate.</li></ul>
 <h2 id="non-goals">Non-Goals</h2>
 <ul><li>No task assignment or task selection.</li><li>No PRD approval, bead activation, implementation acceptance, merge approval, or release approval.</li><li>No contributor scoring, blame assignment, productivity ranking, telemetry, analytics, dashboard backend, or external tracking system.</li><li>No GitHub mutation, PR approval, label/comment mutation, workflow mutation, or project-board behavior.</li><li>No package registry, plugin registry, optional-pack behavior, install/update behavior, release channel, command wrapper, or package-manager behavior.</li><li>No new active-memory file.</li></ul>
-<h2 id="functional-requirements">Functional Requirements</h2>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: a reviewer can see what changed but may need to reconstruct who contributed from scattered closeout, Git, and journal hints.</li><li>After: a reviewer has a compact generated attribution view while source authority stays in reviewed closeout evidence.</li><li>Why now: collaboration, delegation, and review surfaces make attribution context more useful.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS provides generated build-attribution evidence that is subordinate to reviewed bead closeout.</li><li>Definition of done: attribution fields, ledger output, public guidance, generated surfaces, and maintainer history are updated and validated.</li><li>First useful vertical slice: read-only JSON/Markdown ledger plus closeout field preservation.</li></ul>
+<h2 id="product-constitution-fit">Product Constitution Fit</h2>
+<ul><li><code>PRODUCT.md</code> loaded: not needed</li><li>Product promise fit: supports bounded, evidence-backed agent collaboration.</li><li>User and job fit: helps builders and reviewers understand implementation provenance.</li><li>Strategy and non-goal fit: preserves evidence-first review without telemetry or scoring.</li><li>Current bet or success signal affected: stronger handoff and review clarity.</li><li>Product constitution update needed: no</li></ul>
+<h2 id="users">Users</h2>
+<ul><li>Primary user: builder or reviewer checking who contributed to a bead.</li><li>Secondary user: maintainer inspecting package collaboration evidence.</li><li>Excluded user: anyone seeking scoring, blame, task assignment, telemetry, or registry behavior.</li></ul>
+<h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td>Add closeout fields for human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty.</td><td>P0</td><td>Existing reviewed values must be preserved by closeout refresh.</td></tr><tr><td><code>PRD-028-FR02</code></td><td>Add <code>scripts/build-attribution-ledger.py</code> as a read-only checker that prints JSON by default.</td><td>P0</td><td>Default command writes no files.</td></tr><tr><td><code>PRD-028-FR03</code></td><td>Add <code>--self-test</code> deterministic fixtures for reviewed closeout, partial closeout, missing attribution, generated warning, and forbidden uses.</td><td>P0</td><td>No network or external dependency.</td></tr><tr><td><code>PRD-028-FR04</code></td><td>Expose <code>build_attribution</code> in compiled state and generated OS Health sidecars.</td><td>P1</td><td>Sidecars are generated evidence only.</td></tr><tr><td><code>PRD-028-FR05</code></td><td>Generate <code>logs/build-attribution-ledger.json</code> and <code>logs/build-attribution-ledger.md</code>.</td><td>P1</td><td>Markdown must carry generated authority demotion.</td></tr><tr><td><code>PRD-028-FR06</code></td><td>Ledger entries must include bead identity, status, primary authority, human contributor, role, agent/tool surface, reviewer, uncertainty, source, confidence, Git author hint, journal timestamp, changed-path hints, and warnings.</td><td>P1</td><td>Git hints must not become contributor identity.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Protocols, prompts, user docs, package inventory, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated.</td><td>P1</td><td>Maintainer-history follow-through is part of done.</td></tr></tbody></table></div>
-<h2 id="acceptance-criteria">Acceptance Criteria</h2>
-<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td><code>scripts/update-bead-closeout.py</code> preserves attribution fields and fills explicit missing values.</td><td>Code review and closeout refresh behavior.</td></tr><tr><td><code>PRD-028-FR02</code></td><td><code>python3 scripts/build-attribution-ledger.py</code> prints JSON and writes no files.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR03</code></td><td><code>python3 scripts/build-attribution-ledger.py --self-test</code> passes.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR04</code> / <code>PRD-028-FR05</code></td><td><code>python3 scripts/os-health.py</code> refreshes attribution sidecars.</td><td><code>logs/build-attribution-ledger.json/md</code>.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Scenario, inventory, docs, PRD HTML, roadmap HTML, memory, and version checks pass.</td><td>Validation commands.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-028-FR01</code></td><td><code>scripts/update-bead-closeout.py</code> preserves attribution fields and fills explicit missing values.</td><td>Code review and closeout refresh behavior.</td></tr><tr><td><code>PRD-028-FR02</code></td><td><code>python3 scripts/build-attribution-ledger.py</code> prints JSON and writes no files.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR03</code></td><td><code>python3 scripts/build-attribution-ledger.py --self-test</code> passes.</td><td>Command output.</td></tr><tr><td><code>PRD-028-FR04</code> / <code>PRD-028-FR05</code></td><td><code>python3 scripts/os-health.py</code> refreshes attribution sidecars.</td><td><code>logs/build-attribution-ledger.json/md</code>.</td></tr><tr><td><code>PRD-028-FR06</code></td><td>Ledger entries expose attribution identity, source, confidence, hints, changed-path context, and warnings without treating Git hints as contributor identity.</td><td>Source review and generated ledger review.</td></tr><tr><td><code>PRD-028-FR07</code></td><td>Scenario, inventory, docs, PRD HTML, roadmap HTML, memory, and version checks pass.</td><td>Validation commands.</td></tr></tbody></table></div>
 <h2 id="required-validation">Required Validation</h2>
 <pre><code class="language-bash">python3 scripts/build-attribution-ledger.py --self-test
 python3 scripts/clarity-scenario-check.py
@@ -198,12 +265,28 @@ python3 _maintainer/scripts/roadmap-html.py --check
 bash scripts/validate-memory.sh
 python3 scripts/version-check.py
 PYTHONPYCACHEPREFIX=/private/tmp/precode-pycache python3 -m py_compile scripts/build-attribution-ledger.py scripts/os_compiler.py scripts/os-health.py scripts/precode_outputs.py scripts/update-bead-closeout.py scripts/clarity-scenario-check.py</code></pre>
-<h2 id="boundaries">Boundaries</h2>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
 <p>The ledger answers attribution questions only as evidence. It must route any durable correction back to bead Closeout Evidence, owner files, recorded checks, coordinator review, or maintainer history. It must not become a second tracker, task registry, people registry, plugin registry, package registry, or authority surface.</p>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li><code>PROJECT-CONTEXT.md</code> impact: none.</li><li>Architecture impact: generated evidence and closeout field preservation only.</li><li>Data model impact: generated ledger fields only; no telemetry store or external database.</li><li>Security/privacy impact: avoid private identity, secrets, telemetry, or external mutation.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>Build attribution ledger script</td><td><code>python3 scripts/build-attribution-ledger.py</code></td><td>Read-only generated attribution evidence.</td><td>self-test and generated output review</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-028-build-attribution-ledger.md</code></li><li>Owner surfaces likely in play: closeout update script, OS compiler/health output, attribution ledger output, public docs/protocol references, and generated surfaces.</li><li>Forbidden assumptions: do not treat generated ledger output as task assignment, contributor scoring, blame, telemetry, merge approval, or implementation acceptance.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>Does attribution source distinguish reviewed closeout from Git or journal hints?</li><li>Does the ledger avoid scoring, blame, telemetry, people registry, and package registry behavior?</li><li>Does any durable correction route back to closeout evidence or owner files?</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B028-build-attribution-ledger</code></td><td><code>PRD-028-FR01</code> through <code>PRD-028-FR07</code></td><td>Closeout attribution fields, generated ledger, docs/protocol references, generated surfaces, and maintainer history are updated and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>attribution self-test and package checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: Build Attribution Ledger</li><li>Functional requirements to compile: <code>PRD-028-FR01</code> through <code>PRD-028-FR07</code></li><li>Acceptance updates needed: generated evidence remains evidence only.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future attribution evidence include richer external provider hints?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-23</li><li>Approval notes: Approved as a read-only generated attribution evidence slice with no scoring, blame, telemetry, task authority, registry behavior, or package-manager behavior.</li></ul>
     </article>
     <nav class="toc" aria-label="Page contents">
       <strong>Contents</strong>
-      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#functional-requirements">Functional Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#product-constitution-fit">Product Constitution Fit</a><a class="level-2" href="#users">Users</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
     </nav>
   </div>
 </main>

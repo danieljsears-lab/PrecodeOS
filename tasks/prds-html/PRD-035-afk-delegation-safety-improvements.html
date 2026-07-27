@@ -74,6 +74,25 @@
     .empty, .muted { color: var(--muted); }
     .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
     .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
     button {
       appearance: none;
       border: 1px solid var(--accent);
@@ -140,7 +159,7 @@
   <section class="notice">
     <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
   </section>
-  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>AFK / Delegation Safety Improvements</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-06-29</strong></div></section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>AFK / Delegation Safety Improvements</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-06-29</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-27</strong></div></section>
   <section class="summary">
     <h2 id="review-cues">Review Cues</h2>
     <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
@@ -149,30 +168,73 @@
 
     <div class="card">
       <h3>PRD Handoff Readiness</h3>
-      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
       <p><strong>Requirements found:</strong> 8</p>
-      <p><strong>Acceptance rows found:</strong> 0</p>
-      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
-      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p><strong>Acceptance rows found:</strong> 7</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
       <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
     </div>
 
     <h3>Unresolved blockers and questions</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future Run Contract output expose richer AFK readiness summaries?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
     <h3>Requirements</h3>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition guidance must define the criteria for marking a bead <code>afk_candidate</code> and when <code>bounded-afk</code> is the stronger autonomy level.</td><td>P0</td><td>Primary planning surface.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent routing and tool-execution guidance must state that delegated work returns evidence to the parent/user and does not approve commands or widen scope.</td><td>P0</td><td>Delegation boundary.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Session completion and small-team guidance must name re-entry evidence for solo AFK return and branch/worktree teammate return.</td><td>P0</td><td>Return path.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>User-facing docs and prompts must provide copyable AFK-safety and re-entry prompts without implying autonomous execution approval.</td><td>P1</td><td>Beginner clarity.</td></tr><tr><td><code>PRD-035-FR05</code></td><td>Existing advisory checks must warn on weak AFK/delegation metadata: broad files, missing checks, missing stop conditions, missing <code>test_strategy</code>, missing <code>review_context</code>, missing proof, or missing approval gate.</td><td>P1</td><td>No new command.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and AI-readable navigation must describe affected surfaces only where ownership or navigation changes.</td><td>P1</td><td>Reference follow-through.</td></tr><tr><td><code>PRD-035-FR07</code></td><td>Clarity scenario coverage must protect solo AFK, bounded-AFK Run Contract warnings, small-team re-entry, and the boundary that AFK metadata is not approval.</td><td>P1</td><td>Regression coverage.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, docs HTML, PRD HTML, and roadmap HTML must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
     <h3>Acceptance oracle export</h3>
-    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-035-afk-delegation-safety-improvements.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-035-afk-delegation-safety-improvements.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-035-FR01`</textarea></td><td><textarea data-cockpit-cell>Decomposition Protocol distinguishes `afk_candidate`, `bounded-afk`, and `can run in parallel` without changing activation rules.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR02`</textarea></td><td><textarea data-cockpit-cell>Agent Routing and Tool Execution preserve Run Contract advisory boundaries and return-to-parent evidence language.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR03`</textarea></td><td><textarea data-cockpit-cell>Completion/Handoff and Team Collaboration name re-entry evidence and keep generated previews non-authoritative.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR04`</textarea></td><td><textarea data-cockpit-cell>Daily Cockpit, User Guide, How-To, and Prompt Patterns include AFK/re-entry prompts and no-autonomy warnings.</textarea></td><td><textarea data-cockpit-cell>Source review and generated docs HTML.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR05` / `PRD-035-FR07`</textarea></td><td><textarea data-cockpit-cell>Existing advisory check fixtures cover AFK metadata and bounded-AFK warning behavior.</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR06`</textarea></td><td><textarea data-cockpit-cell>Package inventory and `llms.txt` reflect ownership/navigation changes without overexposing AFK as a new workflow.</textarea></td><td><textarea data-cockpit-cell>Source review.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-035-FR08`</textarea></td><td><textarea data-cockpit-cell>Roadmap, journal, changelog, generated PRD/docs/roadmap surfaces are fresh.</textarea></td><td><textarea data-cockpit-cell>Validation commands.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-035-afk-delegation-safety-improvements">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-035-afk-delegation-safety-improvements" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement | Acceptance check | Evidence |
+| --- | --- | --- |
+| `PRD-035-FR01` | Decomposition Protocol distinguishes `afk_candidate`, `bounded-afk`, and `can run in parallel` without changing activation rules. | Source review. |
+| `PRD-035-FR02` | Agent Routing and Tool Execution preserve Run Contract advisory boundaries and return-to-parent evidence language. | Source review. |
+| `PRD-035-FR03` | Completion/Handoff and Team Collaboration name re-entry evidence and keep generated previews non-authoritative. | Source review. |
+| `PRD-035-FR04` | Daily Cockpit, User Guide, How-To, and Prompt Patterns include AFK/re-entry prompts and no-autonomy warnings. | Source review and generated docs HTML. |
+| `PRD-035-FR05` / `PRD-035-FR07` | Existing advisory check fixtures cover AFK metadata and bounded-AFK warning behavior. | `python3 scripts/clarity-scenario-check.py`. |
+| `PRD-035-FR06` | Package inventory and `llms.txt` reflect ownership/navigation changes without overexposing AFK as a new workflow. | Source review. |
+| `PRD-035-FR08` | Roadmap, journal, changelog, generated PRD/docs/roadmap surfaces are fresh. | Validation commands. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
     <h3>Risk and permission model</h3>
-    <p class="empty">None recorded.</p>
+    <p><code>afk_candidate</code> is delegation suitability metadata only. It says a scoped bead may be safe for an agent after context is loaded, files in play are bounded, checks and stop conditions are explicit, and human review remains required.</p>
+<p><code>bounded-afk</code> is the stronger autonomy level for work that may continue while the builder is away. It should name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence through the existing Run Contract path.</p>
+<p><code>can run in parallel</code> is a small-team dependency term. It means branch/worktree-isolated teammate work after coordinator approval, not multiple active beads in one checkout and not merge approval.</p>
     <h3>Agent context</h3>
-    <p class="empty">None recorded.</p>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-035-afk-delegation-safety-improvements.md</code></li><li>Owner surfaces likely in play: Decomposition, Agent Routing, Tool Execution, Session Completion/Handoff, Team Collaboration, Daily Cockpit, User Guide, How-To, Prompt Patterns, package inventory, AI navigation, and clarity scenario coverage.</li><li>Forbidden assumptions: do not approve autonomous execution, risky commands, parallel work activation, merge, transition, external mutation, or task selection from AFK metadata.</li></ul>
     <h3>Bead proposals</h3>
-    <p class="empty">None recorded.</p>
+    <div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B035-afk-delegation-safety-improvements</code></td><td><code>PRD-035-FR01</code> through <code>PRD-035-FR08</code></td><td>Protocols, prompts, docs, advisory checks, inventory/navigation, clarity coverage, generated surfaces, and maintainer history preserve AFK/delegation boundaries.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and package checks</td></tr></tbody></table></div>
   </section>
   <div class="layout">
     <article>
       <h1 id="prd-035-afk-delegation-safety-improvements">PRD-035 -- AFK / Delegation Safety Improvements</h1>
+<h2 id="state">State</h2>
+<ul><li>ID: <code>PRD-035</code></li><li>Status: <code>approved</code></li><li>Owner: Dan Sears / Recode</li><li>Risk level: <code>medium</code></li><li>Last updated: <code>2026-07-27</code></li></ul>
+<h2 id="feature-link">Feature Link</h2>
+<ul><li>Feature: AFK / Delegation Safety Improvements</li><li><code>FEATURES.md</code> status: <code>not compiled</code></li><li>Related PRDs: <code>PRD-020</code>, <code>PRD-025</code>, <code>PRD-034</code></li></ul>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer roadmap evidence and delegation safety friction</li><li>Source references: Decomposition, Agent Routing, Tool Execution, Session Completion/Handoff, Team Collaboration, Run Contract guidance</li><li>Stable facts: <code>afk_candidate</code>, <code>bounded-afk</code>, and <code>can run in parallel</code> mean different things and do not approve autonomous execution.</li><li>Assumptions: existing advisory checks can warn on weak delegation metadata without becoming hard enforcement.</li><li>Privacy or secrets redactions: delegated work must preserve existing sensitive/external/destructive approval gates.</li></ul>
+<h2 id="alignment-grilling-summary">Alignment / Grilling Summary</h2>
+<ul><li>Alignment method: maintainer roadmap planning</li><li>Shared design concept: clarify AFK/delegation suitability and re-entry evidence without creating a delegation runtime or approval path.</li><li>Key decisions reached: no new command, dashboard, registry, optional pack, autonomous lane, or hard validator block in v1.</li><li>Remaining implementation-changing questions: none for the approved v1 slice.</li></ul>
+<h2 id="domain-language">Domain Language</h2>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Status</th><th>Plain-English meaning</th><th>Aliases</th><th>Avoid/confusing terms</th><th>UI/code/test examples</th><th>Source pointer</th></tr></thead><tbody><tr><td><code>afk_candidate</code></td><td>reused</td><td>Metadata saying a scoped bead may be suitable for agent handoff after context and bounds are loaded.</td><td>AFK-suitable</td><td>autonomous approval</td><td>bead metadata</td><td>This PRD</td></tr><tr><td><code>bounded-afk</code></td><td>reused</td><td>Stronger autonomy level requiring explicit allowed actions, proof, stop conditions, approval gates, and re-entry evidence.</td><td>bounded AFK</td><td>permission to continue indefinitely</td><td>Run Contract</td><td>This PRD</td></tr><tr><td><code>can run in parallel</code></td><td>reused</td><td>Small-team dependency term for branch/worktree-isolated teammate work after coordinator approval.</td><td>parallel work</td><td>multiple active beads in one checkout</td><td>Team Collaboration</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS can support scoped delegated work while preserving human review and proof.</li><li>Customer problem: AFK and delegation terms can be mistaken for autonomous execution permission.</li><li>Customer FAQ: Does <code>bounded-afk</code> approve risky actions? No; existing approval gates still apply.</li><li>Internal FAQ: Does this add a delegation runtime? No.</li><li>Appetite: protocol, prompt, advisory-check, and re-entry evidence clarity.</li><li>Kill or pause criteria: stop if metadata becomes command approval, autonomous execution approval, parallel activation, or merge/transition approval.</li></ul>
 <h2 id="summary">Summary</h2>
 <p>PrecodeOS should let a builder step away from a scoped agent task without turning AFK metadata into autonomous execution permission.</p>
 <p>This slice clarifies the difference between <code>afk_candidate</code>, <code>bounded-afk</code>, and small-team parallel work. It strengthens existing advisory checks, prompt language, handoff guidance, and re-entry evidence. It does not add a new command, dashboard, registry, delegation runtime, optional pack, or approval path.</p>
@@ -185,7 +247,7 @@
 <ul><li>No new delegation safety command, dashboard, generated report, registry, command wrapper, optional pack, install/update behavior, package-manager behavior, or autonomous execution lane.</li><li>No automatic activation of parallel work, subagents, branches, worktrees, review acceptance, merge, transition approval, external mutation, or task selection.</li><li>No hard validator block for AFK metadata in v1; warnings remain advisory and require human judgment.</li><li>No change to the one-active-bead rule in a checkout.</li></ul>
 <h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition guidance must define the criteria for marking a bead <code>afk_candidate</code> and when <code>bounded-afk</code> is the stronger autonomy level.</td><td>P0</td><td>Primary planning surface.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent routing and tool-execution guidance must state that delegated work returns evidence to the parent/user and does not approve commands or widen scope.</td><td>P0</td><td>Delegation boundary.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Session completion and small-team guidance must name re-entry evidence for solo AFK return and branch/worktree teammate return.</td><td>P0</td><td>Return path.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>User-facing docs and prompts must provide copyable AFK-safety and re-entry prompts without implying autonomous execution approval.</td><td>P1</td><td>Beginner clarity.</td></tr><tr><td><code>PRD-035-FR05</code></td><td>Existing advisory checks must warn on weak AFK/delegation metadata: broad files, missing checks, missing stop conditions, missing <code>test_strategy</code>, missing <code>review_context</code>, missing proof, or missing approval gate.</td><td>P1</td><td>No new command.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and AI-readable navigation must describe affected surfaces only where ownership or navigation changes.</td><td>P1</td><td>Reference follow-through.</td></tr><tr><td><code>PRD-035-FR07</code></td><td>Clarity scenario coverage must protect solo AFK, bounded-AFK Run Contract warnings, small-team re-entry, and the boundary that AFK metadata is not approval.</td><td>P1</td><td>Regression coverage.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Maintainer changelog, roadmap, roadmap journal, docs HTML, PRD HTML, and roadmap HTML must be updated.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
-<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
 <div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-035-FR01</code></td><td>Decomposition Protocol distinguishes <code>afk_candidate</code>, <code>bounded-afk</code>, and <code>can run in parallel</code> without changing activation rules.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR02</code></td><td>Agent Routing and Tool Execution preserve Run Contract advisory boundaries and return-to-parent evidence language.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR03</code></td><td>Completion/Handoff and Team Collaboration name re-entry evidence and keep generated previews non-authoritative.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR04</code></td><td>Daily Cockpit, User Guide, How-To, and Prompt Patterns include AFK/re-entry prompts and no-autonomy warnings.</td><td>Source review and generated docs HTML.</td></tr><tr><td><code>PRD-035-FR05</code> / <code>PRD-035-FR07</code></td><td>Existing advisory check fixtures cover AFK metadata and bounded-AFK warning behavior.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-035-FR06</code></td><td>Package inventory and <code>llms.txt</code> reflect ownership/navigation changes without overexposing AFK as a new workflow.</td><td>Source review.</td></tr><tr><td><code>PRD-035-FR08</code></td><td>Roadmap, journal, changelog, generated PRD/docs/roadmap surfaces are fresh.</td><td>Validation commands.</td></tr></tbody></table></div>
 <h2 id="required-validation">Required Validation</h2>
 <pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
@@ -199,14 +261,30 @@ python3 _maintainer/scripts/roadmap-html.py
 python3 _maintainer/scripts/roadmap-html.py --check
 python3 _maintainer/scripts/roadmap-maintenance.py
 git diff --check</code></pre>
-<h2 id="boundaries">Boundaries</h2>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
 <p><code>afk_candidate</code> is delegation suitability metadata only. It says a scoped bead may be safe for an agent after context is loaded, files in play are bounded, checks and stop conditions are explicit, and human review remains required.</p>
 <p><code>bounded-afk</code> is the stronger autonomy level for work that may continue while the builder is away. It should name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape, and re-entry evidence through the existing Run Contract path.</p>
 <p><code>can run in parallel</code> is a small-team dependency term. It means branch/worktree-isolated teammate work after coordinator approval, not multiple active beads in one checkout and not merge approval.</p>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li><code>PROJECT-CONTEXT.md</code> impact: none.</li><li>Architecture impact: no runtime, delegation subsystem, dashboard, or registry.</li><li>Data model impact: advisory metadata and generated evidence only.</li><li>Security/privacy impact: sensitive, external, and destructive work still requires explicit approval gates.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>AFK/delegation guidance</td><td>Decomposition, Agent Routing, Tool Execution, Completion/Handoff, Team Collaboration</td><td>Clarifies suitability, allowed actions, stop conditions, and re-entry evidence without approving autonomy.</td><td>clarity scenario and source review</td><td>This PRD</td></tr><tr><td>Existing advisory checks</td><td>current checker surfaces</td><td>Warn on weak AFK/delegation metadata without hard enforcement.</td><td>fixture coverage</td><td>This PRD</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-035-afk-delegation-safety-improvements.md</code></li><li>Owner surfaces likely in play: Decomposition, Agent Routing, Tool Execution, Session Completion/Handoff, Team Collaboration, Daily Cockpit, User Guide, How-To, Prompt Patterns, package inventory, AI navigation, and clarity scenario coverage.</li><li>Forbidden assumptions: do not approve autonomous execution, risky commands, parallel work activation, merge, transition, external mutation, or task selection from AFK metadata.</li></ul>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>Does <code>afk_candidate</code> remain suitability metadata only?</li><li>Does <code>bounded-afk</code> name allowed actions, proof needed, approval gates, stop conditions, blocked escape, and re-entry evidence?</li><li>Does small-team parallelism remain branch/worktree-isolated coordinator-approved work, not multiple active beads in one checkout?</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B035-afk-delegation-safety-improvements</code></td><td><code>PRD-035-FR01</code> through <code>PRD-035-FR08</code></td><td>Protocols, prompts, docs, advisory checks, inventory/navigation, clarity coverage, generated surfaces, and maintainer history preserve AFK/delegation boundaries.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td>This PRD</td><td>clarity and package checks</td></tr></tbody></table></div>
+<h2 id="compilation-notes">Compilation Notes</h2>
+<ul><li>Feature entry: AFK / Delegation Safety Improvements</li><li>Functional requirements to compile: <code>PRD-035-FR01</code> through <code>PRD-035-FR08</code></li><li>Acceptance updates needed: AFK metadata remains advisory and non-approval.</li></ul>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>Should future Run Contract output expose richer AFK readiness summaries?</td><td>Follow-up scope</td><td>no</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-06-29</li><li>Approval notes: Approved as AFK/delegation safety guidance and advisory warning coverage, not autonomous execution approval, command approval, parallel activation, merge approval, transition approval, or runtime behavior.</li></ul>
     </article>
     <nav class="toc" aria-label="Page contents">
       <strong>Contents</strong>
-      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a>
+      <a class="level-2" href="#state">State</a><a class="level-2" href="#feature-link">Feature Link</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#alignment-grilling-summary">Alignment / Grilling Summary</a><a class="level-2" href="#domain-language">Domain Language</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#compilation-notes">Compilation Notes</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
     </nav>
   </div>
 </main>

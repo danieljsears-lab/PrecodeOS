@@ -2,14 +2,14 @@
 prd_id: PRD-034
 status: approved
 owner: Dan Sears / Recode
-created: 2026-06-29
-last_updated: 2026-06-29
 risk_level: low
 feature_link: Many-Bead Operating Rhythm
 features_status: not compiled
 related_prds:
   - PRD-031
   - PRD-033
+created: 2026-06-29
+last_updated: 2026-07-27
 ---
 
 # PRD-034 -- Many-Bead Operating Rhythm
@@ -23,8 +23,53 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-29
+Document version: v0.1.1
+Last updated: 2026-07-27
+
+## State
+
+- ID: `PRD-034`
+- Status: `approved`
+- Owner: Dan Sears / Recode
+- Risk level: `low`
+- Last updated: `2026-07-27`
+
+## Feature Link
+
+- Feature: Many-Bead Operating Rhythm
+- `FEATURES.md` status: `not compiled`
+- Related PRDs: `PRD-031`, `PRD-033`
+
+## Source Inputs
+
+- Source type: maintainer roadmap evidence and repeated bead-work friction
+- Source references: Daily Cockpit, Workflow Selection, Session Completion/Handoff, Prompt Patterns
+- Stable facts: repeated bead work should orient through existing sources and approval gates.
+- Assumptions: after the first product slice, a compact rhythm helps builders avoid routing confusion.
+- Privacy or secrets redactions: none.
+
+## Alignment / Grilling Summary
+
+- Alignment method: maintainer roadmap planning
+- Shared design concept: `Active -> Changed -> Proven -> Parked -> Approval -> Next` is an orientation checklist, not a workflow authority.
+- Key decisions reached: no new protocol, command, script behavior, generated report, schema field, or approval path.
+- Remaining implementation-changing questions: none for the approved v1 slice.
+
+## Domain Language
+
+| Term | Status | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Source pointer |
+|---|---|---|---|---|---|---|
+| Every-bead rhythm | introduced | Compact repeated-work orientation checklist after the first product slice. | many-bead rhythm | task selector, workflow authority | `Active -> Changed -> Proven -> Parked -> Approval -> Next` | This PRD |
+| Parked | reused | Future intent placed in Candidate Queue or a defer/kill destination after review. | deferred | selected next task | Candidate Queue | This PRD |
+
+## PRFAQ-Lite
+
+- Press-release claim: PrecodeOS makes repeated bead work feel like a small evidence-backed rhythm.
+- Customer problem: after the first bead, daily work can feel spread across too many surfaces.
+- Customer FAQ: Does the rhythm choose the next task? No; it orients before normal approval gates.
+- Internal FAQ: Does this replace `next-step.py` or Workflow Selection? No.
+- Appetite: docs, prompt, protocol, and text-contract alignment.
+- Kill or pause criteria: stop if the rhythm becomes task selection, bead activation, transition approval, or generated authority.
 
 ## Summary
 
@@ -66,7 +111,7 @@ A compact rhythm can help a beginner ask the same evidence-backed questions ever
 | `PRD-034-FR07` | `scripts/clarity-scenario-check.py` must enforce rhythm wording and forbidden-action boundaries as a text contract only. | P1 | No new user command. |
 | `PRD-034-FR08` | Maintainer changelog, roadmap, roadmap journal, and generated docs/PRD/roadmap surfaces must be updated. | P1 | Maintainer follow-through. |
 
-## Acceptance Criteria
+## Acceptance Oracle Matrix
 
 | Requirement | Acceptance check | Evidence |
 |---|---|---|
@@ -95,7 +140,7 @@ python3 _maintainer/scripts/roadmap-maintenance.py
 git diff --check
 ```
 
-## Boundaries
+## Risk And Permission Model
 
 The rhythm is an orientation checklist over existing PrecodeOS surfaces:
 
@@ -107,3 +152,52 @@ The rhythm is an orientation checklist over existing PrecodeOS surfaces:
 - Next: session start, Workflow Selection, `next-step.py`, or transition proposal guidance.
 
 `Parked` must not imply Candidate Queue chooses work. `Next` must not imply transition approval. The rhythm must not accept implementation, approve review, approve PRDs, activate beads, choose tasks, rank candidates, mutate owner files, or treat generated output as authority.
+
+## Architecture / Project Context Impact
+
+- `PROJECT-CONTEXT.md` impact: none.
+- Architecture impact: none; guidance and validation text only.
+- Data model impact: none.
+- Security/privacy impact: none.
+
+## Module / Interface Candidates
+
+| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
+|---|---|---|---|---|
+| Every-bead rhythm prompt | Daily Cockpit, User Guide, Prompt Patterns | Orients repeated work through existing evidence and approval gates. | clarity scenario and source review | This PRD |
+
+## Agent Context Contract
+
+- Primary authority file: `tasks/prds/PRD-034-many-bead-operating-rhythm.md`
+- Owner surfaces likely in play: Daily Cockpit, User Guide, Prompt Patterns, Workflow Selection, Session Completion/Handoff, package inventory, and clarity scenario coverage.
+- Forbidden assumptions: do not choose tasks, activate beads, approve review, approve transitions, rank Candidate Queue items, or replace generated/report/owner-file authority.
+
+## Anti-Shallow Checks
+
+- Does `Parked` remain Candidate Queue or defer/kill evidence rather than task selection?
+- Does `Next` preserve transition approval and Workflow Selection boundaries?
+- Does the rhythm remain an orientation checklist over existing surfaces?
+
+## Bead Proposals
+
+| Bead | Requirement IDs | Done when | Delegation mode | Test strategy | Review context | Primary authority | Validation |
+|---|---|---|---|---|---|---|---|
+| `B034-many-bead-operating-rhythm` | `PRD-034-FR01` through `PRD-034-FR08` | Docs, prompt, protocols, package inventory, clarity coverage, generated surfaces, and maintainer history align around the every-bead rhythm. | `human_in_loop` | `static_and_fixture` | `same_session_ok` | This PRD | clarity and generated docs checks |
+
+## Compilation Notes
+
+- Feature entry: Many-Bead Operating Rhythm
+- Functional requirements to compile: `PRD-034-FR01` through `PRD-034-FR08`
+- Acceptance updates needed: rhythm remains orientation only.
+
+## Open Questions
+
+| Question | Affects | Blocking? |
+|---|---|---|
+| Should future closeout output include richer rhythm summaries? | Follow-up scope | no |
+
+## Approval
+
+- Approved by: Dan Sears / Recode
+- Approved on: 2026-06-29
+- Approval notes: Approved as a repeated-work orientation checklist over existing surfaces, not a new workflow, report, command, task selector, PRD approval, bead activation, transition approval, or generated authority.

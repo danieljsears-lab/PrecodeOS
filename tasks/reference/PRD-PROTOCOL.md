@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-06-29
+Document version: v0.1.23
+Last updated: 2026-07-27
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The PRD is not active memory. It is a destination document loaded only when defi
 
 Execution beads are journey units derived from that destination. `tasks/todo.md` points to the active journey unit; the PRD may propose beads but must not activate them.
 
-Generated PRD HTML under `tasks/prds-html/` is a committed review convenience generated from `tasks/prds/*.md`. It can make PRD status, requirements, risks, blockers, bead proposals, approval state, PRD handoff readiness, and Acceptance Oracle Matrix review easier to inspect. Generated PRD pages may export a proposed Acceptance Oracle Matrix Markdown replacement block for manual application, but Markdown PRD shards remain canonical. Generated PRD HTML cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, persist browser edits, or replace PRD shards.
+Generated PRD HTML under `tasks/prds-html/` is a committed review convenience generated from `tasks/prds/*.md`. It can make PRD status, requirements, risks, blockers, bead proposals, approval state, PRD handoff readiness, Acceptance Oracle Matrix review, and reader-facing PRD cluster navigation easier to inspect. The PRD index may group valid destination shards by setup/adoption, product-definition support, review/proof/release evidence, generated surfaces and package structure, collaboration/recovery rhythm, and command/package boundaries. These clusters are navigation only: they do not merge, delete, renumber, supersede, approve, or replace PRD shards. Generated PRD pages may export a proposed Acceptance Oracle Matrix Markdown replacement block for manual application, but Markdown PRD shards remain canonical. Generated PRD HTML cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, persist browser edits, or replace PRD shards.
 
 Use `PRODUCT.md` during product planning, PRD creation, PRD approval review, PRD amendment, or product drift checks. `PRODUCT.md` orients the product promise, users and jobs, strategy and non-goals, current bets, success signals, and design or voice pointers. It does not approve features, activate beads, or replace PRD shards.
 

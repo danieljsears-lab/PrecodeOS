@@ -125,7 +125,7 @@ That is the line PrecodeOS holds: a lightweight governance kernel for agentic de
 | Adopt | Guided setup, existing repo intake, supervised setup plans, upgrade preview, and recovery guidance. |
 | Orient | Tiny active memory, session start, next-step guidance, file inventory, and docs compass. |
 | Decide | Product discovery, First PRD Walkthrough, Local Source Intake, Candidate Queue, and Plan Mode candidate shaping. |
-| Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages. |
+| Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages with reader-facing PRD clusters. |
 | Build | One active bead, files-in-play guardrails, bounded Ralph attempts, and tool-neutral adapters. |
 | Prove | Recorded checks, verification guidance, closeout evidence, proof tracing, and generated health/progress reports. |
 | Review | Review lanes, prompt-only multi-lane review invocation, PRD handoff readiness, engineering-quality guidance, release-readiness evidence, and human approval gates. |
@@ -308,7 +308,7 @@ When one bead is already approved and you need to hand it to a host agent for sc
 | Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
 | Use Claude Code in a first-session or guided cohort setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
 | Browse the generated docs reading surface | [`docs-html/index.html`](docs-html/index.html) |
-| Review generated PRD scan pages | [`tasks/prds-html/index.html`](tasks/prds-html/index.html) |
+| Review generated PRD scan pages and clusters | [`tasks/prds-html/index.html`](tasks/prds-html/index.html) |
 | Review parked ideas and future candidates | [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md) |
 | Ask a stable documentation question | [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md), then `Use Ask Precode.` |
 | Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |

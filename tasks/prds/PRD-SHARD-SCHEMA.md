@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.13
-Last updated: 2026-06-27
+Document version: v0.1.14
+Last updated: 2026-07-27
 
 ## Purpose
 
@@ -22,7 +22,7 @@ When a PRD starts from `CANDIDATE-QUEUE.md`, cite the originating Candidate Queu
 
 `FEATURES.md` remains the compiled feature and functional-requirement inventory. PRD shards own the deeper requirement definition that feeds that inventory.
 
-`tasks/prds-html/` holds generated static HTML review pages for non-template PRD shards. The HTML pages improve scanability and source navigation, and may include an export-only Acceptance Oracle Matrix cockpit that produces proposed Markdown for manual application. They are generated output. They do not approve PRDs, activate beads, choose tasks, accept implementation, write Markdown, persist browser edits, or become source truth.
+`tasks/prds-html/` holds generated static HTML review pages for non-template PRD shards. The index includes reader-facing PRD clusters so a reviewer can browse valid destination shards by setup/adoption, product-definition support, review/proof/release evidence, generated surfaces and package structure, collaboration/recovery rhythm, and command/package boundaries. The HTML pages improve scanability and source navigation, and may include an export-only Acceptance Oracle Matrix cockpit that produces proposed Markdown for manual application. They are generated output. They do not approve PRDs, activate beads, choose tasks, accept implementation, merge, delete, renumber, supersede, write Markdown, persist browser edits, or become source truth.
 
 ## File Naming
 
@@ -109,6 +109,7 @@ Use `PRD-000-template.md` when creating a new shard.
 - Acceptance Oracle Matrix rows may include evidence lane, recorded source or evidence location, and what the proof does not cover when requirement-to-proof drift would matter. This is advisory traceability only; matrix text, generated tests, generated properties, screenshots, browser notes, AI critique, external status summaries, and generated reports are not proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 - `FEATURES.md` compiles approved PRD shards into feature inventory and functional requirements. It should not become the deep PRD itself.
 - `scripts/prd-html.py` may regenerate `tasks/prds-html/*.html` from PRD shards. Generated pages may export proposed Acceptance Oracle Matrix Markdown, but canonical source changes still happen manually in `tasks/prds/*.md`. Run `python3 scripts/prd-html.py --check` when PRD source or PRD review-surface behavior changes.
+- PRD clusters in the generated index are maintained in `scripts/prd-html.py` as reader navigation. Do not add cluster frontmatter to every shard unless a future schema candidate explicitly approves that churn.
 - Beads cite the parent PRD and requirement IDs they implement. New bead proposals should include delegation mode, test strategy, and review context when relevant.
 - Candidate Queue IDs may be included as source context in PRDs and bead proposals, but final bead IDs are assigned only when actual bead files are created.
 - If a PRD changes after implementation starts, add an amendment note to the PRD and create follow-up beads rather than silently widening the active bead.

@@ -3,13 +3,14 @@ prd_id: PRD-033
 status: approved
 owner: Dan Sears / Recode
 created: 2026-06-26
-last_updated: 2026-06-26
+risk_level: medium
 feature_link: Product Artifact Template / Prompt Catalog
 features_status: not compiled
 related_prds:
   - PRD-031
   - PRD-029
   - PRD-030
+last_updated: 2026-07-27
 ---
 
 # PRD-033 -- Product Artifact Template / Prompt Catalog
@@ -23,8 +24,53 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-26
+Document version: v0.1.1
+Last updated: 2026-07-27
+
+## State
+
+- ID: `PRD-033`
+- Status: `approved`
+- Owner: Dan Sears / Recode
+- Risk level: `medium`
+- Last updated: `2026-07-27`
+
+## Feature Link
+
+- Feature: Product Artifact Template / Prompt Catalog
+- `FEATURES.md` status: `not compiled`
+- Related PRDs: `PRD-031`, `PRD-029`, `PRD-030`
+
+## Source Inputs
+
+- Source type: maintainer roadmap evidence and prompt-surface discoverability needs
+- Source references: Prompt Patterns, Daily Cockpit, User Guide, Skill Playbook Protocol, Extension Protocol
+- Stable facts: Artifact Chooser is a navigation aid over existing workflows, not task selection or artifact generation.
+- Assumptions: beginners benefit from a compact prompt catalog when the next artifact is unclear.
+- Privacy or secrets redactions: source materials remain evidence and should not be auto-promoted.
+
+## Alignment / Grilling Summary
+
+- Alignment method: maintainer roadmap planning
+- Shared design concept: map user moments to existing artifacts and owner sources without creating a registry, marketplace, generator, or authority layer.
+- Key decisions reached: uncertain or current-state-dependent cases route to Workflow Selection.
+- Remaining implementation-changing questions: none for the approved v1 slice.
+
+## Domain Language
+
+| Term | Status | Plain-English meaning | Aliases | Avoid/confusing terms | UI/code/test examples | Source pointer |
+|---|---|---|---|---|---|---|
+| Artifact Chooser | introduced | Prompt/index aid that routes a user moment to an existing artifact or workflow. | product artifact catalog | template registry, artifact generator | Prompt Patterns entry | This PRD |
+| Owner source | reused | Canonical file or protocol that governs the chosen artifact. | authority file | generated prompt output | chooser table | Package inventory |
+
+## PRFAQ-Lite
+
+- Press-release claim: PrecodeOS helps builders find the right artifact prompt without creating a hidden task selector.
+- Customer problem: users may know a prompt exists but not which one to invoke.
+- Customer FAQ: Does the chooser generate artifacts? No; it points to existing prompts and owner sources.
+- Internal FAQ: Does this replace Workflow Selection? No; current-state-dependent cases route there.
+- Appetite: compact prompt and docs guidance.
+- Kill or pause criteria: stop if the chooser becomes a registry, marketplace, generator, task selector, or package-manager surface.
 
 ## Summary
 
@@ -53,7 +99,34 @@ A catalog can improve discoverability, but the wrong implementation would create
 - No new command, checker command, generated catalog sidecar, hosted workspace, plugin registry, or external integration.
 - No new active-memory file and no private maintainer-file dependency in public docs.
 
-## Functional Requirements
+## User Moment
+
+- Before: a user may browse many protocols to find the right artifact or prompt.
+- After: the user can start from a compact chooser and then load the owning protocol or prompt.
+- Why now: the package has many useful conditional artifacts and needs safer discoverability.
+
+## Destination
+
+- Destination statement: PrecodeOS provides prompt-catalog navigation over existing artifact workflows while preserving owner-file authority.
+- Definition of done: Prompt Patterns, docs, protocol boundary notes, inventory, validation, generated surfaces, and maintainer history are aligned.
+- First useful vertical slice: compact chooser over existing artifacts only.
+
+## Product Constitution Fit
+
+- `PRODUCT.md` loaded: not needed
+- Product promise fit: helps builders ask for the right artifact without surrendering task choice.
+- User and job fit: supports beginner artifact selection.
+- Strategy and non-goal fit: avoids registries, generators, marketplaces, and package-manager behavior.
+- Current bet or success signal affected: prompt discoverability.
+- Product constitution update needed: no
+
+## Users
+
+- Primary user: builder choosing the next product or workflow artifact.
+- Secondary user: AI assistant or support helper routing to the smallest relevant owner surface.
+- Excluded user: anyone expecting automatic artifact generation, task selection, PRD approval, bead activation, or registry behavior.
+
+## Requirements
 
 | ID | Requirement | Priority | Notes |
 |---|---|---:|---|
@@ -65,7 +138,7 @@ A catalog can improve discoverability, but the wrong implementation would create
 | `PRD-033-FR06` | `scripts/clarity-scenario-check.py` must enforce the chooser's artifact coverage and anti-registry/anti-generator wording. | P1 | Deterministic text contract. |
 | `PRD-033-FR07` | Maintainer changelog, roadmap, roadmap journal, and generated reading surfaces must be refreshed after implementation. | P1 | Maintainer-history follow-through. |
 
-## Acceptance Criteria
+## Acceptance Oracle Matrix
 
 | Requirement | Acceptance check | Evidence |
 |---|---|---|
@@ -87,8 +160,57 @@ python3 scripts/version-check.py
 git diff --check
 ```
 
-## Boundaries
+## Risk And Permission Model
 
 The Artifact Chooser is a navigation aid over existing PrecodeOS workflows. It does not decide the next task, approve work, create artifacts automatically, replace Workflow Selection, or change the authority of templates, prompts, generated reports, owner files, PRDs, beads, Review Lanes, release evidence, or recovery guidance.
 
 When the next step depends on active memory, the active bead, generated evidence, local errors, current repo state, or what work should happen next, the chooser must route to Workflow Selection or the owning protocol instead of selecting work by itself.
+
+## Architecture / Project Context Impact
+
+- `PROJECT-CONTEXT.md` impact: none.
+- Architecture impact: none; prompt and docs navigation only.
+- Data model impact: none.
+- Security/privacy impact: no automatic source promotion or artifact generation.
+
+## Module / Interface Candidates
+
+| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
+|---|---|---|---|---|
+| Artifact Chooser prompt | Prompt Patterns and user docs | Routes common moments to existing artifacts and owner sources. | clarity scenario and source review | This PRD |
+
+## Agent Context Contract
+
+- Primary authority file: `tasks/prds/PRD-033-product-artifact-prompt-catalog.md`
+- Owner surfaces likely in play: Prompt Patterns, Daily Cockpit, User Guide, Skill Playbook Protocol, Extension Protocol, package inventory, and clarity scenario coverage.
+- Forbidden assumptions: do not create a registry, marketplace, optional pack, artifact generator, task selector, command wrapper, or package-manager surface.
+
+## Anti-Shallow Checks
+
+- Does the chooser route current-state-dependent cases to Workflow Selection?
+- Does it preserve owner-source authority and evidence-only generated outputs?
+- Does it avoid automatic artifact creation, registry behavior, and task selection?
+
+## Bead Proposals
+
+| Bead | Requirement IDs | Done when | Delegation mode | Test strategy | Review context | Primary authority | Validation |
+|---|---|---|---|---|---|---|---|
+| `B033-product-artifact-prompt-catalog` | `PRD-033-FR01` through `PRD-033-FR07` | Prompt chooser, docs/protocol boundaries, package inventory, clarity coverage, generated surfaces, and maintainer history are aligned. | `human_in_loop` | `static_and_fixture` | `same_session_ok` | This PRD | clarity and generated docs checks |
+
+## Compilation Notes
+
+- Feature entry: Product Artifact Template / Prompt Catalog
+- Functional requirements to compile: `PRD-033-FR01` through `PRD-033-FR07`
+- Acceptance updates needed: Artifact Chooser remains navigation only.
+
+## Open Questions
+
+| Question | Affects | Blocking? |
+|---|---|---|
+| Should future artifact routing include a generated docs search aid? | Follow-up scope | no |
+
+## Approval
+
+- Approved by: Dan Sears / Recode
+- Approved on: 2026-06-26
+- Approval notes: Approved as a prompt/index aid over existing workflows, not a registry, optional pack, artifact generator, task selector, PRD approval, bead activation, or package-manager behavior.
