@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.49
+Document version: v0.1.50
 Last updated: 2026-07-26
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
@@ -34,6 +34,16 @@ Generated reports are evidence only. Before work resumes, return to `AGENT.md`, 
 Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-GUIDED-SETUP.md` is setup-only, this cockpit is the beginner-facing operating home base, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For a compact first-session aid, see `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md`. For the full prompt source, see `../tasks/reference/PROMPT-PATTERNS.md`. For recovery details, see `../tasks/reference/RECOVERY-PROTOCOL.md`. For release readiness before user-facing shipping risk, see `../tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
 
 `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` is a small aid behind this cockpit. It is useful when a new builder needs one page of prompts, checks, and build-order guidance, but it does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement.
+
+Use the User Guide by action, not as another start page:
+
+| If you need deeper manual help with... | Go to |
+|---|---|
+| picking the right prompt, workflow, role lens, or parked-intent path | [2. Choose The Right Action](PRECODE-USER-GUIDE.md#guide-part-2-choose-the-right-action) |
+| shaping a rough idea before PRD, bead, or code | [3. Shape Ideas Before Coding](PRECODE-USER-GUIDE.md#guide-part-3-shape-ideas-before-coding) |
+| starting or bounding an active work session | [4. Run A Governed Work Session](PRECODE-USER-GUIDE.md#guide-part-4-run-a-governed-work-session) |
+| proving, reviewing, closing, or preparing release evidence | [5. Prove, Review, Close, Or Release](PRECODE-USER-GUIDE.md#guide-part-5-prove-review-close-or-release) |
+| recovery, protected files, reviewed memory, copyable prompts, or FAQ lookup | [6. Recover, Learn, And Look Up Reference](PRECODE-USER-GUIDE.md#guide-part-6-recover-learn-and-look-up-reference) |
 
 ## Command Surface Triage
 

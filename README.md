@@ -298,7 +298,7 @@ When one bead is already approved and you need to hand it to a host agent for sc
 | Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
 | Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
 | Start or resume daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
-| Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) |
+| Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), starting with its compact action map |
 | Use a compact first-session checklist after setup validates | [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
 | Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
 | Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |

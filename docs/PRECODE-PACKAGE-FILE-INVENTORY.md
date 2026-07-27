@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.105
+Document version: v0.2.106
 Last updated: 2026-07-26
 
 ## Purpose
@@ -219,7 +219,7 @@ Adapters and shims point back to the shared operating model. They must not becom
 | `docs/PRECODE-SUPPORT-RUNBOOK.md` | reference | Public-safe support-engineer field guide for guiding first-time PrecodeOS adoption, recurring existing-Precode refresh, user-owned intent capture, setup, first safe session, parallel environment/scaffold readiness, stuck-user diagnosis, no-engineer fallback prompt routing, and repair routing. | Helper-facing companion that coaches the first-reader route without becoming another start path; does not create product truth, replace normal operation, approve PRDs, accept work, interpret feedback, approve repair, approve refresh mutation, or approve transitions. |
 | `docs/PRECODE-TROUBLESHOOTING.md` | reference | Symptom-first troubleshooting reference for setup, validation, active state, current bead, generated-report, copy, stable-fix and Bugfix Spec Lane routing, fallback prompt, and first-session confusion. | Symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior; routes users, support engineers, and agents back to owner files, advisory checks, guided setup, prompt patterns, and Recovery Protocol without becoming the full recovery contract or auto-repair policy. |
 | `docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` | reference | Beginner-facing bridge from traditional software-building stages to Precode and AI coding agent workflows. | Teaches non-technical users how ideas become aligned, named, planned, built, verified, deployed, and learned from without replacing the user guide. |
-| `docs/PRECODE-USER-GUIDE.md` | reference | Deeper hands-on operating manual for PrecodeOS. | Prescriptive annex behind the Daily Cockpit for non-technical users, including alignment, shared-language, AFK-candidate, test-strategy, review prompts, and no-engineer fallback prompt discoverability; not a second start page. |
+| `docs/PRECODE-USER-GUIDE.md` | reference | Deeper hands-on operating manual for PrecodeOS, organized around numbered action-guide parts and a compact action map. | Prescriptive annex behind the Daily Cockpit for non-technical users, including workflow choice, idea shaping, governed work sessions, proof, review, recovery, memory, prompts, and FAQ lookup; not a second start page. |
 | `docs/CLAUDE-CODE-FIELD-GUIDE.md` | reference | Beginner-facing public field guide for using Claude Code with PrecodeOS safely and confidently. | Companion to the user guide and prompt catalog; cross-links common sideways moments to the shared fallback prompt pack; commit-eligible public documentation, not private local material. |
 | `docs/PRECODE-ARCHITECTURE-OVERVIEW.md` | reference | Reviewer-facing architecture, principles, layer model, trust boundaries, and limitations. | Deep companion to the README and this inventory, including destination/journey, glossary evidence, and stale-artifact trust boundaries. |
 | `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` | reference | User-facing package file dictionary and relationship map for public PrecodeOS files. | Supported by `logs/file-inventory.json`; private local material remains outside public inventory. |

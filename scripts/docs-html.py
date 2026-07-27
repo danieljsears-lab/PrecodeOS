@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-07-20
+# Version: v0.1.6
+# Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -250,7 +250,8 @@ def render_table(lines: list[str]) -> str:
     body_rows = []
     for row in rows:
         body_rows.append("<tr>" + "".join(f"<td>{inline(cell)}</td>" for cell in row) + "</tr>")
-    return f'<div class="table-wrap"><table><thead><tr>{head}</tr></thead><tbody>{"".join(body_rows)}</tbody></table></div>'
+    class_name = " table-action-map" if headers and headers[0].lower().startswith("i need to") else ""
+    return f'<div class="table-wrap{class_name}"><table><thead><tr>{head}</tr></thead><tbody>{"".join(body_rows)}</tbody></table></div>'
 
 
 def render_list(items: list[str], ordered: bool) -> str:
@@ -608,6 +609,12 @@ blockquote {
   border: 1px solid var(--line);
   border-radius: 8px;
 }
+.table-action-map {
+  border-color: rgba(23, 108, 99, .34);
+  box-shadow: 0 12px 34px rgba(23, 108, 99, .08);
+}
+.table-action-map table { min-width: 760px; }
+.table-action-map th { background: var(--wash-2); color: var(--accent); }
 table { width: 100%; border-collapse: collapse; min-width: 620px; background: #fffefa; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: #f5f1e9; }

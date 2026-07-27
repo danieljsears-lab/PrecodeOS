@@ -8,7 +8,7 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.27
+Document version: v0.1.28
 Last updated: 2026-07-26
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
@@ -39,7 +39,7 @@ Use Source-To-Promotion Hygiene Review before turning a source summary, Candidat
 - `docs/PRECODE-GUIDED-SETUP.md`: setup-only adoption path when PrecodeOS is not installed in the target project.
 - `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea `Ideation:` entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; also covers the every-bead rhythm and conditional advanced-surface routing.
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
-- `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, not a second start page.
+- `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, now structured as an action-guide manual with numbered major parts and a compact action map; not a second start page.
 - `docs/PRECODE-TROUBLESHOOTING.md`: symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior.
 - `tasks/templates/PRECODE-FIRST-SESSION-CARD.md`: compact first-session builder build-order checklist and prompt card behind Guided Setup and Daily Cockpit, including the conditional `Owner Files?` promotion/re-validation gate before PRD shaping; shareable as the builder's official compact flow, but not a start page, approval shortcut, setup helper, or task selector.
 - `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`: public package file map, context-layer matrix, authority boundaries, and ownership dictionary.

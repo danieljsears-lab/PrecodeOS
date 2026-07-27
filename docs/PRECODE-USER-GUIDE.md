@@ -9,12 +9,15 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.93
+Document version: v0.7.94
 Last updated: 2026-07-26
 
+## 1. Start Here
+<!-- ANCHOR: guide-part-1-start-here -->
 
+This guide is easier to use as an action map than as a book. Start in the Daily Cockpit for normal work, then come here only for the deeper manual section that matches the action you need. The generated HTML page is the best reading surface because it gives you source links, section anchors, progress, and an on-page table of contents; this Markdown file remains the canonical source.
 
-## What This Guide Helps You Do
+### What This Guide Helps You Do
 
 Use this guide while you work. It tells you what to ask the agent, what good output looks like, when to stop, and what you must approve.
 
@@ -36,7 +39,35 @@ If you are helping someone else adopt PrecodeOS, use `docs/PRECODE-SUPPORT-RUNBO
 
 Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.
 
-## Check The Vibe-To-Agentic Boundary
+### Compact Action Map
+<!-- ANCHOR: compact-action-map -->
+
+| I need to... | Start with | Deeper guide part | Stop before... |
+|---|---|---|---|
+| Start from a rough idea | Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` | [3. Shape Ideas Before Coding](#guide-part-3-shape-ideas-before-coding) | PRD approval, bead creation, or coding. |
+| Resume active work | Daily Cockpit `Start` then `Check` | [4. Run A Governed Work Session](#guide-part-4-run-a-governed-work-session) | Editing without active bead, authority, files in play, and checks. |
+| Choose the right workflow or prompt | Daily Cockpit `Ideation`, `Ask Precode`, or Workflow Selection | [2. Choose The Right Action](#guide-part-2-choose-the-right-action) | Treating an index, role lens, or skill-style answer as approval. |
+| Decide whether the agent may code | `Check: name the active bead...` | [4. Run A Governed Work Session](#guide-part-4-run-a-governed-work-session) | Coding before risk, scope, proof, and stop conditions are clear. |
+| Prove work is done | Daily Cockpit `Prove` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Accepting generated output as proof or approval. |
+| Review work before accepting | Daily Cockpit `Review` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Review acceptance, transition approval, merge, or release. |
+| Recover when confused | `I am stuck, help me.` | [6. Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference) | Repair, overwrite, rollback, setup mutation, or transition. |
+| Prepare release evidence | Daily Cockpit `Release: prepare release evidence without release action.` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Deployment, provider mutation, rollback, merge, or release approval. |
+| Park future intent | Daily Cockpit `Queue` or Question-To-Artifact Filing | [2. Choose The Right Action](#guide-part-2-choose-the-right-action) | Candidate ranking as task selection or implementation permission. |
+| Understand a file or term | Ask Precode or role lens | [6. Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference) | Changing owner files before promotion review. |
+
+### Compact Table Of Contents
+<!-- ANCHOR: compact-table-of-contents -->
+
+1. [Start Here](#guide-part-1-start-here): what this guide is, how to use it, and the vibe-to-governed boundary.
+2. [Choose The Right Action](#guide-part-2-choose-the-right-action): ideation, workflow selection, artifact routing, parked intent, and prompt choice.
+3. [Shape Ideas Before Coding](#guide-part-3-shape-ideas-before-coding): rough ideas, Product Briefs, Conviction Packets, discovery, planning, and learning loops.
+4. [Run A Governed Work Session](#guide-part-4-run-a-governed-work-session): session start, daily loop, task suitability, quality floor, command triage, active bead rhythm, and agent bounds.
+5. [Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release): evidence, review lanes, traceability, approvals, reports, closeout, and release readiness.
+6. [Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference): recovery, protected files, reviewed memory, first-use timeline, copyable prompts, and FAQ.
+
+Read only the part that matches your current action. If a section names a protocol, report, or prompt catalog, treat it as a routed reference, not a new start page.
+
+### Check The Vibe-To-Agentic Boundary
 
 Fast AI exploration is useful when the work is a quick sketch, tiny demo, or throwaway experiment. Keep it loose only when the change is reversible, low-risk, not user-facing, not sensitive, and not something future-you must trust.
 
@@ -56,7 +87,12 @@ Do not approve a PRD, activate a bead, accept implementation, approve release, m
 
 Why this matters: vibe coding is fine for reversible learning. It becomes dangerous when a plausible demo quietly becomes software you expect to keep.
 
-## Use Ideation Or The Right Artifact
+## 2. Choose The Right Action
+<!-- ANCHOR: guide-part-2-choose-the-right-action -->
+
+Use this part when you know the kind of help you need but not the exact Precode path. It consolidates workflow choice, prompt choice, parked intent, and future-work filing into one action-first lookup.
+
+### Use Ideation Or The Right Artifact
 
 If you have a rough idea, a path-choice question, or an artifact-routing question, start with the Daily Cockpit's `Ideation:` alias. It can route you to First PRD Walkthrough, Workflow Selection, or the Artifact Chooser without making any of them a competing start page.
 
@@ -86,7 +122,7 @@ If a role name is easier than a protocol name, use a role lens. Role lenses map 
 Role lens: use the [role] lens and route me to the existing Precode workflow. Name what the role is protecting, the owner protocol or document, the stop condition, the proof or approval needed, and the forbidden uses. Do not create a new skill, persona agent, task runner, approval shortcut, command wrapper, PRD approval, bead activation, review acceptance, release approval, external mutation, or coding permission.
 ```
 
-## Use The Every-Bead Rhythm
+### Use The Every-Bead Rhythm
 
 After the first product slice, the repeated Precode habit is:
 
@@ -113,539 +149,7 @@ Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead,
 
 Why this matters: Precode should feel repeatable after bead one. The rhythm helps you ask the same control questions every time without turning the answer into approval.
 
-## Before Your Repo Exists
-
-If you only have messy notes or a first product hunch, use First PRD Walkthrough as the beginner-facing path. It can run in Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. Inside that path, Precode Idea Coach is the guided product-coach interview step; the agent can interview you, guide research, challenge weak assumptions, force clearer answers, and help produce a Conviction Packet.
-
-The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.
-
-First PRD Walkthrough is the shortest safe path from rough idea to PRD readiness. It is the beginner-facing route through the Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. It is not a PRD approval shortcut and it does not authorize coding.
-
-Say this:
-
-```text
-Use Precode Idea Coach / the Product Conviction Packet Skill as my pre-repo guided product coach.
-
-I am a first-time non-technical builder with a rough product idea. Run this as a guided interview inside Claude Code or an equivalent agent surface. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
-
-Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively but firmly, but do not decide for me.
-
-Push back when the user is too broad, the painful before moment is vague, the current workaround is missing, evidence is weak, the idea is solution-first, the first slice is too large, or I jump into features before the user moment is clear.
-
-Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
-
-When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness self-check, and Local Source Intake handoff prompt.
-
-Do not treat that self-check as approval. It does not approve PRDs, owner-file edits, roadmap or backlog creation, beads, or coding.
-
-Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
-```
-
-Or use the shorter walkthrough request:
-
-```text
-Use First PRD Walkthrough for my rough idea.
-
-Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief. Then challenge the idea for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, first useful slice, not-yet scope, and sensitive surfaces.
-
-When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the Local Source Intake readiness self-check and handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
-```
-
-When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
-
-## Use First PRD Walkthrough For Rough Ideas
-
-If you are a non-technical builder with a net-new, rough product idea, start with First PRD Walkthrough. `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` is the workbook step inside that path, before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
-
-The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
-
-Read it this way: Idea is the rough idea or messy notes; Brief is the Product Brief after at most three high-level questions; Packet is the reviewed Conviction Packet / Precode Ingestion Packet; Intake is the Local Source Intake summary; PRD is human-reviewed PRD shaping and approval; Bead is candidate decomposition followed by an approved active bead; Proof is recorded checks and manual evidence; Review is human review with advisory lanes only when needed; Close is closeout evidence and an explicit Close State.
-
-Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
-
-Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a guided product coach. The agent can interview you, help research sources, challenge assumptions, force clarity, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, create a PRD, or create a roadmap or backlog from the workbook by itself.
-
-To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.
-
-The flow is:
-
-```text
-Open Claude Code or equivalent -> invoke Precode Idea Coach -> guided interview -> Product Brief -> Challenge And Clarity pass -> Conviction Packet -> Local Source Intake
-```
-
-Say this:
-
-```text
-I am a non-technical founder with a rough product idea.
-
-Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook step as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
-
-Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
-
-Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
-```
-
-The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake. The later Conviction Packet is also evidence only; it packages MVP-ready clarity for intake, not implementation permission.
-
-Follow the workbook steps:
-
-1. Make a copy of the workbook.
-2. Pick one product idea.
-3. Paste the guided product-coach prompt into Claude Code, Claude, Codex, or an equivalent agent.
-4. Fill out product-level thinking first.
-5. Gather source-cited research.
-6. Separate what you know, what you think, and what you need help deciding.
-7. Run the Challenge And Clarity pass before turning the idea into features.
-8. Use the optional learning/MVE framing when the idea is still too abstract: builder lens, visible iteration, core workflow spine, and smallest complete useful payoff.
-9. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
-10. Fill out capability candidates only after the user moments, evidence, and first useful slice are clearer.
-11. Ask for the reviewed Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness self-check and a Candidate Goal Frame only if durable intent is clear.
-12. Bring only that packet into Precode Local Source Intake.
-13. If later approved PRD-like input and Experience artifacts exist, complete `tasks/templates/BUILDER-EXPERIENCE-INGESTION-PACKET.md` before Claude Code proposes the first implementation bead.
-14. After a coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
-
-When you are ready, say this inside Precode:
-
-```text
-Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
-
-Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
-```
-
-Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.
-
-## Use The Exploration Loop Before PRD Commitment
-
-Use the Exploration Loop when you have already collected material and want help thinking with it before committing to a PRD. This is especially useful for small MVPs, scattered workbook notes, rough feature lists, user quotes, research snippets, screenshots, sketches, chat summaries, Candidate Goal Frames, or prior not-yet ideas.
-
-The loop should not restart the interview or ask you to repeat what you already wrote. It should first summarize what is known, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.
-
-Say this:
-
-```text
-Use the Exploration Loop on the content I already have.
-
-First summarize what is already known from my notes: users, pains, goals, candidate features, evidence, assumptions, risks, and not-yet ideas. Do not ask me to repeat information already present.
-
-Then help me discover what I have not considered yet. Ask one targeted question at a time only when the answer could change the product direction, evidence strength, first useful slice, risk, or PRD readiness.
-
-Translate user moments into capability candidates, not approved features. Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet. End with an Exploration Evidence Packet and a compact candidate matrix. Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
-```
-
-Good Exploration Loop output includes:
-
-- existing content used
-- product idea in plain English
-- intended user and situation
-- painful before moment
-- better after moment
-- current workaround or evidence
-- new things discovered during the loop
-- capability candidates
-- overlooked alternatives or adjacent ideas
-- weakest assumptions
-- risks or sensitive surfaces
-- not-yet list
-- smallest useful MVP slice
-- smallest learning step
-- recommended next Precode path
-
-Use this compact matrix:
-
-| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
-|---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |
-
-Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak worth-building evidence, use the Product Discovery Interview Skill / Product Discovery Validation next.
-
-## Use Plan Mode Before Candidate Or Implementation Commitment
-
-Use the Plan Mode Candidate Craft Loop when an idea or feature angle should become future work before any build starts:
-
-`Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`
-
-Plan Mode is required at two gates:
-
-- Before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought.
-- Before developing an implementation plan for a selected candidate.
-
-Use the host's native planning posture: Codex `/plan`, Claude Code Plan Mode, or an equivalent read-only planning mode in another agent. If the tool does not have a named Plan Mode, ask the agent to stay read-only and produce the plan before editing.
-
-The loop is staged commitment, not authorization. A Plan Packet, Candidate Queue entry, or implementation plan does not approve a PRD, rank work for implementation, activate a bead, update `tasks/todo.md`, authorize coding, or skip owner-file, decomposition, proof, review, and transition gates.
-
-Say this:
-
-```text
-Use Plan Mode for the Plan Mode Candidate Craft Loop.
-
-First develop the idea into a Plan Packet before any Candidate Queue entry. Use Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
-
-If I approve candidate capture, draft the Candidate Queue entry as parked intent only.
-
-If I later select the candidate, use Plan Mode again to develop an implementation plan before any PRD amendment, Architecture Shaping, Decomposition, bead activation, tasks/todo.md update, or code.
-
-Do not approve a PRD, choose tasks, rank the candidate as implementation priority, activate a bead, authorize implementation, or code.
-```
-
-## Use The Plan Loop Before Bead Commitment
-
-Use the Plan Loop when you have already done intake or PRD shaping and want to think through one feature angle before committing it to a PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
-
-The Plan Loop is not the same as the Exploration Loop. Exploration Loop is for pre-PRD thinking from notes and rough ideas. Plan Loop is for post-intake or post-PRD uncertainty before the work turns into an executable bead.
-
-Say this:
-
-```text
-Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
-
-Use Plan Mode first: Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
-
-First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
-
-Then ask one targeted question at a time only when the answer could change the next workflow, risk, first slice, owner-file impact, or stop condition.
-
-End with a Plan Packet containing: source context used, feature angle or topic explored, current known facts, assumptions and weak spots, options considered, risks and sensitive surfaces, recommended next path, candidate first-slice shape only when stage-appropriate, stop conditions, and what not to do yet.
-
-Treat the Plan Packet as evidence only. Do not approve a PRD, create or activate beads, choose tasks, create backlog authority, authorize implementation, or code.
-```
-
-Good Plan Packet output includes:
-
-- source context used
-- feature angle or topic explored
-- current known facts
-- assumptions and weak spots
-- options considered
-- risks and sensitive surfaces
-- recommended next path
-- candidate first-slice shape only when stage-appropriate
-- stop conditions
-- do not do yet
-
-Before PRD approval, the packet may recommend discovery, PRD draft or amendment, Candidate Queue, owner-file update, or stop, but it should not propose beads. After an approved PRD, it may sketch a first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, it may challenge or refine the proposal, but it must not update `tasks/todo.md` or activate work.
-
-## Use Build-React-Learn For Exploratory Prototype Beads
-
-Use Build-React-Learn when a builder needs to try a small product option in the real repo before deciding whether that approach is the right path.
-
-This is not a new mode. It is a normal exploratory prototype bead with normal activation, one active bead, files in play, checks, stop conditions, and Closeout Evidence. Use it only when the prototype is tiny, reversible, and reviewable.
-
-Say this:
-
-```text
-Use Build-React-Learn for an exploratory prototype bead.
-
-Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
-React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
-Close: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead as learning context before closeout.
-
-Do not treat the prototype as product approval, implementation acceptance, PRD approval, or permission to activate another bead.
-```
-
-At closeout, ask for the prototype decision:
-
-```text
-For this exploratory prototype bead, show the prototype decision: keep, revise, rebuild, discard, split, or promote learning to PRD/decision. Explain what the prototype proved, what it did not prove, and the next safe Precode workflow.
-```
-
-Keeping the prototype means it still needs normal review and acceptance. Rebuilding or discarding the prototype is not failure; preserve the learning and route it through PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or a new candidate bead.
-
-## Validate Product Discovery Before PRD Shaping
-
-Use the Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
-
-This is not a proof machine. It helps you see:
-
-- who has the problem
-- what they do today instead
-- what evidence is strong or weak
-- which assumption could break the idea
-- what non-code learning step should happen first
-- whether the safer recommendation is `proceed`, `pause`, `narrow`, or `kill`
-
-Say this:
-
-```text
-Use the Product Discovery Interview Skill on this idea.
-Interview me one question at a time. Challenge assumptions supportively.
-Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
-Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
-```
-
-Skip this for tiny fixes, already-approved PRD follow-through, clear bugs, or narrow maintenance work.
-
-## Review What A Hypothesis Taught You
-
-Use Hypothesis Review / Learning Loop with `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when you already have a Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, Product Brief, Conviction Packet, or Planning Brief and need to know what was learned.
-
-The loop can label the hypothesis or learning target as `untested`, `tested`, `narrowed`, `killed`, `promoted`, `stale`, or `not applicable`. These labels are evidence only. They do not approve product direction, rank candidates, approve PRDs, activate beads, choose tasks, require analytics, create a database, or make generated status true.
-
-Say this:
-
-```text
-Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief.
-
-Tell me what was tested, what was learned, whether the hypothesis is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow.
-
-Treat the output as evidence only. Do not approve product direction, rank candidates, create or activate beads, update owner files, choose tasks, require analytics, create a database, or code.
-```
-
-Stop if: the agent treats the review status as approval, uses it to choose work, asks for production analytics or dashboards you did not provide, or tries to write owner files without review.
-
-## Use The Small Team Collaboration Lane
-
-Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when 2-5 people are working on the same product build. The lane is built into PrecodeOS, but it is explicit and advanced. It is not a separate module, not default-active, and not a runtime toggle.
-
-A coordinator should invoke the lane before teammates begin editing:
-
-```text
-Use the Small Team Collaboration Lane.
-
-We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
-
-Do not activate beads, merge, mutate GitHub, deploy, or change external systems.
-```
-
-After the team agreement is reviewed, record the accepted parts in shared repo authority such as `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, or another owner file. The conversation itself is evidence only.
-
-Each teammate then starts from the shared repo state:
-
-```text
-This repo is using the Small Team Collaboration Lane.
-
-Load active memory, the team coordination notes, and the bead assigned to this branch or worktree. Confirm my teammate role, branch/worktree, assigned bead, primary authority, files in play, checks, stop conditions, evidence I must return, and what requires coordinator approval before editing.
-```
-
-Parallel work requires branch or worktree isolation. One checkout still has one active bead. GitHub branches, pull requests, reviews, and checks are evidence until the coordinator reviews them against the assigned bead, primary authority, recorded checks, manual verification, and owner-file impacts.
-
-When delegated work returns, use one re-entry evidence shape before continuing:
-
-```text
-Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
-```
-
-For cloud-agent or PR returns, keep the prompt provider-neutral. Optional GitHub branch, PR, review, check, or workflow status can help fill evidence fields when it is read-only and available, but it still does not approve implementation, merge, transition, or external mutation.
-
-For a read-only Small Team Collaboration Lane preview, run:
-
-```text
-python3 scripts/team-collaboration-check.py
-```
-
-The preview reports current branch/worktree, integration branch when available, active bead, one-active-bead status, files in play, owner-file impact candidates, re-entry risks, merge/re-entry packet fields, and teammate assignment packet fields. Add `--github` only when you want optional read-only GitHub branch, pull request, review, and check evidence through `gh`.
-
-The generated preview output is evidence only. It does not approve PRDs, activate beads, accept implementation, approve merge, mutate GitHub, create branches or worktrees, deploy, or replace coordinator review.
-
-Stop if a teammate cannot name their branch or worktree, assigned bead, primary authority, files in play, checks, or stop conditions; if two teammates need the same files without a conflict plan; or if a pull request, issue, generated report, or teammate note is being treated as authority.
-
-## Review Who Built What
-
-Use the Build Attribution Ledger when you need accountability and traceability for who contributed work on a bead and which agent/tool surface assisted.
-
-```text
-python3 scripts/build-attribution-ledger.py
-```
-
-The ledger reads bead Closeout Evidence first, then supporting generated journal and Git hints when available. Closeout-reviewed attribution is strongest. Git authorship, branch names, generated journal entries, tool logs, GitHub status, and teammate notes are hints until reviewed into Closeout Evidence.
-
-Ask an agent:
-
-```text
-Review the Build Attribution Ledger for this bead or recent work. Show human contributor, contributor role, agent/tool surface, attribution reviewer, attribution uncertainty, evidence confidence, missing attribution, Git-hint-only attribution, and the source that must be reviewed next. Do not choose tasks, accept implementation, approve merge, approve release, assign blame, score contributors, mutate GitHub, or treat generated ledger output as authority.
-```
-
-The ledger is evidence only. It is not a people registry, package registry, task tracker, telemetry system, blame report, contributor score, implementation acceptance, merge approval, or release approval.
-
-## Share Feedback Or Package Bugs
-
-Use public GitHub Issues only for narrow PrecodeOS feedback and package-bug intake.
-
-- Use feedback issues for adoption friction, confusing docs, setup friction, or workflow questions.
-- Use package-bug issues for PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
-- Use `SECURITY.md` instead of public issues for sensitive security concerns.
-
-Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
-
-## Before You Start
-
-Do this before letting an agent edit files:
-
-- Open the repo or project folder that contains PrecodeOS.
-- Confirm the agent is using Precode instructions.
-- Ask the agent to load active memory only: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
-- Ask the agent to identify the active bead and primary authority file.
-- Ask for the engineering quality floor when you want a short explanation of the quality standard before coding.
-- Work on one feature slice or bead at a time.
-- Do not approve broad changes, sensitive work, dependency changes, production actions, or the next bead yet.
-
-Say this:
-
-```text
-Before editing, load only Precode active memory: AGENT.md, DECISIONS.md, and tasks/todo.md. Then tell me the active bead, primary authority, files in play, checks, stop conditions, and anything blocked. Do not start coding yet.
-```
-
-Expect this:
-
-- active bead path
-- done-when target
-- files in play
-- checks to run
-- stop conditions
-- blockers or open questions
-
-Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.
-
-## Check Task Suitability Before Work
-
-Use this when a request may be too vague, broad, proof-unclear, approval-gated, or easy to mistake for one task. This is the question before coding: is the work clear enough, small enough, proof-ready enough, and bounded enough to continue?
-
-Say this:
-
-```text
-Check task suitability before work starts. Tell me whether this should continue, clarify, route, split, block, or stop.
-
-Explain the destination, owner source, reviewable change size, proof path, approval gates, stop conditions, and split reasons. If useful, run python3 scripts/task-suitability-check.py --check and treat the output as advisory generated evidence only.
-
-Do not choose tasks, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, create proof, or code.
-```
-
-Expect one recommendation:
-
-- `continue`: the task has a visible destination, owner source, bounded scope, proof path, approval posture, and stop condition.
-- `clarify`: a required signal is missing.
-- `route`: a different owner protocol, PRD path, Architecture Shaping, Decomposition, recovery, or approval path must happen first.
-- `split`: the request has multiple outcomes, owner files, proof strategies, risk models, approval gates, or "and then" work.
-- `block`: active state, manual testing, external status, or a missing approval prevents safe work.
-- `stop`: continuing would imply unauthorized mutation, authority drift, or unsafe scope.
-
-The command is optional:
-
-```bash
-python3 scripts/task-suitability-check.py --check
-```
-
-The checker output is advisory JSON only. It does not choose tasks, rank work, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, or create proof.
-
-## Ask For The Engineering Quality Floor
-
-Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.
-
-Say this:
-
-```text
-Before coding, show me the engineering quality standard you are applying here.
-```
-
-Expect a short answer naming:
-
-- quality risk
-- simplest acceptable implementation shape
-- boundary or owner file
-- evidence that will prove the work
-- what would make the agent stop or ask for approval
-
-For low-risk work, this should be one short quality-floor statement. For riskier work, the agent should route to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Review Lanes, or Release Readiness instead of coding.
-
-This is not a production-readiness certification, code-quality score, or new required stage for every bead.
-
-## Use The Engineering Quality Standards Taxonomy
-
-Use this when the agent names a professional standard, the quality floor sounds too abstract, or you want to know which existing Precode protocol should own the risk.
-
-Say this:
-
-```text
-Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval.
-```
-
-Expect a short answer that maps the risk to one of these questions:
-
-- Is this the simplest change that satisfies the active bead and proof path?
-- Where should this behavior, durable fact, state change, provider call, or business rule live?
-- Are secrets, config, dependencies, dashboard values, or environment assumptions being changed safely?
-- What check, test, manual verification, or evidence proves this specific change?
-- Is the work complete enough for a named advisory review lens?
-- Is this really release, deployment, rollback, smoke evidence, docs freshness, or external status work?
-
-External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness are teaching references only. The taxonomy should translate them into Precode routing guidance; it does not make those frameworks public package authority, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.
-
-## Check The Engineering Quality Text Contract
-
-Use this when the engineering quality floor sounds vague, skips proof, skips stop conditions, or claims low risk while naming architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system work.
-
-```bash
-python3 scripts/engineering-quality-check.py --check
-```
-
-Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, routing, or Standards Taxonomy signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, validate application code against external frameworks, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation and does not certify production readiness.
-
-If the checker warns, revise the quality-floor answer or route to the owner protocol before coding. Do not treat a passing result as permission to build.
-
-If the quality-floor answer sounds complete but the changed files look broader than the bead claims, add the repo-shape preview:
-
-```bash
-python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
-```
-
-Expected output: advisory only repo-shape warnings that compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. It can warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, generated-evidence gaps, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate.
-
-## Command Surface Triage
-
-PrecodeOS has many scripts because setup, daily work, support, evidence, review, and maintainer validation need different checks. Do not treat the script folder as a beginner menu. Use the command family that matches the role and stage:
-
-| Role or stage | Use these first | Boundary |
-|---|---|---|
-| Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
-| Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
-| Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
-| Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. |
-
-The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.
-
-## Check Build Loop Health
-
-Build Loop Health is a quiet Precode signal for whether the current work is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not you.
-
-Use it when the session feels busy, when scope starts to grow, at checkpoint, or before closeout:
-
-```bash
-python3 scripts/loop-health.py
-python3 scripts/loop-health.py --verbose
-```
-
-Good output gives one status, one top risk, and one next move. `Clear` means keep going inside the current boundary. `Watch` means one thing needs attention. `Drift Risk` or `Recenter` means the loop is getting hard to steer. `Stop and Review` means the current work is ready or risky enough that evidence should be reviewed before adding more. If the risk names the Work Graph, inspect `logs/work-graph.md` and repair the owner files rather than treating the report as authority.
-
-If you are exploring before a bead exists, that is allowed. When the exploration starts to matter, ask the agent to create or select a lightweight explorer bead with one question and one stopping condition.
-
-Say this:
-
-```text
-Run python3 scripts/loop-health.py and explain the top risk in plain English. If I am exploring without a bead, help me create a lightweight explorer bead with one question and one stopping condition before any implementation.
-```
-
-Why this matters: Precode should protect you from accidental sprawl without making creative exploration feel wrong.
-
-## Use Ralph For Bounded Retry
-
-Ralph is an opt-in bead-attempt loop for testable work. It can run one explicit attempt command, run validators, classify the result, and record generated attempt evidence.
-
-Use Ralph when the active bead has clear files in play, checks, stop conditions, and a retry budget. Do not use Ralph for fuzzy product decisions, broad architecture guessing, sensitive setup, external mutation, or anything that needs approval before the next action is safe.
-
-Command:
-
-```bash
-python3 scripts/ralph-loop.py --dry-run
-```
-
-Say this:
-
-```text
-Run python3 scripts/ralph-loop.py --dry-run and explain the decision, failure category, validator results, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.
-```
-
-Why this matters: failed attempts should become evidence instead of disappearing into chat. Ralph is useful only while it stays inside one active bead and human review remains the acceptance surface.
-
-## Use Goal Frames For Durable Intent
+### Use Goal Frames For Durable Intent
 
 Use a Goal Frame when your intent is durable enough to guide workflow selection, but not ready to become tasks, a roadmap, or code.
 
@@ -697,7 +201,7 @@ This Goal Frame has a fit warning. Ask me whether to reaffirm, revise, retire, s
 
 Why this matters: Goal Frames help the repo remember the direction you are aiming at without hiding stale intent inside the agent's next move.
 
-## Use The Candidate Queue For Parked Intent
+### Use The Candidate Queue For Parked Intent
 
 Use `CANDIDATE-QUEUE.md` when you have multiple ideas, research leads, not-yet items, or possible future slices that you do not want to lose, but that are not ready to become PRDs or beads. Use Plan Mode before developing a new Candidate Queue entry, then use Plan Mode again before developing an implementation plan for any selected candidate.
 
@@ -761,214 +265,7 @@ Do not create B### IDs, approve a PRD, activate a bead, update tasks/todo.md, or
 
 Why this matters: the Candidate Queue gives you the psychological benefit of a backlog without letting the backlog become hidden task authority.
 
-## Do Not Move, Rename, Or Directly Edit Precode Files
-
-Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.
-
-Hard rules:
-
-- Do not rename the project root folder casually. That folder is the repo that mirrors GitHub and contains both the app code and the Precode operating files.
-- Do not move Markdown files.
-- Do not rename Markdown files.
-- Do not directly edit Markdown files until the agent has identified which file owns the fact and what structure must be preserved.
-- Do not edit generated Markdown reports such as `OS-HEALTH.md`, `PROGRESS.md`, `logs/learning-diary.md`, `logs/memory-index.md`, `logs/handoff-packet.md`, or `logs/scheduled-audit.md`.
-- Do not change frontmatter, anchors, authority contracts, headings, bead state, or Closeout Evidence fields casually.
-- Do not add a new active-memory file.
-- Do not put backlog, roadmap, Candidate Queue, someday, or future-work lists into `tasks/todo.md`.
-- Do not paste secrets, tokens, credentials, dashboard values, billing details, or private notes into Precode files.
-
-Do this instead:
-
-| You want to... | Do this instead |
-|---|---|
-| Change a Precode file | Ask the agent which owner file should change and what validation should run. |
-| Rename or reorganize files | Create a dedicated maintenance bead first. |
-| Rename the project folder | Stop and ask an engineer or maintainer how the local folder, Git remote, GitHub repo, and editor workspace should stay connected. |
-| Edit a generated report | Regenerate it with the correct script instead of editing it by hand. |
-| Record a decision | Put it in `DECISIONS.md` or ask which owner file should hold it. |
-| Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
-| Remember something for later | Propose a reviewed memory card under `memory/cards/`. |
-| Add future work | Use `CANDIDATE-QUEUE.md`, a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
-| Create a new bead or repair a bead ID | Run `python3 scripts/next-id.py bead --scan-references` and ask the agent to explain duplicate, mismatch, stale-reference, and next-ID findings before assigning the ID. |
-| Fix an accidental edit or move | Stop work, identify the damage, restore structure, then run validation. |
-
-Say this before changing Markdown:
-
-```text
-I want to change a Precode Markdown file. Tell me which file owns this fact, what structure must be preserved, and what validation to run before editing.
-```
-
-Say this before creating a new bead or when the next bead number looks wrong:
-
-```text
-Before creating a new bead, run python3 scripts/next-id.py bead --scan-references and explain duplicate, mismatch, stale-reference, and next-ID findings. Derive next work from active bead state, approved PRD decomposition, and current bead files, not memory, generated reports, partner labels, Candidate Queue IDs, or old prose.
-```
-
-Say this before moving or renaming anything:
-
-```text
-I want to rename or move a Precode file. Stop and tell me what scripts, anchors, links, authority contracts, or active-memory rules this could break.
-```
-
-Say this before renaming the project folder:
-
-```text
-I want to rename the project root folder. Stop and tell me what this could break in Git, GitHub, my editor workspace, app paths, and Precode validation before anything is renamed.
-```
-
-Say this if something already went wrong:
-
-```text
-I accidentally edited, moved, or renamed a Precode file. Help me identify the damage, restore the expected path, name, anchor, authority contract, frontmatter, and headings, then run validation.
-```
-
-Why this matters: Precode files are not random notes. They are a small operating system made of readable files, and the structure is part of how the system works.
-
-## Make Acceptance Criteria Testable
-
-When a PRD or acceptance note says something vague like "works well," "handles errors," or "is easy to use," ask the agent to make the expected behavior observable before coding or review.
-
-Use this prompt:
-
-```text
-Review these acceptance criteria for vague or unverifiable behavior.
-
-Where it improves clarity, rewrite a criterion in optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
-
-Keep clear non-EARS criteria when they are already observable and testable. Do not require EARS syntax, reject valid non-EARS criteria, approve the PRD, accept implementation, activate a bead, create tasks, change schema, treat wording as proof, or code.
-```
-
-EARS-style wording is a clarity aid. It is not required syntax, PRD approval, implementation acceptance, generated proof, or permission to build.
-
-## Use Recovery When Something Feels Broken
-
-Use `tasks/reference/RECOVERY-PROTOCOL.md` when you think Precode is broken, confusing, stale, or out of bounds.
-
-Start with this prompt:
-
-```text
-I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.
-```
-
-Common recovery paths:
-
-| What feels wrong | What to ask for |
-|---|---|
-| A Precode file was moved or renamed | `Use the Recovery Protocol for file damage. Find the expected path, explain the repair, then validate.` |
-| A generated report was edited or looks wrong | `Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit the report.` |
-| The active bead or todo state is unclear | `Use the Recovery Protocol for active-state repair. Run state-check and explain the owner file before editing.` |
-| Checks are missing or the agent says "done" too early | `Use the Recovery Protocol for missing proof. Tell me which checks or manual verification are missing.` |
-| Already-implemented work needs to be undone | `Use PRD-023 Implemented Bead Reversal Workflow. Preserve the old bead as done history and propose a separate reversal bead with target, reason, preserved behavior, checks, manual verification, and approvals.` |
-| The session feels confused | `Use the Recovery Protocol for context loss. Re-read active memory, the active bead, and the primary authority.` |
-| Work touched files outside the task | `Use the Recovery Protocol for scope expansion. Run files-in-play-check and explain each changed path.` |
-| I approved something too quickly | `Use the Recovery Protocol for approval confusion. Review evidence and ask for accepted, revise, split, blocked, or stop.` |
-
-Recovery is not automatic cleanup. The agent should not run destructive commands, overwrite user edits, delete evidence, or treat generated reports as instructions.
-
-For a small repair, ask the agent to check stable-fix eligibility:
-
-```text
-Use next-step stable-fix eligibility. Tell me whether this is an eligible stable fix, needs evidence, recovery repair, or broader change. Do not edit, release, roll back, approve a transition, or change setup/update behavior from the classifier alone.
-```
-
-Before the agent edits a repair that looks eligible, ask for the Bugfix Spec Lane:
-
-```text
-Use the Bugfix Spec Lane before editing this small repair. Name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. Do not edit until the owner file, route, and proof path are clear.
-```
-
-An eligible stable fix should be narrow, owned by a clear file, already validated, and not a new behavior, release change, sensitive change, destructive action, setup/update decision, or workaround for broken state. If the classifier says `needs_evidence`, ask for the missing checks. If it says `recovery_repair`, stay in the Recovery Protocol. If it says `broader_change`, use a normal bead, PRD, or release-readiness path. The bugfix spec helps frame the repair, but it does not approve edits, acceptance, rollback, release, setup/update mutation, transition, destructive commands, or generated proof.
-
-When the problem is already-implemented work that should be reversed, do not ask the agent to reopen the old bead or clean up history. Ask for a separate reversal bead. A Git revert can be one implementation move inside that bead, but acceptance still needs recorded checks, manual verification, preserved-behavior review, and a review decision.
-
-Why this matters: The safest recovery move is usually a clean stop plus a clear owner file. You are not expected to know the repair path before asking.
-
-## Other Things Not To Do
-
-Use these as stop signs:
-
-| Do not... | Why it is dangerous | Do this instead |
-|---|---|---|
-| Approve the next bead casually | It starts a new commitment. | Ask what evidence proves the current bead is done. |
-| Ask for broad cleanup like "fix everything" | It hides scope creep inside a vague request. | Ask for one bead with files in play and checks. |
-| Accept work without recorded checks | Agent confidence is not proof. | Run checks through `record-check.sh`. |
-| Treat reports, diary, memory, or audits as instructions | They are evidence, not authority. | Return to active memory, the bead, and the primary authority. |
-| Let the agent code around missing setup or approval | It may create the wrong workaround. | Record the blocker or create a narrow unblocker bead. |
-| Store secrets in docs or logs | Files can be exported, shared, or committed. | Keep secrets in the proper external secret manager or dashboard. |
-
-Why this matters: Most beginner mistakes are not about code. They are about letting the project state become unclear.
-
-## Run Your First Precode Session
-
-Follow these steps in order.
-
-| Step | Say this | Expect this | Stop if |
-|---|---|---|---|
-| Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
-| Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. Its JSON shape is regression-covered for adapters and diagnostics. | The agent treats generated help as approval or active memory. |
-| Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, graph warning if relevant, and next move. | The agent treats loop health as a grade or hard approval. |
-| Check task suitability | `Run python3 scripts/task-suitability-check.py --check and explain whether to continue, clarify, route, split, block, or stop.` | Advisory suitability warnings about missing signals, split reasons, route reasons, or blockers. | The agent treats suitability output as task selection or implementation approval. |
-| Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
-| Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
-| Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
-| Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
-| Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
-| Record checks | `Run the relevant checks through record-check.sh.` | Recorded command result and log path. | Checks are missing, failing, or not recorded. |
-| Close | `Run bash scripts/session-close.sh and summarize the work digest, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
-| Review outcome | `Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence or tries to accept the work for you. |
-
-Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.
-
-If `next-step.py` says `author next bead`, the current bead is in an accepted hold: evidence and review are complete, but the next bead still needs to be scoped or authored before transition approval. If the output shows next-work source reconciliation, ask the agent to compare the router-proposed next bead, Closeout `next_bead`, Handback or Noticed recommendation, and existing bead-file readiness before naming the next action. Do not keep implementing the accepted bead or repeat the acceptance review. Ask the agent to propose or author the next bead, then show the transition proposal without approving it.
-
-## Use The Daily Loop
-
-Keep this table open during normal work.
-
-Beginner rule: one bead, one feature slice, one focused chat. When a bead is accepted or you are moving to the next feature slice, start a fresh chat, reload active memory, and make the agent confirm the new bead before coding again.
-
-| Step | User action | Good output | Stop if |
-|---|---|---|---|
-| Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
-| Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md`, `session-start.sh`, or `next-step.py` explains the same generated router decision. | The report replaces the active bead. |
-| Check loop health | Ask for Build Loop Health when scope or stopping point feels fuzzy. | One status, top risk, graph warning if relevant, and next move. | The signal becomes a score of you instead of the work loop. |
-| Confirm | Ask whether to continue, repair, split, block, or stop. | One clear path. | Scope is vague or too broad. |
-| Work | Let the agent edit only scoped files. | Small changes tied to the bead. | It touches unrelated files. |
-| Check | Ask for recorded checks. | `record-check.sh` output and evidence path. | It says done without evidence. |
-| Checkpoint | Pause when confused or scope grows. | Restated task, changed files, next check. | It resists narrowing. |
-| Close | Ask for session close. | Closeout evidence and review state. | It starts the next bead. |
-| Approve | Approve only after review. | Accepted, revise, split, blocked, or transition. | Manual verification is unclear. |
-| Commit | Commit and push each completed, checked slice. | A small commit named for the user-visible slice or repair. | Changes pile up across features or the name is vague, such as `updates` or `fixes`. |
-
-Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.
-
-Use this before committing:
-
-```text
-Give me a commit-ready summary for this completed slice: files changed, evidence recorded, manual verification still needed, and a concise commit name that describes the user-visible feature or repair.
-```
-
-## Checkpoint Before Context Gets Crowded
-
-Long sessions can get fuzzy even when the agent is still trying hard. When the conversation feels crowded, the agent is repeating itself, or a lot of files and tool outputs have passed through the chat, pause before the context gets full.
-
-Say this:
-
-```text
-Use the Agent Routing Protocol and Context Engineering Protocol. If this session is near the context pressure point, prepare a Context Pack before compacting, restarting, or handing off. Include the bead, primary authority, files in play, latest evidence, changed files, remaining work, and next exact check.
-```
-
-Good output includes:
-
-- the active bead and primary authority
-- what changed
-- what evidence exists
-- what is still uncertain
-- the next exact check or question
-
-Why this matters: You are not trying to tune the model. You are making sure the agent has enough clean room to finish, verify, and hand off without losing the task.
-
-## Use The Plain Decision Words
+### Use The Plain Decision Words
 
 Precode checks should help you choose what to do, not make you learn internal labels. When a script reports a `user_decision`, read it this way:
 
@@ -984,7 +281,7 @@ Precode checks should help you choose what to do, not make you learn internal la
 
 Why this matters: You should not have to sound technical to operate Precode. The scripts should translate risk into a small number of safe decisions.
 
-## Choose What To Ask For
+### Choose What To Ask For
 
 Use this table when you are unsure what kind of request to make.
 
@@ -1030,7 +327,619 @@ If several advanced rows seem plausible, do not pick one by taste. Use Workflow 
 
 Why this matters: Not every request should become code. Good Precode use starts by choosing the right kind of work.
 
-## Keep The Agent In Bounds
+## 3. Shape Ideas Before Coding
+<!-- ANCHOR: guide-part-3-shape-ideas-before-coding -->
+
+Use this part before durable product work exists or before a rough idea becomes a PRD, bead, or implementation plan. The output should be evidence, clarity, and reviewed intent, not coding permission.
+
+### Before Your Repo Exists
+
+If you only have messy notes or a first product hunch, use First PRD Walkthrough as the beginner-facing path. It can run in Claude Cowork, Claude, Claude Code, Codex, or another agent before a Precode repo exists. Inside that path, Precode Idea Coach is the guided product-coach interview step; the agent can interview you, guide research, challenge weak assumptions, force clearer answers, and help produce a Conviction Packet.
+
+The target is MVP-ready conviction, not full validation. You should be able to name the intended user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change your mind, MVP-ready first slice, not-yet list, smallest non-code learning step, and recommended next Precode path.
+
+First PRD Walkthrough is the shortest safe path from rough idea to PRD readiness. It is the beginner-facing route through the Product Ideation Workbook, Precode Idea Coach, Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. It is not a PRD approval shortcut and it does not authorize coding.
+
+Say this:
+
+```text
+Use Precode Idea Coach / the Product Conviction Packet Skill as my pre-repo guided product coach.
+
+I am a first-time non-technical builder with a rough product idea. Run this as a guided interview inside Claude Code or an equivalent agent surface. If Claude Code Plan Mode or an equivalent planning mode is available, use it.
+
+Interview me one question at a time. After at most three high-level product or business questions, summarize a Product Brief. Help me research and challenge the idea supportively but firmly, but do not decide for me.
+
+Push back when the user is too broad, the painful before moment is vague, the current workaround is missing, evidence is weak, the idea is solution-first, the first slice is too large, or I jump into features before the user moment is clear.
+
+Treat research as weak evidence unless it shows real user behavior, a current workaround, spend, switching effort, prototype use, payment, or another costly action.
+
+When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the user, painful before moment, better after moment, current workaround or evidence, evidence strength, primary hypothesis or learning target, strongest evidence, weakest assumption, what would change our mind, MVP-ready first slice, not-yet list, smallest non-code learning step, sensitive surfaces, recommended next Precode path, Local Source Intake readiness self-check, and Local Source Intake handoff prompt.
+
+Do not treat that self-check as approval. It does not approve PRDs, owner-file edits, roadmap or backlog creation, beads, or coding.
+
+Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
+```
+
+Or use the shorter walkthrough request:
+
+```text
+Use First PRD Walkthrough for my rough idea.
+
+Ask only high-level product or business questions at first. After at most three questions, summarize a Product Brief. Then challenge the idea for user, painful before moment, better after moment, current workaround or evidence, weakest assumption, first useful slice, not-yet scope, and sensitive surfaces.
+
+When ready, produce a reviewed Conviction Packet / Precode Ingestion Packet with the Local Source Intake readiness self-check and handoff prompt. Treat the Product Brief, Conviction Packet, workbook output, research, and notes as evidence only. Do not draft or approve a PRD, update owner files, create a roadmap or backlog, create or activate beads, choose tasks, or code.
+```
+
+When the repo exists, bring only the reviewed Conviction Packet into Precode Local Source Intake. Do not paste the whole messy chat if the packet is enough.
+
+### Use First PRD Walkthrough For Rough Ideas
+
+If you are a non-technical builder with a net-new, rough product idea, start with First PRD Walkthrough. `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` is the workbook step inside that path, before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
+
+The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+
+Read it this way: Idea is the rough idea or messy notes; Brief is the Product Brief after at most three high-level questions; Packet is the reviewed Conviction Packet / Precode Ingestion Packet; Intake is the Local Source Intake summary; PRD is human-reviewed PRD shaping and approval; Bead is candidate decomposition followed by an approved active bead; Proof is recorded checks and manual evidence; Review is human review with advisory lanes only when needed; Close is closeout evidence and an explicit Close State.
+
+Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
+
+Use the workbook with Claude Cowork, Claude, Claude Code, Codex, or another agent as a guided product coach. The agent can interview you, help research sources, challenge assumptions, force clarity, and organize your thoughts. It must not decide the product for you, write code, edit `PRODUCT.md`, create a PRD, or create a roadmap or backlog from the workbook by itself.
+
+To keep the first session from feeling like a test, ask for a Product Brief after at most three high-level questions.
+
+The flow is:
+
+```text
+Open Claude Code or equivalent -> invoke Precode Idea Coach -> guided interview -> Product Brief -> Challenge And Clarity pass -> Conviction Packet -> Local Source Intake
+```
+
+Say this:
+
+```text
+I am a non-technical founder with a rough product idea.
+
+Use First PRD Walkthrough for my rough idea. Start with the Product Ideation Workbook step as a guided product-coach interview. If Claude Code Plan Mode or an equivalent planning mode is available, use it. Ask only high-level product or business questions at the start. After at most three questions, summarize progress as a Product Brief with: product idea, builder lens when useful, intended user, painful before moment, better after moment, current workaround or evidence, assumptions, primary hypothesis or learning target when useful, not-yet list, smallest useful version, and next best question.
+
+Then run a Challenge And Clarity pass. Push back on broad users, vague pain, missing workaround, weak evidence, feature piles, oversized MVPs, and sensitive surfaces. Rate evidence strength, name the weakest assumption, what would change our mind, and the smallest non-code learning step.
+
+Do not ask me to decide architecture, module boundaries, test strategy, owner files, acceptance matrices, or system behavior yet. Do not write a PRD, create beads, update PRODUCT.md, create a roadmap or backlog, or code.
+```
+
+The Product Brief is evidence only. It helps you see progress before deeper discovery. It does not approve a PRD, activate work, or replace Local Source Intake. The later Conviction Packet is also evidence only; it packages MVP-ready clarity for intake, not implementation permission.
+
+Follow the workbook steps:
+
+1. Make a copy of the workbook.
+2. Pick one product idea.
+3. Paste the guided product-coach prompt into Claude Code, Claude, Codex, or an equivalent agent.
+4. Fill out product-level thinking first.
+5. Gather source-cited research.
+6. Separate what you know, what you think, and what you need help deciding.
+7. Run the Challenge And Clarity pass before turning the idea into features.
+8. Use the optional learning/MVE framing when the idea is still too abstract: builder lens, visible iteration, core workflow spine, and smallest complete useful payoff.
+9. Use the Exploration Loop when you already have notes, rough feature ideas, research, quotes, screenshots, sketches, chat summaries, a Product Brief, a Candidate Goal Frame, or not-yet ideas that should be reused before PRD shaping.
+10. Fill out capability candidates only after the user moments, evidence, and first useful slice are clearer.
+11. Ask for the reviewed Conviction Packet / Precode Ingestion Packet, including Local Source Intake readiness self-check and a Candidate Goal Frame only if durable intent is clear.
+12. Bring only that packet into Precode Local Source Intake.
+13. If later approved PRD-like input and Experience artifacts exist, complete `tasks/templates/BUILDER-EXPERIENCE-INGESTION-PACKET.md` before Claude Code proposes the first implementation bead.
+14. After a coded prototype exists, capture demo observations and target-user feedback in completion evidence before deciding whether to continue, narrow, pause, or change direction.
+
+When you are ready, say this inside Precode:
+
+```text
+Use Local Source Intake on this Conviction Packet / Precode Ingestion Packet.
+
+Treat it as evidence, not authority. Summarize stable facts, assumptions, conflicts, open questions, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, candidate product constitution updates, candidate Goal Frame stability, candidate PRD inputs, likely owner files, and recommended next step. Do not edit PRODUCT.md, create a PRD, create beads, or start coding until I review the intake summary.
+```
+
+Stop if the workbook contains secrets, private raw transcripts, dashboard values, billing details, credentials, or sensitive personal data.
+
+### Use The Exploration Loop Before PRD Commitment
+
+Use the Exploration Loop when you have already collected material and want help thinking with it before committing to a PRD. This is especially useful for small MVPs, scattered workbook notes, rough feature lists, user quotes, research snippets, screenshots, sketches, chat summaries, Candidate Goal Frames, or prior not-yet ideas.
+
+The loop should not restart the interview or ask you to repeat what you already wrote. It should first summarize what is known, then ask only questions that could reveal a meaningful missing angle, weak assumption, overlooked user, hidden risk, smaller first slice, or better capability than the obvious feature.
+
+Say this:
+
+```text
+Use the Exploration Loop on the content I already have.
+
+First summarize what is already known from my notes: users, pains, goals, candidate features, evidence, assumptions, risks, and not-yet ideas. Do not ask me to repeat information already present.
+
+Then help me discover what I have not considered yet. Ask one targeted question at a time only when the answer could change the product direction, evidence strength, first useful slice, risk, or PRD readiness.
+
+Translate user moments into capability candidates, not approved features. Sort concerns into Must decide now, Good enough for MVP, and Defer / Not yet. End with an Exploration Evidence Packet and a compact candidate matrix. Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+Good Exploration Loop output includes:
+
+- existing content used
+- product idea in plain English
+- intended user and situation
+- painful before moment
+- better after moment
+- current workaround or evidence
+- new things discovered during the loop
+- capability candidates
+- overlooked alternatives or adjacent ideas
+- weakest assumptions
+- risks or sensitive surfaces
+- not-yet list
+- smallest useful MVP slice
+- smallest learning step
+- recommended next Precode path
+
+Use this compact matrix:
+
+| Candidate capability | User moment | Existing evidence | New insight | Risk | MVP fit | Recommendation |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+Stop the loop before PRD shaping if the evidence is weak, the conversation is no longer producing new insight, or too many candidates need narrowing. If the main issue is weak worth-building evidence, use the Product Discovery Interview Skill / Product Discovery Validation next.
+
+### Use Plan Mode Before Candidate Or Implementation Commitment
+
+Use the Plan Mode Candidate Craft Loop when an idea or feature angle should become future work before any build starts:
+
+`Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`
+
+Plan Mode is required at two gates:
+
+- Before developing a Candidate Queue entry from an idea, feature angle, not-yet item, or rough implementation thought.
+- Before developing an implementation plan for a selected candidate.
+
+Use the host's native planning posture: Codex `/plan`, Claude Code Plan Mode, or an equivalent read-only planning mode in another agent. If the tool does not have a named Plan Mode, ask the agent to stay read-only and produce the plan before editing.
+
+The loop is staged commitment, not authorization. A Plan Packet, Candidate Queue entry, or implementation plan does not approve a PRD, rank work for implementation, activate a bead, update `tasks/todo.md`, authorize coding, or skip owner-file, decomposition, proof, review, and transition gates.
+
+Say this:
+
+```text
+Use Plan Mode for the Plan Mode Candidate Craft Loop.
+
+First develop the idea into a Plan Packet before any Candidate Queue entry. Use Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
+
+If I approve candidate capture, draft the Candidate Queue entry as parked intent only.
+
+If I later select the candidate, use Plan Mode again to develop an implementation plan before any PRD amendment, Architecture Shaping, Decomposition, bead activation, tasks/todo.md update, or code.
+
+Do not approve a PRD, choose tasks, rank the candidate as implementation priority, activate a bead, authorize implementation, or code.
+```
+
+### Use The Plan Loop Before Bead Commitment
+
+Use the Plan Loop when you have already done intake or PRD shaping and want to think through one feature angle before committing it to a PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+The Plan Loop is not the same as the Exploration Loop. Exploration Loop is for pre-PRD thinking from notes and rough ideas. Plan Loop is for post-intake or post-PRD uncertainty before the work turns into an executable bead.
+
+Say this:
+
+```text
+Use the Plan Loop on this feature angle before we commit it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code.
+
+Use Plan Mode first: Codex /plan, Claude Code Plan Mode, or an equivalent read-only planning mode.
+
+First summarize the source context you are using and what is already known. Do not ask me to repeat information already present.
+
+Then ask one targeted question at a time only when the answer could change the next workflow, risk, first slice, owner-file impact, or stop condition.
+
+End with a Plan Packet containing: source context used, feature angle or topic explored, current known facts, assumptions and weak spots, options considered, risks and sensitive surfaces, recommended next path, candidate first-slice shape only when stage-appropriate, stop conditions, and what not to do yet.
+
+Treat the Plan Packet as evidence only. Do not approve a PRD, create or activate beads, choose tasks, create backlog authority, authorize implementation, or code.
+```
+
+Good Plan Packet output includes:
+
+- source context used
+- feature angle or topic explored
+- current known facts
+- assumptions and weak spots
+- options considered
+- risks and sensitive surfaces
+- recommended next path
+- candidate first-slice shape only when stage-appropriate
+- stop conditions
+- do not do yet
+
+Before PRD approval, the packet may recommend discovery, PRD draft or amendment, Candidate Queue, owner-file update, or stop, but it should not propose beads. After an approved PRD, it may sketch a first-slice shape, but Decomposition must create any candidate bead proposal. Before candidate activation, it may challenge or refine the proposal, but it must not update `tasks/todo.md` or activate work.
+
+### Use Build-React-Learn For Exploratory Prototype Beads
+
+Use Build-React-Learn when a builder needs to try a small product option in the real repo before deciding whether that approach is the right path.
+
+This is not a new mode. It is a normal exploratory prototype bead with normal activation, one active bead, files in play, checks, stop conditions, and Closeout Evidence. Use it only when the prototype is tiny, reversible, and reviewable.
+
+Say this:
+
+```text
+Use Build-React-Learn for an exploratory prototype bead.
+
+Build: define one tiny reversible prototype option inside the current PRD or approved exploration scope.
+React: after the build, help me review what worked, what failed, what changed my mind, what evidence exists, and what this does not prove.
+Close: recommend whether to keep, revise, rebuild, discard, split, amend the PRD, run Plan Loop, use Hypothesis Review, park a Candidate Queue item, or propose the next bead as learning context before closeout.
+
+Do not treat the prototype as product approval, implementation acceptance, PRD approval, or permission to activate another bead.
+```
+
+At closeout, ask for the prototype decision:
+
+```text
+For this exploratory prototype bead, show the prototype decision: keep, revise, rebuild, discard, split, or promote learning to PRD/decision. Explain what the prototype proved, what it did not prove, and the next safe Precode workflow.
+```
+
+Keeping the prototype means it still needs normal review and acceptance. Rebuilding or discarding the prototype is not failure; preserve the learning and route it through PRD amendment, Plan Loop, Hypothesis Review / Learning Loop, Candidate Queue, a decision, or a new candidate bead.
+
+### Validate Product Discovery Before PRD Shaping
+
+Use the Product Discovery Interview Skill with `tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md` after the workbook or Product Brief when an idea is broad, risky, market-facing, paid, evidence-poor, or sounds like a solution before the problem is clear.
+
+This is not a proof machine. It helps you see:
+
+- who has the problem
+- what they do today instead
+- what evidence is strong or weak
+- which assumption could break the idea
+- what non-code learning step should happen first
+- whether the safer recommendation is `proceed`, `pause`, `narrow`, or `kill`
+
+Say this:
+
+```text
+Use the Product Discovery Interview Skill on this idea.
+Interview me one question at a time. Challenge assumptions supportively.
+Tell me the current workaround, primary hypothesis or learning target, strongest evidence, weakest assumption, smallest non-code learning step, and whether you recommend proceed, pause, narrow, or kill.
+Treat the output as evidence only. Do not write a PRD, create beads, update PRODUCT.md, or code.
+```
+
+Skip this for tiny fixes, already-approved PRD follow-through, clear bugs, or narrow maintenance work.
+
+### Review What A Hypothesis Taught You
+
+Use Hypothesis Review / Learning Loop with `tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md` when you already have a Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, Product Brief, Conviction Packet, or Planning Brief and need to know what was learned.
+
+The loop can label the hypothesis or learning target as `untested`, `tested`, `narrowed`, `killed`, `promoted`, `stale`, or `not applicable`. These labels are evidence only. They do not approve product direction, rank candidates, approve PRDs, activate beads, choose tasks, require analytics, create a database, or make generated status true.
+
+Say this:
+
+```text
+Use Hypothesis Review / Learning Loop on this Discovery Summary, Candidate Queue entry, Local Source Intake summary, PRD Source Inputs section, or Planning Brief.
+
+Tell me what was tested, what was learned, whether the hypothesis is untested, tested, narrowed, killed, promoted, stale, or not applicable, and the next safe Precode workflow.
+
+Treat the output as evidence only. Do not approve product direction, rank candidates, create or activate beads, update owner files, choose tasks, require analytics, create a database, or code.
+```
+
+Stop if: the agent treats the review status as approval, uses it to choose work, asks for production analytics or dashboards you did not provide, or tries to write owner files without review.
+
+### Use The Small Team Collaboration Lane
+
+Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when 2-5 people are working on the same product build. The lane is built into PrecodeOS, but it is explicit and advanced. It is not a separate module, not default-active, and not a runtime toggle.
+
+A coordinator should invoke the lane before teammates begin editing:
+
+```text
+Use the Small Team Collaboration Lane.
+
+We have [2-5] people working on this product. Help us define the coordinator, product decision owner, contributor roles, branch/worktree rules, candidate parallel beads, review gates, merge/re-entry rules, and forbidden actions before anyone edits.
+
+Do not activate beads, merge, mutate GitHub, deploy, or change external systems.
+```
+
+After the team agreement is reviewed, record the accepted parts in shared repo authority such as `PROJECT-CONTEXT.md`, `DECISIONS.md`, a PRD, or another owner file. The conversation itself is evidence only.
+
+Each teammate then starts from the shared repo state:
+
+```text
+This repo is using the Small Team Collaboration Lane.
+
+Load active memory, the team coordination notes, and the bead assigned to this branch or worktree. Confirm my teammate role, branch/worktree, assigned bead, primary authority, files in play, checks, stop conditions, evidence I must return, and what requires coordinator approval before editing.
+```
+
+Parallel work requires branch or worktree isolation. One checkout still has one active bead. GitHub branches, pull requests, reviews, and checks are evidence until the coordinator reviews them against the assigned bead, primary authority, recorded checks, manual verification, and owner-file impacts.
+
+When delegated work returns, use one re-entry evidence shape before continuing:
+
+```text
+Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
+```
+
+For cloud-agent or PR returns, keep the prompt provider-neutral. Optional GitHub branch, PR, review, check, or workflow status can help fill evidence fields when it is read-only and available, but it still does not approve implementation, merge, transition, or external mutation.
+
+For a read-only Small Team Collaboration Lane preview, run:
+
+```text
+python3 scripts/team-collaboration-check.py
+```
+
+The preview reports current branch/worktree, integration branch when available, active bead, one-active-bead status, files in play, owner-file impact candidates, re-entry risks, merge/re-entry packet fields, and teammate assignment packet fields. Add `--github` only when you want optional read-only GitHub branch, pull request, review, and check evidence through `gh`.
+
+The generated preview output is evidence only. It does not approve PRDs, activate beads, accept implementation, approve merge, mutate GitHub, create branches or worktrees, deploy, or replace coordinator review.
+
+Stop if a teammate cannot name their branch or worktree, assigned bead, primary authority, files in play, checks, or stop conditions; if two teammates need the same files without a conflict plan; or if a pull request, issue, generated report, or teammate note is being treated as authority.
+
+### Review Who Built What
+
+Use the Build Attribution Ledger when you need accountability and traceability for who contributed work on a bead and which agent/tool surface assisted.
+
+```text
+python3 scripts/build-attribution-ledger.py
+```
+
+The ledger reads bead Closeout Evidence first, then supporting generated journal and Git hints when available. Closeout-reviewed attribution is strongest. Git authorship, branch names, generated journal entries, tool logs, GitHub status, and teammate notes are hints until reviewed into Closeout Evidence.
+
+Ask an agent:
+
+```text
+Review the Build Attribution Ledger for this bead or recent work. Show human contributor, contributor role, agent/tool surface, attribution reviewer, attribution uncertainty, evidence confidence, missing attribution, Git-hint-only attribution, and the source that must be reviewed next. Do not choose tasks, accept implementation, approve merge, approve release, assign blame, score contributors, mutate GitHub, or treat generated ledger output as authority.
+```
+
+The ledger is evidence only. It is not a people registry, package registry, task tracker, telemetry system, blame report, contributor score, implementation acceptance, merge approval, or release approval.
+
+### Share Feedback Or Package Bugs
+
+Use public GitHub Issues only for narrow PrecodeOS feedback and package-bug intake.
+
+- Use feedback issues for adoption friction, confusing docs, setup friction, or workflow questions.
+- Use package-bug issues for PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
+- Use `SECURITY.md` instead of public issues for sensitive security concerns.
+
+Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
+
+## 4. Run A Governed Work Session
+<!-- ANCHOR: guide-part-4-run-a-governed-work-session -->
+
+Use this part once PrecodeOS is installed and you are starting, checking, steering, or bounding an active session. It keeps the agent tied to the active bead, authority file, checks, and stop conditions.
+
+### Before You Start
+
+Do this before letting an agent edit files:
+
+- Open the repo or project folder that contains PrecodeOS.
+- Confirm the agent is using Precode instructions.
+- Ask the agent to load active memory only: `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`.
+- Ask the agent to identify the active bead and primary authority file.
+- Ask for the engineering quality floor when you want a short explanation of the quality standard before coding.
+- Work on one feature slice or bead at a time.
+- Do not approve broad changes, sensitive work, dependency changes, production actions, or the next bead yet.
+
+Say this:
+
+```text
+Before editing, load only Precode active memory: AGENT.md, DECISIONS.md, and tasks/todo.md. Then tell me the active bead, primary authority, files in play, checks, stop conditions, and anything blocked. Do not start coding yet.
+```
+
+Expect this:
+
+- active bead path
+- done-when target
+- files in play
+- checks to run
+- stop conditions
+- blockers or open questions
+
+Stop if: the agent cannot explain the current bead in plain English, or if it tries to work on more than one feature slice at once.
+
+### Check Task Suitability Before Work
+
+Use this when a request may be too vague, broad, proof-unclear, approval-gated, or easy to mistake for one task. This is the question before coding: is the work clear enough, small enough, proof-ready enough, and bounded enough to continue?
+
+Say this:
+
+```text
+Check task suitability before work starts. Tell me whether this should continue, clarify, route, split, block, or stop.
+
+Explain the destination, owner source, reviewable change size, proof path, approval gates, stop conditions, and split reasons. If useful, run python3 scripts/task-suitability-check.py --check and treat the output as advisory generated evidence only.
+
+Do not choose tasks, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, create proof, or code.
+```
+
+Expect one recommendation:
+
+- `continue`: the task has a visible destination, owner source, bounded scope, proof path, approval posture, and stop condition.
+- `clarify`: a required signal is missing.
+- `route`: a different owner protocol, PRD path, Architecture Shaping, Decomposition, recovery, or approval path must happen first.
+- `split`: the request has multiple outcomes, owner files, proof strategies, risk models, approval gates, or "and then" work.
+- `block`: active state, manual testing, external status, or a missing approval prevents safe work.
+- `stop`: continuing would imply unauthorized mutation, authority drift, or unsafe scope.
+
+The command is optional:
+
+```bash
+python3 scripts/task-suitability-check.py --check
+```
+
+The checker output is advisory JSON only. It does not choose tasks, rank work, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, or create proof.
+
+### Ask For The Engineering Quality Floor
+
+Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.
+
+Say this:
+
+```text
+Before coding, show me the engineering quality standard you are applying here.
+```
+
+Expect a short answer naming:
+
+- quality risk
+- simplest acceptable implementation shape
+- boundary or owner file
+- evidence that will prove the work
+- what would make the agent stop or ask for approval
+
+For low-risk work, this should be one short quality-floor statement. For riskier work, the agent should route to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Review Lanes, or Release Readiness instead of coding.
+
+This is not a production-readiness certification, code-quality score, or new required stage for every bead.
+
+### Use The Engineering Quality Standards Taxonomy
+
+Use this when the agent names a professional standard, the quality floor sounds too abstract, or you want to know which existing Precode protocol should own the risk.
+
+Say this:
+
+```text
+Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval.
+```
+
+Expect a short answer that maps the risk to one of these questions:
+
+- Is this the simplest change that satisfies the active bead and proof path?
+- Where should this behavior, durable fact, state change, provider call, or business rule live?
+- Are secrets, config, dependencies, dashboard values, or environment assumptions being changed safely?
+- What check, test, manual verification, or evidence proves this specific change?
+- Is the work complete enough for a named advisory review lens?
+- Is this really release, deployment, rollback, smoke evidence, docs freshness, or external status work?
+
+External ideas such as Twelve-Factor, SOLID, Clean Code, review discipline, CI, deployability, configuration, dependencies, boundaries, proof, and release readiness are teaching references only. The taxonomy should translate them into Precode routing guidance; it does not make those frameworks public package authority, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.
+
+### Check The Engineering Quality Text Contract
+
+Use this when the engineering quality floor sounds vague, skips proof, skips stop conditions, or claims low risk while naming architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system work.
+
+```bash
+python3 scripts/engineering-quality-check.py --check
+```
+
+Expected output: advisory only JSON warnings about missing quality-risk, simplest-shape, boundary, proof, stop-condition, routing, or Standards Taxonomy signals in Precode artifact text. The Engineering Quality Text-Contract Checker does not inspect app code, run linters, run tests, validate application code against external frameworks, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate. It does not approve implementation and does not certify production readiness.
+
+If the checker warns, revise the quality-floor answer or route to the owner protocol before coding. Do not treat a passing result as permission to build.
+
+If the quality-floor answer sounds complete but the changed files look broader than the bead claims, add the repo-shape preview:
+
+```bash
+python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
+```
+
+Expected output: advisory only repo-shape warnings that compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. It can warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, generated-evidence gaps, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate.
+
+### Command Surface Triage
+
+PrecodeOS has many scripts because setup, daily work, support, evidence, review, and maintainer validation need different checks. Do not treat the script folder as a beginner menu. Use the command family that matches the role and stage:
+
+| Role or stage | Use these first | Boundary |
+|---|---|---|
+| Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
+| Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
+| Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
+| Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. |
+
+The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.
+
+### Check Build Loop Health
+
+Build Loop Health is a quiet Precode signal for whether the current work is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not you.
+
+Use it when the session feels busy, when scope starts to grow, at checkpoint, or before closeout:
+
+```bash
+python3 scripts/loop-health.py
+python3 scripts/loop-health.py --verbose
+```
+
+Good output gives one status, one top risk, and one next move. `Clear` means keep going inside the current boundary. `Watch` means one thing needs attention. `Drift Risk` or `Recenter` means the loop is getting hard to steer. `Stop and Review` means the current work is ready or risky enough that evidence should be reviewed before adding more. If the risk names the Work Graph, inspect `logs/work-graph.md` and repair the owner files rather than treating the report as authority.
+
+If you are exploring before a bead exists, that is allowed. When the exploration starts to matter, ask the agent to create or select a lightweight explorer bead with one question and one stopping condition.
+
+Say this:
+
+```text
+Run python3 scripts/loop-health.py and explain the top risk in plain English. If I am exploring without a bead, help me create a lightweight explorer bead with one question and one stopping condition before any implementation.
+```
+
+Why this matters: Precode should protect you from accidental sprawl without making creative exploration feel wrong.
+
+### Use Ralph For Bounded Retry
+
+Ralph is an opt-in bead-attempt loop for testable work. It can run one explicit attempt command, run validators, classify the result, and record generated attempt evidence.
+
+Use Ralph when the active bead has clear files in play, checks, stop conditions, and a retry budget. Do not use Ralph for fuzzy product decisions, broad architecture guessing, sensitive setup, external mutation, or anything that needs approval before the next action is safe.
+
+Command:
+
+```bash
+python3 scripts/ralph-loop.py --dry-run
+```
+
+Say this:
+
+```text
+Run python3 scripts/ralph-loop.py --dry-run and explain the decision, failure category, validator results, and whether another attempt is allowed. Do not treat Ralph as acceptance or transition approval.
+```
+
+Why this matters: failed attempts should become evidence instead of disappearing into chat. Ralph is useful only while it stays inside one active bead and human review remains the acceptance surface.
+
+### Run Your First Precode Session
+
+Follow these steps in order.
+
+| Step | Say this | Expect this | Stop if |
+|---|---|---|---|
+| Start | `Run bash scripts/session-start.sh and explain the result in plain English.` | Current bead, branch/status if available, files, checks, blockers. | The agent skips active memory or cannot name the bead. |
+| Find next step | `Run python3 scripts/next-step.py and explain the recommendation in plain English.` | The canonical generated "what now?" hint: user decision, one next protocol to load, and rough context footprint. Its JSON shape is regression-covered for adapters and diagnostics. | The agent treats generated help as approval or active memory. |
+| Check loop health | `Run python3 scripts/loop-health.py and explain the top risk.` | Advisory Build Loop Health status, top risk, graph warning if relevant, and next move. | The agent treats loop health as a grade or hard approval. |
+| Check task suitability | `Run python3 scripts/task-suitability-check.py --check and explain whether to continue, clarify, route, split, block, or stop.` | Advisory suitability warnings about missing signals, split reasons, route reasons, or blockers. | The agent treats suitability output as task selection or implementation approval. |
+| Read diagnostics | `Run python3 scripts/os-health.py and explain the Doctor Dashboard without treating it as approval.` | Generated diagnostic summary of warning sources, plain-English triage labels, safe asks, do-not-approve warnings, owner commands, and repair paths. | The agent treats Doctor Dashboard as task selection, command approval, or transition approval. |
+| Run Ralph | `Run python3 scripts/ralph-loop.py --dry-run and explain the decision.` | Bounded retry evidence for one active bead. | It treats Ralph as task selection, acceptance, or transition approval. |
+| Confirm task | `Is this bead clear enough to continue, or should we repair, split, block, or stop?` | A clear recommendation and reason. | The task has multiple outcomes or no verification path. |
+| Let agent work | `Work only inside this bead and narrate file changes before editing.` | Small scoped edits inside files in play. | It expands scope, changes unrelated files, or makes product decisions. |
+| Guard scope | `Run python3 scripts/files-in-play-check.py and explain any out-of-scope paths.` | Advisory warning if changed files are outside the bead, with a plain stop/continue decision. | It treats the warning as permission to keep widening scope. |
+| Record checks | `Run the relevant checks through record-check.sh.` | Recorded command result and log path. | Checks are missing, failing, or not recorded. |
+| Close | `Run bash scripts/session-close.sh and summarize the work digest, what passed, and what remains blocked.` | Closeout evidence, health refresh, transition proposal only if eligible. | The agent tries to start the next bead. |
+| Review outcome | `Use the Review / Acceptance Skill and recommend accepted, revise, split, blocked, or stop based on evidence.` | A review recommendation tied to checks and manual verification. | The recommendation relies only on confidence or tries to accept the work for you. |
+
+Why this matters: A session needs a clean beginning, bounded middle, and recorded ending. Without those, chat memory becomes the project memory.
+
+If `next-step.py` says `author next bead`, the current bead is in an accepted hold: evidence and review are complete, but the next bead still needs to be scoped or authored before transition approval. If the output shows next-work source reconciliation, ask the agent to compare the router-proposed next bead, Closeout `next_bead`, Handback or Noticed recommendation, and existing bead-file readiness before naming the next action. Do not keep implementing the accepted bead or repeat the acceptance review. Ask the agent to propose or author the next bead, then show the transition proposal without approving it.
+
+### Use The Daily Loop
+
+Keep this table open during normal work.
+
+Beginner rule: one bead, one feature slice, one focused chat. When a bead is accepted or you are moving to the next feature slice, start a fresh chat, reload active memory, and make the agent confirm the new bead before coding again.
+
+| Step | User action | Good output | Stop if |
+|---|---|---|---|
+| Start | Ask for session start. | Agent explains active bead, scope, files, checks. | It starts coding first. |
+| Orient | Ask for next-step help when unsure. | `PRECODE-HELP.md`, `session-start.sh`, or `next-step.py` explains the same generated router decision. | The report replaces the active bead. |
+| Check loop health | Ask for Build Loop Health when scope or stopping point feels fuzzy. | One status, top risk, graph warning if relevant, and next move. | The signal becomes a score of you instead of the work loop. |
+| Confirm | Ask whether to continue, repair, split, block, or stop. | One clear path. | Scope is vague or too broad. |
+| Work | Let the agent edit only scoped files. | Small changes tied to the bead. | It touches unrelated files. |
+| Check | Ask for recorded checks. | `record-check.sh` output and evidence path. | It says done without evidence. |
+| Checkpoint | Pause when confused or scope grows. | Restated task, changed files, next check. | It resists narrowing. |
+| Close | Ask for session close. | Closeout evidence and review state. | It starts the next bead. |
+| Approve | Approve only after review. | Accepted, revise, split, blocked, or transition. | Manual verification is unclear. |
+| Commit | Commit and push each completed, checked slice. | A small commit named for the user-visible slice or repair. | Changes pile up across features or the name is vague, such as `updates` or `fixes`. |
+
+Why this matters: The daily loop is not ceremony. It is how you keep the agent from turning one request into a moving target.
+
+Use this before committing:
+
+```text
+Give me a commit-ready summary for this completed slice: files changed, evidence recorded, manual verification still needed, and a concise commit name that describes the user-visible feature or repair.
+```
+
+### Checkpoint Before Context Gets Crowded
+
+Long sessions can get fuzzy even when the agent is still trying hard. When the conversation feels crowded, the agent is repeating itself, or a lot of files and tool outputs have passed through the chat, pause before the context gets full.
+
+Say this:
+
+```text
+Use the Agent Routing Protocol and Context Engineering Protocol. If this session is near the context pressure point, prepare a Context Pack before compacting, restarting, or handing off. Include the bead, primary authority, files in play, latest evidence, changed files, remaining work, and next exact check.
+```
+
+Good output includes:
+
+- the active bead and primary authority
+- what changed
+- what evidence exists
+- what is still uncertain
+- the next exact check or question
+
+Why this matters: You are not trying to tune the model. You are making sure the agent has enough clean room to finish, verify, and hand off without losing the task.
+
+### Keep The Agent In Bounds
 
 Use these rules while the agent works:
 
@@ -1063,7 +972,28 @@ Red flags:
 
 Why this matters: You do not need to sound technical to stop drift. You only need to ask the agent to return to the bead, owner file, and evidence.
 
-## Know When Work Is Done
+## 5. Prove, Review, Close, Or Release
+<!-- ANCHOR: guide-part-5-prove-review-close-or-release -->
+
+Use this part when work may be done, risky, ready for review, or approaching release. Generated reports remain evidence only; human review and explicit approval still decide acceptance, transition, merge, and release.
+
+### Make Acceptance Criteria Testable
+
+When a PRD or acceptance note says something vague like "works well," "handles errors," or "is easy to use," ask the agent to make the expected behavior observable before coding or review.
+
+Use this prompt:
+
+```text
+Review these acceptance criteria for vague or unverifiable behavior.
+
+Where it improves clarity, rewrite a criterion in optional EARS-style wording: WHEN [condition/event] THE SYSTEM SHALL [observable expected behavior].
+
+Keep clear non-EARS criteria when they are already observable and testable. Do not require EARS syntax, reject valid non-EARS criteria, approve the PRD, accept implementation, activate a bead, create tasks, change schema, treat wording as proof, or code.
+```
+
+EARS-style wording is a clarity aid. It is not required syntax, PRD approval, implementation acceptance, generated proof, or permission to build.
+
+### Know When Work Is Done
 
 Do not accept work because the agent sounds confident.
 
@@ -1105,7 +1035,7 @@ Stop if: the answer is mostly summary, confidence, or vibes instead of evidence.
 
 Why this matters: In Precode, done means proved and reviewed, not merely plausible.
 
-## Use A Review Lane
+### Use A Review Lane
 
 Use a Review Lane when one active bead, one draft PRD, or one bounded package documentation/reference surface needs a named specialist review question without turning that specialist into a fake teammate, product approver, or approval authority.
 
@@ -1150,7 +1080,7 @@ Stop if: the agent treats the lane or multi-lane invocation as acceptance, PRD a
 
 Why this matters: Review lanes make specialist questions visible while keeping your normal proof and approval gates intact.
 
-## Prepare Release Without Shipping
+### Prepare Release Without Shipping
 
 Use Release Readiness when completed work may affect users, production, deployment, external services, docs needed for use, or post-release support.
 
@@ -1166,7 +1096,7 @@ Stop if: the agent treats a release-readiness note, screenshot, browser note, ge
 
 Why this matters: shipping is a user-owned risk decision. Precode can prepare the evidence, but it cannot approve the release for you.
 
-## Prepare A Release Candidate Evidence Profile
+### Prepare A Release Candidate Evidence Profile
 
 Use a Release Candidate Evidence Profile when release-relevant work is nearly ready and you need one compact evidence view before deciding what, if anything, to release.
 
@@ -1191,7 +1121,7 @@ Do not approve release, deploy, promote, roll back, merge, migrate, change dashb
 
 Stop if: the agent treats the profile or `ready for human release decision` as release approval.
 
-## Review Verification And Release Evidence
+### Review Verification And Release Evidence
 
 Use verification and release evidence review when a release-relevant bead needs a clear path from requirement or behavior to recorded proof.
 
@@ -1207,7 +1137,7 @@ Do not treat screenshots, browser notes, GitHub status, generated reports, smoke
 
 Stop if: the agent treats the trace, `completion-check.py`, screenshots, browser notes, GitHub status, generated reports, smoke checks, or `ready for human release decision` as approval to ship.
 
-## Review Requirement-To-Proof Traceability
+### Review Requirement-To-Proof Traceability
 
 Use requirement-to-proof review when a normal PRD requirement, bug behavior, or acceptance criterion may sound done but the proof path is unclear.
 
@@ -1221,7 +1151,7 @@ Do not accept implementation, approve review, approve release, activate the next
 
 Stop if: the agent treats the trace, generated test, screenshot, browser note, AI critique, external status, or generated report as complete proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 
-## Approve The Right Things
+### Approve The Right Things
 
 You approve these decisions:
 
@@ -1245,7 +1175,7 @@ Do not approve:
 
 Why this matters: Precode lets the agent work quickly, but it keeps judgment and risk with the user.
 
-## Read Reports Without Being Misled
+### Read Reports Without Being Misled
 
 Use reports for learning and audit. Before work resumes, return to active memory, the active bead, and the primary authority file.
 
@@ -1270,7 +1200,7 @@ Use reports as evidence only. Before doing work, return to AGENT.md, DECISIONS.m
 
 Why this matters: Reports help you understand what happened. They do not decide what happens next.
 
-## Use Adaptive Depth And Guardrails
+### Use Adaptive Depth And Guardrails
 
 Adaptive depth helps Precode scale the amount of ceremony to the risk. A typo fix can be `trivial`; a focused setup or feature slice can be `narrow` or `standard`; auth, payments, migrations, deployment, security, or multiple systems should usually be `high-risk` or `multi-system`.
 
@@ -1345,7 +1275,7 @@ For sensitive, external, destructive, or bounded-AFK work, ask for the stricter 
 Before continuing, show the allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape path, and re-entry evidence. Then run python3 scripts/run-contract-check.py.
 ```
 
-## Use Alignment, AFK Candidates, And Fresh Review
+### Use Alignment, AFK Candidates, And Fresh Review
 
 Use alignment before a PRD when the idea is still fuzzy. For a non-technical founder, the agent should start with high-level product and business questions, recommend an answer when useful, and summarize a Product Brief after at most three questions.
 
@@ -1391,7 +1321,133 @@ Say this:
 Review this bead in a fresh context. Reload active memory, the bead, primary authority, parent PRD if relevant, and the recorded evidence before recommending accepted, revise, split, or blocked.
 ```
 
-## Use Reviewed Memory
+## 6. Recover, Learn, And Look Up Reference
+<!-- ANCHOR: guide-part-6-recover-learn-and-look-up-reference -->
+
+Use this part when something feels broken, a file or term is confusing, a lesson should survive, or you need compact reference material. Recovery and learning stay evidence-first and approval-gated.
+
+### Do Not Move, Rename, Or Directly Edit Precode Files
+
+Precode works because specific Markdown files have specific names, locations, headings, anchors, and metadata. Moving, renaming, or casually editing those files can break how agents and scripts find the right memory, task, or authority file.
+
+Hard rules:
+
+- Do not rename the project root folder casually. That folder is the repo that mirrors GitHub and contains both the app code and the Precode operating files.
+- Do not move Markdown files.
+- Do not rename Markdown files.
+- Do not directly edit Markdown files until the agent has identified which file owns the fact and what structure must be preserved.
+- Do not edit generated Markdown reports such as `OS-HEALTH.md`, `PROGRESS.md`, `logs/learning-diary.md`, `logs/memory-index.md`, `logs/handoff-packet.md`, or `logs/scheduled-audit.md`.
+- Do not change frontmatter, anchors, authority contracts, headings, bead state, or Closeout Evidence fields casually.
+- Do not add a new active-memory file.
+- Do not put backlog, roadmap, Candidate Queue, someday, or future-work lists into `tasks/todo.md`.
+- Do not paste secrets, tokens, credentials, dashboard values, billing details, or private notes into Precode files.
+
+Do this instead:
+
+| You want to... | Do this instead |
+|---|---|
+| Change a Precode file | Ask the agent which owner file should change and what validation should run. |
+| Rename or reorganize files | Create a dedicated maintenance bead first. |
+| Rename the project folder | Stop and ask an engineer or maintainer how the local folder, Git remote, GitHub repo, and editor workspace should stay connected. |
+| Edit a generated report | Regenerate it with the correct script instead of editing it by hand. |
+| Record a decision | Put it in `DECISIONS.md` or ask which owner file should hold it. |
+| Clarify product direction | Update `PRODUCT.md` or ask whether the fact belongs in a PRD or `DECISIONS.md`. |
+| Remember something for later | Propose a reviewed memory card under `memory/cards/`. |
+| Add future work | Use `CANDIDATE-QUEUE.md`, a PRD, bead proposal, decision, or long-horizon review, not `tasks/todo.md`. |
+| Create a new bead or repair a bead ID | Run `python3 scripts/next-id.py bead --scan-references` and ask the agent to explain duplicate, mismatch, stale-reference, and next-ID findings before assigning the ID. |
+| Fix an accidental edit or move | Stop work, identify the damage, restore structure, then run validation. |
+
+Say this before changing Markdown:
+
+```text
+I want to change a Precode Markdown file. Tell me which file owns this fact, what structure must be preserved, and what validation to run before editing.
+```
+
+Say this before creating a new bead or when the next bead number looks wrong:
+
+```text
+Before creating a new bead, run python3 scripts/next-id.py bead --scan-references and explain duplicate, mismatch, stale-reference, and next-ID findings. Derive next work from active bead state, approved PRD decomposition, and current bead files, not memory, generated reports, partner labels, Candidate Queue IDs, or old prose.
+```
+
+Say this before moving or renaming anything:
+
+```text
+I want to rename or move a Precode file. Stop and tell me what scripts, anchors, links, authority contracts, or active-memory rules this could break.
+```
+
+Say this before renaming the project folder:
+
+```text
+I want to rename the project root folder. Stop and tell me what this could break in Git, GitHub, my editor workspace, app paths, and Precode validation before anything is renamed.
+```
+
+Say this if something already went wrong:
+
+```text
+I accidentally edited, moved, or renamed a Precode file. Help me identify the damage, restore the expected path, name, anchor, authority contract, frontmatter, and headings, then run validation.
+```
+
+Why this matters: Precode files are not random notes. They are a small operating system made of readable files, and the structure is part of how the system works.
+
+### Use Recovery When Something Feels Broken
+
+Use `tasks/reference/RECOVERY-PROTOCOL.md` when you think Precode is broken, confusing, stale, or out of bounds.
+
+Start with this prompt:
+
+```text
+I think I broke something in Precode. Stop work, identify the symptom, name the owner file, explain the safest recovery path, and do not edit, delete, move, overwrite, or regenerate anything until I approve the next step.
+```
+
+Common recovery paths:
+
+| What feels wrong | What to ask for |
+|---|---|
+| A Precode file was moved or renamed | `Use the Recovery Protocol for file damage. Find the expected path, explain the repair, then validate.` |
+| A generated report was edited or looks wrong | `Use the Recovery Protocol for generated-report confusion. Repair source state first; do not hand-edit the report.` |
+| The active bead or todo state is unclear | `Use the Recovery Protocol for active-state repair. Run state-check and explain the owner file before editing.` |
+| Checks are missing or the agent says "done" too early | `Use the Recovery Protocol for missing proof. Tell me which checks or manual verification are missing.` |
+| Already-implemented work needs to be undone | `Use PRD-023 Implemented Bead Reversal Workflow. Preserve the old bead as done history and propose a separate reversal bead with target, reason, preserved behavior, checks, manual verification, and approvals.` |
+| The session feels confused | `Use the Recovery Protocol for context loss. Re-read active memory, the active bead, and the primary authority.` |
+| Work touched files outside the task | `Use the Recovery Protocol for scope expansion. Run files-in-play-check and explain each changed path.` |
+| I approved something too quickly | `Use the Recovery Protocol for approval confusion. Review evidence and ask for accepted, revise, split, blocked, or stop.` |
+
+Recovery is not automatic cleanup. The agent should not run destructive commands, overwrite user edits, delete evidence, or treat generated reports as instructions.
+
+For a small repair, ask the agent to check stable-fix eligibility:
+
+```text
+Use next-step stable-fix eligibility. Tell me whether this is an eligible stable fix, needs evidence, recovery repair, or broader change. Do not edit, release, roll back, approve a transition, or change setup/update behavior from the classifier alone.
+```
+
+Before the agent edits a repair that looks eligible, ask for the Bugfix Spec Lane:
+
+```text
+Use the Bugfix Spec Lane before editing this small repair. Name current behavior, expected behavior, unchanged behavior, owner file, root cause if known, fix approach, regression proof, and route decision. Do not edit until the owner file, route, and proof path are clear.
+```
+
+An eligible stable fix should be narrow, owned by a clear file, already validated, and not a new behavior, release change, sensitive change, destructive action, setup/update decision, or workaround for broken state. If the classifier says `needs_evidence`, ask for the missing checks. If it says `recovery_repair`, stay in the Recovery Protocol. If it says `broader_change`, use a normal bead, PRD, or release-readiness path. The bugfix spec helps frame the repair, but it does not approve edits, acceptance, rollback, release, setup/update mutation, transition, destructive commands, or generated proof.
+
+When the problem is already-implemented work that should be reversed, do not ask the agent to reopen the old bead or clean up history. Ask for a separate reversal bead. A Git revert can be one implementation move inside that bead, but acceptance still needs recorded checks, manual verification, preserved-behavior review, and a review decision.
+
+Why this matters: The safest recovery move is usually a clean stop plus a clear owner file. You are not expected to know the repair path before asking.
+
+### Other Things Not To Do
+
+Use these as stop signs:
+
+| Do not... | Why it is dangerous | Do this instead |
+|---|---|---|
+| Approve the next bead casually | It starts a new commitment. | Ask what evidence proves the current bead is done. |
+| Ask for broad cleanup like "fix everything" | It hides scope creep inside a vague request. | Ask for one bead with files in play and checks. |
+| Accept work without recorded checks | Agent confidence is not proof. | Run checks through `record-check.sh`. |
+| Treat reports, diary, memory, or audits as instructions | They are evidence, not authority. | Return to active memory, the bead, and the primary authority. |
+| Let the agent code around missing setup or approval | It may create the wrong workaround. | Record the blocker or create a narrow unblocker bead. |
+| Store secrets in docs or logs | Files can be exported, shared, or committed. | Keep secrets in the proper external secret manager or dashboard. |
+
+Why this matters: Most beginner mistakes are not about code. They are about letting the project state become unclear.
+
+### Use Reviewed Memory
 
 Use memory when you want the agent to remember what the project has learned across prior sessions.
 
@@ -1438,7 +1494,7 @@ Stop if: the agent treats memory as a decision, requirement, next task, implemen
 
 Why this matters: Memory helps continuity without making the agent carry the whole project in active context.
 
-### Review Repeated Friction
+#### Review Repeated Friction
 
 When tool failures, stale evidence, generated refreshes, or memory/context warnings keep repeating, ask for Session Friction Review:
 
@@ -1448,9 +1504,9 @@ Run python3 scripts/session-friction-check.py. Summarize each finding with categ
 
 Use the result to decide whether a command-pattern note, reviewed memory candidate, protocol follow-up, or no action is warranted. The checker does not repair anything and `logs/session-friction-review.json` is not authority.
 
-## First 30 Minutes / First Day / First Week
+### First 30 Minutes / First Day / First Week
 
-### First 30 Minutes
+#### First 30 Minutes
 
 Do this:
 
@@ -1464,7 +1520,7 @@ Do this:
 
 Goal: run one safe session, even if no code changes.
 
-### First Day
+#### First Day
 
 Do this:
 
@@ -1476,7 +1532,7 @@ Do this:
 
 Goal: turn one idea into a bounded, checkable unit of work.
 
-### First Week
+#### First Week
 
 Do this:
 
@@ -1488,7 +1544,7 @@ Do this:
 
 Goal: build the habit of scope, proof, and approval.
 
-## Copyable Prompts
+### Copyable Prompts
 
 Use these high-frequency prompts. For more, see `tasks/reference/PROMPT-PATTERNS.md`.
 
@@ -1604,19 +1660,19 @@ Check promotion:
 Check whether this memory should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, or another owner file. Name the source pointers, current status, proposed owner, promotion action, approval required, and stop condition before recommending any edit.
 ```
 
-## FAQ
+### FAQ
 
-### Getting Started
+#### Getting Started
 
-#### What does Precode help me avoid?
+##### What does Precode help me avoid?
 
 Scope creep, stale context, confident wrong code, vague done, skipped checks, skipped manual verification, and uncontrolled next-task momentum.
 
-#### Won't a more capable model just do this natively?
+##### Won't a more capable model just do this natively?
 
 Newer models genuinely do more on their own: more planning, longer context, self-checking, in-session memory. But those gains live inside the model and the chat. They are fast, confident, vendor-specific, and gone when the session ends or you switch tools. Precode is not an agent or a model, so it is not competing on that axis. It is the repo-owned control layer around whatever agent you run: intent, scope, approval, proof, and recovery kept as readable files and human gates that persist across sessions, tools, and models. A more capable model is a reason to want that layer more, not less, because a faster, more confident agent is exactly when quiet drift gets expensive. Precode is not anti-AI; it is anti-drift. A model still cannot grant itself permission to touch payments or production, its in-session memory is not your project's durable source of truth, and its confidence is still not recorded evidence. As models make writing code cheap, usable human-owned control is the scarce part, and that is the part Precode owns.
 
-#### What habit should I build first?
+##### What habit should I build first?
 
 Start every serious session with `bash scripts/session-start.sh`, then make the agent explain the bead before coding.
 
@@ -1626,113 +1682,113 @@ After a checked slice is accepted, commit it before starting the next slice. Pus
 
 Use `origin` as the conventional remote name when you can. If you need to move the project to another GitHub repository, consolidate multiple remotes, rename remotes, or move the folder, stop before changing anything and use the Repository Topology Migration prompt in `tasks/reference/PROMPT-PATTERNS.md`. Precode status helpers can inspect `origin`, another discoverable upstream, or a missing remote as evidence, but they do not approve remote changes, pushes, folder moves, or GitHub mutation.
 
-#### What if I do not understand a file?
+##### What if I do not understand a file?
 
 Ask: `What does this file own, what is it not allowed to decide, and when should it be loaded?`
 
-#### What if I want to move fast?
+##### What if I want to move fast?
 
 Use smaller beads, not fewer guardrails. Small checked work is usually faster than large vague work that needs cleanup.
 
-### Active Memory And Context
+#### Active Memory And Context
 
-#### Why only three active-memory files?
+##### Why only three active-memory files?
 
 They keep the agent's starting point small and inspectable. More always-loaded files create more chances for stale context to override the current bead.
 
-#### What is the difference between notes and authority?
+##### What is the difference between notes and authority?
 
 Notes are evidence. Authority is an approved Precode file such as a PRD, `DECISIONS.md`, `ARCHITECTURE.md`, or the active bead.
 
-#### What should I do if the agent seems confused?
+##### What should I do if the agent seems confused?
 
 Checkpoint. Ask it to restate the active bead, primary authority, files in play, next check, and stop conditions.
 
-### Ideas, PRDs, And Beads
+#### Ideas, PRDs, And Beads
 
-#### When do I use PRODUCT.md?
+##### When do I use PRODUCT.md?
 
 Use `PRODUCT.md` when you are starting a product, checking whether an idea fits the product direction, or updating product promise, users, strategy, non-goals, current bets, success signals, or design and voice. It is planning context only, not active memory and not a task list.
 
-#### What is a bead?
+##### What is a bead?
 
 A bead is one small unit of work with a contract: objective, owner file, files in play, checks, stop conditions, and closeout evidence.
 
-#### When do I use a PRD?
+##### When do I use a PRD?
 
 Use a PRD when the feature needs a destination before coding: problem, non-goals, user moment, requirements, risks, acceptance checks, and likely journey beads.
 
-#### What is alignment?
+##### What is alignment?
 
 It is the conversation before the PRD where the agent helps you share the same design concept before anyone plans or codes. For rough founder ideas, it should start with simple product questions and a Product Brief before technical translation.
 
-#### What is shared language?
+##### What is shared language?
 
 It is the small vocabulary you and the agent agree to use for the product. If you call something a "client intake," the PRD, UI, tests, and code should not quietly call it four different things unless there is a reason.
 
-#### What is a project glossary?
+##### What is a project glossary?
 
 It is a reviewed memory card for useful terms, aliases, avoid terms, examples, and source pointers. It helps future agents understand language, but it is evidence only. Current code, active beads, approved PRDs, and owner files still win.
 
 Good glossary cards include source pointers, freshness, examples from UI/code/tests/docs/support/user language, and an authority owner when a term needs promotion. Search results can help naming review, but they do not rename code, approve PRDs, activate beads, or promote owner files.
 
-#### What is an AFK candidate?
+##### What is an AFK candidate?
 
 It is a bead that may be safe for an agent to execute after context is loaded. It still needs bounded scope, checks, stop conditions, manual QA when needed, and review.
 
-#### What is a vertical slice?
+##### What is a vertical slice?
 
 It is a small piece of work that crosses enough layers to show real behavior. For user-facing work, prefer that over schema-only, backend-only, frontend-only, or tests-later beads.
 
-#### What should I do with an old PRD or closed issue?
+##### What should I do with an old PRD or closed issue?
 
 Treat it as historical evidence. Current active memory, current code, the active bead, the current approved PRD, and owner files are stronger than stale artifacts.
 
-#### What should I do with noisy logs or caches?
+##### What should I do with noisy logs or caches?
 
 Use Local Hygiene. The first commands only warn and dry-run. They should never delete, archive, compact, or move files. Evidence is preserved; caches are disposable only when ignored and regeneratable.
 
-#### What if I change direction mid-task?
+##### What if I change direction mid-task?
 
 Stop implementation. Decide whether the change belongs in a PRD amendment, `DECISIONS.md`, an authority file, a follow-up bead, or deferral.
 
-#### What is a Goal Frame?
+##### What is a Goal Frame?
 
 A Goal Frame is reviewed orientation for a durable goal. It can help guide workflow selection, but it cannot approve work, activate beads, replace a PRD, or become a backlog.
 
-#### What is the Candidate Queue?
+##### What is the Candidate Queue?
 
 It is a non-authoritative place to park intents you have not lost, with enough evidence and status to decide what deserves promotion. It can help review ideas, research needs, stale or blocked candidates, PRD candidates, and candidate bead visibility, but it cannot choose the active task, approve PRDs, activate beads, or authorize implementation.
 
-### Evidence, Checks, And Done
+#### Evidence, Checks, And Done
 
-#### What counts as evidence?
+##### What counts as evidence?
 
 Recorded checks, closeout evidence, manual verification, external read-only status, or accepted review notes. Chat confidence is not evidence.
 
-#### How does Precode stop false done?
+##### How does Precode stop false done?
 
 It separates implementation from proof, review, and next-task approval.
 
-#### When should I checkpoint?
+##### When should I checkpoint?
 
 Checkpoint when the task feels fuzzy, a session gets long, the agent changes several files, an approach fails twice, or scope starts expanding.
 
-### Approvals, Blockers, And Reports
+#### Approvals, Blockers, And Reports
 
-#### Why do I approve the next bead?
+##### Why do I approve the next bead?
 
 The next bead is a new commitment. Precode can propose it, but you decide whether to continue.
 
-#### What if work is blocked by manual setup?
+##### What if work is blocked by manual setup?
 
 Record the missing input, dashboard step, manual test, or narrower unblocker bead. Do not let the agent code around the blocker.
 
-#### Are token/cost numbers exact?
+##### Are token/cost numbers exact?
 
 Only when reliable telemetry exists. Missing spend is unknown, not zero.
 
-#### Does Precode replace judgment?
+##### Does Precode replace judgment?
 
 No. It makes state, scope, evidence, and approvals visible so your judgment is easier to apply.
 
