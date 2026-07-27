@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-07-26
+Document version: v0.1.19
+Last updated: 2026-07-27
 
 ## Purpose
 
@@ -22,7 +22,7 @@ A command can be useful without proving the work is done. Precode separates:
 - verification evidence: a check proved something and was recorded
 - user approval: a human approved a risky action
 
-Tool execution is part of PrecodeOS's advisory repo-native harness contract. Command classes, run contracts, generated sidecars, recorded checks, and transparent facades make agent work inspectable, but they are not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
+Tool execution is part of PrecodeOS's advisory repo-native harness contract. Command classes, run contracts, generated sidecars, recorded checks, and transparent facades make agent work inspectable, but they are not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer. Internally, command classification and files-in-play guardrail assembly live behind `scripts/precode_commands.py` while `scripts/os_compiler.py` remains the stable compiler facade.
 
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token read-only tools, browser or screenshot-heavy tools, delegated agents, and external mutation tools.
 

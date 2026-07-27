@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.35
-Last updated: 2026-07-11
+Document version: v0.3.36
+Last updated: 2026-07-27
 
 ## Executive Summary
 
@@ -413,7 +413,7 @@ The preview is not a project-management system, not a scheduler, and not an appr
 Precode's current architecture direction is router-first externally and modular internally.
 
 - Externally, `next-step.py` owns the generated "what now?" decision; `session-start.sh` presents it; future diagnostic wrappers may explain warnings after the router is trusted.
-- Internally, compiler domains move behind small service modules such as `scripts/precode_state.py`, `scripts/precode_outputs.py`, and `scripts/precode_routing.py`, while `scripts/os_compiler.py` remains the stable facade for existing commands, imports, and generated JSON shapes.
+- Internally, compiler domains move behind small service modules such as `scripts/precode_state.py`, `scripts/precode_outputs.py`, `scripts/precode_routing.py`, and `scripts/precode_commands.py`, while `scripts/os_compiler.py` remains the stable facade for existing commands, imports, and generated JSON shapes.
 - Role contracts stay compact: Navigator, Explorer, Builder, and Review define what to load, decide, avoid, and return. They do not become extra active memory or an autonomous specialist organization.
 - Ralph stays a bounded attempt engine for one active bead, not a multi-bead scheduler or autonomous agent platform.
 - Bootstrap now has staged setup gates: read-only source/target confidence, manifest preview, supervised setup plan, narrow fresh-target apply, existing-project adaptation planning, existing-Precode upgrade preview, recovery guidance, and explicit action-ID copy gates for safe missing package-owned files.
