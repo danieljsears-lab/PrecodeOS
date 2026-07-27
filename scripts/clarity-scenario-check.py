@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.55
-# Last updated: 2026-07-26
+# Version: v0.1.56
+# Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1898,6 +1898,71 @@ def assert_candidate_queue_contract(failures: list[dict[str, str]]) -> int:
         for term in required_terms:
             if term not in text:
                 failures.append({"scenario": f"candidate queue contract: {path}", "expected": term, "actual": "missing"})
+    return len(required_terms_by_path)
+
+
+def assert_authority_map_query_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/prds/PRD-045-authority-map-query-cli.md"): [
+            "Authority Map Query CLI",
+            "read-only lookup over freshly compiled authority-map data",
+            "instead of treating stale generated JSON as authority",
+            "task selection",
+            "command approval",
+            "owner-file replacement",
+            "runtime enforcement",
+            "private maintainer inventory exposure",
+            "package-manager behavior",
+        ],
+        Path("README.md"): [
+            "python3 scripts/authority-map-query.py --query \"active memory\"",
+            "navigation-only",
+            "does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "Authority Map Query CLI",
+            "scripts/authority-map-query.py",
+            "precode authority-map",
+            "navigation evidence only",
+            "does not choose tasks, approve commands, replace owner files, approve PRDs, activate beads, enforce runtime behavior, expose private maintainer inventory, or imply package-manager behavior",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "Authority Map Query CLI",
+            "read-only navigation extension over existing authority-map contracts",
+            "must not become task selection, command approval, owner-file replacement, runtime enforcement, private maintainer inventory, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "Authority Map Query CLI",
+            "read-only navigation command",
+            "does not approve commands, choose tasks, replace owner files, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior",
+        ],
+        Path("llms.txt"): [
+            "scripts/authority-map-query.py",
+            "read-only authority-map navigation helper",
+            "not command approval, task selection, owner-file replacement, PRD approval, bead activation, runtime enforcement, private maintainer inventory, or package-manager behavior",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"authority map query contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Beginner daily work | `python3 scripts/authority-map-query.py",
+            "Beginner daily work | `python3 scripts/precode_cli.py authority-map",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Beginner daily work | `python3 scripts/authority-map-query.py",
+            "Beginner daily work | `python3 scripts/precode_cli.py authority-map",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"authority map query forbidden beginner command: {path}", "expected": "absent", "actual": term})
     return len(required_terms_by_path)
 
 
@@ -5320,6 +5385,7 @@ def main() -> int:
     harness_contract_scenario_count = assert_harness_contract_hardening(failures)
     cross_reference_staleness_scenario_count = assert_cross_reference_staleness_review_lane_contract(failures)
     package_knowledge_lint_scenario_count = assert_package_knowledge_lint_contract(failures)
+    authority_map_query_scenario_count = assert_authority_map_query_contract(failures)
     task_suitability_scenario_count = assert_task_suitability_contract(failures)
     assert_stuck_recovery_contract(failures)
     assert_no_engineer_fallback_prompt_pack(failures)
@@ -5905,6 +5971,7 @@ def main() -> int:
         + harness_contract_scenario_count
         + cross_reference_staleness_scenario_count
         + package_knowledge_lint_scenario_count
+        + authority_map_query_scenario_count
         + task_suitability_scenario_count
         + len(goal_frame_scenarios)
         + len(recovery_scenarios)

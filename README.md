@@ -338,9 +338,12 @@ bash scripts/validate-memory.sh
 python3 scripts/version-check.py
 python3 scripts/file-inventory.py --check
 python3 scripts/package-knowledge-lint.py --check
+python3 scripts/authority-map-query.py --query "active memory"
 python3 scripts/extension-check.py
 python3 scripts/public-repo-check.py
 ```
+
+`python3 scripts/authority-map-query.py --query "active memory"` and the optional `python3 scripts/precode_cli.py authority-map --query "active memory"` facade are navigation-only package map queries. They help reviewers and agents find candidate authority contracts before reading canonical Markdown, but output does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior.
 
 ## If You're An Agent Reading This On Behalf Of A User
 

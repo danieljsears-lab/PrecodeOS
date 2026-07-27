@@ -8,7 +8,7 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.30
+Document version: v0.1.31
 Last updated: 2026-07-27
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
@@ -34,6 +34,7 @@ Use Question-To-Artifact Filing when a valuable answer from chat, planning, revi
 Use Source-To-Promotion Hygiene Review before turning a source summary, Candidate Queue entry, memory claim, or durable chat analysis into authority. It checks source refs, evidence strength, open conflicts, proposed owner, promotion action, approval required, and stop condition; it does not promote files, approve PRDs, choose tasks, update `tasks/todo.md`, or activate beads.
 
 For package-health hardening or maintainer validation, use the existing public checks first: `python3 scripts/version-check.py`, `python3 scripts/file-inventory.py --check`, `python3 scripts/package-knowledge-lint.py --check`, `python3 scripts/extension-check.py`, and `python3 scripts/public-repo-check.py`. These commands surface drift and boundary evidence; they do not approve edits, cleanup, release, security posture, generated-output authority, CI enforcement, task selection, or package-manager behavior.
+Use `scripts/authority-map-query.py` as a read-only authority-map navigation helper when a maintainer, contributor, or AI assistant needs candidate owner files, surface classes, authority, non-authority, or load-trigger contracts before full-file reads. It compiles current authority-map data in memory and may be invoked directly or through `scripts/precode_cli.py authority-map`; its output is not command approval, task selection, owner-file replacement, PRD approval, bead activation, runtime enforcement, private maintainer inventory, or package-manager behavior.
 
 ## Start Here
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-07-26
+# Version: v0.1.5
+# Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -116,6 +116,17 @@ def build_parser() -> argparse.ArgumentParser:
     ))
     update_plan_preview.add_argument("--target", required=True, help="existing Precode target path")
     update_plan_preview.add_argument("--json", action="store_true", help="print JSON output")
+
+    authority_map = add_dry_run(subparsers.add_parser(
+        "authority-map",
+        help="query authority-map contracts for navigation only; does not approve work",
+    ))
+    authority_map.add_argument("--query", help="query text")
+    authority_map.add_argument("--path", help="exact public package path to look up")
+    authority_map.add_argument("--surface-class", help="filter by authority-map surface class")
+    authority_map.add_argument("--list-surface-classes", action="store_true", help="include authority-map surface-class summaries")
+    authority_map.add_argument("--limit", type=int, help="maximum matches to return")
+    authority_map.add_argument("--json", action="store_true", help="print JSON output")
     return parser
 
 
@@ -197,6 +208,21 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             args.target,
             "--update-plan-preview",
         ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "authority-map":
+        command = ["python3", "scripts/authority-map-query.py"]
+        if args.query:
+            command.extend(["--query", args.query])
+        if args.path:
+            command.extend(["--path", args.path])
+        if args.surface_class:
+            command.extend(["--surface-class", args.surface_class])
+        if args.list_surface_classes:
+            command.append("--list-surface-classes")
+        if args.limit is not None:
+            command.extend(["--limit", str(args.limit)])
         if args.json:
             command.append("--json")
         return [command]

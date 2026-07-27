@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.94
-Last updated: 2026-07-26
+Document version: v0.7.95
+Last updated: 2026-07-27
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -822,7 +822,7 @@ PrecodeOS has many scripts because setup, daily work, support, evidence, review,
 | Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
 | Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
 | Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
-| Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. |
+| Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `authority-map-query.py --query "active memory"`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. Authority-map query is navigation-only: it helps find candidate owner files and does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior. |
 
 The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.
 

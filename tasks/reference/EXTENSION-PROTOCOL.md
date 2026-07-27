@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.27
-Last updated: 2026-07-26
+Document version: v0.1.28
+Last updated: 2026-07-27
 
 ## Purpose
 
@@ -188,6 +188,8 @@ Generated evidence should live under `logs/` unless a legacy Precode report alre
 Generated JSON and JSONL files must be treated as evidence only. They may feed summaries, audits, or human review, but they must not directly rewrite active memory, bead state, PRDs, decisions, or product authority files.
 
 Generated reports, sidecars, and public generated HTML added by an extension should be represented in `logs/authority-map.json` surface classes when the generated map is refreshed. That classification is orientation evidence only; it does not approve the extension, make generated output authoritative, or replace the owning protocol, adapter, PRD, decision, authority file, or approved bead.
+
+The Authority Map Query CLI is a read-only navigation extension over existing authority-map contracts. It may query freshly compiled authority-map data for candidate paths, surface classes, authority, non-authority, and load triggers, and the optional `precode authority-map` facade may transparently delegate to the script. It must not become task selection, command approval, owner-file replacement, runtime enforcement, private maintainer inventory, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.
 
 `logs/package-knowledge-lint.json` may expose Package Knowledge Lint findings for broken internal links or anchors, duplicate heading labels, orphan public references, stale generated sidecar cues, duplicate authority claims, and public/private boundary risk across the public package core. It is generated evidence only: it must not approve edits, choose tasks, promote sources, rewrite docs automatically, declare stale claims authoritative, create proof, accept implementation, create a checker gate, create registry or optional-pack behavior, or create install/update, release-channel, or package-manager behavior.
 

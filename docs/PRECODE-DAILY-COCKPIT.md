@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.50
-Last updated: 2026-07-26
+Document version: v0.1.51
+Last updated: 2026-07-27
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, or protocol surface. If a first session feels too large, use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact linear builder build-order card, then return here.
 
@@ -54,7 +54,7 @@ Use the smallest command set that matches your moment. Command surface triage is
 | Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | Use this cockpit and the active bead before opening support, maintainer, or advanced checks. |
 | Setup, support, or recovery | `docs/PRECODE-GUIDED-SETUP.md`, `docs/PRECODE-SUPPORT-RUNBOOK.md`, `docs/PRECODE-TROUBLESHOOTING.md` | `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong here when the symptom calls for them. |
 | Advanced evidence or review | The explicit prompt alias or owner protocol for the stage | Ralph, Candidate Queue, Attribution, Team, PRD handoff, Release, Trace, and review commands are conditional surfaces, not daily starting points. |
-| Maintainer validation | Maintainer package work only | Public repo/package checks and generated docs or roadmap checks stay out of the beginner daily loop. |
+| Maintainer validation | Maintainer package work only | Public repo/package checks, generated docs or roadmap checks, and navigation-only package map queries such as `python3 scripts/authority-map-query.py --query "active memory"` stay out of the beginner daily loop. |
 
 The optional `precode` facade is only a shortcut over canonical commands. If command output sounds like approval, return to owner files, proof, and explicit user approval.
 

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.19
+Document version: v0.1.20
 Last updated: 2026-07-27
 
 ## Purpose
@@ -33,6 +33,8 @@ Use `tasks/prds/PRD-043-agent-access-level-guidance.md` when changing the plain-
 Use `scripts/precode_cli.py`, the optional local `precode` console command, or the optional npm `precodeos` preview entry only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, define release-channel behavior, or make generated output authoritative. The npm entry is limited to read-only setup, upgrade, and update-plan previews and must not expose apply flags or postinstall target mutation. Any updater compatibility policy metadata is evidence interpretation governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview metadata is grouped generated evidence governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`. Neither metadata path is a new command class, registry lookup, dist-tag resolver, channel selector, or package-manager permission.
 
 Command surface triage is reader guidance only. Grouping commands by beginner daily work, setup/support/recovery, advanced evidence/review, and maintainer validation does not change tool-call classes, approve commands, choose tasks, create a router or registry, expand wrapper behavior, or make generated output authoritative. Beginner-facing command surfaces should expose advanced command families as trigger summaries and route detailed use to Prompt Patterns or the owner protocol instead of becoming a script menu.
+
+The Authority Map Query CLI is a read-only navigation command for maintainer, contributor, and AI-assistant orientation over existing authority-map contracts. `python3 scripts/authority-map-query.py` and the transparent `precode authority-map` facade may identify candidate owner files, surface classes, authority, non-authority, and load triggers, but the output does not approve commands, choose tasks, replace owner files, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior.
 
 `scripts/clarity-scenario-check.py` includes regression fixtures for command classification, generated-refresh demotion, optional CLI facade delegation, missing setup-apply approval, and Ralph approval-needed attempt handling. These fixtures prove boundary wording and refusal behavior stay stable; they are not command approval or verification proof for unrelated work.
 
