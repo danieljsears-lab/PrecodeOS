@@ -1019,7 +1019,7 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
 | Risky or uncertain idea | Challenge planning bead | `Challenge this idea before implementation. Name risks, assumptions, approval gates, and the smallest safe test.` |
 | Work is stuck or confusing | Checkpoint or state repair | `Checkpoint and tell me whether to continue, repair, split, block, or stop.` |
-| Security, release, docs freshness, dependency, engineering-quality, draft-PRD quality, or package cross-reference/staleness risk needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, code quality, production readiness, transitions, parallel execution, declare stale claims authoritative, rewrite owner files, or create tasks.` |
+| Security, release, docs freshness, dependency, engineering-quality, polish/product-taste, draft-PRD quality, or package cross-reference/staleness risk needs a named review lens | Review Lane | `Use the Review Lanes Protocol. Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane. Show findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path. Do not approve review, PRDs, release, security, compliance, design quality, UX quality, code quality, production readiness, transitions, parallel execution, declare stale claims authoritative, rewrite owner files, create product authority from reviewer taste, or create tasks.` |
 | A requirement, bug behavior, or acceptance criterion has unclear proof | Requirement-to-proof review | `Review the proof for this requirement, bug behavior, or acceptance criterion. Show evidence lane, recorded source, what this proves, what it does not prove, remaining uncertainty, missing proof, acceptance question, and recommendation. Do not accept implementation or treat generated tests, trace tables, screenshots, browser notes, AI critique, external status, or generated reports as proof by themselves.` |
 | Nearly shippable release-relevant work | Release candidate evidence profile | `Prepare a Release Candidate Evidence Profile. Show changed surfaces, checks, requirement or behavior proven, evidence lane, recorded source, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, release quality cues, risks, approvals still required, and decision state. Do not approve release, certify production readiness, or mutate anything.` |
 | Work may be done | Completion check or Review / Acceptance Skill | `Run a completion check, then use the Review / Acceptance Skill to recommend accepted, revise, split, blocked, or stop based on evidence.` |
@@ -1107,7 +1107,7 @@ Why this matters: In Precode, done means proved and reviewed, not merely plausib
 
 ## Use A Review Lane
 
-Use a Review Lane when one active bead or one draft PRD needs a named specialist review question without turning that specialist into a fake teammate, product approver, or approval authority.
+Use a Review Lane when one active bead, one draft PRD, or one bounded package documentation/reference surface needs a named specialist review question without turning that specialist into a fake teammate, product approver, or approval authority.
 
 Use Security Review Lane for auth, permissions, secrets, personal data, uploads, payments, admin, destructive actions, dependency risk, or other sensitive surfaces.
 
@@ -1117,6 +1117,8 @@ Use Dependency Graph Review Lane for dependency, blocker, follow-up, transition,
 
 Use Engineering Quality Review Lane for a completed or nearly completed active bead when scope discipline, simplest acceptable shape, owner-file and boundary integrity, proof quality, configuration or dependency handling, sensitive-surface routing, stop-condition observance, or approval-gate observance need review.
 
+Use Polish / Product-Taste Review Lane for a completed or nearly completed user-facing active bead when visible user flow, screen behavior, copy clarity, target-user comprehension, acceptance-oracle fit, manual QA path, roughness, or remaining human taste judgment needs review.
+
 Use PRD Quality Review Lane for a draft PRD before approval when user problem clarity, before/after moment, strategy fit, non-goals, assumptions, stale or conflicting inputs, acceptance quality, requirement-to-proof readiness, open questions, handoff readiness, or smallest first slice need review.
 
 Use Cross-Reference / Staleness Review Lane for a bounded package docs or reference surface when stale file references, renamed prompts or aliases, missing owner pointers, stale generated-surface pointers, duplicate concept labels, contradiction risk, or public/private boundary drift may misroute a builder or agent.
@@ -1125,7 +1127,7 @@ Say this:
 
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
 Do not accept implementation, approve review, approve PRDs, approve release, approve transition, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, automatically edit stale references, declare stale claims authoritative, rewrite generated output as source truth, approve parallel execution, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, generated HTML, Work Graph reports, review output, or confidence as proof.
 ```
@@ -1135,6 +1137,8 @@ For dependency graph review, stale or misleading Work Graph output means repair 
 For PRD quality review, the lane complements Requirements Gap And Conflict Review. It reviews product quality and handoff readiness; it does not approve the PRD, rewrite the PRD, generate implementation tasks, activate beads, certify quality, create scorecard authority, or replace the normal PRD approval rules.
 
 For Engineering Quality Review Lane, the lane complements the Engineering Quality Standards Protocol. It reviews completed work against the quality floor; it does not certify code quality, certify production readiness, score code, replace tests or linters, create checker authority, create follow-up tasks, or replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.
+
+For Polish / Product-Taste Review Lane, the lane reviews visible experience risk as advisory input only. It does not certify design quality or UX quality, approve acceptance or release, make reviewer taste product authority, treat screenshots or browser notes as proof by themselves, create follow-up tasks, require professional UX research, create a generated report, or become a required gate.
 
 For Cross-Reference / Staleness Review Lane, semantic drift, duplicate concepts, and contradiction risk are manual review prompts. Current owner files win. If generated HTML or another generated surface is stale, repair or regenerate from source Markdown; do not hand-edit generated output as source truth.
 

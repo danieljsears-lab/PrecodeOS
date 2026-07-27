@@ -3192,7 +3192,9 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "release / docs freshness review lane",
         "dependency graph review lane",
         "engineering quality review lane",
+        "polish / product-taste review lane",
         "prd quality review lane",
+        "tasks/prds/prd-044-polish-product-taste-review-lane.md",
         "tasks/prds/prd-038-engineering-quality-review-lane.md",
         "lane:",
         "review target:",
@@ -3209,6 +3211,7 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "human prd approval",
         "security certification",
         "compliance approval",
+        "design certification",
         "create follow-up tasks",
         "create implementation tasks",
         "rewrite prds",
@@ -3216,6 +3219,10 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "checker authority",
         "certify code quality",
         "certify production readiness",
+        "certify design quality",
+        "certify ux quality",
+        "create product authority from reviewer taste",
+        "treat screenshots or browser notes as proof by themselves",
         "work graph reports are evidence only",
         "repair the markdown owner files",
         "approve parallel execution",
@@ -3238,6 +3245,13 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "inspect app code",
         "add repo heuristics",
         "language-aware analysis",
+        "visible user flow",
+        "copy clarity",
+        "target-user comprehension",
+        "acceptance-oracle fit",
+        "manual qa path",
+        "remaining human taste judgment",
+        "professional ux research",
     ]
     for term in required_terms:
         if term not in protocol_text:
@@ -3245,9 +3259,10 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
 
     prompt_terms = [
         "use the review lanes protocol for this active bead or draft prd",
-        "run exactly one lane: security review lane, release / docs freshness review lane, dependency graph review lane, engineering quality review lane, or prd quality review lane",
+        "run exactly one lane: security review lane, release / docs freshness review lane, dependency graph review lane, engineering quality review lane, polish / product-taste review lane, prd quality review lane, or cross-reference / staleness review lane",
         "run exactly one lane: dependency graph review lane",
         "run exactly one lane: engineering quality review lane",
+        "run exactly one lane: polish / product-taste review lane",
         "run exactly one lane: prd quality review lane",
         "findings, missing proof, acceptance questions",
         "missing or non-done dependencies",
@@ -3262,8 +3277,10 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "approve transitions",
         "approve parallel execution",
         "certify security or compliance",
+        "certify design quality or ux quality",
         "certify code quality",
         "certify production readiness",
+        "create product authority from reviewer taste",
         "create follow-up tasks",
         "create implementation tasks",
         "rewrite prds",
@@ -3277,6 +3294,12 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "treat work graph reports or confidence as proof",
         "mutate github",
         "mutate external systems",
+        "visible user flow",
+        "copy clarity",
+        "target-user comprehension",
+        "acceptance-oracle fit",
+        "manual qa path",
+        "remaining human taste judgment",
     ]
     for term in prompt_terms:
         if term not in prompt_text:
@@ -3288,6 +3311,7 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "release / docs freshness review lane",
         "dependency graph review lane",
         "engineering quality review lane",
+        "polish / product-taste review lane",
         "prd quality review lane",
         "stale or misleading work graph output",
         "product quality and handoff readiness",
@@ -3298,15 +3322,42 @@ def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
         "scorecard authority",
         "checker authority",
         "security sign-off",
+        "design quality",
+        "ux quality",
         "code-quality certification",
         "production-readiness certification",
+        "reviewer taste product authority",
     ):
         if term not in user_guide_text:
             failures.append({"scenario": "review lanes user guidance", "expected": term, "actual": "missing"})
 
-    for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance", "engineering quality review lane", "certify code quality"):
+    for term in ("review lanes protocol", "not as required frontmatter", "certify security or compliance", "engineering quality review lane", "polish / product-taste review lane", "certify code quality", "certify design quality or ux quality"):
         if term not in bead_schema_text:
             failures.append({"scenario": "review lanes bead schema", "expected": term, "actual": "missing"})
+
+    prd_polish_text = Path("tasks/prds/PRD-044-polish-product-taste-review-lane.md").read_text(encoding="utf-8").lower()
+    for term in (
+        "completed or nearly completed user-facing active bead",
+        "visible user flow",
+        "copy clarity",
+        "target-user comprehension",
+        "acceptance-oracle fit",
+        "manual qa path",
+        "remaining human taste judgment",
+        "screenshots or browser notes only as evidence",
+        "not accept implementation",
+        "certify design quality",
+        "certify ux quality",
+        "product authority from reviewer taste",
+        "follow-up task creation",
+        "generated report",
+        "checker gate",
+        "required gate",
+        "command-wrapper behavior",
+        "package-manager behavior",
+    ):
+        if term not in prd_polish_text:
+            failures.append({"scenario": "polish product-taste review lane prd", "expected": term, "actual": "missing"})
 
     prd_text = Path("tasks/prds/PRD-038-engineering-quality-review-lane.md").read_text(encoding="utf-8").lower()
     for term in (

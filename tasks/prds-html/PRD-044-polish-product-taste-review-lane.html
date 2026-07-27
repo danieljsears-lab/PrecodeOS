@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-044 -- Polish / Product-Taste Review Lane</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-044 -- Polish / Product-Taste Review Lane</h1>
+  <p class="muted">Static HTML generated from <code>PRD-044-polish-product-taste-review-lane.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-044-polish-product-taste-review-lane.md#prd-044-polish-product-taste-review-lane">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Polish / Product-Taste Review Lane</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-26</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the advisory Polish / Product-Taste Review Lane for one completed or nearly completed user-facing active bead.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, design certification, UX certification, product authority, generated proof, screenshot-as-proof shortcut, scorecard authority, checker gate, generated report, follow-up task creation, owner-file rewrite, professional UX research requirement, GitHub mutation, external mutation, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, package-manager behavior, command-wrapper behavior, or a persona system.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-044-FR01</code></td><td>Review Lanes Protocol must define Polish / Product-Taste Review Lane as optional advisory review for one completed or nearly completed user-facing active bead.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-044-FR02</code></td><td>Lane input guidance must include the active bead, primary authority, files in play or changed-file summary, acceptance oracle, recorded checks, manual verification path, screenshots or browser notes only as evidence, and Closeout Evidence or current closeout draft.</td><td>P0</td><td>Keeps review grounded.</td></tr><tr><td><code>PRD-044-FR03</code></td><td>Lane output must use the existing Review Lanes fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-044-FR04</code></td><td>Lane focus must include visible user flow, screen behavior, copy clarity, target-user comprehension, acceptance-oracle fit, manual QA path, rough or polish risks, remaining human taste judgment, and target-user feedback needs.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-044-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, Bead Schema, package inventory, and AI navigation must expose the lane only as conditional review guidance.</td><td>P1</td><td>Discoverability without daily-route inflation.</td></tr><tr><td><code>PRD-044-FR06</code></td><td>Fixture coverage must prove the lane remains advisory and does not certify design or UX quality, approve acceptance or release, make reviewer taste product authority, treat screenshots as proof, create follow-up tasks, create a generated report, create a checker gate, create a required gate, or create command-wrapper/package-manager behavior.</td><td>P1</td><td>Use existing clarity scenario checks.</td></tr><tr><td><code>PRD-044-FR07</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-044-polish-product-taste-review-lane">PRD-044 -- Polish / Product-Taste Review Lane</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS has advisory review lanes for security, release/docs freshness, dependency relationships, engineering quality, PRD quality, and package cross-reference/staleness. PRD-044 adds a narrow post-implementation lane for one user-facing bead where the work technically runs but the visible experience may still be confusing, poorly worded, rough, or weak against the acceptance oracle.</p>
+<p>This is a protocol-and-prompt slice. It does not add a checker, command, generated report, design scorecard, acceptance replacement, release gate, or professional UX research requirement.</p>
+<h2 id="problem">Problem</h2>
+<p>Non-technical builders can accept work that passes checks but still feels hard to understand, visibly rough, weakly connected to the target user, or unclear against the promised before/after moment.</p>
+<p>Existing Engineering Quality, PRD Quality, Release / Docs Freshness, Verification Guardrail, and Acceptance surfaces cover important adjacent risks, but none provides a plain post-implementation lens for visible product feel while preserving human product judgment.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Define Polish / Product-Taste Review Lane as advisory review input for one completed or nearly completed user-facing active bead.</li><li>Keep the lane tied to the existing Review Lanes output contract and recommendation values.</li><li>Review visible user flow, screen behavior, copy clarity, target-user comprehension, acceptance-oracle fit, manual QA path, polish risks, and remaining human taste judgment.</li><li>Keep reviewer taste subordinate to owner files, PRDs, acceptance criteria, recorded proof, and human approval.</li><li>Make the public PRD, protocol, prompts, docs, package inventory, bead schema, AI navigation, clarity fixtures, generated surfaces, and maintainer roadmap history agree.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No design certification, UX certification, taste score, scorecard, checker, command, generated report, required review gate, professional UX research requirement, app-code parser, linter replacement, or screenshot-as-proof shortcut.</li><li>No implementation acceptance, review approval, PRD approval, bead activation, transition approval, release approval, follow-up task creation, owner-file rewrite, GitHub mutation, external mutation, registry, optional pack, install/update behavior, release-channel behavior, package-manager behavior, command-wrapper behavior, or persona system.</li><li>No change to Acceptance, Verification Guardrail, Engineering Quality Review, PRD Quality Review, Release / Docs Freshness, Release Readiness, Requirements Gap And Conflict Review, Product Discovery Validation, or Product owner-file authority.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-044-FR01</code></td><td>Review Lanes Protocol must define Polish / Product-Taste Review Lane as optional advisory review for one completed or nearly completed user-facing active bead.</td><td>P0</td><td>Owner protocol update.</td></tr><tr><td><code>PRD-044-FR02</code></td><td>Lane input guidance must include the active bead, primary authority, files in play or changed-file summary, acceptance oracle, recorded checks, manual verification path, screenshots or browser notes only as evidence, and Closeout Evidence or current closeout draft.</td><td>P0</td><td>Keeps review grounded.</td></tr><tr><td><code>PRD-044-FR03</code></td><td>Lane output must use the existing Review Lanes fields and recommendation values.</td><td>P0</td><td>Stable review shape.</td></tr><tr><td><code>PRD-044-FR04</code></td><td>Lane focus must include visible user flow, screen behavior, copy clarity, target-user comprehension, acceptance-oracle fit, manual QA path, rough or polish risks, remaining human taste judgment, and target-user feedback needs.</td><td>P0</td><td>Review substance.</td></tr><tr><td><code>PRD-044-FR05</code></td><td>Prompt Patterns, User Guide, Daily Cockpit, Bead Schema, package inventory, and AI navigation must expose the lane only as conditional review guidance.</td><td>P1</td><td>Discoverability without daily-route inflation.</td></tr><tr><td><code>PRD-044-FR06</code></td><td>Fixture coverage must prove the lane remains advisory and does not certify design or UX quality, approve acceptance or release, make reviewer taste product authority, treat screenshots as proof, create follow-up tasks, create a generated report, create a checker gate, create a required gate, or create command-wrapper/package-manager behavior.</td><td>P1</td><td>Use existing clarity scenario checks.</td></tr><tr><td><code>PRD-044-FR07</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-044-FR01</code></td><td>Review Lanes Protocol defines Polish / Product-Taste Review Lane as advisory review for completed or nearly completed user-facing active beads.</td><td>Source review and clarity scenario.</td></tr><tr><td><code>PRD-044-FR02</code></td><td>Required input guidance names active bead, primary authority, files or changed-file summary, acceptance oracle, checks, manual verification path, screenshots or browser notes as evidence only, and Closeout Evidence.</td><td>Source review.</td></tr><tr><td><code>PRD-044-FR03</code></td><td>Lane output uses <code>Lane</code>, <code>Review target</code>, <code>Authority checked</code>, <code>Evidence reviewed</code>, <code>Findings</code>, <code>Missing proof</code>, <code>Acceptance questions</code>, <code>Recommendation</code>, <code>Approval still required</code>, and <code>Promotion path</code>.</td><td>Clarity scenario.</td></tr><tr><td><code>PRD-044-FR04</code></td><td>Lane focus covers visible flow, screen behavior, copy, target-user comprehension, acceptance-oracle fit, manual QA, polish risk, human taste judgment, and target-user feedback.</td><td>Clarity scenario.</td></tr><tr><td><code>PRD-044-FR05</code></td><td>Prompt, docs, bead schema, inventory, and AI navigation mention the lane without making it a required gate.</td><td>Source review and generated docs HTML.</td></tr><tr><td><code>PRD-044-FR06</code></td><td>Clarity scenario catches required lane terms and forbidden authority drift.</td><td><code>python3 scripts/clarity-scenario-check.py</code>.</td></tr><tr><td><code>PRD-044-FR07</code></td><td>Roadmap, journal, changelog, PRD HTML, docs HTML, and roadmap HTML are current and rendered shortstats are numeric.</td><td>Maintainer checks and rendered roadmap inspection.</td></tr></tbody></table></div>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/clarity-scenario-check.py
+python3 scripts/version-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/public-repo-check.py
+python3 scripts/prd-html.py
+python3 scripts/prd-html.py --check
+python3 scripts/docs-html.py
+python3 scripts/docs-html.py --check
+python3 _maintainer/scripts/docs-html.py
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p>The Polish / Product-Taste Review Lane is a review conversation shape. It may recommend <code>accepted</code>, <code>revise</code>, <code>split</code>, <code>blocked</code>, or <code>stop</code>, but the recommendation is not acceptance. It must not accept implementation, certify design quality, certify UX quality, or create product authority from reviewer taste.</p>
+<p>Reviewer taste is not product authority. If findings imply new product direction, route through normal Precode review: Closeout Evidence, PRD amendment, owner-file update, Candidate Queue entry after user review, candidate or approved bead after user review, Release Readiness, reviewed memory after user review, target-user feedback, or another Review Lane.</p>
+<p>Screenshots, browser notes, and AI critique are evidence only. They can help explain what was inspected, but they do not prove acceptance or design quality by themselves.</p>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B044-polish-product-taste-review-lane</code></td><td><code>PRD-044-FR01</code> through <code>PRD-044-FR07</code></td><td>PRD shard, protocol guidance, prompt guidance, docs/inventory/navigation, clarity coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-044-polish-product-taste-review-lane.md</code></td><td>clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

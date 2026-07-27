@@ -72,7 +72,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Product or requirement shaping | PRD Shaping | Draft PRD or PRD amendment | PRD Protocol, Idea-to-PRD Workflow, and relevant owner files | PRD approval, owner-file mutation, or bead activation is being implied. |
 | Future idea not ready for PRD or bead | Candidate Queue | Candidate Queue entry or shaping proposal | Candidate Queue Protocol | Ranking is treated as implementation priority or task authority. |
 | Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
-| Active bead, draft PRD, or bounded package docs/reference surface needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, stale-claim authority, owner-file rewrite permission, or task creation. |
+| Active bead, draft PRD, or bounded package docs/reference surface needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, design certification, stale-claim authority, owner-file rewrite permission, product authority, or task creation. |
 | PRD needs handoff readiness review | PRD Handoff Readiness Packet | Read-only PRD handoff packet | PRD Protocol, Decomposition Protocol, and Review Lanes Protocol | Readiness output is treated as PRD approval or bead activation. |
 | Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions, not deployment action | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, provider configuration, dashboard mutation, or external mutation is being implied. |
 | Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
@@ -652,13 +652,13 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
 
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
 
 Load the active bead, draft PRD, or bounded package docs/reference surface; primary authority; files in play or changed-file summary when relevant; recorded checks or source evidence when relevant; manual verification when relevant; closeout evidence when relevant; Work Graph evidence when dependency relationships are being reviewed; PRD Protocol when PRD quality is being reviewed; generated-doc freshness results when package cross-references are being reviewed; and only the owner files needed for this lane.
 
 Return: Lane, Review target, Authority checked, Evidence reviewed, Findings, Missing proof, Acceptance questions, Recommendation, Approval still required, and Promotion path.
 
-Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, automatically edit stale references, declare stale claims authoritative, rewrite generated output as source truth, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, generated HTML, Work Graph reports, screenshots, browser notes, GitHub status, AI confidence, or review output as proof.
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, certify security or compliance, certify design quality or UX quality, certify code quality, certify production readiness, create product authority from reviewer taste, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, automatically edit stale references, declare stale claims authoritative, rewrite generated output as source truth, create scorecard authority, create checker authority, run mutating commands, mutate GitHub, mutate external systems, or treat generated reports, generated HTML, Work Graph reports, screenshots, browser notes, GitHub status, AI critique, AI confidence, or review output as proof.
 ```
 
 ### Precode Idea Coach
@@ -1143,6 +1143,23 @@ Tell me whether any finding belongs in Closeout Evidence, a PRD amendment, owner
 Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, certify code quality, certify production readiness, score code, create scorecard authority, create checker authority, create follow-up tasks, rewrite owner files, activate beads, replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness, mutate GitHub, mutate external systems, or treat review output or confidence as proof.
 ```
 
+## Polish / Product-Taste Review Lane
+
+```text
+Use the Review Lanes Protocol for this completed or nearly completed user-facing active bead.
+Run exactly one lane: Polish / Product-Taste Review Lane.
+
+Load the active bead, primary authority, files in play or changed-file summary, acceptance oracle, recorded checks, manual verification path, screenshots or browser notes only as evidence, and Closeout Evidence or current closeout draft.
+
+Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
+
+Focus on visible user flow, screen behavior, copy clarity, target-user comprehension, acceptance-oracle fit, manual QA path, rough or polish risks, remaining human taste judgment, and target-user feedback needed before stronger acceptance or release confidence.
+
+Tell me whether any finding belongs in Closeout Evidence, a PRD amendment, owner-file update, Candidate Queue entry after user review, candidate or approved bead, Release Readiness, reviewed memory, target-user feedback, or another Review Lane.
+
+Recommend only accepted, revise, split, blocked, or stop. Do not accept implementation, approve review, approve release, approve transitions, approve PRDs, certify design quality, certify UX quality, create product authority from reviewer taste, treat screenshots, browser notes, AI critique, or confidence as proof by themselves, create follow-up tasks, rewrite owner files, activate beads, require professional UX research, mutate GitHub, mutate external systems, create a scorecard, create checker authority, create a generated report, become a required gate, create a command wrapper, or imply registry, optional-pack, install/update, release-channel, or package-manager behavior.
+```
+
 ## Cross-Reference / Staleness Review Lane
 
 ```text
@@ -1462,9 +1479,9 @@ Do not choose tasks, accept implementation, approve review, approve merge, appro
 
 ```text
 Use the Review Lanes Protocol for this active bead or draft PRD.
-Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, or PRD Quality Review Lane.
+Run exactly one lane: Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, or Cross-Reference / Staleness Review Lane.
 Show lane, review target, authority checked, evidence reviewed, findings, missing proof, acceptance questions, recommendation, approval still required, and promotion path.
-Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, certify code quality, certify production readiness, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, review output, or confidence as proof.
+Do not accept implementation, approve review, approve PRDs, approve release, certify security or compliance, certify design quality or UX quality, certify code quality, certify production readiness, create product authority from reviewer taste, create follow-up tasks or implementation tasks, rewrite PRDs or owner files, create scorecard authority, create checker authority, mutate GitHub, mutate external systems, or treat generated reports, screenshots, browser notes, AI critique, review output, or confidence as proof.
 ```
 
 ## Release Candidate Evidence Profile

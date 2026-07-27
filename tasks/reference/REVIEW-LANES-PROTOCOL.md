@@ -2,14 +2,14 @@
 <!-- ANCHOR: review-lanes-protocol -->
 
 > AUTHORITY: Optional advisory review lane templates for one active bead, one draft PRD, or one bounded package documentation/reference surface.
-> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
-> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, PRD Quality Review Lane, Cross-Reference / Staleness Review Lane, or Review Lanes review for one active bead, one draft PRD, or one bounded package documentation/reference surface.
+> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, transition approval, review acceptance, implementation acceptance, release approval, design certification, security certification, compliance approval, generated proof, Work Graph authority, command approval, parallel execution approval, follow-up task creation, owner-file rewrite, product authority, external mutation, GitHub mutation, package-manager behavior, task-runner behavior, or a persona system.
+> LOAD_WHEN: A user asks for a Security Review Lane, Release / Docs Freshness Review Lane, Dependency Graph Review Lane, Engineering Quality Review Lane, Polish / Product-Taste Review Lane, PRD Quality Review Lane, Cross-Reference / Staleness Review Lane, or Review Lanes review for one active bead, one draft PRD, or one bounded package documentation/reference surface.
 > CLASS: reference
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
+Document version: v0.1.9
 Last updated: 2026-07-26
 
 ## Purpose
@@ -55,6 +55,14 @@ Use the Engineering Quality Review Lane when the active bead is complete or near
 - proof quality, recorded checks, manual verification, and remaining uncertainty
 - stop-condition observance, approval-gate observance, and whether higher-risk work should have routed to Architecture Shaping, System Design Pattern, Verification Guardrail, Tool Execution, Security Review, Release / Docs Freshness, or Dependency Graph Review
 
+Use the Polish / Product-Taste Review Lane when one completed or nearly completed user-facing active bead needs review of whether the visible experience is understandable, useful, coherent with the acceptance oracle, manually QA-able, and ready for human taste judgment:
+
+- visible user flow, screen behavior, copy clarity, onboarding, docs experience, or user-facing behavior affected by the bead
+- target-user comprehension and whether a reasonable user can understand the value, next action, and completion state
+- acceptance-oracle fit and whether visible behavior supports the promised before/after moment
+- manual QA path, recorded checks, screenshots or browser notes as evidence only, and remaining uncertainty
+- roughness, polish risks, remaining human taste judgment, and what still needs human taste review or target-user feedback before stronger acceptance or release confidence
+
 Use the PRD Quality Review Lane when the draft PRD needs pre-approval review of:
 
 - user problem clarity, before/after moment, strategy fit, non-goals, or assumptions
@@ -96,6 +104,7 @@ Load only the sources needed for the lane:
 - selected `docs/*.md`, `tasks/reference/*.md`, public inventory rows, generated-doc freshness results, and current owner files when cross-reference or staleness is being reviewed
 - PRD handoff readiness packet output when the review question is whether a PRD is ready for decomposition, design, engineering, or review handoff
 - `tasks/prds/PRD-038-engineering-quality-review-lane.md` when implementing, validating, or changing the Engineering Quality Review Lane package capability
+- `tasks/prds/PRD-044-polish-product-taste-review-lane.md` when implementing, validating, or changing the Polish / Product-Taste Review Lane package capability
 
 If the active bead, draft PRD, package surface, primary authority, recorded evidence, source file family, or changed-file summary needed for the selected lane is missing, stop and ask for the missing source instead of inventing a review.
 
@@ -202,6 +211,23 @@ The Engineering Quality Review Lane complements the Engineering Quality Standard
 
 The Engineering Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, certify code quality, certify production readiness, score code, create checker authority, create scorecard authority, replace linters, replace tests, inspect app code, add repo heuristics, add language-aware analysis, create follow-up tasks, rewrite owner files, activate beads, approve release, mutate GitHub, mutate external systems, or turn review output into generated proof.
 
+## Polish / Product-Taste Review Lane
+
+Use this lane to inspect whether one completed or nearly completed user-facing active bead is understandable, useful, coherent with its acceptance oracle, and ready for human taste judgment.
+
+Focus on:
+
+- whether the visible user flow, screen behavior, copy, onboarding, docs experience, or user-facing behavior matches the bead's stated intent
+- whether the target user can understand the value, next action, empty/error/success state, and completion state without hidden chat context
+- whether the visible behavior fits the acceptance oracle and the promised before/after moment
+- whether recorded checks, manual verification, screenshots, browser notes, and Closeout Evidence actually support the polish claims being reviewed
+- whether screenshots, browser notes, or AI critique are being treated as proof by themselves instead of review evidence
+- whether roughness belongs in Closeout Evidence, a PRD amendment, owner-file update, Candidate Queue entry, candidate or approved bead after user review, Release Readiness, reviewed memory, target-user feedback, or another Review Lane
+
+The Polish / Product-Taste Review Lane complements Acceptance, PRD Quality Review, Engineering Quality Review, Verification Guardrail, Release / Docs Freshness, and Release Readiness. It is owned as a package capability by `tasks/prds/PRD-044-polish-product-taste-review-lane.md`. It reviews product feel and visible experience risk as advisory input; it does not replace acceptance review or make reviewer taste product authority.
+
+The Polish / Product-Taste Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, approve release, approve transition, approve PRDs, certify design quality, certify UX quality, create product authority from reviewer taste, treat screenshots or browser notes as proof by themselves, create follow-up tasks, rewrite owner files, activate beads, require professional UX research, mutate GitHub, mutate external systems, create a scorecard, create checker authority, create a generated report, become a required gate, create a command wrapper, or imply registry, optional-pack, install/update, release-channel, or package-manager behavior.
+
 ## Cross-Reference / Staleness Review Lane
 
 Use this lane to inspect whether a bounded documentation/reference surface still points to the right package authorities and current generated reading surfaces.
@@ -227,6 +253,7 @@ Promote accepted findings only through normal reviewed paths:
 - Closeout Evidence
 - PRD amendment
 - owner-file update
+- Candidate Queue entry after user review
 - candidate or approved bead after user review
 - release-readiness evidence
 - reviewed memory after user review
@@ -245,9 +272,12 @@ Stop if:
 - a sensitive surface appears without an approval gate
 - the lane would require secrets, credentials, private data, provider config, dashboard values, or production details
 - the answer would certify security, compliance, release readiness, or acceptance
+- the answer would certify design quality, UX quality, or product taste
 - the answer would certify code quality, production readiness, scalability, reliability, or maintainability
+- the answer would make reviewer taste product authority
 - the answer would approve a PRD, certify PRD quality, create scorecard authority, rewrite the PRD, or turn PRD review findings into implementation tasks
 - the answer would treat generated Work Graph reports as authority, proof, task selection, or transition approval
+- the answer would treat screenshots, browser notes, AI critique, or reviewer confidence as proof by themselves
 - the answer would treat generated HTML, generated reports, or review findings as source authority instead of evidence
 - the answer would approve parallel execution instead of routing through branch/worktree isolation and coordinator review
 - findings would need a new PRD, bead, owner-file update, release action, GitHub mutation, external mutation, or destructive command before user review
@@ -267,10 +297,13 @@ Review Lanes must not:
 - approve merge or migration
 - approve security posture
 - certify compliance
+- certify design quality
+- certify UX quality
 - certify code quality
 - certify production readiness
 - create follow-up tasks
 - create implementation tasks
+- create product authority from reviewer taste
 - rewrite owner files
 - rewrite PRDs
 - rewrite generated output as source truth
@@ -281,7 +314,7 @@ Review Lanes must not:
 - mutate GitHub
 - mutate external systems
 - treat Work Graph reports as authority, proof, transition approval, or task selection
-- treat generated reports, screenshots, browser notes, GitHub status, or confidence as proof
+- treat generated reports, screenshots, browser notes, AI critique, GitHub status, or confidence as proof
 - create scorecard authority
 - create checker authority
 - create a registry, optional pack, command wrapper, package-manager behavior, release-channel behavior, generated report, checker gate, task-runner system, or persona system
