@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
+# Version: v0.1.5
 # Last updated: 2026-07-26
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -86,6 +86,7 @@ REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("commands", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md")),
     ("context budget", ("adapters/CLAUDE.md", "tasks/reference/AGENT-ROUTING-PROTOCOL.md", "tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md")),
     ("cross reference staleness review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
+    ("daily loop", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-OS-README.md")),
     ("dependency graph review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("engineering quality review lane", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("entry shape", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md")),

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.95
-Last updated: 2026-07-27
+Document version: v0.7.97
+Last updated: 2026-07-29
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -29,7 +29,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit `Ideation:` prompt, and broken/confusing state goes to Troubleshooting or `I am stuck, help me.` For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
+For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit's first-class sections are Daily Loop, Next, Health, and Diary; its full Prompt Patterns and Protocol catalogs are reference shelves for learning and lookup. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit `Ideation:` prompt, and broken/confusing state goes to Troubleshooting or `I am stuck, help me.` For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub or using the optional npm preview entry, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts. If PrecodeOS is already embedded in your project and you want to refresh package-owned surfaces, use the Existing Precode Refresh prompt in Guided Setup, `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, or `tasks/reference/PROMPT-PATTERNS.md`; it previews first and stops before approved `UP-ID` copy actions. Upgrade preview may show advisory package version, stable/latest/pinned language, and updater compatibility policy metadata. Update-plan preview may group current `UP-ID` evidence with same-session freshness and validation prompts. These previews perform no registry lookup or dist-tag resolution, expose no npm apply behavior, and do not make `latest` overwrite permission.
 
@@ -45,15 +45,15 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 | I need to... | Start with | Deeper guide part | Stop before... |
 |---|---|---|---|
 | Start from a rough idea | Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` | [3. Shape Ideas Before Coding](#guide-part-3-shape-ideas-before-coding) | PRD approval, bead creation, or coding. |
-| Resume active work | Daily Cockpit `Start` then `Check` | [4. Run A Governed Work Session](#guide-part-4-run-a-governed-work-session) | Editing without active bead, authority, files in play, and checks. |
-| Choose the right workflow or prompt | Daily Cockpit `Ideation`, `Ask Precode`, or Workflow Selection | [2. Choose The Right Action](#guide-part-2-choose-the-right-action) | Treating an index, role lens, or skill-style answer as approval. |
+| Resume active work | Daily Cockpit `Start`, then Daily Loop / Next / Health / Diary | [4. Run A Governed Work Session](#guide-part-4-run-a-governed-work-session) | Editing without active bead, authority, files in play, and checks. |
+| Choose the right workflow or prompt | Daily Cockpit `Next`, `Ideation`, Ask Precode, or the Prompt Patterns Catalog | [2. Choose The Right Action](#guide-part-2-choose-the-right-action) | Treating an index, role lens, skill-style answer, prompt catalog row, or protocol catalog row as approval. |
 | Decide whether the agent may code | `Check: name the active bead...` | [4. Run A Governed Work Session](#guide-part-4-run-a-governed-work-session) | Coding before risk, scope, proof, and stop conditions are clear. |
 | Prove work is done | Daily Cockpit `Prove` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Accepting generated output as proof or approval. |
 | Review work before accepting | Daily Cockpit `Review` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Review acceptance, transition approval, merge, or release. |
 | Recover when confused | `I am stuck, help me.` | [6. Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference) | Repair, overwrite, rollback, setup mutation, or transition. |
 | Prepare release evidence | Daily Cockpit `Release: prepare release evidence without release action.` | [5. Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release) | Deployment, provider mutation, rollback, merge, or release approval. |
 | Park future intent | Daily Cockpit `Queue` or Question-To-Artifact Filing | [2. Choose The Right Action](#guide-part-2-choose-the-right-action) | Candidate ranking as task selection or implementation permission. |
-| Understand a file or term | Ask Precode or role lens | [6. Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference) | Changing owner files before promotion review. |
+| Understand a file, prompt, protocol, or term | Ask Precode, role lens, or the cockpit reference catalogs | [6. Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference) | Changing owner files before promotion review. |
 
 ### Compact Table Of Contents
 <!-- ANCHOR: compact-table-of-contents -->
@@ -61,7 +61,7 @@ Why this matters: This guide is the operating manual. Keep it practical: follow 
 1. [Start Here](#guide-part-1-start-here): what this guide is, how to use it, and the vibe-to-governed boundary.
 2. [Choose The Right Action](#guide-part-2-choose-the-right-action): ideation, workflow selection, artifact routing, parked intent, and prompt choice.
 3. [Shape Ideas Before Coding](#guide-part-3-shape-ideas-before-coding): rough ideas, Product Briefs, Conviction Packets, discovery, planning, and learning loops.
-4. [Run A Governed Work Session](#guide-part-4-run-a-governed-work-session): session start, daily loop, task suitability, quality floor, command triage, active bead rhythm, and agent bounds.
+4. [Run A Governed Work Session](#guide-part-4-run-a-governed-work-session): session start, Daily Loop / Next / Health / Diary, task suitability, quality floor, command triage, active bead rhythm, and agent bounds.
 5. [Prove, Review, Close, Or Release](#guide-part-5-prove-review-close-or-release): evidence, review lanes, traceability, approvals, reports, closeout, and release readiness.
 6. [Recover, Learn, And Look Up Reference](#guide-part-6-recover-learn-and-look-up-reference): recovery, protected files, reviewed memory, first-use timeline, copyable prompts, and FAQ.
 
@@ -1511,7 +1511,7 @@ Use the result to decide whether a command-pattern note, reviewed memory candida
 Do this:
 
 - Open the repo.
-- If the full Daily Cockpit feels too large, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` for the first-session prompt and checklist.
+- If the full Daily Cockpit catalogs feel too large, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` for the first-session prompt and checklist, then return to the cockpit's Daily Loop, Next, Health, and Diary surface.
 - Ask the agent to load active memory.
 - Run session start.
 - Confirm the active bead.

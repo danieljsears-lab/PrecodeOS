@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.73
-Last updated: 2026-07-26
+Document version: v0.1.75
+Last updated: 2026-07-29
 
 ## Purpose
 
@@ -20,7 +20,7 @@ They are prompts, not authority. The agent must still follow active memory, the 
 
 Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
 
-Advanced surfaces are conditional "only when this happens" prompts. Beginner-facing docs should show trigger summaries and route here or to the owner protocol for detailed use. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Agent Access Level Check, Artifact Chooser, Ask Precode, approved-bead handoff, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
+Advanced surfaces are conditional "only when this happens" prompts. Beginner-facing cockpit guidance should show trigger summaries behind the Daily Loop / Next / Health / Diary operating surface and route here or to the owner protocol for detailed use. The Daily Cockpit may also expose the full Prompt Patterns and Protocol catalogs as lower-page reference shelves for learning and lookup. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Agent Access Level Check, Artifact Chooser, Ask Precode, approved-bead handoff, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
 
 Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog. Use Ask Precode for stable docs questions, Workflow Selection when the next path depends on current state, Ideation for rough ideas and artifact routing, Review for acceptance or advisory review moments, and Skill / Extension Review only when a proposed skill, adapter, protocol, generated report, command wrapper, or integration needs maintainer-style shape review. Skill playbooks remain read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 
@@ -116,7 +116,7 @@ Expected output: a short filing recommendation with one primary destination, any
 
 ## Daily Prompt Aliases
 
-These aliases are the lean builder-facing layer for `docs/PRECODE-DAILY-COCKPIT.md`. They are shorthand for the expanded prompts in this catalog and the owner protocols. They must not become command-wrapper behavior, active memory, task authority, generated proof, PRD approval, bead activation, review acceptance, transition approval, release approval, setup/update permission, rollback permission, or external mutation permission.
+These aliases are the lean builder-facing prompt layer behind `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit may expose them in its full Prompt Patterns Catalog as reference rows, while this file remains the expanded prompt authority. They are shorthand for the expanded prompts in this catalog and the owner protocols. They must not become command-wrapper behavior, active memory, task authority, generated proof, PRD approval, bead activation, review acceptance, transition approval, release approval, setup/update permission, rollback permission, or external mutation permission.
 
 Alias guardrail floor:
 

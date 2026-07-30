@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.56
-# Last updated: 2026-07-27
+# Version: v0.1.58
+# Last updated: 2026-07-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -328,19 +328,28 @@ def assert_session_start_router_delegation(failures: list[dict[str, str]]) -> No
 def assert_daily_prompt_alias_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Quick Daily Loop",
-            "Lean prompt alias",
-            "active memory and owner files stay authoritative",
-            "generated reports stay evidence only",
-            "explicit approval is still required",
+            "Daily Loop",
+            "Active -> Changed -> Proven -> Parked -> Approval -> Next",
+            "The first-class sections are deliberately short: **Daily Loop**, **Next**, **Health**, and **Diary**.",
+            "Daily Loop is the build-loop surface.",
+            "Everything below supports the four first-class cockpit sections.",
+            "Health",
+            "Diary",
+            "Next",
+            "Full Prompt Patterns Catalog",
+            "Full Protocol Catalog",
+            "Catalog rows do not approve work",
+            "Expanded prompt bodies remain authoritative in Prompt Patterns",
+            "Protocol rows do not approve work",
+            "Active memory and owner files stay authoritative.",
+            "Generated reports, generated HTML, logs, sidecars, prompt catalog rows, and protocol catalog rows are evidence or navigation only.",
             "Start: run the Precode session start",
-            "Ideation: map my current moment",
-            "Check: name the active bead",
-            "Build: work only on the active bead",
-            "Prove: show recorded evidence",
+            "Ideation: use First PRD Walkthrough for my rough idea.",
+            "Health: show active state",
+            "Diary: read the learning diary",
+            "Next: name the safest next Precode move",
             "Close: run session close",
             "I am stuck, help me.",
-            "Advanced Trigger Summaries",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Daily Prompt Aliases",
@@ -856,15 +865,18 @@ def assert_many_bead_operating_rhythm_contract(failures: list[dict[str, str]]) -
             "`Parked` must not imply Candidate Queue chooses work. `Next` must not imply transition approval.",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "Every-Bead Rhythm",
+            "Daily Loop",
             f"`{rhythm}`",
-            "Active: name `tasks/todo.md`, the active bead, and the primary authority file.",
-            "Changed: summarize the changed files or behavior inside the active bead.",
-            "Proven: show recorded checks, manual verification, proof traces, and review evidence.",
-            "Parked: name future intent only when it belongs in `CANDIDATE-QUEUE.md`, PRD amendment, a decision, a follow-up bead proposal, defer, or kill.",
-            "Approval: name review decision, transition proposal, release or merge approval, and any user input still required.",
-            "Next: route to session start, Workflow Selection, `next-step.py`, or an explicit transition proposal without activating anything.",
-            "This rhythm is a checklist, not a workflow.",
+            "Daily Loop is the build-loop surface.",
+            "Health",
+            "Diary",
+            "Next",
+            "Next tells you the safest next move.",
+            "It does not choose tasks, rank Candidate Queue items as implementation priority, approve PRDs, activate beads, accept review, approve transition, approve release, or authorize coding.",
+            "Workflow Selection",
+            "Candidate Queue",
+            "Transition may be possible",
+            "Readiness evidence only. Use `--approve` only after explicit approval.",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Use The Every-Bead Rhythm",
@@ -1099,7 +1111,8 @@ def assert_beginner_advanced_surface_relocation_contract(failures: list[dict[str
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "Advanced Trigger Summaries",
-            "this cockpit only gives trigger summaries",
+            "Full Prompt Patterns Catalog",
+            "Full Protocol Catalog",
             "Use `../tasks/reference/PROMPT-PATTERNS.md` for copyable advanced prompts and the named owner protocol for detailed rules.",
             "Use An Advanced Owner Surface",
             "why this is not a beginner starting route",
@@ -1115,11 +1128,12 @@ def assert_beginner_advanced_surface_relocation_contract(failures: list[dict[str
             "Beginner-facing docs should show only the trigger summary",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
-            "`docs/PRECODE-DAILY-COCKPIT.md` is the operating home with trigger summaries for advanced surfaces",
-            "`tasks/reference/PROMPT-PATTERNS.md` and owner protocols hold detailed advanced prompts",
+            "`docs/PRECODE-DAILY-COCKPIT.md` is the operating home with four first-class sections, Daily Loop / Next / Health / Diary, plus full Prompt Patterns and Protocol catalogs as reference shelves",
+            "`tasks/reference/PROMPT-PATTERNS.md` and owner protocols remain the detailed prompt and protocol authorities",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
-            "Beginner-facing docs should show trigger summaries and route here or to the owner protocol for detailed use.",
+            "Beginner-facing cockpit guidance should show trigger summaries behind the Daily Loop / Next / Health / Diary operating surface and route here or to the owner protocol for detailed use.",
+            "The Daily Cockpit may also expose the full Prompt Patterns and Protocol catalogs as lower-page reference shelves for learning and lookup.",
         ],
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
             "Beginner-facing docs may show advanced trigger summaries",
@@ -1129,7 +1143,7 @@ def assert_beginner_advanced_surface_relocation_contract(failures: list[dict[str
             "Beginner-facing command surfaces should expose advanced command families as trigger summaries",
         ],
         Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
-            "Daily Cockpit should provide trigger summaries for advanced surfaces",
+            "Daily Cockpit may expose full Prompt Patterns and Protocol catalogs as reference shelves for learning and lookup",
         ],
         Path("llms.txt"): [
             "In beginner-facing docs, present only trigger summaries and route detailed prompts to Prompt Patterns or the owner protocol.",
@@ -2618,8 +2632,9 @@ def assert_skill_playbook_ergonomics_contract(failures: list[dict[str, str]]) ->
     required_terms_by_path = {
         Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
             "Beginner Invocation And Review Ergonomics",
-            "Skill playbooks should be easy to invoke without becoming a beginner-facing catalog",
-            "Daily Cockpit alias or Prompt Patterns entry that routes to the owner protocol",
+            "Skill playbooks should be easy to invoke without becoming a second operating model",
+            "Daily Cockpit may expose full Prompt Patterns and Protocol catalogs as reference shelves for learning and lookup",
+            "Daily Cockpit rhythm, cockpit catalog row, or Prompt Patterns entry that routes to the owner protocol",
             "Skill playbook with manifest fields, owner protocol, stop conditions, and approval gates",
             "Owner protocol update",
             "Existing checker or narrow script after the owner protocol defines the rule",
@@ -2640,12 +2655,13 @@ def assert_skill_playbook_ergonomics_contract(failures: list[dict[str, str]]) ->
             "treat skill output as authority",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
-            "skill-style help",
+            "Full Prompt Patterns Catalog",
+            "Skill Playbook Ergonomics",
             "Which skill-style prompt should I use?",
             "Use Skill Playbook Ergonomics.",
             "One recommended invocation or owner surface",
             "It does not show a skill catalog, install skills, approve extension implementation, add registries, create optional packs, run mutating commands, or replace owner protocols.",
-            "Skill map",
+            "Skill map output is advisory only.",
             "treat skill output as authority",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [

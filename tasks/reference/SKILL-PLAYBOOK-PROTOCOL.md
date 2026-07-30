@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-07-26
+Document version: v0.1.26
+Last updated: 2026-07-29
 
 ## Purpose
 
@@ -47,13 +47,13 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 
 ## Beginner Invocation And Review Ergonomics
 
-Skill playbooks should be easy to invoke without becoming a beginner-facing catalog. Keep beginner language behind the Daily Cockpit aliases, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. Daily Cockpit should provide trigger summaries for advanced surfaces; Prompt Patterns or the owner protocol should carry the detailed prompt body.
+Skill playbooks should be easy to invoke without becoming a second operating model. Keep beginner action language behind the Daily Cockpit Daily Loop / Next / Health / Diary operating surface, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. Daily Cockpit may expose full Prompt Patterns and Protocol catalogs as reference shelves for learning and lookup; Prompt Patterns or the owner protocol still carries the detailed prompt body and authority boundary.
 
 Use this decision aid before adding or changing a skill-style surface:
 
 | Need | Prefer | Do not use |
 |---|---|---|
-| A beginner needs a shorter way to ask for an existing workflow. | Daily Cockpit alias or Prompt Patterns entry that routes to the owner protocol. | A new skill name, registry, optional pack, or command wrapper. |
+| A beginner needs a shorter way to ask for an existing workflow. | Daily Cockpit rhythm, cockpit catalog row, or Prompt Patterns entry that routes to the owner protocol. | A new skill name, registry, optional pack, or command wrapper. |
 | A host agent needs a bounded invocation contract. | Skill playbook with manifest fields, owner protocol, stop conditions, and approval gates. | A tool-specific hidden rule that becomes authority over Precode owner files. |
 | Core Precode behavior needs durable rules. | Owner protocol update. | Skill text as the source of truth. |
 | A repeated validation gap needs deterministic checking. | Existing checker or narrow script after the owner protocol defines the rule. | A skill that claims proof, approval, or enforcement. |
@@ -68,7 +68,7 @@ Review recommendation rule: Skill / Extension Review output is advisory review i
 
 ## Daily Prompt Alias Boundary
 
-Daily prompt aliases are a compact invocation layer for builders using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
+Daily prompt aliases are a compact invocation layer for builders using `docs/PRECODE-DAILY-COCKPIT.md`. They may shorten copyable prompts such as Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover, and the cockpit catalog may expose them as reference rows, but they must route back to `tasks/reference/PROMPT-PATTERNS.md` and the owning protocols when expanded guardrails are needed.
 
 Aliases are not command wrappers, packaged skills, optional packs, registries, active memory, generated evidence, approval surfaces, or task-selection surfaces. They do not reduce the Skill Surface Model: v1 remains prompt playbook first, with read-only command wrappers deferred until a separate package decision.
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-27">
+  <meta name="generated-at" content="2026-07-29">
   <title>PrecodeOS Manifesto · PrecodeOS Docs</title>
   <style>
 :root {
@@ -121,7 +121,57 @@ h5:hover .heading-anchor,
 h6:hover .heading-anchor,
 .heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
-.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.compass-grid, .reference-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.cockpit-hero {
+  padding-bottom: 26px;
+}
+.cockpit-strip {
+  display: grid;
+  gap: 16px;
+  max-width: 930px;
+}
+.cockpit-ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.cockpit-tile {
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 16px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.cockpit-tile strong { font-size: 19px; }
+.cockpit-tile span { color: var(--muted); font-size: 14px; }
+.cockpit-tile:hover { border-color: var(--accent); }
+.cockpit-catalog-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.cockpit-catalog-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.cockpit-catalog-row a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--wash-2);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.cockpit-catalog-row a:hover { border-color: var(--accent); color: var(--accent); }
 .lane, .doc-card, .page-nav a {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -136,6 +186,109 @@ h6:hover .heading-anchor,
 .doc-card:hover { border-color: var(--accent); }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.reference-surface {
+  margin: 40px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(237,245,242,.72), rgba(255,253,248,.96));
+  padding: 24px;
+}
+.reference-surface > :first-child { margin-top: 0; }
+.reference-surface .lede { font-size: 17px; }
+.jump-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 26px; }
+.jump-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.jump-chip:hover { border-color: var(--accent); color: var(--accent); }
+.reference-group { margin-top: 28px; }
+.reference-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 20px;
+}
+.reference-group h3::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent-2);
+  flex: none;
+}
+.reference-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 18px;
+}
+.reference-card h4 { margin: 0; font-size: 18px; }
+.reference-card p { margin: 0; }
+.reference-card .label-row {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.reference-card .label-row strong {
+  color: var(--accent-2);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-block {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #283630;
+  border-radius: 8px;
+  background: #1d2521;
+  padding: 12px;
+}
+.copy-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.copy-block-header span {
+  color: #d2ddd7;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-button {
+  border: 1px solid rgba(248, 251, 247, .32);
+  border-radius: 8px;
+  background: transparent;
+  color: #f8fbf7;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.copy-button:hover { border-color: #f8fbf7; }
+.copy-block pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: #f8fbf7;
+  box-shadow: none;
+}
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
 .reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
@@ -226,8 +379,18 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
+  .sidebar { padding: 16px 18px; }
+  .sidebar .notice, .sidebar .nav-group { display: none; }
+  .brand { margin-bottom: 0; }
   .hero, .content { padding: 30px 18px; }
   .article { padding: 22px; }
+  .reference-surface { padding: 16px; }
+  .cockpit-ritual-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cockpit-tile { min-height: 54px; padding: 12px; align-content: center; }
+  .cockpit-tile strong { font-size: 16px; }
+  .cockpit-tile span { display: none; }
+  .cockpit-catalog-row { gap: 6px; }
+  .cockpit-catalog-row a { padding: 6px 8px; font-size: 12px; }
   .page-nav { grid-template-columns: 1fr; }
 }
 </style>
@@ -235,7 +398,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <body>
   <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
-    
+
 <aside class="sidebar">
   <div class="brand">
     <strong>PrecodeOS Docs</strong>
@@ -248,12 +411,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </aside>
 
     <main>
-      
+
 <section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Manifesto</h1>
   <p class="lede">Canonical site: https://www.precodeos.org .</p>
   <p class="meta"><a href="../docs/PRECODE-MANIFESTO.md">Source Markdown</a><span>v0.1.14</span><span>Updated 2026-05-17</span></p>
+
 </section>
 <section class="content layout">
   <article class="article">
@@ -334,6 +498,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>So they can learn while building. So they can recover from drift. So they can keep ownership of what they are making.</p>
 <p>Build with AI. Keep the project human-owned. Move fast enough to learn.</p>
 <p>Move at the speed the conditions can bear.</p>
+
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-PACKAGE-FILE-INVENTORY.html"><span>Previous</span>PrecodeOS Package File Inventory</a><span></span></nav>
   </article>
   <div class="reader-aside">
@@ -362,6 +527,24 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
       update();
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
+    })();
+    (() => {
+      if (!navigator.clipboard) return;
+      document.querySelectorAll("[data-copy-target]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const target = document.getElementById(button.getAttribute("data-copy-target"));
+          if (!target) return;
+          const original = button.textContent;
+          try {
+            await navigator.clipboard.writeText(target.textContent || "");
+            button.textContent = "Copied";
+            window.setTimeout(() => { button.textContent = original; }, 1400);
+          } catch (error) {
+            button.textContent = "Select text";
+            window.setTimeout(() => { button.textContent = original; }, 1800);
+          }
+        });
+      });
     })();
   </script>
 </body>

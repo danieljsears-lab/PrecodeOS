@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.31
-Last updated: 2026-07-27
+Document version: v0.1.34
+Last updated: 2026-07-29
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -40,7 +40,7 @@ Use `scripts/authority-map-query.py` as a read-only authority-map navigation hel
 
 - `README.md`: public package compass, usage fit, setup path, and high-level navigation.
 - `docs/PRECODE-GUIDED-SETUP.md`: setup-only adoption path when PrecodeOS is not installed in the target project.
-- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea `Ideation:` entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; also covers the every-bead rhythm and conditional advanced-surface routing.
+- `docs/PRECODE-DAILY-COCKPIT.md`: beginner-facing operating home base, rough-idea `Ideation:` entry prompt, first-product spine, and safe next prompts once PrecodeOS is installed or in use; the first-screen cockpit sections are Daily Loop / Next / Health / Diary, and the page also includes full Prompt Patterns and Protocol catalogs as reference shelves while keeping expanded prompts and protocols authoritative in their owner files.
 - `docs/PRECODE-OS-README.md`: conceptual Builder OS explainer, not the daily start page.
 - `docs/PRECODE-USER-GUIDE.md`: deeper operating manual behind the Daily Cockpit, now structured as an action-guide manual with numbered major parts and a compact action map; not a second start page.
 - `docs/PRECODE-TROUBLESHOOTING.md`: symptom lookup for broken or confusing setup, state, checks, generated reports, or first-session behavior.
@@ -95,7 +95,7 @@ Do not expand active memory through this index, generated reports, reviewed memo
 
 ## Generated Reading Surfaces
 
-- `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`, with static progress cues, section links, and source Markdown links; Markdown remains canonical.
+- `docs-html/*.html`: generated public reading surface for `docs/*.md` and selected root public docs, including `CANDIDATE-QUEUE.md`, with static progress cues, section links, source Markdown links, and Daily Cockpit prompt/protocol copy cards that complement the Markdown catalogs; Markdown, Prompt Patterns, and protocol files remain canonical.
 - `scripts/docs-html.py --check`: public freshness check for `docs-html/*.html`.
 - `scripts/engineering-quality-check.py`: Engineering Quality Text-Contract Checker; advisory only, including package text-contract coverage for Engineering Quality Review Lane references and explicit `--repo-heuristics-preview` changed-file repo-shape warnings; not implementation approval, review acceptance, generated proof, app-code parsing, AST analysis, linter replacement, test execution, scorecard, or checker gate.
 - `scripts/completion-check.py`: advisory completion and release-evidence readiness output, including Closeout Evidence work digest, advisory commit-message suggestion, and release-quality cue warnings through `details.release_evidence`; not release approval, production-readiness certification, generated proof, staging, commit, push, deployment automation, transition approval, or a checker gate.

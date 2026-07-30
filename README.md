@@ -228,9 +228,9 @@ Normal work follows a simple path:
 orient -> decide -> plan -> build -> prove -> recover when needed
 ```
 
-For builders, the practical path is the Daily Cockpit path: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`, then `Active -> Changed -> Proven -> Parked -> Approval -> Next` after the first bead. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
+For builders, the practical path is the Daily Cockpit path. Its first screen has four first-class sections: Daily Loop, Next, Health, and Diary. Daily Loop reflects the repeated build loop `Active -> Changed -> Proven -> Parked -> Approval -> Next`; Next asks what safe workflow, proof, parking, transition, or recovery move comes next; Health asks whether the state and evidence are coherent enough to continue; and Diary asks what transpired, changed, was learned, or should be promoted. The first-product spine remains `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
 
-Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, make the agent check the active bead, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
+Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, inspect Daily Loop, Next, Health, and Diary, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
 
 For implementation work, PrecodeOS uses beads: small execution contracts that name the current task, primary authority, files in play, checks, stop conditions, and proof needed.
 
@@ -257,7 +257,7 @@ python3 scripts/os-health.py
 bash scripts/record-check.sh -- <command>
 ```
 
-Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop. For beginner-facing docs, give trigger summaries and route detailed use to Prompt Patterns or the owner protocol.
+Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop. For beginner-facing docs, give trigger summaries and route detailed use to Prompt Patterns or the owner protocol. The Daily Cockpit now also carries full Prompt Patterns and Protocol catalogs as reference shelves; the expanded bodies remain authoritative in Prompt Patterns and protocol owner files.
 
 `precode_cli.py` and the optional `precode` console command are local facades over documented repo scripts. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
 
@@ -298,6 +298,7 @@ When one bead is already approved and you need to hand it to a host agent for sc
 | Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
 | Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
 | Start or resume daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
+| Run the Daily Loop, Next, Health, and Diary cockpit | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then use its full Prompt Patterns and Protocol catalogs only as reference |
 | Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), starting with its compact action map |
 | Use a compact first-session checklist after setup validates | [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
 | Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |

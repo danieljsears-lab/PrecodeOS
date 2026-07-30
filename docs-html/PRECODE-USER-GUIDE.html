@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-27">
+  <meta name="generated-at" content="2026-07-29">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -121,7 +121,57 @@ h5:hover .heading-anchor,
 h6:hover .heading-anchor,
 .heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
-.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.compass-grid, .reference-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.cockpit-hero {
+  padding-bottom: 26px;
+}
+.cockpit-strip {
+  display: grid;
+  gap: 16px;
+  max-width: 930px;
+}
+.cockpit-ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.cockpit-tile {
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 16px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.cockpit-tile strong { font-size: 19px; }
+.cockpit-tile span { color: var(--muted); font-size: 14px; }
+.cockpit-tile:hover { border-color: var(--accent); }
+.cockpit-catalog-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.cockpit-catalog-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.cockpit-catalog-row a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--wash-2);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.cockpit-catalog-row a:hover { border-color: var(--accent); color: var(--accent); }
 .lane, .doc-card, .page-nav a {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -136,6 +186,109 @@ h6:hover .heading-anchor,
 .doc-card:hover { border-color: var(--accent); }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.reference-surface {
+  margin: 40px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(237,245,242,.72), rgba(255,253,248,.96));
+  padding: 24px;
+}
+.reference-surface > :first-child { margin-top: 0; }
+.reference-surface .lede { font-size: 17px; }
+.jump-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 26px; }
+.jump-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.jump-chip:hover { border-color: var(--accent); color: var(--accent); }
+.reference-group { margin-top: 28px; }
+.reference-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 20px;
+}
+.reference-group h3::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent-2);
+  flex: none;
+}
+.reference-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 18px;
+}
+.reference-card h4 { margin: 0; font-size: 18px; }
+.reference-card p { margin: 0; }
+.reference-card .label-row {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.reference-card .label-row strong {
+  color: var(--accent-2);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-block {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #283630;
+  border-radius: 8px;
+  background: #1d2521;
+  padding: 12px;
+}
+.copy-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.copy-block-header span {
+  color: #d2ddd7;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-button {
+  border: 1px solid rgba(248, 251, 247, .32);
+  border-radius: 8px;
+  background: transparent;
+  color: #f8fbf7;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.copy-button:hover { border-color: #f8fbf7; }
+.copy-block pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: #f8fbf7;
+  box-shadow: none;
+}
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
 .reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
@@ -226,8 +379,18 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
+  .sidebar { padding: 16px 18px; }
+  .sidebar .notice, .sidebar .nav-group { display: none; }
+  .brand { margin-bottom: 0; }
   .hero, .content { padding: 30px 18px; }
   .article { padding: 22px; }
+  .reference-surface { padding: 16px; }
+  .cockpit-ritual-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cockpit-tile { min-height: 54px; padding: 12px; align-content: center; }
+  .cockpit-tile strong { font-size: 16px; }
+  .cockpit-tile span { display: none; }
+  .cockpit-catalog-row { gap: 6px; }
+  .cockpit-catalog-row a { padding: 6px 8px; font-size: 12px; }
   .page-nav { grid-template-columns: 1fr; }
 }
 </style>
@@ -235,7 +398,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <body>
   <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
   <div class="shell">
-    
+
 <aside class="sidebar">
   <div class="brand">
     <strong>PrecodeOS Docs</strong>
@@ -248,12 +411,13 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 </aside>
 
     <main>
-      
+
 <section class="hero" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">This guide is easier to use as an action map than as a book. Start in the Daily Cockpit for normal work, then come here only for the deeper manual section that matches the action you need. The generated HTML page is the best readi</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.95</span><span>Updated 2026-07-27</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.97</span><span>Updated 2026-07-29</span></p>
+
 </section>
 <section class="content layout">
   <article class="article">
@@ -265,15 +429,15 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Precode lives inside your project folder. It keeps important project truth in readable Markdown files and uses small scripts to check whether the agent is staying aligned.</p>
 <p>For builders, Precode feels like a small operating system for AI coding work: it shows what matters, what is active, what is proven, and when to stop.</p>
 <p>PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See <code>NOTICE</code> and <code>TRADEMARK.md</code> for license, attribution, and brand-use guidance.</p>
-<p>For the full document compass, go back to <code>README.md</code>. For day-to-day work, start with <code>docs/PRECODE-DAILY-COCKPIT.md</code>. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit <code>Ideation:</code> prompt, and broken/confusing state goes to Troubleshooting or <code>I am stuck, help me.</code> For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.</p>
+<p>For the full document compass, go back to <code>README.md</code>. For day-to-day work, start with <code>docs/PRECODE-DAILY-COCKPIT.md</code>. The cockpit&#x27;s first-class sections are Daily Loop, Next, Health, and Diary; its full Prompt Patterns and Protocol catalogs are reference shelves for learning and lookup. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit <code>Ideation:</code> prompt, and broken/confusing state goes to Troubleshooting or <code>I am stuck, help me.</code> For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.</p>
 <p>If PrecodeOS is not set up in your project yet, start with <code>docs/PRECODE-GUIDED-SETUP.md</code>. That guide walks through pulling the public PrecodeOS repo from GitHub or using the optional npm preview entry, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts. If PrecodeOS is already embedded in your project and you want to refresh package-owned surfaces, use the Existing Precode Refresh prompt in Guided Setup, <code>npx @precodeos/precodeos upgrade-preview --target &amp;lt;existing-precode-root&amp;gt;</code>, <code>npx @precodeos/precodeos update-plan-preview --target &amp;lt;existing-precode-root&amp;gt;</code>, or <code>tasks/reference/PROMPT-PATTERNS.md</code>; it previews first and stops before approved <code>UP-ID</code> copy actions. Upgrade preview may show advisory package version, stable/latest/pinned language, and updater compatibility policy metadata. Update-plan preview may group current <code>UP-ID</code> evidence with same-session freshness and validation prompts. These previews perform no registry lookup or dist-tag resolution, expose no npm apply behavior, and do not make <code>latest</code> overwrite permission.</p>
 <p>Put raw reference material for the project in root-level <code>project-evidence/</code>: notes, documents, screenshots, research, design exports, and link lists. Treat that folder as evidence only. It is not active memory, not product truth, not task approval, and not permission for the agent to code. Use Local Source Intake before promoting anything from it into owner files.</p>
 <p>If you are helping someone else adopt PrecodeOS, use <code>docs/PRECODE-SUPPORT-RUNBOOK.md</code>. If setup, active state, validation, or generated reports feel wrong, use <code>docs/PRECODE-TROUBLESHOOTING.md</code> before editing files.</p>
 <p>Why this matters: This guide is the operating manual. Keep it practical: follow the steps, copy the prompts, and stop when the guide says stop.</p>
 <h3 id="compact-action-map"><a class="heading-anchor" href="#compact-action-map" aria-label="Link to Compact Action Map">#</a>Compact Action Map</h3>
-<div class="table-wrap table-action-map"><table><thead><tr><th>I need to...</th><th>Start with</th><th>Deeper guide part</th><th>Stop before...</th></tr></thead><tbody><tr><td>Start from a rough idea</td><td>Daily Cockpit <code>Ideation: use First PRD Walkthrough for my rough idea.</code></td><td><a href="#guide-part-3-shape-ideas-before-coding">3. Shape Ideas Before Coding</a></td><td>PRD approval, bead creation, or coding.</td></tr><tr><td>Resume active work</td><td>Daily Cockpit <code>Start</code> then <code>Check</code></td><td><a href="#guide-part-4-run-a-governed-work-session">4. Run A Governed Work Session</a></td><td>Editing without active bead, authority, files in play, and checks.</td></tr><tr><td>Choose the right workflow or prompt</td><td>Daily Cockpit <code>Ideation</code>, <code>Ask Precode</code>, or Workflow Selection</td><td><a href="#guide-part-2-choose-the-right-action">2. Choose The Right Action</a></td><td>Treating an index, role lens, or skill-style answer as approval.</td></tr><tr><td>Decide whether the agent may code</td><td><code>Check: name the active bead...</code></td><td><a href="#guide-part-4-run-a-governed-work-session">4. Run A Governed Work Session</a></td><td>Coding before risk, scope, proof, and stop conditions are clear.</td></tr><tr><td>Prove work is done</td><td>Daily Cockpit <code>Prove</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Accepting generated output as proof or approval.</td></tr><tr><td>Review work before accepting</td><td>Daily Cockpit <code>Review</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Review acceptance, transition approval, merge, or release.</td></tr><tr><td>Recover when confused</td><td><code>I am stuck, help me.</code></td><td><a href="#guide-part-6-recover-learn-and-look-up-reference">6. Recover, Learn, And Look Up Reference</a></td><td>Repair, overwrite, rollback, setup mutation, or transition.</td></tr><tr><td>Prepare release evidence</td><td>Daily Cockpit <code>Release: prepare release evidence without release action.</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Deployment, provider mutation, rollback, merge, or release approval.</td></tr><tr><td>Park future intent</td><td>Daily Cockpit <code>Queue</code> or Question-To-Artifact Filing</td><td><a href="#guide-part-2-choose-the-right-action">2. Choose The Right Action</a></td><td>Candidate ranking as task selection or implementation permission.</td></tr><tr><td>Understand a file or term</td><td>Ask Precode or role lens</td><td><a href="#guide-part-6-recover-learn-and-look-up-reference">6. Recover, Learn, And Look Up Reference</a></td><td>Changing owner files before promotion review.</td></tr></tbody></table></div>
+<div class="table-wrap table-action-map"><table><thead><tr><th>I need to...</th><th>Start with</th><th>Deeper guide part</th><th>Stop before...</th></tr></thead><tbody><tr><td>Start from a rough idea</td><td>Daily Cockpit <code>Ideation: use First PRD Walkthrough for my rough idea.</code></td><td><a href="#guide-part-3-shape-ideas-before-coding">3. Shape Ideas Before Coding</a></td><td>PRD approval, bead creation, or coding.</td></tr><tr><td>Resume active work</td><td>Daily Cockpit <code>Start</code>, then Daily Loop / Next / Health / Diary</td><td><a href="#guide-part-4-run-a-governed-work-session">4. Run A Governed Work Session</a></td><td>Editing without active bead, authority, files in play, and checks.</td></tr><tr><td>Choose the right workflow or prompt</td><td>Daily Cockpit <code>Next</code>, <code>Ideation</code>, Ask Precode, or the Prompt Patterns Catalog</td><td><a href="#guide-part-2-choose-the-right-action">2. Choose The Right Action</a></td><td>Treating an index, role lens, skill-style answer, prompt catalog row, or protocol catalog row as approval.</td></tr><tr><td>Decide whether the agent may code</td><td><code>Check: name the active bead...</code></td><td><a href="#guide-part-4-run-a-governed-work-session">4. Run A Governed Work Session</a></td><td>Coding before risk, scope, proof, and stop conditions are clear.</td></tr><tr><td>Prove work is done</td><td>Daily Cockpit <code>Prove</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Accepting generated output as proof or approval.</td></tr><tr><td>Review work before accepting</td><td>Daily Cockpit <code>Review</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Review acceptance, transition approval, merge, or release.</td></tr><tr><td>Recover when confused</td><td><code>I am stuck, help me.</code></td><td><a href="#guide-part-6-recover-learn-and-look-up-reference">6. Recover, Learn, And Look Up Reference</a></td><td>Repair, overwrite, rollback, setup mutation, or transition.</td></tr><tr><td>Prepare release evidence</td><td>Daily Cockpit <code>Release: prepare release evidence without release action.</code></td><td><a href="#guide-part-5-prove-review-close-or-release">5. Prove, Review, Close, Or Release</a></td><td>Deployment, provider mutation, rollback, merge, or release approval.</td></tr><tr><td>Park future intent</td><td>Daily Cockpit <code>Queue</code> or Question-To-Artifact Filing</td><td><a href="#guide-part-2-choose-the-right-action">2. Choose The Right Action</a></td><td>Candidate ranking as task selection or implementation permission.</td></tr><tr><td>Understand a file, prompt, protocol, or term</td><td>Ask Precode, role lens, or the cockpit reference catalogs</td><td><a href="#guide-part-6-recover-learn-and-look-up-reference">6. Recover, Learn, And Look Up Reference</a></td><td>Changing owner files before promotion review.</td></tr></tbody></table></div>
 <h3 id="compact-table-of-contents"><a class="heading-anchor" href="#compact-table-of-contents" aria-label="Link to Compact Table Of Contents">#</a>Compact Table Of Contents</h3>
-<ol><li><a href="#guide-part-1-start-here">Start Here</a>: what this guide is, how to use it, and the vibe-to-governed boundary.</li><li><a href="#guide-part-2-choose-the-right-action">Choose The Right Action</a>: ideation, workflow selection, artifact routing, parked intent, and prompt choice.</li><li><a href="#guide-part-3-shape-ideas-before-coding">Shape Ideas Before Coding</a>: rough ideas, Product Briefs, Conviction Packets, discovery, planning, and learning loops.</li><li><a href="#guide-part-4-run-a-governed-work-session">Run A Governed Work Session</a>: session start, daily loop, task suitability, quality floor, command triage, active bead rhythm, and agent bounds.</li><li><a href="#guide-part-5-prove-review-close-or-release">Prove, Review, Close, Or Release</a>: evidence, review lanes, traceability, approvals, reports, closeout, and release readiness.</li><li><a href="#guide-part-6-recover-learn-and-look-up-reference">Recover, Learn, And Look Up Reference</a>: recovery, protected files, reviewed memory, first-use timeline, copyable prompts, and FAQ.</li></ol>
+<ol><li><a href="#guide-part-1-start-here">Start Here</a>: what this guide is, how to use it, and the vibe-to-governed boundary.</li><li><a href="#guide-part-2-choose-the-right-action">Choose The Right Action</a>: ideation, workflow selection, artifact routing, parked intent, and prompt choice.</li><li><a href="#guide-part-3-shape-ideas-before-coding">Shape Ideas Before Coding</a>: rough ideas, Product Briefs, Conviction Packets, discovery, planning, and learning loops.</li><li><a href="#guide-part-4-run-a-governed-work-session">Run A Governed Work Session</a>: session start, Daily Loop / Next / Health / Diary, task suitability, quality floor, command triage, active bead rhythm, and agent bounds.</li><li><a href="#guide-part-5-prove-review-close-or-release">Prove, Review, Close, Or Release</a>: evidence, review lanes, traceability, approvals, reports, closeout, and release readiness.</li><li><a href="#guide-part-6-recover-learn-and-look-up-reference">Recover, Learn, And Look Up Reference</a>: recovery, protected files, reviewed memory, first-use timeline, copyable prompts, and FAQ.</li></ol>
 <p>Read only the part that matches your current action. If a section names a protocol, report, or prompt catalog, treat it as a routed reference, not a new start page.</p>
 <h3 id="check-the-vibe-to-agentic-boundary"><a class="heading-anchor" href="#check-the-vibe-to-agentic-boundary" aria-label="Link to Check The Vibe To Agentic Boundary">#</a>Check The Vibe-To-Agentic Boundary</h3>
 <p>Fast AI exploration is useful when the work is a quick sketch, tiny demo, or throwaway experiment. Keep it loose only when the change is reversible, low-risk, not user-facing, not sensitive, and not something future-you must trust.</p>
@@ -834,7 +998,7 @@ Do not accept implementation, approve review, approve release, activate the next
 <h3 id="first-30-minutes-first-day-first-week"><a class="heading-anchor" href="#first-30-minutes-first-day-first-week" aria-label="Link to First 30 Minutes / First Day / First Week">#</a>First 30 Minutes / First Day / First Week</h3>
 <h4 id="first-30-minutes"><a class="heading-anchor" href="#first-30-minutes" aria-label="Link to First 30 Minutes">#</a>First 30 Minutes</h4>
 <p>Do this:</p>
-<ul><li>Open the repo.</li><li>If the full Daily Cockpit feels too large, use <code>tasks/templates/PRECODE-FIRST-SESSION-CARD.md</code> for the first-session prompt and checklist.</li><li>Ask the agent to load active memory.</li><li>Run session start.</li><li>Confirm the active bead.</li><li>Do not code until the bead is clear.</li><li>Close the session if anything feels confusing.</li></ul>
+<ul><li>Open the repo.</li><li>If the full Daily Cockpit catalogs feel too large, use <code>tasks/templates/PRECODE-FIRST-SESSION-CARD.md</code> for the first-session prompt and checklist, then return to the cockpit&#x27;s Daily Loop, Next, Health, and Diary surface.</li><li>Ask the agent to load active memory.</li><li>Run session start.</li><li>Confirm the active bead.</li><li>Do not code until the bead is clear.</li><li>Close the session if anything feels confusing.</li></ul>
 <p>Goal: run one safe session, even if no code changes.</p>
 <h4 id="first-day"><a class="heading-anchor" href="#first-day" aria-label="Link to First Day">#</a>First Day</h4>
 <p>Do this:</p>
@@ -951,6 +1115,7 @@ Ask one blocking question at a time. Treat generated reports and source notes as
 <h5 id="does-precode-replace-judgment"><a class="heading-anchor" href="#does-precode-replace-judgment" aria-label="Link to Does Precode replace judgment?">#</a>Does Precode replace judgment?</h5>
 <p>No. It makes state, scope, evidence, and approvals visible so your judgment is easier to apply.</p>
 <hr>
+
     <nav class="page-nav" aria-label="Previous and next docs"><a href="PRECODE-OS-README.html"><span>Previous</span>PrecodeOS Explainer</a><a href="CLAUDE-CODE-FIELD-GUIDE.html"><span>Next</span>Claude Code Field Guide For Builders</a></nav>
   </article>
   <div class="reader-aside">
@@ -979,6 +1144,24 @@ Ask one blocking question at a time. Treat generated reports and source notes as
       update();
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
+    })();
+    (() => {
+      if (!navigator.clipboard) return;
+      document.querySelectorAll("[data-copy-target]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const target = document.getElementById(button.getAttribute("data-copy-target"));
+          if (!target) return;
+          const original = button.textContent;
+          try {
+            await navigator.clipboard.writeText(target.textContent || "");
+            button.textContent = "Copied";
+            window.setTimeout(() => { button.textContent = original; }, 1400);
+          } catch (error) {
+            button.textContent = "Select text";
+            window.setTimeout(() => { button.textContent = original; }, 1800);
+          }
+        });
+      });
     })();
   </script>
 </body>

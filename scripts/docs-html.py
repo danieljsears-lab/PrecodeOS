@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
-# Last updated: 2026-07-26
+# Version: v0.1.9
+# Last updated: 2026-07-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -20,6 +20,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 OUTPUT = ROOT / "docs-html"
+REFERENCE = ROOT / "tasks" / "reference"
 
 ROOT_DOCS = [
     "CANDIDATE-QUEUE.md",
@@ -94,13 +95,261 @@ class Doc:
     toc: list[TocItem]
 
 
+@dataclass(frozen=True)
+class PromptCard:
+    category: str
+    title: str
+    description: str
+    when: str
+    prompt: str
+    source: str
+
+
+@dataclass(frozen=True)
+class ProtocolCard:
+    category: str
+    title: str
+    filename: str
+    authority: str
+    load_when: str
+    version: str
+    last_updated: str
+    launch: str
+
+
+PROMPT_STRUCTURAL_HEADINGS = {
+    "purpose",
+    "daily prompt aliases",
+    "core default loop",
+    "advanced / conditional surfaces",
+    "safe prompt pack",
+    "no-engineer fallback prompt pack",
+}
+
+PROMPT_CATEGORY_HINTS = {
+    "Discovery": {
+        "artifact chooser",
+        "question-to-artifact filing",
+        "local source intake",
+        "source-to-promotion hygiene review",
+        "owner-file promotion before prd shaping",
+        "client engagement intake",
+        "product constitution review",
+        "founder-friendly product brief",
+        "alignment / product brief",
+        "ubiquitous language review",
+        "glossary card proposal",
+        "domain naming review",
+        "idea to evidence trace",
+        "precode idea coach",
+        "first prd walkthrough",
+        "precode conviction handoff",
+        "hypothesis review / learning loop",
+        "accessibility advisor fit interview",
+        "product discovery interview skill",
+    },
+    "Planning": {
+        "prd shaping",
+        "destination prd review",
+        "prd handoff readiness packet",
+        "requirements gap and conflict review",
+        "bead decomposition",
+        "vertical-slice decomposition",
+        "architecture shaping",
+        "system design shape",
+        "pattern fit",
+        "workflow selection",
+        "workflow selection skill",
+        "plan loop",
+        "plan mode candidate craft loop",
+        "routing check",
+        "context budget check",
+        "compact or handoff context pack",
+        "goal frame proposal",
+        "workbook candidate goal frame",
+        "goal frame reaffirmation",
+        "goal frame fit check",
+        "goal frame boundaries",
+        "long-horizon review",
+        "candidate queue review",
+        "add candidate queue entry",
+        "candidate queue shaping proposal",
+        "candidate queue import preview",
+        "afk-candidate review",
+        "ready to become a bead",
+    },
+    "Build": {
+        "session start",
+        "task confirmation",
+        "engineering quality floor",
+        "vibe-to-agentic boundary",
+        "engineer initiation",
+        "backend-only with existing frontend",
+        "active bead before editing",
+        "git hygiene before new work",
+        "repository topology migration",
+        "source and target confirmation",
+        "one question at a time",
+        "build-react-learn exploratory prototype bead",
+        "team assignment packet prompts v2",
+        "teammate startup in a team lane",
+        "small team collaboration lane",
+        "small team collaboration preview",
+        "team merge and re-entry review pack",
+        "bounded-afk re-entry",
+        "delegation re-entry evidence pack",
+        "classify tool call",
+        "record tool run",
+        "command safety",
+        "local hygiene check",
+        "local hygiene dry run",
+        "implementation",
+        "failing-first implementation",
+        "checkpoint",
+        "approved-bead handoff",
+        "build attribution review",
+    },
+    "Review": {
+        "acceptance",
+        "review / acceptance skill",
+        "requirement-to-proof review",
+        "review lanes",
+        "multi-lane review invocation",
+        "review",
+        "review lane",
+        "dependency graph review lane",
+        "prd quality review lane",
+        "engineering quality review lane",
+        "polish / product-taste review lane",
+        "cross-reference / staleness review lane",
+        "make acceptance criteria testable",
+        "review acceptance criteria for vague behavior",
+        "release candidate evidence profile",
+        "verification and release evidence review",
+        "release candidate review",
+        "fresh-context comprehension review",
+        "fresh-context review",
+        "stale artifact handling",
+        "manual verification",
+        "completion check",
+        "reviewed memory",
+        "learning diary review",
+    },
+    "Recovery": {
+        "close the session",
+        "handoff",
+        "handoff packet",
+        "transition readiness",
+        "intent changed",
+        "implemented bead reversal",
+        "state repair",
+        "stuck recovery",
+        "agent is lost",
+        "checks failed",
+        "app will not start",
+        "approved too much",
+        "copied wrong files",
+        "decide whether to stop",
+        "bootstrap recovery guidance",
+        "existing repo intake",
+        "supervised setup plan",
+        "supervised setup apply",
+        "existing project adaptation plan",
+        "existing precode refresh",
+        "package upgrade preview",
+        "package upgrade apply",
+        "stop before precode control-layer edits",
+        "maintainer package review skill",
+        "skill / extension review skill",
+        "precode skill playbook",
+        "evidence is not authority",
+        "triage github feedback or package bug",
+        "session friction review",
+    },
+}
+
+PROTOCOL_CATEGORY_HINTS = [
+    (
+        "Discovery",
+        {
+            "LOCAL-SOURCE-INTAKE-PROTOCOL.md",
+            "PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md",
+            "CLIENT-ENGAGEMENT-INTAKE-PROTOCOL.md",
+            "HYPOTHESIS-REVIEW-PROTOCOL.md",
+            "UBIQUITOUS-LANGUAGE-PROTOCOL.md",
+            "MEMORY-PROTOCOL.md",
+            "LEARNING-DIARY-PROTOCOL.md",
+        },
+    ),
+    (
+        "Planning",
+        {
+            "PRD-PROTOCOL.md",
+            "DECOMPOSITION-PROTOCOL.md",
+            "CANDIDATE-QUEUE-PROTOCOL.md",
+            "WORKFLOW-SELECTION-PROTOCOL.md",
+            "PLANNING-PROTOCOL.md",
+            "GOAL-FRAME-PROTOCOL.md",
+            "LONG-HORIZON-PLANNING-PROTOCOL.md",
+            "ARCHITECTURE-SHAPING-PROTOCOL.md",
+            "SYSTEM-DESIGN-PATTERN-PROTOCOL.md",
+            "INTENT-ORCHESTRATION-PROTOCOL.md",
+            "SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md",
+        },
+    ),
+    (
+        "Build",
+        {
+            "CONTEXT-ENGINEERING-PROTOCOL.md",
+            "AGENT-ROUTING-PROTOCOL.md",
+            "TOOL-EXECUTION-PROTOCOL.md",
+            "TEAM-COLLABORATION-PROTOCOL.md",
+            "BEAD-BUILD-JOURNAL-PROTOCOL.md",
+            "RALPH-LOOP-PROTOCOL.md",
+            "LOCAL-HYGIENE-PROTOCOL.md",
+            "GITHUB-INTEGRATION-PROTOCOL.md",
+            "EXTERNAL-STATUS-INTEGRATION-PROTOCOL.md",
+            "EXTENSION-PROTOCOL.md",
+            "SKILL-PLAYBOOK-PROTOCOL.md",
+            "VERSIONING-PROTOCOL.md",
+        },
+    ),
+    (
+        "Review",
+        {
+            "VERIFICATION-GUARDRAIL-PROTOCOL.md",
+            "REVIEW-LANES-PROTOCOL.md",
+            "ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md",
+            "RELEASE-READINESS-PROTOCOL.md",
+            "SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+        },
+    ),
+    (
+        "Recovery",
+        {
+            "RECOVERY-PROTOCOL.md",
+            "STATE-MANAGEMENT-PROTOCOL.md",
+            "OS-INTEGRITY-PROTOCOL.md",
+            "SCHEDULED-AUDIT-PROTOCOL.md",
+            "BOOTSTRAP-CONFIDENCE-PROTOCOL.md",
+            "INSTALL-UPDATE-MANIFEST-PROTOCOL.md",
+            "SUPERVISED-SETUP-PLAN-PROTOCOL.md",
+            "SUPERVISED-SETUP-APPLY-PROTOCOL.md",
+            "BOOTSTRAP-CLOSEOUT-PROTOCOL.md",
+            "EXISTING-REPO-INTAKE-PROTOCOL.md",
+        },
+    ),
+]
+
+
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
 def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    normalized = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
+    path.write_text(normalized, encoding="utf-8")
 
 
 def h(value: Any) -> str:
@@ -187,6 +436,16 @@ def first_paragraph(markdown: str) -> str:
     return ""
 
 
+def first_sentence(markdown: str, fallback: str = "") -> str:
+    clean = plain_text(markdown)
+    if not clean:
+        return fallback
+    match = re.search(r"(.+?[.!?])(?:\s|$)", clean)
+    if match:
+        return match.group(1).strip()
+    return clean[:180].rstrip()
+
+
 def filename_to_html(filename: str) -> str:
     return Path(filename).with_suffix(".html").name
 
@@ -263,6 +522,104 @@ def render_list(items: list[str], ordered: bool) -> str:
 def render_blockquote(lines: list[str]) -> str:
     content = "\n".join(line.strip()[1:].strip() for line in lines)
     return f"<blockquote>{render_markdown(content, include_title=True)[0]}</blockquote>"
+
+
+def section_ranges(markdown: str) -> list[tuple[int, str, int, int]]:
+    headings = list(re.finditer(r"^(#{1,6})\s+(.+)$", markdown, re.MULTILINE))
+    ranges: list[tuple[int, str, int, int]] = []
+    for index, match in enumerate(headings):
+        level = len(match.group(1))
+        title = match.group(2).strip()
+        end = len(markdown)
+        for next_match in headings[index + 1 :]:
+            if len(next_match.group(1)) <= level:
+                end = next_match.start()
+                break
+        ranges.append((level, title, match.end(), end))
+    return ranges
+
+
+def prompt_category(title: str, parent: str | None) -> str:
+    key = title.lower()
+    for category, titles in PROMPT_CATEGORY_HINTS.items():
+        if key in titles:
+            return category
+    if parent and parent.lower() == "safe prompt pack":
+        return "Recovery" if any(word in key for word in ("recovery", "stuck", "failed", "repair")) else "Build"
+    return "Review" if "review" in key or "proof" in key or "acceptance" in key else "Planning"
+
+
+def extract_prompt_cards() -> list[PromptCard]:
+    path = REFERENCE / "PROMPT-PATTERNS.md"
+    markdown = read_text(path)
+    ranges = section_ranges(markdown)
+    cards: list[PromptCard] = []
+    seen_titles: set[str] = set()
+    current_h2: str | None = None
+    for level, title, start, end in ranges:
+        if level == 2:
+            current_h2 = title
+        key = title.lower()
+        if level not in {2, 3} or key in PROMPT_STRUCTURAL_HEADINGS:
+            continue
+        if key in seen_titles:
+            continue
+        section = markdown[start:end]
+        code_match = re.search(r"```(?:text|bash)?\n(.*?)\n```", section, re.DOTALL)
+        if not code_match:
+            continue
+        before_code = section[: code_match.start()]
+        description = first_sentence(before_code, fallback=f"Copyable Precode prompt for {title}.")
+        when_match = re.search(r"Use (?:this prompt )?when ([^.]+(?:\.[^\n]*)?)", before_code, re.IGNORECASE)
+        when = first_sentence(when_match.group(1), fallback="Use when this workflow moment applies.") if when_match else "Use when this workflow moment applies."
+        cards.append(
+            PromptCard(
+                category=prompt_category(title, current_h2),
+                title=title,
+                description=description,
+                when=when,
+                prompt=code_match.group(1).strip(),
+                source="../tasks/reference/PROMPT-PATTERNS.md",
+            )
+        )
+        seen_titles.add(key)
+    return cards
+
+
+def protocol_category(filename: str) -> str:
+    for category, filenames in PROTOCOL_CATEGORY_HINTS:
+        if filename in filenames:
+            return category
+    return "Planning"
+
+
+def extract_protocol_cards() -> list[ProtocolCard]:
+    cards: list[ProtocolCard] = []
+    for path in sorted(REFERENCE.glob("*PROTOCOL.md")):
+        markdown = read_text(path)
+        title = extract_title(markdown)
+        load_when = extract_contract(markdown, "LOAD_WHEN")
+        authority = extract_contract(markdown, "AUTHORITY")
+        launch = (
+            f"Use the {title}.\n\n"
+            f"Load when: {load_when or 'the protocol trigger applies.'}\n\n"
+            "Preserve its authority boundaries. Do not treat this invocation as task selection, PRD approval, "
+            "bead activation, implementation acceptance, generated evidence authority, command approval, external mutation, "
+            "or permission to bypass human approval gates."
+        )
+        cards.append(
+            ProtocolCard(
+                category=protocol_category(path.name),
+                title=title,
+                filename=path.name,
+                authority=authority,
+                load_when=load_when,
+                version=extract_metadata(markdown, "Document version"),
+                last_updated=extract_metadata(markdown, "Last updated"),
+                launch=launch,
+            )
+        )
+    return cards
 
 
 def render_markdown(markdown: str, include_title: bool = False) -> tuple[str, list[TocItem]]:
@@ -526,7 +883,57 @@ h5:hover .heading-anchor,
 h6:hover .heading-anchor,
 .heading-anchor:focus { opacity: 1; }
 .lede { max-width: 760px; margin: 0; color: #37443c; font-size: 20px; }
-.compass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.compass-grid, .reference-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+.cockpit-hero {
+  padding-bottom: 26px;
+}
+.cockpit-strip {
+  display: grid;
+  gap: 16px;
+  max-width: 930px;
+}
+.cockpit-ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.cockpit-tile {
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 16px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.cockpit-tile strong { font-size: 19px; }
+.cockpit-tile span { color: var(--muted); font-size: 14px; }
+.cockpit-tile:hover { border-color: var(--accent); }
+.cockpit-catalog-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.cockpit-catalog-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.cockpit-catalog-row a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--wash-2);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.cockpit-catalog-row a:hover { border-color: var(--accent); color: var(--accent); }
 .lane, .doc-card, .page-nav a {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -541,6 +948,109 @@ h6:hover .heading-anchor,
 .doc-card:hover { border-color: var(--accent); }
 .doc-card strong { font-size: 18px; }
 .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+.reference-surface {
+  margin: 40px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(237,245,242,.72), rgba(255,253,248,.96));
+  padding: 24px;
+}
+.reference-surface > :first-child { margin-top: 0; }
+.reference-surface .lede { font-size: 17px; }
+.jump-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 26px; }
+.jump-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 7px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+}
+.jump-chip:hover { border-color: var(--accent); color: var(--accent); }
+.reference-group { margin-top: 28px; }
+.reference-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 20px;
+}
+.reference-group h3::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent-2);
+  flex: none;
+}
+.reference-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 34px rgba(54, 43, 28, .07);
+  padding: 18px;
+}
+.reference-card h4 { margin: 0; font-size: 18px; }
+.reference-card p { margin: 0; }
+.reference-card .label-row {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.reference-card .label-row strong {
+  color: var(--accent-2);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-block {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #283630;
+  border-radius: 8px;
+  background: #1d2521;
+  padding: 12px;
+}
+.copy-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.copy-block-header span {
+  color: #d2ddd7;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.copy-button {
+  border: 1px solid rgba(248, 251, 247, .32);
+  border-radius: 8px;
+  background: transparent;
+  color: #f8fbf7;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.copy-button:hover { border-color: #f8fbf7; }
+.copy-block pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: #f8fbf7;
+  box-shadow: none;
+}
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 34px; align-items: start; }
 .reader-aside { display: grid; gap: 14px; position: sticky; top: 24px; }
 .article {
@@ -631,8 +1141,18 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   .heading-anchor { opacity: 1; margin-left: 0; width: auto; padding-right: 8px; float: none; }
 }
 @media (max-width: 620px) {
+  .sidebar { padding: 16px 18px; }
+  .sidebar .notice, .sidebar .nav-group { display: none; }
+  .brand { margin-bottom: 0; }
   .hero, .content { padding: 30px 18px; }
   .article { padding: 22px; }
+  .reference-surface { padding: 16px; }
+  .cockpit-ritual-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cockpit-tile { min-height: 54px; padding: 12px; align-content: center; }
+  .cockpit-tile strong { font-size: 16px; }
+  .cockpit-tile span { display: none; }
+  .cockpit-catalog-row { gap: 6px; }
+  .cockpit-catalog-row a { padding: 6px 8px; font-size: 12px; }
   .page-nav { grid-template-columns: 1fr; }
 }
 """
@@ -707,6 +1227,24 @@ def page_shell(title: str, body: str, docs: list[Doc], active: str | None = None
       window.addEventListener("scroll", update, {{ passive: true }});
       window.addEventListener("resize", update);
     }})();
+    (() => {{
+      if (!navigator.clipboard) return;
+      document.querySelectorAll("[data-copy-target]").forEach((button) => {{
+        button.addEventListener("click", async () => {{
+          const target = document.getElementById(button.getAttribute("data-copy-target"));
+          if (!target) return;
+          const original = button.textContent;
+          try {{
+            await navigator.clipboard.writeText(target.textContent || "");
+            button.textContent = "Copied";
+            window.setTimeout(() => {{ button.textContent = original; }}, 1400);
+          }} catch (error) {{
+            button.textContent = "Select text";
+            window.setTimeout(() => {{ button.textContent = original; }}, 1800);
+          }}
+        }});
+      }});
+    }})();
   </script>
 </body>
 </html>
@@ -778,6 +1316,153 @@ def render_page_tools(doc: Doc, source_href: str) -> str:
 </aside>"""
 
 
+def grouped_prompt_cards(cards: list[PromptCard]) -> dict[str, list[PromptCard]]:
+    grouped: dict[str, list[PromptCard]] = {}
+    for card in cards:
+        grouped.setdefault(card.category, []).append(card)
+    return grouped
+
+
+def grouped_protocol_cards(cards: list[ProtocolCard]) -> dict[str, list[ProtocolCard]]:
+    grouped: dict[str, list[ProtocolCard]] = {}
+    for card in cards:
+        grouped.setdefault(card.category, []).append(card)
+    return grouped
+
+
+def render_copy_block(label: str, text: str, copy_id: str) -> str:
+    return f"""
+<div class="copy-block">
+  <div class="copy-block-header">
+    <span>{h(label)}</span>
+    <button class="copy-button" type="button" data-copy-target="{h(copy_id)}">Copy</button>
+  </div>
+  <pre id="{h(copy_id)}"><code>{h(text)}</code></pre>
+</div>
+"""
+
+
+def render_prompt_card(card: PromptCard, index: int) -> str:
+    copy_id = f"prompt-copy-{index}"
+    return f"""
+<article class="reference-card">
+  <h4>{h(card.title)}</h4>
+  <p>{h(card.description)}</p>
+  <div class="label-row"><strong>When to use</strong><span>{h(card.when)}</span></div>
+  {render_copy_block("Copy this prompt", card.prompt, copy_id)}
+  <p class="meta"><a href="{h(card.source)}">Source: PROMPT-PATTERNS.md</a></p>
+</article>
+"""
+
+
+def render_protocol_card(card: ProtocolCard, index: int) -> str:
+    copy_id = f"protocol-copy-{index}"
+    return f"""
+<article class="reference-card">
+  <h4>{h(card.title)}</h4>
+  <p>{h(card.authority)}</p>
+  <div class="label-row"><strong>Load when</strong><span>{h(card.load_when)}</span></div>
+  {render_copy_block("Say this to load it", card.launch, copy_id)}
+  <p class="meta"><a href="../tasks/reference/{h(card.filename)}">{h(card.filename)}</a><span>{h(card.version)}</span><span>Updated {h(card.last_updated)}</span></p>
+</article>
+"""
+
+
+def render_reference_surface() -> str:
+    prompt_cards = extract_prompt_cards()
+    protocol_cards = extract_protocol_cards()
+    prompt_groups = grouped_prompt_cards(prompt_cards)
+    protocol_groups = grouped_protocol_cards(protocol_cards)
+    categories = ["Discovery", "Planning", "Build", "Review", "Recovery"]
+    chips = []
+    for prefix, grouped in (("Prompts", prompt_groups), ("Protocols", protocol_groups)):
+        for category in categories:
+            if category in grouped:
+                anchor = slugify(f"{prefix} {category}")
+                chips.append(f'<a class="jump-chip" href="#{h(anchor)}">{h(prefix)} · {h(category)}</a>')
+    prompt_sections = []
+    prompt_index = 0
+    for category in categories:
+        cards = prompt_groups.get(category, [])
+        if not cards:
+            continue
+        rendered_cards = []
+        for card in cards:
+            prompt_index += 1
+            rendered_cards.append(render_prompt_card(card, prompt_index))
+        prompt_sections.append(
+            f"""
+<section class="reference-group" id="{h(slugify(f'Prompts {category}'))}">
+  <h3>{h(category)}</h3>
+  <div class="reference-card-grid">{"".join(rendered_cards)}</div>
+</section>
+"""
+        )
+    protocol_sections = []
+    protocol_index = 0
+    for category in categories:
+        cards = protocol_groups.get(category, [])
+        if not cards:
+            continue
+        rendered_cards = []
+        for card in cards:
+            protocol_index += 1
+            rendered_cards.append(render_protocol_card(card, protocol_index))
+        protocol_sections.append(
+            f"""
+<section class="reference-group" id="{h(slugify(f'Protocols {category}'))}">
+  <h3>{h(category)}</h3>
+  <div class="reference-card-grid">{"".join(rendered_cards)}</div>
+</section>
+"""
+        )
+    return f"""
+<section class="reference-surface" aria-labelledby="precode-prompts-protocols">
+  <p class="eyebrow">Generated Reference Aid</p>
+  <h2 id="precode-prompts-protocols">PrecodeOS Prompts And Protocols</h2>
+  <p class="lede">These cards make the existing prompt and protocol surfaces easier to browse and copy from the Daily Cockpit. They are generated from canonical Markdown; source files remain authoritative.</p>
+  <div class="jump-chips">{"".join(chips)}</div>
+  <h2>PrecodeOS Prompts</h2>
+  <p>Copyable prompt cards from <code>tasks/reference/PROMPT-PATTERNS.md</code>. They do not approve work, choose tasks, activate beads, accept review, or replace active memory and owner files.</p>
+  {"".join(prompt_sections)}
+  <h2>PrecodeOS Protocols</h2>
+  <p>Protocol cards for every <code>tasks/reference/*PROTOCOL.md</code> file. Use them only when their load trigger applies; do not load every protocol by default.</p>
+  {"".join(protocol_sections)}
+</section>
+"""
+
+
+def render_cockpit_strip() -> str:
+    return """
+  <div class="cockpit-strip" aria-label="Daily Cockpit ritual">
+    <div class="cockpit-ritual-grid">
+      <a class="cockpit-tile" href="#daily-loop">
+        <strong>Daily Loop</strong>
+        <span>Run the build loop: Active, Changed, Proven, Parked, Approval, Next.</span>
+      </a>
+      <a class="cockpit-tile" href="#next">
+        <strong>Next</strong>
+        <span>Choose the next safe move, approval, recovery path, or transition candidate.</span>
+      </a>
+      <a class="cockpit-tile" href="#health">
+        <strong>Health</strong>
+        <span>Check state, warnings, proof freshness, and whether the system is safe to use.</span>
+      </a>
+      <a class="cockpit-tile" href="#diary">
+        <strong>Diary</strong>
+        <span>Capture what transpired, changed, was learned, parked, or needs promotion.</span>
+      </a>
+    </div>
+    <div class="cockpit-catalog-row" aria-label="Daily Cockpit catalogs">
+      <span>Reference shelves</span>
+      <a href="#full-prompt-patterns-catalog">Prompt Patterns Catalog</a>
+      <a href="#full-protocol-catalog">Protocol Catalog</a>
+      <a href="#precode-prompts-protocols">Copyable HTML Cards</a>
+    </div>
+  </div>
+"""
+
+
 def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_doc: Doc | None) -> str:
     previous_link = (
         f'<a href="{h(previous_doc.html_name)}"><span>Previous</span>{h(previous_doc.title)}</a>'
@@ -793,16 +1478,27 @@ def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_do
     if toc:
         reader_aside_items.append(toc)
     reader_aside = "\n    ".join(reader_aside_items)
+    is_cockpit = doc.filename == "PRECODE-DAILY-COCKPIT.md"
+    hero_class = "hero cockpit-hero" if is_cockpit else "hero"
+    cockpit_strip = render_cockpit_strip() if is_cockpit else ""
+    hero_summary = (
+        "Daily operating surface: run the Daily Loop, choose Next, check Health, capture Diary. "
+        "Prompt and protocol catalogs stay below as reference shelves."
+        if is_cockpit
+        else doc.summary
+    )
     body = f"""
-<section class="hero" id="top">
+<section class="{hero_class}" id="top">
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>{h(doc.title)}</h1>
-  <p class="lede">{h(doc.summary)}</p>
+  <p class="lede">{h(hero_summary)}</p>
   <p class="meta"><a href="{h(source_href)}">Source Markdown</a><span>{h(doc.version)}</span><span>Updated {h(doc.last_updated)}</span></p>
+  {cockpit_strip}
 </section>
 <section class="content layout">
   <article class="article">
     {doc.content_html}
+    {render_reference_surface() if is_cockpit else ""}
     <nav class="page-nav" aria-label="Previous and next docs">{previous_link}{next_link}</nav>
   </article>
   <div class="reader-aside">
