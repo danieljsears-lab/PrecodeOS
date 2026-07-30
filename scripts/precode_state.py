@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-14
+# Version: v0.1.1
+# Last updated: 2026-07-30
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass
 import json
 import re
+import shlex
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -25,6 +27,8 @@ from os_parser import (
 
 
 FRONTMATTER_EMPTY_MARKERS = {"", "none", "n/a", "na", "null", "not applicable"}
+RAW_CHECK_KEY_PREFIX = "raw"
+ARGV_CHECK_KEY_PREFIX = "argv"
 
 
 @dataclass
@@ -364,14 +368,87 @@ def parse_check_command(raw: str) -> dict[str, str]:
     return {"command": command.strip(), "cwd": cwd, "source": raw.strip()}
 
 
-def latest_by_command(rows: list[dict[str, Any]], bead: str | None) -> dict[tuple[str, str], dict[str, Any]]:
-    latest: dict[tuple[str, str], dict[str, Any]] = {}
+def check_command_argv(command: str) -> tuple[str, ...] | None:
+    try:
+        return tuple(shlex.split(command))
+    except ValueError:
+        return None
+
+
+def check_lookup_keys(command: str, cwd: str) -> list[tuple[str, Any, str]]:
+    keys: list[tuple[str, Any, str]] = [(RAW_CHECK_KEY_PREFIX, command, cwd)]
+    argv = check_command_argv(command)
+    if argv is not None:
+        keys.append((ARGV_CHECK_KEY_PREFIX, argv, cwd))
+    return keys
+
+
+def check_lookup(latest: dict[tuple[str, Any, str], dict[str, Any]], command: str, cwd: str) -> dict[str, Any] | None:
+    for key in check_lookup_keys(command, cwd):
+        result = latest.get(key)
+        if result:
+            return result
+    return None
+
+
+def latest_by_command(rows: list[dict[str, Any]], bead: str | None) -> dict[tuple[str, Any, str], dict[str, Any]]:
+    latest: dict[tuple[str, Any, str], dict[str, Any]] = {}
     for row in rows:
         if bead and row.get("bead") != bead:
             continue
         command = str(row.get("command") or "")
         cwd = str(row.get("cwd") or ".")
         if command:
-            latest[(command, cwd)] = row
-            latest[(command, ".")] = row
+            for key in check_lookup_keys(command, cwd):
+                latest[key] = row
     return latest
+
+
+def self_test() -> int:
+    rows = [
+        {"bead": "tasks/beads/B001.md", "command": "python3 scripts/version-check.py", "cwd": ".", "status": "pass"},
+        {
+            "bead": "tasks/beads/B001.md",
+            "command": r"bash -lc cd\ ../backend\ \&\&\ source\ .venv/bin/activate\ \&\&\ ruff\ check\ .\ \&\&\ python\ -m\ mypy\ \&\&\ python\ -m\ pytest\ -q",
+            "cwd": ".",
+            "status": "pass",
+        },
+        {"bead": "tasks/beads/B001.md", "command": "pytest -q", "cwd": "../backend", "status": "pass"},
+        {"bead": "tasks/beads/B001.md", "command": "bash -lc 'unterminated", "cwd": ".", "status": "pass"},
+    ]
+    latest = latest_by_command(rows, "tasks/beads/B001.md")
+    compound_declared = "bash -lc 'cd ../backend && source .venv/bin/activate && ruff check . && python -m mypy && python -m pytest -q'"
+    scenarios = [
+        ("simple raw command", check_lookup(latest, "python3 scripts/version-check.py", "."), "pass"),
+        ("compound argv-equivalent command", check_lookup(latest, compound_declared, "."), "pass"),
+        ("cwd-scoped command", check_lookup(latest, "pytest -q", "../backend"), "pass"),
+        ("cwd mismatch remains missing", check_lookup(latest, "pytest -q", "frontend"), None),
+        ("invalid shell fallback", check_lookup(latest, "bash -lc 'unterminated", "."), "pass"),
+    ]
+    failures: list[dict[str, str]] = []
+    for name, result, expected in scenarios:
+        actual = result.get("status") if result else None
+        if actual != expected:
+            failures.append({"scenario": name, "expected": str(expected), "actual": str(actual)})
+    payload = {
+        "tool": "precode-state",
+        "mode": "self-test",
+        "status": "pass" if not failures else "fail",
+        "scenario_count": len(scenarios),
+        "failures": failures,
+    }
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 1 if failures else 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Precode state parsing helpers")
+    parser.add_argument("--self-test", action="store_true", help="run deterministic check-command matching fixtures")
+    args = parser.parse_args()
+    if args.self_test:
+        return self_test()
+    parser.error("choose --self-test")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

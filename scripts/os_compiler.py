@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.45
-# Last updated: 2026-07-26
+# Version: v0.1.46
+# Last updated: 2026-07-30
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -66,6 +66,7 @@ from precode_state import (
     bead_paths,
     goal_frame_candidate_paths,
     heading_title,
+    check_lookup,
     latest_by_command,
     load_jsonl,
     int_or_none,
@@ -603,12 +604,11 @@ def goal_frame_summary(root: Path, current_bead: BeadRecord | None) -> dict[str,
     }
 
 
-def check_rows_for_bead(bead: BeadRecord, latest: dict[tuple[str, str], dict[str, Any]]) -> list[dict[str, Any]]:
+def check_rows_for_bead(bead: BeadRecord, latest: dict[tuple[str, Any, str], dict[str, Any]]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for raw_check in bead.checks:
         check = parse_check_command(raw_check)
-        key = (check["command"], check["cwd"])
-        result = latest.get(key) or latest.get((check["command"], "."))
+        result = check_lookup(latest, check["command"], check["cwd"])
         rows.append(
             {
                 "source": check["source"],
@@ -1911,7 +1911,7 @@ def compile_work_graph(
         for raw_check in bead.checks:
             parsed = parse_check_command(raw_check)
             check_id = f"check:{bead.rel_path}:{parsed['command']}:{parsed['cwd']}"
-            result = latest.get((parsed["command"], parsed["cwd"])) or latest.get((parsed["command"], "."))
+            result = check_lookup(latest, parsed["command"], parsed["cwd"])
             add_node(
                 node(
                     check_id,
