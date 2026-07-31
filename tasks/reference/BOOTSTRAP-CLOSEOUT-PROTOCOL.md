@@ -35,12 +35,13 @@ Use these modes from the PrecodeOS package checkout after source and target are 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
+npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-The optional npm upgrade and update-plan previews delegate to the same non-mutating package-state comparison from the package source. They expose no apply flags and do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. Neither preview may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
+The optional npm upgrade and update-plan previews delegate to the same non-mutating package-state comparison from the package source. The optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No npm command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 
@@ -70,7 +71,7 @@ The plan is not copy approval or edit approval.
 
 For support-assisted upgrades of an existing Precode target with important active work, known local package edits, or unclear recovery state, prefer a clone-first preview: preserve the current environment as the backup, run `--upgrade-preview` against a fresh clone, and review dirty or customized paths before any approved copy action. This is a support safety posture, not rollback automation or package-update permission.
 
-Updater compatibility policy is governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`. Compatibility exists only as review evidence when upgrade preview has source/target confirmation, package-state classification, release-reference metadata, dirty-path lists, identity-collision checks, deferred package-development identities, candidate `UP-ID` actions, and explicit non-authority warnings. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it adds grouped planning evidence, same-session freshness, optional registry metadata status, and validation prompts, but it does not add npm apply behavior. `npm Approved Package-Owned Apply` remains a separate future roadmap candidate.
+Updater compatibility policy is governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`. Compatibility exists only as review evidence when upgrade preview has source/target confirmation, package-state classification, release-reference metadata, dirty-path lists, identity-collision checks, deferred package-development identities, candidate `UP-ID` actions, and explicit non-authority warnings. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it adds grouped planning evidence, same-session freshness, optional registry metadata status, and validation prompts. Approved npm package-owned apply is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and stays limited to delegated Python upgrade apply for explicit approved `UP-ID` values.
 
 ## npm Update Plan Preview
 
@@ -148,7 +149,7 @@ It must not automate rollback, run destructive cleanup, overwrite dirty files, i
 - Target PRD and bead IDs are project truth; package refresh must not manufacture duplicate IDs or auto-renumber incoming files.
 - Hooks and CI require separate explicit approval.
 - No command in this protocol creates executable release channels, package-manager semantics, registry behavior, optional-pack installation, or rollback automation.
-- The optional npm `precodeos` preview entry must remain a read-only setup/upgrade/update-plan preview surface, not a postinstall mutation path, updater, executable release channel, package-manager flow, registry freshness source, dist-tag resolver, channel selector, or support-only hidden install process.
+- The optional npm `precodeos` entry must remain a setup/upgrade/update-plan preview surface plus approved package-owned copy delegation, not a postinstall mutation path, broad updater, executable release channel, package-manager flow, registry freshness source, dist-tag resolver, channel selector, or support-only hidden install process.
 
 ## Builder Prompt
 

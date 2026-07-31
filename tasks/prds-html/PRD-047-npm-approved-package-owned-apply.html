@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-047 -- npm Approved Package-Owned Apply</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-047 -- npm Approved Package-Owned Apply</h1>
+  <p class="muted">Static HTML generated from <code>PRD-047-npm-approved-package-owned-apply.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-047-npm-approved-package-owned-apply.md#prd-047-npm-approved-package-owned-apply">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>npm Approved Package-Owned Apply</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-07-31</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the optional npm and local facade command that delegates explicitly approved missing package-owned `UP-ID` copy actions to the existing Python upgrade-apply source of truth.</p>
+    <p><strong>Not authority:</strong> Active memory, target-project truth, broad npm updater behavior, package update permission, npm registry freshness, dist-tag resolution, release-channel selection, postinstall mutation, dirty-file overwrite, owner-file adaptation approval, rollback automation, package-manager behavior, generated-output authority, PRD approval, bead activation, review acceptance, or implementation acceptance.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-047-FR01</code></td><td><code>bin/precodeos.mjs</code> must expose <code>apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</td><td>P0</td><td>Repeatable <code>--approve-action</code> is allowed.</td></tr><tr><td><code>PRD-047-FR02</code></td><td>The npm command must delegate to <code>scripts/bootstrap-check.py --upgrade-preview --apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code> from the package source.</td><td>P0</td><td>No Node copy logic.</td></tr><tr><td><code>PRD-047-FR03</code></td><td><code>scripts/precode_cli.py</code> must expose the same local facade delegation.</td><td>P0</td><td>Keeps local and npm command surfaces aligned.</td></tr><tr><td><code>PRD-047-FR04</code></td><td>Facades must require at least one approved <code>UP-ID</code> and reject <code>--approve-action</code> on preview-only commands.</td><td>P0</td><td>Prevents accidental approval-shaped preview calls.</td></tr><tr><td><code>PRD-047-FR05</code></td><td>Public setup, support, troubleshooting, user, package-inventory, protocol, and AI-readable navigation surfaces must frame the command as approved package-owned copy delegation, not npm update.</td><td>P0</td><td>Supersedes only the previous no-npm-apply wording for this narrow command.</td></tr><tr><td><code>PRD-047-FR06</code></td><td>Bootstrap self-test and clarity fixtures must cover facade delegation, missing approval refusal, preserved no-registry/no-dist-tag boundaries, and no package-manager behavior.</td><td>P0</td><td>Regression and text-contract coverage only.</td></tr><tr><td><code>PRD-047-FR07</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <ul><li>Stop if source package root, target root, target kind, package-state classification, release-reference status, dirty paths, identity collisions, deferred identities, or approved action IDs are unclear.</li><li>Stop if a user asks npm to update, overwrite, adapt owner files, renumber PRDs/beads, install hooks, change CI, run app commands, edit app code, query registry freshness, resolve dist-tags, select a channel, or roll back.</li><li>The facade command is only a convenience entry to the current Python apply path. It is not a package manager, release channel, updater, registry freshness source, copy approval, generated proof, or support-only hidden path.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-047-npm-approved-package-owned-apply.md</code></li><li>Parent PRDs:</li><li><code>tasks/prds/PRD-013-installable-precode-cli-wrapper.md</code></li><li><code>tasks/prds/PRD-016-installer-bootstrap-closeout.md</code></li><li><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></li><li><code>tasks/prds/PRD-042-npm-update-plan-preview.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>bin/precodeos.mjs</code></li><li><code>scripts/precode_cli.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>llms.txt</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package-manager mutation</li><li>npm registry integration</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>JavaScript copy logic</li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-047-npm-approved-package-owned-apply">PRD-047 -- npm Approved Package-Owned Apply</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS already has a Python upgrade-apply path for existing Precode targets:</p>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --upgrade-preview --apply-upgrade-preview --approve-action &lt;UP-ID&gt;</code></pre>
+<p>That path copies only approved missing package-owned files marked <code>review_package_copy_candidate</code>. PRD-041 and PRD-042 intentionally kept npm read-only until policy and update-plan evidence proved trustworthy.</p>
+<p>This PRD adds the narrow npm-facing apply slice. The npm and local facades may expose <code>apply-package-owned</code>, but only as transparent delegation to the existing Python command. Node must not implement copy logic.</p>
+<h2 id="problem">Problem</h2>
+<p>Existing users can inspect safe missing package-owned <code>UP-ID</code> candidates through upgrade preview and update-plan preview, but the public npm surface still stops before the same approved copy action the Python path already supports.</p>
+<p>Without a single visible facade command, support helpers may either ask users to switch mental models from npm preview to Python apply, or invent unsafe &quot;update&quot; language. The package needs one explicit command name for approved package-owned copy actions while still refusing broad updater behavior.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Add <code>precodeos apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</li><li>Add matching <code>python3 scripts/precode_cli.py apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</li><li>Delegate to <code>scripts/bootstrap-check.py --upgrade-preview --apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code>.</li><li>Require at least one explicit <code>--approve-action &amp;lt;UP-ID&amp;gt;</code>.</li><li>Preserve the Python implementation as the only mutation engine.</li><li>Keep the same-session preview requirement from PRD-042 and the compatibility policy from PRD-041.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No postinstall behavior, npm registry lookup, dist-tag resolution, channel selection, package-manager update behavior, automatic package update, dirty-file overwrite, owner-file adaptation approval, hook or CI mutation, app command, app-code edit, PRD/bead renumbering, rollback automation, support-only hidden shortcut, generated-output authority, task selection, PRD approval, bead activation, review acceptance, release approval, registry behavior, optional-pack behavior, or public promise that <code>latest</code> is safe to apply.</li><li>No JavaScript copy engine. <code>bin/precodeos.mjs</code> only parses the facade command, prints the delegated Python command, and preserves the Python exit status.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-047-FR01</code></td><td><code>bin/precodeos.mjs</code> must expose <code>apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</td><td>P0</td><td>Repeatable <code>--approve-action</code> is allowed.</td></tr><tr><td><code>PRD-047-FR02</code></td><td>The npm command must delegate to <code>scripts/bootstrap-check.py --upgrade-preview --apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code> from the package source.</td><td>P0</td><td>No Node copy logic.</td></tr><tr><td><code>PRD-047-FR03</code></td><td><code>scripts/precode_cli.py</code> must expose the same local facade delegation.</td><td>P0</td><td>Keeps local and npm command surfaces aligned.</td></tr><tr><td><code>PRD-047-FR04</code></td><td>Facades must require at least one approved <code>UP-ID</code> and reject <code>--approve-action</code> on preview-only commands.</td><td>P0</td><td>Prevents accidental approval-shaped preview calls.</td></tr><tr><td><code>PRD-047-FR05</code></td><td>Public setup, support, troubleshooting, user, package-inventory, protocol, and AI-readable navigation surfaces must frame the command as approved package-owned copy delegation, not npm update.</td><td>P0</td><td>Supersedes only the previous no-npm-apply wording for this narrow command.</td></tr><tr><td><code>PRD-047-FR06</code></td><td>Bootstrap self-test and clarity fixtures must cover facade delegation, missing approval refusal, preserved no-registry/no-dist-tag boundaries, and no package-manager behavior.</td><td>P0</td><td>Regression and text-contract coverage only.</td></tr><tr><td><code>PRD-047-FR07</code></td><td>Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-047-FR01</code></td><td><code>precodeos apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt;</code> is accepted by the npm facade.</td><td>Clarity scenario fixture.</td></tr><tr><td><code>PRD-047-FR02</code></td><td>The printed underlying command includes <code>--upgrade-preview --apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code>.</td><td>Clarity scenario fixture and manual command review.</td></tr><tr><td><code>PRD-047-FR03</code></td><td><code>python3 scripts/precode_cli.py apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; --dry-run</code> prints the same delegated Python apply path.</td><td>Clarity scenario fixture.</td></tr><tr><td><code>PRD-047-FR04</code></td><td>Missing approval fails before delegation, and preview commands still reject approval IDs.</td><td>Facade argument tests and clarity scenario.</td></tr><tr><td><code>PRD-047-FR05</code></td><td>Public docs/protocols/navigation describe approved package-owned copy delegation without implying update permission.</td><td>Docs review and docs HTML freshness.</td></tr><tr><td><code>PRD-047-FR06</code></td><td>Existing Python refusal fixtures still cover dirty states, identity collisions, unknown IDs, missing approvals, and overwrites.</td><td><code>python3 scripts/bootstrap-check.py --self-test</code>.</td></tr><tr><td><code>PRD-047-FR07</code></td><td>Roadmap, journal, changelog, PRD HTML, docs HTML, and roadmap HTML are current and rendered shortstats are numeric.</td><td>Maintainer checks and rendered roadmap inspection.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Stop if source package root, target root, target kind, package-state classification, release-reference status, dirty paths, identity collisions, deferred identities, or approved action IDs are unclear.</li><li>Stop if a user asks npm to update, overwrite, adapt owner files, renumber PRDs/beads, install hooks, change CI, run app commands, edit app code, query registry freshness, resolve dist-tags, select a channel, or roll back.</li><li>The facade command is only a convenience entry to the current Python apply path. It is not a package manager, release channel, updater, registry freshness source, copy approval, generated proof, or support-only hidden path.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td><code>bin/precodeos.mjs</code></td><td><code>precodeos apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</td><td>Prints and delegates to Python upgrade apply; no copy logic.</td><td>Clarity scenario and manual command review.</td><td><code>tasks/prds/PRD-047-npm-approved-package-owned-apply.md</code></td></tr><tr><td><code>scripts/precode_cli.py</code></td><td><code>python3 scripts/precode_cli.py apply-package-owned --target &amp;lt;existing-precode-root&amp;gt; --approve-action &amp;lt;UP-ID&amp;gt; [--json]</code>.</td><td>Local facade prints the delegated Python command.</td><td>Clarity scenario fixture.</td><td><code>tasks/prds/PRD-047-npm-approved-package-owned-apply.md</code></td></tr><tr><td><code>scripts/bootstrap-check.py</code></td><td>Existing <code>--upgrade-preview --apply-upgrade-preview --approve-action &amp;lt;UP-ID&amp;gt;</code>.</td><td>Remains the only mutation engine and refusal-policy owner.</td><td>Bootstrap self-test.</td><td><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-047-npm-approved-package-owned-apply.md</code></li><li>Parent PRDs:</li><li><code>tasks/prds/PRD-013-installable-precode-cli-wrapper.md</code></li><li><code>tasks/prds/PRD-016-installer-bootstrap-closeout.md</code></li><li><code>tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md</code></li><li><code>tasks/prds/PRD-042-npm-update-plan-preview.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md</code></li><li><code>tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md</code></li><li><code>tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li>Files or folders likely in play:</li><li><code>bin/precodeos.mjs</code></li><li><code>scripts/precode_cli.py</code></li><li><code>scripts/clarity-scenario-check.py</code></li><li><code>README.md</code></li><li><code>docs/PRECODE-GUIDED-SETUP.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-TROUBLESHOOTING.md</code></li><li><code>docs/PRECODE-USER-GUIDE.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>llms.txt</code></li><li><code>tasks/reference/PROMPT-PATTERNS.md</code></li><li><code>tasks/prds-html/</code></li><li><code>docs-html/</code></li><li><code>_maintainer/CHANGELOG.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.md</code></li><li><code>_maintainer/PRECODE-ROADMAP-JOURNAL.md</code></li><li><code>_maintainer/PRECODE-ROADMAP.html</code></li><li>Files or folders out of scope:</li><li>target app code</li><li>package-manager mutation</li><li>npm registry integration</li><li>release-channel metadata</li><li>hooks and CI mutation</li><li>dirty package-file overwrite</li><li>automatic owner-file adaptation</li><li>rollback automation</li><li>JavaScript copy logic</li></ul>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/bootstrap-check.py --self-test
+python3 scripts/clarity-scenario-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/version-check.py
+python3 scripts/prd-html.py --check
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If implementation copies files from JavaScript, it violates this PRD.</li><li>If <code>apply-package-owned</code> accepts no approval ID, it violates this PRD.</li><li>If <code>latest</code>, npm acquisition, or update-plan preview is treated as overwrite permission, it violates this PRD.</li><li>If dirty package files, owner files, active memory, PRDs, beads, hooks, CI, app code, or generated evidence are updated automatically, it violates this PRD.</li><li>If generated preview output is treated as target-project truth, compatibility proof, or implementation acceptance, it violates this PRD.</li></ul>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B047-npm-approved-package-owned-apply</code></td><td><code>PRD-047-FR01</code> through <code>PRD-047-FR07</code></td><td>Approved package-owned npm/local facade delegation, protocol/docs/navigation wording, clarity coverage, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-047-npm-approved-package-owned-apply.md</code></td><td>bootstrap self-test, clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-07-31.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

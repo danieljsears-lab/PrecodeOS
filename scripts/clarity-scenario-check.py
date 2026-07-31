@@ -4568,6 +4568,35 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         if term not in update_plan_preview_text:
             failures.append({"scenario": "local update-plan preview facade", "expected": term, "actual": update_plan_preview_text})
 
+    apply_package_owned_args = parser.parse_args(
+        ["--dry-run", "apply-package-owned", "--target", "target", "--approve-action", "UP-001"]
+    )
+    apply_package_owned_commands = precode_cli.build_commands(apply_package_owned_args, parser)
+    apply_package_owned_text = precode_cli.command_text(apply_package_owned_commands[0])
+    for term in (
+        "scripts/bootstrap-check.py",
+        "--source",
+        ".",
+        "--target",
+        "target",
+        "--upgrade-preview",
+        "--apply-upgrade-preview",
+        "--approve-action",
+        "UP-001",
+    ):
+        if term not in apply_package_owned_text:
+            failures.append({"scenario": "local apply-package-owned facade", "expected": term, "actual": apply_package_owned_text})
+
+    missing_up_approval_args = parser.parse_args(["apply-package-owned", "--target", "target"])
+    try:
+        with redirect_stderr(io.StringIO()):
+            precode_cli.build_commands(missing_up_approval_args, parser)
+    except SystemExit as error:
+        if error.code == 0:
+            failures.append({"scenario": "local apply-package-owned missing approval", "expected": "parser error", "actual": "exit 0"})
+    else:
+        failures.append({"scenario": "local apply-package-owned missing approval", "expected": "parser error", "actual": "accepted"})
+
     package_json = json.loads(Path("package.json").read_text(encoding="utf-8"))
     if package_json.get("scripts", {}).get("postinstall"):
         failures.append({"scenario": "npm preview entry postinstall", "expected": "no postinstall", "actual": "postinstall present"})
@@ -4578,19 +4607,21 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         "setup-preview",
         "upgrade-preview",
         "update-plan-preview",
+        "apply-package-owned",
         "scripts/bootstrap-check.py",
         "--supervised-setup-plan",
         "--upgrade-preview",
         "--update-plan-preview",
+        "--apply-upgrade-preview",
+        "--approve-action",
         "No postinstall behavior",
-        "target mutation",
+        "approved package-owned",
         "executable release-channel behavior",
     ):
         if term not in npm_bin:
             failures.append({"scenario": "npm preview entry boundary text", "expected": term, "actual": "missing"})
-    for forbidden in ("--apply-supervised-setup", "--apply-upgrade-preview", "--approve-action"):
-        if forbidden in npm_bin:
-            failures.append({"scenario": "npm preview entry apply exposure", "expected": f"no {forbidden}", "actual": "present"})
+    if "--apply-supervised-setup" in npm_bin:
+        failures.append({"scenario": "npm apply-package-owned setup exposure", "expected": "no --apply-supervised-setup", "actual": "present"})
 
     bootstrap_check = load_script_module("bootstrap_check_fixture", "bootstrap-check.py")
     release_reference = bootstrap_check.source_release_reference(Path("."))

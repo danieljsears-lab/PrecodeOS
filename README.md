@@ -152,11 +152,12 @@ Optional npm preview entry:
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
+npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 ```
 
-The npm entry is acquisition and preview only. It runs the same Bootstrap Confidence setup-plan, upgrade-preview, or update-plan-preview checks from the package source, writes nothing by default, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+The npm entry is acquisition and preview by default. It runs the same Bootstrap Confidence setup-plan, upgrade-preview, or update-plan-preview checks from the package source, writes nothing in preview modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
 
-Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. Neither preview queries npm, resolves dist-tags, selects a channel, exposes npm apply behavior, or makes `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, and update-plan metadata are generated evidence, not authority or update permission.
+Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. These commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, or make `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, update-plan metadata, and generated apply output are evidence, not authority or update permission.
 
 Optional local command facade:
 
@@ -191,6 +192,7 @@ For existing Precode targets, use upgrade preview before any package repair or u
 ```bash
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
+npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
+# Version: v0.1.6
 # Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -117,6 +117,19 @@ def build_parser() -> argparse.ArgumentParser:
     update_plan_preview.add_argument("--target", required=True, help="existing Precode target path")
     update_plan_preview.add_argument("--json", action="store_true", help="print JSON output")
 
+    apply_package_owned = add_dry_run(subparsers.add_parser(
+        "apply-package-owned",
+        help="delegate approved missing package-owned UP-ID copy actions through bootstrap-check.py",
+    ))
+    apply_package_owned.add_argument("--target", required=True, help="existing Precode target path")
+    apply_package_owned.add_argument(
+        "--approve-action",
+        action="append",
+        default=[],
+        help="approved package-owned UP-ID from the current same-session preview; repeat for multiple actions",
+    )
+    apply_package_owned.add_argument("--json", action="store_true", help="print JSON output")
+
     authority_map = add_dry_run(subparsers.add_parser(
         "authority-map",
         help="query authority-map contracts for navigation only; does not approve work",
@@ -208,6 +221,24 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             args.target,
             "--update-plan-preview",
         ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "apply-package-owned":
+        if not args.approve_action:
+            parser.error("apply-package-owned requires at least one --approve-action <UP-ID>")
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--upgrade-preview",
+            "--apply-upgrade-preview",
+        ]
+        for action_id in args.approve_action:
+            command.extend(["--approve-action", action_id])
         if args.json:
             command.append("--json")
         return [command]

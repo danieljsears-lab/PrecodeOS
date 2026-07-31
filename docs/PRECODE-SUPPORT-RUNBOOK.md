@@ -65,7 +65,7 @@ Start with the Existing Precode Refresh prompt in `tasks/reference/PROMPT-PATTER
 - stop before mutation unless the user approves specific `UP-ID` actions
 - run validation before the user's first normal Start after a refresh
 
-Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query npm registry freshness, resolve dist-tags, create package-manager behavior, expose npm apply behavior, or automate rollback. Upgrade preview may show advisory package version, stable/latest/pinned language, and compatibility policy metadata from the local source package; update-plan preview may group current `UP-ID` evidence and validation prompts. That metadata is evidence only; `latest` is not overwrite permission, policy metadata is not update permission, and update-plan preview is not copy approval.
+Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query npm registry freshness, resolve dist-tags, create package-manager behavior, expose broad npm apply behavior outside `apply-package-owned`, or automate rollback. Upgrade preview may show advisory package version, stable/latest/pinned language, and compatibility policy metadata from the local source package; update-plan preview may group current `UP-ID` evidence and validation prompts. That metadata is evidence only; `latest` is not overwrite permission, policy metadata is not update permission, and update-plan preview is not copy approval.
 
 ## Stuck User Recovery
 
@@ -283,7 +283,7 @@ After Bootstrap Confidence, choose the first adoption fork:
 
 - Fresh install for empty or nearly empty targets.
 - Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
-- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, or the equivalent `bootstrap-check.py` preview mode before any approved `UP-ID` copy action. Treat release-reference, compatibility-policy, and update-plan metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, copy approval, or updater permission.
+- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>`, or the equivalent `bootstrap-check.py` preview/apply mode before any approved `UP-ID` copy action. Treat release-reference, compatibility-policy, and update-plan metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, copy approval, or updater permission. `apply-package-owned` delegates only approved missing package-owned `UP-ID` copy actions and is not package update permission.
 
 For existing apps, run:
 

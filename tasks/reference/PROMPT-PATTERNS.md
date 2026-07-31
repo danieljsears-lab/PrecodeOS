@@ -346,9 +346,11 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, updater compatibility policy metadata, candidate `UP-ID` actions, and any update-plan action grouping.
 
-Stop before mutation. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query registry freshness, resolve dist-tags, provide package-manager behavior, expose npm apply behavior, or automate rollback. Treat `latest` as a package reference to inspect, not overwrite permission.
+Stop before mutation until I approve exact `UP-ID` actions. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query registry freshness, resolve dist-tags, provide package-manager behavior, or automate rollback. Treat `latest` as a package reference to inspect, not overwrite permission.
 
-If I approve specific `UP-ID` actions, apply only those missing package-owned files with:
+If I approve specific `UP-ID` actions, apply only those missing package-owned files with one of these delegated commands:
+
+npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 
@@ -357,14 +359,14 @@ After any approved copy, show copied, skipped, blocked, validation next steps, a
 
 Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, optional update-plan action buckets, same-session freshness, validation next steps, and explicit stop-before-mutation status.
 
-This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, npm apply behavior, registry freshness result, dist-tag resolver, or permission to overwrite.
+This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, registry freshness result, dist-tag resolver, or permission to overwrite. Npm apply is limited to `apply-package-owned` delegation for approved missing package-owned `UP-ID` actions.
 
 ### Package Upgrade Preview
 
 ```text
 Run the PrecodeOS package upgrade preview for this existing Precode target.
 Use the PrecodeOS checkout as the source and my project folder as the target.
-If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison, or `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>` when grouped current action IDs and validation prompts are needed.
+If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>` when grouped current action IDs and validation prompts are needed, or `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>` only after explicit approval of current missing package-owned `UP-ID` actions.
 Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
 Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission. Show updater compatibility policy metadata as evidence-threshold and blocked-case guidance only. If update-plan preview is used, show grouped current action IDs, same-session freshness, and validation prompts; do not treat it as registry freshness, dist-tag resolution, apply permission, or copy approval.
