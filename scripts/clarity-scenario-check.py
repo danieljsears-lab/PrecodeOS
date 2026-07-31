@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.58
-# Last updated: 2026-07-29
+# Version: v0.1.59
+# Last updated: 2026-07-31
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -2460,6 +2460,9 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
     required_terms_by_path = {
         Path("tasks/reference/MEMORY-PROTOCOL.md"): [
             "Memory Promotion Review",
+            "compact citation",
+            "demotion decision",
+            "filing recommendation",
             "memory claim",
             "source pointers",
             "current status",
@@ -2471,6 +2474,9 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
         ],
         Path("memory/cards/MEMORY-CARD-FORMAT.md"): [
             "manual promotion review",
+            "compact citation",
+            "demotion decision",
+            "filing recommendation",
             "source pointers",
             "proposed owner",
             "approval required",
@@ -2486,6 +2492,8 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Review this memory for promotion",
+            "compact_citation",
+            "filing_recommendation",
             "stay reviewed memory",
             "be promoted to DECISIONS.md",
             "Do not create cards",
@@ -2493,6 +2501,8 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "Review this memory for promotion",
+            "compact citation",
+            "filing recommendation",
             "proposed owner",
             "approval required",
             "Do not create cards",
@@ -2500,19 +2510,32 @@ def assert_reviewed_memory_promotion_contract(failures: list[dict[str, str]]) ->
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "Review memory promotion",
+            "compact citation",
+            "weak matches as search leads only",
             "source pointers",
             "approval required",
             "Search results may name a proposed promotion owner",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "Memory Promotion Review",
+            "compact citation",
+            "filing recommendation",
             "auto-promote cards",
             "all promotion is manual and approval-gated",
         ],
         Path("docs/PRECODE-ARCHITECTURE-OVERVIEW.md"): [
             "Reviewed-memory recall layer",
+            "compact citation",
+            "filing recommendations do not file automatically",
             "scripts/memory-check.py --needs-promotion",
             "promotion review is manual",
+        ],
+        Path("tasks/prds/PRD-046-reviewed-memory-citation-ergonomics.md"): [
+            "Reviewed Memory Citation Ergonomics",
+            "compact citation",
+            "demotion decision",
+            "filing recommendation",
+            "No new command, flag, facade, generated report, backend, service, or wrapper",
         ],
     }
     for path, required_terms in required_terms_by_path.items():

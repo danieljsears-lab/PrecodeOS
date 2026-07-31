@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
-# Last updated: 2026-07-11
+# Version: v0.1.7
+# Last updated: 2026-07-31
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -81,6 +81,51 @@ def source_pointers(card: dict[str, Any]) -> list[str]:
     return [str(pointer) for pointer in pointers if str(pointer).strip()]
 
 
+def compact_citation(card: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "path": card.get("path"),
+        "title": card.get("title"),
+        "memory_space": card.get("memory_space", "default"),
+        "category": card.get("category"),
+        "freshness": card.get("freshness"),
+        "status": card.get("status"),
+        "source_pointers": source_pointers(card),
+        "promotion_owner": card.get("authority_owner_if_promoted", "none"),
+    }
+
+
+def filing_recommendation(card: dict[str, Any]) -> dict[str, Any]:
+    status = str(card.get("status") or "")
+    freshness = str(card.get("freshness") or "")
+    confidence = str(card.get("confidence") or "")
+    owner = str(card.get("authority_owner_if_promoted") or "none").strip() or "none"
+    if status == "needs_promotion":
+        destination = owner if owner.lower() not in {"none", "not applicable", "n/a"} else "owner file to be named"
+        action = "run Memory Promotion Review before any owner-file edit"
+    elif status in {"archived", "superseded"} or freshness in {"stale", "superseded"} or confidence == "low":
+        destination = "stay reviewed memory as demoted context"
+        action = "use only as a lead, then verify against active memory, the active bead, and the owner file"
+    else:
+        destination = "stay reviewed memory"
+        action = "cite as reviewed evidence, then verify against active memory, the active bead, and the owner file before acting"
+    return {
+        "recommended_destination": destination,
+        "promotion_action": action,
+        "approval_required": "explicit user approval before any card write, owner-file edit, PRD amendment, protocol update, bead change, or active-memory change",
+        "allowed_destinations": [
+            "stay reviewed memory",
+            "proposed memory card",
+            "DECISIONS.md",
+            "PRD",
+            "protocol",
+            "approved bead",
+            "another owner file",
+            "defer",
+        ],
+        "does_not_file_automatically": True,
+    }
+
+
 def promotion_hygiene(card: dict[str, Any]) -> dict[str, Any]:
     pointers = source_pointers(card)
     owner = str(card.get("authority_owner_if_promoted") or "none").strip() or "none"
@@ -122,6 +167,9 @@ def card_reference(card: dict[str, Any]) -> dict[str, Any]:
         "status": card.get("status"),
         "authority_owner_if_promoted": card.get("authority_owner_if_promoted", "none"),
         "demotion": demotion_reason(card),
+        "demotion_decision": "demoted signal; verify before use" if demotion_reason(card) != "none" else "usable reviewed evidence after owner-file verification",
+        "compact_citation": compact_citation(card),
+        "filing_recommendation": filing_recommendation(card),
         "citation": card.get("citation"),
         "source_to_promotion_hygiene": promotion_hygiene(card),
     }
@@ -182,8 +230,11 @@ def selective_recall(
                 "score": score,
                 "match": term_match_summary(card, terms),
                 "snippet": recall_snippet(card, terms),
+                "compact_citation": compact_citation(card),
                 "citation": card.get("citation"),
                 "demotion": demotion_reason(card),
+                "demotion_decision": "demoted signal; verify before use" if demotion_reason(card) != "none" else "usable reviewed evidence after owner-file verification",
+                "filing_recommendation": filing_recommendation(card),
                 "source_to_promotion_hygiene": promotion_hygiene(card),
                 "generated_evidence_only": True,
             }
@@ -200,6 +251,12 @@ def selective_recall(
         "no_useful_memory_found": not recalls,
         "recalls": recalls,
         "no_match_guidance": "No exact reviewed-memory match was found. Do not force weak memory into context; try narrower terms, inspect weak_match_examples as leads only, or create/promote reviewed memory through the normal approval path." if not recalls else "",
+        "no_match_analysis": {
+            "exact_match_required": True,
+            "weak_matches_are": "search leads only, not memory to load",
+            "recommended_destination": "stay in chat or create/promote reviewed memory through the normal approval path after human review" if not recalls else "not applicable",
+            "do_not_infer_memory": not recalls,
+        },
         "weak_match_examples": [] if recalls else weak_match_examples(all_cards or cards, terms, args.limit),
         "search_method": {
             "keyword": "implemented; recall requires every query term to match the reviewed card search text before returning snippets",
@@ -493,6 +550,12 @@ def self_test() -> int:
     if recalls[1].get("demotion") == "none":
         print("memory-check self-test failed: stale low-confidence memory was not demoted")
         return 1
+    if "compact_citation" not in recalls[0] or not recalls[0].get("filing_recommendation"):
+        print("memory-check self-test failed: recall did not expose compact citation and filing recommendation")
+        return 1
+    if recalls[1].get("demotion_decision") != "demoted signal; verify before use":
+        print("memory-check self-test failed: stale low-confidence memory did not expose demotion decision")
+        return 1
     miss_args = argparse.Namespace(query="unmatched", limit=5)
     miss = selective_recall(cards, miss_args)
     if not miss.get("no_useful_memory_found"):
@@ -506,6 +569,9 @@ def self_test() -> int:
         return 1
     if not weak_examples[0].get("match", {}).get("missing_terms"):
         print("memory-check self-test failed: weak lead did not name missing terms")
+        return 1
+    if weak.get("no_match_analysis", {}).get("weak_matches_are") != "search leads only, not memory to load":
+        print("memory-check self-test failed: no-match analysis did not demote weak leads")
         return 1
     glossary_args = argparse.Namespace(query="client intake", category="project_glossary", freshness=None, status=None, needs_promotion=False, recall=False)
     glossary_matches = filter_cards(cards, glossary_args)
@@ -523,6 +589,10 @@ def self_test() -> int:
     hygiene = glossary_recalls[0].get("source_to_promotion_hygiene") if isinstance(glossary_recalls[0], dict) else {}
     if not isinstance(hygiene, dict) or hygiene.get("proposed_owner") != "tasks/prds/PRD-123-example.md":
         print("memory-check self-test failed: promotion hygiene did not name proposed owner")
+        return 1
+    filing = glossary_recalls[0].get("filing_recommendation") if isinstance(glossary_recalls[0], dict) else {}
+    if not isinstance(filing, dict) or filing.get("recommended_destination") != "tasks/prds/PRD-123-example.md":
+        print("memory-check self-test failed: filing recommendation did not name promotion owner")
         return 1
     if "owner_file_promotion" not in hygiene.get("does_not_approve", []):
         print("memory-check self-test failed: promotion hygiene did not preserve non-approval boundary")

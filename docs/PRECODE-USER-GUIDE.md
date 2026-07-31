@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.97
-Last updated: 2026-07-29
+Document version: v0.7.98
+Last updated: 2026-07-31
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -1457,6 +1457,7 @@ Do this:
 - Make it cite the memory cards it used.
 - Make it say whether the result should stay reviewed memory, become a proposed memory card, or be promoted to `DECISIONS.md`, a PRD, a protocol, an approved bead, or another owner file.
 - Make it name the source pointers, current status, proposed owner, promotion action, approval required, and stop condition before any promotion.
+- When using `memory-check.py --recall`, make it use compact citation, demotion decision, and filing recommendation fields when present.
 - Demote stale, superseded, archived, or low-confidence cards before relying on them.
 - Return to active memory and the active bead before editing.
 
@@ -1481,7 +1482,7 @@ Run python3 scripts/memory-check.py --query "topic words". Cite card path, title
 Use selective recall when loading whole cards would waste context:
 
 ```text
-Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite paths, titles, memory spaces, freshness, status, source pointers, demotion reasons, and promotion owners before recommending action.
+Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite compact_citation fields when present, including paths, titles, memory spaces, freshness, status, source pointers, demotion decisions, and promotion owners. Use filing_recommendation only as advisory destination guidance; do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
 ```
 
 Before discussing semantic search or a shared memory backend, ask for a retrieval-readiness review:

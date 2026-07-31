@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.75
-Last updated: 2026-07-29
+Document version: v0.1.76
+Last updated: 2026-07-31
 
 ## Purpose
 
@@ -1658,7 +1658,7 @@ Search reviewed memory for what we have learned about this topic. Cite the memor
 Use selective recall when context cost matters:
 
 ```text
-Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite paths, titles, memory spaces, freshness, status, source pointers, demotion reasons, and promotion owners before recommending action.
+Run python3 scripts/memory-check.py --query "topic words" --recall. Use exact-match snippets only. If no exact match is found, treat weak_match_examples as search leads, not memory to load. Cite compact_citation fields when present, including paths, titles, memory spaces, freshness, status, source pointers, demotion decisions, and promotion owners. Use filing_recommendation only as advisory destination guidance; do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
 ```
 
 ```text
@@ -1666,7 +1666,7 @@ Review this memory for promotion. Cite the memory claim, source pointers, curren
 ```
 
 ```text
-Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, explain the recommendation meaning, and name any token-pressure, demoted-card, no-match, or weak-match evidence. Do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
+Run python3 scripts/memory-check.py --retrieval-review --query "topic words". Treat the result as generated evidence only. Tell me whether the recommendation is stay_filesystem_first, split_or_promote_cards_first, or extension_review_required, explain the recommendation meaning, and name any token-pressure, demoted-card, no-match, weak-match, compact-citation, or filing-recommendation evidence. Do not add semantic search, a shared backend, cards, owner-file promotions, task selection, or active-memory changes without separate approval.
 ```
 
 ```text

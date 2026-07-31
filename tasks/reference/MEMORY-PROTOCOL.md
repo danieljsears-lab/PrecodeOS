@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-07-11
+Document version: v0.1.11
+Last updated: 2026-07-31
 
 ## Purpose
 
@@ -69,7 +69,7 @@ Generated memory indexes live under `logs/`:
 
 The generated indexes must declare `CLASS: generated` and must not be treated as active memory, task plans, owner files, or promotion approval.
 
-`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, `--recall` may return concise cited snippets for selective recall, and `--retrieval-review` may summarize whether filesystem memory hygiene is good enough before any optional retrieval-backend discussion. Recall snippets require every query term to match the reviewed card search text; weak matches are leads only and must not be forced into context as memory. The command does not create cards, edit owner files, promote memory, select tasks, approve work, or approve a backend.
+`scripts/memory-check.py` is the read-only search and audit command for reviewed memory. It may filter by query, category, freshness, status, or promotion need, `--recall` may return concise cited snippets for selective recall, and `--retrieval-review` may summarize whether filesystem memory hygiene is good enough before any optional retrieval-backend discussion. Recall snippets require every query term to match the reviewed card search text; weak matches are leads only and must not be forced into context as memory. Recall output should include compact citation, demotion decision, and filing recommendation fields so agents can cite the source, explain whether the result is demoted, and recommend the smallest destination without filing automatically. The command does not create cards, edit owner files, promote memory, select tasks, approve work, or approve a backend.
 
 Memory cards may include `memory_space` metadata to group project, domain, team, or topic memories. Memory spaces are retrieval labels only. They must not become a new authority tree, active-memory partition, task selector, permission boundary, registry, optional pack, or package-manager surface.
 
@@ -185,9 +185,11 @@ When searching memory, agents must return citations with:
 - authority owner if promotion is proposed
 - glossary excerpt when the card is `project_glossary`
 
+When reading `memory-check.py --recall` JSON, agents should use the compact citation, demotion decision, and filing recommendation fields when present. Filing recommendations are advisory only. Allowed destinations are staying reviewed memory, becoming a proposed memory card, promotion to `DECISIONS.md`, a PRD, a protocol, an approved bead, another owner file, or defer. The recommendation must not create the card, edit the owner file, approve a PRD, activate a bead, choose work, accept implementation, or update active memory.
+
 Search results with `freshness: stale`, `freshness: superseded`, `status: archived`, `status: superseded`, or `confidence: low` are demoted signals. Use them only to find context, conflicts, or history, then verify against current active memory, the active bead, and the relevant owner file before recommending action.
 
-Selective recall results must return short snippets with card citations rather than whole-card dumps. If no reviewed memory matches every query term, the agent or script should say no useful exact memory was found instead of forcing weak recall into the context window. Weak-match examples may be used as search leads only; verify them against active memory, the active bead, and the owner file before recommending action.
+Selective recall results must return short snippets with compact card citations rather than whole-card dumps. If no reviewed memory matches every query term, the agent or script should say no useful exact memory was found instead of forcing weak recall into the context window. Weak-match examples may be used as search leads only; verify them against active memory, the active bead, and the owner file before recommending action.
 
 Retrieval-readiness review results must name the recommendation, token-pressure signals, memory spaces, demoted stale/superseded/low-confidence/promotion-needed cards, recommendation meanings, and any query miss or weak-match examples. If no reviewed cards exist, the result should keep the project filesystem-first and point back to reviewed card creation rather than backend work.
 
@@ -196,7 +198,7 @@ Session-friction findings are also demoted signals until reviewed. They may sugg
 Copyable search prompt:
 
 ```text
-Search reviewed memory for this topic with selective recall. Cite matching cards by path, title, memory space, category, freshness, status, source pointers, and promotion owner. Return concise snippets instead of loading whole memory files. Treat memory as evidence only, visibly demote stale, superseded, archived, low-confidence, or needs_promotion cards, and return to active memory, the active bead, and the owner file before recommending action. Tell me whether each useful result should stay reviewed memory, become a proposed memory card, or be promoted to DECISIONS.md, a PRD, or another owner file. Do not promote anything without my approval.
+Search reviewed memory for this topic with selective recall. Cite matching cards by path, title, memory space, category, freshness, status, source pointers, and promotion owner. Use compact citation, demotion decision, and filing recommendation fields when present. Return concise snippets instead of loading whole memory files. Treat memory as evidence only, visibly demote stale, superseded, archived, low-confidence, or needs_promotion cards, and return to active memory, the active bead, and the owner file before recommending action. Tell me whether each useful result should stay reviewed memory, become a proposed memory card, be promoted to DECISIONS.md, a PRD, a protocol, an approved bead, another owner file, or defer. Do not promote anything without my approval.
 ```
 
 Copyable retrieval-readiness prompt:

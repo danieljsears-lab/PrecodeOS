@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-07-26
+# Version: v0.1.6
+# Last updated: 2026-07-31
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -31,6 +31,15 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
             if not isinstance(card, dict):
                 continue
             notes = "; ".join(card.get("warnings") or [])
+            status = str(card.get("status") or "")
+            freshness = str(card.get("freshness") or "")
+            confidence = str(card.get("confidence") or "")
+            if status == "needs_promotion":
+                destination = card.get("authority_owner_if_promoted") or "owner file to be named"
+            elif status in {"archived", "superseded"} or freshness in {"stale", "superseded"} or confidence == "low":
+                destination = "demoted context only"
+            else:
+                destination = "stay reviewed memory"
             rows.append(
                 "| "
                 + " | ".join(
@@ -43,6 +52,7 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
                         cell(card.get("status")),
                         cell(card.get("estimated_tokens") or "0"),
                         cell(card.get("authority_owner_if_promoted") or "none"),
+                        cell(destination),
                         cell(notes or "none"),
                         cell(card.get("summary")),
                     ]
@@ -51,8 +61,8 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
             )
         return "\n".join(
             [
-                "| Card | Title | Space | Category | Freshness | Status | Est. tokens | Promotion owner | Warnings | Summary |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+                "| Card | Title | Space | Category | Freshness | Status | Est. tokens | Promotion owner | Suggested destination | Warnings | Summary |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
                 *rows,
             ]
         ) if rows else "- No matching reviewed memory cards."
@@ -65,11 +75,12 @@ def render_memory_index_markdown(memory: dict[str, Any]) -> str:
             source_text = ", ".join(str(source) for source in sources) if sources else "none"
             glossary_text = str(citation.get("glossary_excerpt") or "").strip()
             glossary_note = f"; glossary excerpt: {glossary_text}" if glossary_text else ""
+            demotion = card.get("demotion") or "none"
             lines.append(
                 "- "
                 + f"`{citation.get('path', 'missing')}`: {citation.get('title', 'missing')} "
                 + f"[{citation.get('category', 'missing')}, {citation.get('freshness', 'missing')}, {citation.get('status', 'missing')}] "
-                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}{glossary_note}"
+                + f"sources: {source_text}; promotion owner: {citation.get('authority_owner_if_promoted', 'none')}; demotion: {demotion}{glossary_note}"
             )
         return "\n".join(lines) if lines else "- No citations available."
 
@@ -129,9 +140,9 @@ Generated at: `{datetime.now(timezone.utc).isoformat()}`
 
 Use this index to find reviewed memory cards. Before acting, return to active memory, the active bead, and the primary authority file.
 
-Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets for exact query-term matches; search misses should stay explicit and weak matches should remain leads instead of being forced into context.
+Prefer selective recall over whole-file loading when memory grows. `scripts/memory-check.py --query "<topic>" --recall` returns concise cited snippets for exact query-term matches with compact citation, demotion decision, and filing recommendation fields; search misses should stay explicit and weak matches should remain leads instead of being forced into context.
 
-If a card may need promotion, use Memory Promotion Review: name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Search results may identify a proposed owner, but they must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
+If a card may need promotion, use Memory Promotion Review: name the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Filing recommendations may suggest staying reviewed memory, proposing a memory card, promoting to `DECISIONS.md`, a PRD, a protocol, an approved bead, another owner file, or deferring, but they must not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory.
 
 Use this prompt when asking an agent to search memory:
 

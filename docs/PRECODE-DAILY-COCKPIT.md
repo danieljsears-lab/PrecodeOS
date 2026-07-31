@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.53
-Last updated: 2026-07-29
+Document version: v0.1.54
+Last updated: 2026-07-31
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.
 
@@ -129,6 +129,10 @@ Diary: read the learning diary, bead build journal, attribution evidence, closeo
 
 ```text
 Review this memory for promotion. Cite the memory claim, source pointers, current status, proposed owner, promotion action, approval required, and stop condition. Do not create cards, edit owner files, approve PRDs, activate beads, choose tasks, accept implementation, or change active memory without my approval.
+```
+
+```text
+Search reviewed memory with selective recall. Use compact citation, demotion decision, and filing recommendation fields when present. Treat weak matches as search leads only, not memory to load, and do not file or promote anything automatically.
 ```
 
 Commands when the owning workflow calls for them:
