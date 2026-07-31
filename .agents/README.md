@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-19
+Document version: v0.1.1
+Last updated: 2026-07-31
 
 ## Purpose
 
@@ -32,4 +32,8 @@ Use `.agents/skills/` as host-discoverable packaging only. If a user needs help 
 
 ## Current Contents
 
-The current bundled skills are Nimble-oriented research and web-data skills. They may have their own prerequisites, external API behavior, write permissions, and host-specific tool declarations. Those capabilities belong to the host skill's own contract; they do not expand PrecodeOS active memory or public workflow authority.
+The current bundled skills include Nimble-oriented research and web-data skills plus the Precode-owned `release-readiness` host skill.
+
+The Nimble-oriented skills may have their own prerequisites, external API behavior, write permissions, and host-specific tool declarations. Those capabilities belong to the host skill's own contract; they do not expand PrecodeOS active memory or public workflow authority.
+
+The `release-readiness` host skill is packaging for a read-only Precode prompt playbook. It routes to `tasks/reference/RELEASE-READINESS-PROTOCOL.md` and `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`; it does not approve release, deploy, mutate GitHub or providers, create command-wrapper behavior, create optional-pack behavior, or make `.agents/skills/` a beginner-facing skill catalog.

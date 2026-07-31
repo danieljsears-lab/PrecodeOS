@@ -1096,6 +1096,15 @@ Stop if: the agent treats a release-readiness note, screenshot, browser note, ge
 
 Why this matters: shipping is a user-owned risk decision. Precode can prepare the evidence, but it cannot approve the release for you.
 
+If you want the host-agent skill-style invocation, say this instead:
+
+```text
+Use the Release Readiness Skill.
+Load the Release Readiness Protocol and Skill Playbook Protocol.
+Return Release situation, Evidence recorded, Evidence still missing, Smoke/manual/browser verification, Rollback or blocked escape, Approvals still required, Decision-state recommendation, and Stop condition.
+Do not deploy, release, roll back, merge, migrate, mutate GitHub resources, mutate providers or external services, approve review, accept implementation, activate the next bead, create generated proof, certify production readiness, create a command wrapper, create optional packs, or treat ready for human release decision as release approval.
+```
+
 ### Prepare A Release Candidate Evidence Profile
 
 Use a Release Candidate Evidence Profile when release-relevant work is nearly ready and you need one compact evidence view before deciding what, if anything, to release.

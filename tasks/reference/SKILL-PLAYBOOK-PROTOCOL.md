@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-07-29
+Document version: v0.1.27
+Last updated: 2026-07-31
 
 ## Purpose
 
@@ -309,6 +309,36 @@ Recommendation: revise | clarify | split | ready-for-human-approval-review | sto
 
 The output is advisory review input only. It does not approve the PRD, accept design promotion, create implementation instructions, activate work, or replace human approval.
 
+### Release Readiness Skill
+
+```text
+Name: Release Readiness Skill
+Purpose: Help a user or host agent prepare release-readiness evidence and approval questions for release-relevant work without taking release action.
+Load when: The user asks for Release Readiness Skill, release readiness, release-prep help, shipping evidence, a release-candidate evidence review, or asks whether completed or nearly completed work is ready for a human release decision.
+Owner protocol or adapter: `tasks/reference/RELEASE-READINESS-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, and `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`
+Allowed actions: Read active memory, the active bead, primary authority, Closeout Evidence, recorded checks, release-readiness notes, Release Candidate Evidence Profiles, verification and release evidence, relevant owner docs, and generated evidence as review input only; compare evidence to the Release Readiness Protocol; and return release evidence guidance, missing evidence, approval questions, decision-state recommendation, and stop conditions.
+Forbidden actions: Edit files, deploy, release, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate external systems, approve review, accept implementation, approve release, activate beads, run mutating commands, create generated proof, certify production readiness, certify compliance, create provider checklists, add command wrappers, create optional packs, create registries, add package-manager behavior, or treat skill output as authority.
+Generated evidence, if any: None in v1. Conversational output is release-review input only until the user records accepted findings in Closeout Evidence, a release-readiness note, a Release Candidate Evidence Profile, an owner file, or another reviewed artifact.
+User approval required before: Any file edit, review acceptance, release approval, deployment, promotion, rollback, merge, migration, dashboard change, secret change, provider mutation, GitHub mutation, external mutation, bead activation, transition approval, generated-evidence write, command execution beyond read-only inspection, or sensitive-surface action.
+Stop conditions: Active memory or active bead is missing; the release target, affected users, recorded checks, smoke path, manual/browser verification, docs/support freshness, rollback or blocked escape, approvals still required, decision state, or remaining uncertainty is unclear; generated reports, screenshots, browser notes, GitHub status, release-readiness notes, or the phrase `ready for human release decision` are being treated as release approval; or the user asks the skill to mutate external systems or approve release.
+Promotion path for findings: Promote accepted findings only through Closeout Evidence, the Release Readiness Protocol evidence shapes, an owner file, a PRD amendment, `DECISIONS.md`, a candidate/approved bead, or reviewed memory after user review.
+```
+
+When invoked, return exactly these fields:
+
+```text
+Release situation:
+Evidence recorded:
+Evidence still missing:
+Smoke/manual/browser verification:
+Rollback or blocked escape:
+Approvals still required:
+Decision-state recommendation:
+Stop condition:
+```
+
+The output is release-prep review input only. It does not approve release, deploy, roll back, merge, mutate GitHub or providers, certify production readiness, create proof, activate beads, or replace human approval.
+
 ### Maintainer Package Review Skill
 
 ```text
@@ -424,6 +454,15 @@ The output is an extension-shape review only. It does not approve the extension,
 - Gain: reduces false-done drift at the review boundary while keeping human acceptance and transition approval intact.
 - Status: implemented as a read-only prompt playbook in this protocol and `tasks/reference/PROMPT-PATTERNS.md`.
 
+### Release Readiness Skill
+
+- Purpose: prepare release-readiness evidence and approval questions for release-relevant work without taking release action.
+- Owner sources: `tasks/reference/RELEASE-READINESS-PROTOCOL.md`, `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md`, `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md`, active bead, Closeout Evidence, recorded checks, and release-readiness or release-candidate evidence.
+- Allowed actions: inspect release evidence, identify missing checks, smoke/manual/browser verification, rollback or blocked escape, approvals still required, and recommend a decision state.
+- Forbidden actions: deploy, release, roll back, merge, migrate, mutate dashboards, secrets, GitHub, providers, or external systems; approve review or release; activate beads; run mutating commands; certify production readiness; create command-wrapper, registry, optional-pack, release-channel, or package-manager behavior.
+- Gain: makes late-stage release evidence easier to ask for while keeping release authority in the Release Readiness Protocol and human approval.
+- Status: implemented as a read-only prompt playbook in this protocol, `tasks/reference/PROMPT-PATTERNS.md`, and host-discoverable packaging under `.agents/skills/release-readiness/`.
+
 ### Maintainer Package Review Skill
 
 - Purpose: help maintain PrecodeOS as an OS package, not an app runtime.
@@ -526,7 +565,7 @@ If any field is unclear, the skill is not ready to become a maintained Precode s
 | Skill / Extension Review Skill | Implemented | Extension-shape review prompt; keep it advisory-only and subordinate to the Extension Protocol. |
 | No-Engineer Fallback Prompt Pack | Implemented outside skill set | Implemented as Prompt Patterns and user/support docs, not a skill playbook; keep it subordinate to Recovery Protocol and approval gates. |
 | Product Conviction Packet Skill | P2 | Useful for first-time builders and guided cohorts; keep it prompt-only, evidence-only, and subordinate to Idea-to-PRD, Product Discovery Interview Skill / Product Discovery Validation, and Local Source Intake. |
-| Release Readiness Skill | P3 | Better after release-readiness, manifest, and package-health lanes mature. |
+| Release Readiness Skill | Implemented | Release-prep evidence prompt; keep it read-only, subordinate to the Release Readiness Protocol, and clearly separate from release approval, deployment, provider mutation, command wrappers, registries, optional packs, and package-manager behavior. |
 
 ## Better Alternatives
 

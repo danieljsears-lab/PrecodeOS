@@ -8,8 +8,8 @@ CLASS: reference-navigation
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.34
-Last updated: 2026-07-29
+Document version: v0.1.35
+Last updated: 2026-07-31
 
 This file is a navigation aid only. It points to canonical Markdown files and must not be used to approve work, choose tasks, run commands, replace active memory, summarize away source evidence, or infer current project state.
 
@@ -26,6 +26,7 @@ When an artifact prompt asks for Experience artifacts, frontend design files, sc
 Use conditional advanced-surface routing. Advanced surfaces such as Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Artifact Chooser, team coordination, reversal, and proof tracing are available when needed. In beginner-facing docs, present only trigger summaries and route detailed prompts to Prompt Patterns or the owner protocol. Do not present advanced surfaces as peer routes for the first-product spine or normal every-bead rhythm unless the current stage, risk, support role, recovery path, or explicit user question calls for one.
 Use Agent Access Level Check before risky command or permission-shaped work. Access levels are `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, and `destructive`; they are guidance over Tool Execution classes, files in play, Run Contracts, approval gates, and stop conditions, not command approval, runtime enforcement, sandbox behavior, schema metadata, generated-output authority, or package-manager behavior.
 Use Skill Playbook Ergonomics when a user is unsure which skill-style prompt to invoke. It maps the request to Ask Precode, Workflow Selection, Ideation, Review / Acceptance, Skill / Extension Review, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. It is not a skill catalog, registry, optional pack, command wrapper, approval gate, implementation path, or replacement for owner protocols.
+Use Release Readiness Skill when release-relevant work needs a read-only evidence and approval-question pass before a human release decision. It routes to the Release Readiness Protocol and Skill Playbook Protocol, returns release situation, recorded and missing evidence, smoke/manual/browser verification, rollback or blocked escape, approvals still required, decision-state recommendation, and stop condition, and does not approve release, deploy, mutate GitHub or providers, create proof, create command wrappers, create optional packs, add release-channel behavior, or add package-manager behavior.
 Use Role Lens Prompt Map when a user asks for product manager, product strategist, researcher, designer, architect, developer, QA/reviewer, security, or deployment help. Role lenses map familiar role language to existing Precode workflows and owner protocols; they are not role skills, persona agents, task runners, approval shortcuts, command wrappers, registries, optional packs, or coding permission.
 
 Use the Plan Mode Candidate Craft Loop when candidate or implementation-plan commitment is at issue: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex use `/plan`, in Claude Code use Plan Mode, and in other agents use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate; neither output authorizes implementation.

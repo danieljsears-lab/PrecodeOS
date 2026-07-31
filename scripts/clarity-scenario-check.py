@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.59
+# Version: v0.1.60
 # Last updated: 2026-07-31
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -35,6 +35,7 @@ from os_compiler import (
     team_collaboration_preview,
 )
 from precode_doctor import build_doctor_dashboard
+from precode_state import check_lookup_keys
 
 
 def load_prd_handoff_module() -> Any:
@@ -2749,6 +2750,103 @@ def assert_skill_playbook_ergonomics_contract(failures: list[dict[str, str]]) ->
     return len(required_terms_by_path)
 
 
+def assert_release_readiness_skill_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md"): [
+            "Release Readiness Skill",
+            "Owner protocol or adapter: `tasks/reference/RELEASE-READINESS-PROTOCOL.md`",
+            "Allowed actions: Read active memory, the active bead, primary authority, Closeout Evidence, recorded checks",
+            "ready for human release decision",
+            "The output is release-prep review input only",
+            "does not approve release, deploy, roll back, merge, mutate GitHub or providers",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Use the Release Readiness Skill.",
+            "Load the Release Readiness Protocol and Skill Playbook Protocol",
+            "Return exactly: Release situation, Evidence recorded, Evidence still missing, Smoke/manual/browser verification, Rollback or blocked escape, Approvals still required, Decision-state recommendation, and Stop condition.",
+            "ready for human release decision is not release approval",
+            "Do not edit files, deploy, release, promote, roll back, merge, migrate",
+            "create a command wrapper, create a registry, create optional packs, add release-channel behavior, or add package-manager behavior",
+        ],
+        Path(".agents/README.md"): [
+            "release-readiness",
+            "host skill is packaging for a read-only Precode prompt playbook",
+            "routes to `tasks/reference/RELEASE-READINESS-PROTOCOL.md` and `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`",
+            "does not approve release, deploy, mutate GitHub or providers",
+            "do not turn the host skill folder into a beginner-facing skill catalog",
+        ],
+        Path(".agents/skills/release-readiness/SKILL.md"): [
+            "name: release-readiness",
+            "read-only host-discoverable packaging surface",
+            "skill-playbook",
+            "`tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`",
+            "Release situation:",
+            "Evidence recorded:",
+            "Evidence still missing:",
+            "Smoke/manual/browser verification:",
+            "Rollback or blocked escape:",
+            "Approvals still required:",
+            "Decision-state recommendation:",
+            "Stop condition:",
+            "ready for human release decision",
+            "release",
+            "approval",
+            "Do not edit files, deploy, release, promote, roll back, merge, migrate",
+            "create command",
+            "create registries",
+            "create optional packs",
+        ],
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Release Readiness Skill",
+            "release-relevant work needs one read-only evidence and approval-question pass before a human release decision",
+            "Does not approve release, deploy, mutate GitHub or providers, create proof, or become a command wrapper.",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "Use the Release Readiness Skill.",
+            "Load the Release Readiness Protocol and Skill Playbook Protocol.",
+            "Return Release situation, Evidence recorded, Evidence still missing",
+            "Do not deploy, release, roll back, merge, migrate, mutate GitHub resources, mutate providers or external services",
+            "treat ready for human release decision as release approval",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "read-only `release-readiness` packaging surface",
+            "Release Readiness Skill guidance",
+            "keeps Release Readiness Skill read-only and subordinate to the Release Readiness Protocol",
+            "without approving release, deploying, mutating GitHub or providers",
+        ],
+        Path("llms.txt"): [
+            "Use Release Readiness Skill when release-relevant work needs a read-only evidence and approval-question pass before a human release decision",
+            "routes to the Release Readiness Protocol and Skill Playbook Protocol",
+            "does not approve release, deploy, mutate GitHub or providers",
+            "create command wrappers, create optional packs, add release-channel behavior, or add package-manager behavior",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"release readiness skill contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Release Readiness Skill approves release",
+            "Release Readiness Skill deploys",
+            "Release Readiness Skill creates optional packs",
+        ],
+        Path(".agents/skills/release-readiness/SKILL.md"): [
+            "approve release action",
+            "run deployment",
+            "package manager updates",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"release readiness skill forbidden wording: {path}", "expected": "absent", "actual": term})
+    return len(required_terms_by_path)
+
+
 def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
@@ -5030,10 +5128,10 @@ def loop_status(loop_health: Any, context: dict[str, Any], state: dict[str, Any]
 
 
 def passing_checks(current: BeadRecord) -> dict[tuple[str, str], dict[str, Any]]:
-    rows: dict[tuple[str, str], dict[str, Any]] = {}
+    rows: dict[tuple[str, Any, str], dict[str, Any]] = {}
     for raw in current.checks:
         command = raw.split(" -- ", 1)[1] if " -- " in raw else raw
-        rows[(command, ".")] = {
+        row = {
             "bead": current.rel_path,
             "command": command,
             "cwd": ".",
@@ -5042,6 +5140,8 @@ def passing_checks(current: BeadRecord) -> dict[tuple[str, str], dict[str, Any]]
             "timestamp": "2026-06-14T12:00:00+00:00",
             "output": "fixture",
         }
+        for key in check_lookup_keys(command, "."):
+            rows[key] = row
     return rows
 
 
@@ -5470,6 +5570,7 @@ def main() -> int:
     reviewed_memory_promotion_scenario_count = assert_reviewed_memory_promotion_contract(failures)
     source_to_promotion_hygiene_scenario_count = assert_source_to_promotion_hygiene_contract(failures)
     skill_playbook_ergonomics_scenario_count = assert_skill_playbook_ergonomics_contract(failures)
+    release_readiness_skill_scenario_count = assert_release_readiness_skill_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     approved_bead_handoff_scenario_count = assert_approved_bead_handoff_contract(failures)
@@ -5528,12 +5629,12 @@ def main() -> int:
     stable_fix_fixture = bead(
         title="B999 - Stable Fix Fixture",
         bead_kind="bugfix",
-        primary_authority="tasks/reference/RECOVERY-PROTOCOL.md",
-        files_in_play=["tasks/reference/RECOVERY-PROTOCOL.md"],
+        primary_authority="OPERATING-CONSTRAINTS.md",
+        files_in_play=["OPERATING-CONSTRAINTS.md"],
         checks=["bash scripts/validate-memory.sh"],
         verification_type=["static"],
         sections={
-            "Objective": "Apply a narrow stable fix to repair a broken link.",
+            "Objective": "Apply a narrow stable fix to repair a local fixture marker.",
             "Done When": "The narrow fix is validated.",
             "Stop If": "The fix changes behavior or expands beyond the owner file.",
         },
@@ -6057,6 +6158,7 @@ def main() -> int:
         + reviewed_memory_promotion_scenario_count
         + source_to_promotion_hygiene_scenario_count
         + skill_playbook_ergonomics_scenario_count
+        + release_readiness_skill_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
         + approved_bead_handoff_scenario_count

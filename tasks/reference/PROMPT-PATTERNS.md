@@ -74,7 +74,7 @@ If the next step depends on active memory, the active bead, current repo state, 
 | Small repair before editing | Bugfix Spec Lane | Compact bugfix spec | Recovery Protocol and Verification Guardrail Protocol | Root cause, unchanged behavior, owner file, or regression proof is unknown. |
 | Active bead, draft PRD, or bounded package docs/reference surface needs advisory review | Review Lanes | One advisory review lane output | Review Lanes Protocol | Review output is being treated as acceptance, release approval, design certification, stale-claim authority, owner-file rewrite permission, product authority, or task creation. |
 | PRD needs handoff readiness review | PRD Handoff Readiness Packet | Read-only PRD handoff packet | PRD Protocol, Decomposition Protocol, and Review Lanes Protocol | Readiness output is treated as PRD approval or bead activation. |
-| Shipping risk or release decision is near | Release Candidate Evidence Profile | Release evidence and approval questions, not deployment action | Release Readiness Protocol and Verification Guardrail Protocol | Release, rollback, merge, deploy, provider configuration, dashboard mutation, or external mutation is being implied. |
+| Shipping risk or release decision is near | Release Readiness Skill or Release Candidate Evidence Profile | Release evidence and approval questions, not deployment action | Release Readiness Protocol, Skill Playbook Protocol, and Verification Guardrail Protocol | Release, rollback, merge, deploy, provider configuration, dashboard mutation, or external mutation is being implied. |
 | Multiple people are working | Small Team Collaboration Lane | Coordinator, branch/worktree rule, candidate parallel beads, and review gates | Team Collaboration Protocol | Multiple active beads are requested in one checkout or merge approval is implied. |
 | Something feels broken or confusing | Recovery Protocol or No-Engineer Fallback Prompt Pack | Symptom, first safe move, owner surface, and next safe action | Recovery Protocol | Repair, rollback, overwrite, setup mutation, or app-code change is being requested without approval. |
 | Stable docs question | Ask Precode | Cited docs/protocol answer | README, public docs, and relevant reference protocols | The question depends on current state or what to do next. |
@@ -214,7 +214,7 @@ Expected output: one access level, one reason, allowed actions, proof needed, ap
 | Access check | `Access: tell me what the agent may do before this command or work starts.` | Agent Access Level Check |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
 | Re-entry | `Re-entry: review delegated work before continuing.` | Delegation Re-Entry Evidence Pack |
-| Release | `Release: prepare release evidence without release action.` | Prepare A Release Candidate Evidence Profile |
+| Release | `Release: prepare release evidence without release action.` | Release Readiness Skill / Prepare A Release Candidate Evidence Profile |
 | Trace | `Trace: map this requirement or bug behavior to proof.` | Requirement-To-Proof Review |
 | Attribution | `Attribution: review who-built-what evidence.` | Build Attribution Review |
 | Reverse | `Reverse: use the Implemented Bead Reversal Workflow.` | Implemented Bead Reversal Workflow |
@@ -1505,6 +1505,20 @@ Use the Review Lanes Protocol for this one named active bead or draft PRD: [targ
 Use these 2-3 lanes: [named lanes], or recommend up to 3 lanes if I have not named them. If my requested bundle is too broad, recommend the smaller lane set before reviewing.
 Show one merged advisory output with findings grouped by lane, deduplicated missing proof, acceptance questions, recommendation, approval still required, and promotion path.
 Do not create a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, approval gate, generated proof, or generated authority; do not accept implementation, approve review, approve PRDs, approve release, approve transitions, approve parallel execution, create tasks, or treat review output as proof.
+```
+
+## Release Readiness Skill
+
+```text
+Use the Release Readiness Skill.
+
+Load the Release Readiness Protocol and Skill Playbook Protocol. Inspect the active bead, primary authority, Closeout Evidence, recorded checks, release-readiness notes, Release Candidate Evidence Profile, verification and release evidence, and relevant owner docs. Treat generated reports, screenshots, browser notes, GitHub status, and release notes as review input only unless they are recorded evidence.
+
+Return exactly: Release situation, Evidence recorded, Evidence still missing, Smoke/manual/browser verification, Rollback or blocked escape, Approvals still required, Decision-state recommendation, and Stop condition.
+
+Use only these decision-state recommendations when applicable: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.
+
+Do not edit files, deploy, release, promote, roll back, merge, migrate, change dashboards, change secrets, mutate GitHub resources, mutate providers or external services, approve review, accept implementation, activate the next bead, run mutating commands, create generated proof, certify production readiness, certify compliance, create provider checklists, create a command wrapper, create a registry, create optional packs, add release-channel behavior, or add package-manager behavior.
 ```
 
 ## Release Candidate Evidence Profile
