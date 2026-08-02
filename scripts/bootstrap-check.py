@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.6
-# Last updated: 2026-07-24
+# Version: v0.5.7
+# Last updated: 2026-08-02
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -36,6 +36,7 @@ PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
     {
         "group": "public_orientation_docs",
         "paths": [
+            ".gitignore",
             "README.md",
             "docs/",
             "docs-html/",
@@ -104,6 +105,7 @@ SOURCE_REQUIRED_PATHS = [
 ]
 CONFLICT_PATHS = [
     "README.md",
+    ".gitignore",
     "CANDIDATE-QUEUE.md",
     "PRODUCT.md",
     "PROJECT-CONTEXT.md",
@@ -121,6 +123,20 @@ CONFLICT_PATHS = [
     ".githooks",
 ]
 MINIMAL_TARGET_NAMES = {".git", ".gitignore", "README.md", "LICENSE"}
+TARGET_KIND_IGNORED_NAMES = {
+    ".agent-state",
+    ".claude",
+    ".codex",
+    ".cursor",
+    ".idea",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".vscode",
+    "__pycache__",
+    "coverage",
+    "htmlcov",
+}
 STOP_CONDITIONS = [
     "source and target are unclear",
     "source and target resolve to the same folder",
@@ -263,7 +279,10 @@ def target_kind(source: Path, target: Path, source_exists: bool, target_exists: 
     names = {child.name for child in children}
     if not children:
         return "empty"
-    if all(name in MINIMAL_TARGET_NAMES for name in names):
+    meaningful_names = {name for name in names if name not in TARGET_KIND_IGNORED_NAMES}
+    if not meaningful_names:
+        return "nearly_empty"
+    if all(name in MINIMAL_TARGET_NAMES for name in meaningful_names):
         return "nearly_empty"
     if all((target / name).exists() for name in ["AGENT.md", "DECISIONS.md", "tasks/todo.md"]):
         return "existing_precode"
@@ -1757,6 +1776,7 @@ def make_source(root: Path) -> None:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n", encoding="utf-8")
+    (root / ".gitignore").write_text("__pycache__/\n*.py[cod]\n", encoding="utf-8")
     (root / "package.json").write_text(
         json.dumps({"name": "@precodeos/precodeos", "version": "1.0.0-beta.1"}, indent=2) + "\n",
         encoding="utf-8",
@@ -1838,6 +1858,21 @@ def self_test() -> int:
         assert any(
             action["category"] == "review_adaptation_candidate" and action["path"] == "README.md"
             for action in nearly_empty_payload["supervised_setup_plan"]["actions"]
+        )
+
+        local_tooling_target = base / "local-tooling-target"
+        local_tooling_target.mkdir()
+        (local_tooling_target / ".git").mkdir()
+        (local_tooling_target / ".claude").mkdir()
+        (local_tooling_target / ".claude" / "settings.local.json").write_text("{}\n", encoding="utf-8")
+        local_tooling_payload = build_payload(source.as_posix(), local_tooling_target.as_posix())
+        local_tooling_payload["install_update_preview"] = build_manifest_preview(local_tooling_payload)
+        local_tooling_payload["supervised_setup_plan"] = build_supervised_setup_plan(local_tooling_payload)
+        assert local_tooling_payload["target_kind"] == "nearly_empty"
+        assert local_tooling_payload["supervised_setup_plan"]["status"] == "pass"
+        assert any(
+            action["category"] == "review_copy_candidate" and action["path"] == ".gitignore"
+            for action in local_tooling_payload["supervised_setup_plan"]["actions"]
         )
 
         existing_payload["install_update_preview"] = build_manifest_preview(existing_payload)
@@ -2040,6 +2075,8 @@ def self_test() -> int:
         }
         assert "OPERATING-CONSTRAINTS.md" in preview_copy_paths
         assert "OPERATING-CONSTRAINTS.md" in setup_copy_paths
+        assert ".gitignore" in preview_copy_paths
+        assert ".gitignore" in setup_copy_paths
         assert "docs-html/" in preview_copy_paths
         assert "docs-html/" in setup_copy_paths
         assert "tasks/todo.md" not in preview_copy_paths
@@ -2103,6 +2140,24 @@ def self_test() -> int:
         assert (docs_apply_target / "docs-html" / "index.html").is_file()
         assert (docs_apply_target / "docs-html" / "PRECODE-GUIDED-SETUP.html").is_file()
         assert not (docs_apply_target / "docs").exists()
+
+        gitignore_copy_ids = [
+            action["id"]
+            for action in apply_payload["supervised_setup_plan"]["actions"]
+            if action["category"] == "review_copy_candidate" and action["path"] == ".gitignore"
+        ]
+        assert len(gitignore_copy_ids) == 1
+        gitignore_apply_target = base / "gitignore-apply-target"
+        gitignore_apply_target.mkdir()
+        gitignore_apply_payload = build_payload(source.as_posix(), gitignore_apply_target.as_posix())
+        gitignore_apply_payload["install_update_preview"] = build_manifest_preview(gitignore_apply_payload)
+        gitignore_apply_payload["supervised_setup_plan"] = build_supervised_setup_plan(gitignore_apply_payload)
+        gitignore_apply_payload["supervised_setup_apply"] = apply_supervised_setup(
+            gitignore_apply_payload,
+            gitignore_copy_ids,
+        )
+        assert gitignore_apply_payload["supervised_setup_apply"]["status"] == "applied"
+        assert "__pycache__/" in (gitignore_apply_target / ".gitignore").read_text(encoding="utf-8")
 
         blocked_no_approval = apply_supervised_setup(apply_payload, [])
         assert blocked_no_approval["status"] == "blocked"

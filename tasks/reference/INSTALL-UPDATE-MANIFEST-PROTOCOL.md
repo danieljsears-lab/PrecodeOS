@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-06-15
+Document version: v0.1.4
+Last updated: 2026-08-02
 
 ## Purpose
 
@@ -102,8 +102,8 @@ Each action should include:
 | Target state | Preview behavior |
 |---|---|
 | Missing source, missing target, or same source/target | Mark setup actions as `blocked`. |
-| Empty target | Show public file-group copy candidates and owner-file adaptation candidates after user approval. |
-| Nearly empty target | Preserve or adapt existing minimal material such as `README.md`; show remaining supervised candidates. |
+| Empty target | Show public file-group copy candidates, including `.gitignore`, and owner-file adaptation candidates after user approval. |
+| Nearly empty target | Preserve or adapt existing minimal material such as `.gitignore` or `README.md`; ignore excluded top-level local/cache/tooling folders for target-kind classification; show remaining supervised candidates. |
 | Existing project | Defer copying and adaptation until Existing Repo Intake runs and conflicts are reviewed. |
 | Existing Precode target | Preserve existing Precode material and validate memory before setup, repair, or update decisions. |
 

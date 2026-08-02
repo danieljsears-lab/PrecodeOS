@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-24
+Document version: v0.1.24
+Last updated: 2026-08-02
 
 ## What This Guide Is For
 
@@ -75,6 +75,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 The preview labels possible setup actions as `copy_candidate`, `adapt_candidate`, `preserve_existing`, `exclude`, `blocked`, or `deferred`. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
+
+Fresh setup includes `.gitignore` as a reviewed setup surface so generated Python bytecode, caches, local tooling state, and secrets are ignored before the first target-project commit. If the target already has `.gitignore`, preserve or adapt it; do not overwrite it.
 
 After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:
 
@@ -415,6 +417,8 @@ Do not copy these from the package checkout into a user's project:
 | `.agent-state/`, `.claude/`, `.codex/`, `.cursor/`, `.vscode/`, `.idea/` | Local agent, editor, and IDE state. |
 | `.env`, `.env.*`, `secrets/`, `credentials/`, key and certificate files | Secrets and environment material. |
 | `__pycache__/`, test caches, coverage output, local virtual environments | Regeneratable local cache or environment output. |
+
+Local agent, editor, and cache folders should not make an otherwise fresh target look like an existing project. Bootstrap Confidence treats those top-level excluded folders as local state for target-kind classification, while still listing them as exclusions that must not be copied.
 
 Keep `logs/LOG-EVIDENCE-TAXONOMY.md` if the package includes it. That file explains generated log semantics and is public documentation.
 

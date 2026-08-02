@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-07-02
+Document version: v0.1.8
+Last updated: 2026-08-02
 
 ## Purpose
 
@@ -113,7 +113,7 @@ Use these labels:
 | `missing` | The target path does not exist. |
 | `same_as_source` | Source and target resolve to the same folder. |
 | `empty` | Target exists and has no visible project files. |
-| `nearly_empty` | Target has only minimal repository files such as `.git`, `.gitignore`, `README.md`, or `LICENSE`. |
+| `nearly_empty` | Target has only minimal repository files such as `.git`, `.gitignore`, `README.md`, or `LICENSE`, plus ignored local/cache/tooling folders if present. |
 | `existing_precode` | Target already has Precode active-memory files. |
 | `existing_project` | Target has project material that needs conflict review before setup. |
 
@@ -129,13 +129,15 @@ Public file groups:
 | Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
-| Public orientation docs | `README.md`, `docs/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
+| Public orientation docs | `.gitignore`, `README.md`, `docs/`, `docs-html/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
 | Work structure | `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, `tasks/prds/PRD-SHARD-SCHEMA.md`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
 | Scripts and checks | `scripts/`, `.githooks/`, `.github/workflows/` when approved |
 | Public generated-log guide | `logs/LOG-EVIDENCE-TAXONOMY.md` |
 
 Fresh setup must not copy PrecodeOS's package development PRDs, package development beads, or package source `tasks/todo.md` into the target project. The target project creates its own active work state and future PRD/bead IDs.
+
+Fresh setup should include the package `.gitignore` when the target does not already have one, because runtime bytecode, caches, local tooling state, generated reports, and secrets can appear after scripts run. If the target already has `.gitignore`, preserve or adapt it rather than overwriting it.
 
 Excluded paths:
 

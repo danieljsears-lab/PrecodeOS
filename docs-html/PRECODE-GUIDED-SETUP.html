@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-07-31">
+  <meta name="generated-at" content="2026-08-02">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">Use this guide when you want to put PrecodeOS into a project for the first time.</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.23</span><span>Updated 2026-07-24</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.24</span><span>Updated 2026-08-02</span></p>
 
 </section>
 <section class="content layout">
@@ -446,6 +446,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>After the basic check, use the install/update manifest dry-run preview when you want the next level of setup clarity without changing the target project:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --preview-manifest</code></pre>
 <p>The preview labels possible setup actions as <code>copy_candidate</code>, <code>adapt_candidate</code>, <code>preserve_existing</code>, <code>exclude</code>, <code>blocked</code>, or <code>deferred</code>. It is still generated evidence only. It does not approve copying, overwriting, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.</p>
+<p>Fresh setup includes <code>.gitignore</code> as a reviewed setup surface so generated Python bytecode, caches, local tooling state, and secrets are ignored before the first target-project commit. If the target already has <code>.gitignore</code>, preserve or adapt it; do not overwrite it.</p>
 <p>After the preview, use the supervised setup plan when you want a human-readable checklist before approving manual setup work:</p>
 <pre><code class="language-bash">npx @precodeos/precodeos setup-preview --target &lt;target-project-root&gt;
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --supervised-setup-plan</code></pre>
@@ -592,6 +593,7 @@ python3 scripts/existing-repo-intake.py --source &lt;precode-package-root&gt; --
 <h2 id="step-4-exclude-private-generated-local-and-secret-files"><a class="heading-anchor" href="#step-4-exclude-private-generated-local-and-secret-files" aria-label="Link to Step 4: Exclude Private, Generated, Local, And Secret Files">#</a>Step 4: Exclude Private, Generated, Local, And Secret Files</h2>
 <p>Do not copy these from the package checkout into a user&#x27;s project:</p>
 <div class="table-wrap"><table><thead><tr><th>Exclusion</th><th>Why</th></tr></thead><tbody><tr><td>Private local planning material</td><td>Local context that is not part of the reusable public package.</td></tr><tr><td><code>OS-HEALTH.md</code>, <code>PRECODE-HELP.md</code>, <code>PROGRESS.md</code></td><td>Generated reports, not source authority.</td></tr><tr><td><code>logs/*.json</code>, <code>logs/*.jsonl</code>, <code>logs/*.yaml</code>, generated <code>logs/*.md</code></td><td>Generated evidence from one repo, not setup source for another repo.</td></tr><tr><td><code>logs/check-output/</code>, <code>logs/scheduled-audit-output/</code></td><td>Local command output and audit snapshots.</td></tr><tr><td><code>.agent-state/</code>, <code>.claude/</code>, <code>.codex/</code>, <code>.cursor/</code>, <code>.vscode/</code>, <code>.idea/</code></td><td>Local agent, editor, and IDE state.</td></tr><tr><td><code>.env</code>, <code>.env.*</code>, <code>secrets/</code>, <code>credentials/</code>, key and certificate files</td><td>Secrets and environment material.</td></tr><tr><td><code>__pycache__/</code>, test caches, coverage output, local virtual environments</td><td>Regeneratable local cache or environment output.</td></tr></tbody></table></div>
+<p>Local agent, editor, and cache folders should not make an otherwise fresh target look like an existing project. Bootstrap Confidence treats those top-level excluded folders as local state for target-kind classification, while still listing them as exclusions that must not be copied.</p>
 <p>Keep <code>logs/LOG-EVIDENCE-TAXONOMY.md</code> if the package includes it. That file explains generated log semantics and is public documentation.</p>
 <p>Keep <code>project-evidence/PROJECT-EVIDENCE-GUIDE.md</code> if the package includes it. After setup, the folder belongs to the target project and may contain user-selected raw evidence. Do not copy private evidence from one project into another.</p>
 <h2 id="step-5-validate-before-work-starts"><a class="heading-anchor" href="#step-5-validate-before-work-starts" aria-label="Link to Step 5: Validate Before Work Starts">#</a>Step 5: Validate Before Work Starts</h2>

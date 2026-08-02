@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.4
-# Last updated: 2026-07-31
+# Version: v0.2.5
+# Last updated: 2026-08-02
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -572,18 +572,39 @@ def prd_id(prd: Prd) -> str:
 def render_clusters(prds: list[Prd]) -> str:
     by_id = {prd_id(prd): prd for prd in prds}
     clustered_ids = [identifier for cluster in PRD_CLUSTERS for identifier in cluster.prd_ids]
-    missing_ids = sorted(set(by_id) - set(clustered_ids))
-    unknown_ids = sorted(set(clustered_ids) - set(by_id))
+    unclustered_ids = sorted(set(by_id) - set(clustered_ids))
+    unavailable_ids = sorted(set(clustered_ids) - set(by_id))
     duplicate_ids = sorted(identifier for identifier in set(clustered_ids) if clustered_ids.count(identifier) > 1)
-    if missing_ids or unknown_ids or duplicate_ids:
+    if unclustered_ids or unavailable_ids or duplicate_ids:
+        rows = []
+        for prd in sorted(prds, key=lambda item: prd_id(item)):
+            identifier = prd_id(prd)
+            short_title = prd.title.replace(identifier, "").strip(" -—")
+            rows.append(
+                '<li>'
+                f'<a href="{h(prd.html_name)}">{h(identifier)}</a>'
+                f' <span>{h(short_title or prd.title)}</span>'
+                f' <a class="source-mini" href="{h(source_href(prd, prd.anchor))}">Markdown</a>'
+                '</li>'
+            )
         details = []
-        if missing_ids:
-            details.append("missing from clusters: " + ", ".join(missing_ids))
-        if unknown_ids:
-            details.append("unknown cluster IDs: " + ", ".join(unknown_ids))
+        if unclustered_ids:
+            details.append("unclustered PRDs: " + ", ".join(unclustered_ids))
+        if unavailable_ids:
+            details.append("package cluster IDs not present in this target: " + ", ".join(unavailable_ids))
         if duplicate_ids:
-            details.append("duplicate cluster IDs: " + ", ".join(duplicate_ids))
-        raise RuntimeError("PRD cluster map mismatch; " + "; ".join(details))
+            details.append("duplicate package cluster IDs: " + ", ".join(duplicate_ids))
+        detail_text = " ".join(details) if details else "The package cluster map does not exactly match this PRD set."
+        return (
+            '<section class="clusters" aria-labelledby="prd-clusters">'
+            '<h2 id="prd-clusters">PRD Index</h2>'
+            '<p class="muted">Reader-facing navigation only. The package cluster map does not exactly match this PRD set, '
+            'so the generated page is using a target-safe unclustered index instead of failing. '
+            'This does not approve, merge, supersede, renumber, or replace canonical Markdown PRDs.</p>'
+            f'<p class="muted">{h(detail_text)}</p>'
+            f'<div class="cluster-grid"><section class="cluster-card"><h3>Current PRDs</h3><ul class="cluster-list">{"".join(rows)}</ul></section></div>'
+            "</section>"
+        )
 
     cards: list[str] = []
     for cluster in PRD_CLUSTERS:
