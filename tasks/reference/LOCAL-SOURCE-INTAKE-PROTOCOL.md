@@ -16,7 +16,7 @@ Last updated: 2026-07-22
 
 Local Source Intake helps a solo builder turn messy project material into trusted Precode artifacts without treating the raw material as authority.
 
-In the first-product spine, intake sits after the reviewed packet and before PRD shaping: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. A Conviction Packet / Precode Ingestion Packet can feed intake. A reviewed Conviction Packet / Precode Ingestion Packet can feed intake after a compact readiness self-check, but intake output still requires user review before PRD shaping, owner-file promotion, decomposition, bead activation, or coding. The self-check is advisory only. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
+In the first-product spine, intake sits after the reviewed packet and before PRD shaping: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`. A Conviction Packet / Precode Ingestion Packet can feed intake. A reviewed Conviction Packet / Precode Ingestion Packet can feed intake after a compact readiness self-check, but intake output still requires user review before PRD shaping, owner-file promotion, decomposition, bead activation, or coding. Architecture Shaping happens after PRD approval only when the approved PRD is architecture-sensitive. The self-check is advisory only. It does not approve a PRD, owner-file edit, roadmap, backlog, bead, or coding.
 
 The intake output is not the plan. It is a short, inspectable evidence summary that can feed:
 

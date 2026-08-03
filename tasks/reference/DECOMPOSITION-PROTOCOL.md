@@ -18,7 +18,7 @@ Decomposition turns a shaped destination into journey units small enough to veri
 
 This protocol helps Precode avoid premature implementation, overbroad beads, hidden dependencies, and mixed planning plus coding.
 
-In the first-product spine, decomposition starts only after human-reviewed PRD shaping and approval: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Decomposition may propose candidate beads, but it does not activate them; proof, review, and closeout remain separate later gates.
+In the first-product spine, decomposition starts only after human-reviewed PRD shaping and approval plus Architecture Shaping when the approved PRD is architecture-sensitive: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`. Decomposition may propose candidate beads, but it does not activate them; proof, review, and closeout remain separate later gates. Low-risk approved PRDs can proceed to decomposition with the Architecture Shaping skip reason recorded in PRD or bead notes.
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when a candidate bead comes from changed, superseded, deferred, queued, or source-heavy intent and needs a clear promotion path before activation.
 

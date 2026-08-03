@@ -486,7 +486,7 @@ def assert_onboarding_authority_consolidation_contract(failures: list[dict[str, 
             "Use the Product Ideation Workbook and Precode Idea Coach as ordered steps inside that path.",
         ],
         Path("tasks/reference/PRD-PROTOCOL.md"): [
-            "Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close",
+            "Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close",
             "Start with First PRD Walkthrough, using Product Ideation Workbook and Precode Idea Coach as ordered steps",
             "Use \"First PRD Walkthrough\" as the plain-language request for this ramp",
         ],
@@ -647,7 +647,7 @@ def assert_question_to_artifact_filing_contract(failures: list[dict[str, str]]) 
 
 
 def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
-    spine = "Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close"
+    spine = "Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close"
     required_terms_by_path = {
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             f"First-product spine: `{spine}`",
@@ -655,6 +655,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             "Packet: reviewed Conviction Packet / Precode Ingestion Packet.",
             "Intake: Local Source Intake summary.",
             "PRD: human-reviewed PRD shaping and approval.",
+            "Architecture? is conditional",
             "Bead: candidate decomposition, then approved active bead.",
             "Proof: recorded checks and manual evidence.",
             "Review: human review, with advisory lanes only when needed.",
@@ -664,6 +665,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             f"The first-product spine is: `{spine}`.",
             "Intake is the Local Source Intake summary",
             "PRD is human-reviewed PRD shaping and approval",
+            "Architecture? means run Architecture Shaping only when",
             "Bead is candidate decomposition followed by an approved active bead",
             "Proof is recorded checks and manual evidence",
             "Review is human review with advisory lanes only when needed",
@@ -674,6 +676,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             "rough idea or messy notes become a Product Brief",
             "then Local Source Intake",
             "then human-reviewed PRD shaping and approval",
+            "then conditional Architecture Shaping when",
             "then candidate decomposition and one approved active bead",
             "then recorded proof, human review, and closeout with explicit Close State",
         ],
@@ -681,6 +684,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             f"First-product spine: `{spine}`.",
             "Product Ideation Workbook and Precode Idea Coach are steps inside that route, not separate commands to choose between.",
             "Bring it through Local Source Intake before PRD shaping",
+            "Architecture Shaping sits between approved PRD and decomposition only when",
             "human PRD approval is required before decomposition, bead activation, or implementation",
         ],
         Path("docs/PRECODE-SUPPORT-RUNBOOK.md"): [
@@ -688,6 +692,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             "Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.",
             "then Local Source Intake",
             "then human-reviewed PRD shaping and approval",
+            "then Architecture Shaping only when",
             "then candidate decomposition and one approved active bead",
             "then recorded proof, human review, and closeout with explicit Close State",
         ],
@@ -697,6 +702,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             "Packet: reviewed Conviction Packet / Precode Ingestion Packet.",
             "Intake: Local Source Intake summary.",
             "PRD: human-reviewed PRD shaping and approval.",
+            "Architecture?: Architecture Shaping only when",
             "Bead: candidate decomposition, then approved active bead.",
             "Proof: recorded checks and manual evidence.",
             "Review: human review, with advisory lanes only when needed.",
@@ -706,6 +712,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             f"First-product spine: `{spine}`.",
             "Local Source Intake before PRD shaping",
             "human PRD approval before decomposition or bead activation",
+            "conditional Architecture Shaping before bead decomposition",
             "recorded proof before review",
             "review before closeout or transition approval",
         ],
@@ -714,15 +721,18 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             "Brief means Product Brief after at most three high-level questions",
             "Packet means reviewed Conviction Packet / Precode Ingestion Packet",
             "Intake means Local Source Intake before PRD shaping",
+            "Architecture? is the conditional bridge",
         ],
         Path("tasks/reference/LOCAL-SOURCE-INTAKE-PROTOCOL.md"): [
             f"`{spine}`",
             "A Conviction Packet / Precode Ingestion Packet can feed intake",
+            "Architecture Shaping happens after PRD approval only when",
             "requires user review before PRD shaping, owner-file promotion, decomposition, bead activation, or coding",
         ],
         Path("tasks/reference/DECOMPOSITION-PROTOCOL.md"): [
             f"`{spine}`",
             "after human-reviewed PRD shaping and approval",
+            "Architecture Shaping when the approved PRD is architecture-sensitive",
             "does not activate them",
             "proof, review, and closeout remain separate later gates",
         ],
@@ -730,6 +740,7 @@ def assert_first_product_spine_contract(failures: list[dict[str, str]]) -> int:
             f"`{spine}`",
             "Proof, Review, and Close",
             "recorded checks and manual evidence come before human review",
+            "conditional architecture-sensitive PRD bridge before decomposition",
             "closeout with explicit Close State comes after review/handback",
             "Closeout does not accept work, approve transition, or activate another bead by itself.",
         ],
@@ -2051,10 +2062,13 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/templates/PRECODE-FIRST-SESSION-CARD.md"): [
             "Builder Build Order",
-            "Setup -> Start -> Idea/Packet -> Intake -> Owner Files? -> PRD -> Bead -> Proof -> Review -> Close -> Next",
+            "Setup -> Start -> Idea/Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close -> Next",
             "Owner Files?",
+            "Architecture?",
             "Source-To-Promotion Hygiene Review",
             "then re-validate before PRD shaping",
+            "run Architecture Shaping before bead decomposition",
+            "record the Architecture Shaping skip reason",
             "Owner-File Promotion Prompt",
             "Do not invent facts",
             "automatic owner-file adaptation",
@@ -2075,6 +2089,8 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "compact linear builder build-order card",
             "conditional `Owner Files?` gate before PRD shaping",
+            "conditional `Architecture?` bridge before bead decomposition",
+            "mandatory only for architecture-sensitive approved PRDs",
             "owner-file promotion check",
             "one page of prompts, checks, and build-order guidance",
             "does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement",
@@ -2095,17 +2111,20 @@ def assert_first_session_card_contract(failures: list[dict[str, str]]) -> int:
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "compact post-setup builder build-order checklist",
             "conditional `Owner Files?` promotion/re-validation gate",
+            "conditional `Architecture?` bridge between PRD approval and bead decomposition",
             "automatic owner-file adaptation",
+            "universal Architecture Brief gate",
             "not a fifth route",
             "Compact first-session builder build-order checklist",
         ],
         Path("llms.txt"): [
             "compact first-session builder build-order checklist",
             "conditional `Owner Files?` gate after intake and before PRD shaping",
+            "conditional `Architecture?` bridge between approved PRD and bead decomposition",
             "promotion/re-validation gate before PRD shaping",
             "shareable as the builder's official compact flow",
             "reinforces Guided Setup and the Daily Cockpit",
-            "does not approve setup, choose tasks, activate beads, replace protocols, create a router, or become a new start page",
+            "does not approve setup, choose tasks, activate beads, make Architecture Brief universal, replace protocols, create a router, or become a new start page",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "Owner-File Promotion Before PRD Shaping",

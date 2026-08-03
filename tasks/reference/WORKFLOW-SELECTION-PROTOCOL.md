@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-07-24
+Document version: v0.1.26
+Last updated: 2026-08-02
 
 ## Purpose
 
@@ -20,7 +20,7 @@ Use this protocol when the next step is unclear, when too many protocols could a
 
 For a rough idea, do not present Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers. The user-facing route is First PRD Walkthrough. Use Product Discovery Validation only when worth-building uncertainty is the specific blocker, and use the workbook, coach, Product Brief, Conviction Packet, Local Source Intake, and PRD shaping as ordered steps inside the rough-idea path.
 
-First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`. Workflow selection should preserve the order: Local Source Intake before PRD shaping, human PRD approval before decomposition or bead activation, recorded proof before review, and review before closeout or transition approval.
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`. Workflow selection should preserve the order: Local Source Intake before PRD shaping, human PRD approval before decomposition or bead activation, conditional Architecture Shaping before bead decomposition when an approved PRD is architecture-sensitive, recorded proof before review, and review before closeout or transition approval. `Architecture?` is a risk check, not a universal gate: low-risk approved PRDs may proceed to decomposition with the skip reason recorded in the PRD architecture-impact section or bead notes.
 
 After the first product slice, repeated work can orient through the every-bead rhythm before choosing a workflow: `Active -> Changed -> Proven -> Parked -> Approval -> Next`. This is a human-facing checklist over existing sources: active bead and `tasks/todo.md` for active work, changed-file summary and Closeout Evidence for changed work, recorded checks and manual verification for proof, Candidate Queue or explicit defer/kill destination for parked intent, review decision and transition proposal for approval, and session start, Workflow Selection, `next-step.py`, or transition proposal for next guidance. The rhythm does not choose tasks, rank candidates, approve PRDs, activate beads, accept review, approve transition, or create generated report authority.
 
@@ -66,8 +66,8 @@ Choose the workflow that matches the current situation:
 | User explicitly asks to explore a feature angle after intake or PRD shaping but before committing to PRD amendment, Architecture Shaping, Decomposition, candidate bead proposal, or activation | Plan Loop in Plan Mode | Plan Packet |
 | User selects a Candidate Queue entry and asks for an implementation plan | Plan Mode Candidate Craft Loop, then the owner workflow | Implementation plan draft only; no activation before PRD/authority/decomposition approval |
 | Shaped idea that still needs product clarity | Idea-to-PRD / PRFAQ-lite | PRD shard draft |
-| Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals |
-| Approved PRD with auth, data, API, integration, dependency, migration, workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
+| Approved PRD with stable requirement IDs and no material architecture risk | Decomposition Protocol | candidate bead proposals with low-risk Architecture Shaping skip reason recorded in PRD or bead notes |
+| Approved PRD with auth, data, API, integration, dependency, migration, external service, multi-step workflow, or multi-system risk | Architecture Shaping Protocol | Architecture Brief evidence before bead proposals |
 | High-risk, uncertain, or challenge-worthy idea | PRFAQ/challenge planning bead | questions, risk notes, or narrowed proposal |
 | User is unsure whether accessibility review is needed for a bead, review, or release candidate | Accessibility Advisor Fit Interview | recommendation to invoke advisor, not needed, or defer |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |

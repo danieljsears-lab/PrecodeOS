@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.98
-Last updated: 2026-07-31
+Document version: v0.7.99
+Last updated: 2026-08-02
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -376,9 +376,9 @@ When the repo exists, bring only the reviewed Conviction Packet into Precode Loc
 
 If you are a non-technical builder with a net-new, rough product idea, start with First PRD Walkthrough. `tasks/templates/PRODUCT-IDEATION-WORKBOOK.md` is the workbook step inside that path, before asking Precode to update `PRODUCT.md`, write a PRD, create beads, or code.
 
-The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
-Read it this way: Idea is the rough idea or messy notes; Brief is the Product Brief after at most three high-level questions; Packet is the reviewed Conviction Packet / Precode Ingestion Packet; Intake is the Local Source Intake summary; PRD is human-reviewed PRD shaping and approval; Bead is candidate decomposition followed by an approved active bead; Proof is recorded checks and manual evidence; Review is human review with advisory lanes only when needed; Close is closeout evidence and an explicit Close State.
+Read it this way: Idea is the rough idea or messy notes; Brief is the Product Brief after at most three high-level questions; Packet is the reviewed Conviction Packet / Precode Ingestion Packet; Intake is the Local Source Intake summary; PRD is human-reviewed PRD shaping and approval; Architecture? means run Architecture Shaping only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior; Bead is candidate decomposition followed by an approved active bead; Proof is recorded checks and manual evidence; Review is human review with advisory lanes only when needed; Close is closeout evidence and an explicit Close State. If Architecture Shaping is skipped because the work is low-risk, record the skip reason in the PRD architecture-impact section or bead notes.
 
 Skip the workbook for bugs, maintenance, approved PRD follow-through, narrow feature changes, and other work where the problem and scope are already clear.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.54
-Last updated: 2026-07-31
+Document version: v0.1.55
+Last updated: 2026-08-02
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.
 
@@ -184,7 +184,7 @@ These notes preserve the common Precode routes as reference material. They are n
 | Review attribution | Build Attribution Ledger, build attribution review, and who-built-what evidence belong in Diary and review reference. | Attribution evidence is not blame, scoring, telemetry, implementation acceptance, merge approval, or release approval. |
 | Release prep | Release: prepare release evidence without release action. Late-stage release-prep evidence, release-quality cues, and approval questions. It does not deploy, configure providers, mutate dashboards, merge, roll back, certify production readiness, or approve release. | Release Readiness prepares human approval questions only. |
 
-First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`. Architecture? is conditional: run Architecture Shaping only for approved PRDs touching auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior. For low-risk approved PRDs, proceed to bead decomposition and record the skip reason in the PRD architecture-impact section or bead notes.
 
 - Idea: rough idea or messy notes.
 - Brief: Product Brief after at most three high-level questions.
@@ -208,7 +208,7 @@ Quality and boundary cue: `Check: name the active bead, authority, files, first 
 
 Recovery cue: when stuck, name the symptom, first safe move, owner surface, up to three read-only or advisory checks, next safe prompt or action, and forbidden actions before repair. Forbidden actions include no delete, overwrite, regenerate, transition approval, rollback, setup/update mutation, or destructive command without explicit approval.
 
-First-session card reminder: use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as a compact linear builder build-order card when the full cockpit catalogs feel too large. It includes the conditional `Owner Files?` gate before PRD shaping and the owner-file promotion check. It is one page of prompts, checks, and build-order guidance; it does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement.
+First-session card reminder: use `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as a compact linear builder build-order card when the full cockpit catalogs feel too large. It includes the conditional `Owner Files?` gate before PRD shaping, the owner-file promotion check, and the conditional `Architecture?` bridge before bead decomposition. Architecture Shaping is mandatory only for architecture-sensitive approved PRDs; low-risk approved PRDs can proceed to bead decomposition with a recorded skip reason. The card is one page of prompts, checks, and build-order guidance; it does not become a start page, task selector, approval shortcut, setup guide, router, command wrapper, or protocol replacement.
 
 Plan Mode Candidate Craft Loop reminder: in Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Use it Before developing a Candidate Queue entry and Before developing an implementation plan for a selected candidate. It does not approve a PRD, rank work for implementation, activate a bead, update `tasks/todo.md`, authorize coding, or skip owner-file, decomposition, proof, review, and transition gates.
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.76
-Last updated: 2026-07-31
+Document version: v0.1.77
+Last updated: 2026-08-02
 
 ## Purpose
 
@@ -30,13 +30,14 @@ For rough ideas, use one user-facing invocation: `Ideation: use First PRD Walkth
 
 For first-reader routing, keep the public path compact: not installed goes to Guided Setup; installed or working goes to Daily Cockpit; rough ideas use the Daily Cockpit `Ideation:` prompt; broken or confusing setup, state, checks, or generated reports go to Troubleshooting or `I am stuck, help me.`
 
-First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
 - Idea: rough idea or messy notes.
 - Brief: Product Brief after at most three high-level questions.
 - Packet: reviewed Conviction Packet / Precode Ingestion Packet.
 - Intake: Local Source Intake summary.
 - PRD: human-reviewed PRD shaping and approval.
+- Architecture?: Architecture Shaping only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior; otherwise record the low-risk skip reason in PRD or bead notes.
 - Bead: candidate decomposition, then approved active bead.
 - Proof: recorded checks and manual evidence.
 - Review: human review, with advisory lanes only when needed.

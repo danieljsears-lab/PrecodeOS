@@ -718,9 +718,9 @@ Use this section when PrecodeOS adoption is happening inside a guided cohort, wo
 
 Use this routing when a builder arrives with messy notes, a Product Brief, guided research, or a Conviction Packet before PRD creation.
 
-First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Proof -> Review -> Close`.
+First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
-Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.
+Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then Architecture Shaping only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. If Claude says an Architecture Brief is mandatory for every bead, correct it: the bridge is mandatory only for architecture-sensitive approved PRDs. Low-risk approved PRDs may proceed to bead decomposition with the skip reason recorded in PRD or bead notes. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.
 
 Advanced support surfaces such as Release Readiness, Goal Frames, Ralph, Attribution, Artifact Chooser, reversal, team coordination, and proof tracing are also conditional. Use them only when the current stage, risk, support role, recovery path, or explicit user question calls for one.
 
