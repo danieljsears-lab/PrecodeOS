@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.5
-# Last updated: 2026-08-02
+# Version: v0.2.6
+# Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -83,8 +83,8 @@ PRD_CLUSTERS = (
     ),
     PrdCluster(
         title="Generated / Review Surfaces And Package Structure",
-        purpose="Generated PRD/doctor/authority-map surfaces, package-surface structure, session-friction review, and generated-output boundaries.",
-        prd_ids=("PRD-007", "PRD-008", "PRD-012", "PRD-014", "PRD-027", "PRD-045", "PRD-046"),
+        purpose="Generated PRD/doctor/authority-map surfaces, package-surface structure, session-friction review, usage evidence review, and generated-output boundaries.",
+        prd_ids=("PRD-007", "PRD-008", "PRD-012", "PRD-014", "PRD-027", "PRD-045", "PRD-046", "PRD-048"),
     ),
     PrdCluster(
         title="Collaboration / Recovery / Operating Rhythm",

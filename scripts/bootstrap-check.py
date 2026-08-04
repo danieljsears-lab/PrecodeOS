@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.7
-# Last updated: 2026-08-02
+# Version: v0.5.8
+# Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -102,6 +102,11 @@ SOURCE_REQUIRED_PATHS = [
     "OPERATING-CONSTRAINTS.md",
     "tasks/todo.md",
     "docs/PRECODE-GUIDED-SETUP.md",
+]
+REQUIRED_SETUP_SUPPORT_PATHS = [
+    "tasks/beads/BEAD-SCHEMA.md",
+    "tasks/prds/PRD-000-template.md",
+    "tasks/prds/PRD-SHARD-SCHEMA.md",
 ]
 CONFLICT_PATHS = [
     "README.md",
@@ -262,6 +267,12 @@ def rel(path: Path, root: Path) -> str:
 
 def source_missing_paths(source: Path) -> list[str]:
     return [name for name in SOURCE_REQUIRED_PATHS if not (source / name).exists()]
+
+
+def target_missing_required_setup_support_paths(target: Path, kind: str) -> list[str]:
+    if kind != "existing_precode" or not target.is_dir():
+        return []
+    return [name for name in REQUIRED_SETUP_SUPPORT_PATHS if not (target / name).is_file()]
 
 
 def immediate_children(path: Path) -> list[Path]:
@@ -777,6 +788,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
     dirty_package: list[str] = []
     dirty_owner: list[str] = []
     missing_package: list[str] = []
+    required_setup_support_missing = list(payload.get("target_missing_required_setup_support_paths", []))
     identity_collisions: list[dict[str, str]] = []
     deferred_identity_paths: list[str] = []
     target_identity = identity_index(target_root)
@@ -911,6 +923,7 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
         "dirty_package_paths": dirty_package,
         "dirty_project_or_owner_paths": dirty_owner,
         "missing_package_paths": missing_package,
+        "required_setup_support_missing_paths": required_setup_support_missing,
         "identity_collisions": identity_collisions,
         "deferred_package_dev_identity_paths": deferred_identity_paths,
         "blockers": blockers,
@@ -1423,6 +1436,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     target_exists = target.is_dir()
     missing_source_paths = source_missing_paths(source) if source_exists else SOURCE_REQUIRED_PATHS.copy()
     kind = target_kind(source, target, source_exists, target_exists)
+    missing_required_setup_support_paths = target_missing_required_setup_support_paths(target, kind)
     conflicts = target_conflicts(target)
     missing_dependencies = dependency_status()
 
@@ -1439,6 +1453,8 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         blockers.append("source and target resolve to the same folder")
     if conflicts and kind != "existing_precode":
         warnings.append("target has files that may conflict with Precode setup")
+    if missing_required_setup_support_paths:
+        warnings.append("target is missing required reusable setup support files")
     if missing_dependencies:
         warnings.append("recommended local dependencies are missing")
 
@@ -1451,6 +1467,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "source_root": source.as_posix(),
         "target_root": target.as_posix(),
         "source_missing_paths": missing_source_paths,
+        "target_missing_required_setup_support_paths": missing_required_setup_support_paths,
         "target_kind": kind,
         "public_file_groups": PUBLIC_FILE_GROUPS,
         "excluded_paths": EXCLUDED_PATHS,
@@ -1492,6 +1509,12 @@ def render_plain(payload: dict[str, Any]) -> str:
     if payload["source_missing_paths"]:
         lines.append("\nSource missing paths:")
         lines.extend(f"- `{item}`" for item in payload["source_missing_paths"])
+    if payload["target_missing_required_setup_support_paths"]:
+        lines.append("\nTarget missing required setup support files:")
+        lines.extend(f"- `{item}`" for item in payload["target_missing_required_setup_support_paths"])
+        lines.append(
+            "These reusable schema/template files are required for setup completeness. They are skipped by ID validation but must still be present."
+        )
     if payload["conflicts"]:
         lines.append("\nTarget conflicts:")
         for conflict in payload["conflicts"]:
@@ -1639,6 +1662,12 @@ def render_upgrade_preview_plain(payload: dict[str, Any]) -> str:
     if preview["dirty_project_or_owner_paths"]:
         lines.append("\nProject or owner paths to preserve/review:")
         lines.extend(f"- `{item}`" for item in preview["dirty_project_or_owner_paths"])
+    if preview["required_setup_support_missing_paths"]:
+        lines.append("\nRequired reusable setup support files missing:")
+        lines.extend(f"- `{item}`" for item in preview["required_setup_support_missing_paths"])
+        lines.append(
+            "These files should appear as missing package-owned copy candidates when present in the source package; validation skip-lists do not make them optional."
+        )
     if preview["identity_collisions"]:
         lines.append("\nIdentity collisions blocking copy:")
         for item in preview["identity_collisions"]:
@@ -1930,6 +1959,7 @@ def self_test() -> int:
         (source / "tasks" / "beads").mkdir(parents=True, exist_ok=True)
         (existing_precode_target / "tasks" / "prds").mkdir(parents=True)
         (existing_precode_target / "tasks" / "beads").mkdir(parents=True)
+        (existing_precode_target / "tasks" / "prds" / ".gitkeep").write_text("", encoding="utf-8")
         (source / "tasks" / "prds" / "PRD-002-bootstrap-confidence-lane.md").write_text(
             "---\nprd_id: PRD-002\n---\n# Bootstrap Confidence Lane\n",
             encoding="utf-8",
@@ -1954,6 +1984,12 @@ def self_test() -> int:
         existing_precode_payload["npm_update_plan_preview"] = build_update_plan_preview(existing_precode_payload)
         existing_precode_payload["bootstrap_recovery_guidance"] = build_recovery_guidance(existing_precode_payload)
         assert existing_precode_payload["target_kind"] == "existing_precode"
+        assert set(existing_precode_payload["target_missing_required_setup_support_paths"]) == {
+            "tasks/beads/BEAD-SCHEMA.md",
+            "tasks/prds/PRD-000-template.md",
+            "tasks/prds/PRD-SHARD-SCHEMA.md",
+        }
+        assert "target is missing required reusable setup support files" in existing_precode_payload["warnings"]
         assert any(
             action["category"] == "preserve_existing"
             for action in existing_precode_payload["install_update_preview"]["actions"]
@@ -1964,6 +2000,20 @@ def self_test() -> int:
             for action in existing_precode_payload["supervised_setup_plan"]["actions"]
         )
         assert existing_precode_payload["package_upgrade_preview"]["package_state_classification"] == "dirty_project_or_owner_edits"
+        assert set(existing_precode_payload["package_upgrade_preview"]["required_setup_support_missing_paths"]) == {
+            "tasks/beads/BEAD-SCHEMA.md",
+            "tasks/prds/PRD-000-template.md",
+            "tasks/prds/PRD-SHARD-SCHEMA.md",
+        }
+        required_support_actions = [
+            action
+            for action in existing_precode_payload["package_upgrade_preview"]["actions"]
+            if action["category"] == "review_package_copy_candidate"
+            and action["path"] in existing_precode_payload["target_missing_required_setup_support_paths"]
+        ]
+        assert {action["path"] for action in required_support_actions} == set(
+            existing_precode_payload["target_missing_required_setup_support_paths"]
+        )
         release_reference = existing_precode_payload["package_upgrade_preview"]["release_reference"]
         compatibility_policy = existing_precode_payload["package_upgrade_preview"]["updater_compatibility_policy"]
         assert release_reference["source_package_name"] == "@precodeos/precodeos"

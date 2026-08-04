@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.20
-Last updated: 2026-07-27
+Document version: v0.1.21
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -118,6 +118,8 @@ bash scripts/record-check.sh -- <command>
 A logged tool run does not count as a passing check unless it is also recorded through `record-check.sh` or accepted in Closeout Evidence with the required manual verification format.
 
 `python3 scripts/session-friction-check.py` runs Session Friction Review as a read-only advisory check over safe local ledgers and compiled summaries. It may flag repeated failure categories, missing failure categories, unavailable commands or dependencies, sandbox or approval blocks, stale check or closeout evidence, generated refresh without verification, reviewed-memory context pressure, or no safe evidence found. Each finding must cite source evidence, confidence, freshness, proposed destination, and a suggested next human review step. The output is generated evidence only: it must not auto-edit active memory, shims, reviewed memory, owner files, generated reports, or command wrappers, and it must not approve commands, select tasks, promote memory, accept review, or create package-manager behavior.
+
+Usage evidence review, if implemented under `tasks/prds/PRD-048-precode-usage-evidence-review.md`, must stay local, opt-in, read-only, and explicit about unknowns by default. It may summarize safe local Precode evidence such as tool-run categories, check freshness, setup/refresh preview signals, session-friction findings, learning-diary presence, and spend-import presence, but it must not collect raw transcripts, secrets, app logs, app analytics, dashboard values, production data, user identity records, support case records, contributor scoring, productivity ranking, or long raw command output. Any outbound analytics or network submission is external-system work and requires a separate approved readiness gate plus explicit user submission or approval.
 
 Guardrail checks such as `python3 scripts/files-in-play-check.py`, `python3 scripts/bead-depth-check.py`, and `python3 scripts/next-step.py` are advisory evidence. They can warn, orient, or suggest a pause, but they do not approve commands, authorize out-of-scope edits, or replace explicit user approval for sensitive or external mutation. If adaptive depth warns before a command, the agent should explain the warning's shortest next action and either fix the bead metadata, strengthen proof, ask for approval, or split scope before treating the command path as clear.
 

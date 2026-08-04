@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.44
-Last updated: 2026-07-26
+Document version: v0.1.46
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -45,6 +45,19 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, `--update-plan-preview` when support needs grouped current `UP-ID` evidence before discussing refresh options, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the builder should go next. If the builder is lost in the doc sequence, route them to the first-session card as the build-order index, then back to the owning doc for the actual prompt or command.
+
+For a 10-15 minute setup target, use a fast verified setup lane rather than a side process:
+
+1. Confirm source, target, target kind, and `git status`.
+2. Run `bootstrap-check.py --supervised-setup-plan` for empty or nearly empty targets, or `--upgrade-preview` for existing Precode targets.
+3. Approve only the specific `SP-ID` or `UP-ID` copy actions needed for package-owned setup files.
+4. Apply those approved copy actions with the matching apply mode.
+5. Run `bash scripts/validate-memory.sh`.
+6. Hand the builder to `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` or Conviction Packet / First PRD intake.
+
+The target must include the reusable support files `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`. If Bootstrap Confidence says an existing Precode target is missing them, treat that as setup completeness repair before product work, even if active-memory validation passes.
+
+A prepared support branch or starter target can be used for a cohort only as a clearly labeled support convenience. It is not the canonical PrecodeOS package path, not an update channel, not package-manager behavior, not public package authority, and not a zero-mistake guarantee. Validate it before intake, and do not let it hide defects in the normal setup or refresh flow.
 
 ## Support Command Triage
 
@@ -191,6 +204,8 @@ Do not create product truth for the user. If the product is fuzzy, help the user
 Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `logs/` as authority. Generated reports are evidence only. The Doctor Dashboard inside OS Health explains warning sources, plain-English triage labels, and repair paths, but it does not approve commands, task selection, transitions, or acceptance.
 
 Public GitHub Issues are available for narrow PrecodeOS feedback and package-bug intake. Support may route adoption friction, confusing docs, setup friction, workflow questions, or package bugs to the issue templates when public sharing is appropriate, but issues are source evidence only. Do not use issue status, labels, comments, pull requests, reviews, checks, or project boards as product truth, support approval, task selection, merge approval, release approval, GitHub mutation approval, or a replacement for Local Source Intake and maintainer review.
+
+When support or cohort helpers capture usage evidence, keep it explicit and sanitized. Use the PrecodeOS Usage Evidence Notes in `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` or a GitHub feedback/package-bug issue only after the user has reviewed what will be shared. Record setup friction, confusing docs or prompts, support intervention type, what Precode helped the builder control, and what remains unknown because it was not logged. Do not collect raw private transcripts, secrets, dashboard values, app data, user identity records, support case records, contributor scoring, productivity ranking, or automatic outbound telemetry.
 
 ## Mainline Walkthrough: New Project
 

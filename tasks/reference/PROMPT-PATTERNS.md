@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.77
-Last updated: 2026-08-02
+Document version: v0.1.78
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -345,7 +345,7 @@ npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
 
-Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, updater compatibility policy metadata, candidate `UP-ID` actions, and any update-plan action grouping.
+Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked. List protected files, conflicts, required reusable setup support files missing, identity-collision blockers, deferred package development PRDs or beads, advisory release-reference metadata, updater compatibility policy metadata, candidate `UP-ID` actions, and any update-plan action grouping.
 
 Stop before mutation until I approve exact `UP-ID` actions. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query registry freshness, resolve dist-tags, provide package-manager behavior, or automate rollback. Treat `latest` as a package reference to inspect, not overwrite permission.
 
@@ -358,7 +358,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.
 ```
 
-Expected output: source and target confirmation, target classification, protected files, conflicts, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, optional update-plan action buckets, same-session freshness, validation next steps, and explicit stop-before-mutation status.
+Expected output: source and target confirmation, target classification, protected files, conflicts, required reusable setup support files missing, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, optional update-plan action buckets, same-session freshness, validation next steps, and explicit stop-before-mutation status.
 
 This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, registry freshness result, dist-tag resolver, or permission to overwrite. Npm apply is limited to `apply-package-owned` delegation for approved missing package-owned `UP-ID` actions.
 
@@ -371,6 +371,7 @@ If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview -
 Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
 Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission. Show updater compatibility policy metadata as evidence-threshold and blocked-case guidance only. If update-plan preview is used, show grouped current action IDs, same-session freshness, and validation prompts; do not treat it as registry freshness, dist-tag resolution, apply permission, or copy approval.
+If the preview reports missing required setup support files, treat `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md` as package-owned repair candidates before PRD shaping or bead work. They are skipped by ID validation but are not optional.
 Show action IDs and wait for my explicit approval before any missing package-owned file copy.
 Treat the preview as evidence only, not package update permission.
 ```

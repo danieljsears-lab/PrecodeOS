@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-08-02
+Document version: v0.1.25
+Last updated: 2026-08-04
 
 ## What This Guide Is For
 
@@ -95,6 +95,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
 
+For short support calls, the fast path is the same mechanism with less wandering: run the supervised setup plan, approve only the needed fresh-target `SP-ID` copy actions, apply them, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone or bulk copy. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
+
 The optional wrapper exposes the same apply gate and still requires approved action IDs:
 
 ```bash
@@ -156,6 +158,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It may show advisory release-reference metadata from the local package source: package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. The update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. Approved npm package-owned apply is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`; it is only delegation to the Python upgrade-apply path for explicit current `UP-ID` approvals. Preview modes write nothing, perform no npm registry lookup or dist-tag resolution, and do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, or rollback.
 
 If the project has important active work, known local Precode changes, or unclear recovery state, preserve the current environment as the backup and run upgrade preview against a fresh clone. Review dirty or customized paths before any approved copy action. Clone-first preview is a support safety step; it is not rollback automation or update permission.
+
+A maintainer-verified starter branch or prepared support target may reduce setup time for a cohort, but it is a support artifact, not the canonical setup path or a guarantee of zero mistakes. It must be labeled as prepared support material, must not carry the package checkout's `.git` history into the client project, and still needs validation before Conviction Packet intake or product work begins.
 
 If the preview shows a missing package-owned file marked `review_package_copy_candidate`, you may copy that one file only after approving its `UP-ID`. Package development PRDs and beads are not normal upgrade-copy candidates for existing Precode targets; copy only `PRD-000-template`, schemas/reference files, or other copyable non-identity package files:
 

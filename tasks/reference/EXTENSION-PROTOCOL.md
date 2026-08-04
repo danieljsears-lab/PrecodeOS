@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.28
-Last updated: 2026-07-27
+Document version: v0.1.29
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -52,6 +52,8 @@ The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over ex
 
 Future retrieval-backed memory is governed by this protocol before any database, MCP server, shared backend, dashboard, REST API, vector index, embedding layer, or cross-machine memory surface becomes a public package feature. Reviewed filesystem memory remains the default source of durable learning; retrieval backends may accelerate recall, but they must not become active memory, task selection, owner-file authority, promotion approval, external mutation, automatic write access, registry behavior, optional-pack installation, or package-manager behavior. `memory-check.py --recall` returns exact-match cited snippets and demotes weak matches to leads only. `memory-check.py --retrieval-review` is a readiness review only: it may show token pressure, card hygiene, query miss evidence, and weak-match examples, but it does not approve a backend.
 
+Usage evidence and telemetry-adjacent work is governed by `tasks/prds/PRD-048-precode-usage-evidence-review.md` before any new collector, report, submission packet, or analytics integration becomes a public package surface. The default path is local opt-in evidence review, then explicit sanitized submission, then a deferred networked analytics readiness gate. Usage evidence must not add default outbound telemetry, app analytics SDKs, hosted endpoints, hidden identity tracking, support case records, contributor scoring, productivity ranking, generated proof, task selection, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.
+
 ## Extension Types
 
 | Type | Purpose | Usual owner |
@@ -62,6 +64,7 @@ Future retrieval-backed memory is governed by this protocol before any database,
 | Importer | Reads source material or telemetry and normalizes evidence | `scripts/import-*.py` |
 | Approval-gated local queue helper | Previews Candidate Queue import or shaping actions and applies only explicit approved action IDs | `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` plus `scripts/candidate-queue.py` |
 | Audit | Reads project, package, or external status and reports findings | `scripts/*-audit.py`, `scripts/package-knowledge-lint.py`, or read-only preview scripts such as `scripts/team-collaboration-check.py` and `scripts/session-friction-check.py` |
+| Usage evidence review | Future staged local/submitted/networked usage-learning surface | `tasks/prds/PRD-048-precode-usage-evidence-review.md` plus this protocol and Tool Execution |
 | Generated report | Human-readable or machine-readable evidence output | `logs/`, `OS-HEALTH.md`, or `PROGRESS.md` |
 | Generated execution profile | Machine-readable run-contract export for a host or adapter | `logs/run-contract.json` and `logs/run-contract.yaml` |
 | AI-readable navigation index | Compact stable-docs index for AI assistants and documentation tools | `llms.txt` plus canonical Markdown owner files |
@@ -91,6 +94,7 @@ Every extension must preserve these boundaries:
 - Keep future optional packs explicit, reviewable, and non-installable until separate approved package work defines distribution behavior.
 - Keep AI-readable navigation indexes as indexes only: they may point to canonical docs and protocols, but they must not summarize away source evidence, select work, approve commands, define runtime integration behavior, or replace owner files.
 - Keep retrieval-backed memory optional and reviewed: no required Postgres, pgvector, Docker, MCP server, REST API, dashboard, shared backend, semantic index, embedding layer, automatic agent write access, external mutation, or cross-machine memory dependency may be added without a separate approved extension after readiness evidence shows plain-file recall is insufficient.
+- Keep usage evidence staged and explicit: local opt-in review before submission, explicit sanitized submission before networked analytics, and no default outbound collection or identity tracking without a separate approved readiness gate.
 
 ## Future Pack Boundary Spec
 

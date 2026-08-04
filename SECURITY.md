@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.3
-Last updated: 2026-06-19
+Document version: v0.2.4
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -39,6 +39,7 @@ Confirmed package constraints:
 - Local CLI: `scripts/precode_cli.py` is a facade over curated repo commands and must print underlying commands before running them.
 - Setup mutation: `scripts/bootstrap-check.py` apply modes must require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. The optional npm `apply-package-owned` command may only delegate approved missing package-owned `UP-ID` actions to the Python upgrade-apply path; it must not implement copy logic in JavaScript. Advisory release-reference metadata in upgrade preview is generated evidence only; it is not update permission or broad npm updater behavior.
 - Generated evidence: files under `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, generated docs, and generated PRD review pages must not approve tasks, commands, transitions, releases, or implementation acceptance.
+- Usage evidence and telemetry: PrecodeOS does not collect default outbound telemetry. Usage evidence work must start local, opt-in, read-only, and explicit about unknowns. Sanitized sharing must be user-reviewed and submitted deliberately. Any future outbound analytics requires separate approval for consent, privacy, retention, hosted endpoint ownership, security review, and public documentation.
 - External systems: GitHub helpers and scheduled audits are read-only by default unless a separate approved path explicitly allows mutation.
 - CI: GitHub Actions should use least privilege, preserve read-only validation unless an explicit maintainer decision changes it, and must not require secrets for ordinary package validation.
 
@@ -51,6 +52,7 @@ For package-facing changes, review whether the change affects:
 - command execution, subprocess calls, shell helpers, or command wrappers
 - copy, restore, checkpoint, setup, upgrade, cleanup, or generated refresh behavior
 - secrets, credentials, env files, private keys, certificates, dashboards, production config, or sensitive raw evidence
+- raw private transcripts, app analytics, app logs, dashboard values, user identity records, support case records, customer records, contributor scoring, productivity ranking, or outbound telemetry
 - GitHub, CI, external status, importers, scheduled audits, or other external systems
 - generated reports, sidecars, HTML surfaces, or evidence ledgers that could be mistaken for authority
 - package install/update boundaries, executable release channels, optional packs, registries, or package-manager semantics

@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-048 -- Precode Usage Evidence Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-048 -- Precode Usage Evidence Review</h1>
+  <p class="muted">Static HTML generated from <code>PRD-048-precode-usage-evidence-review.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-048-precode-usage-evidence-review.md#prd-048-precode-usage-evidence-review">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>high</strong></div><div class="metric"><span>Feature</span><strong>Precode Usage Evidence Review</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Approval section present; details not parsed.</strong></div><div class="metric"><span>Last updated</span><strong>2026-08-04</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for staged, evidence-only PrecodeOS usage learning, including local opt-in usage evidence review, explicit sanitized submission, cohort/support evidence fields, and deferred outbound analytics readiness.</p>
+    <p><strong>Not authority:</strong> Active memory, product truth, user identity records, app analytics, automatic outbound telemetry, runtime instrumentation, hosted analytics infrastructure, task selection, roadmap approval, PRD approval, bead activation, implementation acceptance, support case records, contributor scoring, productivity ranking, generated proof, external mutation, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, package-manager behavior, or implementation status.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 7</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-048-FR01</code></td><td>Define usage evidence as staged local, submitted, and networked layers.</td><td>P0</td><td>Networked remains deferred.</td></tr><tr><td><code>PRD-048-FR02</code></td><td>Local usage evidence review must be opt-in, read-only, and built only from safe local Precode evidence.</td><td>P0</td><td>Candidate future script/check work.</td></tr><tr><td><code>PRD-048-FR03</code></td><td>Local review must report unknowns explicitly when signals are absent.</td><td>P0</td><td>Missing evidence is unknown, not zero.</td></tr><tr><td><code>PRD-048-FR04</code></td><td>Sanitized submitted evidence packets must require explicit user/support review before sharing.</td><td>P0</td><td>GitHub issues are allowed source-intake routes.</td></tr><tr><td><code>PRD-048-FR05</code></td><td>Cohort/support completion evidence must include lightweight setup, docs/prompt, support-intervention, and control-value fields.</td><td>P0</td><td>Extends existing packet without making it a grading rubric.</td></tr><tr><td><code>PRD-048-FR06</code></td><td>Outbound opt-in analytics must stay deferred until a separate readiness gate defines consent, privacy, retention, hosting, endpoint ownership, security review, and public documentation.</td><td>P0</td><td>No endpoint or SDK in this slice.</td></tr><tr><td><code>PRD-048-FR07</code></td><td>Protocols, support docs, package inventory, maintainer changelog, roadmap history, roadmap journal, and generated PRD/docs/roadmap HTML must reflect the evidence-only boundary.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <ul><li>Stop if the work adds default outbound network calls, endpoint configuration, identity tracking, raw transcript handling, app-data collection, support case records, scoring, hidden submission, automatic issue creation, or automatic source promotion.</li><li>Stop if generated usage evidence is treated as adoption proof, product validation, support approval, task selection, PRD approval, bead activation, implementation acceptance, roadmap approval, or release approval.</li><li>Any future outbound analytics requires a separate high-risk PRD or semantic-change proposal, security/privacy review, consent language, retention rules, public documentation, and explicit maintainer approval.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-048-precode-usage-evidence-review.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md</code></li><li>Related public references:</li><li><code>tasks/prds/PRD-027-session-friction-review.md</code></li><li><code>tasks/prds/PRD-032-github-collaboration-hub.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>SECURITY.md</code></li><li><code>tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md</code></li><li>Files or folders out of scope:</li><li>active memory</li><li>user app code</li><li>analytics SDKs</li><li>hosted endpoints</li><li>public issue mutation</li><li>support case databases</li><li>package-manager files</li><li>command wrappers</li></ul>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-048-precode-usage-evidence-review">PRD-048 -- Precode Usage Evidence Review</h1>
+<h2 id="summary">Summary</h2>
+<p>PrecodeOS should learn from usage without turning itself into an analytics product.</p>
+<p>The first useful slice is a local, opt-in usage evidence review built from safe repo evidence. Users or support helpers may explicitly submit sanitized packets or GitHub issues when they choose. Outbound analytics remains deferred until consent, privacy, retention, hosting, endpoint ownership, and public documentation are approved separately.</p>
+<h2 id="source-inputs">Source Inputs</h2>
+<ul><li>Source type: maintainer plan and package-boundary review</li><li>Source references:</li><li><code>tasks/prds/PRD-027-session-friction-review.md</code></li><li><code>tasks/prds/PRD-032-github-collaboration-hub.md</code></li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md</code></li><li><code>SECURITY.md</code></li><li>Stable facts:</li><li>Session Friction Review is local, read-only, and explicitly not telemetry.</li><li>GitHub feedback and package-bug issues are source evidence only.</li><li>Scheduled audits may dry-run spend telemetry import and read local logs, but must not mutate work or external systems.</li><li>Existing agent spend import handles cost/token telemetry, not product usage analytics.</li><li>Assumptions:</li><li>Maintainer learning is the primary goal, support diagnosability is second, and adoption proof is third.</li><li>Local opt-in evidence should precede explicit submission, and explicit submission should precede any networked analytics.</li><li>Privacy or secrets redactions:</li><li>Usage evidence must not include secrets, credentials, private raw transcripts, dashboard values, app data, customer records, sensitive personal data, user identity records, contributor scoring, productivity ranking, or long raw command output.</li></ul>
+<h2 id="prfaq-lite">PRFAQ-Lite</h2>
+<ul><li>Press-release claim: PrecodeOS can learn where users lose orientation without collecting hidden analytics.</li><li>Customer problem: support and maintainer feedback can stay anecdotal unless safe local evidence and submitted packets have a common shape.</li><li>Customer FAQ: Does PrecodeOS send usage data automatically? No. V1 is local and opt-in; sharing is explicit.</li><li>Internal FAQ: Does telemetry prove adoption? No. Usage evidence is source material until reviewed against quality, support, and ownership gates.</li><li>Appetite: PRD, evidence taxonomy, packet fields, protocol boundaries, and future-readiness gate only.</li><li>Kill or pause criteria: stop if the work adds default outbound collection, hidden identity tracking, support case records, scoring, task authority, or generated proof.</li></ul>
+<h2 id="problem">Problem</h2>
+<p>PrecodeOS has local evidence surfaces and public feedback intake, but no named shape for reviewing telemetry-adjacent usage evidence without crossing privacy, authority, or app-runtime boundaries.</p>
+<p>Without a staged contract, future telemetry work could overfit to command counts, support vanity adoption metrics, or add outbound analytics before the package has earned that trust.</p>
+<h2 id="user-moment">User Moment</h2>
+<ul><li>Before: a maintainer or support helper can inspect scattered logs, support notes, issue reports, and cohort packets, but &quot;usage telemetry&quot; has no safe package meaning.</li><li>After: PrecodeOS has a ranked, evidence-only path: local review first, explicit sanitized submission second, cohort/support rollup third, and outbound analytics only after readiness approval.</li><li>Why now: alpha/beta learning, support friction, session-friction review, GitHub source intake, and spend import already exist as adjacent evidence lanes.</li></ul>
+<h2 id="destination">Destination</h2>
+<ul><li>Destination statement: PrecodeOS defines usage learning as staged evidence capture that improves package maintenance and support without automatic instrumentation.</li><li>Definition of done: PRD owner, protocol/documentation boundary updates, cohort/support packet fields, PRD HTML cluster update, maintainer changelog, roadmap implemented history, roadmap journal coverage, and generated review surfaces are current.</li><li>First useful vertical slice: no new collector yet; add the public requirement owner and safe packet/evidence boundaries before implementation.</li></ul>
+<h2 id="goals">Goals</h2>
+<ul><li>Goal 1: Rank likely telemetry candidates by maintainer learning, support diagnosability, adoption proof, boundary risk, and cost.</li><li>Goal 2: Define local opt-in usage evidence review as the recommended next implementation candidate.</li><li>Goal 3: Define explicit sanitized submission as the only V1 sharing path.</li><li>Goal 4: Add lightweight cohort/support evidence fields for setup friction, confusing docs or prompts, support intervention type, and what Precode helped the user control.</li><li>Goal 5: Defer outbound analytics behind a separate readiness gate.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No default outbound telemetry, app analytics SDK, hosted event endpoint, dashboard, user identity store, raw transcript collection, app-data collection, install beacon, update beacon, usage leaderboard, contributor scoring, productivity ranking, support case database, automatic issue creation, automatic source promotion, generated proof, task selection, PRD approval, bead activation, implementation acceptance, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, package-manager behavior, or external mutation.</li><li>No new command wrapper in this PRD.</li><li>No change to active memory.</li><li>No claim that usage evidence proves product validation or beta readiness by itself.</li></ul>
+<h2 id="ranked-candidate-set">Ranked Candidate Set</h2>
+<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Candidate</th><th>Disposition</th><th>Reason</th></tr></thead><tbody><tr><td>1</td><td>Local Opt-In Usage Evidence Review</td><td>Recommended next implementation candidate</td><td>Best fit for package maintenance and support diagnosis with no network dependency.</td></tr><tr><td>2</td><td>Sanitized Submitted Evidence Pack</td><td>Recommended companion surface</td><td>Lets users or support helpers share reviewed evidence deliberately through GitHub feedback, package-bug intake, cohort packets, or private maintainer channels.</td></tr><tr><td>3</td><td>Cohort/Support Evidence Rollup</td><td>Recommended adoption-proof support</td><td>Extends existing Discovery, Scope, Ownership, and Proof gates with lightweight friction and support signals.</td></tr><tr><td>4</td><td>Tool Execution Ledger v2 / Agent Spend Hardening</td><td>Narrow follow-up</td><td>Useful for cost/tool history, but too narrow to answer broader orientation and support questions alone.</td></tr><tr><td>5</td><td>GitHub Source-Intake Rollups</td><td>Later after issue volume exists</td><td>Helpful only after real public feedback and package-bug evidence accumulates.</td></tr><tr><td>6</td><td>Outbound Opt-In Analytics</td><td>Deferred readiness gate</td><td>Requires consent, privacy policy, retention, endpoint ownership, hosting, security review, and public docs.</td></tr><tr><td>7</td><td>Implicit or Default Outbound Telemetry</td><td>Rejected</td><td>Conflicts with repo-native human control and package trust.</td></tr></tbody></table></div>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-048-FR01</code></td><td>Define usage evidence as staged local, submitted, and networked layers.</td><td>P0</td><td>Networked remains deferred.</td></tr><tr><td><code>PRD-048-FR02</code></td><td>Local usage evidence review must be opt-in, read-only, and built only from safe local Precode evidence.</td><td>P0</td><td>Candidate future script/check work.</td></tr><tr><td><code>PRD-048-FR03</code></td><td>Local review must report unknowns explicitly when signals are absent.</td><td>P0</td><td>Missing evidence is unknown, not zero.</td></tr><tr><td><code>PRD-048-FR04</code></td><td>Sanitized submitted evidence packets must require explicit user/support review before sharing.</td><td>P0</td><td>GitHub issues are allowed source-intake routes.</td></tr><tr><td><code>PRD-048-FR05</code></td><td>Cohort/support completion evidence must include lightweight setup, docs/prompt, support-intervention, and control-value fields.</td><td>P0</td><td>Extends existing packet without making it a grading rubric.</td></tr><tr><td><code>PRD-048-FR06</code></td><td>Outbound opt-in analytics must stay deferred until a separate readiness gate defines consent, privacy, retention, hosting, endpoint ownership, security review, and public documentation.</td><td>P0</td><td>No endpoint or SDK in this slice.</td></tr><tr><td><code>PRD-048-FR07</code></td><td>Protocols, support docs, package inventory, maintainer changelog, roadmap history, roadmap journal, and generated PRD/docs/roadmap HTML must reflect the evidence-only boundary.</td><td>P1</td><td>Maintainer follow-through.</td></tr></tbody></table></div>
+<h2 id="future-local-review-shape">Future Local Review Shape</h2>
+<p>A future local opt-in review may summarize:</p>
+<ul><li>workflow moments used</li><li>setup and refresh friction</li><li>repeated command or tool friction</li><li>stale evidence patterns</li><li>recovery triggers</li><li>docs, prompts, templates, or protocols referenced when safely known</li><li>local check and generated-report freshness signals</li><li>agent spend import presence, with missing spend marked unknown</li><li>GitHub source-intake presence when explicitly imported</li></ul>
+<p>It must not summarize raw private transcripts, app logs, dashboard values, secrets, app analytics, production data, user identity, customer records, support case records, contributor scoring, productivity ranking, or raw long command output.</p>
+<h2 id="sanitized-evidence-packet-shape">Sanitized Evidence Packet Shape</h2>
+<p>Use this shape when a user, support engineer, instructor, or maintainer chooses to share usage evidence:</p>
+<pre><code class="language-text">Usage evidence purpose:
+PrecodeOS version or package source, if known:
+Target context: new project | existing project | cohort | support | maintainer review
+Workflow moments used:
+Setup or refresh friction:
+Confusing docs, prompts, commands, or templates:
+Support intervention type:
+What Precode helped the user control:
+What remained unclear or too heavy:
+Checks or generated evidence reviewed:
+Unknown because not logged:
+Redactions performed:
+Submitted through: GitHub feedback | package-bug issue | cohort packet | private maintainer channel</code></pre>
+<p>This packet is source evidence only. It does not choose roadmap direction, approve PRDs, activate beads, accept implementation, prove adoption, create support records, or authorize follow-up work.</p>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-048-FR01</code> / <code>PRD-048-FR06</code></td><td>Public source distinguishes local, submitted, and deferred networked layers.</td><td>Source review.</td></tr><tr><td><code>PRD-048-FR02</code> / <code>PRD-048-FR03</code></td><td>Future local review shape is read-only, opt-in, local-first, and names unknowns.</td><td>PRD and protocol review.</td></tr><tr><td><code>PRD-048-FR04</code></td><td>Submitted packet is explicit, sanitized, and evidence-only.</td><td>PRD/support/template review.</td></tr><tr><td><code>PRD-048-FR05</code></td><td>Completion packet includes lightweight usage/support fields without becoming a rubric or support case record.</td><td>Template review.</td></tr><tr><td><code>PRD-048-FR07</code></td><td>Protocols, inventory, changelog, roadmap, journal, generated PRD/docs/roadmap surfaces are current.</td><td>Validation commands.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<ul><li>Stop if the work adds default outbound network calls, endpoint configuration, identity tracking, raw transcript handling, app-data collection, support case records, scoring, hidden submission, automatic issue creation, or automatic source promotion.</li><li>Stop if generated usage evidence is treated as adoption proof, product validation, support approval, task selection, PRD approval, bead activation, implementation acceptance, roadmap approval, or release approval.</li><li>Any future outbound analytics requires a separate high-risk PRD or semantic-change proposal, security/privacy review, consent language, retention rules, public documentation, and explicit maintainer approval.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>Future local usage evidence review</td><td><code>scripts/*usage*</code> or existing scheduled-audit/session-friction surfaces after separate approval.</td><td>Read-only local evidence summary, opt-in, no network.</td><td>Self-test plus no-write default check.</td><td>This PRD and Tool Execution Protocol.</td></tr><tr><td>Submitted usage evidence packet</td><td>Completion packet, GitHub feedback/package-bug issue, or private maintainer channel.</td><td>Explicitly reviewed sanitized source evidence only.</td><td>Source/template review.</td><td>This PRD and GitHub Collaboration Hub.</td></tr><tr><td>Cohort/support rollup</td><td>Builder Completion Evidence Packet.</td><td>Lightweight adoption/support signals without grading, support database, or product validation proof.</td><td>Template review.</td><td>This PRD and alpha/beta evidence plan.</td></tr><tr><td>Future outbound analytics readiness</td><td>Deferred PRD or semantic-change proposal.</td><td>No implementation until consent, privacy, hosting, endpoint, security, retention, and docs are approved.</td><td>Future security/privacy validation.</td><td>This PRD as readiness gate source.</td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-048-precode-usage-evidence-review.md</code></li><li>Owner protocols:</li><li><code>tasks/reference/EXTENSION-PROTOCOL.md</code></li><li><code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code></li><li><code>tasks/reference/SCHEDULED-AUDIT-PROTOCOL.md</code></li><li>Related public references:</li><li><code>tasks/prds/PRD-027-session-friction-review.md</code></li><li><code>tasks/prds/PRD-032-github-collaboration-hub.md</code></li><li><code>docs/PRECODE-SUPPORT-RUNBOOK.md</code></li><li><code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code></li><li><code>SECURITY.md</code></li><li><code>tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md</code></li><li>Files or folders out of scope:</li><li>active memory</li><li>user app code</li><li>analytics SDKs</li><li>hosted endpoints</li><li>public issue mutation</li><li>support case databases</li><li>package-manager files</li><li>command wrappers</li></ul>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/session-friction-check.py --self-test
+python3 scripts/file-inventory.py --check
+python3 scripts/public-repo-check.py
+python3 scripts/package-knowledge-lint.py --check
+python3 scripts/prd-html.py --check
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py --check
+bash scripts/validate-memory.sh
+git diff --check</code></pre>
+<h2 id="anti-shallow-checks">Anti-Shallow Checks</h2>
+<ul><li>If evidence leaves the local repo without explicit user review and submission, it violates this PRD.</li><li>If command counts are treated as adoption proof, it violates this PRD.</li><li>If cohort/support evidence becomes a grading rubric, support database, or product-validation claim, it violates this PRD.</li><li>If outbound analytics is implemented before privacy, consent, retention, hosting, endpoint ownership, security review, and public docs are approved, it violates this PRD.</li><li>If generated usage review output creates tasks or promotes source conclusions automatically, it violates this PRD.</li></ul>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B048-precode-usage-evidence-review</code></td><td><code>PRD-048-FR01</code> through <code>PRD-048-FR07</code></td><td>Usage evidence PRD owner, local/submitted/networked boundary wording, sanitized packet shape, cohort/support fields, protocol/docs/inventory updates, maintainer changelog, roadmap history, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_and_fixture</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-048-precode-usage-evidence-review.md</code></td><td>session-friction self-test, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approval state: approved by maintainer implementation request on 2026-08-04.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#source-inputs">Source Inputs</a><a class="level-2" href="#prfaq-lite">PRFAQ-Lite</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#user-moment">User Moment</a><a class="level-2" href="#destination">Destination</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#ranked-candidate-set">Ranked Candidate Set</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#future-local-review-shape">Future Local Review Shape</a><a class="level-2" href="#sanitized-evidence-packet-shape">Sanitized Evidence Packet Shape</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#anti-shallow-checks">Anti-Shallow Checks</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

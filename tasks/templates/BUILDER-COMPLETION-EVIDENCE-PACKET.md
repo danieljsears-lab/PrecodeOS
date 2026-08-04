@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-14
+Document version: v0.1.2
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -119,6 +119,20 @@ Use this section when the project used a Builder Experience Ingestion Packet or 
 - Feedback still needed:
 
 These notes are evidence only. They do not accept implementation work, approve product changes, or replace the normal Precode review decision.
+
+### PrecodeOS Usage Evidence Notes
+
+Use this section only when the builder, instructor, or support engineer wants a lightweight public-safe adoption/support snapshot.
+
+- Setup or refresh friction:
+- Confusing docs, prompts, commands, or templates:
+- Support intervention type: `none | setup | repo state | validation/checks | local runtime | auth/demo blocker | product-routing clarification | other`
+- What Precode helped the builder control:
+- What felt too heavy or unclear:
+- Unknown because not logged:
+- Redactions performed:
+
+These notes are source evidence only. They do not prove adoption, create a support case record, grade the builder, rank productivity, approve product direction, approve implementation, choose roadmap work, or authorize telemetry submission.
 
 ## Completion Snapshot
 

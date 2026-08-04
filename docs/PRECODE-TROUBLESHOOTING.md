@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.22
-Last updated: 2026-07-18
+Document version: v0.1.23
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -263,6 +263,30 @@ Safe path:
 During support-assisted package refresh, duplicate PRD/bead IDs are a refresh blocker. Run `bootstrap-check.py --upgrade-preview` before copying package files, preserve the target project's existing PRDs/beads, and do not copy incoming package development PRDs or beads that collide with target IDs.
 
 Do not patch generated reports as a substitute for fixing active memory.
+
+### Required Setup Support Files Are Missing
+
+Likely causes:
+
+- setup copied the `tasks/prds/` or `tasks/beads/` directory shape but not the reusable schema/template files
+- an agent treated `PRD-000-template.md` as a package development PRD instead of a target-safe template
+- validation skip-lists were mistaken for required-file checks
+- a target directory contains `.gitkeep`, making an intentionally empty directory look complete
+
+First check:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
+```
+
+Safe path:
+
+- look for `Target missing required setup support files` or `Required reusable setup support files missing`
+- approve only the `UP-ID` actions for `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`
+- apply approved package-owned copies with `--apply-upgrade-preview --approve-action <UP-ID>`
+- re-run `bash scripts/validate-memory.sh` before PRD shaping or bead work
+
+These files are skipped by PRD/bead ID validation because they are templates or schemas. That does not make them optional. Do not copy package development PRDs or beads to fix this symptom.
 
 ### Bead ID Or Next Bead Looks Wrong
 

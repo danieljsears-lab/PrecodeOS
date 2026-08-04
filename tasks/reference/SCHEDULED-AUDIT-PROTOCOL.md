@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-07-11
+Document version: v0.1.4
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -28,6 +28,7 @@ Scheduled audits may:
 - refresh `OS-HEALTH.md` and `logs/os-health.json`
 - refresh `logs/learning-diary.md` without appending a fake session
 - dry-run spend telemetry import
+- run future local opt-in usage evidence review only when the user or maintainer explicitly requests it
 - read existing logs and generated sidecars
 - read local Git metadata
 - read external system status when configured through read-only tools and the External Status Integration Protocol
@@ -43,6 +44,7 @@ Scheduled audits must not:
 - create PRDs, beads, requirements, issues, comments, labels, or decisions
 - push, merge, deploy, rollback, migrate, rerun CI, or mutate external systems
 - store secrets, tokens, credentials, dashboard values, or private raw transcripts
+- send usage evidence, analytics events, install beacons, update beacons, identity records, support records, app data, or dashboard values to an external service
 - treat generated reports as active memory
 
 ## Built-In Local Audits
@@ -62,6 +64,8 @@ Run these by default:
 - Workflow Planning Audit: flag wrong workflow fit, PRD approval gaps, missing bead proposals, mixed planning and implementation, blocked work without an unblocker path, backlog-like active fields, or generated reports driving workflow selection.
 - Long-Horizon Planning Audit: flag future work leaking into active memory, approved PRDs without bead proposals, blocked or deferred work without revisit paths, dependency gaps, or follow-up candidates without destinations.
 - Completion And Handoff Audit: flag incomplete closeout evidence, vague manual verification, missing review decisions, unsafe next-bead references, stale session close evidence for close-oriented bead states, or incomplete handoff Context Packs; report an open `in_progress` session as detail rather than a warning.
+
+Usage Evidence Review is not a default scheduled audit. If a future local review exists, scheduled audit may call it only as an explicit opt-in local read, and its output remains generated evidence. It must not create issues, submit packets, call network endpoints, identify users, score contributors, rank productivity, or prove adoption.
 
 ## Built-In External Audits
 

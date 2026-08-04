@@ -8,9 +8,9 @@ body:
       value: |
         Thanks for helping improve PrecodeOS.
 
-        This issue is source evidence only. It does not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, or replace maintainer review.
+        This issue is source evidence only. It does not choose roadmap direction, approve PRDs, activate beads, accept implementation, approve merge, prove adoption, create support records, or replace maintainer review.
 
-        Do not include secrets, tokens, credentials, private dashboard values, customer records, or sensitive personal data.
+        Do not include secrets, tokens, credentials, private dashboard values, customer records, raw private transcripts, app data, user identity records, or sensitive personal data.
   - type: dropdown
     id: feedback_type
     attributes:
@@ -20,6 +20,7 @@ body:
         - Confusing docs
         - Setup friction
         - Workflow question
+        - Sanitized usage evidence
         - Other package feedback
     validations:
       required: true
@@ -50,7 +51,7 @@ body:
     id: source_evidence
     attributes:
       label: Evidence or examples
-      description: Add short excerpts, screenshots, or links only if they are safe to share publicly.
+      description: Add short excerpts, screenshots, links, or sanitized usage-evidence notes only if they are safe to share publicly.
     validations:
       required: false
   - type: checkboxes
@@ -58,7 +59,7 @@ body:
     attributes:
       label: Boundary checks
       options:
-        - label: I removed secrets, tokens, credentials, private dashboard values, and sensitive personal data.
+        - label: I removed secrets, tokens, credentials, private dashboard values, raw private transcripts, app data, user identity records, and sensitive personal data.
           required: true
         - label: I understand this issue is source evidence until the maintainer reviews and promotes any stable conclusion into a Precode owner file.
           required: true
