@@ -23,8 +23,8 @@ last_updated: 2026-07-27
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-07-27
+Document version: v0.1.2
+Last updated: 2026-08-04
 
 ## State
 
@@ -32,7 +32,7 @@ Last updated: 2026-07-27
 - Status: `approved`
 - Owner: Dan Sears / Recode
 - Risk level: `medium`
-- Last updated: `2026-07-27`
+- Last updated: `2026-08-04`
 
 ## Feature Link
 
@@ -46,7 +46,7 @@ Last updated: 2026-07-27
 - Source references: GitHub issue-template needs, Local Source Intake, contribution and package-bug intake boundaries
 - Stable facts: GitHub Issues, labels, comments, pull requests, reviews, checks, and boards are external evidence until reviewed and promoted.
 - Assumptions: narrow public issue intake can expose adoption friction without creating issue-driven roadmap authority.
-- Privacy or secrets redactions: issue templates must warn users not to include secrets, credentials, or private dashboard data.
+- Privacy or secrets redactions: issue templates must warn users not to include secrets, credentials, private dashboard data, raw private transcripts, app data, user identity records, or sensitive personal data.
 
 ## Alignment / Grilling Summary
 
@@ -85,6 +85,7 @@ PrecodeOS now has enough release evidence, package trust guidance, and read-only
 
 - Open a narrow GitHub issue intake path for adoption feedback and package bugs.
 - Keep GitHub Issues, labels, comments, pull requests, reviews, checks, and boards as evidence only.
+- Allow reviewed sanitized usage-evidence packet excerpts as public source evidence when they explain feedback or a package bug.
 - Route reviewed findings through Local Source Intake, PRD amendment, `DECISIONS.md`, protocols, package docs, or candidate beads.
 - Preserve maintainer authority, contribution boundaries, and explicit external-mutation approval gates.
 - Avoid project-management, support-bot, registry, optional-pack, installer, update-channel, or package-manager behavior.
@@ -137,6 +138,7 @@ PrecodeOS now has enough release evidence, package trust guidance, and read-only
 | `PRD-032-FR06` | `scripts/import-github-sources.py --self-test` must cover feedback issue, package-bug issue, pull-request source intake, and evidence-only promotion wording. | P1 | Deterministic, no network. |
 | `PRD-032-FR07` | `scripts/clarity-scenario-check.py` must guard collaboration-hub wording across templates, protocols, policy, and prompts. | P1 | Contract coverage. |
 | `PRD-032-FR08` | Maintainer changelog, roadmap, roadmap journal, and generated reading surfaces must be refreshed after implementation. | P1 | Maintainer-history follow-through. |
+| `PRD-032-FR09` | GitHub feedback and package-bug intake may include reviewed sanitized usage-evidence packet excerpts, but issue templates and helpers must not submit packets automatically. | P0 | PRD-048 owns the packet helper boundary. |
 
 ## Acceptance Oracle Matrix
 
@@ -149,6 +151,7 @@ PrecodeOS now has enough release evidence, package trust guidance, and read-only
 | `PRD-032-FR06` | `python3 scripts/import-github-sources.py --self-test` passes. | Command output. |
 | `PRD-032-FR07` | `python3 scripts/clarity-scenario-check.py` passes. | Command output. |
 | `PRD-032-FR08` | Roadmap, changelog, journal, package inventory, and generated surfaces are current. | Validation commands. |
+| `PRD-032-FR09` | Feedback/package-bug templates mention reviewed sanitized packet excerpts as source evidence only without creating submitter automation. | Source review and PRD-048 helper self-test. |
 
 ## Required Validation
 
@@ -180,13 +183,14 @@ Enabling repository Issues, creating labels, changing issue settings, assigning 
 
 | Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
 |---|---|---|---|---|
-| GitHub issue templates | `.github/ISSUE_TEMPLATE/*.yml` | Collect source evidence without approving tasks or mutating GitHub automatically. | source review and clarity scenario | This PRD |
+| GitHub issue templates | `.github/ISSUE_TEMPLATE/*.yml` | Collect source evidence and reviewed sanitized packet excerpts without approving tasks or mutating GitHub automatically. | source review and clarity scenario | This PRD |
 | GitHub source importer | `scripts/import-github-sources.py --self-test` | Read-only source-intake support. | deterministic self-test | This PRD |
+| Sanitized evidence packet helper | `scripts/sanitized-evidence-pack.py --review <packet-file>` | Local advisory review before manual issue filing; no GitHub mutation. | deterministic self-test | PRD-048 |
 
 ## Agent Context Contract
 
 - Primary authority file: `tasks/prds/PRD-032-github-collaboration-hub.md`
-- Owner surfaces likely in play: GitHub issue templates, GitHub Integration guidance, Local Source Intake, Tool Execution, Prompt Patterns, public docs, governance, contributing policy, and package inventory.
+- Owner surfaces likely in play: GitHub issue templates, GitHub Integration guidance, Local Source Intake, Tool Execution, PRD-048, Prompt Patterns, public docs, governance, contributing policy, and package inventory.
 - Forbidden assumptions: do not mutate GitHub, choose work, approve PRDs, activate beads, approve roadmap changes, accept implementation, approve merge, or approve release.
 
 ## Anti-Shallow Checks

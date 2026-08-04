@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.61
+# Version: v0.1.63
 # Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -4836,6 +4836,38 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         if term not in update_plan_preview_text:
             failures.append({"scenario": "local update-plan preview facade", "expected": term, "actual": update_plan_preview_text})
 
+    usage_evidence_args = parser.parse_args(["--dry-run", "usage-evidence-review", "--json"])
+    usage_evidence_commands = precode_cli.build_commands(usage_evidence_args, parser)
+    usage_evidence_text = precode_cli.command_text(usage_evidence_commands[0])
+    for term in ("scripts/usage-evidence-review.py", "--json"):
+        if term not in usage_evidence_text:
+            failures.append({"scenario": "local usage-evidence facade", "expected": term, "actual": usage_evidence_text})
+
+    cohort_rollup_args = parser.parse_args(
+        ["--dry-run", "cohort-support-rollup", "--packet", "packet.md", "--glob", "packets/*.md", "--json"]
+    )
+    cohort_rollup_commands = precode_cli.build_commands(cohort_rollup_args, parser)
+    cohort_rollup_text = precode_cli.command_text(cohort_rollup_commands[0])
+    for term in (
+        "scripts/cohort-support-evidence-rollup.py",
+        "--packet",
+        "packet.md",
+        "--glob",
+        "packets/*.md",
+        "--json",
+    ):
+        if term not in cohort_rollup_text:
+            failures.append({"scenario": "local cohort/support rollup facade", "expected": term, "actual": cohort_rollup_text})
+    missing_rollup_input_args = parser.parse_args(["cohort-support-rollup"])
+    try:
+        with redirect_stderr(io.StringIO()):
+            precode_cli.build_commands(missing_rollup_input_args, parser)
+    except SystemExit as error:
+        if error.code == 0:
+            failures.append({"scenario": "local cohort/support rollup missing input", "expected": "parser error", "actual": "exit 0"})
+    else:
+        failures.append({"scenario": "local cohort/support rollup missing input", "expected": "parser error", "actual": "accepted"})
+
     apply_package_owned_args = parser.parse_args(
         ["--dry-run", "apply-package-owned", "--target", "target", "--approve-action", "UP-001"]
     )
@@ -4876,7 +4908,9 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         "upgrade-preview",
         "update-plan-preview",
         "apply-package-owned",
+        "usage-evidence-review",
         "scripts/bootstrap-check.py",
+        "scripts/usage-evidence-review.py",
         "--supervised-setup-plan",
         "--upgrade-preview",
         "--update-plan-preview",
@@ -4884,6 +4918,8 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         "--approve-action",
         "No postinstall behavior",
         "approved package-owned",
+        "telemetry collection",
+        "evidence submission",
         "executable release-channel behavior",
     ):
         if term not in npm_bin:
@@ -6228,9 +6264,121 @@ def main() -> int:
             }
         )
 
+    sanitized_evidence_pack = load_script_module("sanitized_evidence_pack", "sanitized-evidence-pack.py")
+    sanitized_result = sanitized_evidence_pack.review_packet(
+        sanitized_evidence_pack.PACKET_TEMPLATE
+        .replace("yes | no", "yes")
+        .replace("Usage evidence purpose:", "Usage evidence purpose: safe support-friction summary")
+        .replace(
+            "PrecodeOS version or package source, if known:",
+            "PrecodeOS version or package source, if known: local package source",
+        )
+        .replace("Target context: new project | existing project | cohort | support | maintainer review", "Target context: support")
+        .replace("Workflow moments used:", "Workflow moments used: guided setup")
+        .replace("Setup or refresh friction:", "Setup or refresh friction: command sequence was unclear")
+        .replace("Confusing docs, prompts, commands, or templates:", "Confusing docs, prompts, commands, or templates: support runbook")
+        .replace("Support intervention type:", "Support intervention type: setup")
+        .replace("What Precode helped the user control:", "What Precode helped the user control: setup boundary")
+        .replace("What remained unclear or too heavy:", "What remained unclear or too heavy: next route")
+        .replace("Checks or generated evidence reviewed:", "Checks or generated evidence reviewed: bootstrap preview")
+        .replace("Unknown because not logged:", "Unknown because not logged: exact elapsed time")
+        .replace("Redactions performed:", "Redactions performed: removed private paths")
+        .replace(
+            "Submitted through: GitHub feedback | package-bug issue | cohort packet | private maintainer channel",
+            "Submitted through: GitHub feedback",
+        )
+        .replace(
+            "- Submission destination chosen: GitHub feedback | package-bug issue | cohort packet | private maintainer channel",
+            "- Submission destination chosen: GitHub feedback",
+        )
+    )
+    if (
+        sanitized_result.get("status") != "pass"
+        or not sanitized_result.get("advisory_only")
+        or sanitized_result.get("mutates_files")
+        or sanitized_result.get("submits_externally")
+        or "does not submit evidence" not in str(sanitized_result.get("boundary") or "")
+    ):
+        failures.append(
+            {
+                "scenario": "sanitized submitted evidence pack boundary",
+                "expected": "pass advisory no-write no-submit",
+                "actual": str(sanitized_result),
+            }
+        )
+
+    usage_evidence_review = load_script_module("usage_evidence_review", "usage-evidence-review.py")
+    usage_result = usage_evidence_review.self_test()
+    if usage_result.get("status") != "pass":
+        failures.append(
+            {
+                "scenario": "local opt-in usage evidence review self-test",
+                "expected": "pass",
+                "actual": str(usage_result),
+            }
+        )
+    usage_payload = usage_evidence_review.build_payload_from_inputs(
+        Path("."),
+        {
+            "tool_runs": [],
+            "check_results": [],
+            "loop_runs": [],
+            "agent_spend": [],
+        },
+        {},
+        {},
+    )
+    if (
+        not usage_payload.get("advisory_only")
+        or not usage_payload.get("read_only")
+        or usage_payload.get("mutates_files")
+        or usage_payload.get("writes_generated_report")
+        or usage_payload.get("submits_externally")
+        or usage_payload.get("network_calls")
+        or "unknown_because_not_logged" not in usage_payload
+        or "does not collect telemetry" not in str(usage_payload.get("boundary") or "")
+    ):
+        failures.append(
+            {
+                "scenario": "local opt-in usage evidence review boundary",
+                "expected": "advisory read-only no-write no-submit no-network with unknowns",
+                "actual": str(usage_payload),
+            }
+        )
+
+    cohort_support_rollup = load_script_module("cohort_support_rollup", "cohort-support-evidence-rollup.py")
+    rollup_result = cohort_support_rollup.self_test()
+    if rollup_result.get("status") != "pass":
+        failures.append(
+            {
+                "scenario": "cohort/support evidence rollup self-test",
+                "expected": "pass",
+                "actual": str(rollup_result),
+            }
+        )
+    rollup_payload = cohort_support_rollup.build_rollup([], [])
+    if (
+        not rollup_payload.get("advisory_only")
+        or not rollup_payload.get("read_only")
+        or rollup_payload.get("mutates_files")
+        or rollup_payload.get("writes_generated_report")
+        or rollup_payload.get("submits_externally")
+        or rollup_payload.get("network_calls")
+        or rollup_payload.get("packet_volume_status") != "unknown_insufficient_packet_volume"
+        or "does not prove adoption" not in str(rollup_payload.get("boundary") or "")
+    ):
+        failures.append(
+            {
+                "scenario": "cohort/support evidence rollup boundary",
+                "expected": "advisory read-only no-write no-submit no-network with sparse volume unknown",
+                "actual": str(rollup_payload),
+            }
+        )
+
     boundary_scenario_count = 1
     boundary_scenario_count += assert_local_command_facade_boundaries(failures)
     boundary_scenario_count += assert_ralph_command_boundaries(failures)
+    boundary_scenario_count += 4
 
     check_time = datetime(2026, 6, 4, 12, 0, tzinfo=timezone.utc)
     older_close = datetime(2026, 6, 4, 11, 0, tzinfo=timezone.utc)

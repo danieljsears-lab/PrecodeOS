@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.4
+Document version: v0.2.6
 Last updated: 2026-08-04
 
 ## Purpose
@@ -40,7 +40,7 @@ Confirmed package constraints:
 - Setup mutation: `scripts/bootstrap-check.py` apply modes must require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. The optional npm `apply-package-owned` command may only delegate approved missing package-owned `UP-ID` actions to the Python upgrade-apply path; it must not implement copy logic in JavaScript. Advisory release-reference metadata in upgrade preview is generated evidence only; it is not update permission or broad npm updater behavior.
 - Product Code Quality Snapshot: `scripts/product-code-quality-snapshot.py` may identify likely project-owned lint/check commands as Project Linter Evidence, but discovery is not execution. It must not run lint, tests, typechecks, package managers, fixers, app code, or external commands beyond read-only repository inspection by default. If a user wants to run a suggested command, normal Tool Execution approval and sensitive-surface review still apply.
 - Generated evidence: files under `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, generated docs, and generated PRD review pages must not approve tasks, commands, transitions, releases, or implementation acceptance.
-- Usage evidence and telemetry: PrecodeOS does not collect default outbound telemetry. Usage evidence work must start local, opt-in, read-only, and explicit about unknowns. Sanitized sharing must be user-reviewed and submitted deliberately. Any future outbound analytics requires separate approval for consent, privacy, retention, hosted endpoint ownership, security review, and public documentation.
+- Usage evidence and telemetry: PrecodeOS does not collect default outbound telemetry. `scripts/usage-evidence-review.py`, `precode usage-evidence-review`, and `precodeos usage-evidence-review` are local, opt-in, read-only, no-write, no-submit, no-network generated-evidence reviews over safe local Precode ledgers and generated freshness signals with explicit unknowns. Sanitized sharing must be user-reviewed and submitted deliberately. Any future outbound analytics requires separate approval for consent, privacy, retention, hosted endpoint ownership, security review, and public documentation.
 - External systems: GitHub helpers and scheduled audits are read-only by default unless a separate approved path explicitly allows mutation.
 - CI: GitHub Actions should use least privilege, preserve read-only validation unless an explicit maintainer decision changes it, and must not require secrets for ordinary package validation.
 
@@ -54,6 +54,7 @@ For package-facing changes, review whether the change affects:
 - copy, restore, checkpoint, setup, upgrade, cleanup, or generated refresh behavior
 - secrets, credentials, env files, private keys, certificates, dashboards, production config, or sensitive raw evidence
 - raw private transcripts, app analytics, app logs, dashboard values, user identity records, support case records, customer records, contributor scoring, productivity ranking, or outbound telemetry
+- local usage-evidence review output, submitted usage-evidence packets, cohort/support rollups, or GitHub excerpts that have not been reviewed through `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md`, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md`, or an equivalent redaction review
 - GitHub, CI, external status, importers, scheduled audits, or other external systems
 - generated reports, sidecars, HTML surfaces, or evidence ledgers that could be mistaken for authority
 - package install/update boundaries, executable release channels, optional packs, registries, or package-manager semantics

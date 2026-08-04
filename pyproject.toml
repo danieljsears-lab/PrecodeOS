@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "precodeos"
 version = "1.0.0b1"
-description = "Local PrecodeOS command facade over repo-native scripts."
+description = "Local PrecodeOS command facade over repo-native scripts and local usage-evidence review."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }

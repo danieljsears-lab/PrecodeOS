@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.101
+Document version: v0.7.103
 Last updated: 2026-08-04
 
 ## 1. Start Here
@@ -690,9 +690,11 @@ Use public GitHub Issues only for narrow PrecodeOS feedback and package-bug inta
 
 - Use feedback issues for adoption friction, confusing docs, setup friction, or workflow questions.
 - Use package-bug issues for PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
+- If you want to share usage evidence, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or ask a helper to run `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before pasting only safe excerpts.
+- If multiple cohort or support packet files exist, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` and `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` can summarize repeated patterns from those explicit packets only. Sparse packet volume is unknown, not no friction.
 - Use `SECURITY.md` instead of public issues for sensitive security concerns.
 
-Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
+Issues, labels, comments, pull requests, reviews, checks, project boards, and pasted packet excerpts are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, authorize telemetry, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
 
 ## 4. Run A Governed Work Session
 <!-- ANCHOR: guide-part-4-run-a-governed-work-session -->
@@ -850,7 +852,7 @@ PrecodeOS has many scripts because setup, daily work, support, evidence, review,
 |---|---|---|
 | Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
 | Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos fast-setup-preview`, `npx @precodeos/precodeos fast-setup-apply`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `npx @precodeos/precodeos apply-package-owned`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. `fast-setup-apply` delegates only approved current `SP-ID` or `UP-ID` copy actions and prints validation; `apply-package-owned` delegates only approved missing package-owned `UP-ID` copy actions and refuses dirty/unknown package states through Bootstrap Closeout. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
-| Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
+| Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, Local Opt-In Usage Evidence Review, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. Usage evidence review can run through `python3 scripts/usage-evidence-review.py`, `python3 scripts/precode_cli.py usage-evidence-review`, or `npx @precodeos/precodeos usage-evidence-review`; it writes nothing, submits nothing, calls no network, and reports unknowns when local ledgers are absent. These outputs remain evidence or advisory review. |
 | Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `authority-map-query.py --query "active memory"`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. Authority-map query is navigation-only: it helps find candidate owner files and does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior. |
 
 The optional `precode` facade and `scripts/precode_cli.py` can shorten common commands, but they do not change the underlying command's authority, side effects, approval gates, or evidence limits.
@@ -1542,6 +1544,16 @@ Run python3 scripts/session-friction-check.py. Summarize each finding with categ
 ```
 
 Use the result to decide whether a command-pattern note, reviewed memory candidate, protocol follow-up, or no action is warranted. The checker does not repair anything and `logs/session-friction-review.json` is not authority.
+
+#### Review Local Usage Evidence
+
+When a user, support helper, or maintainer explicitly wants local usage-learning evidence, ask for Local Opt-In Usage Evidence Review:
+
+```text
+Run python3 scripts/usage-evidence-review.py. Summarize safe local source counts, workflow/setup/check/freshness/friction signals, explicit unknown_because_not_logged fields, finding categories, source refs, and recommended human review destinations. Treat the output as generated evidence only. Do not collect telemetry, write reports, submit evidence, create issues, store identity, create support records, prove adoption, choose roadmap work, approve commands, approve PRDs, activate beads, accept implementation, or approve release.
+```
+
+Use the result to decide whether support notes, protocol follow-up, Session Friction Review, a sanitized submitted packet, or no action is warranted. The review does not repair anything and does not create `logs/usage-evidence-review.*`.
 
 ### First 30 Minutes / First Day / First Week
 

@@ -12,8 +12,8 @@ const BIN_DIR = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(BIN_DIR, "..");
 const BOUNDARY_NOTE =
   "precodeos is an optional npm entry for PrecodeOS setup, fast verified setup, upgrade, update-plan previews, " +
-  "and approved SP-ID or UP-ID copy delegation. It delegates to scripts/bootstrap-check.py; " +
-  "preview output, including updater compatibility policy metadata, is generated evidence only.";
+  "approved SP-ID or UP-ID copy delegation, and local usage-evidence review. It delegates to Python scripts; " +
+  "preview and review output, including updater compatibility policy metadata, is generated evidence only.";
 
 function usage() {
   return `Usage:
@@ -23,6 +23,7 @@ function usage() {
   precodeos upgrade-preview --target <existing-precode-root> [--json]
   precodeos update-plan-preview --target <existing-precode-root> [--json]
   precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID> [--approve-action <UP-ID> ...] [--json]
+  precodeos usage-evidence-review [--json]
 
 Boundary:
   Preview commands are read-only by default. Fast setup apply delegates only explicitly
@@ -31,7 +32,7 @@ Boundary:
   No postinstall behavior, dirty-file overwrite, owner-file adaptation, hook installation,
   CI mutation, app commands, app-code edits, executable release-channel behavior, package-manager
   updates, npm registry lookup, dist-tag resolution, broad npm updater behavior, rollback automation,
-  task selection, PRD approval, or bead activation.
+  telemetry collection, evidence submission, issue creation, task selection, PRD approval, or bead activation.
 `;
 }
 
@@ -40,7 +41,7 @@ function parseArgs(argv) {
   if (!command || command === "--help" || command === "-h" || command === "help") {
     return { command: "help", target: "", json: false };
   }
-  if (!["setup-preview", "fast-setup-preview", "fast-setup-apply", "upgrade-preview", "update-plan-preview", "apply-package-owned"].includes(command)) {
+  if (!["setup-preview", "fast-setup-preview", "fast-setup-apply", "upgrade-preview", "update-plan-preview", "apply-package-owned", "usage-evidence-review"].includes(command)) {
     throw new Error(`unknown command: ${command}`);
   }
   let target = "";
@@ -64,7 +65,7 @@ function parseArgs(argv) {
       throw new Error(`unknown argument: ${value}`);
     }
   }
-  if (!target) {
+  if (command !== "usage-evidence-review" && !target) {
     throw new Error(`${command} requires --target <target-project-root>`);
   }
   if (!["fast-setup-apply", "apply-package-owned"].includes(command) && approveActions.length > 0) {
@@ -80,6 +81,13 @@ function parseArgs(argv) {
 }
 
 function commandFor(parsed) {
+  if (parsed.command === "usage-evidence-review") {
+    const command = ["python3", "scripts/usage-evidence-review.py"];
+    if (parsed.json) {
+      command.push("--json");
+    }
+    return command;
+  }
   const command = [
     "python3",
     "scripts/bootstrap-check.py",

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.80
+Document version: v0.1.81
 Last updated: 2026-08-04
 
 ## Purpose
@@ -530,7 +530,9 @@ Use the GitHub Collaboration Hub intake path.
 
 Review this public GitHub feedback or package-bug issue as source evidence. Load the GitHub Integration Protocol, Local Source Intake Protocol, and the minimum package docs or protocols needed to classify it.
 
-Return: issue type, stable facts, assumptions, missing reproduction or context, privacy or secrets redactions needed, likely owner files, recommended destination, and next safe maintainer action.
+If the issue includes a sanitized usage-evidence packet excerpt, verify it appears reviewed against `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or the local helper boundary from PRD-048. Treat missing redaction notes, unknowns, or destination review as evidence gaps, not as permission to reject or promote automatically.
+
+Return: issue type, stable facts, assumptions, missing reproduction or context, privacy or secrets redactions needed, sanitized packet review gaps if any, likely owner files, recommended destination, and next safe maintainer action.
 
 Recommended destination must be one of: Local Source Intake summary, PRD draft or amendment, `DECISIONS.md` update, protocol update, package-doc update, package-bug bead proposal, defer, close with explanation, or ask for more evidence.
 
@@ -582,6 +584,18 @@ Run `python3 scripts/session-friction-check.py` as a read-only advisory review o
 Return findings with category, cited source refs, confidence, freshness, recommended destination, suggested next human review step, and generated-report warning.
 
 Do not create memory cards. Do not edit owner files. Do not approve commands, choose tasks, approve PRDs, activate beads, accept implementation, create wrappers, or treat `logs/session-friction-review.json` or checker output as proof or authority.
+```
+
+### Local Opt-In Usage Evidence Review
+
+```text
+Use Local Opt-In Usage Evidence Review.
+
+Run `python3 scripts/usage-evidence-review.py` as an explicit local, read-only, no-write, no-submit, no-network review of safe PrecodeOS usage-learning evidence.
+
+Return source counts, workflow/setup/check/freshness/friction signals, explicit `unknown_because_not_logged` fields, finding categories, source refs, recommended human review destinations, and forbidden uses.
+
+Do not collect telemetry, write reports, submit evidence, create issues, store identity, create support records, score contributors, rank productivity, prove adoption, choose roadmap work, approve commands, approve PRDs, activate beads, accept implementation, approve release, create wrappers, or mutate external systems.
 ```
 
 ### Team Assignment Packet Prompts v2

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.4
 Last updated: 2026-08-04
 
 ## Purpose
@@ -133,6 +133,10 @@ Use this section only when the builder, instructor, or support engineer wants a 
 - Redactions performed:
 
 These notes are source evidence only. They do not prove adoption, create a support case record, grade the builder, rank productivity, approve product direction, approve implementation, choose roadmap work, or authorize telemetry submission.
+
+If these notes will be shared outside the cohort packet, copy them into `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` and review the packet before submitting through GitHub feedback, a package-bug issue, or a private maintainer channel. `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` can check the packet locally, but it does not submit, approve, store, score, or authorize telemetry.
+
+If multiple packet files exist and a support helper, instructor, or maintainer needs repeated-pattern evidence, use `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` or `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>`. The rollup reads only explicit packet files and treats sparse packet volume as unknown, not no friction.
 
 ## Completion Snapshot
 

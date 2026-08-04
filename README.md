@@ -157,17 +157,19 @@ npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --appro
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
+npx @precodeos/precodeos usage-evidence-review
 ```
 
-The npm entry is acquisition and preview by default. It runs the same Bootstrap Confidence setup-plan, fast verified setup preview, upgrade-preview, or update-plan-preview checks from the package source, writes nothing in preview modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+The npm entry is acquisition, preview, and local review by default. It runs the same Bootstrap Confidence setup-plan, fast verified setup preview, upgrade-preview, update-plan-preview, or usage-evidence review checks from the package source, writes nothing in preview and review modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, telemetry collection, evidence submission, task selection, PRD approval, or bead activation.
 
-Fast verified setup preview is a transparent shortcut over the existing Bootstrap command sequence. It exposes the underlying commands and current `SP-ID` or `UP-ID` candidates. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python Bootstrap apply paths and then prints the exact validation command; it is not an installer, updater, starter-branch authority, rollback helper, support-only hidden setup, package manager, PRD approval, bead activation, or generated-output authority. Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. These commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, or make `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, update-plan metadata, and generated apply output are evidence, not authority or update permission.
+Fast verified setup preview is a transparent shortcut over the existing Bootstrap command sequence. It exposes the underlying commands and current `SP-ID` or `UP-ID` candidates. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python Bootstrap apply paths and then prints the exact validation command; it is not an installer, updater, starter-branch authority, rollback helper, support-only hidden setup, package manager, PRD approval, bead activation, or generated-output authority. Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. `usage-evidence-review` delegates to `scripts/usage-evidence-review.py` and summarizes safe local ledgers, check freshness, generated freshness, session-friction findings, scheduled-audit presence, and spend-import presence with explicit unknowns. These commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, collect telemetry, submit evidence, create issues, or make `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, update-plan metadata, usage-evidence output, and generated apply output are evidence, not authority or update permission.
 
 Optional local command facade:
 
 ```bash
 python3 scripts/precode_cli.py --help
 python3 scripts/precode_cli.py validate
+python3 scripts/precode_cli.py usage-evidence-review
 ```
 
 For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a curated wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
@@ -407,7 +409,7 @@ Use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) for daily work a
 
 ## Beta
 
-PrecodeOS is early. Expect sharp edges, review source before execution, and use public GitHub Issues for narrow feedback or package-bug intake when something feels clumsy or underpowered. Issues, labels, comments, pull requests, reviews, checks, and project boards are source evidence only until reviewed and promoted into Precode owner files or maintainer decisions; they do not choose tasks, approve PRDs, activate beads, approve merge, approve release, or replace maintainer review.
+PrecodeOS is early. Expect sharp edges, review source before execution, and use public GitHub Issues for narrow feedback or package-bug intake when something feels clumsy or underpowered. If you share usage evidence, review it with `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before pasting only safe excerpts. When multiple explicit cohort/support packet files exist, `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` or `precode cohort-support-rollup --packet <packet-file>` can summarize repeated patterns without scanning by default or submitting evidence. Issues, labels, comments, pull requests, reviews, checks, project boards, pasted packet excerpts, and rollups are source evidence only until reviewed and promoted into Precode owner files or maintainer decisions; they do not choose tasks, approve PRDs, activate beads, approve merge, approve release, authorize telemetry, or replace maintainer review.
 
 ## License, Trademark, And Provenance
 
@@ -422,8 +424,8 @@ PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 d
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.57
-Last updated: 2026-07-26
+Document version: v0.1.59
+Last updated: 2026-08-04
 
 AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
 NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.

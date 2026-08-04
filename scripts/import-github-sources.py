@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-06-24
+# Version: v0.1.2
+# Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -192,6 +192,7 @@ def self_test() -> dict[str, Any]:
             "body": "\n".join(
                 [
                     "I need clearer setup docs for existing projects.",
+                    "Sanitized usage evidence: reviewed packet excerpt, no secrets included.",
                     "Question: should I run Existing Repo Intake first?",
                     "Success would mean the guide tells me what to check.",
                 ]
@@ -255,6 +256,7 @@ def self_test() -> dict[str, Any]:
         "Feedback: setup docs were confusing",
         "Package bug: validation message is misleading",
         "Docs: clarify GitHub intake",
+        "Sanitized usage evidence",
     ):
         if term not in markdown:
             failures.append(f"markdown missing: {term}")

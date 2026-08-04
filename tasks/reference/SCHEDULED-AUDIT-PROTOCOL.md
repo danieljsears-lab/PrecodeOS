@@ -28,7 +28,7 @@ Scheduled audits may:
 - refresh `OS-HEALTH.md` and `logs/os-health.json`
 - refresh `logs/learning-diary.md` without appending a fake session
 - dry-run spend telemetry import
-- run future local opt-in usage evidence review only when the user or maintainer explicitly requests it
+- run local opt-in usage evidence review only when the user or maintainer explicitly requests it
 - read existing logs and generated sidecars
 - read local Git metadata
 - read external system status when configured through read-only tools and the External Status Integration Protocol
@@ -65,7 +65,7 @@ Run these by default:
 - Long-Horizon Planning Audit: flag future work leaking into active memory, approved PRDs without bead proposals, blocked or deferred work without revisit paths, dependency gaps, or follow-up candidates without destinations.
 - Completion And Handoff Audit: flag incomplete closeout evidence, vague manual verification, missing review decisions, unsafe next-bead references, stale session close evidence for close-oriented bead states, or incomplete handoff Context Packs; report an open `in_progress` session as detail rather than a warning.
 
-Usage Evidence Review is not a default scheduled audit. If a future local review exists, scheduled audit may call it only as an explicit opt-in local read, and its output remains generated evidence. It must not create issues, submit packets, call network endpoints, identify users, score contributors, rank productivity, or prove adoption.
+Usage Evidence Review is not a default scheduled audit. Scheduled audit may call `python3 scripts/usage-evidence-review.py` only as an explicit opt-in local read, and its output remains generated evidence. It must not write usage reports by default, create issues, submit packets, call network endpoints, identify users, create support records, score contributors, rank productivity, choose roadmap work, approve PRDs or beads, approve release, or prove adoption.
 
 ## Built-In External Audits
 

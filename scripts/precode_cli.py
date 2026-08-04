@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.7
+# Version: v0.1.8
 # Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -75,6 +75,18 @@ def build_parser() -> argparse.ArgumentParser:
     add_dry_run(subparsers.add_parser("health", help="show generated OS Health evidence; not authority"))
     add_dry_run(subparsers.add_parser("validate", help="validate active memory and package state"))
     add_dry_run(subparsers.add_parser("check", help="run the local package validation summary"))
+    usage_evidence = add_dry_run(subparsers.add_parser(
+        "usage-evidence-review",
+        help="show local opt-in usage-evidence review findings; writes nothing and submits nothing",
+    ))
+    usage_evidence.add_argument("--json", action="store_true", help="print JSON output")
+    cohort_support_rollup = add_dry_run(subparsers.add_parser(
+        "cohort-support-rollup",
+        help="roll up explicit cohort/support packet files; writes nothing and submits nothing",
+    ))
+    cohort_support_rollup.add_argument("--packet", action="append", default=[], help="explicit packet file to include; repeatable")
+    cohort_support_rollup.add_argument("--glob", action="append", default=[], help="explicit packet glob to include; repeatable")
+    cohort_support_rollup.add_argument("--json", action="store_true", help="print JSON output")
 
     bootstrap = add_dry_run(subparsers.add_parser(
         "bootstrap-check",
@@ -181,6 +193,22 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             ["python3", "scripts/file-inventory.py", "--check"],
             ["python3", "scripts/public-repo-check.py"],
         ]
+    if args.command == "usage-evidence-review":
+        command = ["python3", "scripts/usage-evidence-review.py"]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "cohort-support-rollup":
+        if not args.packet and not args.glob:
+            parser.error("cohort-support-rollup requires at least one --packet <path> or --glob <pattern>")
+        command = ["python3", "scripts/cohort-support-evidence-rollup.py"]
+        for packet in args.packet:
+            command.extend(["--packet", packet])
+        for pattern in args.glob:
+            command.extend(["--glob", pattern])
+        if args.json:
+            command.append("--json")
+        return [command]
     if args.command == "bootstrap-check":
         if args.apply_supervised_setup and not args.supervised_setup_plan:
             parser.error("bootstrap-check --apply-supervised-setup requires --supervised-setup-plan")

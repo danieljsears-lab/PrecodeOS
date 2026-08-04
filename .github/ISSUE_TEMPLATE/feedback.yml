@@ -51,7 +51,7 @@ body:
     id: source_evidence
     attributes:
       label: Evidence or examples
-      description: Add short excerpts, screenshots, links, or sanitized usage-evidence notes only if they are safe to share publicly.
+      description: Add short excerpts, screenshots, links, or reviewed sanitized usage-evidence packet excerpts only if they are safe to share publicly. Use tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md or python3 scripts/sanitized-evidence-pack.py --review <packet-file> before pasting usage evidence.
     validations:
       required: false
   - type: checkboxes

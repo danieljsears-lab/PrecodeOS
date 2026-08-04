@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-07-11
+Document version: v0.1.10
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -93,6 +93,7 @@ Allowed issue intake:
 - confusing docs
 - setup friction
 - workflow questions
+- reviewed sanitized usage-evidence packet excerpts when safe to share publicly
 - package bugs in docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior
 
 Recommended issue labels are evidence labels only:
@@ -115,8 +116,10 @@ Issue templates should ask for:
 - expected behavior
 - reproduction steps or context
 - checks tried, when relevant
-- safe public evidence or examples
-- confirmation that secrets, tokens, credentials, private dashboard values, customer records, and sensitive personal data were removed
+- safe public evidence, examples, or reviewed sanitized usage-evidence packet excerpts
+- confirmation that secrets, tokens, credentials, private dashboard values, customer records, raw private transcripts, app data, user identity records, and sensitive personal data were removed
+
+When usage evidence is involved, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before manual filing. The packet helper is a local advisory review surface only; it must not create issues, submit packets, label issues, approve promotion, create support records, authorize telemetry, or mutate GitHub.
 
 Blank issues should stay disabled for the first Collaboration Hub slice. Security reports should route through `SECURITY.md`, not public issue templates.
 

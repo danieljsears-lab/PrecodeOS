@@ -10,7 +10,7 @@ body:
 
         This issue is source evidence only. It does not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, or authorize GitHub mutation.
 
-        Do not include secrets, tokens, credentials, private dashboard values, customer records, or sensitive personal data.
+        Do not include secrets, tokens, credentials, private dashboard values, customer records, raw private transcripts, app data, user identity records, or sensitive personal data. If a reviewed sanitized usage-evidence packet explains the package bug, paste only the safe excerpt.
   - type: dropdown
     id: surface
     attributes:
@@ -44,7 +44,7 @@ body:
     id: reproduction
     attributes:
       label: Reproduction or context
-      description: Provide the shortest safe steps, command output summary, or context needed to inspect the bug.
+      description: Provide the shortest safe steps, command output summary, reviewed sanitized packet excerpt, or context needed to inspect the bug.
       placeholder: 1. Run ... 2. Observe ...
     validations:
       required: true

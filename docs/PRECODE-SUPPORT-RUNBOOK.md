@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.46
+Document version: v0.1.48
 Last updated: 2026-08-04
 
 ## Purpose
@@ -206,7 +206,7 @@ Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `l
 
 Public GitHub Issues are available for narrow PrecodeOS feedback and package-bug intake. Support may route adoption friction, confusing docs, setup friction, workflow questions, or package bugs to the issue templates when public sharing is appropriate, but issues are source evidence only. Do not use issue status, labels, comments, pull requests, reviews, checks, or project boards as product truth, support approval, task selection, merge approval, release approval, GitHub mutation approval, or a replacement for Local Source Intake and maintainer review.
 
-When support or cohort helpers capture usage evidence, keep it explicit and sanitized. Use the PrecodeOS Usage Evidence Notes in `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` or a GitHub feedback/package-bug issue only after the user has reviewed what will be shared. Record setup friction, confusing docs or prompts, support intervention type, what Precode helped the builder control, and what remains unknown because it was not logged. Do not collect raw private transcripts, secrets, dashboard values, app data, user identity records, support case records, contributor scoring, productivity ranking, or automatic outbound telemetry.
+When support or cohort helpers capture usage evidence, keep it explicit and sanitized. Use `python3 scripts/usage-evidence-review.py`, `python3 scripts/precode_cli.py usage-evidence-review`, or `npx @precodeos/precodeos usage-evidence-review` only when the user or maintainer explicitly wants local usage-learning evidence from safe local ledgers and generated freshness signals. The review writes nothing, submits nothing, calls no network, and treats missing ledgers as unknown rather than zero usage. Use the PrecodeOS Usage Evidence Notes in `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` for cohort completion snapshots. When the evidence will be shared through GitHub feedback, a package-bug issue, or a private maintainer channel, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` and optionally run `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before sharing. After multiple explicit packet files exist, use `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` or `precode cohort-support-rollup --packet <packet-file>` to compare repeated patterns; sparse packet volume is unknown, not no friction. These helpers are local advisory review only; they do not submit, create issues, write records, approve evidence, authorize telemetry, prove adoption, choose roadmap work, create support records, grade builders, or mutate external systems. Record setup friction, confusing docs or prompts, support intervention type, what Precode helped the builder control, and what remains unknown because it was not logged. Do not collect raw private transcripts, secrets, dashboard values, app data, user identity records, support case records, contributor scoring, productivity ranking, or automatic outbound telemetry.
 
 ## Mainline Walkthrough: New Project
 
@@ -729,6 +729,8 @@ Before a demo or engineer session:
 If the app does not start, loads slowly, or auth blocks the demo, move to `docs/PRECODE-TROUBLESHOOTING.md`. Do not use a demo deadline as a reason to skip active memory, validation, secrets boundaries, or user approval.
 
 For builder-by-builder completion evidence, use `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md`. The packet is the shared progress artifact for the builder, instructor, and support engineer. It should stay short, public-safe, and evidence-only: instructors can help summarize product evidence, support engineers can note narrow technical unblocks, and the builder owns product decisions, approvals, acceptance, and next direction.
+
+For cross-builder or cross-support pattern review, use `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` only after explicit packet files exist. The rollup helps compare repeated setup, docs, prompt, support-intervention, and builder-control signals, but it is still source evidence only and does not prove adoption, grade builders, create support records, choose roadmap work, or replace maintainer review.
 
 ## Guided Cohort Role Boundaries
 
