@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.27
+Document version: v0.1.28
 Last updated: 2026-08-04
 
 ## Purpose
@@ -19,6 +19,8 @@ Workflow selection helps a user or agent choose the right Precode path before st
 Use this protocol when the next step is unclear, when too many protocols could apply, or when an agent may be jumping from idea to implementation too quickly.
 
 For host-agent coordination, keep the Daily Cockpit as the builder's control surface and the coding agent's host interface as the execution surface. The cockpit decides what to ask next, what state and proof matter, what approval remains, and when to stop. Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent may execute only inside the active Precode bounds. Workflow Selection may route to Daily Loop, Agent Access Level Check, task suitability, Approved-Bead Handoff, proof/review, closeout, or recovery; it must not create a new cockpit, dashboard, generated panel, agent shell, command wrapper, runtime, task selector, PRD approval, bead activation, review acceptance, transition approval, or coding permission.
+
+When the user is coordinating returned agent work, route through the Host-Agent Return Loop from Prompt Patterns: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Use it when work is about to start in a host agent, when the host agent returns changes, when the builder comes back after AFK or handoff, or when the agent says "done" before proof is clear. The safe output should name scope returned, changed files, checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt. This loop is workflow guidance only; it does not accept implementation, approve review, approve transition, activate another bead, mutate external systems, create generated proof, or make generated HTML authoritative.
 
 For a rough idea, do not present Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers. The user-facing route is First PRD Walkthrough. Use Product Discovery Validation only when worth-building uncertainty is the specific blocker, and use the workbook, coach, Product Brief, Conviction Packet, Local Source Intake, and PRD shaping as ordered steps inside the rough-idea path.
 
@@ -74,6 +76,7 @@ Choose the workflow that matches the current situation:
 | User is unsure whether accessibility review is needed for a bead, review, or release candidate | Accessibility Advisor Fit Interview | recommendation to invoke advisor, not needed, or defer |
 | Bug, refactor, setup, review, external integration, manual dashboard work, or blocked work | matching bead template | narrow bead proposal |
 | Completed, messy, or disputed work | review, closeout, state repair, or unblocker flow | recorded evidence, review decision, or repair bead |
+| Host agent returned work, AFK work, handoff work, PR/branch/cloud-agent summary, or agent says "done" before proof is clear | Host-Agent Return Review, then review/closeout/recovery as needed | returned-scope evidence, missing proof, approval still required, and next safe prompt |
 | User asks for Workflow Selection Skill or another current-state skill-style workflow | Skill Playbook Protocol plus the owner workflow | read-only prompt-playbook output |
 
 When the recommended workflow is a bead proposal, use the bead kind menu in `tasks/beads/BEAD-SCHEMA.md` to explain the work shape in beginner-readable terms: intake, shaping, implementation, repair, refactor, setup/integration, unblocker, or review. The menu is guidance only. It does not choose work, approve PRDs, activate beads, add new schema authority, or override the Bead Decomposition Test.

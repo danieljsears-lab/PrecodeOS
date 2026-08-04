@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.56
+Document version: v0.1.57
 Last updated: 2026-08-04
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.
@@ -17,6 +17,8 @@ Use this cockpit first once PrecodeOS is installed or you are already working in
 The cockpit has four first-class daily operating sections and two required reference catalogs. The first-class sections are deliberately short: **Daily Loop**, **Next**, **Health**, and **Diary**. The full Prompt Patterns Catalog and full Protocol Catalog are included lower on this page as reference shelves so new users can learn the system without turning the first screen into a manual.
 
 Use this page as the builder's control surface for host-agent work. The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop; Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries. Before agent work, use Daily Loop and Next to name the active bead, authority, files, approvals, and stop condition. During work, keep the agent inside those bounds and use Agent Access Level Check when risk rises. For proof and review, use Health, Prove, Review, recorded checks, and manual verification before accepting anything. For handoff or stop, use Approved-Bead Handoff only after one bead is approved, or Close/Diary to record what changed, what was proven, what is parked, what approval remains, and the next safe prompt.
+
+For host-agent returns, use the Host-Agent Return Loop inside the same cockpit: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Prepare names the active bead, primary authority, files in play, and stop condition. Bound names allowed actions, access level, approval required before risky actions, and forbidden actions. Send gives the host agent one scoped prompt. Return requires changed files, checks and results, manual verification, missing proof, unresolved risks, approval still required, and forbidden actions not taken. Prove and Review happen before acceptance. Close/Next records what changed, what is parked, and the next safe prompt without activating another bead.
 
 Generated reports, generated HTML, logs, sidecars, prompt catalog rows, and protocol catalog rows are evidence or navigation only. Active memory and owner files stay authoritative. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
@@ -64,7 +66,7 @@ bash scripts/session-start.sh
 
 Expected output: active memory reminder, current bead, done-when target, primary authority, files in play, checks, stop conditions, router guidance, and generated-report warning.
 
-The optional local `precode` facade is only a shortcut over canonical commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, generated evidence, prompt use, or protocol loading as authority. The optional npm `precodeos` entry stays in setup or existing-Precode refresh preview lanes only; it is not the normal cockpit surface.
+The optional local `precode` facade is only a shortcut over canonical commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, generated evidence, prompt use, or protocol loading as authority. The optional npm `precodeos` entry stays in setup, fast verified setup, or existing-Precode refresh lanes only; preview writes nothing, apply requires current `SP-ID` or `UP-ID` approval, and it is not the normal cockpit surface.
 
 ## Next
 
@@ -81,6 +83,8 @@ I only have a rough idea. Use `Ideation: use First PRD Walkthrough for my rough 
 | Work may be ready to close | `Close: run session close...` / `bash scripts/session-close.sh` | Work digest, checks, blockers, approvals, learning context, Close State. |
 | Transition may be possible | `python3 scripts/bead-transition.py` | Readiness evidence only. Use `--approve` only after explicit approval. |
 | Something feels broken or confusing | `Recover: I am stuck, help me.` | Symptom, first safe move, owner surface, up to three read-only checks, next safe action, forbidden actions. |
+| A host agent returned work | `Review returned agent work before I accept it.` | Changed files, checks, manual verification, missing proof, approval still required, parked follow-ups, forbidden actions not taken, next safe prompt. |
+| You are back after AFK or handoff | `Re-enter after AFK or handoff.` | Reloaded state, changed files, recorded checks, Run Contract if present, proof still missing, approval still required, next action as continue, review, split, block, or handoff. |
 
 If the generated next-step decision is `author next bead`, treat it as an accepted hold: the current bead is accepted, but transition still needs a next bead proposal or authored bead. If output shows next-work source reconciliation, compare the router pointer, Closeout next bead, Handback or Noticed recommendation, and existing bead-file readiness before transition. Do not continue implementation, repeat acceptance review, approve transition, or activate a bead from generated classification.
 
@@ -107,6 +111,12 @@ If health is unclear, ask:
 
 ```text
 Health: show active state, current bead, primary authority, files in play, latest checks, generated-report warnings, and what must be inspected before editing.
+```
+
+Before accepting returned host-agent work, ask:
+
+```text
+Review returned agent work before I accept it. Show the active bead, primary authority, files changed, recorded checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt. Do not accept implementation, approve transition, activate another bead, mutate external systems, or treat generated reports, generated HTML, agent confidence, screenshots, PR status, or chat summaries as proof by themselves.
 ```
 
 Stop if the agent cannot name the active bead, primary authority, files in play, checks, and stop conditions.

@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.24
+Document version: v0.1.25
 Last updated: 2026-08-04
 
 ## Purpose
@@ -19,6 +19,8 @@ Completion and handoff keep the end of a session as structured as the start.
 This protocol distinguishes orientation, evidence, review, and activation so a finished-sounding agent response does not become automatic task completion.
 
 When a builder is coordinating a host coding agent, Daily Cockpit remains the control surface and the host interface remains the execution surface. Handoff and closeout should make that split visible: before work, name active bead, authority, files, approvals, proof, and stop condition; during work, keep the host agent inside those bounds; after work, return proof, review questions, parked follow-ups, approval still required, and next safe prompt to the cockpit. This does not create a generated cockpit panel, command wrapper, agent shell, dashboard, runtime, task selector, acceptance shortcut, transition approval, or external mutation permission.
+
+For Agent Work Cockpit V2, handoff and closeout should also support the Host-Agent Return Loop: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Returned host-agent work should name scope returned, changed files, checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and the next safe prompt. If the builder was AFK or the work came back through a branch, PR, cloud agent, or teammate, treat the return as re-entry review before continuing. A clean return summary does not accept implementation, approve review, approve transition, activate another bead, approve merge, mutate GitHub, deploy, release, or turn generated reports, generated HTML, screenshots, PR status, CI status, reviews, chat summaries, or agent confidence into proof by themselves.
 
 In the first-product spine, the end of the path is still three separate gates: Proof, Review, and Close. `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close` means recorded checks and manual evidence come before human review, and closeout with explicit Close State comes after review/handback. Architecture? is the conditional architecture-sensitive PRD bridge before decomposition, not a universal closeout or transition gate. Closeout does not accept work, approve transition, or activate another bead by itself.
 
@@ -40,6 +42,7 @@ Active memory remains exactly:
 | Session close | refresh closeout, print the bead work digest and advisory commit-message subject, record validation, assess promotion, log close, update learning diary | approve review, activate next bead, rewrite product scope, stage files, commit, or push |
 | Bead closeout | record checks, result, work digest, advisory commit-message suggestion, manual verification, changed files, drift, lesson, follow-up, blocked escape | replace review decision or user approval, stage files, commit, or push |
 | Review | decide `accepted`, `revise`, `split`, or `blocked` | bypass missing evidence or sensitive approval gates |
+| Return review | inspect returned agent work, changed files, checks, manual verification, missing proof, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt | accept implementation, approve review, approve transition, activate another bead, mutate external systems, or treat generated reports, generated HTML, PR status, screenshots, chat summaries, or agent confidence as proof |
 | Transition proposal | show whether the compiled readiness model permits a next bead | mutate bead state or `tasks/todo.md` |
 | Transition approval | after user approval, move the current bead to `done` and the next bead to `in_progress` | run without explicit approval |
 | Handoff | orient another agent with a Context Pack, approved-bead handoff prompt, and generated-report warning when the stage calls for one | choose tasks, approve transitions, activate work, or turn handoff text into generated authority |

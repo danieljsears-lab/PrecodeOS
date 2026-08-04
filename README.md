@@ -152,14 +152,16 @@ Optional npm preview entry:
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 ```
 
-The npm entry is acquisition and preview by default. It runs the same Bootstrap Confidence setup-plan, upgrade-preview, or update-plan-preview checks from the package source, writes nothing in preview modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
+The npm entry is acquisition and preview by default. It runs the same Bootstrap Confidence setup-plan, fast verified setup preview, upgrade-preview, or update-plan-preview checks from the package source, writes nothing in preview modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation.
 
-Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. These commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, or make `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, update-plan metadata, and generated apply output are evidence, not authority or update permission.
+Fast verified setup preview is a transparent shortcut over the existing Bootstrap command sequence. It exposes the underlying commands and current `SP-ID` or `UP-ID` candidates. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python Bootstrap apply paths and then prints the exact validation command; it is not an installer, updater, starter-branch authority, rollback helper, support-only hidden setup, package manager, PRD approval, bead activation, or generated-output authority. Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. These commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, or make `latest` safe to overwrite into an active Precode project. Package state, compatibility policy, update-plan metadata, and generated apply output are evidence, not authority or update permission.
 
 Optional local command facade:
 
@@ -176,11 +178,16 @@ Before copying PrecodeOS into another project, run Bootstrap Confidence against 
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
 ```
 
 The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define executable release channels, or automate rollback.
+
+Bootstrap output includes setup diagnosis fields that name source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions. Use those fields to decide whether the next safe path is fresh setup, Existing Repo Intake, package-owned refresh, recovery guidance, first-session orientation, or product work. The diagnosis is generated evidence only; it does not approve copying, repair, rollback, setup/update mutation, product work, PRD approval, bead activation, review acceptance, command approval, or package-manager behavior.
 
 For existing projects, run Existing Repo Intake first, then use the adaptation plan only as a non-mutating checklist:
 
@@ -194,9 +201,13 @@ For existing Precode targets, use upgrade preview before any package repair or u
 ```bash
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
+npx @precodeos/precodeos fast-setup-preview --target <existing-precode-root>
+npx @precodeos/precodeos fast-setup-apply --target <existing-precode-root> --approve-action <UP-ID>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 ```
 
@@ -280,6 +291,8 @@ Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-re
 When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
 
 When one bead is already approved and you need to hand it to a host agent for scoped implementation, use `Use Approved-Bead Handoff for the current approved bead.` from Prompt Patterns. The handoff must restate active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. It does not activate beads, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.
+
+When host-agent work returns, use the Daily Cockpit Host-Agent Return Loop: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Ask `Review returned agent work before I accept it.` before acceptance, especially after AFK, handoff, branch, PR, cloud-agent, or teammate return. The return review must name changed files, checks and results, manual verification, proof still missing, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt. It does not accept implementation, approve review, approve transition, activate another bead, mutate external systems, or make generated HTML, generated reports, screenshots, PR status, chat summaries, or agent confidence into proof.
 
 ## Project Map
 

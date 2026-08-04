@@ -32,6 +32,8 @@ Run the command from the PrecodeOS package checkout after reviewing the supervis
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
 Approve multiple setup-plan copy actions by repeating `--approve-action`:
@@ -48,7 +50,11 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
 
+`--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path.
+
 Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
+
+If setup diagnosis says the target is an existing Precode target, existing project, wrong folder, missing target, or missing reusable setup support files, do not use supervised setup apply. Route to Existing Repo Intake, package-owned refresh, or recovery guidance first.
 
 ## Required Apply Shape
 
@@ -121,6 +127,7 @@ After an applied setup copy:
 - run `python3 scripts/file-inventory.py --check` from the installed Precode root when package files are present
 - adapt owner files manually before product implementation starts
 - run target-specific checks only after owner files name them
+- confirm setup diagnosis no longer reports wrong source/target or required reusable setup support files missing
 
 These checks validate setup state. They do not prove product correctness or approve implementation.
 

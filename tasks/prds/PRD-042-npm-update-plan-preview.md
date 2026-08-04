@@ -31,7 +31,7 @@ Last updated: 2026-07-24
 
 PrecodeOS already has a read-only npm `precodeos` entry, local release-reference metadata, and the npm Updater Evidence And Compatibility Policy. Existing users still need a clearer way to inspect candidate refresh actions without treating npm as an updater.
 
-This PRD adds a read-only update-plan preview. It groups the existing upgrade-preview evidence into candidate package-copy IDs, manual-review IDs, blocked IDs, deferred IDs, same-session freshness requirements, validation prompts, and explicit non-authority warnings. It does not add npm apply behavior.
+This PRD adds a read-only update-plan preview. It groups the existing upgrade-preview evidence into candidate package-copy IDs, manual-review IDs, blocked IDs, deferred IDs, same-session freshness requirements, validation prompts, and explicit non-authority warnings. It does not itself approve or perform copying; the later PRD-047 `apply-package-owned` delegation is separate.
 
 ## Problem
 
@@ -46,11 +46,11 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 - Reuse upgrade-preview evidence and PRD-041 compatibility policy metadata instead of creating a separate updater subsystem.
 - Group current `UP-ID` actions into candidate package-copy, manual-review, blocked, and deferred buckets.
 - Name same-session freshness, clone-first support, validation prompts, optional registry metadata status, and non-authority limits.
-- Keep npm apply behavior out of the npm facade.
+- Keep copy approval and mutation behavior out of update-plan preview.
 
 ## Non-Goals
 
-- No target mutation, npm apply flag, `--approve-action` exposure through npm, postinstall behavior, npm registry lookup, dist-tag resolution, channel selection, package-manager update behavior, automatic package update, dirty-file overwrite, owner-file adaptation approval, hook or CI mutation, app command, app-code edit, PRD/bead renumbering, rollback automation, support-only hidden shortcut, generated-output authority, task selection, PRD approval, bead activation, review acceptance, release approval, registry behavior, optional-pack behavior, or public promise that `latest` is safe to apply.
+- No target mutation, copy approval from update-plan preview, postinstall behavior, npm registry lookup, dist-tag resolution, channel selection, package-manager update behavior, automatic package update, dirty-file overwrite, owner-file adaptation approval, hook or CI mutation, app command, app-code edit, PRD/bead renumbering, rollback automation, support-only hidden shortcut, generated-output authority, task selection, PRD approval, bead activation, review acceptance, release approval, registry behavior, optional-pack behavior, or public promise that `latest` is safe to apply.
 
 ## Requirements
 
@@ -60,7 +60,7 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 | `PRD-042-FR02` | The plan must expose action summary counts, grouped current `UP-ID` lists, same-session freshness requirements, validation prompts, optional registry metadata status, and non-authority limits. | P0 | Action IDs remain advisory evidence. |
 | `PRD-042-FR03` | `bin/precodeos.mjs` and `scripts/precode_cli.py` may expose read-only `update-plan-preview` delegation to Bootstrap Confidence. | P0 | No npm apply flags or approval IDs. |
 | `PRD-042-FR04` | Public setup, support, troubleshooting, user, package-inventory, protocol, and AI-readable navigation surfaces must frame update-plan preview as generated evidence only. | P0 | Prevents package-manager drift. |
-| `PRD-042-FR05` | Bootstrap self-test and clarity fixtures must cover update-plan JSON/plain shape, facade delegation, no registry lookup, no dist-tag resolution, no npm apply exposure, and no mutation authority. | P0 | Text-contract and payload regression only. |
+| `PRD-042-FR05` | Bootstrap self-test and clarity fixtures must cover update-plan JSON/plain shape, facade delegation, no registry lookup, no dist-tag resolution, no copy approval from update-plan preview, and no mutation authority. | P0 | Text-contract and payload regression only. |
 | `PRD-042-FR06` | Maintainer changelog, roadmap implemented history, roadmap journal, generated docs/PRD surfaces, and generated roadmap HTML must be refreshed with numeric shortstats. | P1 | Maintainer closeout. |
 
 ## Acceptance Criteria
@@ -69,7 +69,7 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 |---|---|---|
 | `PRD-042-FR01` | `--update-plan-preview --json` includes both `package_upgrade_preview` and `npm_update_plan_preview`. | `python3 scripts/bootstrap-check.py --self-test`. |
 | `PRD-042-FR02` | The plan reports grouped `UP-ID` buckets, counts, `same_session_requirement`, `validation_prompts`, `optional_registry_metadata`, and non-authority warnings. | Bootstrap self-test and manual JSON review. |
-| `PRD-042-FR03` | `precodeos update-plan-preview --target <existing-precode-root>` and `python3 scripts/precode_cli.py update-plan-preview --target <existing-precode-root>` print/delegate to `--update-plan-preview`; npm still exposes no apply flags. | `python3 scripts/clarity-scenario-check.py`. |
+| `PRD-042-FR03` | `precodeos update-plan-preview --target <existing-precode-root>` and `python3 scripts/precode_cli.py update-plan-preview --target <existing-precode-root>` print/delegate to `--update-plan-preview`; update-plan preview still exposes no approval flags. | `python3 scripts/clarity-scenario-check.py`. |
 | `PRD-042-FR04` | Public docs/protocols/navigation describe update-plan preview without implying update permission. | Docs review and docs HTML freshness. |
 | `PRD-042-FR05` | Fixtures fail if registry/dist-tag lookup, npm apply exposure, package-manager behavior, or generated-output authority appears. | Clarity scenario and bootstrap self-test. |
 | `PRD-042-FR06` | Roadmap, journal, changelog, PRD HTML, docs HTML, and roadmap HTML are current and rendered shortstats are numeric. | Maintainer checks and rendered roadmap inspection. |
@@ -148,7 +148,7 @@ git diff --check
 
 ## Anti-Shallow Checks
 
-- If implementation adds npm apply exposure, registry lookup, dist-tag resolution, channel selection, postinstall mutation, or package-manager behavior, it violates this PRD.
+- If implementation adds copy approval to update-plan preview, registry lookup, dist-tag resolution, channel selection, postinstall mutation, or package-manager behavior, it violates this PRD.
 - If the update-plan preview is treated as copy permission or generated authority, it violates this PRD.
 - If dirty package files, owner files, active memory, PRDs, beads, hooks, CI, app code, or generated evidence are updated automatically, it violates this PRD.
 

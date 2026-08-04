@@ -33,15 +33,19 @@ Use these modes from the PrecodeOS package checkout after source and target are 
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-The optional npm upgrade and update-plan previews delegate to the same non-mutating package-state comparison from the package source. The optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No npm command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
+The optional npm fast setup, upgrade, and update-plan previews delegate to the same non-mutating Bootstrap evidence from the package source. The optional npm `fast-setup-apply` command delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python setup or upgrade apply path and prints validation; the optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No npm command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 
@@ -136,9 +140,11 @@ The package keeps fixture coverage for these upgrade-apply refusals in `scripts/
 
 ## Recovery Guidance
 
-`--recovery-guidance` gives support-assisted next steps for partial or confusing setup states. It may recommend Git inspection, memory validation, file inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning.
+`--recovery-guidance` gives support-assisted next steps for partial or confusing setup states. It includes setup diagnosis, validation-after-apply, and forbidden next actions so a support helper can separate wrong source/target, fresh setup, existing project intake, existing Precode refresh, missing reusable setup support files, recovery, first-session orientation, and product work.
 
-It must not automate rollback, run destructive cleanup, overwrite dirty files, install hooks, change CI, or treat generated preview output as authority.
+When required reusable setup support files are missing from an existing Precode target, recovery guidance should route to package-owned refresh and validation. Approve only current `UP-ID` actions for missing package-owned schema/template files, then run `bash scripts/validate-memory.sh` before normal Precode work resumes.
+
+It must not automate rollback, run destructive cleanup, overwrite dirty files, install hooks, change CI, create a new setup command, create a support-only setup path, approve setup/update mutation, approve product work, or treat generated preview output as authority.
 
 ## Guardrails
 

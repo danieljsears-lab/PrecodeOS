@@ -42,7 +42,7 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 2. Confirm the user owns product direction, scope, approval, and acceptance. Support owns technical diagnosis and narrow unblocking.
 3. Identify the package source, target project, current folder, and current `git status` before copying or editing.
 4. If the user is unsure whether PrecodeOS belongs in the project yet, run the fit check from `docs/PRECODE-GUIDED-SETUP.md` before installing or deferring PrecodeOS.
-5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, `--update-plan-preview` when support needs grouped current `UP-ID` evidence before discussing refresh options, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
+5. If Precode setup is the issue, run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` from the package checkout. Use the setup diagnosis fields to name source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions before proposing setup repair, package refresh, first-session orientation, or product work. Use `--preview-manifest` when the user needs a dry-run view, `--supervised-setup-plan` before fresh-target setup approval, `--existing-project-adaptation-plan` after Existing Repo Intake, `--upgrade-preview` for existing Precode targets, `--update-plan-preview` when support needs grouped current `UP-ID` evidence before discussing refresh options, and `--recovery-guidance` when setup is partial or confusing. For empty or nearly empty targets only, use `--apply-supervised-setup --approve-action <SP-ID>` after the user approves specific copy action IDs. For existing Precode targets, use `--apply-upgrade-preview --approve-action <UP-ID>` only for missing package-owned files that the upgrade preview marks as `review_package_copy_candidate`; do not copy actions marked `blocked_identity_collision` or package development PRDs/beads deferred from upgrade copy. If state is confusing, use `docs/PRECODE-TROUBLESHOOTING.md`.
 6. Run only the narrow checks that match the symptom, then explain the result in plain language.
 7. Close by naming the current bead or blocker, the next safe prompt, what remains unapproved, and where the builder should go next. If the builder is lost in the doc sequence, route them to the first-session card as the build-order index, then back to the owning doc for the actual prompt or command.
 
@@ -73,6 +73,7 @@ Start with the Existing Precode Refresh prompt in `tasks/reference/PROMPT-PATTER
 
 - confirm the PrecodeOS package source, target project, current folder, and target `git status`
 - run `bootstrap-check.py --upgrade-preview` before any copy action, or `bootstrap-check.py --update-plan-preview` when the user needs grouped current action IDs and validation prompts
+- use setup diagnosis to separate missing reusable setup support files from product work or app-code repair
 - explain clean, dirty, mixed, unknown, blocked, identity-collision, deferred package-development, and updater compatibility policy states in plain English
 - show candidate `UP-ID` actions only for missing package-owned files
 - stop before mutation unless the user approves specific `UP-ID` actions
@@ -274,14 +275,16 @@ When the builder does not yet have a clean package checkout or the support call 
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 ```
 
-This is not a support-only install path. It has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback, task selection, PRD approval, or bead activation.
+This is not a support-only install path. Fast verified setup preview exposes the underlying Bootstrap command sequence for the target state and writes nothing. It has no postinstall behavior and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback, task selection, PRD approval, or bead activation.
 
 When the user needs the next setup checklist before approving manual work, run:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
 The supervised setup plan includes the manifest preview, action IDs, approval gates, exclusions, blockers, and validation steps. It is generated evidence only, not permission to copy, adapt owner files, overwrite target material, install hooks, change CI, edit active memory, run app commands, or write app code.
@@ -290,15 +293,17 @@ For an empty or nearly empty target, apply only the specific copy action IDs the
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
-This copies only approved `review_copy_candidate` actions and reports copied, skipped, blocked, and validation next steps. It is not an owner-file adaptation engine, existing-repo migration, overwrite command, hook installer, CI installer, app-command runner, app-code writer, release channel, package-manager flow, rollback tool, or `precode` CLI.
+This copies only approved `review_copy_candidate` actions and reports copied, skipped, blocked, and validation next steps. The fast facade delegates to the same Python copy path and prints the exact target validation command after approved apply. It is not an owner-file adaptation engine, existing-repo migration, overwrite command, hook installer, CI installer, app-command runner, app-code writer, release channel, package-manager flow, rollback tool, or setup approval shortcut.
 
 After Bootstrap Confidence, choose the first adoption fork:
 
 - Fresh install for empty or nearly empty targets.
 - Existing Repo Intake for repos with app code, docs, CI, product history, or active work.
-- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>`, or the equivalent `bootstrap-check.py` preview/apply mode before any approved `UP-ID` copy action. Treat release-reference, compatibility-policy, and update-plan metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, copy approval, or updater permission. `apply-package-owned` delegates only approved missing package-owned `UP-ID` copy actions and is not package update permission.
+- Existing Precode refresh for targets that already contain Precode active memory; use `npx @precodeos/precodeos fast-setup-preview --target <existing-precode-root>`, `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, `npx @precodeos/precodeos fast-setup-apply --target <existing-precode-root> --approve-action <UP-ID>`, `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>`, or the equivalent `bootstrap-check.py` preview/apply mode before any approved `UP-ID` copy action. Treat release-reference, compatibility-policy, and update-plan metadata as advisory only: no registry lookup, dist-tag resolution, channel selection, copy approval, or updater permission. `fast-setup-apply` and `apply-package-owned` delegate only approved current missing package-owned `UP-ID` copy actions and are not package update permission.
 
 For existing apps, run:
 

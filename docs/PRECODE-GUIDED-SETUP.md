@@ -38,7 +38,7 @@ After setup validates, stop here. If a new builder needs one visible build-order
 
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
-The optional npm entry is acquisition and preview by default. It can run first-install setup preview, existing-Precode upgrade preview, existing-Precode update-plan preview, or approved package-owned copy delegation from the package source. Preview modes write nothing. `apply-package-owned` delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
+The optional npm entry is acquisition and preview by default. It can run first-install setup preview, fast verified setup preview, existing-Precode upgrade preview, existing-Precode update-plan preview, approved fast setup copy delegation, or approved package-owned copy delegation from the package source. Preview modes write nothing. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to Python Bootstrap apply paths, and `apply-package-owned` delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
@@ -68,6 +68,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The helper names the package source, target project, target kind, public file groups, excluded files, conflicts, missing dependencies, stop conditions, and first safe next action. By default it writes nothing.
 
+The helper also prints setup diagnosis: source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions. Use that diagnosis before deciding whether the next step is fresh setup, Existing Repo Intake, package-owned refresh, recovery guidance, first-session orientation, or product work. It is generated evidence only and does not approve copying, repair, rollback, setup/update mutation, product work, command approval, PRD approval, bead activation, review acceptance, or package-manager behavior.
+
 After the basic check, use the install/update manifest dry-run preview when you want the next level of setup clarity without changing the target project:
 
 ```bash
@@ -82,25 +84,31 @@ After the preview, use the supervised setup plan when you want a human-readable 
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
-The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The fast verified setup facade prints the underlying command sequence for fresh setup, existing Precode refresh, or existing-project intake; preview output remains evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
-This apply mode copies only approved `review_copy_candidate` actions. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
+This apply mode copies only approved `review_copy_candidate` actions. The fast facade delegates to the same Python copy path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
 
-For short support calls, the fast path is the same mechanism with less wandering: run the supervised setup plan, approve only the needed fresh-target `SP-ID` copy actions, apply them, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone or bulk copy. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
+For short support calls, the fast path is the same mechanism with less wandering: run `--fast-verified-setup-preview`, review the underlying supervised setup, existing Precode refresh, or existing app intake commands, approve only the needed current `SP-ID` or `UP-ID` copy actions, apply them, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone, prepared starter target, bulk copy, package update, rollback shortcut, or support-only setup authority. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
 
 The optional wrapper exposes the same apply gate and still requires approved action IDs:
 
 ```bash
 python3 scripts/precode_cli.py setup-preview --target <target-project-root>
+python3 scripts/precode_cli.py fast-setup-preview --target <target-project-root>
+python3 scripts/precode_cli.py fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/precode_cli.py bootstrap-check --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 ```
@@ -150,9 +158,12 @@ For a target that already has PrecodeOS active memory, use upgrade preview befor
 ```bash
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
+npx @precodeos/precodeos fast-setup-preview --target <existing-precode-root>
+npx @precodeos/precodeos fast-setup-apply --target <existing-precode-root> --approve-action <UP-ID>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
 The upgrade preview classifies the target as `clean`, `dirty_package_edits`, `dirty_project_or_owner_edits`, `mixed_or_unknown`, or `blocked`. It also checks incoming PRD/bead IDs against target PRD/bead IDs. If it reports `blocked_identity_collision`, do not copy that file, do not renumber the builder's existing ID, and preserve target PRDs/beads. It may show advisory release-reference metadata from the local package source: package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. The update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. Approved npm package-owned apply is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`; it is only delegation to the Python upgrade-apply path for explicit current `UP-ID` approvals. Preview modes write nothing, perform no npm registry lookup or dist-tag resolution, and do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, or rollback.
@@ -165,9 +176,10 @@ If the preview shows a missing package-owned file marked `review_package_copy_ca
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <UP-ID>
 ```
 
-This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation.
+This apply mode refuses dirty or unknown package states, identity-collision actions, existing target paths, owner-file adaptation, hooks, CI, app commands, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. The fast facade is a transparent delegate over the same apply boundary; it does not make `latest` safe to overwrite, query npm, resolve dist-tags, choose a channel, or approve package updates.
 
 ## Existing Precode Refresh
 
@@ -213,6 +225,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 ```
 
 Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.
+
+If recovery guidance reports missing reusable setup support files, keep the work in package-owned refresh and validation. Approve only current `UP-ID` actions for the missing schema/template files, then run `bash scripts/validate-memory.sh` before product work resumes.
 
 ## Fit Check: PrecodeOS Or Plain VS Code?
 

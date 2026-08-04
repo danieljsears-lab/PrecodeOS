@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.79
+Document version: v0.1.80
 Last updated: 2026-08-04
 
 ## Purpose
@@ -139,7 +139,7 @@ Alias guardrail floor:
 | Queue | `Queue: review Candidate Queue as parked intent.` | Candidate Queue Review |
 | Build | `Build: work only on the active bead.` | Approved-Bead Handoff / Keep Implementation Bounded |
 | Prove | `Prove: show recorded evidence and what I should verify.` | Ask For Evidence |
-| Review | `Review: check this work or artifact before I accept it.` | Review / Acceptance Skill, Review Lanes, PRD Handoff Readiness, or Requirement-To-Proof Review when the artifact or risk calls for one |
+| Review | `Review: check this work or artifact before I accept it.` | Host-Agent Return Review, Review / Acceptance Skill, Review Lanes, PRD Handoff Readiness, or Requirement-To-Proof Review when the artifact or risk calls for one |
 | Close | `Close: run session close, summarize the work digest, suggested commit message, checks, blockers, approvals, learning context, and end with Close State.` | Close The Session / Daily Learning Loop |
 | Recover | `Recover: I am stuck, help me.` | No-Engineer Fallback Prompt Pack / Recovery Protocol |
 
@@ -207,6 +207,42 @@ Do not treat the access level as command approval, runtime permission enforcemen
 
 Expected output: one access level, one reason, allowed actions, proof needed, approval required before, stop condition, and whether a Run Contract is needed.
 
+### Host-Agent Return Loop
+
+Use this loop from the Daily Cockpit when a nontechnical builder is coordinating Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent. It is the cockpit rhythm for agent work, not a generated cockpit panel, agent shell, runtime, command wrapper, task selector, approval shortcut, or generated-output authority.
+
+```text
+Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next
+```
+
+- Prepare: name the active bead, primary authority, files in play, proof needed, and stop condition.
+- Bound: name access level, allowed actions, approval required before risky actions, forbidden actions, and Run Contract needs.
+- Send: give the host agent one approved-bead or bounded prompt.
+- Return: require changed files, checks and results, manual verification, missing proof, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt.
+- Prove: inspect recorded checks, manual verification, and what generated evidence does not prove.
+- Review: decide whether the human should continue, review, split, block, or handoff.
+- Close/Next: record the work digest, parked follow-ups, approval state, and next safe prompt without activating another bead.
+
+Expected output: a cockpit-readable return loop summary that helps the builder decide whether to continue, review, split, block, or handoff. It does not accept implementation, approve review, approve transition, activate another bead, mutate external systems, create generated proof, or treat agent confidence, generated HTML, generated reports, PR status, screenshots, or chat summaries as proof by themselves.
+
+### Host-Agent Return Review
+
+Use this prompt when a host agent says work is done, returns from AFK or handoff, or provides a PR/branch/cloud-agent summary and the builder needs to decide what can be trusted before accepting anything.
+
+```text
+Review returned agent work before I accept it.
+
+Reload active memory, the active bead, primary authority, files in play, recorded checks, Run Contract if present, stop conditions, and generated-report warnings.
+
+Show active bead, scope returned, changed files, checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt.
+
+Recommend only continue, review, split, block, or handoff.
+
+Do not accept implementation, approve review, approve transition, activate another bead, mutate GitHub, mutate external systems, deploy, release, create generated proof, create a generated cockpit panel, or treat generated reports, generated HTML, agent confidence, screenshots, PR status, CI status, reviews, or chat summaries as proof by themselves.
+```
+
+Expected output: returned scope, evidence reviewed, missing proof, unresolved risks, approval still required, recommended next human action, and the exact prompt to paste next in the Daily Cockpit.
+
 | Alias | Lean paste prompt | Expanded prompt to use when risk is higher |
 |---|---|---|
 | Hypothesis | `Hypothesis: use Hypothesis Review / Learning Loop.` | Hypothesis Review / Learning Loop |
@@ -215,6 +251,7 @@ Expected output: one access level, one reason, allowed actions, proof needed, ap
 | Access check | `Access: tell me what the agent may do before this command or work starts.` | Agent Access Level Check |
 | Team | `Team: use the Small Team Collaboration Lane before anyone edits.` | Small Team Collaboration Lane |
 | Re-entry | `Re-entry: review delegated work before continuing.` | Delegation Re-Entry Evidence Pack |
+| Return review | `Review returned agent work before I accept it.` | Host-Agent Return Review |
 | Release | `Release: prepare release evidence without release action.` | Release Readiness Skill / Prepare A Release Candidate Evidence Profile |
 | Trace | `Trace: map this requirement or bug behavior to proof.` | Requirement-To-Proof Review |
 | Attribution | `Attribution: review who-built-what evidence.` | Build Attribution Review |
@@ -361,6 +398,36 @@ After any approved copy, show copied, skipped, blocked, validation next steps, a
 Expected output: source and target confirmation, target classification, protected files, conflicts, required reusable setup support files missing, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, optional update-plan action buckets, same-session freshness, validation next steps, and explicit stop-before-mutation status.
 
 This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, registry freshness result, dist-tag resolver, or permission to overwrite. Npm apply is limited to `apply-package-owned` delegation for approved missing package-owned `UP-ID` actions.
+
+### Fast Verified Setup
+
+```text
+Run Fast Verified Setup for this target.
+
+Use my clean PrecodeOS package checkout as the source and my target project as the target.
+
+First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh. Then run:
+
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
+
+Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, and exact validation command.
+
+Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
+
+If I approve current action IDs, apply only those copy actions with:
+
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
+
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
+
+After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved.
+```
+
+Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, and `cd <target-project-root> && bash scripts/validate-memory.sh` as the validation command after apply.
+
+This is a transparent facade over existing Bootstrap setup and refresh paths, not an installer, updater, prepared starter-target authority, support-only setup path, rollback helper, package manager, task selector, PRD approval, bead activation, or generated-output authority.
 
 ### Package Upgrade Preview
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Version: v0.1.2
+// Version: v0.1.3
 // Last updated: 2026-07-31
 // Owner: PrecodeOS
 // Created by Dan Sears / Recode.
@@ -11,20 +11,23 @@ import { spawnSync } from "node:child_process";
 const BIN_DIR = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(BIN_DIR, "..");
 const BOUNDARY_NOTE =
-  "precodeos is an optional npm entry for PrecodeOS setup, upgrade, update-plan previews, " +
-  "and approved package-owned copy delegation. It delegates to scripts/bootstrap-check.py; " +
+  "precodeos is an optional npm entry for PrecodeOS setup, fast verified setup, upgrade, update-plan previews, " +
+  "and approved SP-ID or UP-ID copy delegation. It delegates to scripts/bootstrap-check.py; " +
   "preview output, including updater compatibility policy metadata, is generated evidence only.";
 
 function usage() {
   return `Usage:
   precodeos setup-preview --target <target-project-root> [--json]
+  precodeos fast-setup-preview --target <target-project-root> [--json]
+  precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID> [--approve-action <SP-ID|UP-ID> ...] [--json]
   precodeos upgrade-preview --target <existing-precode-root> [--json]
   precodeos update-plan-preview --target <existing-precode-root> [--json]
   precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID> [--approve-action <UP-ID> ...] [--json]
 
 Boundary:
-  Preview commands are read-only by default. Apply-package-owned delegates only explicitly
-  approved missing package-owned UP-ID copy actions to the Python source of truth.
+  Preview commands are read-only by default. Fast setup apply delegates only explicitly
+  approved current SP-ID or UP-ID copy actions to the Python source of truth.
+  Apply-package-owned remains the existing explicit approved package-owned UP-ID delegation.
   No postinstall behavior, dirty-file overwrite, owner-file adaptation, hook installation,
   CI mutation, app commands, app-code edits, executable release-channel behavior, package-manager
   updates, npm registry lookup, dist-tag resolution, broad npm updater behavior, rollback automation,
@@ -37,7 +40,7 @@ function parseArgs(argv) {
   if (!command || command === "--help" || command === "-h" || command === "help") {
     return { command: "help", target: "", json: false };
   }
-  if (!["setup-preview", "upgrade-preview", "update-plan-preview", "apply-package-owned"].includes(command)) {
+  if (!["setup-preview", "fast-setup-preview", "fast-setup-apply", "upgrade-preview", "update-plan-preview", "apply-package-owned"].includes(command)) {
     throw new Error(`unknown command: ${command}`);
   }
   let target = "";
@@ -64,8 +67,11 @@ function parseArgs(argv) {
   if (!target) {
     throw new Error(`${command} requires --target <target-project-root>`);
   }
-  if (command !== "apply-package-owned" && approveActions.length > 0) {
-    throw new Error("--approve-action is only valid with apply-package-owned");
+  if (!["fast-setup-apply", "apply-package-owned"].includes(command) && approveActions.length > 0) {
+    throw new Error("--approve-action is only valid with fast-setup-apply or apply-package-owned");
+  }
+  if (command === "fast-setup-apply" && approveActions.length === 0) {
+    throw new Error("fast-setup-apply requires at least one --approve-action <SP-ID|UP-ID>");
   }
   if (command === "apply-package-owned" && approveActions.length === 0) {
     throw new Error("apply-package-owned requires at least one --approve-action <UP-ID>");
@@ -84,6 +90,13 @@ function commandFor(parsed) {
   ];
   if (parsed.command === "setup-preview") {
     command.push("--supervised-setup-plan");
+  } else if (parsed.command === "fast-setup-preview") {
+    command.push("--fast-verified-setup-preview");
+  } else if (parsed.command === "fast-setup-apply") {
+    command.push("--fast-verified-setup-apply");
+    for (const action of parsed.approveActions) {
+      command.push("--approve-action", action);
+    }
   } else if (parsed.command === "upgrade-preview") {
     command.push("--upgrade-preview");
   } else if (parsed.command === "update-plan-preview") {

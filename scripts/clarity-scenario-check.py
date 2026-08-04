@@ -24,6 +24,8 @@ from os_compiler import (
     command_classification,
     completion_session_freshness,
     memory_summary,
+    manual_verification_clear,
+    manual_verification_structured,
     next_step_guidance,
     next_work_source_reconciliation,
     reference_followthrough_quality,
@@ -1212,38 +1214,56 @@ def assert_agent_work_cockpit_contract(failures: list[dict[str, str]]) -> int:
             "The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop",
             "Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries.",
             "For handoff or stop, use Approved-Bead Handoff only after one bead is approved",
+            "For host-agent returns, use the Host-Agent Return Loop inside the same cockpit: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`.",
+            "Review returned agent work before I accept it.",
         ],
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "It is the cockpit bridge from builder intent to host-agent bounds, not permission to widen scope.",
             "Expected output: a six-part orientation checklist that helps the builder decide the next host-agent prompt from the Daily Cockpit.",
             "This is the cockpit-to-agent bridge for a single approved bead",
+            "Use this loop from the Daily Cockpit when a nontechnical builder is coordinating Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent.",
+            "Host-Agent Return Review",
+            "Do not accept implementation, approve review, approve transition, activate another bead, mutate GitHub, mutate external systems, deploy, release, create generated proof, create a generated cockpit panel",
         ],
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
             "keep the Daily Cockpit as the builder's control surface and the coding agent's host interface as the execution surface",
             "Workflow Selection may route to Daily Loop, Agent Access Level Check, task suitability, Approved-Bead Handoff, proof/review, closeout, or recovery",
+            "When the user is coordinating returned agent work, route through the Host-Agent Return Loop from Prompt Patterns",
         ],
         Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
             "Daily Cockpit remains the control surface and the host interface remains the execution surface.",
             "return proof, review questions, parked follow-ups, approval still required, and next safe prompt to the cockpit",
+            "For Agent Work Cockpit V2, handoff and closeout should also support the Host-Agent Return Loop",
+            "Return review",
         ],
         Path("README.md"): [
             "use the Daily Cockpit as the builder control surface",
             "The host agent executes only inside approved Precode bounds",
+            "When host-agent work returns, use the Daily Cockpit Host-Agent Return Loop",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "the cockpit is where you decide what to ask, what state and proof matter, what approval remains, and when to stop",
             "Return reviewable evidence to the Daily Cockpit.",
+            "For any host-agent return, including solo AFK, branch/worktree, PR, cloud-agent, or teammate work, use the Daily Cockpit Host-Agent Return Loop before acceptance",
         ],
         Path("docs/CLAUDE-CODE-FIELD-GUIDE.md"): [
             "Treat the Daily Cockpit as the builder control surface and Claude Code as the host-agent execution surface.",
+            "When Claude Code returns work, use the Daily Cockpit Host-Agent Return Loop before acceptance",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "`docs/PRECODE-DAILY-COCKPIT.md` is the operating home and host-agent coordination surface",
             "Host coding agents execute inside approved Precode bounds",
+            "Agent Work Cockpit V2 adds a Host-Agent Return Loop",
         ],
         Path("llms.txt"): [
             "Use Daily Cockpit as the host-agent coordination surface.",
             "Route host-agent work through Daily Loop, Next, Agent Access Level Check, Approved-Bead Handoff, proof/review, closeout, or recovery as appropriate.",
+            "Use the Host-Agent Return Loop when host-agent work starts, returns, resumes after AFK/handoff, or says \"done\" before proof is clear",
+        ],
+        Path("scripts/docs-html.py"): [
+            "Host-Agent Return Loop",
+            "Prepare -&gt; Bound -&gt; Send -&gt; Return -&gt; Prove -&gt; Review -&gt; Close/Next",
+            "generated from the package contract for easier browsing; canonical Markdown and protocols remain authoritative",
         ],
     }
     for path, required_terms in required_terms_by_path.items():
@@ -5189,6 +5209,102 @@ def assert_recovery_scenario_harness(fixtures: list[dict[str, Any]], failures: l
                 failures.append({"scenario": f"recovery fixture forbidden action: {category}", "expected": action, "actual": str(forbidden_actions)})
 
 
+def assert_manual_verification_pending_marker_contract(failures: list[dict[str, str]]) -> int:
+    clear_cases = [
+        "Who checked: Dan. What was checked: Accessibility repair. Environment: local browser. Result: accepted; three sub-24px AA failures fixed. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: WCAG review. Environment: local browser. Result: accepted. Notes: failed WCAG criteria were corrected. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: QA vocabulary. Environment: local. Result: accepted. Notes: failure and failures describe repaired findings. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: infrastructure wording. Environment: local. Result: accepted. Notes: failover and failsafe wording is legitimate prose. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: deployment wording. Environment: local. Result: accepted. Notes: commissioning copy is legitimate prose. Remaining uncertainty: none.",
+        "not applicable because documentation-only review was not needed.",
+        "n/a",
+    ]
+    blocked_cases = [
+        "pending",
+        "missing",
+        "not recorded",
+        "manual_testing",
+        "Who checked: Dan. What was checked: UI. Environment: local. Result: fail. Remaining uncertainty: needs repair.",
+        "Who checked: Dan. What was checked: UI. Environment: local. Status: failed. Remaining uncertainty: needs repair.",
+        "failed.",
+    ]
+    structured_clear = clear_cases[0]
+
+    for value in clear_cases:
+        if not manual_verification_clear(value):
+            failures.append({"scenario": "manual verification pending markers allowed prose", "expected": "clear", "actual": value})
+    for value in blocked_cases:
+        if manual_verification_clear(value):
+            failures.append({"scenario": "manual verification pending markers blocked status", "expected": "blocked", "actual": value})
+    if not manual_verification_structured(structured_clear):
+        failures.append({"scenario": "manual verification structured with QA vocabulary", "expected": "structured", "actual": structured_clear})
+    return len(clear_cases) + len(blocked_cases) + 1
+
+
+def assert_setup_diagnosis_clarity_contract(failures: list[dict[str, str]]) -> int:
+    bootstrap_check = load_script_module("bootstrap_check_setup_diagnosis_fixture", "bootstrap-check.py")
+    diagnosis = bootstrap_check.setup_diagnosis(
+        "existing_precode",
+        [],
+        [
+            "tasks/beads/BEAD-SCHEMA.md",
+            "tasks/prds/PRD-000-template.md",
+            "tasks/prds/PRD-SHARD-SCHEMA.md",
+        ],
+        [],
+        [],
+    )
+    expected_pairs = {
+        "diagnosis_kind": "setup_diagnosis_clarity",
+        "partial_setup_classification": "required_support_files_missing",
+        "recommended_route": "package_owned_refresh_then_validate",
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+    }
+    for key, expected in expected_pairs.items():
+        if diagnosis.get(key) != expected:
+            failures.append(
+                {
+                    "scenario": f"setup diagnosis payload {key}",
+                    "expected": str(expected),
+                    "actual": str(diagnosis.get(key)),
+                }
+            )
+    for term in (
+        "do not create a new setup command or support-only setup path",
+        "do not create package-manager behavior",
+    ):
+        if term not in diagnosis.get("forbidden_next_actions", []):
+            failures.append({"scenario": "setup diagnosis forbidden action", "expected": term, "actual": str(diagnosis)})
+
+    docs_text = "\n".join(
+        Path(path).read_text(encoding="utf-8").lower()
+        for path in (
+            "tasks/prds/PRD-050-setup-diagnosis-clarity-hardening.md",
+            "tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md",
+            "tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md",
+            "tasks/reference/RECOVERY-PROTOCOL.md",
+            "docs/PRECODE-GUIDED-SETUP.md",
+            "docs/PRECODE-TROUBLESHOOTING.md",
+            "docs/PRECODE-SUPPORT-RUNBOOK.md",
+            "llms.txt",
+        )
+    )
+    for term in (
+        "setup diagnosis",
+        "source/target clarity",
+        "partial setup classification",
+        "validation-after-apply",
+        "forbidden next actions",
+        "missing reusable setup support",
+        "not a new setup command",
+        "package-manager behavior",
+    ):
+        if term not in docs_text:
+            failures.append({"scenario": "setup diagnosis text contract", "expected": term, "actual": "missing"})
+    return 3
+
+
 def assert_doctor_dashboard(name: str, payload: dict[str, Any], expected_status: str, failures: list[dict[str, str]]) -> None:
     dashboard = build_doctor_dashboard(payload)
     if dashboard.get("status") != expected_status:
@@ -5689,6 +5805,8 @@ def main() -> int:
 
     recovery_fixture_scenarios = recovery_scenario_fixtures()
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
+    manual_verification_scenario_count = assert_manual_verification_pending_marker_contract(failures)
+    setup_diagnosis_scenario_count = assert_setup_diagnosis_clarity_contract(failures)
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
     onboarding_authority_scenario_count = assert_onboarding_authority_consolidation_contract(failures)
@@ -6287,6 +6405,8 @@ def main() -> int:
         + builder_journey_authority_scenario_count
         + command_surface_triage_scenario_count
         + beginner_advanced_surface_relocation_scenario_count
+        + manual_verification_scenario_count
+        + setup_diagnosis_scenario_count
         + agent_work_cockpit_scenario_count
         + engineering_quality_scenario_count
         + public_objection_scenario_count

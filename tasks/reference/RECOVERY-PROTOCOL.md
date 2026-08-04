@@ -50,8 +50,11 @@ Good first checks are usually one to three of:
 - `python3 scripts/files-in-play-check.py`
 - `python3 scripts/completion-check.py`
 - `python3 scripts/os-health.py`
+- `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance` when the symptom is setup, package refresh, wrong source/target, or missing reusable setup support files
 
 `OS-HEALTH.md`, Doctor Dashboard output, `PRECODE-HELP.md`, `next-step.py`, and stable-fix eligibility are diagnostic evidence only. They can help explain what is wrong, but they do not approve repair, transition, rollback, setup/update mutation, destructive commands, or generated-report regeneration.
+
+Bootstrap recovery guidance includes setup diagnosis fields for source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions. Use them to decide whether the next safe path is fresh setup, Existing Repo Intake, package-owned refresh, recovery, first-session orientation, or product work. Do not treat setup diagnosis as copy approval, repair approval, rollback approval, command approval, product work approval, a new setup command, a support-only setup path, or package-manager behavior.
 
 The No-Engineer Fallback Prompt Pack in `tasks/reference/PROMPT-PATTERNS.md` is a symptom-specific front door into this protocol. Its prompts help a user name agent-lost, checks-failed, app-will-not-start, approved-too-much, copied-wrong-files, and stop-or-continue moments; they do not approve edits, deletion, overwrite, regeneration, rollback, setup/update mutation, transition approval, app-code changes, secrets handling, external mutation, or destructive commands.
 
@@ -112,6 +115,7 @@ I think I broke something in Precode. Stop work, identify the symptom, name the 
 | Generated report was edited | Identify the source script that owns the report. | Stop using the edited report, restore or regenerate it from source state, then return to owner files. | Do not treat the edited report as authority. |
 | Generated report looks stale | Check whether source files, checks, closeout, or transitions changed after the report. | Refresh the report with the owning script after source state is coherent. | Do not hand-edit generated Markdown. |
 | Active state is broken | Run `python3 scripts/state-check.py`. | Repair `tasks/todo.md` or the active bead so they agree, then validate memory. | Do not continue implementation while the active bead is unclear. |
+| Setup is partial or source/target is unclear | Run `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance`. | Read setup diagnosis, then route to fresh setup, Existing Repo Intake, package-owned refresh, or validation before product work. | Do not create a new setup command, use support-only setup authority, copy package development PRDs/beads, or treat generated output as mutation approval. |
 | Checks or proof are missing | Run `python3 scripts/completion-check.py` and inspect bead checks. | Run stronger checks through `bash scripts/record-check.sh -- <command>` or record manual verification. | Do not accept work based on confidence. |
 | Session or agent is confused | Re-read active memory, active bead, and primary authority. | Run `bash scripts/checkpoint.sh` or prepare a handoff, then continue only with a clear context pack. | Do not continue from chat memory alone. |
 | Scope expanded accidentally | Run `python3 scripts/files-in-play-check.py`. | Explain each changed path as generated evidence, current-bead work, or separate follow-up; split or ask for approval when needed. | Do not silently widen the active task. |

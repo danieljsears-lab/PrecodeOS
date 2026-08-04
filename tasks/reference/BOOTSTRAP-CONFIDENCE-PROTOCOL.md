@@ -36,12 +36,14 @@ Optional npm preview entry:
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 ```
 
-The npm entry delegates to this protocol's `--supervised-setup-plan`, `--upgrade-preview`, `--update-plan-preview`, or approved package-owned `--apply-upgrade-preview` modes from the package source. Preview modes write nothing by default. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python source of truth. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade and update-plan previews may show advisory local release-reference metadata and updater compatibility policy metadata, but they perform no npm registry lookup or dist-tag resolution.
+The npm entry delegates to this protocol's `--supervised-setup-plan`, `--fast-verified-setup-preview`, `--fast-verified-setup-apply`, `--upgrade-preview`, `--update-plan-preview`, or approved package-owned `--apply-upgrade-preview` modes from the package source. Preview modes write nothing by default. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python source of truth and prints the validation command; `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python source of truth. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade and update-plan previews may show advisory local release-reference metadata and updater compatibility policy metadata, but they perform no npm registry lookup or dist-tag resolution.
 
 Optional modes:
 
@@ -53,6 +55,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --write-evidence
@@ -61,6 +65,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 Default mode prints a plain-English report and writes nothing.
 
 `--json` prints machine-readable output and writes nothing.
+
+All modes include additive setup diagnosis fields. The diagnosis names source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, forbidden next actions, generated-evidence status, and non-authority limits. It helps decide whether the next safe path is fresh setup, Existing Repo Intake, package-owned refresh, recovery guidance, first-session orientation, or product work. It does not approve copying, repair, rollback, setup/update mutation, product work, command execution, PRD approval, bead activation, review acceptance, or package-manager behavior.
 
 `--preview-manifest` adds a non-mutating install/update dry-run preview with candidate setup action categories. It still writes nothing by default and does not approve setup mutation.
 
@@ -87,6 +93,7 @@ Bootstrap Confidence output should include:
 - `source_root`
 - `target_root`
 - `target_kind`
+- `setup_diagnosis`
 - `public_file_groups`
 - `excluded_paths`
 - `conflicts`
@@ -95,6 +102,18 @@ Bootstrap Confidence output should include:
 - `stop_conditions`
 
 Plain output should also remind the user that the result is generated evidence only and does not approve mutation.
+
+Setup diagnosis should include:
+
+- `source_target_clarity`
+- `target_state`
+- `partial_setup_classification`
+- `recommended_route`
+- `target_missing_required_setup_support_paths`
+- `validation_after_apply`
+- `forbidden_next_actions`
+- `target_mutation_allowed: false`
+- `generated_evidence_only: true`
 
 When `--preview-manifest` is used, output should also include an `install_update_preview` object with action categories and a next setup gate. The preview is governed by `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md`.
 
@@ -164,6 +183,8 @@ Use plain recommendations:
 | Target has existing project material | Run Existing Repo Intake, then review conflicts and owner-file adaptations before copying anything. |
 | Target already has Precode active memory | Validate memory before deciding whether this is setup, repair, or update work. |
 
+When setup diagnosis reports `required_support_files_missing`, treat the target as an existing Precode target that needs package-owned refresh plus validation. Approve only current missing package-owned `UP-ID` copy actions for reusable schemas/templates, then run `bash scripts/validate-memory.sh` before PRD shaping, bead work, first-session orientation, or product implementation resumes.
+
 ## Guardrails
 
 - Bootstrap Confidence output is generated evidence only.
@@ -181,6 +202,7 @@ Use plain recommendations:
 - It must not treat supervised setup apply as a broad installer, owner-file adaptation engine, update flow, rollback flow, hook installer, CI installer, package manager, executable release channel, or CLI.
 - It must not treat existing-project adaptation planning, upgrade preview, or recovery guidance as owner-file edit approval, package update permission, dirty-file overwrite approval, rollback approval, executable release-channel behavior, or package-manager behavior.
 - It must not treat upgrade apply as permission to replace dirty package files, adapt owner files, install hooks, change CI, automate rollback, or update through a package manager.
+- It must not treat setup diagnosis as repair approval, rollback approval, command approval, product work approval, a new setup command, a support-only setup path, prepared starter-target authority, generated-output authority, or package-manager behavior.
 - It must not make an installable `precode` CLI a prerequisite for normal repo-local use.
 - It must not make the optional npm `precodeos` preview entry a broad installer, updater, release-channel surface, postinstall mutation path, target-project mutation path, or prerequisite for normal repo-local use.
 

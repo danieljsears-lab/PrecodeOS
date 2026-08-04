@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.5.8
+# Version: v0.5.9
 # Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shlex
 import shutil
 import tempfile
 from pathlib import Path
@@ -265,6 +266,14 @@ def rel(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
+def shell_command_text(command: list[str]) -> str:
+    return " ".join(shlex.quote(part) for part in command)
+
+
+def validation_command(target_root: str) -> str:
+    return f"cd {shlex.quote(target_root)} && bash scripts/validate-memory.sh"
+
+
 def source_missing_paths(source: Path) -> list[str]:
     return [name for name in SOURCE_REQUIRED_PATHS if not (source / name).exists()]
 
@@ -506,6 +515,93 @@ def recommended_next_step(kind: str, source_missing: list[str], conflicts: list[
     if conflicts:
         return "Review conflicts and proposed owner-file adaptations before copying anything."
     return "Proceed to existing-project guided setup review before copying anything."
+
+
+def setup_diagnosis(
+    kind: str,
+    source_missing: list[str],
+    target_missing_support: list[str],
+    conflicts: list[dict[str, str]],
+    blockers: list[str],
+) -> dict[str, Any]:
+    source_target_clarity = "clear"
+    target_state = "ready_for_diagnosis"
+    partial_setup_classification = "none"
+    recommended_route = "guided_setup"
+    validation_after_apply = [
+        "Inspect target git status after any approved copy action.",
+        "Run `bash scripts/validate-memory.sh` from the installed Precode root after package files exist.",
+    ]
+    forbidden_next_actions = [
+        "do not copy files from generated output alone",
+        "do not overwrite target material",
+        "do not adapt owner files without separate review",
+        "do not automate rollback",
+        "do not install hooks or change CI silently",
+        "do not treat setup diagnosis as product work approval",
+        "do not create a new setup command or support-only setup path",
+        "do not create package-manager behavior",
+    ]
+
+    if source_missing or kind in {"missing", "same_as_source"} or blockers:
+        source_target_clarity = "unclear_or_blocked"
+    if kind == "same_as_source":
+        target_state = "wrong_folder"
+        partial_setup_classification = "wrong_source_target"
+        recommended_route = "stop_and_choose_target"
+    elif kind == "missing":
+        target_state = "missing_target"
+        partial_setup_classification = "target_missing"
+        recommended_route = "stop_and_identify_or_create_target"
+    elif source_missing:
+        target_state = "source_not_plausible"
+        partial_setup_classification = "source_incomplete"
+        recommended_route = "stop_and_use_clean_package_source"
+    elif target_missing_support:
+        target_state = "existing_precode_missing_reusable_setup_support"
+        partial_setup_classification = "required_support_files_missing"
+        recommended_route = "package_owned_refresh_then_validate"
+    elif kind == "existing_precode":
+        target_state = "existing_precode"
+        partial_setup_classification = "installed_precode"
+        recommended_route = "validate_then_choose_repair_refresh_or_work"
+    elif kind == "existing_project":
+        target_state = "existing_project"
+        partial_setup_classification = "existing_project_needs_intake"
+        recommended_route = "existing_repo_intake_before_setup_mutation"
+    elif kind in {"empty", "nearly_empty"}:
+        target_state = "fresh_target"
+        partial_setup_classification = "fresh_setup_candidate"
+        recommended_route = "supervised_setup_plan_then_validate"
+    elif conflicts:
+        target_state = "conflict_review_needed"
+        partial_setup_classification = "conflicts_present"
+        recommended_route = "review_conflicts_before_copying"
+
+    return {
+        "diagnosis_kind": "setup_diagnosis_clarity",
+        "source_target_clarity": source_target_clarity,
+        "target_state": target_state,
+        "partial_setup_classification": partial_setup_classification,
+        "recommended_route": recommended_route,
+        "target_missing_required_setup_support_paths": target_missing_support,
+        "validation_after_apply": validation_after_apply,
+        "forbidden_next_actions": forbidden_next_actions,
+        "generated_evidence_only": True,
+        "target_mutation_allowed": False,
+        "not_authority_for": [
+            "copy approval",
+            "repair approval",
+            "rollback approval",
+            "setup or update mutation",
+            "product work approval",
+            "PRD approval",
+            "bead activation",
+            "review acceptance",
+            "command approval",
+            "package-manager behavior",
+        ],
+    }
 
 
 def preview_action(category: str, path: str, reason: str, group: str | None = None) -> dict[str, str]:
@@ -981,7 +1077,7 @@ def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
     elif grouped_action_ids["candidate_package_copy"]:
         next_manual_gate = (
             "If the user explicitly approves a current missing package-owned UP-ID, use the Python upgrade-preview "
-            "apply path; the npm facade still exposes no apply behavior."
+            "apply path or the apply-package-owned facade; this preview itself does not approve or perform copying."
         )
 
     return {
@@ -1039,11 +1135,225 @@ def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def bootstrap_command(payload: dict[str, Any], *flags: str) -> str:
+    command = [
+        "python3",
+        "scripts/bootstrap-check.py",
+        "--source",
+        str(payload["source_root"]),
+        "--target",
+        str(payload["target_root"]),
+        *flags,
+    ]
+    return shell_command_text(command)
+
+
+def existing_repo_intake_command(payload: dict[str, Any]) -> str:
+    command = [
+        "python3",
+        "scripts/existing-repo-intake.py",
+        "--source",
+        str(payload["source_root"]),
+        "--target",
+        str(payload["target_root"]),
+    ]
+    return shell_command_text(command)
+
+
+def action_ids(actions: list[dict[str, Any]], category: str) -> list[str]:
+    return [str(action["id"]) for action in actions if action["category"] == category]
+
+
+def approved_action_prefixes(approved_action_ids: list[str]) -> set[str]:
+    prefixes: set[str] = set()
+    for action_id in approved_action_ids:
+        if "-" in action_id:
+            prefixes.add(action_id.split("-", 1)[0])
+        else:
+            prefixes.add(action_id)
+    return prefixes
+
+
+def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    kind = str(payload["target_kind"])
+    blockers = list(payload["blockers"])
+    route = "blocked"
+    approval_prefix = "none"
+    current_action_ids: list[str] = []
+    underlying_commands: list[str] = []
+    next_manual_gate = "Resolve blockers and rerun fast verified setup preview."
+
+    if kind in {"empty", "nearly_empty"}:
+        route = "fresh_or_nearly_empty_setup"
+        approval_prefix = "SP"
+        plan = payload["supervised_setup_plan"]
+        current_action_ids = action_ids(plan["actions"], "review_copy_candidate")
+        underlying_commands = [
+            bootstrap_command(payload, "--fast-verified-setup-preview"),
+            bootstrap_command(payload, "--supervised-setup-plan"),
+            bootstrap_command(payload, "--fast-verified-setup-apply", "--approve-action", "<SP-ID>"),
+            validation_command(str(payload["target_root"])),
+        ]
+        next_manual_gate = (
+            "Review the supervised setup plan. Apply only current SP-ID review_copy_candidate actions with "
+            "--fast-verified-setup-apply, then run validation from the installed target."
+        )
+    elif kind == "existing_precode":
+        route = "existing_precode_refresh"
+        approval_prefix = "UP"
+        plan = payload["npm_update_plan_preview"]
+        current_action_ids = list(plan["grouped_action_ids"]["candidate_package_copy"])
+        underlying_commands = [
+            bootstrap_command(payload, "--fast-verified-setup-preview"),
+            bootstrap_command(payload, "--upgrade-preview"),
+            bootstrap_command(payload, "--update-plan-preview"),
+            bootstrap_command(payload, "--fast-verified-setup-apply", "--approve-action", "<UP-ID>"),
+            validation_command(str(payload["target_root"])),
+        ]
+        next_manual_gate = (
+            "Review upgrade and update-plan evidence. Apply only current UP-ID review_package_copy_candidate "
+            "actions with --fast-verified-setup-apply, then run validation from the target."
+        )
+    elif kind == "existing_project":
+        route = "existing_project_intake"
+        underlying_commands = [
+            bootstrap_command(payload, "--fast-verified-setup-preview"),
+            existing_repo_intake_command(payload),
+            bootstrap_command(payload, "--existing-project-adaptation-plan"),
+        ]
+        next_manual_gate = "Run Existing Repo Intake and adaptation planning. This facade has no existing-app apply path."
+    else:
+        underlying_commands = [bootstrap_command(payload)]
+
+    return {
+        "preview_kind": "fast_verified_setup_preview",
+        "status": "blocked" if blockers else payload["status"],
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": kind,
+        "route": route,
+        "approval_prefix": approval_prefix,
+        "current_action_ids": current_action_ids,
+        "underlying_commands": underlying_commands,
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "next_manual_gate": next_manual_gate,
+        "validation_command_after_apply": validation_command(str(payload["target_root"])),
+        "blockers": blockers,
+        "not_authority_for": [
+            "broad installer behavior",
+            "hidden support-only setup",
+            "package update permission",
+            "dirty-file overwrite",
+            "owner-file adaptation approval",
+            "hook installation",
+            "CI mutation",
+            "app commands",
+            "app-code edits",
+            "registry lookup",
+            "dist-tag resolution",
+            "release-channel behavior",
+            "package-manager behavior",
+            "rollback automation",
+            "generated-output authority",
+            "task selection",
+            "PRD approval",
+            "bead activation",
+        ],
+    }
+
+
+def build_fast_verified_setup_apply(payload: dict[str, Any], approved_action_ids: list[str]) -> dict[str, Any]:
+    approved = sorted(set(approved_action_ids))
+    prefixes = approved_action_prefixes(approved)
+    blocked: list[dict[str, str]] = []
+    delegated_apply: dict[str, Any] | None = None
+    route = "blocked"
+
+    if not approved:
+        blocked.append({"path": "<approval>", "reason": "at least one --approve-action <SP-ID|UP-ID> is required"})
+    if len(prefixes) > 1:
+        blocked.append({"path": "<approval>", "reason": "do not mix SP-ID and UP-ID approvals in one fast setup apply"})
+    elif prefixes and prefixes not in [{"SP"}, {"UP"}]:
+        blocked.append({"path": "<approval>", "reason": "fast setup apply accepts only current SP-ID or UP-ID actions"})
+
+    if not blocked and prefixes == {"SP"}:
+        route = "fresh_or_nearly_empty_setup"
+        delegated_apply = apply_supervised_setup(payload, approved)
+    elif not blocked and prefixes == {"UP"}:
+        route = "existing_precode_refresh"
+        delegated_apply = apply_upgrade_preview(payload, approved)
+
+    status = "blocked"
+    copied: list[dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
+    delegated_blocked: list[dict[str, str]] = []
+    if delegated_apply is not None:
+        status = str(delegated_apply["status"])
+        copied = list(delegated_apply["copied"])
+        skipped = list(delegated_apply["skipped"])
+        delegated_blocked = list(delegated_apply["blocked"])
+    all_blocked = blocked + delegated_blocked
+    if all_blocked:
+        status = "blocked"
+
+    return {
+        "apply_kind": "fast_verified_setup_apply",
+        "status": status,
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": payload["target_kind"],
+        "route": route,
+        "approved_actions": approved,
+        "copied": copied,
+        "skipped": skipped,
+        "blocked": all_blocked,
+        "delegated_apply": delegated_apply,
+        "underlying_commands": [
+            bootstrap_command(
+                payload,
+                "--fast-verified-setup-apply",
+                *[part for action_id in approved for part in ("--approve-action", action_id)],
+            )
+        ],
+        "validation_next_step": (
+            validation_command(str(payload["target_root"]))
+            if status == "applied"
+            else "Resolve blockers and rerun fast verified setup preview before applying current approval IDs."
+        ),
+        "target_mutation_allowed": status == "applied",
+        "generated_evidence_only": status != "applied",
+        "not_authority_for": [
+            "owner-file adaptation",
+            "overwriting target material",
+            "installing hooks",
+            "changing CI",
+            "running app commands",
+            "writing app code",
+            "registry lookup",
+            "dist-tag resolution",
+            "release-channel behavior",
+            "package-manager behavior",
+            "rollback automation",
+            "task selection",
+            "PRD approval",
+            "bead activation",
+            "generated-output authority",
+        ],
+    }
+
+
 def build_recovery_guidance(payload: dict[str, Any]) -> dict[str, Any]:
     kind = str(payload["target_kind"])
     blockers = list(payload["blockers"])
+    diagnosis = payload.get("setup_diagnosis") or {}
+    missing_support = list(payload.get("target_missing_required_setup_support_paths", []))
     if kind == "existing_precode":
-        path = "Validate active memory, run upgrade preview, then decide whether this is repair, package update, or normal Precode work."
+        if missing_support:
+            path = "Run package upgrade preview, copy only approved missing reusable setup support UP-IDs, validate memory, then decide whether this is repair, package refresh, or normal Precode work."
+        else:
+            path = "Validate active memory, run upgrade preview, then decide whether this is repair, package refresh, or normal Precode work."
     elif kind == "existing_project":
         path = "Run Existing Repo Intake, preserve current project truth, and plan owner-file adaptation before any setup mutation."
     elif kind in {"empty", "nearly_empty"}:
@@ -1060,9 +1370,11 @@ def build_recovery_guidance(payload: dict[str, Any]) -> dict[str, Any]:
         "source_root": payload["source_root"],
         "target_root": payload["target_root"],
         "target_kind": kind,
+        "setup_diagnosis": diagnosis,
         "likely_recovery_path": path,
         "support_steps": [
             "Confirm source and target folders before interpreting setup state.",
+            "Name the setup diagnosis route before proposing setup repair, package refresh, first-session orientation, or product work.",
             "Inspect target git status before approving any mutation.",
             "Use preview or intake evidence to name the smallest safe next action.",
             "Ask for explicit approval before copying, adapting, deleting, overwriting, installing hooks, or changing CI.",
@@ -1074,6 +1386,7 @@ def build_recovery_guidance(payload: dict[str, Any]) -> dict[str, Any]:
         ],
         "forbidden_actions": [
             "do not automate rollback",
+            "do not create a new setup command or support-only setup path",
             "do not run destructive cleanup",
             "do not overwrite dirty package or owner files",
             "do not install hooks or change CI silently",
@@ -1459,6 +1772,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         warnings.append("recommended local dependencies are missing")
 
     status = "blocked" if blockers else "warning" if warnings else "pass"
+    diagnosis = setup_diagnosis(kind, missing_source_paths, missing_required_setup_support_paths, conflicts, blockers)
     payload = {
         "tool": "bootstrap-check",
         "status": status,
@@ -1469,6 +1783,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "source_missing_paths": missing_source_paths,
         "target_missing_required_setup_support_paths": missing_required_setup_support_paths,
         "target_kind": kind,
+        "setup_diagnosis": diagnosis,
         "public_file_groups": PUBLIC_FILE_GROUPS,
         "excluded_paths": EXCLUDED_PATHS,
         "conflicts": conflicts,
@@ -1492,6 +1807,7 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
 
 
 def render_plain(payload: dict[str, Any]) -> str:
+    diagnosis = payload.get("setup_diagnosis") or {}
     lines = [
         f"Bootstrap Confidence: {payload['status']}",
         f"- Source: `{payload['source_root']}`",
@@ -1500,6 +1816,24 @@ def render_plain(payload: dict[str, Any]) -> str:
         f"- Recommended next step: {payload['recommended_next_step']}",
         "- Read-only default: yes; this command does not copy, edit, install hooks, change CI, or write app code.",
     ]
+    if diagnosis:
+        lines.extend(
+            [
+                "\nSetup diagnosis:",
+                f"- Source/target clarity: `{diagnosis['source_target_clarity']}`",
+                f"- Target state: `{diagnosis['target_state']}`",
+                f"- Partial setup classification: `{diagnosis['partial_setup_classification']}`",
+                f"- Recommended route: `{diagnosis['recommended_route']}`",
+                "- Target mutation allowed from diagnosis: no",
+                "- Generated evidence only: yes",
+            ]
+        )
+        if diagnosis.get("validation_after_apply"):
+            lines.append("\nValidation after approved apply:")
+            lines.extend(f"- {item}" for item in diagnosis["validation_after_apply"])
+        if diagnosis.get("forbidden_next_actions"):
+            lines.append("\nForbidden next actions:")
+            lines.extend(f"- {item}" for item in diagnosis["forbidden_next_actions"])
     if payload["blockers"]:
         lines.append("\nBlockers:")
         lines.extend(f"- {item}" for item in payload["blockers"])
@@ -1756,6 +2090,75 @@ def render_upgrade_apply_plain(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_fast_verified_setup_preview_plain(payload: dict[str, Any]) -> str:
+    preview = payload["fast_verified_setup_preview"]
+    lines = [
+        render_plain(payload),
+        "\nFast Verified Setup Preview:",
+        f"- Preview kind: `{preview['preview_kind']}`",
+        f"- Preview status: `{preview['status']}`",
+        f"- Route: `{preview['route']}`",
+        f"- Approval prefix: `{preview['approval_prefix']}`",
+        "- Target mutation allowed: no",
+        "- Writes by default: no",
+        "- Generated evidence only: yes",
+        "- Facade boundary: transparent delegate only; not an installer, updater, package manager, rollback helper, support-only hidden setup path, task selector, PRD approval, or bead activation.",
+        f"- Next manual gate: {preview['next_manual_gate']}",
+        "\nUnderlying command sequence:",
+    ]
+    lines.extend(f"- `{command}`" for command in preview["underlying_commands"])
+    if preview["current_action_ids"]:
+        lines.append("\nCurrent candidate approval IDs:")
+        lines.extend(f"- `{action_id}`" for action_id in preview["current_action_ids"])
+    lines.append(f"\nValidation command after approved apply: `{preview['validation_command_after_apply']}`")
+    if "supervised_setup_plan" in payload:
+        lines.append("\nFresh-target setup evidence:")
+        plan = payload["supervised_setup_plan"]
+        lines.append(f"- Plan status: `{plan['status']}`")
+        lines.append(f"- Review-copy candidates: {len(action_ids(plan['actions'], 'review_copy_candidate'))}")
+    if "npm_update_plan_preview" in payload:
+        plan = payload["npm_update_plan_preview"]
+        lines.append("\nExisting-Precode refresh evidence:")
+        lines.append(f"- Plan status: `{plan['status']}`")
+        lines.append(f"- Package state classification: `{plan['package_state_classification']}`")
+        lines.append(f"- Candidate package-copy IDs: {len(plan['grouped_action_ids']['candidate_package_copy'])}")
+    if "existing_project_adaptation_plan" in payload:
+        plan = payload["existing_project_adaptation_plan"]
+        lines.append("\nExisting-project intake evidence:")
+        lines.append(f"- Plan status: `{plan['status']}`")
+        lines.append("- Apply path: none; run Existing Repo Intake before any adaptation or copy decision.")
+    lines.append(
+        "\nFast setup warning: preview output is evidence only. Apply only current SP-ID or UP-ID values with explicit approval; validation remains required after copying."
+    )
+    return "\n".join(lines)
+
+
+def render_fast_verified_setup_apply_plain(payload: dict[str, Any]) -> str:
+    summary = payload["fast_verified_setup_apply"]
+    lines = [
+        render_fast_verified_setup_preview_plain(payload),
+        "\nFast Verified Setup Apply Summary:",
+        f"- Apply kind: `{summary['apply_kind']}`",
+        f"- Apply status: `{summary['status']}`",
+        f"- Route: `{summary['route']}`",
+        "- Scope: explicit current SP-ID or UP-ID copy actions delegated to the Python Bootstrap source of truth.",
+        "- This apply mode does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide rollback automation, provide package-manager behavior, select tasks, approve PRDs, or activate beads.",
+        "\nUnderlying command:",
+    ]
+    lines.extend(f"- `{command}`" for command in summary["underlying_commands"])
+    if summary["copied"]:
+        lines.append("\nCopied:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["copied"])
+    if summary["skipped"]:
+        lines.append("\nSkipped:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["skipped"])
+    if summary["blocked"]:
+        lines.append("\nBlocked:")
+        lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["blocked"])
+    lines.append(f"\nValidation next step: `{summary['validation_next_step']}`")
+    return "\n".join(lines)
+
+
 def render_recovery_guidance_plain(payload: dict[str, Any]) -> str:
     guidance = payload["bootstrap_recovery_guidance"]
     lines = [
@@ -1862,6 +2265,9 @@ def self_test() -> int:
         empty_payload = build_payload(source.as_posix(), empty_target.as_posix())
         assert empty_payload["target_kind"] == "empty"
         assert empty_payload["status"] == "pass"
+        assert empty_payload["setup_diagnosis"]["recommended_route"] == "supervised_setup_plan_then_validate"
+        assert empty_payload["setup_diagnosis"]["target_mutation_allowed"] is False
+        assert "package-manager behavior" in empty_payload["setup_diagnosis"]["not_authority_for"]
         assert not (source / "logs" / "bootstrap-check.json").exists()
 
         existing_target = base / "existing-target"
@@ -1871,6 +2277,7 @@ def self_test() -> int:
         existing_payload = build_payload(source.as_posix(), existing_target.as_posix())
         assert existing_payload["target_kind"] == "existing_project"
         assert existing_payload["status"] == "warning"
+        assert existing_payload["setup_diagnosis"]["recommended_route"] == "existing_repo_intake_before_setup_mutation"
         assert any(item["path"] == "README.md" for item in existing_payload["conflicts"])
 
         nearly_empty_target = base / "nearly-empty-target"
@@ -1924,6 +2331,14 @@ def self_test() -> int:
             action["category"] in {"review_owner_adaptation_candidate", "review_owner_creation_candidate"}
             for action in existing_payload["existing_project_adaptation_plan"]["actions"]
         )
+        existing_payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(existing_payload)
+        assert existing_payload["fast_verified_setup_preview"]["route"] == "existing_project_intake"
+        assert existing_payload["fast_verified_setup_preview"]["current_action_ids"] == []
+        assert any(
+            "scripts/existing-repo-intake.py" in command
+            for command in existing_payload["fast_verified_setup_preview"]["underlying_commands"]
+        )
+        assert "no existing-app apply path" in existing_payload["fast_verified_setup_preview"]["next_manual_gate"]
 
         missing_source_payload = build_payload((base / "missing-source").as_posix(), empty_target.as_posix())
         assert missing_source_payload["status"] == "blocked"
@@ -1936,6 +2351,8 @@ def self_test() -> int:
         missing_target_payload = build_payload(source.as_posix(), (base / "missing-target").as_posix())
         assert missing_target_payload["target_kind"] == "missing"
         assert missing_target_payload["status"] == "blocked"
+        assert missing_target_payload["setup_diagnosis"]["source_target_clarity"] == "unclear_or_blocked"
+        assert missing_target_payload["setup_diagnosis"]["partial_setup_classification"] == "target_missing"
         missing_target_payload["install_update_preview"] = build_manifest_preview(missing_target_payload)
         missing_target_payload["supervised_setup_plan"] = build_supervised_setup_plan(missing_target_payload)
         assert any(action["path"] == "<target-project-root>" for action in missing_target_payload["install_update_preview"]["actions"])
@@ -1944,6 +2361,8 @@ def self_test() -> int:
         same_payload = build_payload(source.as_posix(), source.as_posix())
         assert same_payload["target_kind"] == "same_as_source"
         assert same_payload["status"] == "blocked"
+        assert same_payload["setup_diagnosis"]["target_state"] == "wrong_folder"
+        assert same_payload["setup_diagnosis"]["recommended_route"] == "stop_and_choose_target"
         same_payload["install_update_preview"] = build_manifest_preview(same_payload)
         same_payload["supervised_setup_plan"] = build_supervised_setup_plan(same_payload)
         assert any(action["category"] == "blocked" for action in same_payload["install_update_preview"]["actions"])
@@ -1989,6 +2408,10 @@ def self_test() -> int:
             "tasks/prds/PRD-000-template.md",
             "tasks/prds/PRD-SHARD-SCHEMA.md",
         }
+        assert existing_precode_payload["setup_diagnosis"]["partial_setup_classification"] == "required_support_files_missing"
+        assert existing_precode_payload["setup_diagnosis"]["recommended_route"] == "package_owned_refresh_then_validate"
+        assert "Inspect target git status" in " ".join(existing_precode_payload["setup_diagnosis"]["validation_after_apply"])
+        assert "do not create a new setup command or support-only setup path" in existing_precode_payload["setup_diagnosis"]["forbidden_next_actions"]
         assert "target is missing required reusable setup support files" in existing_precode_payload["warnings"]
         assert any(
             action["category"] == "preserve_existing"
@@ -2081,13 +2504,42 @@ def self_test() -> int:
         assert "Npm Update Plan Preview" in rendered_update_plan
         assert "Registry lookup performed: no" in rendered_update_plan
         assert "not package update permission" in rendered_update_plan
+        assert "Dist-tag resolution performed: no" in rendered_update_plan
+        fast_precode_target = base / "fast-existing-precode-target"
+        make_source(fast_precode_target)
+        fast_precode_payload = build_payload(source.as_posix(), fast_precode_target.as_posix())
+        fast_precode_payload["install_update_preview"] = build_manifest_preview(fast_precode_payload)
+        fast_precode_payload["supervised_setup_plan"] = build_supervised_setup_plan(fast_precode_payload)
+        fast_precode_payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(fast_precode_payload)
+        fast_precode_payload["package_upgrade_preview"] = build_upgrade_preview(fast_precode_payload)
+        fast_precode_payload["npm_update_plan_preview"] = build_update_plan_preview(fast_precode_payload)
+        fast_precode_payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(fast_precode_payload)
+        assert fast_precode_payload["fast_verified_setup_preview"]["route"] == "existing_precode_refresh"
+        assert fast_precode_payload["fast_verified_setup_preview"]["approval_prefix"] == "UP"
+        assert any(
+            "--update-plan-preview" in command
+            for command in fast_precode_payload["fast_verified_setup_preview"]["underlying_commands"]
+        )
+        fast_upgrade_copy_ids = [
+            action["id"]
+            for action in fast_precode_payload["package_upgrade_preview"]["actions"]
+            if action["category"] == "review_package_copy_candidate" and action["path"] == "docs/NEW-PACKAGE-DOC.md"
+        ]
+        assert len(fast_upgrade_copy_ids) == 1
+        fast_precode_apply = build_fast_verified_setup_apply(fast_precode_payload, fast_upgrade_copy_ids)
+        assert fast_precode_apply["status"] == "applied"
+        assert (fast_precode_target / "docs" / "NEW-PACKAGE-DOC.md").is_file()
+        assert fast_precode_apply["validation_next_step"] == validation_command(str(fast_precode_payload["target_root"]))
+        fast_mixed_apply = build_fast_verified_setup_apply(fast_precode_payload, ["SP-001", fast_upgrade_copy_ids[0]])
+        assert fast_mixed_apply["status"] == "blocked"
+        assert any("do not mix" in item["reason"] for item in fast_mixed_apply["blocked"])
         collision_apply = apply_upgrade_preview(existing_precode_payload, [prd_collision_actions[0]["id"]])
         assert collision_apply["status"] == "blocked"
         assert any("identity collision" in item["reason"] for item in collision_apply["blocked"])
         upgrade_apply = apply_upgrade_preview(existing_precode_payload, upgrade_copy_ids)
         assert upgrade_apply["status"] == "applied"
         assert (existing_precode_target / "docs" / "NEW-PACKAGE-DOC.md").is_file()
-        assert "Validate active memory" in existing_precode_payload["bootstrap_recovery_guidance"]["likely_recovery_path"]
+        assert "validate memory" in existing_precode_payload["bootstrap_recovery_guidance"]["likely_recovery_path"]
 
         dirty_precode_target = base / "dirty-precode-target"
         make_source(dirty_precode_target)
@@ -2145,8 +2597,30 @@ def self_test() -> int:
             for action in empty_payload["install_update_preview"]["actions"]
         )
         rendered_setup_plan = render_setup_plan_plain(empty_payload)
+        assert "Setup diagnosis:" in rendered_setup_plan
+        assert "Recommended route: `supervised_setup_plan_then_validate`" in rendered_setup_plan
         assert "evidence only" in rendered_setup_plan
         assert "does not approve copying" in rendered_setup_plan
+        fast_empty_payload = dict(empty_payload)
+        fast_empty_payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(fast_empty_payload)
+        fast_empty_payload["package_upgrade_preview"] = build_upgrade_preview(fast_empty_payload)
+        fast_empty_payload["npm_update_plan_preview"] = build_update_plan_preview(fast_empty_payload)
+        fast_empty_payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(fast_empty_payload)
+        assert fast_empty_payload["fast_verified_setup_preview"]["route"] == "fresh_or_nearly_empty_setup"
+        assert fast_empty_payload["fast_verified_setup_preview"]["approval_prefix"] == "SP"
+        assert any(
+            "--supervised-setup-plan" in command
+            for command in fast_empty_payload["fast_verified_setup_preview"]["underlying_commands"]
+        )
+        rendered_fast_preview = render_fast_verified_setup_preview_plain(fast_empty_payload)
+        assert "Fast Verified Setup Preview" in rendered_fast_preview
+        assert "Underlying command sequence" in rendered_fast_preview
+        fast_no_approval = build_fast_verified_setup_apply(fast_empty_payload, [])
+        assert fast_no_approval["status"] == "blocked"
+        assert any("at least one" in item["reason"] for item in fast_no_approval["blocked"])
+        fast_unknown = build_fast_verified_setup_apply(fast_empty_payload, ["SP-999"])
+        assert fast_unknown["status"] == "blocked"
+        assert any("not present in the setup plan" in item["reason"] for item in fast_unknown["blocked"])
         json.dumps(empty_payload, sort_keys=True)
 
         write_evidence(empty_payload)
@@ -2173,6 +2647,20 @@ def self_test() -> int:
         assert apply_payload["supervised_setup_apply"]["status"] == "applied"
         assert (apply_target / "AGENT.md").is_file()
         assert not (apply_target / "DECISIONS.md").exists()
+        fast_apply_target = base / "fast-apply-target"
+        fast_apply_target.mkdir()
+        fast_apply_payload = build_payload(source.as_posix(), fast_apply_target.as_posix())
+        fast_apply_payload["install_update_preview"] = build_manifest_preview(fast_apply_payload)
+        fast_apply_payload["supervised_setup_plan"] = build_supervised_setup_plan(fast_apply_payload)
+        fast_apply_payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(fast_apply_payload)
+        fast_setup_apply = build_fast_verified_setup_apply(fast_apply_payload, approved_copy_ids)
+        assert fast_setup_apply["status"] == "applied"
+        assert (fast_apply_target / "AGENT.md").is_file()
+        assert fast_setup_apply["validation_next_step"] == validation_command(str(fast_apply_payload["target_root"]))
+        rendered_fast_apply = render_fast_verified_setup_apply_plain(
+            {**fast_apply_payload, "fast_verified_setup_apply": fast_setup_apply}
+        )
+        assert "Fast Verified Setup Apply Summary" in rendered_fast_apply
 
         docs_html_copy_ids = [
             action["id"]
@@ -2288,6 +2776,16 @@ def main() -> int:
         help="include non-mutating npm update-plan preview output for existing Precode targets; implies --upgrade-preview",
     )
     parser.add_argument(
+        "--fast-verified-setup-preview",
+        action="store_true",
+        help="include transparent fast verified setup command sequencing over existing bootstrap paths",
+    )
+    parser.add_argument(
+        "--fast-verified-setup-apply",
+        action="store_true",
+        help="apply explicitly approved current SP-ID or UP-ID copy actions through the fast verified setup facade",
+    )
+    parser.add_argument(
         "--recovery-guidance",
         action="store_true",
         help="include non-mutating bootstrap recovery guidance output",
@@ -2321,17 +2819,39 @@ def main() -> int:
         parser.error("--apply-supervised-setup requires --supervised-setup-plan")
     if args.apply_upgrade_preview and not args.upgrade_preview:
         parser.error("--apply-upgrade-preview requires --upgrade-preview")
+    if args.fast_verified_setup_apply and not args.approve_action:
+        parser.error("--fast-verified-setup-apply requires at least one --approve-action <SP-ID|UP-ID>")
 
     payload = build_payload(args.source, args.target)
-    if args.preview_manifest or args.supervised_setup_plan:
+    fast_mode = args.fast_verified_setup_preview or args.fast_verified_setup_apply
+    target_route_kind = str(payload["target_kind"])
+    fast_apply_prefixes = approved_action_prefixes(args.approve_action) if args.fast_verified_setup_apply else set()
+    needs_fresh_setup = (
+        args.preview_manifest
+        or args.supervised_setup_plan
+        or (args.fast_verified_setup_preview and target_route_kind in {"empty", "nearly_empty"})
+        or (args.fast_verified_setup_apply and "SP" in fast_apply_prefixes)
+    )
+    needs_existing_project = (
+        args.existing_project_adaptation_plan
+        or (args.fast_verified_setup_preview and target_route_kind == "existing_project")
+        or (args.fast_verified_setup_apply and target_route_kind == "existing_project")
+    )
+    needs_existing_precode = (
+        args.upgrade_preview
+        or args.update_plan_preview
+        or (args.fast_verified_setup_preview and target_route_kind == "existing_precode")
+        or (args.fast_verified_setup_apply and "UP" in fast_apply_prefixes)
+    )
+    if needs_fresh_setup:
         payload["install_update_preview"] = build_manifest_preview(payload)
-    if args.supervised_setup_plan:
+    if args.supervised_setup_plan or needs_fresh_setup:
         payload["supervised_setup_plan"] = build_supervised_setup_plan(payload)
-    if args.existing_project_adaptation_plan:
+    if needs_existing_project:
         payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(payload)
-    if args.upgrade_preview or args.update_plan_preview:
+    if needs_existing_precode:
         payload["package_upgrade_preview"] = build_upgrade_preview(payload)
-    if args.update_plan_preview:
+    if args.update_plan_preview or needs_existing_precode:
         payload["npm_update_plan_preview"] = build_update_plan_preview(payload)
     if args.recovery_guidance:
         payload["bootstrap_recovery_guidance"] = build_recovery_guidance(payload)
@@ -2339,6 +2859,10 @@ def main() -> int:
         payload["supervised_setup_apply"] = apply_supervised_setup(payload, args.approve_action)
     if args.apply_upgrade_preview:
         payload["package_upgrade_apply"] = apply_upgrade_preview(payload, args.approve_action)
+    if args.fast_verified_setup_preview or args.fast_verified_setup_apply:
+        payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(payload)
+    if args.fast_verified_setup_apply:
+        payload["fast_verified_setup_apply"] = build_fast_verified_setup_apply(payload, args.approve_action)
     if args.write_evidence:
         if payload["source_root"] == payload["target_root"]:
             raise SystemExit("bootstrap-check: refusing to write evidence when source and target are the same")
@@ -2348,7 +2872,11 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
-        if args.apply_upgrade_preview:
+        if args.fast_verified_setup_apply:
+            print(render_fast_verified_setup_apply_plain(payload))
+        elif args.fast_verified_setup_preview:
+            print(render_fast_verified_setup_preview_plain(payload))
+        elif args.apply_upgrade_preview:
             print(render_upgrade_apply_plain(payload))
         elif args.update_plan_preview:
             print(render_update_plan_preview_plain(payload))

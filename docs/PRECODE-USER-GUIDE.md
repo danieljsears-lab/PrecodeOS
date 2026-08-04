@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.100
+Document version: v0.7.101
 Last updated: 2026-08-04
 
 ## 1. Start Here
@@ -644,6 +644,14 @@ When delegated work returns, use one re-entry evidence shape before continuing:
 Re-entry: review delegated work before continuing. Name the scope returned, changed files, checks and results, manual verification, approval still required, unresolved risks, external status evidence, forbidden actions not taken, and recommended next human action. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve merge, approve transition, mutate GitHub, deploy, release, or treat agent summaries, PR status, CI, reviews, or generated reports as authority.
 ```
 
+For any host-agent return, including solo AFK, branch/worktree, PR, cloud-agent, or teammate work, use the Daily Cockpit Host-Agent Return Loop before acceptance:
+
+```text
+Review returned agent work before I accept it.
+
+Show the active bead, scope returned, changed files, checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt. Recommend only continue, review, split, block, or handoff. Do not accept implementation, approve review, approve transition, activate another bead, mutate external systems, deploy, release, or treat generated reports, generated HTML, screenshots, PR status, CI status, chat summaries, reviews, or agent confidence as proof by themselves.
+```
+
 For cloud-agent or PR returns, keep the prompt provider-neutral. Optional GitHub branch, PR, review, check, or workflow status can help fill evidence fields when it is read-only and available, but it still does not approve implementation, merge, transition, or external mutation.
 
 For a read-only Small Team Collaboration Lane preview, run:
@@ -841,7 +849,7 @@ PrecodeOS has many scripts because setup, daily work, support, evidence, review,
 | Role or stage | Use these first | Boundary |
 |---|---|---|
 | Beginner daily work | `bash scripts/session-start.sh`, `python3 scripts/next-step.py`, `python3 scripts/loop-health.py`, `python3 scripts/os-health.py`, `bash scripts/record-check.sh -- <command>` | These orient, check, and record evidence. They do not approve PRDs, activate beads, accept review, or choose work. |
-| Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `npx @precodeos/precodeos apply-package-owned`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. `apply-package-owned` delegates only approved missing package-owned `UP-ID` copy actions and refuses dirty/unknown package states through Bootstrap Closeout. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
+| Setup, support, refresh, or recovery | `npx @precodeos/precodeos setup-preview`, `npx @precodeos/precodeos fast-setup-preview`, `npx @precodeos/precodeos fast-setup-apply`, `npx @precodeos/precodeos upgrade-preview`, `npx @precodeos/precodeos update-plan-preview`, `npx @precodeos/precodeos apply-package-owned`, `python3 scripts/bootstrap-check.py`, `python3 scripts/existing-repo-intake.py`, `bash scripts/validate-memory.sh`, `python3 scripts/file-inventory.py --check`, `python3 scripts/state-check.py`, `python3 scripts/files-in-play-check.py`, `python3 scripts/completion-check.py`, `python3 scripts/bead-transition.py --json` | Use these when setup, package-owned refresh, active state, file scope, proof, or transition readiness is unclear. They diagnose; npm and Python preview entries do not approve repair, refresh mutation, package update behavior, package-manager behavior, executable release-channel behavior, or generated-output authority. `fast-setup-apply` delegates only approved current `SP-ID` or `UP-ID` copy actions and prints validation; `apply-package-owned` delegates only approved missing package-owned `UP-ID` copy actions and refuses dirty/unknown package states through Bootstrap Closeout. Advisory release-reference, compatibility-policy, and update-plan metadata is evidence only. |
 | Advanced evidence or review | Ralph, Candidate Queue, Build Attribution Ledger, Team Collaboration, PRD Handoff Readiness, Release Readiness, proof trace, and review-lane commands | Use only when the current stage, risk, support role, or explicit user question calls for them. These outputs remain evidence or advisory review. |
 | Maintainer validation | `version-check.py`, `file-inventory.py --check`, `package-knowledge-lint.py --check`, `authority-map-query.py --query "active memory"`, `public-repo-check.py`, generated docs checks, PRD HTML checks, and roadmap checks | These are package-maintenance checks, not the normal builder daily surface. Authority-map query is navigation-only: it helps find candidate owner files and does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior. |
 

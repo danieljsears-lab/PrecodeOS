@@ -30,10 +30,12 @@ Use the setup plan from the PrecodeOS package checkout after Bootstrap Confidenc
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
-The optional npm command is a read-only preview entry over the same setup plan. It has no postinstall behavior, writes nothing by default, and exposes no apply flags.
+The optional npm setup preview is a read-only preview entry over the same setup plan. Fast verified setup preview is also read-only and exposes the underlying Bootstrap command sequence before any apply decision. It has no postinstall behavior and writes nothing by default.
 
 Structured output is available with:
 
@@ -49,6 +51,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--supervised-setup-plan` includes the install/update manifest preview because setup-plan actions must be traceable to preview categories.
 
+The underlying Bootstrap output also includes setup diagnosis fields. Before reviewing setup-plan actions, use source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions to confirm this is really fresh setup rather than Existing Repo Intake, package-owned refresh, recovery, first-session orientation, or product work. Diagnosis does not approve copy actions.
+
 `--write-evidence` writes only Bootstrap Confidence evidence files under the PrecodeOS package source:
 
 - `logs/bootstrap-check.json`
@@ -60,9 +64,10 @@ After the setup plan is reviewed, a separate apply mode may copy explicitly appr
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
 ```
 
-That apply mode is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md`. The plan itself remains evidence only and does not approve the apply step.
+That apply mode is governed by `tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md`; the fast facade delegates to the same Python copy path for approved current `SP-ID` values and prints validation. The plan itself remains evidence only and does not approve the apply step.
 
 Existing-project adaptation planning, package upgrade preview, support-assisted recovery guidance, and upgrade apply are separate closeout paths governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`.
 
@@ -75,6 +80,7 @@ The setup-plan output should include:
 - `source_root`
 - `target_root`
 - `target_kind`
+- `setup_diagnosis`
 - `actions`
 - `approval_gates`
 - `excluded_paths`

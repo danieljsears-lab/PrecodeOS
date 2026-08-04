@@ -9,7 +9,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.22
+Document version: v0.1.23
 Last updated: 2026-08-04
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
@@ -22,6 +22,8 @@ This guide is for first-time builders and non-technical builders using Claude Co
 This is a Claude Code companion, not the PrecodeOS start page. If PrecodeOS is not installed, use `docs/PRECODE-GUIDED-SETUP.md`. If it is installed or you are resuming work, use `docs/PRECODE-DAILY-COCKPIT.md` first. If you only have a rough idea, use the Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` path. If setup, state, checks, or generated reports feel broken, use `docs/PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.`
 
 Treat the Daily Cockpit as the builder control surface and Claude Code as the host-agent execution surface. The cockpit is where you decide the next prompt, active state, proof, approval, and stop condition; Claude Code works only inside the approved Precode bounds. Do not turn this guide into a generated cockpit panel, agent shell, command wrapper, dashboard, task selector, approval shortcut, or runtime.
+
+When Claude Code returns work, use the Daily Cockpit Host-Agent Return Loop before acceptance: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Ask `Review returned agent work before I accept it.` and require changed files, checks and results, manual verification, proof still missing, approval still required, forbidden actions not taken, and next safe prompt. Claude Code confidence, screenshots, generated reports, generated HTML, PR status, or chat summaries are not proof by themselves.
 
 Read it once, front to back, before your first session. After that, keep it open alongside your laptop and jump to whatever section you need. The **Prompt Cookbook** and **Quick Reference Card** are the sections you'll reach for most.
 

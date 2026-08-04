@@ -88,7 +88,8 @@ from precode_state import (
 
 
 APP_DIR = "app"
-PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "fail", "failed", "needs_info", "manual_testing"}
+PENDING_MARKERS = {"pending", "blocked", "not recorded", "unavailable", "missing", "needs_info", "manual_testing"}
+FAILED_STATUS_MARKERS = {"fail", "failed"}
 APPROVED_MARKERS = ("accepted", "approve", "approved")
 VERIFICATION_TIERS = {"static", "unit", "integration", "browser", "manual", "external"}
 RELEASE_EVIDENCE_FIELDS = {
@@ -623,13 +624,26 @@ def check_rows_for_bead(bead: BeadRecord, latest: dict[tuple[str, Any, str], dic
     return rows
 
 
+def status_marker_present(text: str, marker: str) -> bool:
+    pattern = r"(?<![a-z0-9_])" + re.escape(marker).replace(r"\ ", r"\s+") + r"(?![a-z0-9_])"
+    return bool(re.search(pattern, text))
+
+
+def failed_status_present(text: str) -> bool:
+    if re.fullmatch(r"(?:fail|failed)[.!?]?", text):
+        return True
+    return bool(re.search(r"(?<![a-z0-9_])(?:result|status)\s*:\s*(?:fail|failed)(?![a-z0-9_])", text))
+
+
 def manual_verification_clear(value: str) -> bool:
     normalized = value.lower().strip()
     if not normalized:
         return False
     if "not applicable" in normalized or normalized == "n/a":
         return True
-    return not any(marker in normalized for marker in PENDING_MARKERS)
+    if failed_status_present(normalized):
+        return False
+    return not any(status_marker_present(normalized, marker) for marker in PENDING_MARKERS)
 
 
 def review_decision_accepted(value: str) -> bool:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.6
+# Version: v0.1.7
 # Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -117,6 +117,26 @@ def build_parser() -> argparse.ArgumentParser:
     update_plan_preview.add_argument("--target", required=True, help="existing Precode target path")
     update_plan_preview.add_argument("--json", action="store_true", help="print JSON output")
 
+    fast_setup_preview = add_dry_run(subparsers.add_parser(
+        "fast-setup-preview",
+        help="show transparent fast verified setup command sequencing; writes nothing",
+    ))
+    fast_setup_preview.add_argument("--target", required=True, help="target project path")
+    fast_setup_preview.add_argument("--json", action="store_true", help="print JSON output")
+
+    fast_setup_apply = add_dry_run(subparsers.add_parser(
+        "fast-setup-apply",
+        help="delegate approved current SP-ID or UP-ID copy actions through bootstrap-check.py",
+    ))
+    fast_setup_apply.add_argument("--target", required=True, help="target project path")
+    fast_setup_apply.add_argument(
+        "--approve-action",
+        action="append",
+        default=[],
+        help="approved current SP-ID or UP-ID; repeat for multiple actions of the same prefix",
+    )
+    fast_setup_apply.add_argument("--json", action="store_true", help="print JSON output")
+
     apply_package_owned = add_dry_run(subparsers.add_parser(
         "apply-package-owned",
         help="delegate approved missing package-owned UP-ID copy actions through bootstrap-check.py",
@@ -221,6 +241,36 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             args.target,
             "--update-plan-preview",
         ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "fast-setup-preview":
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--fast-verified-setup-preview",
+        ]
+        if args.json:
+            command.append("--json")
+        return [command]
+    if args.command == "fast-setup-apply":
+        if not args.approve_action:
+            parser.error("fast-setup-apply requires at least one --approve-action <SP-ID|UP-ID>")
+        command = [
+            "python3",
+            "scripts/bootstrap-check.py",
+            "--source",
+            ".",
+            "--target",
+            args.target,
+            "--fast-verified-setup-apply",
+        ]
+        for action_id in args.approve_action:
+            command.extend(["--approve-action", action_id])
         if args.json:
             command.append("--json")
         return [command]

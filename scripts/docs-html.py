@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.9
-# Last updated: 2026-07-29
+# Version: v0.1.10
+# Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1463,6 +1463,72 @@ def render_cockpit_strip() -> str:
 """
 
 
+def render_host_agent_return_surface() -> str:
+    cards = [
+        (
+            "Prepare",
+            "Name the active bead, primary authority, files in play, proof needed, and stop condition.",
+            "Prepare host-agent work: show active bead, primary authority, files in play, proof needed, approval still required, and stop condition before any host agent edits.",
+        ),
+        (
+            "Bound",
+            "Set access level, allowed actions, approval gates, forbidden actions, and Run Contract needs.",
+            "Bound this agent: name the current access level, allowed actions, approval required before risky actions, forbidden actions, proof needed, Run Contract needs, and stop conditions.",
+        ),
+        (
+            "Send",
+            "Give one scoped approved-bead or bounded prompt to the host agent.",
+            "Use Approved-Bead Handoff for the current approved bead. Restate active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing.",
+        ),
+        (
+            "Return",
+            "Require changed files, checks, manual verification, risks, approvals, and forbidden actions not taken.",
+            "Review returned agent work before I accept it. Show scope returned, changed files, checks and results, manual verification, proof still missing, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt.",
+        ),
+        (
+            "Prove",
+            "Separate recorded checks and manual verification from generated evidence and agent confidence.",
+            "Prove: show recorded checks, manual verification, what each proof source does and does not prove, what generated evidence does not decide, and what I should verify manually before acceptance.",
+        ),
+        (
+            "Review",
+            "Recommend continue, review, split, block, or handoff without accepting work.",
+            "Review: recommend only continue, review, split, block, or handoff. Do not accept implementation, approve review, approve transition, activate another bead, mutate external systems, or treat generated reports, generated HTML, PR status, screenshots, or chat summaries as proof by themselves.",
+        ),
+        (
+            "Close/Next",
+            "Record digest, parked follow-ups, approval state, and next safe prompt without activation.",
+            "Close: run session close, summarize the work digest, suggested commit message, checks, blockers, approvals, learning context, parked follow-ups, next safe prompt, and end with Close State.",
+        ),
+    ]
+    rendered_cards = []
+    for index, (title, summary, prompt) in enumerate(cards):
+        rendered_cards.append(
+            f"""
+    <article class="reference-card">
+      <h4>{h(title)}</h4>
+      <p>{h(summary)}</p>
+      {render_copy_block("Copy this cockpit prompt", prompt, f"host-agent-return-{index}")}
+    </article>
+"""
+        )
+    return f"""
+<section class="reference-surface" id="host-agent-return-loop" aria-label="Host-Agent Return Loop">
+  <p class="eyebrow">Agent Work Cockpit V2</p>
+  <h2>Host-Agent Return Loop</h2>
+  <p class="lede"><code>Prepare -&gt; Bound -&gt; Send -&gt; Return -&gt; Prove -&gt; Review -&gt; Close/Next</code></p>
+  <p class="lede">Use these copy cards when coordinating Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent. They are generated from the package contract for easier browsing; canonical Markdown and protocols remain authoritative.</p>
+  <div class="cockpit-catalog-row" aria-label="Host-Agent Return Loop sources">
+    <span>Source authority</span>
+    <a href="../docs/PRECODE-DAILY-COCKPIT.md">Daily Cockpit Markdown</a>
+    <a href="../tasks/reference/PROMPT-PATTERNS.md">Prompt Patterns</a>
+    <a href="../tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md">Session Completion/Handoff</a>
+  </div>
+  <div class="reference-card-grid">{"".join(rendered_cards)}</div>
+</section>
+"""
+
+
 def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_doc: Doc | None) -> str:
     previous_link = (
         f'<a href="{h(previous_doc.html_name)}"><span>Previous</span>{h(previous_doc.title)}</a>'
@@ -1498,6 +1564,7 @@ def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_do
 <section class="content layout">
   <article class="article">
     {doc.content_html}
+    {render_host_agent_return_surface() if is_cockpit else ""}
     {render_reference_surface() if is_cockpit else ""}
     <nav class="page-nav" aria-label="Previous and next docs">{previous_link}{next_link}</nav>
   </article>

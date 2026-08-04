@@ -69,7 +69,7 @@ PRD_CLUSTERS = (
     PrdCluster(
         title="Setup / Adoption",
         purpose="First install, existing-project intake, setup previews, supervised copy actions, and package refresh policy.",
-        prd_ids=("PRD-002", "PRD-003", "PRD-004", "PRD-006", "PRD-010", "PRD-016", "PRD-041", "PRD-042", "PRD-047"),
+        prd_ids=("PRD-002", "PRD-003", "PRD-004", "PRD-006", "PRD-010", "PRD-016", "PRD-041", "PRD-042", "PRD-047", "PRD-050"),
     ),
     PrdCluster(
         title="PRD / Product-Definition Support",
