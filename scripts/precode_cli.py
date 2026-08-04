@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.8
+# Version: v0.1.9
 # Last updated: 2026-07-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -86,6 +86,11 @@ def build_parser() -> argparse.ArgumentParser:
     ))
     cohort_support_rollup.add_argument("--packet", action="append", default=[], help="explicit packet file to include; repeatable")
     cohort_support_rollup.add_argument("--glob", action="append", default=[], help="explicit packet glob to include; repeatable")
+    cohort_support_rollup.add_argument(
+        "--setup-friction",
+        action="store_true",
+        help="print the setup-specific friction lens over explicit packet files",
+    )
     cohort_support_rollup.add_argument("--json", action="store_true", help="print JSON output")
 
     bootstrap = add_dry_run(subparsers.add_parser(
@@ -206,6 +211,8 @@ def build_commands(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
             command.extend(["--packet", packet])
         for pattern in args.glob:
             command.extend(["--glob", pattern])
+        if args.setup_friction:
+            command.append("--setup-friction")
         if args.json:
             command.append("--json")
         return [command]

@@ -598,6 +598,18 @@ Return source counts, workflow/setup/check/freshness/friction signals, explicit 
 Do not collect telemetry, write reports, submit evidence, create issues, store identity, create support records, score contributors, rank productivity, prove adoption, choose roadmap work, approve commands, approve PRDs, activate beads, accept implementation, approve release, create wrappers, or mutate external systems.
 ```
 
+### Support Setup Friction Evidence Loop
+
+```text
+Use Support Setup Friction Evidence Loop.
+
+Run `python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet <packet-file>` only after explicit Builder Completion Evidence Packet or Sanitized Submitted Evidence Packet files exist.
+
+Return packet volume status, source/target clarity, target kind, missing reusable setup support files, approval latency or blockers, command sequence confusion, validation failure, prepared support artifact usage, next safe route, setup or refresh friction, explicit unknowns, source refs, and forbidden uses.
+
+Treat sparse packet volume and blank setup fields as unknown, not no friction. Do not scan the repo by default, collect telemetry, write reports, submit evidence, create issues, store identity, create support records, prove adoption, choose roadmap work, approve PRDs, activate beads, accept implementation, approve release, create wrappers, or mutate external systems.
+```
+
 ### Team Assignment Packet Prompts v2
 
 ```text

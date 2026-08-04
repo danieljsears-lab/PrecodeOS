@@ -23,14 +23,14 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.1.3
 Last updated: 2026-08-04
 
 ## Summary
 
 PrecodeOS should learn from usage without turning itself into an analytics product.
 
-The first requirement slice defined local, submitted, and networked usage-evidence boundaries before any collector implementation. The Local Opt-In Usage Evidence Review follow-on adds `scripts/usage-evidence-review.py` plus transparent `precode usage-evidence-review` and `precodeos usage-evidence-review` delegation so maintainers and support helpers can inspect safe local evidence without writing a report or submitting telemetry. The Sanitized Submitted Evidence Pack follow-on adds a dedicated packet template and local no-submit review helper so users, support helpers, instructors, or maintainers can review a packet before deliberate sharing. The Cohort/Support Evidence Rollup follow-on adds explicit packet-file aggregation by path or glob so repeated patterns can be reviewed without default scans, support records, analytics, grading, adoption proof, or roadmap selection. Outbound analytics remains deferred until consent, privacy, retention, hosting, endpoint ownership, and public documentation are approved separately.
+The first requirement slice defined local, submitted, and networked usage-evidence boundaries before any collector implementation. The Local Opt-In Usage Evidence Review follow-on adds `scripts/usage-evidence-review.py` plus transparent `precode usage-evidence-review` and `precodeos usage-evidence-review` delegation so maintainers and support helpers can inspect safe local evidence without writing a report or submitting telemetry. The Sanitized Submitted Evidence Pack follow-on adds a dedicated packet template and local no-submit review helper so users, support helpers, instructors, or maintainers can review a packet before deliberate sharing. The Cohort/Support Evidence Rollup follow-on adds explicit packet-file aggregation by path or glob so repeated patterns can be reviewed without default scans, support records, analytics, grading, adoption proof, or roadmap selection. The Support Setup Friction Evidence Loop follow-on adds a setup-specific lens over the same explicit packet files so support can review source/target ambiguity, target kind, missing support files, approval blockers, command sequence confusion, validation failures, prepared support artifact use, next safe route, and unknowns without creating a new support system. Outbound analytics remains deferred until consent, privacy, retention, hosting, endpoint ownership, and public documentation are approved separately.
 
 ## Source Inputs
 
@@ -86,6 +86,7 @@ Without a staged contract, future telemetry work could overfit to command counts
 - Goal 2: Implement local opt-in usage evidence review as a read-only generated-evidence command.
 - Goal 3: Define explicit sanitized submission as the only V1 sharing path.
 - Goal 4: Add lightweight cohort/support evidence fields for setup friction, confusing docs or prompts, support intervention type, and what Precode helped the user control.
+- Goal 4a: Add a setup-specific packet-file lens for repeated support setup friction after fast verified setup, setup diagnosis, or existing-Precode refresh sessions.
 - Goal 5: Defer outbound analytics behind a separate readiness gate.
 
 ## Non-Goals
@@ -121,6 +122,7 @@ Without a staged contract, future telemetry work could overfit to command counts
 | `PRD-048-FR08` | Sanitized submitted evidence must have a dedicated public packet template and local no-submit review helper. | P0 | The helper prints templates or advisory review warnings only. |
 | `PRD-048-FR09` | GitHub feedback and package-bug intake may accept reviewed sanitized packet excerpts, but no command may submit them automatically. | P0 | External submission remains a user action. |
 | `PRD-048-FR10` | Cohort/support rollups must aggregate only explicit packet files supplied by path or glob, and must report sparse evidence as unknown rather than as no friction. | P0 | No default repo scan, support database, grading, adoption proof, or roadmap selection. |
+| `PRD-048-FR11` | Support setup friction review must be a setup-specific lens over explicit packet files, not a new collector or support-record system. | P0 | Covers source/target clarity, target kind, missing setup support files, approval latency, command sequence confusion, validation failure, prepared support artifact use, next safe route, and unknowns. |
 
 ## Local Review Shape
 
@@ -153,6 +155,14 @@ PrecodeOS version or package source, if known:
 Target context: new project | existing project | cohort | support | maintainer review
 Workflow moments used:
 Setup or refresh friction:
+Setup source/target clarity:
+Setup target kind:
+Missing reusable setup support files:
+Setup approval latency or blocker:
+Setup command sequence confusion:
+Setup validation failure:
+Prepared support artifact used:
+Setup next safe route:
 Confusing docs, prompts, commands, or templates:
 Support intervention type:
 What Precode helped the user control:
@@ -179,6 +189,14 @@ If fewer than three packet files are supplied, the rollup reports `unknown_insuf
 
 The rollup is source evidence only. It must not write rollup files, submit evidence, create issues, call hosted endpoints, collect telemetry, store identity records, create support records, grade builders, score contributors, rank productivity, prove adoption, validate the product, approve owner-file promotion, choose roadmap work, approve PRDs, activate beads, accept implementation, or create generated proof.
 
+### Support Setup Friction Evidence Loop
+
+Run `python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet <packet-file>` or `precode cohort-support-rollup --setup-friction --packet <packet-file>` only after explicit support or cohort packet files include setup/support evidence.
+
+The setup-friction lens reports the normal packet-volume status plus setup-specific counts for source/target clarity, target kind, missing reusable setup support files, approval latency or blockers, command sequence confusion, validation failure, prepared support artifact usage, next safe route, setup or refresh friction, and unknowns because they were not logged.
+
+This lens is for the v4 setup-hardening question only: whether real support setup sessions still leave repeated unknowns after fast verified setup and setup diagnosis improvements. It must not become a separate setup authority, support case database, transcript analyzer, telemetry collector, prepared starter-target authority, package update approval, generated-output authority, automatic roadmap selector, or replacement for maintainer review.
+
 ## Acceptance Criteria
 
 | Requirement | Acceptance check | Evidence |
@@ -191,6 +209,7 @@ The rollup is source evidence only. It must not write rollup files, submit evide
 | `PRD-048-FR08` | Dedicated submitted-packet template and local helper exist; helper has template, review, JSON, and self-test modes with no-write/no-submit boundaries. | `python3 scripts/sanitized-evidence-pack.py --self-test`. |
 | `PRD-048-FR09` | GitHub intake wording routes reviewed sanitized packet excerpts as source evidence only and keeps submission manual. | Source review and GitHub importer self-test. |
 | `PRD-048-FR10` | Rollup helper and template exist; helper requires explicit `--packet` or `--glob`, has JSON/self-test modes, reports sparse volume as unknown, and keeps no-write/no-submit boundaries. | `python3 scripts/cohort-support-evidence-rollup.py --self-test` and `precode cohort-support-rollup --dry-run --packet <packet-file>`. |
+| `PRD-048-FR11` | Setup-friction lens exists on the packet-file rollup helper and local facade; output is setup-specific, read-only, explicit about unknowns, and source-evidence only. | `python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md --json` and `python3 scripts/precode_cli.py cohort-support-rollup --dry-run --setup-friction --packet tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md`. |
 
 ## Risk And Permission Model
 
@@ -204,7 +223,7 @@ The rollup is source evidence only. It must not write rollup files, submit evide
 |---|---|---|---|---|
 | Local usage evidence review | `scripts/usage-evidence-review.py`, `precode usage-evidence-review`, and `precodeos usage-evidence-review`. | Read-only local evidence summary, opt-in, no-write, no-submit, no network, explicit unknowns. | Self-test plus JSON/plain no-write review. | This PRD and Tool Execution Protocol. |
 | Submitted usage evidence packet | `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md`, `scripts/sanitized-evidence-pack.py`, completion packet, GitHub feedback/package-bug issue, or private maintainer channel. | Explicitly reviewed sanitized source evidence only; helper reviews locally and never submits. | Self-test plus source/template review. | This PRD and GitHub Collaboration Hub. |
-| Cohort/support rollup | `scripts/cohort-support-evidence-rollup.py`, `precode cohort-support-rollup`, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md`, Builder Completion Evidence Packet, and Sanitized Submitted Evidence Packet. | Explicit packet-file aggregation only; no default scan, support database, grading, adoption proof, product validation proof, or roadmap selection. | Self-test plus source/template review. | This PRD and alpha/beta evidence plan. |
+| Cohort/support rollup and setup-friction lens | `scripts/cohort-support-evidence-rollup.py`, `precode cohort-support-rollup`, optional `--setup-friction`, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md`, Builder Completion Evidence Packet, and Sanitized Submitted Evidence Packet. | Explicit packet-file aggregation only; optional setup-specific review lens; no default scan, support database, transcript analyzer, grading, adoption proof, product validation proof, or roadmap selection. | Self-test plus setup-friction JSON/plain and source/template review. | This PRD and alpha/beta evidence plan. |
 | Future outbound analytics readiness | Deferred PRD or semantic-change proposal. | No implementation until consent, privacy, hosting, endpoint, security, retention, and docs are approved. | Future security/privacy validation. | This PRD as readiness gate source. |
 
 ## Agent Context Contract
@@ -247,6 +266,8 @@ node bin/precodeos.mjs usage-evidence-review --json
 python3 scripts/sanitized-evidence-pack.py --self-test
 python3 scripts/cohort-support-evidence-rollup.py --self-test
 python3 scripts/precode_cli.py cohort-support-rollup --dry-run --packet tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md
+python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md --json
+python3 scripts/precode_cli.py cohort-support-rollup --dry-run --setup-friction --packet tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md
 python3 scripts/import-github-sources.py --self-test
 python3 scripts/session-friction-check.py --self-test
 python3 scripts/file-inventory.py --check

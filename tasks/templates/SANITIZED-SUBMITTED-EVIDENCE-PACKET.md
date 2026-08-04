@@ -59,6 +59,22 @@ Workflow moments used:
 
 Setup or refresh friction:
 
+Setup source/target clarity:
+
+Setup target kind:
+
+Missing reusable setup support files:
+
+Setup approval latency or blocker:
+
+Setup command sequence confusion:
+
+Setup validation failure:
+
+Prepared support artifact used:
+
+Setup next safe route:
+
 Confusing docs, prompts, commands, or templates:
 
 Support intervention type:

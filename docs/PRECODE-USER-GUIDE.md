@@ -691,7 +691,7 @@ Use public GitHub Issues only for narrow PrecodeOS feedback and package-bug inta
 - Use feedback issues for adoption friction, confusing docs, setup friction, or workflow questions.
 - Use package-bug issues for PrecodeOS package docs, scripts, protocols, generated-surface expectations, setup/copy helpers, CI, or GitHub helper behavior.
 - If you want to share usage evidence, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or ask a helper to run `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before pasting only safe excerpts.
-- If multiple cohort or support packet files exist, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` and `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` can summarize repeated patterns from those explicit packets only. Sparse packet volume is unknown, not no friction.
+- If multiple cohort or support packet files exist, `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` and `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` can summarize repeated patterns from those explicit packets only. Add `--setup-friction` only when reviewing setup-specific support friction. Sparse packet volume is unknown, not no friction.
 - Use `SECURITY.md` instead of public issues for sensitive security concerns.
 
 Issues, labels, comments, pull requests, reviews, checks, project boards, and pasted packet excerpts are source evidence only. They do not choose tasks, approve PRDs, activate beads, accept implementation, approve merge, approve release, mutate GitHub, authorize telemetry, or replace maintainer review. Stable conclusions must be reviewed and promoted through Local Source Intake, PRDs, `DECISIONS.md`, owner docs, protocols, or candidate beads.
@@ -1554,6 +1554,12 @@ Run python3 scripts/usage-evidence-review.py. Summarize safe local source counts
 ```
 
 Use the result to decide whether support notes, protocol follow-up, Session Friction Review, a sanitized submitted packet, or no action is warranted. The review does not repair anything and does not create `logs/usage-evidence-review.*`.
+
+When explicit packet files already exist and the question is setup-specific support friction, ask for:
+
+```text
+Run python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet <packet-file>. Summarize source/target clarity, target kind, missing reusable setup support files, approval blockers, command sequence confusion, validation failure, prepared support artifact use, next safe route, and unknowns. Treat sparse packet volume as unknown. Do not scan the repo by default, collect telemetry, create support records, prove adoption, choose roadmap work, approve PRDs, activate beads, accept implementation, submit evidence, or mutate files.
+```
 
 ### First 30 Minutes / First Day / First Week
 

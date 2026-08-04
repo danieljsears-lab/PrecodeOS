@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
+# Version: v0.1.1
 # Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -29,6 +29,14 @@ PrecodeOS version or package source, if known:
 Target context: new project | existing project | cohort | support | maintainer review
 Workflow moments used:
 Setup or refresh friction:
+Setup source/target clarity:
+Setup target kind:
+Missing reusable setup support files:
+Setup approval latency or blocker:
+Setup command sequence confusion:
+Setup validation failure:
+Prepared support artifact used:
+Setup next safe route:
 Confusing docs, prompts, commands, or templates:
 Support intervention type:
 What Precode helped the user control:

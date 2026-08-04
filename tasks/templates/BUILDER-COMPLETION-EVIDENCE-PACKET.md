@@ -125,6 +125,14 @@ These notes are evidence only. They do not accept implementation work, approve p
 Use this section only when the builder, instructor, or support engineer wants a lightweight public-safe adoption/support snapshot.
 
 - Setup or refresh friction:
+- Setup source/target clarity:
+- Setup target kind:
+- Missing reusable setup support files:
+- Setup approval latency or blocker:
+- Setup command sequence confusion:
+- Setup validation failure:
+- Prepared support artifact used:
+- Setup next safe route:
 - Confusing docs, prompts, commands, or templates:
 - Support intervention type: `none | setup | repo state | validation/checks | local runtime | auth/demo blocker | product-routing clarification | other`
 - What Precode helped the builder control:
@@ -136,7 +144,7 @@ These notes are source evidence only. They do not prove adoption, create a suppo
 
 If these notes will be shared outside the cohort packet, copy them into `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` and review the packet before submitting through GitHub feedback, a package-bug issue, or a private maintainer channel. `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` can check the packet locally, but it does not submit, approve, store, score, or authorize telemetry.
 
-If multiple packet files exist and a support helper, instructor, or maintainer needs repeated-pattern evidence, use `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` or `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>`. The rollup reads only explicit packet files and treats sparse packet volume as unknown, not no friction.
+If multiple packet files exist and a support helper, instructor, or maintainer needs repeated-pattern evidence, use `tasks/templates/COHORT-SUPPORT-EVIDENCE-ROLLUP.md` or `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>`. Add `--setup-friction` only when the review is specifically about setup/support friction after fast setup or diagnosis sessions. The rollup reads only explicit packet files and treats sparse packet volume as unknown, not no friction.
 
 ## Completion Snapshot
 

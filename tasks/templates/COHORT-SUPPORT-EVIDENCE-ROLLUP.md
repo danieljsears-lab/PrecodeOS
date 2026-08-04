@@ -30,6 +30,13 @@ or, through the optional local facade:
 precode cohort-support-rollup --packet <packet-file>
 ```
 
+Use the setup-specific lens only when the review is about setup/support friction after fast verified setup, setup diagnosis, or support refresh sessions:
+
+```bash
+python3 scripts/cohort-support-evidence-rollup.py --setup-friction --packet <packet-file>
+precode cohort-support-rollup --setup-friction --packet <packet-file>
+```
+
 The helper reads only packet files named with `--packet` or `--glob`. It does not scan the repo by default, write this template, submit evidence, create issues, collect telemetry, store identity, score people, approve work, or mutate external systems.
 
 ## Rollup
@@ -45,6 +52,14 @@ Packet volume: `sufficient for pattern review | unknown / insufficient packet vo
 ### Repeated Patterns
 
 - Setup or refresh friction:
+- Setup source/target clarity:
+- Setup target kind:
+- Missing reusable setup support files:
+- Setup approval latency or blocker:
+- Setup command sequence confusion:
+- Setup validation failure:
+- Prepared support artifact used:
+- Setup next safe route:
 - Confusing docs, prompts, commands, or templates:
 - Support intervention types:
 - What Precode helped builders control:

@@ -4844,7 +4844,16 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
             failures.append({"scenario": "local usage-evidence facade", "expected": term, "actual": usage_evidence_text})
 
     cohort_rollup_args = parser.parse_args(
-        ["--dry-run", "cohort-support-rollup", "--packet", "packet.md", "--glob", "packets/*.md", "--json"]
+        [
+            "--dry-run",
+            "cohort-support-rollup",
+            "--packet",
+            "packet.md",
+            "--glob",
+            "packets/*.md",
+            "--setup-friction",
+            "--json",
+        ]
     )
     cohort_rollup_commands = precode_cli.build_commands(cohort_rollup_args, parser)
     cohort_rollup_text = precode_cli.command_text(cohort_rollup_commands[0])
@@ -4854,6 +4863,7 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         "packet.md",
         "--glob",
         "packets/*.md",
+        "--setup-friction",
         "--json",
     ):
         if term not in cohort_rollup_text:
@@ -5045,7 +5055,7 @@ def assert_local_command_facade_boundaries(failures: list[dict[str, str]]) -> in
         if forbidden not in update_plan_not_authority:
             failures.append({"scenario": "npm update-plan preview non-authority", "expected": forbidden, "actual": update_plan_not_authority})
 
-    return 6
+    return 7
 
 
 def assert_ralph_command_boundaries(failures: list[dict[str, str]]) -> int:
@@ -6374,11 +6384,31 @@ def main() -> int:
                 "actual": str(rollup_payload),
             }
         )
+    setup_rollup_payload = cohort_support_rollup.build_setup_friction_rollup([], [])
+    if (
+        not setup_rollup_payload.get("setup_friction_focus")
+        or not setup_rollup_payload.get("advisory_only")
+        or not setup_rollup_payload.get("read_only")
+        or setup_rollup_payload.get("mutates_files")
+        or setup_rollup_payload.get("writes_generated_report")
+        or setup_rollup_payload.get("submits_externally")
+        or setup_rollup_payload.get("network_calls")
+        or setup_rollup_payload.get("packet_volume_status") != "unknown_insufficient_packet_volume"
+        or "does not prove adoption" not in str(setup_rollup_payload.get("boundary") or "")
+        or "setup_source_target_clarity" not in setup_rollup_payload.get("setup_friction_counts", {})
+    ):
+        failures.append(
+            {
+                "scenario": "support setup friction evidence loop boundary",
+                "expected": "setup lens is advisory read-only no-write no-submit no-network with setup counts and sparse volume unknown",
+                "actual": str(setup_rollup_payload),
+            }
+        )
 
     boundary_scenario_count = 1
     boundary_scenario_count += assert_local_command_facade_boundaries(failures)
     boundary_scenario_count += assert_ralph_command_boundaries(failures)
-    boundary_scenario_count += 4
+    boundary_scenario_count += 5
 
     check_time = datetime(2026, 6, 4, 12, 0, tzinfo=timezone.utc)
     older_close = datetime(2026, 6, 4, 11, 0, tzinfo=timezone.utc)
