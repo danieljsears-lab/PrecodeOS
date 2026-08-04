@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-07-26
+Document version: v0.1.10
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -212,13 +212,15 @@ Focus on:
 - whether the chosen shape was the simplest acceptable implementation for the requirement and proof path
 - whether owner-file and boundary integrity held across modules, configuration, dependency, external-service, secret, data, and sensitive-surface boundaries
 - whether configuration or dependency handling and sensitive-surface routing were explicit when those risks appeared
-- whether recorded checks, manual verification, and Closeout Evidence actually support the quality claims being reviewed
+- whether Product Code Quality Snapshot evidence, recorded checks, manual verification, and Closeout Evidence actually support the quality claims being reviewed
 - whether stop conditions, approval gates, and routing triggers were observed before risk expanded
 - whether any finding belongs in Closeout Evidence, a PRD amendment, owner-file update, candidate or approved bead, Release Readiness, reviewed memory, or another Review Lane
 
-The Engineering Quality Review Lane complements the Engineering Quality Standards Protocol and is owned as a package capability by `tasks/prds/PRD-038-engineering-quality-review-lane.md`. The Standards Protocol is the pre-coding quality floor; this lane is post-implementation review input. It does not replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.
+Product Code Quality Snapshot may be used as evidence for this lane when the user asks whether the AI coding agent wrote decent code for the active bead. The snapshot is active-bead-first evidence gathering from `scripts/product-code-quality-snapshot.py --active-bead`; it may name undeclared changed files, repo-shape risk signals, missing proof, and likely project-owned lint/check commands. Project Linter Evidence from the snapshot is discovery only and still requires separate user approval before any suggested command runs.
 
-The Engineering Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, certify code quality, certify production readiness, score code, create checker authority, create scorecard authority, replace linters, replace tests, inspect app code, add repo heuristics, add language-aware analysis, create follow-up tasks, rewrite owner files, activate beads, approve release, mutate GitHub, mutate external systems, or turn review output into generated proof.
+The Engineering Quality Review Lane complements the Engineering Quality Standards Protocol and is owned as a package capability by `tasks/prds/PRD-038-engineering-quality-review-lane.md`. Product Code Quality Snapshot is owned by `tasks/prds/PRD-049-product-code-quality-snapshot.md` and can feed this lane as evidence. The Standards Protocol is the pre-coding quality floor; this lane is post-implementation review input. It does not replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.
+
+The Engineering Quality Review Lane may recommend `accepted`, `revise`, `split`, `blocked`, or `stop` as review input only. It must not accept implementation, approve review, certify code quality, certify production readiness, score code, create checker authority, create scorecard authority, replace linters, replace tests, run Product Code Quality Snapshot suggestions automatically, inspect app code, add repo heuristics, add language-aware analysis, create follow-up tasks, rewrite owner files, activate beads, approve release, mutate GitHub, mutate external systems, or turn review output into generated proof.
 
 ## Polish / Product-Taste Review Lane
 

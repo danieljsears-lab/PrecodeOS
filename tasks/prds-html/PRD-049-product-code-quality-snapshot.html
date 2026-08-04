@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-049 -- Product Code Quality Snapshot</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-049 -- Product Code Quality Snapshot</h1>
+  <p class="muted">Static HTML generated from <code>PRD-049-product-code-quality-snapshot.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-049-product-code-quality-snapshot.md#prd-049-product-code-quality-snapshot">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Product Code Quality Snapshot</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>No approval section found.</strong></div><div class="metric"><span>Last updated</span><strong>2026-08-04</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for the advisory Product Code Quality Snapshot over active-bead code-change evidence and explicit whole-codebase changed-file health evidence.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, bead activation, implementation acceptance, review approval, release approval, code-quality certification, production-readiness certification, security certification, compliance approval, generated proof, scorecard authority, checker gate, linter replacement, test execution, app-code parsing, AST analysis, framework-specific correctness claim, auto-fix behavior, command approval, command-wrapper behavior, GitHub mutation, external mutation, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status warning">warning</span></p>
+      <p><strong>Requirements found:</strong> 9</p>
+      <p><strong>Acceptance rows found:</strong> 0</p>
+      <p><strong>Next safe action:</strong> Resolve blockers through PRD amendment, Architecture Shaping, or unblocker planning before bead activation.</p>
+      <ul><li>Acceptance Oracle Matrix is missing or not parseable</li><li>Risk And Permission Model is missing</li><li>Agent Context Contract is missing</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-049-FR01</code></td><td><code>scripts/product-code-quality-snapshot.py --active-bead</code> must be the documented default user path for active-bead code-change evidence.</td><td>P0</td><td>Active bead, authority, files in play, checks, changed files, undeclared changes, missing proof.</td></tr><tr><td><code>PRD-049-FR02</code></td><td><code>scripts/product-code-quality-snapshot.py --whole-codebase</code> must be an explicit secondary mode for broad changed-file health evidence.</td><td>P0</td><td>No task selection or certification.</td></tr><tr><td><code>PRD-049-FR03</code></td><td>The script must support <code>--json</code> and plain text output.</td><td>P0</td><td>Stable inspection shape without generated authority.</td></tr><tr><td><code>PRD-049-FR04</code></td><td>The script must discover likely project-owned lint/check commands from package manifests and common config files, but must not run them.</td><td>P0</td><td>Project Linter Evidence is discovery only.</td></tr><tr><td><code>PRD-049-FR05</code></td><td>Output must include snapshot mode, active bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, likely lint/check commands, missing proof, review questions, recommended next action, advisory-only warning, and <code>does_not</code>.</td><td>P0</td><td>Plain fields for nontechnical review.</td></tr><tr><td><code>PRD-049-FR06</code></td><td>Engineering Quality Standards Protocol and Review Lanes Protocol must route the snapshot between repo heuristics and Engineering Quality Review Lane.</td><td>P0</td><td>Evidence packet before review lane.</td></tr><tr><td><code>PRD-049-FR07</code></td><td>Prompt Patterns, Daily Cockpit, User Guide, README, AI navigation, Tool Execution, Security, and Package File Inventory must expose the snapshot without making it a start route, required stage, score, gate, proof, or approval.</td><td>P1</td><td>Discoverability without route inflation.</td></tr><tr><td><code>PRD-049-FR08</code></td><td>Clarity scenario coverage and script self-test must protect advisory-only boundaries, active-bead-first default, Project Linter Evidence wording, and no score/certification/gate language.</td><td>P1</td><td>Deterministic package checks.</td></tr><tr><td><code>PRD-049-FR09</code></td><td>Generated PRD HTML, generated public docs HTML, maintainer changelog, roadmap implemented history, roadmap journal, and generated private roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+    <p class="empty">No Acceptance Oracle Matrix table found for export.</p>
+    <h3>Risk and permission model</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Agent context</h3>
+    <p class="empty">None recorded.</p>
+    <h3>Bead proposals</h3>
+    <p class="empty">None recorded.</p>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-049-product-code-quality-snapshot">PRD-049 -- Product Code Quality Snapshot</h1>
+<h2 id="summary">Summary</h2>
+<p>Product Code Quality Snapshot gives a nontechnical builder one plain, local way to ask whether the AI coding agent&#x27;s changed code appears bounded, maintainable, owner-file-aligned, and supported by proof before acceptance.</p>
+<p>V1 is active-bead-first. It gathers evidence from the active bead, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, and likely project-owned lint or check commands. A secondary whole-codebase mode can inspect changed-file health without choosing work or certifying the codebase.</p>
+<p>The snapshot is evidence gathering, not code-quality judgment. It does not run linters or tests by default, parse app code, score quality, certify &quot;decent code&quot;, approve acceptance, or replace Engineering Quality Review Lane.</p>
+<h2 id="problem">Problem</h2>
+<p>Engineering Quality floor, repo heuristics, and Engineering Quality Review Lane already help before and after implementation. The gap is evidence assembly. A builder can still ask, &quot;did the AI write decent code?&quot;, while the agent has changed undeclared files, skipped project checks, touched configuration or dependencies, or produced proof that does not match the scope.</p>
+<p>Builders need that evidence made legible without being asked to trust a score.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Add an active-bead-first snapshot that gathers code-change evidence for one current bead.</li><li>Add a secondary whole-codebase mode for explicit changed-file health inspection.</li><li>Discover likely project-owned lint and check commands without running them.</li><li>Feed Engineering Quality Review Lane with a clearer evidence packet when human review is needed.</li><li>Keep all output advisory and non-authoritative.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No standalone <code>precode lint</code>, npm wrapper support, command wrapper, package-manager behavior, or release-channel behavior.</li><li>No linter installation, lint-config mutation, auto-fix behavior, linter replacement, test replacement, or default command execution.</li><li>No app-code parser, AST analysis, language-aware analysis, framework-specific correctness claim, quality score, scorecard, certification, generated proof, checker gate, implementation acceptance, review approval, release approval, follow-up task creation, owner-file rewrite authority, GitHub mutation, or external mutation.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-049-FR01</code></td><td><code>scripts/product-code-quality-snapshot.py --active-bead</code> must be the documented default user path for active-bead code-change evidence.</td><td>P0</td><td>Active bead, authority, files in play, checks, changed files, undeclared changes, missing proof.</td></tr><tr><td><code>PRD-049-FR02</code></td><td><code>scripts/product-code-quality-snapshot.py --whole-codebase</code> must be an explicit secondary mode for broad changed-file health evidence.</td><td>P0</td><td>No task selection or certification.</td></tr><tr><td><code>PRD-049-FR03</code></td><td>The script must support <code>--json</code> and plain text output.</td><td>P0</td><td>Stable inspection shape without generated authority.</td></tr><tr><td><code>PRD-049-FR04</code></td><td>The script must discover likely project-owned lint/check commands from package manifests and common config files, but must not run them.</td><td>P0</td><td>Project Linter Evidence is discovery only.</td></tr><tr><td><code>PRD-049-FR05</code></td><td>Output must include snapshot mode, active bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, likely lint/check commands, missing proof, review questions, recommended next action, advisory-only warning, and <code>does_not</code>.</td><td>P0</td><td>Plain fields for nontechnical review.</td></tr><tr><td><code>PRD-049-FR06</code></td><td>Engineering Quality Standards Protocol and Review Lanes Protocol must route the snapshot between repo heuristics and Engineering Quality Review Lane.</td><td>P0</td><td>Evidence packet before review lane.</td></tr><tr><td><code>PRD-049-FR07</code></td><td>Prompt Patterns, Daily Cockpit, User Guide, README, AI navigation, Tool Execution, Security, and Package File Inventory must expose the snapshot without making it a start route, required stage, score, gate, proof, or approval.</td><td>P1</td><td>Discoverability without route inflation.</td></tr><tr><td><code>PRD-049-FR08</code></td><td>Clarity scenario coverage and script self-test must protect advisory-only boundaries, active-bead-first default, Project Linter Evidence wording, and no score/certification/gate language.</td><td>P1</td><td>Deterministic package checks.</td></tr><tr><td><code>PRD-049-FR09</code></td><td>Generated PRD HTML, generated public docs HTML, maintainer changelog, roadmap implemented history, roadmap journal, and generated private roadmap HTML must be refreshed with numeric shortstats.</td><td>P1</td><td>Maintainer closeout.</td></tr></tbody></table></div>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Acceptance check</th><th>Evidence</th></tr></thead><tbody><tr><td><code>PRD-049-FR01</code> / <code>PRD-049-FR05</code></td><td>Active-bead mode emits active bead, authority, declared files, declared checks, changed paths, undeclared paths, missing proof, review questions, recommended next action, and advisory warning.</td><td><code>python3 scripts/product-code-quality-snapshot.py --active-bead --json</code></td></tr><tr><td><code>PRD-049-FR02</code></td><td>Whole-codebase mode is explicit and does not depend on active bead approval or choose work.</td><td><code>python3 scripts/product-code-quality-snapshot.py --whole-codebase --json</code></td></tr><tr><td><code>PRD-049-FR03</code></td><td>Plain and JSON output both render without running lint or tests.</td><td>Source review and command output.</td></tr><tr><td><code>PRD-049-FR04</code></td><td>Likely lint/check command rows say discovery only and require separate approval before execution.</td><td>Self-test and source review.</td></tr><tr><td><code>PRD-049-FR06</code> / <code>PRD-049-FR07</code></td><td>Protocols, prompts, docs, AI navigation, security, tool execution, and inventory route the snapshot as advisory evidence only.</td><td>Clarity scenario and source review.</td></tr><tr><td><code>PRD-049-FR08</code></td><td>Self-test and clarity scenario checks fail if score/certification/gate language or command-running behavior appears.</td><td><code>python3 scripts/product-code-quality-snapshot.py --self-test</code> and <code>python3 scripts/clarity-scenario-check.py</code></td></tr><tr><td><code>PRD-049-FR09</code></td><td>Roadmap, journal, changelog, generated docs, generated PRD HTML, and generated roadmap HTML are current with numeric shortstats.</td><td>Maintainer checks and rendered surface inspection.</td></tr></tbody></table></div>
+<h2 id="required-validation">Required Validation</h2>
+<pre><code class="language-bash">python3 scripts/product-code-quality-snapshot.py --self-test
+python3 scripts/product-code-quality-snapshot.py --active-bead --json
+python3 scripts/product-code-quality-snapshot.py --whole-codebase --json
+python3 scripts/engineering-quality-check.py --self-test
+python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
+python3 scripts/clarity-scenario-check.py
+python3 scripts/version-check.py
+python3 scripts/file-inventory.py --check
+python3 scripts/public-repo-check.py
+python3 scripts/prd-html.py
+python3 scripts/prd-html.py --check
+python3 scripts/docs-html.py --check
+python3 _maintainer/scripts/docs-html.py
+python3 _maintainer/scripts/docs-html.py --check
+python3 _maintainer/scripts/roadmap-html.py
+python3 _maintainer/scripts/roadmap-html.py --check
+git diff --check</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p>Product Code Quality Snapshot is a local advisory evidence packet. It can make scope drift, missing proof, changed-file breadth, and likely project-owned lint/check commands visible before acceptance. It cannot decide whether code is good, certify code quality, approve review, approve release, or replace human judgment.</p>
+<p>Project Linter Evidence is discovery only. The snapshot may identify likely existing commands and explain their probable scope, but running those commands is a separate tool action under normal Tool Execution approval rules.</p>
+<p>The script must not run lint, tests, typechecks, package managers, fixers, or app code.</p>
+<p>If the snapshot finds new work, the promotion path is normal Precode review: Closeout Evidence, PRD amendment, owner-file update, candidate or approved bead after user review, Release Readiness, reviewed memory, or another Review Lane. The snapshot does not create or apply those changes automatically.</p>
+<h2 id="candidate-bead-proposal">Candidate Bead Proposal</h2>
+<div class="table-wrap"><table><thead><tr><th>Bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Validation</th></tr></thead><tbody><tr><td><code>B049-product-code-quality-snapshot</code></td><td><code>PRD-049-FR01</code> through <code>PRD-049-FR09</code></td><td>PRD shard, read-only snapshot script, protocol guidance, prompt guidance, docs/inventory/navigation, Tool Execution and Security boundaries, clarity coverage, maintainer changelog, roadmap history, roadmap journal, and generated docs/PRD/roadmap HTML are implemented and validated.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>same_session_ok</code></td><td><code>tasks/prds/PRD-049-product-code-quality-snapshot.md</code></td><td>snapshot self-test, clarity scenario, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-criteria">Acceptance Criteria</a><a class="level-2" href="#required-validation">Required Validation</a><a class="level-2" href="#boundaries">Boundaries</a><a class="level-2" href="#candidate-bead-proposal">Candidate Bead Proposal</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

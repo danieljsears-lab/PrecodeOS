@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-26
+Document version: v0.1.24
+Last updated: 2026-08-04
 
 ## Purpose
 
 Completion and handoff keep the end of a session as structured as the start.
 
 This protocol distinguishes orientation, evidence, review, and activation so a finished-sounding agent response does not become automatic task completion.
+
+When a builder is coordinating a host coding agent, Daily Cockpit remains the control surface and the host interface remains the execution surface. Handoff and closeout should make that split visible: before work, name active bead, authority, files, approvals, proof, and stop condition; during work, keep the host agent inside those bounds; after work, return proof, review questions, parked follow-ups, approval still required, and next safe prompt to the cockpit. This does not create a generated cockpit panel, command wrapper, agent shell, dashboard, runtime, task selector, acceptance shortcut, transition approval, or external mutation permission.
 
 In the first-product spine, the end of the path is still three separate gates: Proof, Review, and Close. `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close` means recorded checks and manual evidence come before human review, and closeout with explicit Close State comes after review/handback. Architecture? is the conditional architecture-sensitive PRD bridge before decomposition, not a universal closeout or transition gate. Closeout does not accept work, approve transition, or activate another bead by itself.
 
@@ -48,7 +50,7 @@ An accepted hold is the narrow re-entry state where Closeout Evidence is complet
 
 When handoff or closeout names next work, derive it from active bead state, the approved PRD decomposition or owner-file decision that owns the work sequence, and current `tasks/beads/*.md` files before naming a bead ID. Stale memory, old PRD prose, external partner labels, generated reports, Candidate Queue IDs, and near-bead sketches are evidence only. If a new bead must be authored, run `python3 scripts/next-id.py bead` before assigning its ID, and use `--scan-references` when stale or external `B###` labels are part of the confusion.
 
-Approved-bead handoff is the narrow prompt moment after one bead is already approved and the builder wants a host agent to start scoped implementation. It must restate the active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. It orients implementation inside the approved bead only. It does not approve a PRD, activate a bead, approve transition, choose tasks, update `tasks/todo.md`, accept review, create a generated handoff packet, create command behavior, mutate external systems, approve merge, or approve release.
+Approved-bead handoff is the narrow prompt moment after one bead is already approved and the builder wants a host agent to start scoped implementation from the Daily Cockpit. It must restate the active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. It orients implementation inside the approved bead only. It returns reviewable evidence to the cockpit. It does not approve a PRD, activate a bead, approve transition, choose tasks, update `tasks/todo.md`, accept review, create a generated handoff packet, create command behavior, mutate external systems, approve merge, or approve release. It also does not create a generated cockpit panel or agent-shell behavior.
 
 ## Required Completion Fields
 

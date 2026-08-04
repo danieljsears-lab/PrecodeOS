@@ -22,6 +22,8 @@ Use this first-reader route and stop at the first surface that matches your situ
 
 Do not read the docs as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, OS README is the concept explainer, Troubleshooting is symptom lookup, and Support Runbook is helper-facing.
 
+When work involves Codex, Claude Code, Cursor, Copilot, Gemini, or another host coding agent, use the Daily Cockpit as the builder control surface. The cockpit is where you decide what to ask, what state and proof matter, what approval remains, and when to stop. The host agent executes only inside approved Precode bounds; PrecodeOS does not add a dashboard, generated panel, agent shell, runtime, command wrapper, task selector, or approval shortcut.
+
 ## What It Is
 
 Learn more: `https://www.precodeos.org`.
@@ -128,7 +130,7 @@ That is the line PrecodeOS holds: a lightweight governance kernel for agentic de
 | Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages with reader-facing PRD clusters. |
 | Build | One active bead, files-in-play guardrails, bounded Ralph attempts, and tool-neutral adapters. |
 | Prove | Recorded checks, verification guidance, closeout evidence, proof tracing, and generated health/progress reports. |
-| Review | Review lanes, prompt-only multi-lane review invocation, PRD handoff readiness, engineering-quality guidance, release-readiness evidence, and human approval gates. |
+| Review | Review lanes, prompt-only multi-lane review invocation, PRD handoff readiness, engineering-quality guidance, Product Code Quality Snapshot evidence, release-readiness evidence, and human approval gates. |
 | Recover | Troubleshooting, recovery protocol routing, OS checkpoints, state checks, and safe stuck-user prompts. |
 | Collaborate | Small-team coordination, branch/worktree re-entry guidance, GitHub evidence intake, and build attribution evidence. |
 

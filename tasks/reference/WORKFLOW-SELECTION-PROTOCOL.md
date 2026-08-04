@@ -9,14 +9,16 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-08-02
+Document version: v0.1.27
+Last updated: 2026-08-04
 
 ## Purpose
 
 Workflow selection helps a user or agent choose the right Precode path before starting work.
 
 Use this protocol when the next step is unclear, when too many protocols could apply, or when an agent may be jumping from idea to implementation too quickly.
+
+For host-agent coordination, keep the Daily Cockpit as the builder's control surface and the coding agent's host interface as the execution surface. The cockpit decides what to ask next, what state and proof matter, what approval remains, and when to stop. Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent may execute only inside the active Precode bounds. Workflow Selection may route to Daily Loop, Agent Access Level Check, task suitability, Approved-Bead Handoff, proof/review, closeout, or recovery; it must not create a new cockpit, dashboard, generated panel, agent shell, command wrapper, runtime, task selector, PRD approval, bead activation, review acceptance, transition approval, or coding permission.
 
 For a rough idea, do not present Product Discovery Interview, Product Conviction Packet, Precode Idea Coach, and First PRD Walkthrough as peers. The user-facing route is First PRD Walkthrough. Use Product Discovery Validation only when worth-building uncertainty is the specific blocker, and use the workbook, coach, Product Brief, Conviction Packet, Local Source Intake, and PRD shaping as ordered steps inside the rough-idea path.
 

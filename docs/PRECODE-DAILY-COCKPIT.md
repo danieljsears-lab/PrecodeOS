@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.55
-Last updated: 2026-08-02
+Document version: v0.1.56
+Last updated: 2026-08-04
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.
 
 The cockpit has four first-class daily operating sections and two required reference catalogs. The first-class sections are deliberately short: **Daily Loop**, **Next**, **Health**, and **Diary**. The full Prompt Patterns Catalog and full Protocol Catalog are included lower on this page as reference shelves so new users can learn the system without turning the first screen into a manual.
+
+Use this page as the builder's control surface for host-agent work. The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop; Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries. Before agent work, use Daily Loop and Next to name the active bead, authority, files, approvals, and stop condition. During work, keep the agent inside those bounds and use Agent Access Level Check when risk rises. For proof and review, use Health, Prove, Review, recorded checks, and manual verification before accepting anything. For handoff or stop, use Approved-Bead Handoff only after one bead is approved, or Close/Diary to record what changed, what was proven, what is parked, what approval remains, and the next safe prompt.
 
 Generated reports, generated HTML, logs, sidecars, prompt catalog rows, and protocol catalog rows are evidence or navigation only. Active memory and owner files stay authoritative. Before work resumes, return to `AGENT.md`, `DECISIONS.md`, `tasks/todo.md`, the active bead, the primary authority file, and your explicit approval.
 
@@ -33,7 +35,7 @@ For the builder journey, the Daily Cockpit owns the operating path; the User Gui
 
 ## Daily Loop
 
-Daily Loop is the build-loop surface. Use it to understand where the work is in the cycle before letting an agent continue. Repeated bead work uses this rhythm: `Active -> Changed -> Proven -> Parked -> Approval -> Next`.
+Daily Loop is the build-loop surface. Use it to understand where the work is in the cycle before letting a host agent continue. Repeated bead work uses this rhythm: `Active -> Changed -> Proven -> Parked -> Approval -> Next`.
 
 ```text
 Active -> Changed -> Proven -> Parked -> Approval -> Next
@@ -177,6 +179,8 @@ These notes preserve the common Precode routes as reference material. They are n
 | Review hypothesis | Hypothesis Review / Learning Loop can report untested, tested, narrowed, killed, promoted, stale, or not applicable. | It does not approve product direction, rank candidates, activate beads, require analytics, or create a database. |
 | Clarify acceptance | `Acceptance: review vague criteria with optional EARS-style wording.` Do not require EARS syntax, approve the PRD, activate beads, treat wording as proof, or code. | This is writing guidance only, not PRD approval or proof. |
 | Quality map | `Quality map: translate the relevant engineering standard into a Precode routing question.` Use the Engineering Quality Standards Taxonomy when a professional standard needs a plain Precode route. | The taxonomy does not make external frameworks public package authority; the checker is advisory only and does not approve coding, review, release, or generated proof. |
+| Check quality text contract | `python3 scripts/engineering-quality-check.py --check` checks quality-floor wording before risk gets hidden. | Advisory only; it does not inspect app code, run lint/tests, approve implementation, accept review, or create proof. |
+| Code quality snapshot | `Run Product Code Quality Snapshot for the active bead.` Use this after code changes when you need changed-file, declared-scope, proof, and Project Linter Evidence before accepting work. | Project Linter Evidence is discovery only; the snapshot does not run lint/tests, certify code quality, accept review, approve release, create tasks, or create generated proof. |
 | Check task suitability | `python3 scripts/task-suitability-check.py --check` can return continue, clarify, route, split, block, or stop. | It does not approve work, choose tasks, approve PRDs, activate beads, authorize implementation, accept review, approve commands, or create proof. |
 | Check The Vibe-To-Agentic Boundary | Ask whether a fast sketch can stay tiny, reversible, and evidence-only, or must route me through the right Precode owner workflow before coding. | It does not approve a PRD, activate a bead, accept implementation, approve release, mutate files, create generated proof, or code. |
 | Approved handoff | `Use Approved-Bead Handoff for the current approved bead.` A scoped host-agent build handoff with active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning. | It does not activate a bead, choose tasks, accept review, approve transition, or create generated handoff output. |
@@ -301,6 +305,7 @@ This catalog is complete for the 135 copyable prompt cards extracted from `../ta
 | [Session Start](../tasks/reference/PROMPT-PATTERNS.md#session-start) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |
 | [Task Confirmation](../tasks/reference/PROMPT-PATTERNS.md#task-confirmation) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |
 | [Engineering Quality Floor](../tasks/reference/PROMPT-PATTERNS.md#engineering-quality-floor) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |
+| [Product Code Quality Snapshot](../tasks/reference/PROMPT-PATTERNS.md#engineering-quality-floor) | Use after code changed and a builder asks whether the AI wrote decent code for the active bead. | `PROMPT-PATTERNS.md` | Does not run lint/tests, certify code quality, accept work, approve release, create generated proof, or choose tasks. |
 | [Vibe-To-Agentic Boundary](../tasks/reference/PROMPT-PATTERNS.md#vibe-to-agentic-boundary) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |
 | [Engineer Initiation](../tasks/reference/PROMPT-PATTERNS.md#engineer-initiation) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |
 | [Backend-Only With Existing Frontend](../tasks/reference/PROMPT-PATTERNS.md#backend-only-with-existing-frontend) | Use when this workflow moment applies. | `PROMPT-PATTERNS.md` | Does not widen scope, approve commands, bypass files-in-play, accept work, or mutate external systems. |

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-07-11
+Document version: v0.1.5
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -113,6 +113,16 @@ The checker is advisory only. It does not inspect app code, run linters, run tes
 `python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview` adds the Engineering Quality Repo Heuristics Preview. Use it only when changed-file repo-shape risk may contradict the quality-floor answer. The preview compares read-only git changed-file summaries with the active bead's primary authority, files in play, checks, and Stop If section. It may warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, or generated-evidence gaps.
 
 Repo heuristics preview is repo-shape risk only. If git metadata is unavailable, the output must say that explicitly and continue with declared Precode artifact signals only. The preview does not inspect app code deeply, parse ASTs, run linters, run tests, approve implementation, accept review, certify production readiness, score code quality, create proof, create a checker gate, replace Review Lanes, replace Release Readiness, or make warnings block ordinary low-risk work.
+
+## Product Code Quality Snapshot
+
+`python3 scripts/product-code-quality-snapshot.py --active-bead` runs the Product Code Quality Snapshot. Use it after code has changed and before acceptance when the user asks whether the AI coding agent wrote decent code for the active bead. It gathers active-bead-first evidence: active bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, likely project-owned lint/check commands, missing proof, review questions, and a recommended next action.
+
+`python3 scripts/product-code-quality-snapshot.py --whole-codebase` is an explicit secondary mode for broader changed-file health evidence. Use it only when the user asks for whole-codebase changed-file visibility. It is triage evidence, not task selection or health certification.
+
+Project Linter Evidence is discovery only. The snapshot may identify likely existing commands from package manifests or common config files and explain their probable scope, but it does not run lint, tests, typechecks, package managers, fixers, or app code. Running any suggested command is a separate user-approved tool action under the Tool Execution Protocol.
+
+Product Code Quality Snapshot sits between repo heuristics and Engineering Quality Review Lane: repo heuristics warn when changed-file shape contradicts the quality-floor answer; the snapshot assembles a fuller evidence packet; Engineering Quality Review Lane uses that evidence for a human acceptance conversation. The snapshot does not inspect app code deeply, parse ASTs, install linters, mutate lint config, auto-fix code, score code quality, certify decent code, certify production readiness, approve implementation, accept review, approve release, create generated proof, create a checker gate, create follow-up tasks, or replace tests, linters, Review Lanes, Release Readiness, Verification Guardrail, Tool Execution, Architecture Shaping, or System Design Pattern.
 
 For post-implementation review, use Engineering Quality Review Lane in the Review Lanes Protocol. That lane is owned by `tasks/prds/PRD-038-engineering-quality-review-lane.md` and reviews whether completed or nearly completed work respected this floor. It is advisory review input only; it does not accept implementation, approve review, certify code quality, certify production readiness, create follow-up tasks, replace tests or linters, inspect app code, add repo heuristics, add language-aware analysis, or expand this protocol into a full standards taxonomy. It does not add repo heuristics and does not add language-aware analysis.
 

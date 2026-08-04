@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.99
-Last updated: 2026-08-02
+Document version: v0.7.100
+Last updated: 2026-08-04
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -29,7 +29,7 @@ For builders, Precode feels like a small operating system for AI coding work: it
 
 PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. See `NOTICE` and `TRADEMARK.md` for license, attribution, and brand-use guidance.
 
-For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit's first-class sections are Daily Loop, Next, Health, and Diary; its full Prompt Patterns and Protocol catalogs are reference shelves for learning and lookup. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit `Ideation:` prompt, and broken/confusing state goes to Troubleshooting or `I am stuck, help me.` For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
+For the full document compass, go back to `README.md`. For day-to-day work, start with `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit's first-class sections are Daily Loop, Next, Health, and Diary; its full Prompt Patterns and Protocol catalogs are reference shelves for learning and lookup. When you use Codex, Claude Code, Cursor, Copilot, Gemini, or another host coding agent, the cockpit is where you decide what to ask, what state and proof matter, what approval remains, and when to stop; the host agent executes only inside approved Precode bounds. This guide is the deeper operating manual: use it when the cockpit points you here, when you need more context before approving risk, or when you need to understand what good agent output and proof should look like. Do not treat this guide as a second start page. For the self-serve route, remember: setup goes to Guided Setup, normal work goes to Daily Cockpit, rough ideas use the Daily Cockpit `Ideation:` prompt, and broken/confusing state goes to Troubleshooting or `I am stuck, help me.` For the builder journey, the Daily Cockpit owns the operating path; this guide explains the same path in more depth.
 
 If PrecodeOS is not set up in your project yet, start with `docs/PRECODE-GUIDED-SETUP.md`. That guide walks through pulling the public PrecodeOS repo from GitHub or using the optional npm entry, running Bootstrap Confidence, choosing the first adoption fork, copying the public package files into a fresh project or using Existing Repo Intake for an existing app, excluding private and generated material, and validating before work starts. If PrecodeOS is already embedded in your project and you want to refresh package-owned surfaces, use the Existing Precode Refresh prompt in Guided Setup, `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>`, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>`, `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>`, or `tasks/reference/PROMPT-PATTERNS.md`. It previews first and stops before approved `UP-ID` copy actions. Upgrade preview may show advisory package version, stable/latest/pinned language, and updater compatibility policy metadata. Update-plan preview may group current `UP-ID` evidence with same-session freshness and validation prompts. `apply-package-owned` delegates only approved missing package-owned copy actions to the Python upgrade-apply path. These commands perform no registry lookup or dist-tag resolution and do not make `latest` overwrite permission.
 
@@ -309,8 +309,9 @@ Read this table from the top down. The first-product spine, every-bead rhythm, a
 | Approved PRD exists | Bead decomposition | `Use the Decomposition Protocol to propose journey beads small enough to verify. Prefer vertical slices, include delegation_mode, test_strategy, review_context, and do not activate anything.` |
 | Feature shape is unclear before coding | System design shape | `Use the System Design Pattern Protocol. Start with the simplest shape that can work, then tell me whether this needs a direct change, adapter/facade, state flow, strategy boundary, audit trail, auth/access boundary, or deep module. Do not code.` |
 | Agent is about to code and you want a thin quality check | Engineering quality floor | `Before coding, show me the engineering quality standard you are applying here. Tell me the quality risk, simplest acceptable shape, boundary or owner file, evidence to prove it, and what would make you stop or ask for approval. If this reveals architecture, security, data, dependency, deployment, external-service, command-risk, release, or multi-system risk, route me to the existing owner protocol instead of coding.` |
-| One approved bead needs a scoped host-agent handoff | Approved-Bead Handoff | `Use Approved-Bead Handoff for the current approved bead. Restate active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. Do not activate a bead, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.` |
+| One approved bead needs a scoped host-agent handoff | Approved-Bead Handoff | `Use Approved-Bead Handoff for the current approved bead. Restate active bead, primary authority, files in play, allowed actions, proof needed, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. Return reviewable evidence to the Daily Cockpit. Do not activate a bead, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority. Do not create a generated cockpit panel or agent-shell behavior.` |
 | Agent names a professional standard and you need plain routing | Engineering quality standards taxonomy | `Use the Engineering Quality Standards Taxonomy. Translate the relevant standard into a plain Precode routing question, name the owner protocol or continue path, name the proof needed, and say what still needs human approval. Do not use external frameworks as public package authority, create a scorecard, certify code quality, certify production readiness, approve implementation, approve review, approve release, or add a new command.` |
+| Code changed and you want to know whether the AI wrote decent code for this bead | Product Code Quality Snapshot | `Run Product Code Quality Snapshot for the active bead with python3 scripts/product-code-quality-snapshot.py --active-bead --json. Treat it as advisory evidence only. Show active bead, authority, files in play, checks, changed files, undeclared changed files, repo-shape risks, Project Linter Evidence, missing proof, review questions, and next action. Do not run lint/tests without separate approval, certify code quality, accept review, approve release, create proof, create tasks, or create a checker gate.` |
 | Agent may touch risky commands or sensitive surfaces | Agent Access Level Check | `Use the Agent Access Level Check. Tell me whether the current access level is inspect, verify, local-change, sensitive, external-change, or destructive. Name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape if relevant, and whether a Run Contract is needed. Do not treat the access level as command approval, runtime enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, or permission to widen scope.` |
 | Unsure whether accessibility review is needed | Accessibility Advisor Fit Interview | `Use the Accessibility Advisor Fit Interview. Ask one question at a time and recommend invoke advisor, not needed, or defer. Do not make accessibility review mandatory for every UI/interface bead, claim legal compliance, accept implementation, or approve release.` |
 | Known small task is active | Implement active bead | `Work only on the active bead. Confirm scope, files, checks, and stop conditions before editing.` |
@@ -812,6 +813,26 @@ python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview
 ```
 
 Expected output: advisory only repo-shape warnings that compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. It can warn about undeclared changed files, broad cross-surface edits, dependency or config touches, docs/protocol/PRD touches, script touches, missing matching checks, generated-evidence gaps, or explicit git-unavailable status. It does not inspect app code, run tests or linters, approve implementation, accept review, certify production readiness, create proof, create a scorecard, or become a checker gate.
+
+### Run Product Code Quality Snapshot
+
+Use Product Code Quality Snapshot after code has changed and you need to ask, "did the AI coding agent write decent code for this active bead?"
+
+```bash
+python3 scripts/product-code-quality-snapshot.py --active-bead --json
+```
+
+Expected output: advisory evidence with the active bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, Project Linter Evidence, missing proof, review questions, and recommended next action.
+
+Project Linter Evidence is discovery only. The snapshot may identify likely project-owned lint/check commands, but it does not run lint, tests, typechecks, package managers, fixers, or app code. Running a suggested command is a separate user-approved tool action under Tool Execution Protocol.
+
+Use whole-codebase mode only when you explicitly want broader changed-file health evidence:
+
+```bash
+python3 scripts/product-code-quality-snapshot.py --whole-codebase --json
+```
+
+The snapshot does not certify code quality, certify decent code, certify production readiness, accept review, approve release, create generated proof, create follow-up tasks, choose work, replace tests or linters, or create a checker gate. If the snapshot raises real concerns, use it as evidence for Engineering Quality Review Lane before acceptance.
 
 ### Command Surface Triage
 

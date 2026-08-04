@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.78
+Document version: v0.1.79
 Last updated: 2026-08-04
 
 ## Purpose
@@ -193,7 +193,7 @@ Expected output: role lens, recommended workflow, owner source, stop condition, 
 
 ### Agent Access Level Check
 
-Use this prompt before work starts or before a risky command when the practical question is what an agent may inspect, verify, change locally, handle as sensitive, mutate externally, or stop before doing.
+Use this prompt from the Daily Cockpit before host-agent work starts or before a risky command when the practical question is what an agent may inspect, verify, change locally, handle as sensitive, mutate externally, or stop before doing. It is the cockpit bridge from builder intent to host-agent bounds, not permission to widen scope.
 
 ```text
 Use the Agent Access Level Check.
@@ -202,7 +202,7 @@ Read the active bead, files in play, stop conditions, Run Contract if present, a
 
 For that level, name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape when relevant, and re-entry evidence if the work may continue while I am away.
 
-Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, or permission to widen scope.
+Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, generated panel behavior, agent-shell behavior, or permission to widen scope.
 ```
 
 Expected output: one access level, one reason, allowed actions, proof needed, approval required before, stop condition, and whether a Run Contract is needed.
@@ -223,7 +223,7 @@ Expected output: one access level, one reason, allowed actions, proof needed, ap
 
 ### Every-Bead Rhythm
 
-Use after the first bead, at session start, before closeout, or whenever the work feels scattered across reports, queues, proof, and approval gates.
+Use after the first bead, at session start, before closeout, before handing approved work to a host agent, or whenever the work feels scattered across reports, queues, proof, and approval gates.
 
 ```text
 Check: show Active, Changed, Proven, Parked, Approval, and Next for the current Precode work.
@@ -233,7 +233,7 @@ Use existing sources only: tasks/todo.md, the active bead, primary authority, ch
 Do not choose tasks, rank Candidate Queue items, approve a PRD, activate a bead, accept review, approve transition, create a new report, treat generated output as authority, or code.
 ```
 
-Expected output: a six-part orientation checklist. It may name missing proof, blocked approval, or the safest next prompt, but it must not mutate state or authorize work.
+Expected output: a six-part orientation checklist that helps the builder decide the next host-agent prompt from the Daily Cockpit. It may name missing proof, blocked approval, or the safest next prompt, but it must not mutate state, authorize work, create a generated cockpit panel, or create agent-shell behavior.
 
 ### Check Task Suitability Before Work
 
@@ -872,6 +872,20 @@ If the quality-floor text looks complete but the changed files look broader than
 Run `python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview`. Treat the repo heuristics as advisory only. Use them to compare read-only git changed-file summaries against the active bead's primary authority, files in play, checks, and Stop If section. Do not treat the result as proof, implementation approval, review acceptance, code-quality score, linter output, test output, or a checker gate.
 ```
 
+When code has changed and the builder asks whether the AI wrote decent code, gather a Product Code Quality Snapshot:
+
+```text
+Run `python3 scripts/product-code-quality-snapshot.py --active-bead --json`. Treat Product Code Quality Snapshot as advisory evidence only. Use it to assemble active-bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, likely project-owned lint/check commands, missing proof, review questions, and recommended next action.
+
+Project Linter Evidence is discovery only. Do not run lint, tests, typechecks, package managers, fixers, or app code from the snapshot unless I separately approve the exact command under Tool Execution Protocol. Do not treat the snapshot as proof, implementation approval, review acceptance, code-quality score, decent-code certification, production-readiness certification, follow-up task creation, or a checker gate.
+```
+
+Use explicit whole-codebase mode only when the user asks for broader changed-file health:
+
+```text
+Run `python3 scripts/product-code-quality-snapshot.py --whole-codebase --json`. Treat it as secondary whole-codebase changed-file triage evidence only; do not choose work, certify health, approve acceptance, or replace an active-bead review.
+```
+
 ## Vibe-To-Agentic Boundary
 
 ```text
@@ -1350,7 +1364,7 @@ Create a handoff packet for the next agent. Do not activate the next bead or use
 
 ## Approved-Bead Handoff
 
-Use this after a bead is already approved and the builder wants to hand that one bead to a host agent for scoped implementation. This is a build-orientation prompt, not bead activation.
+Use this after a bead is already approved and the builder wants to hand that one bead from the Daily Cockpit to a host agent for scoped implementation. This is the cockpit-to-agent bridge for a single approved bead; it is a build-orientation prompt, not bead activation.
 
 ```text
 Use Approved-Bead Handoff for the current approved bead.
@@ -1374,7 +1388,7 @@ Return the handoff first with these fields:
 
 Then work only inside that approved bead and its files in play. If the bead is not approved, the active state is unclear, files in play are missing, proof is undefined, or the requested work changes scope, stop and route me to Workflow Selection, Decomposition, PRD amendment, or transition proposal as appropriate.
 
-Do not activate a bead, approve transition, choose tasks, accept review, update tasks/todo.md, create a command wrapper, create generated handoff output, mutate GitHub or external systems, approve merge or release, or treat generated reports as authority.
+Do not activate a bead, approve transition, choose tasks, accept review, update tasks/todo.md, create a command wrapper, create generated handoff output, create a generated cockpit panel, create agent-shell behavior, mutate GitHub or external systems, approve merge or release, or treat generated reports as authority.
 ```
 
 ## Transition Readiness

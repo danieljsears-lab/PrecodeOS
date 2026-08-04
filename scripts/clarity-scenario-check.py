@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.60
-# Last updated: 2026-07-31
+# Version: v0.1.61
+# Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1205,6 +1205,81 @@ def assert_beginner_advanced_surface_relocation_contract(failures: list[dict[str
     return len(required_terms_by_path) + len(forbidden_terms_by_path)
 
 
+def assert_agent_work_cockpit_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "Use this page as the builder's control surface for host-agent work.",
+            "The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop",
+            "Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries.",
+            "For handoff or stop, use Approved-Bead Handoff only after one bead is approved",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "It is the cockpit bridge from builder intent to host-agent bounds, not permission to widen scope.",
+            "Expected output: a six-part orientation checklist that helps the builder decide the next host-agent prompt from the Daily Cockpit.",
+            "This is the cockpit-to-agent bridge for a single approved bead",
+        ],
+        Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
+            "keep the Daily Cockpit as the builder's control surface and the coding agent's host interface as the execution surface",
+            "Workflow Selection may route to Daily Loop, Agent Access Level Check, task suitability, Approved-Bead Handoff, proof/review, closeout, or recovery",
+        ],
+        Path("tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md"): [
+            "Daily Cockpit remains the control surface and the host interface remains the execution surface.",
+            "return proof, review questions, parked follow-ups, approval still required, and next safe prompt to the cockpit",
+        ],
+        Path("README.md"): [
+            "use the Daily Cockpit as the builder control surface",
+            "The host agent executes only inside approved Precode bounds",
+        ],
+        Path("docs/PRECODE-USER-GUIDE.md"): [
+            "the cockpit is where you decide what to ask, what state and proof matter, what approval remains, and when to stop",
+            "Return reviewable evidence to the Daily Cockpit.",
+        ],
+        Path("docs/CLAUDE-CODE-FIELD-GUIDE.md"): [
+            "Treat the Daily Cockpit as the builder control surface and Claude Code as the host-agent execution surface.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "`docs/PRECODE-DAILY-COCKPIT.md` is the operating home and host-agent coordination surface",
+            "Host coding agents execute inside approved Precode bounds",
+        ],
+        Path("llms.txt"): [
+            "Use Daily Cockpit as the host-agent coordination surface.",
+            "Route host-agent work through Daily Loop, Next, Agent Access Level Check, Approved-Bead Handoff, proof/review, closeout, or recovery as appropriate.",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"agent work cockpit contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("docs/PRECODE-DAILY-COCKPIT.md"): [
+            "the generated cockpit panel",
+            "the Precode agent shell",
+            "host agent may approve",
+        ],
+        Path("README.md"): [
+            "PrecodeOS runs the agent",
+            "generated panel approves",
+            "agent shell approves",
+        ],
+        Path("tasks/reference/PROMPT-PATTERNS.md"): [
+            "Approved-Bead Handoff activates",
+            "Agent Access Level Check approves commands",
+        ],
+        Path("llms.txt"): [
+            "generated cockpit panel chooses tasks",
+            "agent shell activates beads",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"agent work cockpit forbidden wording: {path}", "expected": f"remove {term}", "actual": "present"})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path)
+
+
 def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md"): [
@@ -1215,6 +1290,10 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
+            "Product Code Quality Snapshot",
+            "python3 scripts/product-code-quality-snapshot.py --active-bead",
+            "python3 scripts/product-code-quality-snapshot.py --whole-codebase",
+            "Project Linter Evidence is discovery only",
             "quality-risk, simplest-shape, boundary, proof, stop-condition, and routing signals",
             "does not inspect app code",
             "does not approve implementation",
@@ -1229,12 +1308,18 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "Engineering Quality Text-Contract Checker",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
+            "Run `python3 scripts/product-code-quality-snapshot.py --active-bead --json`",
+            "Project Linter Evidence is discovery only",
+            "Run `python3 scripts/product-code-quality-snapshot.py --whole-codebase --json`",
             "advisory only",
             "does not approve implementation",
             "does not create proof",
         ],
         Path("docs/PRECODE-DAILY-COCKPIT.md"): [
             "Quality map",
+            "Code quality snapshot",
+            "Run Product Code Quality Snapshot for the active bead.",
+            "Project Linter Evidence is discovery only",
             "Use the Engineering Quality Standards Taxonomy",
             "does not make external frameworks public package authority",
             "Check: name the active bead, authority, files, first check, suitability decision, quality risk, vibe-to-agentic boundary, stop conditions, and every-bead rhythm before editing.",
@@ -1250,12 +1335,20 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "Check The Engineering Quality Text Contract",
             "python3 scripts/engineering-quality-check.py --check",
             "python3 scripts/engineering-quality-check.py --check --repo-heuristics-preview",
+            "Run Product Code Quality Snapshot",
+            "python3 scripts/product-code-quality-snapshot.py --active-bead --json",
+            "Project Linter Evidence is discovery only",
+            "python3 scripts/product-code-quality-snapshot.py --whole-codebase --json",
             "advisory only",
             "does not inspect app code",
             "does not approve implementation",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "scripts/engineering-quality-check.py",
+            "scripts/product-code-quality-snapshot.py",
+            "PRD-049",
+            "Product Code Quality Snapshot",
+            "Project Linter Evidence discovery",
             "Engineering Quality Standards Taxonomy",
             "external-framework code validation",
             "Engineering Quality Text-Contract Checker",
@@ -1266,10 +1359,31 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         ],
         Path("llms.txt"): [
             "scripts/engineering-quality-check.py",
+            "scripts/product-code-quality-snapshot.py",
+            "PRD-049-product-code-quality-snapshot.md",
             "Engineering Quality Standards Taxonomy",
             "Engineering Quality Text-Contract Checker",
             "--repo-heuristics-preview",
             "advisory only",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "Product Code Quality Snapshot may discover likely project-owned lint/check commands",
+            "that discovery is not command approval",
+            "does not run lint, tests, typechecks, package managers, fixers, or app code",
+        ],
+        Path("SECURITY.md"): [
+            "Product Code Quality Snapshot",
+            "Project Linter Evidence",
+            "discovery is not execution",
+            "must not run lint, tests, typechecks, package managers, fixers, app code, or external commands",
+        ],
+        Path("tasks/prds/PRD-049-product-code-quality-snapshot.md"): [
+            "active-bead-first",
+            "whole-codebase mode",
+            "Project Linter Evidence is discovery only",
+            "must not run lint, tests, typechecks, package managers, fixers, or app code",
+            "No standalone `precode lint`",
+            "No app-code parser, AST analysis, language-aware analysis",
         ],
     }
     for path, required_terms in required_terms_by_path.items():
@@ -1300,6 +1414,17 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
             "passing result grants permission to build",
             "certifies production readiness",
             "taxonomy approval",
+            "snapshot approval",
+            "Product Code Quality Snapshot certifies",
+        ],
+        Path("tasks/reference/TOOL-EXECUTION-PROTOCOL.md"): [
+            "snapshot command approval",
+            "snapshot may run lint",
+        ],
+        Path("tasks/prds/PRD-049-product-code-quality-snapshot.md"): [
+            "code-quality score",
+            "checker gate approval",
+            "`precode lint` command",
         ],
     }
     for path, forbidden_terms in forbidden_terms_by_path.items():
@@ -1316,7 +1441,13 @@ def assert_engineering_quality_text_contract(failures: list[dict[str, str]]) -> 
         failures.append({"scenario": "engineering quality checker advisory", "expected": "advisory_only true", "actual": str(payload.get("advisory_only"))})
     if payload.get("scenario_count") != 8:
         failures.append({"scenario": "engineering quality checker scenario count", "expected": "8", "actual": str(payload.get("scenario_count"))})
-    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 8
+    snapshot_module = load_script_module("product_code_quality_snapshot", "product-code-quality-snapshot.py")
+    snapshot_payload = snapshot_module.self_test()
+    if snapshot_payload.get("status") != "pass":
+        failures.append({"scenario": "product code quality snapshot self-test", "expected": "pass", "actual": json.dumps(snapshot_payload, sort_keys=True)})
+    if snapshot_payload.get("advisory_only") is not True:
+        failures.append({"scenario": "product code quality snapshot advisory", "expected": "advisory_only true", "actual": str(snapshot_payload.get("advisory_only"))})
+    return len(required_terms_by_path) + len(forbidden_terms_by_path) + 10
 
 
 def assert_public_objection_handling_contract(failures: list[dict[str, str]]) -> int:
@@ -5568,6 +5699,7 @@ def main() -> int:
     builder_journey_authority_scenario_count = assert_builder_journey_authority_consolidation_contract(failures)
     command_surface_triage_scenario_count = assert_command_surface_triage_contract(failures)
     beginner_advanced_surface_relocation_scenario_count = assert_beginner_advanced_surface_relocation_contract(failures)
+    agent_work_cockpit_scenario_count = assert_agent_work_cockpit_contract(failures)
     engineering_quality_scenario_count = assert_engineering_quality_text_contract(failures)
     public_objection_scenario_count = assert_public_objection_handling_contract(failures)
     vibe_to_agentic_boundary_scenario_count = assert_vibe_to_agentic_boundary_contract(failures)
@@ -6155,6 +6287,7 @@ def main() -> int:
         + builder_journey_authority_scenario_count
         + command_surface_triage_scenario_count
         + beginner_advanced_surface_relocation_scenario_count
+        + agent_work_cockpit_scenario_count
         + engineering_quality_scenario_count
         + public_objection_scenario_count
         + vibe_to_agentic_boundary_scenario_count
