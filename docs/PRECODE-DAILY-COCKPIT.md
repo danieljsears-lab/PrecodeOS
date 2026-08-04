@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.57
+Document version: v0.1.58
 Last updated: 2026-08-04
 
 Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.
@@ -31,7 +31,7 @@ First-reader route:
 | You only have a rough idea | `Ideation: use First PRD Walkthrough for my rough idea.` |
 | Setup, state, checks, generated reports, or first-session behavior feel broken | `PRECODE-TROUBLESHOOTING.md` or `I am stuck, help me.` |
 
-Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-GUIDED-SETUP.md` is setup-only, this cockpit is the beginner-facing operating home base, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. For a compact first-session aid, see `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md`.
+Document roles are intentionally narrow: `../README.md` is the public package compass, `PRECODE-SUPPORT-RUNBOOK.md` is helper triage and live-call sequencing, `PRECODE-GUIDED-SETUP.md` is setup-only and owns setup mechanics and copy/apply rules, `../tasks/templates/PRECODE-FIRST-SESSION-CARD.md` is compact builder build order after setup validates, this cockpit is the beginner-facing operating home base after validation, `PRECODE-USER-GUIDE.md` is the deeper operating manual, `HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md` is the educational bridge, and `PRECODE-OS-README.md` is the conceptual Builder OS explainer. For Claude Code classroom habits, see `CLAUDE-CODE-FIELD-GUIDE.md`. For symptom lookup, see `PRECODE-TROUBLESHOOTING.md`. Prompt Patterns supplies copyable prompts; it is not live-call authority.
 
 For the builder journey, the Daily Cockpit owns the operating path; the User Guide explains the same path in more depth.
 
@@ -66,7 +66,7 @@ bash scripts/session-start.sh
 
 Expected output: active memory reminder, current bead, done-when target, primary authority, files in play, checks, stop conditions, router guidance, and generated-report warning.
 
-The optional local `precode` facade is only a shortcut over canonical commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, generated evidence, prompt use, or protocol loading as authority. The optional npm `precodeos` entry stays in setup, fast verified setup, or existing-Precode refresh lanes only; preview writes nothing, apply requires current `SP-ID` or `UP-ID` approval, and it is not the normal cockpit surface.
+The optional local `precode` facade is only a shortcut over canonical commands. It prints the underlying script command and does not approve work, transitions, setup mutation, releases, generated evidence, prompt use, or protocol loading as authority. The optional npm `precodeos` entry stays in setup, fast verified setup, or existing-Precode refresh lanes only; use it on live calls only after `npm view @precodeos/precodeos version` confirms availability, and fall back to the Python/local checkout command if npm is unavailable or unverified. Preview writes nothing, apply requires current `SP-ID` or `UP-ID` approval, and npm availability is not registry freshness, update permission, package-manager behavior, or the normal cockpit surface.
 
 ## Next
 

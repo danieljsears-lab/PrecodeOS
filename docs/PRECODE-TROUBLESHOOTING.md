@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.23
+Document version: v0.1.24
 Last updated: 2026-08-04
 
 ## Purpose
@@ -557,11 +557,14 @@ Do not let technical support become hidden product ownership.
 
 This index is for setup, support, and recovery moments. Beginner daily work should stay with the Daily Cockpit command set first: `session-start.sh`, `next-step.py`, `loop-health.py`, `os-health.py`, and `record-check.sh`. Use this table when a symptom needs a narrower diagnostic command. Command output is evidence or guidance only; it does not approve repair, mutation, acceptance, transition, or task selection.
 
+Before using any `npx @precodeos/precodeos ...` command in this table, check external availability with `npm view @precodeos/precodeos version`. If npm is unavailable, unverified, returns 404, or fails on a live call, use the adjacent Python/local checkout command. A failed npm availability check is a package availability/support issue, not proof that the target project setup is broken.
+
 | Command | Use it when | Remember |
 |---|---|---|
 | `bash scripts/validate-memory.sh` | Active memory, bead pointer, or setup validity is uncertain. | A failure means source state needs attention before work continues. |
 | `python3 scripts/file-inventory.py --check` | Public package files, new docs, copied files, or metadata are uncertain. | Inventory findings are advisory; they do not choose tasks. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>` | First setup, source/target folder identity, copy groups, exclusions, conflicts, or first safe setup action are uncertain. | Read-only by default; output is evidence only and does not approve mutation. |
+| `npm view @precodeos/precodeos version` | A support helper wants to use an optional `npx @precodeos/precodeos ...` command on a live call. | External availability preflight only; if it fails or is unverified, use Python/local checkout fallback. It is not registry freshness, dist-tag resolution, update permission, copy approval, release-channel behavior, or package-manager behavior. |
 | `npx @precodeos/precodeos setup-preview --target <target-project-root>` | A first install needs one visible package-backed setup checklist command before copying anything. | Delegates to Bootstrap Confidence supervised setup plan; no postinstall behavior, target mutation, copy approval, owner-file adaptation approval, hook setup, CI setup, app commands, app-code edits, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. |
 | `npx @precodeos/precodeos fast-setup-preview --target <target-project-root>` | A short support slot needs the visible command sequence for fresh setup, existing Precode refresh, or existing-project intake. | Delegates to Bootstrap Confidence fast verified setup preview; writes nothing, exposes underlying commands, and does not approve copying, package updates, owner-file adaptation, rollback, package-manager behavior, task selection, PRD approval, or bead activation. |
 | `python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --preview-manifest` | Source and target are clear enough to preview candidate setup actions before mutation. | Dry-run evidence only; not copy permission, install permission, executable release-channel behavior, package-manager behavior, rollback automation, hook setup, CI setup, active-memory edits, or app-code edits. |

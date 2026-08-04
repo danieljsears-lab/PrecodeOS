@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.25
+Document version: v0.1.26
 Last updated: 2026-08-04
 
 ## What This Guide Is For
@@ -39,6 +39,14 @@ After setup validates, stop here. If a new builder needs one visible build-order
 The optional local `precode` CLI is only a wrapper over these repo scripts. It can shorten commands after setup, but it does not approve copying, owner-file adaptation, hook installation, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
 
 The optional npm entry is acquisition and preview by default. It can run first-install setup preview, fast verified setup preview, existing-Precode upgrade preview, existing-Precode update-plan preview, approved fast setup copy delegation, or approved package-owned copy delegation from the package source. Preview modes write nothing. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to Python Bootstrap apply paths, and `apply-package-owned` delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, package updates, executable release-channel behavior, rollback, or generated evidence as authority.
+
+Before using `npx @precodeos/precodeos ...` in setup or support, check external package availability:
+
+```bash
+npm view @precodeos/precodeos version
+```
+
+If npm is unavailable, unverified, or failing, use the adjacent `python3 scripts/bootstrap-check.py ...` or `python3 scripts/precode_cli.py ...` command from a clean local PrecodeOS checkout. Availability only means the facade can run; it is not registry freshness evidence, dist-tag resolution, copy approval, update permission, overwrite permission, owner-file adaptation approval, release-channel behavior, rollback, or package-manager behavior.
 
 If you need the exact public package technical dictionary, use `docs/PRECODE-PACKAGE-FILE-INVENTORY.md`. This setup guide explains the adoption path; the package inventory remains the public file map.
 
@@ -89,7 +97,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
-The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The fast verified setup facade prints the underlying command sequence for fresh setup, existing Precode refresh, or existing-project intake; preview output remains evidence only. The npm command delegates to the same plan from the package source. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
+The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The fast verified setup facade prints the underlying command sequence for fresh setup, existing Precode refresh, or existing-project intake; preview output remains evidence only. Npm commands delegate to the same plan from the package source only after availability is confirmed; when npm is unavailable or unverified, use the Python/local checkout path. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
 
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
@@ -337,8 +345,8 @@ Ask:
 Set up PrecodeOS for a new project.
 Use the public PrecodeOS checkout as the source package.
 Do not write application code.
-Create or adapt only the Precode operating files needed for a first safe session.
-Before changing anything, show me the copy checklist and the files that will be excluded.
+Show me the explicit supervised setup file groups, required reusable support files, validation command, and files that will be excluded.
+After setup validates, stop before product work.
 ```
 
 After the user approves, copy the public package files by supervised file group. Do not use a bulk overwrite command. For empty or nearly empty targets, `--apply-supervised-setup` can copy approved setup-plan copy actions by ID; it still cannot adapt owner files, overwrite target files, install hooks, change CI, or handle existing-project setup.

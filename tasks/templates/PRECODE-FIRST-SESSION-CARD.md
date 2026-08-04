@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-08-02
+Document version: v0.1.5
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -39,7 +39,7 @@ Use this order when you need one visible path:
 
 | Stage | What to do | Where it lives |
 |---|---|---|
-| Setup | Install or refresh PrecodeOS, validate, then stop. | `docs/PRECODE-GUIDED-SETUP.md` |
+| Setup | Install, refresh, or run fast verified setup preview/apply with approved action IDs, validate, then stop. | `docs/PRECODE-GUIDED-SETUP.md` |
 | Start | Begin the working session and make the agent explain the current state before editing. | `docs/PRECODE-DAILY-COCKPIT.md` |
 | Idea/Packet | If the idea is rough, use First PRD Walkthrough; if a packet exists, keep it as evidence for intake. | Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` |
 | Intake | Summarize reviewed source material before promoting anything into owner files or PRDs. | Daily Cockpit / Support Runbook route |
@@ -65,7 +65,7 @@ Use the official build order: Setup -> Start -> Idea/Packet -> Intake -> Owner F
 
 First tell me which stage I am in, which owning doc or prompt to use, and the next one action I should take. Keep the answer short enough to follow on a live call.
 
-If setup is not validated, route me to Guided Setup and stop before product work.
+If setup is not validated, route me to Guided Setup or fast verified setup preview/apply, validate, and stop before product work.
 If setup is validated, route me to the Daily Cockpit or First Safe Prompt.
 If my idea or source packet is not reviewed, route me to Ideation or Intake before PRD work.
 If intake found stable facts that should live in owner files, run Source-To-Promotion Hygiene Review, ask for approval before edits, and re-validate before PRD shaping.

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-07-02
+Document version: v0.1.4
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -33,6 +33,7 @@ Use these modes from the PrecodeOS package checkout after source and target are 
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
+npm view @precodeos/precodeos version
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
@@ -45,7 +46,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-The optional npm fast setup, upgrade, and update-plan previews delegate to the same non-mutating Bootstrap evidence from the package source. The optional npm `fast-setup-apply` command delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python setup or upgrade apply path and prints validation; the optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No npm command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission.
+Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The optional npm fast setup, upgrade, and update-plan previews delegate to the same non-mutating Bootstrap evidence from the package source. The optional npm `fast-setup-apply` command delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python setup or upgrade apply path and prints validation; the optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No PrecodeOS command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission; the external npm availability preflight is command availability only, not registry freshness or update permission.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-08-02
+Document version: v0.1.4
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -31,6 +31,7 @@ The approved copy set may include `.gitignore` when the target lacks one so gene
 Run the command from the PrecodeOS package checkout after reviewing the supervised setup plan:
 
 ```bash
+npm view @precodeos/precodeos version
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
@@ -50,7 +51,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
 
-`--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path.
+Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
 
 Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
 

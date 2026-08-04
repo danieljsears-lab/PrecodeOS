@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.63
+# Version: v0.1.64
 # Last updated: 2026-08-04
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -4602,7 +4602,7 @@ def assert_requirement_to_proof_contract(failures: list[dict[str, str]]) -> int:
         if term not in prompt_text:
             failures.append({"scenario": "requirement-to-proof prompt boundaries", "expected": term, "actual": "missing"})
 
-    return 3
+    return 5
 
 
 def reversal_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
@@ -5348,6 +5348,22 @@ def assert_setup_diagnosis_clarity_contract(failures: list[dict[str, str]]) -> i
     ):
         if term not in docs_text:
             failures.append({"scenario": "setup diagnosis text contract", "expected": term, "actual": "missing"})
+    for term in (
+        "npm view @precodeos/precodeos version",
+        "unavailable",
+        "python/local checkout",
+        "returns 404",
+        "command availability only",
+        "not registry freshness",
+        "not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior",
+    ):
+        if term not in docs_text:
+            failures.append({"scenario": "npm availability fallback text contract", "expected": term, "actual": "missing"})
+    inventory_text = Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md").read_text(encoding="utf-8")
+    if "| `tasks/prds/PRD-000-template.md` | reference template |" not in inventory_text:
+        failures.append({"scenario": "prd template inventory explicit row", "expected": "PRD-000-template inventory row", "actual": "missing"})
+    if "unlike numbered package-development PRDs" not in inventory_text:
+        failures.append({"scenario": "prd template inventory distinction", "expected": "template distinct from numbered package PRDs", "actual": "missing"})
     return 3
 
 

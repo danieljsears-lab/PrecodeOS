@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-08-02
+Document version: v0.1.5
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -56,11 +56,12 @@ Bootstrap Confidence output also includes setup diagnosis fields before the prev
 After preview, use the supervised setup plan when the user needs a checklist before approving any manual setup work:
 
 ```bash
+npm view @precodeos/precodeos version
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 ```
 
-The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. The optional npm command delegates to the same plan from the package source. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, or app-code edits.
+The supervised setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`. The optional npm command delegates to the same plan from the package source only after the external availability preflight succeeds. If npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. It is still non-mutating generated evidence and does not approve copying, owner-file edits, overwrites, hooks, CI changes, active-memory edits, app commands, app-code edits, registry freshness, dist-tag resolution, release-channel behavior, or package-manager behavior.
 
 The final bootstrap closeout modes are governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Use `--existing-project-adaptation-plan` for non-mutating owner-file adaptation planning in existing projects, `--upgrade-preview` for existing Precode package-state comparison plus advisory local release-reference metadata, `--update-plan-preview` for grouped read-only update planning over current `UP-ID` evidence, `--recovery-guidance` for partial setup support, and `--apply-upgrade-preview --approve-action <UP-ID>` only for explicitly approved missing package-owned files. The optional npm `apply-package-owned` command delegates to that Python apply path and is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`.
 

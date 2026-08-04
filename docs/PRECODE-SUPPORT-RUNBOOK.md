@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.48
+Document version: v0.1.49
 Last updated: 2026-08-04
 
 ## Purpose
@@ -21,6 +21,8 @@ This runbook is helper-facing. It does not replace Guided Setup for setup, Daily
 For a self-serve builder, route first by situation: not installed goes to Guided Setup, installed or working goes to Daily Cockpit, rough ideas use Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.`, and broken or confusing state goes to Troubleshooting or `I am stuck, help me.` Support uses this runbook to coach that route, not to create another start path.
 
 When a builder needs a linear view of what happens when, use `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` as the compact builder build-order card behind Guided Setup and Daily Cockpit. Do not create or maintain a separate side doc for the same path.
+
+Use this route order on support calls: this runbook owns helper triage and live-call sequencing, Guided Setup owns setup mechanics and copy/apply rules, the First Session Card owns compact builder build order after setup validates, the Daily Cockpit owns normal operation after validation, and Prompt Patterns only supplies copyable prompts.
 
 The support posture is:
 
@@ -49,11 +51,19 @@ Use this flow when a support engineer has a short onboarding, setup, or unblocke
 For a 10-15 minute setup target, use a fast verified setup lane rather than a side process:
 
 1. Confirm source, target, target kind, and `git status`.
-2. Run `bootstrap-check.py --supervised-setup-plan` for empty or nearly empty targets, or `--upgrade-preview` for existing Precode targets.
+2. Run the Python/local checkout path first: `bootstrap-check.py --fast-verified-setup-preview`, `--supervised-setup-plan` for empty or nearly empty targets, or `--upgrade-preview` for existing Precode targets.
 3. Approve only the specific `SP-ID` or `UP-ID` copy actions needed for package-owned setup files.
 4. Apply those approved copy actions with the matching apply mode.
 5. Run `bash scripts/validate-memory.sh`.
 6. Hand the builder to `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` or Conviction Packet / First PRD intake.
+
+Optional npm commands are allowed on a live call only after an external availability preflight succeeds:
+
+```bash
+npm view @precodeos/precodeos version
+```
+
+If that command fails, returns a 404, or cannot be verified during the call, use the adjacent `python3 scripts/bootstrap-check.py ...` or `python3 scripts/precode_cli.py ...` command from a clean local package checkout. Npm availability only means the facade can run; it does not approve copy, overwrite, owner-file adaptation, update, rollback, registry freshness, dist-tag resolution, release-channel behavior, or package-manager behavior.
 
 The target must include the reusable support files `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`. If Bootstrap Confidence says an existing Precode target is missing them, treat that as setup completeness repair before product work, even if active-memory validation passes.
 
@@ -128,6 +138,8 @@ When the repo layout differs from the default target-root setup, support should 
 1. The installed Precode root where `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md`, `tasks/`, and `scripts/` live.
 2. The app directories that checks should run against.
 3. Whether any expected app directory is intentionally absent until an approved bead creates it.
+
+If the Precode control layer intentionally lives under a `precode/` subfolder, run Bootstrap, fast verified setup, and existing-Precode refresh commands with `--target <repo-root>/precode`, because that is the installed Precode root. Record the app directories and check roots separately in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal PrecodeOS topology.
 
 Do not start intake, create files, write code, move project material, or adapt owner files until these boundaries are clear. If the layout conflicts with active memory, `PROJECT-CONTEXT.md`, `CODEBASE-GUIDE.md`, or the current bead, surface the conflict before editing.
 
@@ -206,7 +218,7 @@ Do not treat `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, or files under `l
 
 Public GitHub Issues are available for narrow PrecodeOS feedback and package-bug intake. Support may route adoption friction, confusing docs, setup friction, workflow questions, or package bugs to the issue templates when public sharing is appropriate, but issues are source evidence only. Do not use issue status, labels, comments, pull requests, reviews, checks, or project boards as product truth, support approval, task selection, merge approval, release approval, GitHub mutation approval, or a replacement for Local Source Intake and maintainer review.
 
-When support or cohort helpers capture usage evidence, keep it explicit and sanitized. Use `python3 scripts/usage-evidence-review.py`, `python3 scripts/precode_cli.py usage-evidence-review`, or `npx @precodeos/precodeos usage-evidence-review` only when the user or maintainer explicitly wants local usage-learning evidence from safe local ledgers and generated freshness signals. The review writes nothing, submits nothing, calls no network, and treats missing ledgers as unknown rather than zero usage. Use the PrecodeOS Usage Evidence Notes in `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` for cohort completion snapshots. When the evidence will be shared through GitHub feedback, a package-bug issue, or a private maintainer channel, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` and optionally run `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before sharing. After multiple explicit packet files exist, use `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` or `precode cohort-support-rollup --packet <packet-file>` to compare repeated patterns; add `--setup-friction` only when reviewing setup-specific support friction from explicit packet files after fast verified setup, setup diagnosis, or existing-Precode refresh sessions. Sparse packet volume is unknown, not no friction. These helpers are local advisory review only; they do not submit, create issues, write records, approve evidence, authorize telemetry, prove adoption, choose roadmap work, create support records, grade builders, or mutate external systems. Record setup friction, source/target clarity, target kind, missing reusable setup support files, approval latency or blockers, command sequence confusion, validation failures, prepared support artifact usage, next safe route, confusing docs or prompts, support intervention type, what Precode helped the builder control, and what remains unknown because it was not logged. Do not collect raw private transcripts, secrets, dashboard values, app data, user identity records, support case records, contributor scoring, productivity ranking, or automatic outbound telemetry.
+When support or cohort helpers capture usage evidence, keep it explicit and sanitized. Use `python3 scripts/usage-evidence-review.py`, `python3 scripts/precode_cli.py usage-evidence-review`, or, after npm availability is confirmed, `npx @precodeos/precodeos usage-evidence-review` only when the user or maintainer explicitly wants local usage-learning evidence from safe local ledgers and generated freshness signals. The review writes nothing, submits nothing, calls no network, and treats missing ledgers as unknown rather than zero usage. Use the PrecodeOS Usage Evidence Notes in `tasks/templates/BUILDER-COMPLETION-EVIDENCE-PACKET.md` for cohort completion snapshots. When the evidence will be shared through GitHub feedback, a package-bug issue, or a private maintainer channel, use `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` and optionally run `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before sharing. After multiple explicit packet files exist, use `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` or `precode cohort-support-rollup --packet <packet-file>` to compare repeated patterns; add `--setup-friction` only when reviewing setup-specific support friction from explicit packet files after fast verified setup, setup diagnosis, or existing-Precode refresh sessions. Sparse packet volume is unknown, not no friction. These helpers are local advisory review only; they do not submit, create issues, write records, approve evidence, authorize telemetry, prove adoption, choose roadmap work, create support records, grade builders, or mutate external systems. Record setup friction, source/target clarity, target kind, missing reusable setup support files, approval latency or blockers, command sequence confusion, validation failures, prepared support artifact usage, next safe route, confusing docs or prompts, support intervention type, what Precode helped the builder control, and what remains unknown because it was not logged. Do not collect raw private transcripts, secrets, dashboard values, app data, user identity records, support case records, contributor scoring, productivity ranking, or automatic outbound telemetry.
 
 ## Mainline Walkthrough: New Project
 
@@ -271,7 +283,7 @@ Stop if the source package and target project are unclear. Mixing them up is the
 
 Bootstrap Confidence is read-only by default. It names target kind, public file groups, exclusions, conflicts, missing dependencies, first safe next action, and stop conditions. Its output is generated evidence only, not permission to copy, overwrite, install hooks, change CI, edit active memory, or write app code.
 
-When the builder does not yet have a clean package checkout or the support call needs one visible preview command, use the optional npm entry for the same read-only setup checklist:
+When the builder does not yet have a clean package checkout or the support call needs one visible preview command, use the optional npm entry for the same read-only setup checklist only after `npm view @precodeos/precodeos version` confirms the package is available. If npm is unavailable, unverified, or failing, use the Python command from a clean local package checkout instead.
 
 ```bash
 npx @precodeos/precodeos setup-preview --target <target-project-root>

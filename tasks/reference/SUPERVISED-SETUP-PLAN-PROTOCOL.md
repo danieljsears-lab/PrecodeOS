@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.3
-Last updated: 2026-08-02
+Document version: v0.1.4
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -29,13 +29,14 @@ This protocol is intentionally non-mutating. It produces setup-plan evidence onl
 Use the setup plan from the PrecodeOS package checkout after Bootstrap Confidence:
 
 ```bash
+npm view @precodeos/precodeos version
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
-The optional npm setup preview is a read-only preview entry over the same setup plan. Fast verified setup preview is also read-only and exposes the underlying Bootstrap command sequence before any apply decision. It has no postinstall behavior and writes nothing by default.
+Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The optional npm setup preview is a read-only preview entry over the same setup plan. Fast verified setup preview is also read-only and exposes the underlying Bootstrap command sequence before any apply decision. It has no postinstall behavior and writes nothing by default. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
 
 Structured output is available with:
 

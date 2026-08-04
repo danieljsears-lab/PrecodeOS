@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.81
+Document version: v0.1.82
 Last updated: 2026-08-04
 
 ## Purpose
@@ -322,6 +322,18 @@ Do not copy files, create files, write code, install hooks, change CI, or update
 If repo facts conflict with active memory, PROJECT-CONTEXT.md, or the setup guide, surface the conflict before continuing.
 ```
 
+### Npm Availability Or Python Fallback
+
+```text
+Before using any `npx @precodeos/precodeos ...` setup, fast setup, refresh, apply, or usage-review command during support, check availability with:
+
+npm view @precodeos/precodeos version
+
+If npm is unavailable, returns 404, fails, or cannot be verified on the call, use the adjacent Python/local checkout command instead, such as `python3 scripts/bootstrap-check.py ...` or `python3 scripts/precode_cli.py ...`.
+
+Treat npm availability only as command availability. Do not treat it as registry freshness, dist-tag resolution, copy approval, owner-file adaptation approval, update permission, overwrite permission, release-channel behavior, rollback, package-manager behavior, task selection, PRD approval, or bead activation.
+```
+
 ### Existing Repo Intake
 
 ```text
@@ -337,7 +349,7 @@ Treat the output as evidence only, not permission to mutate.
 ```text
 Run the PrecodeOS supervised setup plan after Bootstrap Confidence and manifest preview.
 Use the PrecodeOS checkout as the package source and my project folder as the target.
-If using the optional npm entry, run `npx @precodeos/precodeos setup-preview --target <target-project-root>` for the same read-only setup checklist.
+If using the optional npm entry, first run `npm view @precodeos/precodeos version`; if it is available, run `npx @precodeos/precodeos setup-preview --target <target-project-root>` for the same read-only setup checklist. If npm is unavailable or unverified, use the Python/local checkout command instead.
 Do not copy, edit, install hooks, change CI, run app commands, create active memory, adapt owner files, approve a PRD, activate a bead, or write code.
 Show the setup checklist, approval gates, exclusions, blockers, and validation steps.
 Treat the setup plan as evidence only, not permission to mutate.
@@ -370,7 +382,7 @@ Run the Existing Precode Refresh prompt for this project.
 
 Use my clean PrecodeOS package checkout as the source and my existing Precode project as the target.
 
-First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. Then run:
+First confirm the source path, target path, current folder, current git status, active Precode owner files, and files that must not be copied or edited. If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run:
 
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
 
@@ -406,7 +418,7 @@ Run Fast Verified Setup for this target.
 
 Use my clean PrecodeOS package checkout as the source and my target project as the target.
 
-First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh. Then run:
+First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh. If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run:
 
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 
@@ -434,7 +446,7 @@ This is a transparent facade over existing Bootstrap setup and refresh paths, no
 ```text
 Run the PrecodeOS package upgrade preview for this existing Precode target.
 Use the PrecodeOS checkout as the source and my project folder as the target.
-If using the optional npm entry, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>` when grouped current action IDs and validation prompts are needed, or `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>` only after explicit approval of current missing package-owned `UP-ID` actions.
+If using the optional npm entry, first run `npm view @precodeos/precodeos version`; if available, run `npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>` for the same read-only package-state comparison, `npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>` when grouped current action IDs and validation prompts are needed, or `npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>` only after explicit approval of current missing package-owned `UP-ID` actions. If npm is unavailable or unverified, use the Python/local checkout command instead.
 Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, define executable release channels, provide package-manager behavior, or automate rollback.
 Classify the target as clean, dirty package edits, dirty project or owner edits, mixed or unknown, or blocked.
 Show local release-reference metadata when present, including package version, inferred prerelease label, registry lookup status, stable/latest/pinned guidance, and the warning that `latest` is not overwrite permission. Show updater compatibility policy metadata as evidence-threshold and blocked-case guidance only. If update-plan preview is used, show grouped current action IDs, same-session freshness, and validation prompts; do not treat it as registry freshness, dist-tag resolution, apply permission, or copy approval.

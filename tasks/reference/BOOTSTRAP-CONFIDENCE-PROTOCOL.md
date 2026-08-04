@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-08-02
+Document version: v0.1.9
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -35,6 +35,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 Optional npm preview entry:
 
 ```bash
+npm view @precodeos/precodeos version
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
@@ -43,7 +44,7 @@ npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 ```
 
-The npm entry delegates to this protocol's `--supervised-setup-plan`, `--fast-verified-setup-preview`, `--fast-verified-setup-apply`, `--upgrade-preview`, `--update-plan-preview`, or approved package-owned `--apply-upgrade-preview` modes from the package source. Preview modes write nothing by default. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python source of truth and prints the validation command; `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python source of truth. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. Upgrade and update-plan previews may show advisory local release-reference metadata and updater compatibility policy metadata, but they perform no npm registry lookup or dist-tag resolution.
+Use the npm entry only after the external `npm view @precodeos/precodeos version` availability preflight succeeds. If npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The npm entry delegates to this protocol's `--supervised-setup-plan`, `--fast-verified-setup-preview`, `--fast-verified-setup-apply`, `--upgrade-preview`, `--update-plan-preview`, or approved package-owned `--apply-upgrade-preview` modes from the package source. Preview modes write nothing by default. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python source of truth and prints the validation command; `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python source of truth. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. PrecodeOS commands perform no npm registry lookup or dist-tag resolution; the availability preflight is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
 
 Optional modes:
 
