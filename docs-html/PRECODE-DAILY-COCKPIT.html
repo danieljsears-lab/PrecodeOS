@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-08-04">
+  <meta name="generated-at" content="2026-08-05">
   <title>PrecodeOS Daily Cockpit · PrecodeOS Docs</title>
   <style>
 :root {
@@ -1851,15 +1851,19 @@ Treat npm availability only as command availability. Do not treat it as registry
 
 Use my clean PrecodeOS package checkout as the source and my target project as the target.
 
-First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh. If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run:
+First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh.
+
+If the PrecodeOS package still needs to be cloned, clone it outside the target project folder and confirm the target project&#x27;s git status does not show the clone as untracked or nested. If the target folder does not exist yet, create only that target folder before Bootstrap Confidence. If this project intentionally uses `&lt;repo-root&gt;/precode` as the installed Precode root, use `--target &lt;repo-root&gt;/precode` and record that project-specific topology later in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal default.
+
+If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run the preview only:
 
 npx @precodeos/precodeos fast-setup-preview --target &lt;target-project-root&gt;
 
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-preview
 
-Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, and exact validation command.
+Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and exact validation command.
 
-Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
+Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. This cannot be completed as one uninterrupted paste because action IDs do not exist until preview prints them. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
 
 If I approve current action IDs, apply only those copy actions with:
 
@@ -1867,7 +1871,9 @@ npx @precodeos/precodeos fast-setup-apply --target &lt;target-project-root&gt; -
 
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-apply --approve-action &lt;SP-ID|UP-ID&gt;
 
-After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved.</code></pre>
+After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
+
+For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.</code></pre>
 </div>
 
   <p class="meta"><a href="../tasks/reference/PROMPT-PATTERNS.md">Source: PROMPT-PATTERNS.md</a></p>

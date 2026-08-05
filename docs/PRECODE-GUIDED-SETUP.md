@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-08-04
+Document version: v0.1.27
+Last updated: 2026-08-05
 
 ## What This Guide Is For
 
@@ -66,6 +66,8 @@ If you have notes, documents, screenshots, research, design exports, or links th
 
 Stop if you are unsure which folder is the PrecodeOS package checkout and which folder is your target project. Mixing those up is the easiest way to copy in the wrong direction.
 
+The target folder must already exist before Bootstrap Confidence can classify it. If a specific project intentionally keeps the Precode control layer in a `precode/` subfolder, create that folder first and use it as the target path. That is a project-specific topology, not the default PrecodeOS setup shape, and it must be recorded later in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`.
+
 ## Bootstrap Confidence Check
 
 Before copying, editing, installing hooks, or changing the target project, run the read-only Bootstrap Confidence helper from the PrecodeOS package checkout:
@@ -99,6 +101,8 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 The plan adds action IDs, approval gates, exclusions, blockers, and validation steps. It implies the manifest preview and is still generated evidence only. The fast verified setup facade prints the underlying command sequence for fresh setup, existing Precode refresh, or existing-project intake; preview output remains evidence only. Npm commands delegate to the same plan from the package source only after availability is confirmed; when npm is unavailable or unverified, use the Python/local checkout path. Neither path approves copying, owner-file edits, overwrites, hook installation, CI changes, active-memory edits, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, or CLI-driven setup approval.
 
+Preview and apply are separate steps. Do not paste an apply command with `<SP-ID>` before the setup plan has printed current action IDs. Read the plan first, choose only `review_copy_candidate` IDs that the user approves, then run apply with those exact IDs.
+
 For an empty or nearly empty target, you may apply specific reviewed copy actions after the user approves the action IDs:
 
 ```bash
@@ -107,9 +111,9 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
-This apply mode copies only approved `review_copy_candidate` actions. The fast facade delegates to the same Python copy path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status and validate memory before product work starts.
+This apply mode copies only approved `review_copy_candidate` actions. The fast facade delegates to the same Python copy path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status, create the fresh target active-work state, adapt owner files with approved user facts, and validate memory before product work starts.
 
-For short support calls, the fast path is the same mechanism with less wandering: run `--fast-verified-setup-preview`, review the underlying supervised setup, existing Precode refresh, or existing app intake commands, approve only the needed current `SP-ID` or `UP-ID` copy actions, apply them, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone, prepared starter target, bulk copy, package update, rollback shortcut, or support-only setup authority. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
+For short support calls, the fast path is the same mechanism with less wandering: run `--fast-verified-setup-preview`, review the underlying supervised setup, existing Precode refresh, or existing app intake commands, approve only the needed current `SP-ID` or `UP-ID` copy actions, apply them, create or adapt the active work state and owner files where required, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone, prepared starter target, bulk copy, package update, rollback shortcut, or support-only setup authority. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
 
 The optional wrapper exposes the same apply gate and still requires approved action IDs:
 
@@ -262,12 +266,12 @@ Once real development starts in VS Code, keep development there. You may use des
 
 ## Step 1: Pull PrecodeOS From GitHub
 
-Start by getting a clean local copy of the public PrecodeOS package.
+Start by getting a clean local copy of the public PrecodeOS package. Clone it outside the target project folder so it does not become a nested Git repository inside the project you are setting up.
 
 If you do not have it yet:
 
 ```bash
-git clone https://github.com/danieljsears-lab/PrecodeOS.git
+git clone https://github.com/danieljsears-lab/PrecodeOS.git <outside-target-folder>/PrecodeOS
 ```
 
 If you already have it:
@@ -286,7 +290,7 @@ find . -maxdepth 2 -type f | sort
 
 You are using this checkout as the package source. Do not treat it as the target app you are building unless your goal is to maintain PrecodeOS itself.
 
-After you know the target project path, run Bootstrap Confidence before setup:
+After you know the target project path, make sure that target folder exists, then run Bootstrap Confidence before setup:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
@@ -345,7 +349,8 @@ Ask:
 Set up PrecodeOS for a new project.
 Use the public PrecodeOS checkout as the source package.
 Do not write application code.
-Show me the explicit supervised setup file groups, required reusable support files, validation command, and files that will be excluded.
+Show me the explicit supervised setup file groups, current action IDs, required reusable support files, validation command, and files that will be excluded.
+Do not copy or adapt anything until I approve exact action IDs and owner-file edits.
 After setup validates, stop before product work.
 ```
 
@@ -359,7 +364,7 @@ For a new project, the setup should include:
 | Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
-| Public orientation docs | `README.md`, `docs/`, `docs-html/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
+| Public orientation docs | `.gitignore`, `README.md`, `docs/`, `docs-html/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |
 | Agent shims and adapters | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `adapters/` |
 | Work structure | `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, `tasks/prds/PRD-SHARD-SCHEMA.md`, `tasks/reference/`, `tasks/templates/`, `modes/`, `memory/` |
 | Project evidence guide | `project-evidence/PROJECT-EVIDENCE-GUIDE.md` |
@@ -370,12 +375,16 @@ For a new project, the setup should include:
 
 Do not copy PrecodeOS's package development PRDs or beads into the target project. Numbered package files such as `tasks/prds/PRD-001...` or `tasks/beads/B000...` describe PrecodeOS itself and can collide with the target project's own future PRD and bead IDs.
 
-Then adapt these files before starting product work:
+Then create or adapt setup state and owner files before starting product work:
 
 - `PRODUCT.md`: product promise, users, strategy, bets, success signals, and voice
 - `PROJECT-CONTEXT.md`: app directory, stack, conventions, checks, integrations, and sensitive boundaries
 - `DECISIONS.md`: hard decisions already known for this project
 - `tasks/todo.md`: the fresh first setup bead and current state
+
+Fresh active work state is project-specific. Create a target `tasks/todo.md` rather than copying the package source's active work file, author exactly one small setup or orientation bead in `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. `validate-memory.sh` requires exactly one `in_progress` bead, so validation should run only after this state exists. Do not use `bead-transition.py` to approve setup or activate product work.
+
+Owner-file adaptation must use user-approved project facts. If the product promise, app directories, checks, stack, integrations, or hard decisions are uncertain, mark them as assumptions or open questions rather than inventing settled truth.
 
 ### Path B: Existing Project
 

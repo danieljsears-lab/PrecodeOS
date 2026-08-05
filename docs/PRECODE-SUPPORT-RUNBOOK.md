@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.49
-Last updated: 2026-08-04
+Document version: v0.1.50
+Last updated: 2026-08-05
 
 ## Purpose
 
@@ -68,6 +68,8 @@ If that command fails, returns a 404, or cannot be verified during the call, use
 The target must include the reusable support files `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`. If Bootstrap Confidence says an existing Precode target is missing them, treat that as setup completeness repair before product work, even if active-memory validation passes.
 
 A prepared support branch or starter target can be used for a cohort only as a clearly labeled support convenience. It is not the canonical PrecodeOS package path, not an update channel, not package-manager behavior, not public package authority, and not a zero-mistake guarantee. Validate it before intake, and do not let it hide defects in the normal setup or refresh flow.
+
+Support-call prompt packets, copied call scripts, and teammate notes are evidence and convenience material only. Do not treat them as public setup authority, a replacement for Guided Setup, a reason to skip Bootstrap Confidence, or permission to make a project-specific `precode/` subfolder topology the default setup shape.
 
 ## Support Command Triage
 
@@ -139,9 +141,9 @@ When the repo layout differs from the default target-root setup, support should 
 2. The app directories that checks should run against.
 3. Whether any expected app directory is intentionally absent until an approved bead creates it.
 
-If the Precode control layer intentionally lives under a `precode/` subfolder, run Bootstrap, fast verified setup, and existing-Precode refresh commands with `--target <repo-root>/precode`, because that is the installed Precode root. Record the app directories and check roots separately in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal PrecodeOS topology.
+If the Precode control layer intentionally lives under a `precode/` subfolder, create that folder before Bootstrap if it does not exist, then run Bootstrap, fast verified setup, and existing-Precode refresh commands with `--target <repo-root>/precode`, because that is the installed Precode root. Record the app directories and check roots separately in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal PrecodeOS topology.
 
-Do not start intake, create files, write code, move project material, or adapt owner files until these boundaries are clear. If the layout conflicts with active memory, `PROJECT-CONTEXT.md`, `CODEBASE-GUIDE.md`, or the current bead, surface the conflict before editing.
+Do not start intake, create files, write code, move project material, author the first setup bead, or adapt owner files until these boundaries are clear and the user has approved the exact setup action. If the layout conflicts with active memory, `PROJECT-CONTEXT.md`, `CODEBASE-GUIDE.md`, or the current bead, surface the conflict before editing.
 
 ### One Question At A Time
 
@@ -156,7 +158,7 @@ Before activating a new bead or starting a new support session, check git status
 
 Bead boundaries should normally align with commit boundaries. If completed checked work is uncommitted, stop and propose a commit summary before moving forward. Push when the builder's repo has a remote and the support workflow expects remote backup or collaboration.
 
-Use `origin` as the conventional remote name when possible. If a builder is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
+Use `origin` as the conventional remote name when possible. Stop before creating a GitHub repository, adding a remote, changing remote visibility, or pushing; show the exact command and wait for user approval. If a builder is moving from one GitHub repository to another, consolidating multiple remotes, renaming remotes, or moving the project folder, inspect first and use the Repository Topology Migration prompt from `tasks/reference/PROMPT-PATTERNS.md`. Do not change remotes, push, pull, move folders, delete old repositories, or edit project-local command wrappers until the canonical repository, support access impact, rollback path, and validation plan are explicit and approved.
 
 Do not treat this chat instruction as durable state by itself. If the rule needs to persist, put it in the appropriate Precode owner or support document.
 ```

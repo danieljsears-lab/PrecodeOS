@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.82
-Last updated: 2026-08-04
+Document version: v0.1.83
+Last updated: 2026-08-05
 
 ## Purpose
 
@@ -418,15 +418,19 @@ Run Fast Verified Setup for this target.
 
 Use my clean PrecodeOS package checkout as the source and my target project as the target.
 
-First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh. If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run:
+First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh.
+
+If the PrecodeOS package still needs to be cloned, clone it outside the target project folder and confirm the target project's git status does not show the clone as untracked or nested. If the target folder does not exist yet, create only that target folder before Bootstrap Confidence. If this project intentionally uses `<repo-root>/precode` as the installed Precode root, use `--target <repo-root>/precode` and record that project-specific topology later in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal default.
+
+If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run the preview only:
 
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 
-Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, and exact validation command.
+Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and exact validation command.
 
-Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
+Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. This cannot be completed as one uninterrupted paste because action IDs do not exist until preview prints them. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
 
 If I approve current action IDs, apply only those copy actions with:
 
@@ -434,10 +438,12 @@ npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --appro
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
 
-After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved.
+After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
+
+For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
 ```
 
-Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, and `cd <target-project-root> && bash scripts/validate-memory.sh` as the validation command after apply.
+Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, fresh active-work-state status when needed, owner-file assumptions or open questions, and `cd <target-project-root> && bash scripts/validate-memory.sh` as the validation command after apply.
 
 This is a transparent facade over existing Bootstrap setup and refresh paths, not an installer, updater, prepared starter-target authority, support-only setup path, rollback helper, package manager, task selector, PRD approval, bead activation, or generated-output authority.
 
