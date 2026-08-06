@@ -3017,6 +3017,90 @@ def assert_release_readiness_skill_contract(failures: list[dict[str, str]]) -> i
     return len(required_terms_by_path)
 
 
+def assert_curated_pack_exemplar_contract(failures: list[dict[str, str]]) -> int:
+    required_terms_by_path = {
+        Path("tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md"): [
+            "AUTHORITY: Official non-installable curated pack exemplar review shape",
+            "Pack status: exemplar-review-shape",
+            "tasks/reference/RELEASE-READINESS-PROTOCOL.md",
+            "tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md",
+            "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+            "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md",
+            ".agents/skills/release-readiness/SKILL.md",
+            "distribution_behavior: none",
+            "registry_or_marketplace_behavior: none",
+            "install_update_package_manager_behavior: none",
+            "not create optional-pack distribution",
+            "does not approve release",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "official non-installable Release Readiness curated pack exemplar review shape",
+            "tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "Official non-installable exemplar metadata shape",
+            "exemplar_template: tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "distribution_behavior: none",
+            "registry_or_marketplace_behavior: none",
+            "install_update_package_manager_behavior: none",
+        ],
+        Path("tasks/reference/RELEASE-READINESS-PROTOCOL.md"): [
+            "official non-installable curated pack exemplar",
+            "tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "does not install a pack or skill",
+            "create a registry",
+            "approve release",
+            "add package-manager behavior",
+        ],
+        Path("CONTRIBUTING.md"): [
+            "official non-installable curated pack exemplar review shape",
+            "tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "Do not treat it as a pack manifest",
+            "permission to distribute optional packs",
+        ],
+        Path("README.md"): [
+            "Pack-shaped extension proposals",
+            "RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "It is not a pack manifest, registry, marketplace, installer, release approval, command wrapper, release-channel surface, or package-manager behavior.",
+        ],
+        Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
+            "tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md",
+            "Official non-installable curated pack exemplar review shape",
+            "not a pack manifest, registry, marketplace, installer",
+            "release-channel surface, or package-manager surface",
+        ],
+        Path("llms.txt"): [
+            "Use Release Readiness Curated Pack Exemplar only when reviewing pack-shaped extension boundaries",
+            "official non-installable exemplar review shape",
+            "It is not a pack manifest, registry, marketplace, install path",
+            "permission to distribute optional packs",
+        ],
+    }
+    for path, required_terms in required_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term not in text:
+                failures.append({"scenario": f"curated pack exemplar contract: {path}", "expected": term, "actual": "missing"})
+
+    forbidden_terms_by_path = {
+        Path("tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md"): [
+            "install this pack",
+            "registry listing required",
+            "release approved",
+            "package manager update",
+        ],
+        Path("tasks/reference/EXTENSION-PROTOCOL.md"): [
+            "Official installable exemplar",
+            "registry record for release-readiness-review-pack",
+            "package manager behavior is allowed",
+        ],
+    }
+    for path, forbidden_terms in forbidden_terms_by_path.items():
+        text = path.read_text(encoding="utf-8")
+        for term in forbidden_terms:
+            if term in text:
+                failures.append({"scenario": f"curated pack exemplar forbidden wording: {path}", "expected": "absent", "actual": term})
+    return len(required_terms_by_path)
+
+
 def assert_plan_loop_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
         Path("tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md"): [
@@ -5902,6 +5986,7 @@ def main() -> int:
     source_to_promotion_hygiene_scenario_count = assert_source_to_promotion_hygiene_contract(failures)
     skill_playbook_ergonomics_scenario_count = assert_skill_playbook_ergonomics_contract(failures)
     release_readiness_skill_scenario_count = assert_release_readiness_skill_contract(failures)
+    curated_pack_exemplar_scenario_count = assert_curated_pack_exemplar_contract(failures)
     plan_loop_scenario_count = assert_plan_loop_contract(failures)
     plan_mode_candidate_craft_scenario_count = assert_plan_mode_candidate_craft_loop_contract(failures)
     approved_bead_handoff_scenario_count = assert_approved_bead_handoff_contract(failures)
@@ -6625,6 +6710,7 @@ def main() -> int:
         + source_to_promotion_hygiene_scenario_count
         + skill_playbook_ergonomics_scenario_count
         + release_readiness_skill_scenario_count
+        + curated_pack_exemplar_scenario_count
         + plan_loop_scenario_count
         + plan_mode_candidate_craft_scenario_count
         + approved_bead_handoff_scenario_count

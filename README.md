@@ -352,6 +352,7 @@ PrecodeOS is designed to be inspectable:
 - Contribution policy is inbound = Apache-2.0.
 - Maintainer review is required for governance, trademark, licensing, public positioning, active memory, core workflow semantics, generated-output demotion, and beginner-facing safety language.
 - Trust-affecting semantic changes should use [`SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md`](tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md) before implementation or merge.
+- Pack-shaped extension proposals should use the official non-installable [`RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md`](tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md) as the review model for owner surfaces, validation, approval gates, forbidden effects, and removal notes. It is not a pack manifest, registry, marketplace, installer, release approval, command wrapper, release-channel surface, or package-manager behavior.
 
 Useful reviewer commands:
 

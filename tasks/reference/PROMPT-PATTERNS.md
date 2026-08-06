@@ -1643,6 +1643,8 @@ Use the Release Readiness Skill.
 
 Load the Release Readiness Protocol and Skill Playbook Protocol. Inspect the active bead, primary authority, Closeout Evidence, recorded checks, release-readiness notes, Release Candidate Evidence Profile, verification and release evidence, and relevant owner docs. Treat generated reports, screenshots, browser notes, GitHub status, and release notes as review input only unless they are recorded evidence.
 
+If the user asks why Release Readiness is packaged this way, cite `tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` as the official non-installable curated pack exemplar review shape. Do not treat that template as a pack manifest, registry record, skill installation instruction, command wrapper, release approval, release-channel surface, or package-manager surface.
+
 Return exactly: Release situation, Evidence recorded, Evidence still missing, Smoke/manual/browser verification, Rollback or blocked escape, Approvals still required, Decision-state recommendation, and Stop condition.
 
 Use only these decision-state recommendations when applicable: candidate, needs evidence, blocked, or ready for human release decision. Make clear that ready for human release decision is not release approval.

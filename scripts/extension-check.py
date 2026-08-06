@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-07-26
+# Version: v0.1.3
+# Last updated: 2026-08-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -64,6 +64,39 @@ def check_markdown(path: Path, root: Path, issues: list[dict[str, Any]]) -> None
             add_issue(issues, name, "generated markdown should clearly say it is not active memory")
 
 
+def check_release_readiness_curated_pack_exemplar(root: Path, issues: list[dict[str, Any]]) -> None:
+    path = root / "tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md"
+    name = rel(path, root)
+    if not path.is_file():
+        add_issue(issues, name, "missing official release-readiness curated pack exemplar", "error")
+        return
+    text = path.read_text(encoding="utf-8")
+    values = contract(text)
+    for field in CONTRACT_FIELDS:
+        if field not in values:
+            add_issue(issues, name, f"missing authority contract field: {field}", "error")
+    if not anchor(text):
+        add_issue(issues, name, "missing canonical anchor", "error")
+
+    required_terms = [
+        "status: exemplar-review-shape",
+        "distribution_behavior: none",
+        "registry_or_marketplace_behavior: none",
+        "install_update_package_manager_behavior: none",
+        "active_memory_changes: none",
+        "external_systems_touched: none",
+        "read_only_by_default: true",
+        "tasks/reference/RELEASE-READINESS-PROTOCOL.md",
+        "tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md",
+        "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+        "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md",
+        ".agents/skills/release-readiness/SKILL.md",
+    ]
+    for term in required_terms:
+        if term not in text:
+            add_issue(issues, name, f"release-readiness exemplar missing required boundary term: {term}", "error")
+
+
 def main() -> int:
     root = repo_root()
     issues: list[dict[str, Any]] = []
@@ -85,6 +118,8 @@ def main() -> int:
         extra = [item for item in active if item not in ACTIVE_MEMORY and item.endswith(".md")]
         if extra:
             add_issue(issues, "AGENT.md", f"possible extra active-memory markdown files: {', '.join(extra)}")
+
+    check_release_readiness_curated_pack_exemplar(root, issues)
 
     payload = {
         "tool": "extension-check",

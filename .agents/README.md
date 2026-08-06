@@ -37,3 +37,5 @@ The current bundled skills include Nimble-oriented research and web-data skills 
 The Nimble-oriented skills may have their own prerequisites, external API behavior, write permissions, and host-specific tool declarations. Those capabilities belong to the host skill's own contract; they do not expand PrecodeOS active memory or public workflow authority.
 
 The `release-readiness` host skill is packaging for a read-only Precode prompt playbook. It routes to `tasks/reference/RELEASE-READINESS-PROTOCOL.md` and `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`; it does not approve release, deploy, mutate GitHub or providers, create command-wrapper behavior, create optional-pack behavior, or make `.agents/skills/` a beginner-facing skill catalog.
+
+`tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` uses Release Readiness as the official non-installable curated pack exemplar review shape. That exemplar may name this host skill as an included surface, but it does not make `.agents/skills/` a pack directory, install surface, registry, marketplace, command wrapper, release channel, package-manager surface, or source of Precode authority.

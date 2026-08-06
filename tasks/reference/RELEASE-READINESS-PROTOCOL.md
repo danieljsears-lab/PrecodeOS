@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-07-11
+Document version: v0.1.8
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -25,6 +25,8 @@ This protocol prepares evidence and approval questions. It does not deploy, prom
 In the builder journey, deployment means this release-prep checkpoint: evidence, docs/support freshness, rollback or blocked escape, and explicit human approvals before any external action. PrecodeOS does not provide platform-specific deployment playbooks, configure providers, mutate dashboards, or execute deploys through this protocol.
 
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` for verification tiers and sensitive-surface gates. Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` for closeout, review, and transition rules. Use `tasks/reference/GITHUB-INTEGRATION-PROTOCOL.md` for GitHub status or package checkpoint boundaries.
+
+Release Readiness is also the official non-installable curated pack exemplar in `tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md`. The exemplar groups existing release-readiness owner surfaces for Extension Protocol review only. It does not install a pack or skill, create a registry, add command-wrapper behavior, approve release, deploy, mutate GitHub or providers, create release-channel behavior, add package-manager behavior, or turn host-skill packaging into Precode authority.
 
 Active memory remains exactly:
 

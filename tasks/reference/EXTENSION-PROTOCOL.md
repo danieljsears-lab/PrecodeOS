@@ -48,7 +48,7 @@ Future host shims and native rule-directory surfaces must start as advisory comp
 
 Future host-facing contract consumption may become stricter only after advisory run contracts, command classification, and wrapper boundaries prove stable in real use. Any stricter host adapter must remain subordinate to owner files, active beads, recorded proof, user approval gates, and the Tool Execution Protocol; it must not silently become runtime enforcement or command approval.
 
-Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec or pack review checklist may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
+Future optional packs are governed by this protocol before any pack distribution exists. A pack boundary spec, pack review checklist, or official exemplar review shape may describe what a future pack is allowed to contain, but it must not create pack installation, registry, marketplace, update, release-channel, or package-manager behavior.
 
 The Artifact Chooser in `tasks/reference/PROMPT-PATTERNS.md` is an index over existing prompts and artifacts, not an extension type. Do not treat it as a template registry, marketplace, optional pack, package manager, hidden task selector, automatic artifact generator, skill playbook, command wrapper, or approval surface. If artifact selection depends on active state, route through Workflow Selection or the owning protocol.
 
@@ -106,7 +106,7 @@ A future pack may contain related reference protocols, templates, examples, scri
 
 Pack-shaped proposals should usually start as maintainer or contributor review artifacts, not installable modules. Review the contributor threshold first: one logical packaging change, named owner surfaces, included checks, docs/protocol/inventory/generated-surface impact, no scope expansion during review, and no registry, marketplace, installer, release-channel, package-manager, or target-project mutation behavior.
 
-Recommended initial official pack categories are release readiness, security review, docs/navigation review, UI or experience review, and existing-repo intake. A single exemplar pack may be documented as non-installable review evidence after contributor thresholds are clear; it must prove that packaging clarifies ownership and validation instead of competing with the core.
+Recommended initial official pack categories are release readiness, security review, docs/navigation review, UI or experience review, and existing-repo intake. `tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` is the official non-installable Release Readiness curated pack exemplar review shape. It proves only that packaging can clarify existing owner surfaces, validation, approval gates, forbidden effects, active-memory impact, and removal notes without competing with the core.
 
 A future pack must not:
 
@@ -140,36 +140,60 @@ Registry or marketplace behavior: none
 Install/update/package-manager behavior: none
 ```
 
-Illustrative non-installable metadata shape:
+Official non-installable exemplar metadata shape:
 
 ```yaml
 pack:
   id: release-readiness-review-pack
   status: exemplar-review-shape
   owner_protocol: tasks/reference/EXTENSION-PROTOCOL.md
+  exemplar_template: tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md
+  capability_being_grouped: release-readiness evidence and approval-question review
   included_surfaces:
     - tasks/reference/RELEASE-READINESS-PROTOCOL.md
     - tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md
     - tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md
+    - tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md
+    - tasks/reference/PROMPT-PATTERNS.md
+    - .agents/README.md
+    - .agents/skills/release-readiness/SKILL.md
   pack_categories:
     - release-readiness
     - verification
+    - human-approval-review
   generated_evidence: none
   active_memory_changes: none
-  external_mutation: none
+  external_systems_touched: none
+  read_only_by_default: true
   validation:
+    - python3 scripts/clarity-scenario-check.py
     - python3 scripts/extension-check.py
     - python3 scripts/file-inventory.py --check
   forbidden_effects:
-    - task approval
-    - command approval
-    - installation
-    - registry behavior
-    - package-manager behavior
+    - active-memory expansion
+    - task selection
+    - PRD approval
+    - bead activation
+    - review acceptance
     - release approval
+    - deployment approval
+    - command approval
+    - generated metadata authority
+    - host skill installation
+    - command-wrapper behavior
+    - registry behavior
+    - marketplace behavior
+    - optional-pack installation
+    - install/update behavior
+    - release-channel behavior
+    - package-manager behavior
+    - target-project mutation
+  distribution_behavior: none
+  registry_or_marketplace_behavior: none
+  install_update_package_manager_behavior: none
 ```
 
-The example above is a review shape only. It is not a shipped pack, install manifest, registry record, package index, release-readiness approval, or permission to distribute optional packs.
+The exemplar above is a review shape only. It is not a shipped pack, install manifest, registry record, package index, release-readiness approval, release-channel surface, package-manager surface, host-skill installation instruction, or permission to distribute optional packs.
 
 ## Authority Contract Rules
 

@@ -52,6 +52,8 @@ Keep these contributions small enough to review:
 
 Optional-pack proposals are review artifacts until a separate approved package change defines distribution. A proposed pack must declare included surfaces, owner protocols or adapters, generated evidence, validation, forbidden effects, removal or rollback notes, and active-memory impact. It must not add active memory, approve work, install host plugins, or make generated metadata authoritative.
 
+`tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` is the official non-installable curated pack exemplar review shape. Use it as a model for declaring owner surfaces, validation, approval gates, forbidden effects, removal notes, and active-memory impact. Do not treat it as a pack manifest, install path, registry listing, marketplace entry, release approval, release-channel surface, command wrapper, package-manager behavior, or permission to distribute optional packs.
+
 For packaging-style work, use `tasks/reference/EXTENSION-PROTOCOL.md` before implementation or merge. Extension review output is advisory review input only; it does not approve the change, install a skill, create a registry, or create optional-pack behavior.
 
 ## Review Expectations

@@ -112,6 +112,8 @@ Use Question-To-Artifact Filing for this answer. Name the source question, the a
 
 If you are unsure which skill-style prompt to use, ask for Skill Playbook Ergonomics instead of browsing a skill catalog. It should map your request to the smallest existing invocation: Ask Precode, Workflow Selection, Ideation / First PRD Walkthrough, Review / Acceptance Skill, Skill / Extension Review Skill, a normal owner protocol, a prompt-pattern entry, an adapter note, a script/check, or no new surface. Skill playbooks are read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 
+When reviewing pack-shaped extension proposals, use `tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` as the official non-installable exemplar review shape. It shows how Release Readiness groups existing owner surfaces without creating a pack manifest, install path, registry, marketplace, command wrapper, release-channel behavior, package-manager behavior, release approval, or target-project mutation.
+
 ```text
 Use Skill Playbook Ergonomics. Map my request to the smallest existing Precode invocation or owner surface, name the owner protocol or document, name the stop condition, and say what still requires human approval. Do not show me a skill catalog, create a new skill name, install a skill, add a registry, create an optional pack, run mutating commands, approve PRDs, activate beads, accept review, approve extension implementation, or treat skill output as authority.
 ```

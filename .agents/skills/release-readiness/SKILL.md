@@ -31,6 +31,13 @@ Treat this skill as host-discoverable packaging only. PrecodeOS skill-playbook
 authority lives in `tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md`, and release
 authority lives in `tasks/reference/RELEASE-READINESS-PROTOCOL.md`.
 
+`tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md` may name this
+host skill as one included surface in the official non-installable curated pack
+exemplar review shape. That does not install this skill, create a pack
+directory, create a registry or marketplace, add command-wrapper behavior,
+approve release, add release-channel behavior, add package-manager behavior, or
+make host skill metadata Precode authority.
+
 Load the smallest relevant set of canonical sources:
 
 - `tasks/reference/RELEASE-READINESS-PROTOCOL.md`
