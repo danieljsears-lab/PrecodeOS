@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.27
-Last updated: 2026-08-05
+Document version: v0.1.28
+Last updated: 2026-08-06
 
 ## What This Guide Is For
 
@@ -111,7 +111,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
-This apply mode copies only approved `review_copy_candidate` actions. The fast facade delegates to the same Python copy path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status, create the fresh target active-work state, adapt owner files with approved user facts, and validate memory before product work starts.
+This apply mode copies only approved `review_copy_candidate` actions. The fast facade delegates to the same Python copy path and prints validation next steps after approved apply, but fresh setup cannot validate immediately after copy-only apply. It refuses owner-file adaptation, existing-project setup, overwrites, hooks, CI, app commands, app code, executable release-channel behavior, package-manager behavior, rollback automation, and hidden CLI approval. After apply, inspect target Git status, create the fresh target active-work state, adapt owner files from package templates with approved user facts, preserve anchors and authority contract fields, and validate memory before product work starts.
 
 For short support calls, the fast path is the same mechanism with less wandering: run `--fast-verified-setup-preview`, review the underlying supervised setup, existing Precode refresh, or existing app intake commands, approve only the needed current `SP-ID` or `UP-ID` copy actions, apply them, create or adapt the active work state and owner files where required, run validation, then move the builder to the first-session card or Conviction Packet / First PRD path. Do not replace this with a blind branch clone, prepared starter target, bulk copy, package update, rollback shortcut, or support-only setup authority. The required reusable setup support files are `tasks/beads/BEAD-SCHEMA.md`, `tasks/prds/PRD-000-template.md`, and `tasks/prds/PRD-SHARD-SCHEMA.md`; Bootstrap Confidence reports them separately when an existing Precode target is missing them, because ID validation skip-lists do not make them optional.
 
@@ -382,7 +382,7 @@ Then create or adapt setup state and owner files before starting product work:
 - `DECISIONS.md`: hard decisions already known for this project
 - `tasks/todo.md`: the fresh first setup bead and current state
 
-Fresh active work state is project-specific. Create a target `tasks/todo.md` rather than copying the package source's active work file, author exactly one small setup or orientation bead in `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. `validate-memory.sh` requires exactly one `in_progress` bead, so validation should run only after this state exists. Do not use `bead-transition.py` to approve setup or activate product work.
+Fresh active work state is project-specific. Create a target `tasks/todo.md` rather than copying the package source's active work file, author exactly one small setup or orientation bead in `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Preserve the package template anchors, frontmatter shape, and authority contract fields when creating or adapting setup files. `validate-memory.sh` requires exactly one `in_progress` bead, so validation should run only after this state exists. Do not use `bead-transition.py` to approve setup or activate product work.
 
 Owner-file adaptation must use user-approved project facts. If the product promise, app directories, checks, stack, integrations, or hard decisions are uncertain, mark them as assumptions or open questions rather than inventing settled truth.
 
@@ -461,11 +461,16 @@ Keep `project-evidence/PROJECT-EVIDENCE-GUIDE.md` if the package includes it. Af
 
 ## Step 5: Validate Before Work Starts
 
-After the files are in place and owner files have been adapted, run the first validation command from the installed Precode root. In the default setup this is the target project root; if your project intentionally keeps PrecodeOS in a subfolder, run validation from that subfolder.
+After the files are in place, fresh active work state exists, and owner files have been adapted from package templates with preserved anchors and authority contract fields, run the first validation command from the installed Precode root. In the default setup this is the target project root; if your project intentionally keeps PrecodeOS in a subfolder, run validation from that subfolder.
 
 ```bash
 bash scripts/validate-memory.sh
+python3 scripts/file-inventory.py --check
 ```
+
+Do not run `python3 scripts/prd-html.py` as first setup validation. PRD HTML generation is a later review-surface refresh for package PRD shards, not proof that a fresh target setup is ready for first product work.
+
+Before the first target commit, confirm copied files are trackable by Git. From the repository root that contains the installed Precode root, run a `git check-ignore` sweep over installed files. Clean output means no installed file is ignored; depending on the shell and Git version, the command may exit nonzero when nothing is ignored, so treat no output as the success signal rather than as a failure by itself.
 
 Then start the first session:
 

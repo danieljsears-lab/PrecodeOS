@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.7.104
-Last updated: 2026-08-04
+Document version: v0.7.105
+Last updated: 2026-08-06
 
 ## 1. Start Here
 <!-- ANCHOR: guide-part-1-start-here -->
@@ -1290,7 +1290,7 @@ Run python3 scripts/files-in-play-check.py --command "<command summary>" and exp
 
 If the decision is `continue`, still keep local mutations inside `files_in_play`. Ask first if the command installs dependencies, runs migrations, touches secrets, auth, private data, payments, deployments, external services, releases, shared branches, or destructive operations.
 
-Use agent access levels as plain-language routing:
+Use agent access levels as plain-language routing. Tool Execution owns this ladder; user prompts, adapter notes, Run Contracts, and command classifications should use the same meanings instead of inventing local access rules:
 
 | Access level | Use when | Boundary |
 |---|---|---|
@@ -1301,7 +1301,7 @@ Use agent access levels as plain-language routing:
 | `external-change` | The agent may affect GitHub, CI, deployments, dashboards, issue trackers, releases, shared branches, or hosted services. | Require explicit approval naming the action, affected system, recovery path, and evidence. |
 | `destructive` | The command may delete, reset, drop, force-push, roll back, or cause hard-to-reverse damage. | Stop until the exact command, effect, rollback or blocked escape, and evidence plan are approved. |
 
-These levels do not enforce permissions or approve work. They help you ask the agent what it may do before capability turns into momentum.
+These levels do not enforce permissions, approve work, change host settings, or add schema metadata. They help you ask the agent what it may do before capability turns into momentum; if another surface uses different wording, ask the agent to reconcile it back to Tool Execution before continuing.
 
 Use `--edit-lock` for high-risk beads when you want an advisory check against the active bead's files in play:
 

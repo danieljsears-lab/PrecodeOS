@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.7
-Last updated: 2026-07-26
+Document version: v0.1.8
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Agent routing helps Precode use enough intelligence without turning every task i
 
 This protocol is provider-neutral. It defines the decision language. Tool adapters translate the language into Claude, Codex, Gemini, Cursor, Antigravity, or future agent settings.
 
-When the routing question is "what may this agent do right now?", use the Tool Execution access levels: `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, and `destructive`. They are guidance over existing tool-call classes, files in play, Run Contracts, approval gates, and stop conditions; they are not a provider setting, sandbox rule, command approval, or schema-backed permission system.
+When the routing question is "what may this agent do right now?", use the Tool Execution access levels: `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, and `destructive`. Tool Execution owns the ladder; Agent Routing only applies it to model choice, delegation, context, and tool path. Access levels are guidance over existing tool-call classes, files in play, Run Contracts, approval gates, and stop conditions; they are not a provider setting, sandbox rule, command approval, or schema-backed permission system.
 
 Active memory remains exactly:
 
@@ -43,6 +43,7 @@ Escalate only when the current tier cannot safely decide. De-escalate when the n
 
 - Model choice, reasoning effort, subagent choice, or access-level label must not override the active bead, files in play, stop conditions, approval gates, or review requirements.
 - Agent access level must not be inferred from model capability. A stronger model can still be limited to `inspect` or `verify` when the active bead, Run Contract, or approval state does not allow mutation.
+- If adapter, prompt, or handoff wording describes access differently from Tool Execution, treat the mismatch as wording drift and reconcile to Tool Execution before continuing.
 - If the work needs a second outcome, authority owner, verification strategy, or risk model, split the bead before routing to a stronger model.
 - Use `deep` for stakes plus ambiguity plus novelty. Do not use it as the default for routine execution.
 - Use `long-horizon` only with explicit checkpoints, review context, and a clear escape path.

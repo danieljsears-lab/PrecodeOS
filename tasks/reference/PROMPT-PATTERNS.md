@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.83
-Last updated: 2026-08-05
+Document version: v0.1.85
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -193,7 +193,7 @@ Expected output: role lens, recommended workflow, owner source, stop condition, 
 
 ### Agent Access Level Check
 
-Use this prompt from the Daily Cockpit before host-agent work starts or before a risky command when the practical question is what an agent may inspect, verify, change locally, handle as sensitive, mutate externally, or stop before doing. It is the cockpit bridge from builder intent to host-agent bounds, not permission to widen scope.
+Use this prompt from the Daily Cockpit before host-agent work starts or before a risky command when the practical question is what an agent may inspect, verify, change locally, handle as sensitive, mutate externally, or stop before doing. It is the cockpit bridge from builder intent to host-agent bounds, not permission to widen scope. Tool Execution owns the access ladder; this prompt only asks the agent to apply it to the current bead, files in play, proof path, and approval gates.
 
 ```text
 Use the Agent Access Level Check.
@@ -202,10 +202,10 @@ Read the active bead, files in play, stop conditions, Run Contract if present, a
 
 For that level, name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape when relevant, and re-entry evidence if the work may continue while I am away.
 
-Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, generated panel behavior, agent-shell behavior, or permission to widen scope.
+Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, generated panel behavior, agent-shell behavior, provider setting, or permission to widen scope.
 ```
 
-Expected output: one access level, one reason, allowed actions, proof needed, approval required before, stop condition, and whether a Run Contract is needed.
+Expected output: one access level from Tool Execution, one reason, allowed actions, proof needed, approval required before, stop condition, and whether a Run Contract is needed. If the prompt, adapter, or handoff text uses different access wording, call out the mismatch and reconcile to Tool Execution.
 
 ### Host-Agent Return Loop
 
@@ -428,7 +428,7 @@ npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 
-Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and exact validation command.
+Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and validation prerequisites.
 
 Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. This cannot be completed as one uninterrupted paste because action IDs do not exist until preview prints them. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
 
@@ -438,12 +438,14 @@ npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --appro
 
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
 
-After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
+After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
 
-For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
+For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Adapt owner files from package templates, preserve anchors and authority contract fields, and use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
+
+Before the first target commit, run a git trackability sweep over installed files. If `git check-ignore` prints no ignored paths, treat that as clean even if the command exits nonzero because no files matched. For first setup validation, run only `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check` from the installed Precode root. Do not run `python3 scripts/prd-html.py` as first setup validation.
 ```
 
-Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, fresh active-work-state status when needed, owner-file assumptions or open questions, and `cd <target-project-root> && bash scripts/validate-memory.sh` as the validation command after apply.
+Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, fresh active-work-state status when needed, owner-file assumptions or open questions, git trackability result, and the validation commands only after fresh setup prerequisites are complete.
 
 This is a transparent facade over existing Bootstrap setup and refresh paths, not an installer, updater, prepared starter-target authority, support-only setup path, rollback helper, package manager, task selector, PRD approval, bead activation, or generated-output authority.
 

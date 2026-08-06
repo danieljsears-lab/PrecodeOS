@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-08-04
+Document version: v0.1.5
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -51,7 +51,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
 
-Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints `cd <target-project-root> && bash scripts/validate-memory.sh` after approved apply. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
+Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints validation next steps after approved apply. Fresh setup validation comes after copied package files, fresh active work state, exactly one setup or orientation `in_progress` bead, and owner-file template adaptation with preserved anchors and authority contracts. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
 
 Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
 
@@ -124,11 +124,14 @@ The package keeps fixture coverage for the refusal contract in `scripts/bootstra
 After an applied setup copy:
 
 - inspect target Git status
-- run `bash scripts/validate-memory.sh` from the installed Precode root after copied files are present
+- create or adapt fresh `tasks/todo.md`, author exactly one setup or orientation bead marked `in_progress`, and preserve package template anchors and authority contract fields
+- adapt owner files manually with user-approved facts before product implementation starts
+- confirm copied files are not hidden by target `.gitignore`; no output from a `git check-ignore` sweep is the clean signal even when the command exits nonzero because no paths matched
+- run `bash scripts/validate-memory.sh` from the installed Precode root after active state and owner files are ready
 - run `python3 scripts/file-inventory.py --check` from the installed Precode root when package files are present
-- adapt owner files manually before product implementation starts
 - run target-specific checks only after owner files name them
 - confirm setup diagnosis no longer reports wrong source/target or required reusable setup support files missing
+- do not run `python3 scripts/prd-html.py` as first setup validation
 
 These checks validate setup state. They do not prove product correctness or approve implementation.
 

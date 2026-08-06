@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.9
-# Last updated: 2026-08-04
+# Version: v0.5.10
+# Last updated: 2026-08-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -274,6 +274,15 @@ def validation_command(target_root: str) -> str:
     return f"cd {shlex.quote(target_root)} && bash scripts/validate-memory.sh"
 
 
+def fresh_setup_validation_next_step(target_root: str) -> str:
+    return (
+        "Inspect target git status. Before validation, create fresh `tasks/todo.md`, author exactly one setup or "
+        "orientation bead marked `in_progress`, point `tasks/todo.md` at that bead, and adapt owner files from package "
+        f"templates with preserved anchors and authority contracts; then run `{validation_command(target_root)}` and "
+        "`python3 scripts/file-inventory.py --check` from the installed Precode root."
+    )
+
+
 def source_missing_paths(source: Path) -> list[str]:
     return [name for name in SOURCE_REQUIRED_PATHS if not (source / name).exists()]
 
@@ -530,7 +539,7 @@ def setup_diagnosis(
     recommended_route = "guided_setup"
     validation_after_apply = [
         "Inspect target git status after any approved copy action.",
-        "Run `bash scripts/validate-memory.sh` from the installed Precode root after package files exist.",
+        "For fresh setup, create active work state and adapt owner files before validation; for existing Precode refresh, validate after approved package-owned copy.",
     ]
     forbidden_next_actions = [
         "do not copy files from generated output alone",
@@ -1192,11 +1201,11 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
             bootstrap_command(payload, "--fast-verified-setup-preview"),
             bootstrap_command(payload, "--supervised-setup-plan"),
             bootstrap_command(payload, "--fast-verified-setup-apply", "--approve-action", "<SP-ID>"),
-            validation_command(str(payload["target_root"])),
         ]
         next_manual_gate = (
             "Review the supervised setup plan. Apply only current SP-ID review_copy_candidate actions with "
-            "--fast-verified-setup-apply, then run validation from the installed target."
+            "--fast-verified-setup-apply, then complete fresh active work state, owner-file template adaptation, "
+            "anchor/authority-contract preservation, and git trackability review before validation."
         )
     elif kind == "existing_precode":
         route = "existing_precode_refresh"
@@ -1240,6 +1249,11 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
         "generated_evidence_only": True,
         "next_manual_gate": next_manual_gate,
         "validation_command_after_apply": validation_command(str(payload["target_root"])),
+        "fresh_setup_validation_prerequisites": (
+            fresh_setup_validation_next_step(str(payload["target_root"]))
+            if route == "fresh_or_nearly_empty_setup"
+            else ""
+        ),
         "blockers": blockers,
         "not_authority_for": [
             "broad installer behavior",
@@ -1318,7 +1332,9 @@ def build_fast_verified_setup_apply(payload: dict[str, Any], approved_action_ids
             )
         ],
         "validation_next_step": (
-            validation_command(str(payload["target_root"]))
+            fresh_setup_validation_next_step(str(payload["target_root"]))
+            if status == "applied" and route == "fresh_or_nearly_empty_setup"
+            else validation_command(str(payload["target_root"]))
             if status == "applied"
             else "Resolve blockers and rerun fast verified setup preview before applying current approval IDs."
         ),
@@ -1611,7 +1627,7 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
         "skipped": skipped,
         "blocked": blocked,
         "validation_next_step": (
-            "Inspect target git status, then run `bash scripts/validate-memory.sh` from the installed Precode root after copied files are present."
+            fresh_setup_validation_next_step(str(payload["target_root"]))
             if status == "applied"
             else "Resolve blockers and rerun the supervised setup plan before applying setup actions."
         ),
@@ -2110,7 +2126,10 @@ def render_fast_verified_setup_preview_plain(payload: dict[str, Any]) -> str:
     if preview["current_action_ids"]:
         lines.append("\nCurrent candidate approval IDs:")
         lines.extend(f"- `{action_id}`" for action_id in preview["current_action_ids"])
-    lines.append(f"\nValidation command after approved apply: `{preview['validation_command_after_apply']}`")
+    if preview.get("fresh_setup_validation_prerequisites"):
+        lines.append(f"\nFresh setup validation prerequisites: {preview['fresh_setup_validation_prerequisites']}")
+    else:
+        lines.append(f"\nValidation command after approved apply: `{preview['validation_command_after_apply']}`")
     if "supervised_setup_plan" in payload:
         lines.append("\nFresh-target setup evidence:")
         plan = payload["supervised_setup_plan"]
@@ -2615,6 +2634,8 @@ def self_test() -> int:
         rendered_fast_preview = render_fast_verified_setup_preview_plain(fast_empty_payload)
         assert "Fast Verified Setup Preview" in rendered_fast_preview
         assert "Underlying command sequence" in rendered_fast_preview
+        assert "Fresh setup validation prerequisites" in rendered_fast_preview
+        assert "exactly one setup or orientation bead marked `in_progress`" in rendered_fast_preview
         fast_no_approval = build_fast_verified_setup_apply(fast_empty_payload, [])
         assert fast_no_approval["status"] == "blocked"
         assert any("at least one" in item["reason"] for item in fast_no_approval["blocked"])
@@ -2656,7 +2677,10 @@ def self_test() -> int:
         fast_setup_apply = build_fast_verified_setup_apply(fast_apply_payload, approved_copy_ids)
         assert fast_setup_apply["status"] == "applied"
         assert (fast_apply_target / "AGENT.md").is_file()
-        assert fast_setup_apply["validation_next_step"] == validation_command(str(fast_apply_payload["target_root"]))
+        assert fast_setup_apply["validation_next_step"] == fresh_setup_validation_next_step(
+            str(fast_apply_payload["target_root"])
+        )
+        assert "exactly one setup or orientation bead marked `in_progress`" in fast_setup_apply["validation_next_step"]
         rendered_fast_apply = render_fast_verified_setup_apply_plain(
             {**fast_apply_payload, "fast_verified_setup_apply": fast_setup_apply}
         )

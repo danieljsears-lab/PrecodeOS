@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.50
-Last updated: 2026-08-05
+Document version: v0.1.51
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -54,8 +54,10 @@ For a 10-15 minute setup target, use a fast verified setup lane rather than a si
 2. Run the Python/local checkout path first: `bootstrap-check.py --fast-verified-setup-preview`, `--supervised-setup-plan` for empty or nearly empty targets, or `--upgrade-preview` for existing Precode targets.
 3. Approve only the specific `SP-ID` or `UP-ID` copy actions needed for package-owned setup files.
 4. Apply those approved copy actions with the matching apply mode.
-5. Run `bash scripts/validate-memory.sh`.
-6. Hand the builder to `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` or Conviction Packet / First PRD intake.
+5. For fresh setup, create the target's fresh active work state, author exactly one setup or orientation bead marked `in_progress`, point `tasks/todo.md` at it, and adapt owner files from package templates with preserved anchors and authority contract fields.
+6. Confirm installed files are not hidden by target `.gitignore` rules. A `git check-ignore` sweep can exit nonzero when no files are ignored, so treat no output as the clean result.
+7. Run `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check` from the installed Precode root. Do not run `python3 scripts/prd-html.py` as first setup validation.
+8. Hand the builder to `tasks/templates/PRECODE-FIRST-SESSION-CARD.md` or Conviction Packet / First PRD intake.
 
 Optional npm commands are allowed on a live call only after an external availability preflight succeeds:
 

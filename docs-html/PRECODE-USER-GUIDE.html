@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-08-05">
+  <meta name="generated-at" content="2026-08-06">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>How To Use PrecodeOS</h1>
   <p class="lede">This guide is easier to use as an action map than as a book. Start in the Daily Cockpit for normal work, then come here only for the deeper manual section that matches the action you need. The generated HTML page is the best readi</p>
-  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.104</span><span>Updated 2026-08-04</span></p>
+  <p class="meta"><a href="../docs/PRECODE-USER-GUIDE.md">Source Markdown</a><span>v0.7.105</span><span>Updated 2026-08-06</span></p>
 
 </section>
 <section class="content layout">
@@ -930,9 +930,9 @@ Do not accept implementation, approve review, approve release, activate the next
 <p>Before running a risky command, ask the guardrail to classify it:</p>
 <pre><code class="language-text">Run python3 scripts/files-in-play-check.py --command &quot;&lt;command summary&gt;&quot; and explain whether the decision is continue, approval needed, or stop. Do not run the command yet.</code></pre>
 <p>If the decision is <code>continue</code>, still keep local mutations inside <code>files_in_play</code>. Ask first if the command installs dependencies, runs migrations, touches secrets, auth, private data, payments, deployments, external services, releases, shared branches, or destructive operations.</p>
-<p>Use agent access levels as plain-language routing:</p>
+<p>Use agent access levels as plain-language routing. Tool Execution owns this ladder; user prompts, adapter notes, Run Contracts, and command classifications should use the same meanings instead of inventing local access rules:</p>
 <div class="table-wrap"><table><thead><tr><th>Access level</th><th>Use when</th><th>Boundary</th></tr></thead><tbody><tr><td><code>inspect</code></td><td>The agent only reads local or external state.</td><td>Evidence only; ask first if secrets or private data may be exposed.</td></tr><tr><td><code>verify</code></td><td>The agent runs checks intended to prove behavior or package integrity.</td><td>Record proof when needed; ask first if the check is external, secret-bearing, expensive, or mutating.</td></tr><tr><td><code>local-change</code></td><td>The agent edits local files inside the active bead.</td><td>Keep changes inside <code>files_in_play</code>; ask before dependencies, generated authority-like rewrites, scope widening, or sensitive files.</td></tr><tr><td><code>sensitive</code></td><td>The work touches secrets, auth, private data, payments, dashboards, or security config.</td><td>Require explicit approval, proof path, and usually a Run Contract.</td></tr><tr><td><code>external-change</code></td><td>The agent may affect GitHub, CI, deployments, dashboards, issue trackers, releases, shared branches, or hosted services.</td><td>Require explicit approval naming the action, affected system, recovery path, and evidence.</td></tr><tr><td><code>destructive</code></td><td>The command may delete, reset, drop, force-push, roll back, or cause hard-to-reverse damage.</td><td>Stop until the exact command, effect, rollback or blocked escape, and evidence plan are approved.</td></tr></tbody></table></div>
-<p>These levels do not enforce permissions or approve work. They help you ask the agent what it may do before capability turns into momentum.</p>
+<p>These levels do not enforce permissions, approve work, change host settings, or add schema metadata. They help you ask the agent what it may do before capability turns into momentum; if another surface uses different wording, ask the agent to reconcile it back to Tool Execution before continuing.</p>
 <p>Use <code>--edit-lock</code> for high-risk beads when you want an advisory check against the active bead&#x27;s files in play:</p>
 <pre><code class="language-text">Run python3 scripts/files-in-play-check.py --edit-lock and explain whether any changed path is outside this bead. Treat the lock as advisory evidence, not permission.</code></pre>
 <p>For sensitive, external, destructive, or bounded-AFK work, ask for the stricter plain-English contract before work starts:</p>

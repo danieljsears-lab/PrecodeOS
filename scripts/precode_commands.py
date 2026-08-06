@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-07-27
+# Version: v0.1.1
+# Last updated: 2026-08-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -290,8 +290,9 @@ def command_classification(command: str, bead: BeadRecord | None) -> dict[str, A
     if "access_level" not in locals():
         access_level = TOOL_ACCESS_LEVEL_BY_CLASS.get(tool_class, "inspect")
     access_level_warning = (
-        "Access levels are advisory routing language over existing tool-call classes, files_in_play, Run Contracts, approval gates, "
-        "and stop conditions; they do not approve commands, enforce permissions, add sandbox behavior, or create schema-backed access metadata."
+        "Access levels are advisory routing language owned by Tool Execution over existing tool-call classes, files_in_play, "
+        "Run Contracts, approval gates, and stop conditions; they do not approve commands, enforce permissions, add sandbox behavior, "
+        "define provider settings, or create schema-backed access metadata."
     )
 
     return {

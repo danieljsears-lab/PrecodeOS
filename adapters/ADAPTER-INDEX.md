@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-07-11
+Document version: v0.1.10
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -15,6 +15,7 @@ Use `AGENT.md` for the shared operating system.
 Use the files in this folder only for tool-specific notes that do not belong in the shared core.
 Use `modes/*.md` and `tasks/beads/*.md` for shared execution behavior.
 Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` for shared model tier, context-budget, delegation, and tool-routing guidance before applying adapter-specific settings.
+Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` for the shared access ladder before translating risk into host-specific prompts. Adapters may explain `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, and `destructive`, but they must not redefine those labels as provider settings, sandbox policy, command approval, schema metadata, or host permissions.
 Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a tool-specific instruction, shim, generated report, memory result, or source artifact could be mistaken for Precode authority.
 
 ## Available Adapters
@@ -100,3 +101,4 @@ Adapters translate the shared `fast`, `default`, `deep`, and `long-horizon` rout
 If a tool does not expose a native control, fall back to Precode checkpoint, Context Pack, handoff, and review discipline. Adapter-specific routing notes must not expand active memory, activate beads, override files in play, or bypass human approval gates.
 
 Adapters and shims are compatibility guidance only. They translate Precode into a host tool's discovery and routing habits, but they must not create alternate active memory, host-specific authority trees, generated instruction sources, task approval, review acceptance, or package-manager behavior.
+If an adapter or root shim uses access wording that conflicts with Tool Execution, treat the adapter wording as stale and reconcile to Tool Execution before continuing.

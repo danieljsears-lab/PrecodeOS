@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-08-04
+Document version: v0.1.24
+Last updated: 2026-08-06
 
 ## Purpose
 
@@ -28,7 +28,7 @@ Use `tasks/reference/AGENT-ROUTING-PROTOCOL.md` when choosing between low-token 
 
 Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when a host or user wants a bounded retry loop around one active bead. Ralph can record attempts and validators, but it is still subject to this protocol's command classes and approval rules.
 
-Use `tasks/prds/PRD-043-agent-access-level-guidance.md` when changing the plain-language access model itself. Access levels are guidance over the existing tool-call classes, `files_in_play`, Run Contracts, approval gates, and stop conditions. They are not permission grants, runtime enforcement, sandbox policy, command approval, schema-backed access metadata, or host-plugin configuration.
+Use `tasks/prds/PRD-043-agent-access-level-guidance.md` when changing the plain-language access model itself. Tool Execution owns the shared access ladder for every prompt, adapter, Run Contract, command classification, and reader-doc explanation. Access levels are guidance over the existing tool-call classes, `files_in_play`, Run Contracts, approval gates, and stop conditions. They are not permission grants, runtime enforcement, sandbox policy, command approval, schema-backed access metadata, or host-plugin configuration.
 
 Use `scripts/precode_cli.py`, the optional local `precode` console command, or the optional npm `precodeos` entry only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, define release-channel behavior, or make generated output authoritative. The npm entry is limited to read-only setup, fast verified setup, upgrade, and update-plan previews plus `fast-setup-apply` delegation for explicitly approved current `SP-ID` or `UP-ID` copy actions and `apply-package-owned` delegation for explicitly approved missing package-owned `UP-ID` actions. It must not expose postinstall target mutation, dirty-file overwrite, owner-file adaptation, registry lookup, dist-tag resolution, channel selection, rollback automation, or package-manager behavior. Updater compatibility policy metadata is evidence interpretation governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview metadata is grouped generated evidence governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; approved package-owned apply is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`. None of these metadata or facade paths is a registry lookup, dist-tag resolver, channel selector, or package-manager permission.
 
@@ -64,7 +64,7 @@ Use these classes when describing important tool calls:
 
 ## Agent Access Levels
 
-Use these plain access levels when a builder asks what an agent may do right now. They translate command risk into beginner-readable language while preserving the existing tool-call classes as the canonical machine-readable vocabulary.
+Use these plain access levels when a builder asks what an agent may do right now. They translate command risk into beginner-readable stop signs while preserving the existing tool-call classes as the canonical machine-readable vocabulary. Other protocols, prompts, adapters, generated sidecars, and docs should point back to this ladder instead of redefining local meanings.
 
 | Access level | Plain meaning | Existing Precode mapping | Human gate |
 |---|---|---|---|
@@ -75,7 +75,7 @@ Use these plain access levels when a builder asks what an agent may do right now
 | `external-change` | The agent may change a hosted service, GitHub, CI, deployment, dashboard, issue tracker, release, or shared branch only after approval. | `external_mutation`; external mutation rules; Run Contract when needed. | Explicit approval naming action, affected system, recovery path, and evidence. |
 | `destructive` | The agent must stop before irreversible or hard-to-reverse work. | `destructive`; deletion, reset, drop, force-push, destructive migration, rollback. | Stop until the user explicitly approves the exact command, expected effect, rollback or blocked escape, and evidence plan. |
 
-If multiple levels apply, use the highest-risk level. For example, a local edit in `SECURITY.md` is not merely `local-change`; it is sensitive work and needs the matching approval and proof path. Access levels do not override sandbox permissions, broaden `files_in_play`, approve commands, accept implementation, approve review, merge work, deploy, release, or activate another bead.
+If multiple levels apply, use the highest-risk level. For example, a local edit in `SECURITY.md` is not merely `local-change`; it is sensitive work and needs the matching approval and proof path. Access levels do not override sandbox permissions, broaden `files_in_play`, approve commands, accept implementation, approve review, merge work, deploy, release, or activate another bead. If another surface uses different wording, reconcile it back to this table before treating the work as bounded.
 
 ## Command Policy In Beads
 

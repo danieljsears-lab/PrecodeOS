@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-08-05">
+  <meta name="generated-at" content="2026-08-06">
   <title>PrecodeOS Daily Cockpit · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Daily Cockpit</h1>
   <p class="lede">Daily operating surface: run the Daily Loop, choose Next, check Health, capture Diary. Prompt and protocol catalogs stay below as reference shelves.</p>
-  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.58</span><span>Updated 2026-08-04</span></p>
+  <p class="meta"><a href="../docs/PRECODE-DAILY-COCKPIT.md">Source Markdown</a><span>v0.1.59</span><span>Updated 2026-08-06</span></p>
 
   <div class="cockpit-strip" aria-label="Daily Cockpit ritual">
     <div class="cockpit-ritual-grid">
@@ -450,8 +450,8 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <article class="article">
     <p>Use this cockpit first once PrecodeOS is installed or you are already working inside a PrecodeOS repo. Stop here for normal work unless this page routes you to a specific setup, manual, troubleshooting, prompt, or protocol surface.</p>
 <p>The cockpit has four first-class daily operating sections and two required reference catalogs. The first-class sections are deliberately short: <strong>Daily Loop</strong>, <strong>Next</strong>, <strong>Health</strong>, and <strong>Diary</strong>. The full Prompt Patterns Catalog and full Protocol Catalog are included lower on this page as reference shelves so new users can learn the system without turning the first screen into a manual.</p>
-<p>Use this page as the builder&#x27;s control surface for host-agent work. The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop; Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries. Before agent work, use Daily Loop and Next to name the active bead, authority, files, approvals, and stop condition. During work, keep the agent inside those bounds and use Agent Access Level Check when risk rises. For proof and review, use Health, Prove, Review, recorded checks, and manual verification before accepting anything. For handoff or stop, use Approved-Bead Handoff only after one bead is approved, or Close/Diary to record what changed, what was proven, what is parked, what approval remains, and the next safe prompt.</p>
-<p>For host-agent returns, use the Host-Agent Return Loop inside the same cockpit: <code>Prepare -&amp;gt; Bound -&amp;gt; Send -&amp;gt; Return -&amp;gt; Prove -&amp;gt; Review -&amp;gt; Close/Next</code>. Prepare names the active bead, primary authority, files in play, and stop condition. Bound names allowed actions, access level, approval required before risky actions, and forbidden actions. Send gives the host agent one scoped prompt. Return requires changed files, checks and results, manual verification, missing proof, unresolved risks, approval still required, and forbidden actions not taken. Prove and Review happen before acceptance. Close/Next records what changed, what is parked, and the next safe prompt without activating another bead.</p>
+<p>Use this page as the builder&#x27;s control surface for host-agent work. The Daily Cockpit is where you decide what to ask, what state matters, what proof is missing, and when to stop; Codex, Claude Code, Cursor, Copilot, Gemini, or another host agent is where scoped work happens inside approved Precode boundaries. Before agent work, use Daily Loop and Next to name the active bead, authority, files, approvals, and stop condition. During work, keep the agent inside those bounds and use Agent Access Level Check when risk rises; Tool Execution owns the access ladder, and the cockpit only applies it to the current moment. For proof and review, use Health, Prove, Review, recorded checks, and manual verification before accepting anything. For handoff or stop, use Approved-Bead Handoff only after one bead is approved, or Close/Diary to record what changed, what was proven, what is parked, what approval remains, and the next safe prompt.</p>
+<p>For host-agent returns, use the Host-Agent Return Loop inside the same cockpit: <code>Prepare -&amp;gt; Bound -&amp;gt; Send -&amp;gt; Return -&amp;gt; Prove -&amp;gt; Review -&amp;gt; Close/Next</code>. Prepare names the active bead, primary authority, files in play, and stop condition. Bound names allowed actions, Tool Execution access level, approval required before risky actions, and forbidden actions. Send gives the host agent one scoped prompt. Return requires changed files, checks and results, manual verification, missing proof, unresolved risks, approval still required, and forbidden actions not taken. Prove and Review happen before acceptance. Close/Next records what changed, what is parked, and the next safe prompt without activating another bead.</p>
 <p>Generated reports, generated HTML, logs, sidecars, prompt catalog rows, and protocol catalog rows are evidence or navigation only. Active memory and owner files stay authoritative. Before work resumes, return to <code>AGENT.md</code>, <code>DECISIONS.md</code>, <code>tasks/todo.md</code>, the active bead, the primary authority file, and your explicit approval.</p>
 <p>First-reader route:</p>
 <div class="table-wrap"><table><thead><tr><th>Situation</th><th>Go here</th></tr></thead><tbody><tr><td>PrecodeOS is not installed in the target project</td><td><code>PRECODE-GUIDED-SETUP.md</code></td></tr><tr><td>PrecodeOS is installed or work is resuming</td><td>Stay in this Daily Cockpit</td></tr><tr><td>You only have a rough idea</td><td><code>Ideation: use First PRD Walkthrough for my rough idea.</code></td></tr><tr><td>Setup, state, checks, generated reports, or first-session behavior feel broken</td><td><code>PRECODE-TROUBLESHOOTING.md</code> or <code>I am stuck, help me.</code></td></tr></tbody></table></div>
@@ -1151,7 +1151,7 @@ Read the active bead, files in play, stop conditions, Run Contract if present, a
 
 For that level, name allowed actions, proof needed, approval required before risky actions, stop conditions, rollback or blocked escape when relevant, and re-entry evidence if the work may continue while I am away.
 
-Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, generated panel behavior, agent-shell behavior, or permission to widen scope.</code></pre>
+Do not treat the access level as command approval, runtime permission enforcement, sandbox behavior, schema metadata, generated-output authority, package-manager behavior, generated panel behavior, agent-shell behavior, provider setting, or permission to widen scope.</code></pre>
 </div>
 
   <p class="meta"><a href="../tasks/reference/PROMPT-PATTERNS.md">Source: PROMPT-PATTERNS.md</a></p>
@@ -1861,7 +1861,7 @@ npx @precodeos/precodeos fast-setup-preview --target &lt;target-project-root&gt;
 
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-preview
 
-Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and exact validation command.
+Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and validation prerequisites.
 
 Stop before mutation until I approve exact current `SP-ID` or `UP-ID` actions. This cannot be completed as one uninterrupted paste because action IDs do not exist until preview prints them. Do not copy, edit, overwrite, adapt owner files, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide package-manager behavior, automate rollback, approve a PRD, activate a bead, or treat generated output as authority.
 
@@ -1871,9 +1871,11 @@ npx @precodeos/precodeos fast-setup-apply --target &lt;target-project-root&gt; -
 
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-apply --approve-action &lt;SP-ID|UP-ID&gt;
 
-After any approved copy, show copied, skipped, blocked, the exact validation command, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
+After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
 
-For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.</code></pre>
+For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Adapt owner files from package templates, preserve anchors and authority contract fields, and use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
+
+Before the first target commit, run a git trackability sweep over installed files. If `git check-ignore` prints no ignored paths, treat that as clean even if the command exits nonzero because no files matched. For first setup validation, run only `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check` from the installed Precode root. Do not run `python3 scripts/prd-html.py` as first setup validation.</code></pre>
 </div>
 
   <p class="meta"><a href="../tasks/reference/PROMPT-PATTERNS.md">Source: PROMPT-PATTERNS.md</a></p>
@@ -3986,7 +3988,7 @@ Load when: Choosing an AI coding agent model, reasoning effort, subagent/delegat
 Preserve its authority boundaries. Do not treat this invocation as task selection, PRD approval, bead activation, implementation acceptance, generated evidence authority, command approval, external mutation, or permission to bypass human approval gates.</code></pre>
 </div>
 
-  <p class="meta"><a href="../tasks/reference/AGENT-ROUTING-PROTOCOL.md">AGENT-ROUTING-PROTOCOL.md</a><span>v0.1.7</span><span>Updated 2026-07-26</span></p>
+  <p class="meta"><a href="../tasks/reference/AGENT-ROUTING-PROTOCOL.md">AGENT-ROUTING-PROTOCOL.md</a><span>v0.1.8</span><span>Updated 2026-08-06</span></p>
 </article>
 
 <article class="reference-card">
@@ -4186,7 +4188,7 @@ Load when: Choosing, recording, reviewing, or approving tool calls; adding tool 
 Preserve its authority boundaries. Do not treat this invocation as task selection, PRD approval, bead activation, implementation acceptance, generated evidence authority, command approval, external mutation, or permission to bypass human approval gates.</code></pre>
 </div>
 
-  <p class="meta"><a href="../tasks/reference/TOOL-EXECUTION-PROTOCOL.md">TOOL-EXECUTION-PROTOCOL.md</a><span>v0.1.23</span><span>Updated 2026-08-04</span></p>
+  <p class="meta"><a href="../tasks/reference/TOOL-EXECUTION-PROTOCOL.md">TOOL-EXECUTION-PROTOCOL.md</a><span>v0.1.24</span><span>Updated 2026-08-06</span></p>
 </article>
 
 <article class="reference-card">
@@ -4496,7 +4498,7 @@ Load when: A user, support engineer, or agent has reviewed a supervised setup pl
 Preserve its authority boundaries. Do not treat this invocation as task selection, PRD approval, bead activation, implementation acceptance, generated evidence authority, command approval, external mutation, or permission to bypass human approval gates.</code></pre>
 </div>
 
-  <p class="meta"><a href="../tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md">SUPERVISED-SETUP-APPLY-PROTOCOL.md</a><span>v0.1.4</span><span>Updated 2026-08-04</span></p>
+  <p class="meta"><a href="../tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md">SUPERVISED-SETUP-APPLY-PROTOCOL.md</a><span>v0.1.5</span><span>Updated 2026-08-06</span></p>
 </article>
 
 <article class="reference-card">
