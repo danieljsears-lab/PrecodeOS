@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.16
-Last updated: 2026-07-11
+Document version: v0.1.17
+Last updated: 2026-08-09
 
 ## Purpose
 
@@ -129,6 +129,7 @@ Use the smallest proof that controls the risk.
 | Reversal or supersession of implemented work | superseded bead, reversal target, reversal reason, preserved behavior, recorded checks, manual verification, and explicit review decision |
 
 `validate-memory.sh` is necessary for Precode integrity, but it is not sufficient proof for every bead.
+It tolerates Windows CRLF frontmatter and checks required closeout markers as non-empty labeled bullets inside `Closeout Evidence`, not as bare substrings elsewhere in the file.
 
 Stable-fix eligibility requires recorded proof, not just a declared check. When `scripts/next-step.py --json` reports `stable_fix_eligibility.classification` as `needs_evidence`, record the narrowest check that proves the owner-file repair, then reassess before accepting the work. A passing `eligible_stable_fix` classification is still advisory; it does not replace Closeout Evidence, review, user approval, release readiness, or sensitive-surface gates.
 

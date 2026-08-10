@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.51
-Last updated: 2026-08-06
+Document version: v0.1.52
+Last updated: 2026-08-09
 
 ## Purpose
 
@@ -313,7 +313,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
 ```
 
-This copies only approved `review_copy_candidate` actions and reports copied, skipped, blocked, and validation next steps. The fast facade delegates to the same Python copy path and prints the exact target validation command after approved apply. It is not an owner-file adaptation engine, existing-repo migration, overwrite command, hook installer, CI installer, app-command runner, app-code writer, release channel, package-manager flow, rollback tool, or setup approval shortcut.
+This copies only approved `review_copy_candidate` actions and reports copied, skipped, blocked, and validation next steps. The fast facade delegates to the same Python copy path and prints fresh-setup validation prerequisites before the target validation command: copied package files, fresh active work state, exactly one setup or orientation `in_progress` bead, owner-file template adaptation with preserved anchors and authority contracts, and git trackability review. It is not an owner-file adaptation engine, existing-repo migration, overwrite command, hook installer, CI installer, app-command runner, app-code writer, release channel, package-manager flow, rollback tool, or setup approval shortcut.
 
 After Bootstrap Confidence, choose the first adoption fork:
 

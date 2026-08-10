@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
-# Last updated: 2026-07-26
+# Version: v0.1.4
+# Last updated: 2026-08-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -46,6 +46,34 @@ CLOSEOUT_LABELS = [
     ("Attribution uncertainty", "attribution_uncertainty"),
     ("Evidence source", "evidence_source"),
 ]
+
+
+def read_text_preserving_newlines(path: Path) -> str:
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return handle.read()
+
+
+def preferred_newline(text: str) -> str:
+    if "\r\n" in text:
+        return "\r\n"
+    if "\r" in text:
+        return "\r"
+    return "\n"
+
+
+def normalize_newlines(text: str) -> str:
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
+def restore_newlines(text: str, newline: str) -> str:
+    if newline == "\n":
+        return text
+    return text.replace("\n", newline)
+
+
+def write_text_preserving_newlines(path: Path, text: str, newline: str) -> None:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        handle.write(restore_newlines(text, newline))
 
 
 def current_bead_path(root: Path) -> Path | None:
@@ -103,7 +131,9 @@ def main() -> int:
         return 0
 
     bead = read_bead(bead_path, root)
-    current_text = bead_path.read_text(encoding="utf-8")
+    raw_current_text = read_text_preserving_newlines(bead_path)
+    source_newline = preferred_newline(raw_current_text)
+    current_text = normalize_newlines(raw_current_text)
     check_results = load_jsonl(root / "logs" / "check-results.jsonl")
     bead_results = [row for row in check_results if row.get("bead") == bead.rel_path]
     close_state = close_readiness(bead, latest_by_command(check_results, bead.rel_path))
@@ -159,7 +189,7 @@ def main() -> int:
     ordered_items = [(label, values[key]) for label, key in CLOSEOUT_LABELS]
     updated = replace_labeled_bullets(current_text, "Closeout Evidence", ordered_items)
     if updated != current_text:
-        bead_path.write_text(updated, encoding="utf-8")
+        write_text_preserving_newlines(bead_path, updated, source_newline)
         print(f"update-bead-closeout: updated {bead.rel_path}")
     else:
         print(f"update-bead-closeout: {bead.rel_path} already current")

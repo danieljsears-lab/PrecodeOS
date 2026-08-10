@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-08-06
+Document version: v0.1.6
+Last updated: 2026-08-09
 
 ## Purpose
 
@@ -51,7 +51,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
 
-Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints validation next steps after approved apply. Fresh setup validation comes after copied package files, fresh active work state, exactly one setup or orientation `in_progress` bead, and owner-file template adaptation with preserved anchors and authority contracts. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
+Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints validation next steps after approved apply. Fresh setup validation comes after copied package files, fresh active work state, exactly one setup or orientation `in_progress` bead, owner-file template adaptation with preserved anchors and authority contracts, and git trackability review. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
 
 Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
 

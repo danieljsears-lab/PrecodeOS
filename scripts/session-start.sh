@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.3
-# Last updated: 2026-06-14
+# Version: v0.1.4
+# Last updated: 2026-08-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -25,6 +25,7 @@ PY
 
 python3 - "$branch" "$state_json" <<'PY'
 import json
+from pathlib import Path
 import sys
 
 branch = sys.argv[1]
@@ -32,6 +33,24 @@ state = json.loads(sys.argv[2])
 todo_sections = state["todo_sections"]
 bead_sections = state["bead_sections"]
 bead_bullets = state["bead_bullets"]
+
+
+def strip_inline_code(value):
+    return str(value or "").strip().strip("`").strip()
+
+
+def first_bullet_path(section):
+    for line in str(section or "").splitlines():
+        if line.strip().startswith("- "):
+            candidate = strip_inline_code(line.strip()[2:])
+            if candidate:
+                return candidate
+    return ""
+
+
+primary_authority_path = strip_inline_code(
+    (state.get("todo_frontmatter") or {}).get("primary_authority")
+) or first_bullet_path(bead_sections.get("Primary Authority", ""))
 
 print("PrecodeOS Session Start")
 print(f"Branch: {branch}")
@@ -45,7 +64,18 @@ for heading in ("Current Bead", "Done When", "Files In Play", "Explicit Out-of-S
 print("\nBead State:")
 print(bead_sections.get("State", "").strip() or "- (missing)")
 print("\nPrimary Authority:")
-print(bead_sections.get("Primary Authority", "").strip() or "- (missing)")
+if primary_authority_path:
+    path = Path(primary_authority_path)
+    status = "exists" if path.is_file() else "missing"
+    print(f"- Live file: `{primary_authority_path}` ({status})")
+else:
+    print("- Live file: (missing)")
+recorded_primary_authority = bead_sections.get("Primary Authority", "").strip()
+if recorded_primary_authority:
+    print("- Recorded in bead:")
+    print(recorded_primary_authority)
+else:
+    print("- Recorded in bead: (missing)")
 print("\nBead Checks:")
 print(bead_sections.get("Checks", "").strip() or "- (missing)")
 print("\nStop Conditions:")

@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.27
-Last updated: 2026-07-26
+Document version: v0.1.28
+Last updated: 2026-08-09
 
 ## Purpose
 
@@ -88,6 +88,7 @@ Agent access levels are plain-language Tool Execution guidance, not bead-schema 
 Ralph fields are optional and should appear only when a bead is testable enough for bounded retry. Ralph opt-in does not run automatically, approve attempts, widen files in play, accept review, or activate the next bead.
 
 Frontmatter is the canonical machine-readable metadata surface.
+For list-like fields such as `depends_on`, `requirement_ids`, `files_in_play`, `checks`, and `verification_type`, prefer YAML lists. Simple comma- or semicolon-delimited strings are accepted for compatibility, but runtime scripts must treat them as list items, not characters.
 The mirrored sections below stay readable for humans and for transition-safe validation, but runtime scripts should prefer frontmatter and compiled sidecars over ad hoc prose parsing.
 
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when choosing `verification_type`. Prefer the tier names `static`, `unit`, `integration`, `browser`, `manual`, and `external` for new beads.
@@ -229,7 +230,7 @@ Use this section only when a bead needs execution-specific orientation. Omit it 
 - Planning beads may produce PRDs, open questions, candidate requirements, architecture notes, source summaries, or candidate beads; they should not edit app code.
 - Execution beads may produce implementation changes and recorded evidence; they should not reshape product definition mid-flight.
 - Run checks through `bash scripts/record-check.sh -- <command>` so command output and exit codes are recorded.
-- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, work digest, advisory suggested commit message, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review.
+- Closeout Evidence must use a stable labeled-bullet schema and record actual command results, result, work digest, advisory suggested commit message, manual verification status, files changed, whether the next bead is safe to activate, review decision, drift observed, lesson to promote, follow-up bead needed, blocked escape status, and reference follow-through status when public package or maintainer-history surfaces may need review. Required closeout labels must appear as non-empty labeled bullets inside `Closeout Evidence`; prose elsewhere in the bead is not closeout-marker proof.
 - Closeout Evidence should also record Build Attribution fields when contributor accountability or handoff traceability matters: `Human contributor`, `Contributor role`, `Agent/tool surface`, `Attribution reviewed by`, and `Attribution uncertainty`. These fields are reviewed attribution evidence only; they do not assign blame, score contributors, accept implementation, approve merge, or make agent/tool identity responsible for human decisions.
 - Requirement-to-proof traces should be included when requirement IDs, bug behavior, or acceptance criteria are central to review confidence. Generated tests, generated properties, trace tables, screenshots, browser notes, AI critique, external status summaries, and generated reports are not complete proof without recorded checks, structured manual verification, Closeout Evidence, accepted review, or promoted follow-up evidence.
 - Reference follow-through should be recorded as `Reference follow-through: resolved`, `deferred`, or `not applicable`, with a short reason. Use it to show whether public reference docs, protocols, package inventory, generated HTML freshness, maintainer changelog, or roadmap/journal history were reviewed; it is not acceptance, transition approval, or generated-output authority.

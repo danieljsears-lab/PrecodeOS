@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-07-30
+# Version: v0.1.2
+# Last updated: 2026-08-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -76,7 +76,11 @@ def normalize_optional(value: str | None) -> str:
     return "" if cleaned.lower() in FRONTMATTER_EMPTY_MARKERS else cleaned
 
 
-def normalize_list(items: list[Any] | None) -> list[str]:
+def normalize_list(items: Any) -> list[str]:
+    if isinstance(items, str):
+        return split_list_value(items)
+    if not isinstance(items, list):
+        return []
     values: list[str] = []
     for item in items or []:
         value = strip_inline_code(str(item))
@@ -405,6 +409,9 @@ def latest_by_command(rows: list[dict[str, Any]], bead: str | None) -> dict[tupl
 
 
 def self_test() -> int:
+    comma_checks = "bash scripts/validate-memory.sh, python3 scripts/file-inventory.py --check"
+    semicolon_files = "`PROJECT-CONTEXT.md`; `tasks/beads/B001-demo.md`"
+    multiline_requirements = "- PRD-001-FR01\n- PRD-001-FR02"
     rows = [
         {"bead": "tasks/beads/B001.md", "command": "python3 scripts/version-check.py", "cwd": ".", "status": "pass"},
         {
@@ -426,6 +433,26 @@ def self_test() -> int:
         ("invalid shell fallback", check_lookup(latest, "bash -lc 'unterminated", "."), "pass"),
     ]
     failures: list[dict[str, str]] = []
+    list_scenarios = [
+        (
+            "comma-delimited string list",
+            normalize_list(comma_checks),
+            ["bash scripts/validate-memory.sh", "python3 scripts/file-inventory.py --check"],
+        ),
+        (
+            "semicolon-delimited string list",
+            normalize_list(semicolon_files),
+            ["PROJECT-CONTEXT.md", "tasks/beads/B001-demo.md"],
+        ),
+        (
+            "multiline dash string list",
+            normalize_list(multiline_requirements),
+            ["PRD-001-FR01", "PRD-001-FR02"],
+        ),
+    ]
+    for name, actual, expected in list_scenarios:
+        if actual != expected:
+            failures.append({"scenario": name, "expected": str(expected), "actual": str(actual)})
     for name, result, expected in scenarios:
         actual = result.get("status") if result else None
         if actual != expected:
@@ -434,7 +461,7 @@ def self_test() -> int:
         "tool": "precode-state",
         "mode": "self-test",
         "status": "pass" if not failures else "fail",
-        "scenario_count": len(scenarios),
+        "scenario_count": len(scenarios) + len(list_scenarios),
         "failures": failures,
     }
     print(json.dumps(payload, indent=2, sort_keys=True))

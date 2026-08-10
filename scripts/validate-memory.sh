@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.9
-# Last updated: 2026-07-26
+# Version: v0.1.10
+# Last updated: 2026-08-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -11,6 +11,7 @@ json_output=false
 strict=false
 session_start=false
 session_close=false
+self_test=false
 declare -a paths=()
 
 while [[ $# -gt 0 ]]; do
@@ -31,6 +32,10 @@ while [[ $# -gt 0 ]]; do
       session_close=true
       shift
       ;;
+    --self-test)
+      self_test=true
+      shift
+      ;;
     --changed-only)
       shift
       ;;
@@ -41,7 +46,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-python3 - "$repo_root" "$json_output" "$strict" "$session_start" "$session_close" "${paths[@]-}" <<'PY'
+python3 - "$repo_root" "$json_output" "$strict" "$session_start" "$session_close" "$self_test" "${paths[@]-}" <<'PY'
 from __future__ import annotations
 
 import json
@@ -54,7 +59,8 @@ json_output = sys.argv[2] == "true"
 strict = sys.argv[3] == "true"
 session_start = sys.argv[4] == "true"
 session_close = sys.argv[5] == "true"
-raw_paths = sys.argv[6:]
+self_test = sys.argv[6] == "true"
+raw_paths = sys.argv[7:]
 
 issues: list[dict[str, object]] = []
 
@@ -87,16 +93,33 @@ def anchor(text: str) -> str:
 
 
 def frontmatter(text: str) -> dict[str, str]:
-    if not text.startswith("---\n"):
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    if not normalized.startswith("---\n"):
         return {}
-    end = text.find("\n---", 4)
+    end = normalized.find("\n---", 4)
     if end == -1:
         return {}
     values: dict[str, str] = {}
-    for line in text[4:end].splitlines():
+    for line in normalized[4:end].splitlines():
         if ":" in line and not line.startswith(" "):
             key, value = line.split(":", 1)
             values[key.strip()] = value.strip().strip("'\"")
+    return values
+
+
+def section_body(text: str, heading: str) -> str:
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    match = re.search(rf"^##\s+{re.escape(heading)}\s*\n(.*?)(?=^##\s+|\Z)", normalized, re.MULTILINE | re.DOTALL)
+    return match.group(1).strip() if match else ""
+
+
+def closeout_marker_values(text: str) -> dict[str, str]:
+    values: dict[str, str] = {}
+    body = section_body(text, "Closeout Evidence")
+    for line in body.splitlines():
+        match = re.match(r"^\s*-\s*([^:]+):\s*(.*\S)\s*$", line)
+        if match:
+            values[match.group(1).strip().lower()] = match.group(2).strip()
     return values
 
 
@@ -114,7 +137,7 @@ def validate_unique_ids(
     helper_kind: str,
 ) -> None:
     seen: dict[str, list[str]] = {}
-    expected_pattern = re.compile(rf"^({prefix}-\d{{3}})-.+\.md$")
+    expected_pattern = re.compile(rf"^({prefix}-\d{{3}})-.+\.md$") if prefix == "PRD" else re.compile(r"^(B\d{3})-.+\.md$")
     for item_path in sorted((root / directory).glob(pattern)):
         if item_path.name in skip_names:
             continue
@@ -139,6 +162,34 @@ def validate_unique_ids(
                 1,
                 f"duplicate {field} {item_id} declared in {joined}; run `python3 scripts/next-id.py {helper_kind}` for the next free {prefix} ID",
             )
+
+
+def run_self_test() -> int:
+    failures: list[dict[str, str]] = []
+    crlf = "---\r\nbead_id: B001\r\nstatus: in_progress\r\n---\r\n"
+    if frontmatter(crlf).get("bead_id") != "B001":
+        failures.append({"scenario": "CRLF frontmatter", "expected": "B001", "actual": str(frontmatter(crlf))})
+    good_closeout = "## Closeout Evidence\n\n- Checks run: `bash scripts/validate-memory.sh`\n- Result: pass\n"
+    good_values = closeout_marker_values(good_closeout)
+    if good_values.get("checks run") != "`bash scripts/validate-memory.sh`" or good_values.get("result") != "pass":
+        failures.append({"scenario": "closeout labeled markers", "expected": "non-empty values", "actual": str(good_values)})
+    bad_closeout = "## Closeout Evidence\n\n- Checks run:\n\n## Notes\n\nThe results were clean.\n"
+    bad_values = closeout_marker_values(bad_closeout)
+    if "checks run" in bad_values or "result" in bad_values:
+        failures.append({"scenario": "closeout rejects empty and prose substrings", "expected": "{}", "actual": str(bad_values)})
+    payload = {
+        "tool": "validate-memory",
+        "mode": "self-test",
+        "status": "pass" if not failures else "fail",
+        "scenario_count": 3,
+        "failures": failures,
+    }
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0 if not failures else 1
+
+
+if self_test:
+    raise SystemExit(run_self_test())
 
 
 expected_anchors = {
@@ -269,7 +320,8 @@ for bead_path in sorted((root / "tasks" / "beads").glob("*.md")):
     for heading in sorted(bead_required - sections):
         add(path, 1, f"bead missing required section: {heading}")
     for marker in closeout_markers:
-        if marker.lower() not in text.lower():
+        marker_values = closeout_marker_values(text)
+        if not marker_values.get(marker.lower()):
             add(path, 1, f"bead Closeout Evidence missing marker: {marker}")
 
 if len(in_progress) != 1:

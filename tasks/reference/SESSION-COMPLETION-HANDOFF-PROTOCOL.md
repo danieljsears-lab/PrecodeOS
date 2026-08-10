@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-08-04
+Document version: v0.1.26
+Last updated: 2026-08-09
 
 ## Purpose
 
@@ -82,6 +82,8 @@ Closeout Evidence should include:
 - reference follow-through when public package files, protocols, docs, PRDs, beads, scripts, generated reading surfaces, or maintainer-roadmap work may require public reference-document or maintainer-history updates
 - build attribution when accountability, teammate work, handoff, fresh-context review, or future traceability matters: human contributor, contributor role, agent/tool surface, attribution reviewer, and attribution uncertainty
 - every-bead rhythm when repeated bead work needs a compact handback: Active, Changed, Proven, Parked, Approval, and Next
+
+Closeout auto-refresh may update known generated labeled bullets from recorded evidence, but it should preserve extra human-authored closeout lines instead of silently erasing them. If generated and manual evidence disagree, treat that as review input to reconcile in the bead, not as automatic acceptance.
 
 The work digest and suggested commit message are orientation only. They may be printed by session close, completion checks, OS Health, handoff packets, and the bead build journal, but they do not accept implementation, approve review, approve transition, activate the next bead, stage files, commit, push, or replace the detailed Closeout Evidence fields they summarize.
 

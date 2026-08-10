@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-05-06
+# Version: v0.1.2
+# Last updated: 2026-08-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -194,7 +194,34 @@ def labeled_bullets(section: str) -> dict[str, str]:
 
 
 def replace_labeled_bullets(text: str, heading: str, ordered_items: list[tuple[str, str]]) -> str:
-    section_body = "\n".join([f"- {label}: {value}" for label, value in ordered_items]).rstrip()
+    section_pattern = re.compile(rf"^## {re.escape(heading)}\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL)
+    match = section_pattern.search(text)
+    if not match:
+        raise ValueError(f"{heading} section not found")
+
+    generated_lines = [f"- {label}: {value}" for label, value in ordered_items]
+    generated_labels = {label for label, _ in ordered_items}
+    preserved_lines: list[str] = []
+    skip_continuation = False
+
+    for line in match.group(1).strip("\n").splitlines():
+        bullet_match = re.match(r"^\s*-\s*([^:]+):", line)
+        if bullet_match:
+            label = strip_inline_code(bullet_match.group(1).strip())
+            skip_continuation = label in generated_labels
+            if skip_continuation:
+                continue
+        elif skip_continuation and line.startswith((" ", "\t")):
+            continue
+        else:
+            skip_continuation = False
+        if line.strip():
+            preserved_lines.append(line)
+
+    body_lines = generated_lines
+    if preserved_lines:
+        body_lines.extend(["", *preserved_lines])
+    section_body = "\n".join(body_lines).rstrip()
     replacement = f"## {heading}\n\n{section_body}\n"
     return replace_section(text, heading, replacement)
 
