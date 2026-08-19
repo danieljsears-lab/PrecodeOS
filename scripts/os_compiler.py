@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.46
-# Last updated: 2026-07-30
+# Version: v0.1.47
+# Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -626,7 +626,12 @@ def check_rows_for_bead(bead: BeadRecord, latest: dict[tuple[str, Any, str], dic
 
 def status_marker_present(text: str, marker: str) -> bool:
     pattern = r"(?<![a-z0-9_])" + re.escape(marker).replace(r"\ ", r"\s+") + r"(?![a-z0-9_])"
-    return bool(re.search(pattern, text))
+    for match in re.finditer(pattern, text):
+        prefix = text[max(0, match.start() - 40) : match.start()].rstrip()
+        if re.search(r"(?:\bno\b|\bnot\b|\bwithout\b|\bnothing(?:\s+\w+){0,3})$", prefix):
+            continue
+        return True
+    return False
 
 
 def failed_status_present(text: str) -> bool:
@@ -696,6 +701,13 @@ def manual_verification_structured(value: str) -> bool:
         return True
     required = ("who checked", "what was checked", "environment", "result", "remaining uncertainty")
     return all(field in normalized for field in required)
+
+
+def reversal_trigger_present(text: str) -> bool:
+    normalized = text.lower()
+    if any(term in normalized for term in REVERSAL_TRIGGER_TERMS if term != "git revert"):
+        return True
+    return bool(re.search(r"git\s+revert(?!`?[-\w])", normalized))
 
 
 def evidence_quality(root: Path, bead: BeadRecord | None, check_results: list[dict[str, Any]], changed: list[str]) -> dict[str, Any]:
@@ -2337,7 +2349,7 @@ def reversal_workflow_quality(bead: BeadRecord | None, check_results: list[dict[
         ]
     )
     lower_text = combined_text.lower()
-    invoked = any(term in lower_text for term in REVERSAL_TRIGGER_TERMS)
+    invoked = reversal_trigger_present(combined_text)
     if not invoked:
         return {
             "status": "not_invoked",
@@ -2361,7 +2373,8 @@ def reversal_workflow_quality(bead: BeadRecord | None, check_results: list[dict[
         warnings.append("reversal workflow manual verification is missing or vague")
     if not review_decision_valid(bead.closeout.get("review_decision", "")):
         warnings.append("reversal workflow review decision is missing or invalid")
-    if "git revert" in lower_text and (not passing_commands or not field_label_present(combined_text, "Reversal proof")):
+    git_revert_mentioned = bool(re.search(r"git\s+revert(?!`?[-\w])", lower_text))
+    if git_revert_mentioned and (not passing_commands or not field_label_present(combined_text, "Reversal proof")):
         warnings.append("Git revert is review input only; record reversal proof before acceptance")
 
     forbidden_markers = {
@@ -2388,7 +2401,7 @@ def reversal_workflow_quality(bead: BeadRecord | None, check_results: list[dict[
             "recorded_pass_commands": passing_commands,
             "manual_verification_structured": manual_verification_structured(bead.closeout.get("manual_verification", "")),
             "review_decision": bead.closeout.get("review_decision", "not recorded"),
-            "git_revert_mentioned": "git revert" in lower_text,
+            "git_revert_mentioned": git_revert_mentioned,
             "forbidden_history_mutation_markers": forbidden_present,
             "generated_report_warning": "Reversal workflow warnings are generated evidence only; they do not approve reversal, rollback, transition, or history mutation.",
         },
@@ -3289,12 +3302,13 @@ def close_readiness(bead: BeadRecord, latest_checks: dict[tuple[str, str], dict[
 
 def find_next_bead(bead: BeadRecord, root: Path) -> str | None:
     next_value = bead.closeout.get("next_bead", "")
-    if next_value:
-        next_bead = parse_next_bead_reference(next_value, root)
-        if next_bead:
-            return next_bead
-
-    return parse_next_bead_reference(bead.handback, root)
+    if not next_value:
+        return None
+    next_bead = parse_next_bead_reference(next_value, root)
+    if not next_bead:
+        return None
+    candidate = read_bead(root / next_bead, root)
+    return None if candidate.status == "done" else next_bead
 
 
 def first_bead_label(value: str) -> str:

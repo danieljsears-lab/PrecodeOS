@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-08-06
+Document version: v0.1.25
+Last updated: 2026-08-18
 
 ## Purpose
 
@@ -93,7 +93,7 @@ Dependency installs and other local mutations are not automatically forbidden, b
 
 ## Allowed Actions
 
-Risk-triggered run contracts use allowed actions as the plain-language wrapper over capability leases. A capability lease is not new permission; it is a stricter statement of the permissions already implied by the active bead, `files_in_play`, tool-call classes, approval gates, and stop conditions.
+Risk-triggered run contracts use allowed actions as the plain-language wrapper over capability leases. A capability lease is not new permission; it is a stricter statement of the permissions already implied by the active bead, `files_in_play`, tool-call classes, approval gates, and stop conditions. `Allowed actions` is prose about permitted operations; it must not be parsed as the filesystem path list. Use `allowed_paths` or the compatibility wording `Allowed files` for path validation.
 
 Use a bead Run Contract when sensitive, external, destructive, or `bounded-afk` work needs tighter boundaries:
 

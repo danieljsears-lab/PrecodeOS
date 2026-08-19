@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# Version: v0.1.4
-# Last updated: 2026-08-09
+# Version: v0.1.5
+# Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import argparse
 import json
-import subprocess
 from pathlib import Path
 
 from os_compiler import (
@@ -85,23 +85,6 @@ def current_bead_path(root: Path) -> Path | None:
     return path if path.is_file() else None
 
 
-def git_changed_summary(root: Path) -> str:
-    try:
-        result = subprocess.run(
-            ["git", "status", "--short"],
-            cwd=root,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-    except OSError:
-        return "unknown"
-    lines = [line for line in result.stdout.splitlines() if line.strip()]
-    if not lines:
-        return "none"
-    return f"{len(lines)} changed path(s)"
-
-
 def render_check_summary(results: list[dict[str, object]]) -> str:
     if not results:
         return "no recorded command results yet; use `bash scripts/record-check.sh -- <command>`"
@@ -123,7 +106,20 @@ def normalize_blocked_escape(value: str) -> str:
     return value
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Refresh generated fields in the current bead's Closeout Evidence section."
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show whether the closeout would change without writing the bead",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
     root = repo_root()
     bead_path = current_bead_path(root)
     if bead_path is None:
@@ -144,7 +140,7 @@ def main() -> int:
         else f"not needed while status is `{bead.status}`"
     )
 
-    files_changed = f"{git_changed_summary(root)} at last evidence update"
+    files_changed = bead.closeout.get("files_changed") or "not recorded"
     values = {
         "checks_run": render_check_summary(bead_results),
         "result": (
@@ -188,6 +184,10 @@ def main() -> int:
 
     ordered_items = [(label, values[key]) for label, key in CLOSEOUT_LABELS]
     updated = replace_labeled_bullets(current_text, "Closeout Evidence", ordered_items)
+    if args.dry_run:
+        state = "would update" if updated != current_text else "already current"
+        print(f"update-bead-closeout: {bead.rel_path} {state} (dry run)")
+        return 0
     if updated != current_text:
         write_text_preserving_newlines(bead_path, updated, source_newline)
         print(f"update-bead-closeout: updated {bead.rel_path}")

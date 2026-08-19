@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-08-09
+# Version: v0.1.3
+# Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -182,7 +182,7 @@ def normalize_run_contract(raw: Any, section: str, bead_defaults: dict[str, Any]
                 return section_values.get(normalized)
         return None
 
-    allowed_paths = split_list_value(field("allowed_paths", "allowed files", "allowed actions")) or list(
+    allowed_paths = split_list_value(field("allowed_paths", "allowed files")) or list(
         bead_defaults.get("files_in_play") or []
     )
     proof_needed = split_list_value(field("proof_needed", "proof lanes", "proof required"))

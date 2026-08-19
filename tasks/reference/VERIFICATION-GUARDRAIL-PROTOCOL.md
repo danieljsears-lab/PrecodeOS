@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-08-09
+Document version: v0.1.18
+Last updated: 2026-08-18
 
 ## Purpose
 
@@ -90,6 +90,8 @@ Accessibility advisory:
 Automated accessibility checks are useful when available, but they are not legal compliance proof. Manual review notes and unresolved findings remain review input until recorded in Closeout Evidence, promoted into an owner file or follow-up bead, or accepted by the user through normal review.
 
 Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding whether evidence is complete enough for review, closeout, handoff, or transition proposal.
+
+Manual-verification status matching is boundary-aware and treats explicitly negated prose such as `No missing fields` or `nothing was blocked` as clear evidence when the surrounding structured fields are complete. Genuine status values such as `pending`, `missing`, `blocked`, `not recorded`, or `failed` remain review-blocking. Closeout refresh must preserve multiline manual-verification content rather than reducing it to the first line.
 
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared for user-project shipping, deployment readiness, smoke evidence, browser/manual release checks, docs freshness, rollback or blocked escape, or post-release review. Release readiness does not weaken sensitive-surface gates or approve release actions.
 

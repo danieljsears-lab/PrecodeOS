@@ -21,8 +21,8 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-23
+Document version: v0.1.1
+Last updated: 2026-08-18
 
 ## State
 
@@ -214,7 +214,7 @@ Implemented beads can later prove wrong, obsolete, or harmful. Without a reusabl
 
 - If the reversal does not name the superseded bead, it is too vague.
 - If the reversal does not name preserved behavior, it is too risky.
-- If a Git revert is treated as proof without recorded checks and manual verification, it violates this PRD.
+- If a Git revert is treated as proof without recorded checks and manual verification, it violates this PRD. Reversal detection must not treat Markdown-rendered prose such as ``git revert``-ible as an actual reversal operation.
 - If the workflow deletes evidence, rewrites logs, reopens a `done` bead, or mutates transition history, it violates this PRD.
 
 ## Bead Proposals

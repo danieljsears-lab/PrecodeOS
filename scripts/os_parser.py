@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.2
-# Last updated: 2026-08-09
+# Version: v0.1.3
+# Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -158,11 +158,22 @@ def parse_sections(text: str) -> dict[str, str]:
 
 
 def bullet_items(section: str) -> list[str]:
-    return [
-        line.strip()[2:].strip()
-        for line in section.splitlines()
-        if line.strip().startswith("- ")
-    ]
+    items: list[str] = []
+    current: list[str] = []
+
+    def flush() -> None:
+        if current:
+            items.append("\n".join(current).strip())
+            current.clear()
+
+    for line in section.splitlines():
+        if re.match(r"^-\s+", line):
+            flush()
+            current.append(line[2:].strip())
+        elif current and line.strip():
+            current.append(line.rstrip())
+    flush()
+    return items
 
 
 def first_bullet(section: str) -> str | None:
@@ -199,13 +210,20 @@ def replace_labeled_bullets(text: str, heading: str, ordered_items: list[tuple[s
     if not match:
         raise ValueError(f"{heading} section not found")
 
-    generated_lines = [f"- {label}: {value}" for label, value in ordered_items]
+    generated_lines: list[str] = []
+    for label, value in ordered_items:
+        value_lines = str(value).splitlines() or [""]
+        generated_lines.append(f"- {label}: {value_lines[0]}")
+        generated_lines.extend(
+            line if line.startswith((" ", "\t")) else f"  {line}"
+            for line in value_lines[1:]
+        )
     generated_labels = {label for label, _ in ordered_items}
     preserved_lines: list[str] = []
     skip_continuation = False
 
     for line in match.group(1).strip("\n").splitlines():
-        bullet_match = re.match(r"^\s*-\s*([^:]+):", line)
+        bullet_match = re.match(r"^-\s*([^:]+):", line)
         if bullet_match:
             label = strip_inline_code(bullet_match.group(1).strip())
             skip_continuation = label in generated_labels

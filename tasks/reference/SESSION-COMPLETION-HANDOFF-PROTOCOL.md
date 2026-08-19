@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.26
-Last updated: 2026-08-09
+Document version: v0.1.27
+Last updated: 2026-08-18
 
 ## Purpose
 
@@ -106,6 +106,8 @@ When non-release acceptance confidence depends on a specific requirement ID, bug
 Accessibility advisory closeout is opt-in. Do not add it to every UI/interface bead by default. When invoked, record invocation decision, target, automated check evidence, manual review notes, unresolved findings, and acceptance risk. If the Accessibility Advisor Fit Interview recommends `not needed` or `defer`, record that decision only when it affects review, handoff, or release confidence.
 
 Reference follow-through closeout is required when public package source changes may affect docs, protocols, package inventory, navigation indexes, generated HTML freshness, or maintainer-local public-package history. Record `Reference follow-through: resolved`, `deferred`, or `not applicable`, followed by the shortest useful reason. Public package source changes should review `_maintainer/CHANGELOG.md`; maintainer roadmap and roadmap-journal review is expected only when the bead, PRD, or closeout names roadmap or roadmap-candidate work. Generated HTML should be refreshed or checked from canonical Markdown; do not hand-edit generated reading surfaces as authority.
+
+Closeout refresh is a write operation: use `python3 scripts/update-bead-closeout.py --dry-run` to inspect the proposed change and `--help` for usage without modifying the bead. The refresher preserves recorded `Files changed` evidence and multiline labeled-bullet content; it does not infer durable bead scope from the repository-wide working tree. An explicit Closeout `Next bead` value is the forward pointer; Handback citations remain advisory reconciliation input, not promotion authority.
 
 Session-close handback should end with an explicit `Close State` line:
 

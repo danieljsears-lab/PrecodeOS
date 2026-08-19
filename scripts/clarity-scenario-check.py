@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.64
-# Last updated: 2026-08-04
+# Version: v0.1.65
+# Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -23,6 +23,7 @@ from os_compiler import (
     build_attribution_ledger,
     command_classification,
     completion_session_freshness,
+    find_next_bead,
     memory_summary,
     manual_verification_clear,
     manual_verification_structured,
@@ -31,13 +32,15 @@ from os_compiler import (
     reference_followthrough_quality,
     release_evidence_quality,
     reversal_workflow_quality,
+    reversal_trigger_present,
     run_contract_quality,
     session_friction_review,
     stable_fix_eligibility,
     team_collaboration_preview,
 )
 from precode_doctor import build_doctor_dashboard
-from precode_state import check_lookup_keys
+from precode_state import check_lookup_keys, normalize_run_contract
+from os_parser import bullet_items, replace_labeled_bullets
 
 
 def load_prd_handoff_module() -> Any:
@@ -5346,6 +5349,8 @@ def assert_manual_verification_pending_marker_contract(failures: list[dict[str, 
         "Who checked: Dan. What was checked: QA vocabulary. Environment: local. Result: accepted. Notes: failure and failures describe repaired findings. Remaining uncertainty: none.",
         "Who checked: Dan. What was checked: infrastructure wording. Environment: local. Result: accepted. Notes: failover and failsafe wording is legitimate prose. Remaining uncertainty: none.",
         "Who checked: Dan. What was checked: deployment wording. Environment: local. Result: accepted. Notes: commissioning copy is legitimate prose. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: closeout wording. Environment: local. Result: accepted. Notes: No missing fields; every check recorded. Remaining uncertainty: none.",
+        "Who checked: Dan. What was checked: rollback wording. Environment: local. Result: accepted. Notes: nothing was blocked and the change is additive. Remaining uncertainty: none.",
         "not applicable because documentation-only review was not needed.",
         "n/a",
     ]
@@ -5369,6 +5374,55 @@ def assert_manual_verification_pending_marker_contract(failures: list[dict[str, 
     if not manual_verification_structured(structured_clear):
         failures.append({"scenario": "manual verification structured with QA vocabulary", "expected": "structured", "actual": structured_clear})
     return len(clear_cases) + len(blocked_cases) + 1
+
+
+def assert_support_defect_hardening_contract(failures: list[dict[str, str]]) -> int:
+    closeout = """## Closeout Evidence
+
+- Manual verification: Who checked: A. Builder.
+  What was checked: the login form and reset path.
+  Environment: staging, Chromium.
+  Result: both correct.
+  Remaining uncertainty: none.
+- Drift observed: two items.
+  - The first was a stale count.
+- Review decision: accepted
+"""
+    items = bullet_items(closeout.split("## Closeout Evidence\n", 1)[1])
+    manual = next((item for item in items if item.startswith("Manual verification:")), "")
+    if not manual_verification_structured(manual):
+        failures.append({"scenario": "closeout multiline manual verification", "expected": "structured", "actual": manual})
+
+    rewritten = replace_labeled_bullets(
+        closeout,
+        "Closeout Evidence",
+        [(item.split(":", 1)[0], item.split(":", 1)[1].strip()) for item in items if ":" in item],
+    )
+    if "What was checked: the login form and reset path." not in rewritten:
+        failures.append({"scenario": "closeout continuation preservation", "expected": "what was checked retained", "actual": rewritten})
+    if "  - The first was a stale count." not in rewritten:
+        failures.append({"scenario": "closeout nested bullet preservation", "expected": "nested bullet retained", "actual": rewritten})
+
+    run_contract = normalize_run_contract(
+        {},
+        "- Required: true\n- Allowed actions: editing the frontend files, running lint, typecheck, and e2e",
+        {"files_in_play": ["frontend/page.tsx"]},
+    )
+    if run_contract.get("allowed_paths") != ["frontend/page.tsx"]:
+        failures.append({"scenario": "run contract actions are not paths", "expected": "files_in_play fallback", "actual": str(run_contract.get("allowed_paths"))})
+
+    if reversal_trigger_present("entirely `git revert`-ible"):
+        failures.append({"scenario": "hyphenated git revert adjective", "expected": "not invoked", "actual": "invoked"})
+    if not reversal_trigger_present("We performed a git revert of the migration."):
+        failures.append({"scenario": "actual git revert language", "expected": "invoked", "actual": "not invoked"})
+
+    if reversal_workflow_quality(bead(closeout={"next_bead": "none named yet"}, handback="historical citation B094"), []).get("status") != "not_invoked":
+        failures.append({"scenario": "historical handback citation", "expected": "reversal not invoked", "actual": "unexpected reversal state"})
+
+    if find_next_bead(bead(closeout={"next_bead": "none named yet"}, handback="historical citation B094"), Path(".")) is not None:
+        failures.append({"scenario": "handback is not next-bead authority", "expected": "no next bead", "actual": "candidate returned"})
+
+    return 7
 
 
 def assert_setup_diagnosis_clarity_contract(failures: list[dict[str, str]]) -> int:
@@ -5952,6 +6006,7 @@ def main() -> int:
     recovery_fixture_scenarios = recovery_scenario_fixtures()
     assert_recovery_scenario_harness(recovery_fixture_scenarios, failures)
     manual_verification_scenario_count = assert_manual_verification_pending_marker_contract(failures)
+    support_defect_hardening_scenario_count = assert_support_defect_hardening_contract(failures)
     setup_diagnosis_scenario_count = assert_setup_diagnosis_clarity_contract(failures)
     daily_prompt_alias_scenario_count = assert_daily_prompt_alias_contract(failures)
     artifact_chooser_scenario_count = assert_artifact_chooser_contract(failures)
@@ -6685,6 +6740,7 @@ def main() -> int:
         + command_surface_triage_scenario_count
         + beginner_advanced_surface_relocation_scenario_count
         + manual_verification_scenario_count
+        + support_defect_hardening_scenario_count
         + setup_diagnosis_scenario_count
         + agent_work_cockpit_scenario_count
         + engineering_quality_scenario_count
