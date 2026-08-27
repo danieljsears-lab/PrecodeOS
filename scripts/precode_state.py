@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.3
+# Version: v0.1.4
 # Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -161,6 +161,27 @@ def parse_next_bead_reference(value: str, root: Path) -> str | None:
     return rel_path(sorted(matches)[0], root)
 
 
+def parse_dependency_reference(value: str) -> str:
+    """Extract the bead reference from a human-readable dependency bullet."""
+    path_match = re.search(r"`?(tasks/beads/[^`\s)]+?\.md)\b", value)
+    if path_match:
+        return path_match.group(1)
+
+    id_match = re.search(r"\b(B\d{3})\b", value, re.IGNORECASE)
+    if id_match:
+        return id_match.group(1)
+
+    return normalize_optional(value)
+
+
+def parse_dependency_section(section: str) -> list[str]:
+    return [
+        reference
+        for item in bullet_items(section)
+        if (reference := parse_dependency_reference(item))
+    ]
+
+
 def bead_paths(root: Path) -> list[Path]:
     return sorted(path for path in (root / "tasks" / "beads").glob("*.md") if path.name != "BEAD-SCHEMA.md")
 
@@ -227,7 +248,9 @@ def read_bead(path: Path, root: Path) -> BeadRecord:
     primary_authority = normalize_optional(
         str(doc.frontmatter.get("primary_authority") or first_bullet(doc.sections.get("Primary Authority", "")) or "")
     )
-    depends_on = normalize_list(doc.frontmatter.get("depends_on")) or normalize_list(bullet_items(doc.sections.get("Depends On", "")))
+    depends_on = normalize_list(doc.frontmatter.get("depends_on")) or parse_dependency_section(
+        doc.sections.get("Depends On", "")
+    )
     parent_prd = normalize_optional(
         str(doc.frontmatter.get("parent_prd") or first_bullet(doc.sections.get("Parent PRD", "")) or "")
     )

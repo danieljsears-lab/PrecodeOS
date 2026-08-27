@@ -88,7 +88,7 @@ Agent access levels are plain-language Tool Execution guidance, not bead-schema 
 Ralph fields are optional and should appear only when a bead is testable enough for bounded retry. Ralph opt-in does not run automatically, approve attempts, widen files in play, accept review, or activate the next bead.
 
 Frontmatter is the canonical machine-readable metadata surface.
-For list-like fields such as `depends_on`, `requirement_ids`, `files_in_play`, `checks`, and `verification_type`, prefer YAML lists. Simple comma- or semicolon-delimited strings are accepted for compatibility, but runtime scripts must treat them as list items, not characters.
+For list-like fields such as `depends_on`, `requirement_ids`, `files_in_play`, `checks`, and `verification_type`, prefer YAML lists. Simple comma- or semicolon-delimited strings are accepted for compatibility, but runtime scripts must treat them as list items, not characters. When `depends_on` is empty and the compatibility `Depends On` section is used, each bullet may contain explanatory prose; the runtime extracts the bead path or `B###` reference from that bullet and preserves unresolved references for an explicit missing-dependency warning.
 The mirrored sections below stay readable for humans and for transition-safe validation, but runtime scripts should prefer frontmatter and compiled sidecars over ad hoc prose parsing.
 
 Use `tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md` when choosing `verification_type`. Prefer the tier names `static`, `unit`, `integration`, `browser`, `manual`, and `external` for new beads.

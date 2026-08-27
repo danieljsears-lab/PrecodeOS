@@ -43,7 +43,7 @@ Active memory remains exactly:
 | Bead closeout | record checks, result, work digest, advisory commit-message suggestion, manual verification, changed files, drift, lesson, follow-up, blocked escape | replace review decision or user approval, stage files, commit, or push |
 | Review | decide `accepted`, `revise`, `split`, or `blocked` | bypass missing evidence or sensitive approval gates |
 | Return review | inspect returned agent work, changed files, checks, manual verification, missing proof, unresolved risks, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt | accept implementation, approve review, approve transition, activate another bead, mutate external systems, or treat generated reports, generated HTML, PR status, screenshots, chat summaries, or agent confidence as proof |
-| Transition proposal | show whether the compiled readiness model permits a next bead | mutate bead state or `tasks/todo.md` |
+| Transition proposal | show whether the compiled readiness model permits a next bead; evaluate the next bead against the projected post-transition state so a dependency on the current bead does not deadlock promotion | mutate bead state or `tasks/todo.md` |
 | Transition approval | after user approval, move the current bead to `done` and the next bead to `in_progress` | run without explicit approval |
 | Handoff | orient another agent with a Context Pack, approved-bead handoff prompt, and generated-report warning when the stage calls for one | choose tasks, approve transitions, activate work, or turn handoff text into generated authority |
 

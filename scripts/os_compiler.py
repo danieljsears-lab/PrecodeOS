@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Version: v0.1.47
+# Version: v0.1.48
 # Last updated: 2026-08-18
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import datetime, timezone
+from dataclasses import replace
 import json
 import re
 import subprocess
@@ -3457,7 +3458,9 @@ def promotion_readiness(
     elif next_rel not in bead_map:
         blockers.append(f"next bead file is missing: {next_rel}")
     else:
-        next_start = start_readiness(bead_map[next_rel], bead_map)
+        projected_bead_map = dict(bead_map)
+        projected_bead_map[bead.rel_path] = replace(bead, status="done")
+        next_start = start_readiness(bead_map[next_rel], projected_bead_map)
         blockers.extend([f"next bead blocker: {item}" for item in next_start["blockers"]])
 
     return {
