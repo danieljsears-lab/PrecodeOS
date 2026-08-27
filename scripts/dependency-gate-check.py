@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-08-26
+# Version: v0.1.1
+# Last updated: 2026-08-27
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -79,6 +79,33 @@ def run() -> list[dict[str, str]]:
     if not any("dependency is not done" in item for item in blocked["blockers"]):
         failures.append({"scenario": "non-current dependency", "expected": "unfinished dependency blocks", "actual": str(blocked)})
 
+    blocked_next = bead("B160", "ready", [current.rel_path, unfinished.rel_path])
+    blocked_map = {
+        current.rel_path: current,
+        unfinished.rel_path: unfinished,
+        blocked_next.rel_path: blocked_next,
+    }
+    blocked_closeout = dict(closeout)
+    blocked_closeout["next_bead"] = blocked_next.rel_path
+    blocked_current = bead("B159", "review", [], closeout=blocked_closeout)
+    blocked_map[blocked_current.rel_path] = blocked_current
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        (root / blocked_next.rel_path).parent.mkdir(parents=True)
+        (root / blocked_next.rel_path).write_text("status: ready\n", encoding="utf-8")
+        blocked_promotion = promotion_readiness(root, blocked_current, blocked_map, latest_check())
+    if not any(
+        unfinished.rel_path in item and "dependency is not done" in item
+        for item in blocked_promotion["blockers"]
+    ):
+        failures.append(
+            {
+                "scenario": "non-current promotion dependency",
+                "expected": "unfinished unrelated dependency blocks promotion",
+                "actual": str(blocked_promotion["blockers"]),
+            }
+        )
+
     prose = """\n- `tasks/beads/B159-bff-server-side-caller.md`. **Hard prerequisite.** This bead records who owns a\n  scan, which requires naming the caller server-side.\n- B157 must be reviewed first.\n"""
     parsed = parse_dependency_section(prose)
     expected = ["tasks/beads/B159-bff-server-side-caller.md", "B157"]
@@ -118,7 +145,7 @@ def run() -> list[dict[str, str]]:
 
 def main() -> int:
     failures = run()
-    print(json.dumps({"tool": "dependency-gate-check", "status": "pass" if not failures else "fail", "scenario_count": 7, "failures": failures}, indent=2, sort_keys=True))
+    print(json.dumps({"tool": "dependency-gate-check", "status": "pass" if not failures else "fail", "scenario_count": 8, "failures": failures}, indent=2, sort_keys=True))
     return 1 if failures else 0
 
 
