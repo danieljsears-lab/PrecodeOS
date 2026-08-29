@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-08-18">
+  <meta name="generated-at" content="2026-08-29">
   <title>PrecodeOS Guided Setup · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">Use this guide when you want to put PrecodeOS into a project for the first time.</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.28</span><span>Updated 2026-08-06</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.1.29</span><span>Updated 2026-08-29</span></p>
 
 </section>
 <section class="content layout">
@@ -527,6 +527,27 @@ python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --targe
 After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved.</code></pre>
 <p>Checklist before approving any <code>UP-ID</code>:</p>
 <ul><li>The PrecodeOS source checkout and target project are unambiguous.</li><li><code>git status</code> in the target is clean, understood, or intentionally preserved.</li><li>The preview did not report <code>blocked_identity_collision</code> for the action.</li><li>The action copies a missing package-owned file only.</li><li>No owner file, active memory, app code, generated evidence, secret, CI, hook, PRD identity, bead identity, or deployment setting will be overwritten.</li><li>You understand the validation command to run before normal work resumes.</li></ul>
+<h2 id="safe-existing-file-refresh-with-audit-report"><a class="heading-anchor" href="#safe-existing-file-refresh-with-audit-report" aria-label="Link to Safe Existing File Refresh With Audit Report">#</a>Safe Existing-File Refresh With Audit Report</h2>
+<p>Use this workflow when the target already contains PrecodeOS and you want Claude or Codex to refresh only existing package-owned files that differ from a current public PrecodeOS checkout.</p>
+<p>Copy this prompt into your agent:</p>
+<pre><code class="language-text">Run a safe existing-file PrecodeOS refresh for this project.
+
+Use the current public PrecodeOS repository checkout as the source and my existing PrecodeOS installation as the target. Confirm the source remote, branch or tag, commit, package version, target path, current folder, and target Git status.
+
+Run:
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --refresh-existing-preview
+
+Produce a consolidated file-by-file plan with source and target hashes, ownership, local Git modification status, proposed action, action ID, and reason. Compare only files present in both source and target.
+
+Do not create or refresh missing files. Do not touch user-created, project-owned, locally modified, generated, sensitive, owner, active-memory, PRD, bead, app, CI, or hook files. Treat uncertain ownership or unknown Git state as blocked.
+
+Stop and wait for my explicit approval of specific RF-ID actions. After approval, run:
+python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --refresh-existing-preview --apply-refresh-existing --approve-action &lt;RF-ID&gt;
+
+Run validation, rerun the comparison, and write `logs/precode-refresh-audit.md`. Include source and target provenance, planned/approved/refreshed/skipped/blocked files, before/after hashes, validation results, residual differences, and recovery guidance.
+
+If that report path already contains a file, do not overwrite it; write the report outside the target and tell me the exact path. Write a report even when the refresh is blocked, partially completed, or validation fails.</code></pre>
+<p>The report is generated evidence only. It does not authorize another refresh, approve files, or replace package or project authority. Missing files remain outside this workflow.</p>
 <p>When setup state is partial or confusing, ask for recovery guidance:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --recovery-guidance</code></pre>
 <p>Recovery guidance is support guidance only. It can recommend Git inspection, memory validation, file-inventory checks, Existing Repo Intake, upgrade preview, or supervised setup planning, but it does not automate rollback or destructive cleanup.</p>
@@ -679,7 +700,7 @@ Here are the conflicts and choices that need your approval:</code></pre>
   <a class="tool-link" href="#top">Back to top</a>
   <p class="meta">Progress and section links are reading aids only. Markdown remains canonical.</p>
 </aside>
-    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#existing-precode-refresh">Existing Precode Refresh</a><a class="level-2" href="#fit-check-precodeos-or-plain-vs-code">Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
+    <aside class="toc"><p class="nav-label">On This Page</p><a class="level-2" href="#what-this-guide-is-for">What This Guide Is For</a><a class="level-2" href="#before-you-start">Before You Start</a><a class="level-2" href="#bootstrap-confidence-check">Bootstrap Confidence Check</a><a class="level-2" href="#existing-precode-refresh">Existing Precode Refresh</a><a class="level-2" href="#safe-existing-file-refresh-with-audit-report">Safe Existing File Refresh With Audit Report</a><a class="level-2" href="#fit-check-precodeos-or-plain-vs-code">Fit Check: PrecodeOS Or Plain VS Code?</a><a class="level-2" href="#step-1-pull-precodeos-from-github">Step 1: Pull PrecodeOS From GitHub</a><a class="level-2" href="#step-2-ask-the-agent-to-orient-first">Step 2: Ask The Agent To Orient First</a><a class="level-2" href="#step-3-choose-the-first-adoption-fork">Step 3: Choose The First Adoption Fork</a><a class="level-3" href="#path-a-new-project">Path A: New Project</a><a class="level-3" href="#path-b-existing-project">Path B: Existing Project</a><a class="level-2" href="#step-4-exclude-private-generated-local-and-secret-files">Step 4: Exclude Private, Generated, Local, And Secret Files</a><a class="level-2" href="#step-5-validate-before-work-starts">Step 5: Validate Before Work Starts</a><a class="level-2" href="#step-6-first-safe-agent-prompt">Step 6: First Safe Agent Prompt</a><a class="level-2" href="#support-engineer-runbook">Support Engineer Runbook</a><a class="level-3" href="#preflight">Preflight</a><a class="level-3" href="#target-project-inspection">Target Project Inspection</a><a class="level-3" href="#validation-checklist">Validation Checklist</a><a class="level-3" href="#escalation-and-stop-conditions">Escalation And Stop Conditions</a><a class="level-2" href="#where-to-go-next">Where To Go Next</a></aside>
   </div>
 </section>
 

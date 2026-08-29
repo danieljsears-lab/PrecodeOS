@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.28
-Last updated: 2026-08-06
+Document version: v0.1.29
+Last updated: 2026-08-29
 
 ## What This Guide Is For
 
@@ -229,6 +229,34 @@ Checklist before approving any `UP-ID`:
 - The action copies a missing package-owned file only.
 - No owner file, active memory, app code, generated evidence, secret, CI, hook, PRD identity, bead identity, or deployment setting will be overwritten.
 - You understand the validation command to run before normal work resumes.
+
+## Safe Existing-File Refresh With Audit Report
+
+Use this workflow when the target already contains PrecodeOS and you want Claude or Codex to refresh only existing package-owned files that differ from a current public PrecodeOS checkout.
+
+Copy this prompt into your agent:
+
+```text
+Run a safe existing-file PrecodeOS refresh for this project.
+
+Use the current public PrecodeOS repository checkout as the source and my existing PrecodeOS installation as the target. Confirm the source remote, branch or tag, commit, package version, target path, current folder, and target Git status.
+
+Run:
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview
+
+Produce a consolidated file-by-file plan with source and target hashes, ownership, local Git modification status, proposed action, action ID, and reason. Compare only files present in both source and target.
+
+Do not create or refresh missing files. Do not touch user-created, project-owned, locally modified, generated, sensitive, owner, active-memory, PRD, bead, app, CI, or hook files. Treat uncertain ownership or unknown Git state as blocked.
+
+Stop and wait for my explicit approval of specific RF-ID actions. After approval, run:
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
+
+Run validation, rerun the comparison, and write `logs/precode-refresh-audit.md`. Include source and target provenance, planned/approved/refreshed/skipped/blocked files, before/after hashes, validation results, residual differences, and recovery guidance.
+
+If that report path already contains a file, do not overwrite it; write the report outside the target and tell me the exact path. Write a report even when the refresh is blocked, partially completed, or validation fails.
+```
+
+The report is generated evidence only. It does not authorize another refresh, approve files, or replace package or project authority. Missing files remain outside this workflow.
 
 When setup state is partial or confusing, ask for recovery guidance:
 

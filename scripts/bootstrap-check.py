@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.10
-# Last updated: 2026-08-06
+# Version: v0.5.11
+# Last updated: 2026-08-29
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -9,9 +9,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shlex
 import shutil
+import subprocess
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -175,6 +178,7 @@ DEFERRED_SETUP_PATHS = {
 APPLY_ALLOWED_TARGET_KINDS = {"empty", "nearly_empty"}
 OWNER_GROUPS = {"active_memory", "active_work_state", "product_and_project_owner_files"}
 UPGRADE_DEFERRED_PATHS = {".githooks/", ".github/workflows/"}
+REFRESH_AUDIT_RELATIVE_PATH = "logs/precode-refresh-audit.md"
 SECRET_OR_LOCAL_PARTS = {
     ".agent-state",
     ".claude",
@@ -339,6 +343,86 @@ def dependency_status() -> list[str]:
     if shutil.which("git") is None:
         missing.append("git")
     return missing
+
+
+def git_metadata(root: Path) -> dict[str, Any]:
+    """Return conservative local Git evidence without changing repository state."""
+    if not (root / ".git").exists():
+        return {
+            "available": False,
+            "status": "unknown",
+            "reason": "target is not a Git working tree",
+            "modified_paths": [],
+        }
+    try:
+        status_result = subprocess.run(
+            ["git", "-C", str(root), "status", "--short", "--untracked-files=all"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        commit_result = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "HEAD"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        remote_result = subprocess.run(
+            ["git", "-C", str(root), "config", "--get", "remote.origin.url"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return {
+            "available": False,
+            "status": "unknown",
+            "reason": f"could not inspect Git state: {exc}",
+            "modified_paths": [],
+        }
+    if status_result.returncode != 0 or commit_result.returncode != 0:
+        return {
+            "available": False,
+            "status": "unknown",
+            "reason": (status_result.stderr or commit_result.stderr or "Git inspection failed").strip(),
+            "modified_paths": [],
+        }
+    modified_paths: list[str] = []
+    for line in status_result.stdout.splitlines():
+        if len(line) < 4:
+            continue
+        path = line[3:]
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        modified_paths.append(path)
+    return {
+        "available": True,
+        "status": "clean" if not modified_paths else "dirty",
+        "commit": commit_result.stdout.strip(),
+        "remote": remote_result.stdout.strip() or "not recorded",
+        "modified_paths": sorted(set(modified_paths)),
+    }
+
+
+def source_provenance(source_root: Path) -> dict[str, Any]:
+    metadata = git_metadata(source_root)
+    package = source_release_reference(source_root)
+    return {
+        "repository": metadata.get("remote", "not recorded"),
+        "commit": metadata.get("commit", "not recorded"),
+        "git_status": metadata.get("status", "unknown"),
+        "package_name": package["source_package_name"],
+        "package_version": package["source_package_version"],
+        "inspected_at_utc": datetime.now(timezone.utc).isoformat(),
+        "freshness": (
+            "identified_git_checkout"
+            if metadata.get("available") and metadata.get("commit")
+            else "unverifiable"
+        ),
+    }
 
 
 def file_digest(path: Path) -> str:
@@ -1050,6 +1134,79 @@ def build_upgrade_preview(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    """Plan replacement of existing, package-owned, Git-clean files only."""
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    git_state = payload["target_git"]
+    blockers = list(payload["blockers"])
+    if payload["target_kind"] != "existing_precode":
+        blockers.append("existing-file refresh applies only to existing Precode targets")
+    if not git_state["available"]:
+        blockers.append("target Git state is unknown; existing-file refresh requires a Git working tree")
+
+    actions: list[dict[str, Any]] = []
+    action_index = 1
+    modified = set(git_state.get("modified_paths", []))
+    for group in payload["public_file_groups"]:
+        group_name = str(group["group"])
+        if group_name in OWNER_GROUPS:
+            continue
+        for path in iter_source_group_files(source_root, group):
+            source_path = source_root / path
+            target_path = target_root / path
+            if (
+                not source_path.is_file()
+                or not target_path.is_file()
+                or source_path.is_symlink()
+                or target_path.is_symlink()
+            ):
+                continue
+            source_hash = file_digest(source_path)
+            target_hash = file_digest(target_path)
+            if source_hash == target_hash:
+                category = "current"
+                reason = "existing package-owned file matches the public source"
+            elif path in modified:
+                category = "preserve_local_modification"
+                reason = "target path has local Git changes; preserve user work and do not overwrite"
+            elif not git_state["available"]:
+                category = "blocked_uncertain_ownership"
+                reason = "target Git state is unknown; ownership and local modification status cannot be verified"
+            else:
+                category = "refresh_existing_package_file"
+                reason = "existing package-owned file differs from the identified public source checkout"
+            action = numbered_action("RF", action_index, category, path, reason, group_name)
+            action.update({"source_sha256": source_hash, "target_sha256": target_hash})
+            actions.append(action)
+            action_index += 1
+    return {
+        "preview_kind": "existing_file_refresh_preview",
+        "status": "blocked" if blockers else "warning" if any(a["category"] != "current" for a in actions) else "pass",
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": payload["target_kind"],
+        "source_provenance": payload["source_provenance"],
+        "target_git": git_state,
+        "actions": actions,
+        "approved_action_category": "refresh_existing_package_file",
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "not_authority_for": [
+            "user-file mutation",
+            "missing-file creation",
+            "locally modified-file overwrite",
+            "owner-file adaptation",
+            "active-memory edits",
+            "app-code edits",
+            "package-manager updates",
+            "rollback automation",
+        ],
+        "next_manual_gate": "User must approve specific RF-ID actions before existing package-owned files are refreshed.",
+    }
+
+
 def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
     preview = payload.get("package_upgrade_preview") or build_upgrade_preview(payload)
     actions = list(preview["actions"])
@@ -1758,6 +1915,164 @@ def apply_upgrade_preview(payload: dict[str, Any], approved_action_ids: list[str
     }
 
 
+def apply_existing_file_refresh(payload: dict[str, Any], approved_action_ids: list[str]) -> dict[str, Any]:
+    if "existing_file_refresh_preview" not in payload:
+        raise ValueError("existing-file refresh apply requires --refresh-existing-preview")
+    preview = payload["existing_file_refresh_preview"]
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    approved = set(approved_action_ids)
+    copied: list[dict[str, Any]] = []
+    skipped: list[dict[str, str]] = []
+    blocked: list[dict[str, str]] = []
+    if not approved:
+        blocked.append({"path": "<approval>", "reason": "at least one --approve-action RF-ID is required"})
+    if preview["target_kind"] != "existing_precode":
+        blocked.append({"path": "<target>", "reason": "existing-file refresh requires an existing Precode target"})
+    if not preview["target_git"].get("available"):
+        blocked.append({"path": "<target>", "reason": "target Git state is unknown; refusing existing-file refresh"})
+    actions = {str(action["id"]): action for action in preview["actions"]}
+    for action_id in sorted(approved):
+        action = actions.get(action_id)
+        if action is None:
+            blocked.append({"path": action_id, "reason": "approved action ID is not present in the refresh preview"})
+            continue
+        if action["category"] != "refresh_existing_package_file":
+            blocked.append({"path": str(action["path"]), "reason": f"{action_id} is {action['category']}; refresh requires refresh_existing_package_file"})
+            continue
+        path = str(action["path"])
+        source_path = source_root / path
+        target_path = target_root / path
+        if (
+            not source_path.is_file()
+            or not target_path.is_file()
+            or source_path.is_symlink()
+            or target_path.is_symlink()
+        ):
+            blocked.append({"path": path, "reason": "refresh requires both source and target files to exist"})
+        if path in set(preview["target_git"].get("modified_paths", [])):
+            blocked.append({"path": path, "reason": "target file has local Git changes; refusing overwrite"})
+        if target_path.is_file() and file_digest(target_path) != str(action["target_sha256"]):
+            blocked.append({"path": path, "reason": "target file changed after preview; rerun refresh preview"})
+    if not blocked:
+        for action_id in sorted(approved):
+            action = actions[action_id]
+            path = str(action["path"])
+            source_path = source_root / path
+            target_path = target_root / path
+            before = file_digest(target_path)
+            shutil.copy2(source_path, target_path)
+            after = file_digest(target_path)
+            copied.append({"path": path, "before_sha256": before, "after_sha256": after, "source_sha256": file_digest(source_path)})
+    for action in preview["actions"]:
+        action_id = str(action["id"])
+        if action_id not in approved:
+            skipped.append({"path": str(action["path"]), "reason": f"{action_id} was not approved"})
+    return {
+        "apply_kind": "existing_file_refresh_apply",
+        "status": "blocked" if blocked else "applied",
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "approved_actions": sorted(approved),
+        "refreshed": copied,
+        "skipped": skipped,
+        "blocked": blocked,
+        "target_mutation_allowed": not blocked,
+        "generated_evidence_only": False,
+        "validation_next_step": "Run Precode validation and rerun --refresh-existing-preview." if not blocked else "Resolve blockers and rerun --refresh-existing-preview.",
+    }
+
+
+def run_refresh_validation(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    target = Path(str(payload["target_root"]))
+    commands = [
+        ["bash", "scripts/validate-memory.sh"],
+        ["python3", "scripts/memory-check.py"],
+        ["python3", "scripts/version-check.py"],
+        ["python3", "scripts/file-inventory.py", "--check"],
+        ["python3", "scripts/docs-html.py", "--check"],
+        ["python3", "scripts/prd-html.py", "--check"],
+    ]
+    results: list[dict[str, Any]] = []
+    for command in commands:
+        if not (target / command[1]).is_file():
+            results.append({"command": shlex.join(command), "status": "not_run", "reason": "command file is not present in target"})
+            continue
+        try:
+            result = subprocess.run(command, cwd=target, check=False, capture_output=True, text=True, timeout=60)
+            results.append({"command": shlex.join(command), "status": "pass" if result.returncode == 0 else "fail", "returncode": result.returncode, "output": (result.stdout + result.stderr)[-4000:]})
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            results.append({"command": shlex.join(command), "status": "fail", "reason": str(exc)})
+    return results
+
+
+def write_refresh_audit_report(payload: dict[str, Any]) -> str:
+    target = Path(str(payload["target_root"]))
+    preferred = target / REFRESH_AUDIT_RELATIVE_PATH
+    if preferred.exists():
+        descriptor, fallback_path = tempfile.mkstemp(prefix="precode-refresh-audit-", suffix=".md")
+        os.close(descriptor)
+        report_path = Path(fallback_path)
+    else:
+        report_path = preferred
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+    preview = payload.get("existing_file_refresh_preview", {})
+    apply = payload.get("existing_file_refresh_apply", {})
+    validation_failed = any(item.get("status") == "fail" for item in payload.get("refresh_validation", []))
+    report_status = apply.get("status", "preview_only")
+    if validation_failed and report_status == "applied":
+        report_status = "partial_or_validation_failed"
+    lines = [
+        "# PrecodeOS Existing-File Refresh Audit",
+        "",
+        "AUTHORITY: Generated audit evidence for one PrecodeOS refresh session.",
+        "NOT_AUTHORITY: Package update policy, approval, source of truth, task selection, or permission for a future refresh.",
+        "CLASS: generated",
+        "",
+        f"- Report time (UTC): {datetime.now(timezone.utc).isoformat()}",
+        f"- Source: `{payload['source_root']}`",
+        f"- Target: `{payload['target_root']}`",
+        f"- Source provenance: `{json.dumps(payload.get('source_provenance', {}), sort_keys=True)}`",
+        f"- Target Git at inspection: `{json.dumps(payload.get('target_git', {}), sort_keys=True)}`",
+        f"- Refresh status: `{report_status}`",
+        "",
+        "## Scope and exclusions",
+        "",
+        "Only existing, package-owned, Git-clean PrecodeOS files were eligible. Missing files, user-created files, locally modified files, owner files, active memory, app files, generated evidence, secrets, CI, hooks, PRDs, and beads were excluded.",
+        "",
+        "## File dispositions",
+        "",
+        "| Action | Category | Path | Source SHA-256 | Target SHA-256 | Reason |",
+        "|---|---|---|---|---|---|",
+    ]
+    for action in preview.get("actions", []):
+        lines.append(f"| {action['id']} | {action['category']} | `{action['path']}` | `{action.get('source_sha256', '')}` | `{action.get('target_sha256', '')}` | {action['reason']} |")
+    lines.extend(["", "## Approved and refreshed files", "", f"Approved action IDs: `{', '.join(apply.get('approved_actions', [])) or 'none'}`", ""])
+    for item in apply.get("refreshed", []):
+        lines.append(f"- `{item['path']}`: `{item['before_sha256']}` -> `{item['after_sha256']}`")
+    if not apply.get("refreshed"):
+        lines.append("- None.")
+    lines.extend(["", "## Blocked or skipped", ""])
+    for item in apply.get("blocked", []) + apply.get("skipped", []):
+        lines.append(f"- `{item['path']}`: {item['reason']}")
+    if not apply.get("blocked") and not apply.get("skipped"):
+        lines.append("- None.")
+    lines.extend(["", "## Validation", ""])
+    for result in payload.get("refresh_validation", []):
+        lines.append(f"- `{result['command']}`: **{result['status']}**" + (f" — {result.get('reason', '')}" if result.get("reason") else ""))
+    lines.extend(["", "## Residual differences", ""])
+    residual = payload.get("refresh_residual_preview", {})
+    residual_actions = [a for a in residual.get("actions", []) if a.get("category") != "current"]
+    if residual_actions:
+        for action in residual_actions:
+            lines.append(f"- `{action['path']}`: {action['category']} — {action['reason']}")
+    else:
+        lines.append("- None detected among eligible existing package-owned files.")
+    lines.extend(["", "## Recovery", "", "If issues are found, stop normal work, preserve this report and the target Git state, inspect the before/after hashes, and restore through the target repository's reviewed branch or backup. This report does not authorize rollback or another refresh."])
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return report_path.as_posix()
+
+
 def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
     source = resolve_candidate(source_raw)
     target = resolve_candidate(target_raw)
@@ -1796,6 +2111,8 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "blockers": blockers,
         "source_root": source.as_posix(),
         "target_root": target.as_posix(),
+        "source_provenance": source_provenance(source) if source_exists else {"freshness": "unverifiable"},
+        "target_git": git_metadata(target) if target_exists else {"available": False, "status": "unknown", "modified_paths": []},
         "source_missing_paths": missing_source_paths,
         "target_missing_required_setup_support_paths": missing_required_setup_support_paths,
         "target_kind": kind,
@@ -2103,6 +2420,41 @@ def render_upgrade_apply_plain(payload: dict[str, Any]) -> str:
         lines.append("\nBlocked:")
         lines.extend(f"- `{item['path']}`: {item['reason']}" for item in summary["blocked"])
     lines.append(f"\nValidation next step: {summary['validation_next_step']}")
+    return "\n".join(lines)
+
+
+def render_existing_file_refresh_plain(payload: dict[str, Any]) -> str:
+    preview = payload["existing_file_refresh_preview"]
+    lines = [
+        render_plain(payload),
+        "\nExisting-File Refresh Preview:",
+        f"- Status: `{preview['status']}`",
+        f"- Source provenance: `{json.dumps(preview['source_provenance'], sort_keys=True)}`",
+        f"- Target Git state: `{preview['target_git']['status']}`",
+        "- Scope: existing package-owned files only; missing files and user-created files are excluded.",
+        "- Writes by default: no",
+        "- Generated evidence only: yes",
+        f"- Next manual gate: {preview['next_manual_gate']}",
+        "\nFile-by-file refresh actions:",
+    ]
+    for action in preview["actions"]:
+        lines.append(
+            f"- {action['id']} {action['category']}: `{action['path']}` — {action['reason']} "
+            f"(source {action.get('source_sha256', '')}; target {action.get('target_sha256', '')})"
+        )
+    lines.append("\nRefresh warning: only explicitly approved RF-ID refresh_existing_package_file actions may replace existing files.")
+    if "existing_file_refresh_apply" in payload:
+        summary = payload["existing_file_refresh_apply"]
+        lines.extend(["\nExisting-File Refresh Apply Summary:", f"- Status: `{summary['status']}`"])
+        for item in summary.get("refreshed", []):
+            lines.append(f"- Refreshed `{item['path']}`: `{item['before_sha256']}` -> `{item['after_sha256']}`")
+        for item in summary.get("blocked", []) + summary.get("skipped", []):
+            lines.append(f"- {item['path']}: {item['reason']}")
+        if payload.get("refresh_validation"):
+            lines.append("\nValidation:")
+            lines.extend(f"- `{item['command']}`: {item['status']}" for item in payload["refresh_validation"])
+        if payload.get("refresh_report_path"):
+            lines.append(f"\nAudit report: `{payload['refresh_report_path']}`")
     return "\n".join(lines)
 
 
@@ -2570,6 +2922,42 @@ def self_test() -> int:
         assert dirty_apply["status"] == "blocked"
         assert any("refuses dirty or unknown package state" in item["reason"] for item in dirty_apply["blocked"])
 
+        refresh_source = base / "refresh-source"
+        refresh_target = base / "refresh-target"
+        make_source(refresh_source)
+        make_source(refresh_target)
+        (refresh_source / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("public beta refresh\n", encoding="utf-8")
+        (refresh_target / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("local alpha build\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(refresh_target), "init"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(refresh_target), "add", "."], check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-C", str(refresh_target), "-c", "user.name=Precode Test", "-c", "user.email=precode@example.invalid", "commit", "-m", "fixture"],
+            check=True,
+            capture_output=True,
+        )
+        (refresh_target / "user-created.txt").write_text("must remain\n", encoding="utf-8")
+        refresh_payload = build_payload(refresh_source.as_posix(), refresh_target.as_posix())
+        refresh_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(refresh_payload)
+        refresh_actions = refresh_payload["existing_file_refresh_preview"]["actions"]
+        refresh_action = next(action for action in refresh_actions if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
+        assert refresh_action["category"] == "refresh_existing_package_file"
+        assert not any(action["path"] == "user-created.txt" for action in refresh_actions)
+        refresh_payload["existing_file_refresh_apply"] = apply_existing_file_refresh(refresh_payload, [refresh_action["id"]])
+        assert refresh_payload["existing_file_refresh_apply"]["status"] == "applied"
+        assert (refresh_target / "docs" / "PRECODE-GUIDED-SETUP.md").read_text(encoding="utf-8") == "public beta refresh\n"
+        assert (refresh_target / "user-created.txt").read_text(encoding="utf-8") == "must remain\n"
+        refresh_payload["refresh_validation"] = []
+        refresh_payload["refresh_residual_preview"] = build_existing_file_refresh_preview(build_payload(refresh_source.as_posix(), refresh_target.as_posix()))
+        refresh_payload["refresh_report_path"] = write_refresh_audit_report(refresh_payload)
+        assert refresh_payload["refresh_report_path"].endswith("logs/precode-refresh-audit.md")
+        assert "->" in Path(refresh_payload["refresh_report_path"]).read_text(encoding="utf-8")
+
+        (refresh_target / "logs").mkdir(parents=True, exist_ok=True)
+        (refresh_target / "logs" / "precode-refresh-audit.md").write_text("user report\n", encoding="utf-8")
+        fallback_report = write_refresh_audit_report(refresh_payload)
+        assert fallback_report != (refresh_target / "logs" / "precode-refresh-audit.md").as_posix()
+        assert (refresh_target / "logs" / "precode-refresh-audit.md").read_text(encoding="utf-8") == "user report\n"
+
         empty_payload["install_update_preview"] = build_manifest_preview(empty_payload)
         empty_payload["supervised_setup_plan"] = build_supervised_setup_plan(empty_payload)
         assert any(
@@ -2825,6 +3213,16 @@ def main() -> int:
         help="apply explicitly approved missing package-file copy actions from --upgrade-preview",
     )
     parser.add_argument(
+        "--refresh-existing-preview",
+        action="store_true",
+        help="include a non-mutating preview for existing, Git-clean package-owned files that differ from source",
+    )
+    parser.add_argument(
+        "--apply-refresh-existing",
+        action="store_true",
+        help="apply explicitly approved RF-ID existing package-file refresh actions and write an audit report",
+    )
+    parser.add_argument(
         "--approve-action",
         action="append",
         default=[],
@@ -2843,6 +3241,8 @@ def main() -> int:
         parser.error("--apply-supervised-setup requires --supervised-setup-plan")
     if args.apply_upgrade_preview and not args.upgrade_preview:
         parser.error("--apply-upgrade-preview requires --upgrade-preview")
+    if args.apply_refresh_existing and not args.refresh_existing_preview:
+        parser.error("--apply-refresh-existing requires --refresh-existing-preview")
     if args.fast_verified_setup_apply and not args.approve_action:
         parser.error("--fast-verified-setup-apply requires at least one --approve-action <SP-ID|UP-ID>")
 
@@ -2864,6 +3264,7 @@ def main() -> int:
     needs_existing_precode = (
         args.upgrade_preview
         or args.update_plan_preview
+        or args.refresh_existing_preview
         or (args.fast_verified_setup_preview and target_route_kind == "existing_precode")
         or (args.fast_verified_setup_apply and "UP" in fast_apply_prefixes)
     )
@@ -2875,6 +3276,8 @@ def main() -> int:
         payload["existing_project_adaptation_plan"] = build_existing_project_adaptation_plan(payload)
     if needs_existing_precode:
         payload["package_upgrade_preview"] = build_upgrade_preview(payload)
+    if args.refresh_existing_preview or args.apply_refresh_existing:
+        payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(payload)
     if args.update_plan_preview or needs_existing_precode:
         payload["npm_update_plan_preview"] = build_update_plan_preview(payload)
     if args.recovery_guidance:
@@ -2883,6 +3286,13 @@ def main() -> int:
         payload["supervised_setup_apply"] = apply_supervised_setup(payload, args.approve_action)
     if args.apply_upgrade_preview:
         payload["package_upgrade_apply"] = apply_upgrade_preview(payload, args.approve_action)
+    if args.apply_refresh_existing:
+        payload["existing_file_refresh_apply"] = apply_existing_file_refresh(payload, args.approve_action)
+        payload["refresh_validation"] = run_refresh_validation(payload)
+        residual_payload = build_payload(args.source, args.target)
+        residual_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(residual_payload)
+        payload["refresh_residual_preview"] = residual_payload["existing_file_refresh_preview"]
+        payload["refresh_report_path"] = write_refresh_audit_report(payload)
     if args.fast_verified_setup_preview or args.fast_verified_setup_apply:
         payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(payload)
     if args.fast_verified_setup_apply:
@@ -2902,6 +3312,10 @@ def main() -> int:
             print(render_fast_verified_setup_preview_plain(payload))
         elif args.apply_upgrade_preview:
             print(render_upgrade_apply_plain(payload))
+        elif args.apply_refresh_existing:
+            print(render_existing_file_refresh_plain(payload))
+        elif args.refresh_existing_preview:
+            print(render_existing_file_refresh_plain(payload))
         elif args.update_plan_preview:
             print(render_update_plan_preview_plain(payload))
         elif args.upgrade_preview:

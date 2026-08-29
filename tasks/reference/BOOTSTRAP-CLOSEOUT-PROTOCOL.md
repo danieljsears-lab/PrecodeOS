@@ -1,7 +1,7 @@
 # PrecodeOS -- Bootstrap Closeout Protocol
 <!-- ANCHOR: bootstrap-closeout-protocol -->
 
-> AUTHORITY: Final staged closeout contract for PrecodeOS bootstrap adoption, existing-project adaptation planning, package upgrade preview, support-assisted recovery guidance, and narrowly approved missing-package-file copy actions.
+> AUTHORITY: Final staged closeout contract for PrecodeOS bootstrap adoption, existing-project adaptation planning, package upgrade preview, safe existing-file refresh, support-assisted recovery guidance, and narrowly approved package copy actions.
 > NOT_AUTHORITY: Active memory, target-project truth, broad installer behavior, owner-file adaptation approval, dirty package-file replacement, hook installation, CI mutation, app commands, app-code edits, release channels, package-manager behavior, rollback automation, task selection, PRD approval, bead activation, or generated evidence truth.
 > LOAD_WHEN: A user, support engineer, maintainer, or agent needs the final P0 bootstrap lane behavior after Bootstrap Confidence, Existing Repo Intake, manifest preview, supervised setup plan, and supervised setup apply.
 > CLASS: reference
@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-08-04
+Document version: v0.1.5
+Last updated: 2026-08-29
 
 ## Purpose
 
@@ -41,6 +41,8 @@ npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
@@ -96,6 +98,16 @@ The plan must include:
 - generated-evidence and non-authority warnings
 
 The plan is not copy approval, package update permission, npm apply behavior, registry freshness, dist-tag resolution, release-channel behavior, package-manager behavior, rollback automation, owner-file adaptation approval, or generated-output authority.
+
+## Safe Existing-File Refresh
+
+`--refresh-existing-preview` compares only files present in both the public PrecodeOS source checkout and an existing Precode target. It produces `RF-*` actions for existing package-owned files that differ and are clean according to target Git evidence. It excludes missing files, user-created files, locally modified files, owner and active-memory files, app files, generated or sensitive files, PRDs, beads, hooks, and CI.
+
+`--apply-refresh-existing` requires a fresh preview and explicit `--approve-action <RF-ID>` values. It may replace only approved existing package-owned files whose target hashes still match the preview. It refuses unknown Git state, local modifications, path changes, missing files, uncertain ownership, and all protected surfaces. It is separate from `--apply-upgrade-preview`, which remains limited to approved missing package-owned files.
+
+After apply, the command runs the relevant local Precode validation checks, reruns the refresh preview, and writes `logs/precode-refresh-audit.md`. If that path is already occupied, it preserves the existing file and writes the report to a temporary external path. The report records source and target provenance, action IDs, planned/approved/refreshed/skipped/blocked files, before/after hashes, validation results, residual differences, and recovery guidance.
+
+The audit report is generated evidence only. It does not approve a future refresh, become package or project authority, authorize rollback, or replace source Markdown and protocols.
 
 Upgrade preview is ID-aware for PRD and bead Markdown files. It reads incoming `prd_id` / `bead_id` values and target IDs before proposing copy actions. If an incoming package file declares an ID that already exists at another target path, the action must be `blocked_identity_collision`, name the incoming path, incoming ID, and existing target path, and remain non-copyable.
 

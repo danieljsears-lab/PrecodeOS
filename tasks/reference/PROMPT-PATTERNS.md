@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.85
-Last updated: 2026-08-06
+Document version: v0.1.86
+Last updated: 2026-08-29
 
 ## Purpose
 
@@ -410,6 +410,30 @@ After any approved copy, show copied, skipped, blocked, validation next steps, a
 Expected output: source and target confirmation, target classification, protected files, conflicts, required reusable setup support files missing, blocked identity collisions, deferred package development PRDs or beads, advisory release-reference metadata, compatibility-policy blocked cases, candidate `UP-ID` actions, optional update-plan action buckets, same-session freshness, validation next steps, and explicit stop-before-mutation status.
 
 This is a refresh prompt, not an automatic update, executable release channel, rollback path, package manager, owner-file adaptation engine, registry freshness result, dist-tag resolver, or permission to overwrite. Npm apply is limited to `apply-package-owned` delegation for approved missing package-owned `UP-ID` actions.
+
+### Safe Existing-File Refresh With Audit Report
+
+```text
+Run a safe existing-file PrecodeOS refresh for this project.
+
+Use the current public PrecodeOS repository checkout as the source and my existing PrecodeOS installation as the target. Confirm the source remote, branch or tag, commit, package version, target path, current folder, and target Git status.
+
+Run:
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview
+
+Produce a consolidated file-by-file plan. Include source and target SHA-256 hashes, package ownership, local Git modification status, proposed action, action ID, and reason. Compare only files present in both source and target.
+
+Do not create or refresh missing files. Do not touch user-created, project-owned, locally modified, generated, sensitive, owner, active-memory, PRD, bead, app, CI, or hook files. Treat uncertain ownership or unknown Git state as blocked.
+
+Stop and wait for my explicit approval of specific RF-ID actions. After approval, run:
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
+
+Perform only approved existing package-owned file refreshes. Run the validation checks, rerun the comparison, and write `logs/precode-refresh-audit.md`. The report must record source and target provenance, planned/approved/refreshed/skipped/blocked files, before/after hashes, validation results, residual differences, and recovery guidance.
+
+If the report path already contains a file, do not overwrite it; write the report outside the target and tell me the exact path. Write a report even when the refresh is blocked, partially completed, or validation fails. Treat the report as generated evidence, not authority or permission for a future refresh.
+```
+
+This workflow refreshes existing package-owned files only. It is not a broad updater, installer, package manager, release channel, rollback tool, or permission to overwrite local work.
 
 ### Fast Verified Setup
 

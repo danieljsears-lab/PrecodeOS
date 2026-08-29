@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.52
-Last updated: 2026-08-09
+Document version: v0.1.53
+Last updated: 2026-08-29
 
 ## Purpose
 
@@ -94,6 +94,8 @@ Start with the Existing Precode Refresh prompt in `tasks/reference/PROMPT-PATTER
 - run validation before the user's first normal Start after a refresh
 
 Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query npm registry freshness, resolve dist-tags, create package-manager behavior, expose broad npm apply behavior outside `apply-package-owned`, or automate rollback. Upgrade preview may show advisory package version, stable/latest/pinned language, and compatibility policy metadata from the local source package; update-plan preview may group current `UP-ID` evidence and validation prompts. That metadata is evidence only; `latest` is not overwrite permission, policy metadata is not update permission, and update-plan preview is not copy approval.
+
+For a user who needs a consolidated agent-executed refresh, use the Safe Existing-File Refresh prompt in `docs/PRECODE-GUIDED-SETUP.md`. It runs `--refresh-existing-preview`, presents `RF-ID` actions for existing package-owned files only, waits for explicit approval, applies only approved Git-clean files with `--apply-refresh-existing`, runs validation, reruns the comparison, and writes `logs/precode-refresh-audit.md`. Missing files, user-created files, locally modified files, owner files, active memory, app files, generated evidence, secrets, CI, hooks, PRDs, and beads remain protected. If the reserved report path is occupied, preserve it and use the external report path printed by the command.
 
 ## Stuck User Recovery
 

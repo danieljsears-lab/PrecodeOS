@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-08-18">
+  <meta name="generated-at" content="2026-08-29">
   <title>PrecodeOS Support Runbook · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Support Runbook</h1>
   <p class="lede">Use this runbook when you are helping someone else adopt PrecodeOS.</p>
-  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.52</span><span>Updated 2026-08-09</span></p>
+  <p class="meta"><a href="../docs/PRECODE-SUPPORT-RUNBOOK.md">Source Markdown</a><span>v0.1.53</span><span>Updated 2026-08-29</span></p>
 
 </section>
 <section class="content layout">
@@ -450,6 +450,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Start with the Existing Precode Refresh prompt in <code>tasks/reference/PROMPT-PATTERNS.md</code> or the copyable version in <code>docs/PRECODE-GUIDED-SETUP.md</code>. The support stance is still read-only first:</p>
 <ul><li>confirm the PrecodeOS package source, target project, current folder, and target <code>git status</code></li><li>run <code>bootstrap-check.py --upgrade-preview</code> before any copy action, or <code>bootstrap-check.py --update-plan-preview</code> when the user needs grouped current action IDs and validation prompts</li><li>use setup diagnosis to separate missing reusable setup support files from product work or app-code repair</li><li>explain clean, dirty, mixed, unknown, blocked, identity-collision, deferred package-development, and updater compatibility policy states in plain English</li><li>show candidate <code>UP-ID</code> actions only for missing package-owned files</li><li>stop before mutation unless the user approves specific <code>UP-ID</code> actions</li><li>run validation before the user&#x27;s first normal Start after a refresh</li></ul>
 <p>Do not turn recurring refresh support into an automatic updater. Do not overwrite dirty files, adapt owner files, install hooks, change CI, run app commands, write app code, renumber PRDs or beads, define executable release channels, query npm registry freshness, resolve dist-tags, create package-manager behavior, expose broad npm apply behavior outside <code>apply-package-owned</code>, or automate rollback. Upgrade preview may show advisory package version, stable/latest/pinned language, and compatibility policy metadata from the local source package; update-plan preview may group current <code>UP-ID</code> evidence and validation prompts. That metadata is evidence only; <code>latest</code> is not overwrite permission, policy metadata is not update permission, and update-plan preview is not copy approval.</p>
+<p>For a user who needs a consolidated agent-executed refresh, use the Safe Existing-File Refresh prompt in <code>docs/PRECODE-GUIDED-SETUP.md</code>. It runs <code>--refresh-existing-preview</code>, presents <code>RF-ID</code> actions for existing package-owned files only, waits for explicit approval, applies only approved Git-clean files with <code>--apply-refresh-existing</code>, runs validation, reruns the comparison, and writes <code>logs/precode-refresh-audit.md</code>. Missing files, user-created files, locally modified files, owner files, active memory, app files, generated evidence, secrets, CI, hooks, PRDs, and beads remain protected. If the reserved report path is occupied, preserve it and use the external report path printed by the command.</p>
 <h2 id="stuck-user-recovery"><a class="heading-anchor" href="#stuck-user-recovery" aria-label="Link to Stuck User Recovery">#</a>Stuck User Recovery</h2>
 <p>Use this when a beginner says <code>I am stuck</code>, <code>I am stuck, help me</code>, or cannot name the symptom.</p>
 <p>Support should help the user get a prescriptive diagnosis without taking over product authority or approving repair:</p>
