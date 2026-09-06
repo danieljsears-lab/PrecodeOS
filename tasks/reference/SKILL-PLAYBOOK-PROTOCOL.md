@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.27
-Last updated: 2026-07-31
+Document version: v0.1.28
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -47,7 +47,7 @@ A prompt playbook may tell an agent to inspect files and summarize. It must not 
 
 ## Beginner Invocation And Review Ergonomics
 
-Skill playbooks should be easy to invoke without becoming a second operating model. Keep beginner action language behind the Daily Cockpit Daily Loop / Next / Health / Diary operating surface, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. Daily Cockpit may expose full Prompt Patterns and Protocol catalogs as reference shelves for learning and lookup; Prompt Patterns or the owner protocol still carries the detailed prompt body and authority boundary.
+Skill playbooks should be easy to invoke without becoming a second operating model. Keep beginner action language behind the Daily Cockpit Daily Loop / Next / Health / Diary operating surface, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. The cockpit routes to Prompt Patterns or one owner protocol for detailed bodies and authority boundaries instead of embedding complete catalogs.
 
 Use this decision aid before adding or changing a skill-style surface:
 

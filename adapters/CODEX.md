@@ -6,10 +6,14 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-07-11
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
+
+## V1 Setup Contract
+
+Follow the **V1 Agent-Operated Setup Contract** in `adapters/ADAPTER-INDEX.md`. Do not introduce Codex-specific setup semantics or approval rules.
 
 ## Shared Command Surface
 

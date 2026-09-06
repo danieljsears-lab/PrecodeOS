@@ -6,8 +6,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.10
-Last updated: 2026-08-06
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -32,23 +32,40 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a 
 Official tool documentation and in-product controls remain authoritative for exact model availability, pricing, quotas, preview flags, MCP behavior, and file-discovery behavior. This matrix names the Precode-owned compatibility surface only; it is not a promise that every host behaves identically.
 
 Status values:
-- `shipped` - Precode ships a shim or adapter for this host family.
+- `certified-for-launch` - the host has a deterministic Precode conformance result for the bounded macOS setup-and-orientation journey.
+- `shipped` - Precode ships a shim or adapter for this host family without the bounded v1 certification claim.
 - `advisory` - Precode has a thin adapter note or likely root-shim path, but no broader support promise.
 - `deferred` - Keep in roadmap/watchlist notes until repeated evidence justifies a shipped surface.
 
 | Host family | Status | Precode-owned surface | Expected load contract | Boundary |
 |---|---|---|---|---|
-| Codex and AGENTS-compatible agents | shipped | `AGENTS.md`, `adapters/CODEX.md` | Auto-load `AGENTS.md`, then follow `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. | No Precode-native scoped rule tree; use shared routing, checkpoint, handoff, and review discipline. |
-| Claude Code and Claude-style project instructions | shipped | `CLAUDE.md`, `adapters/CLAUDE.md` | Auto-load `CLAUDE.md`, then follow the shared active-memory files and Claude adapter notes. | Claude-specific controls stay in the adapter; the shim must not become a second operating model. |
-| Gemini-style project memory | shipped | `GEMINI.md`, `adapters/GEMINI.md` | Auto-load `GEMINI.md`, then follow the shared active-memory files and Gemini adapter notes. | Gemini-specific controls stay advisory and cannot approve work, commands, reviews, or transitions. |
+| Codex and AGENTS-compatible agents | certified-for-launch | `AGENTS.md`, `adapters/CODEX.md` | Auto-load `AGENTS.md`, then follow `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`. | Conformance-certified; external no-help session result pending. No Precode-native scoped rule tree. |
+| Claude Code and Claude-style project instructions | certified-for-launch | `CLAUDE.md`, `adapters/CLAUDE.md` | Auto-load `CLAUDE.md`, then follow the shared active-memory files and Claude adapter notes. | Conformance-certified; external no-help session result pending. The shim must not become a second operating model. |
+| Gemini-style project memory | certified-for-launch | `GEMINI.md`, `adapters/GEMINI.md` | Auto-load `GEMINI.md`, then follow the shared active-memory files and Gemini adapter notes. | Conformance-certified; external usability evidence pending. Gemini-specific controls cannot approve work or transitions. |
 | GitHub Copilot repository instructions | shipped | `.github/copilot-instructions.md`, `adapters/COPILOT.md` | Load repository instructions when the active Copilot surface supports them, then follow the shared active-memory files. | Copilot code review, PR review, issues, checks, and comments are evidence, not acceptance or task authority. |
-| Cursor / VS Code-adjacent agents | advisory | `adapters/CURSOR.md`; `AGENTS.md` when supported by the host | Use the shipped adapter note and root shim behavior when the host supports it. | Do not add `.cursor/rules` or VS Code rule directories until repeated evidence shows a root-shim gap. |
+| Cursor | certified-for-launch | `AGENTS.md`, `adapters/CURSOR.md` | Auto-load the root `AGENTS.md`, then follow the shared active-memory files. | Conformance-certified; external usability evidence pending. Do not add a competing `.cursor/rules` authority tree. |
 | Antigravity | advisory | `adapters/ANTIGRAVITY.md` | Use the adapter note plus the host's documented instruction behavior. | Host-specific behavior remains tool-dependent; no broad compatibility promise. |
 | Windsurf/Cascade, JetBrains/Junie, Kiro, Zed, Cline/Roo, Replit/Devin, and similar hosted or IDE agents | deferred | none beyond any host support for `AGENTS.md` or shared repo files | Treat as watchlist surfaces until official instruction behavior and repeated Precode usage justify a shipped adapter or shim. | Do not create native rule-directory shims, detailed host capability tables, package-manager semantics, optional packs, or support promises from speculation. |
+
+Certification describes Precode contract conformance, not equal usability evidence. Codex and Claude Code are the hosts used in the six external no-help sessions. Cursor and Gemini are certified for launch through deterministic conformance plus maintainer smoke tests; external usability evidence remains pending and must be stated as such.
+
+## V1 Agent-Operated Setup Contract
+
+For the bounded macOS self-serve journey, the active certified agent should:
+
+1. Identify the intended project folder; the user should not need to construct a path or interpret shell syntax.
+2. Run `npx @precodeos/precodeos fast-setup-preview --target <target-project-root>`.
+3. Explain package version, support status, prerequisites, target classification, proposed actions, approval IDs, validation requirements, recovery route, next safe action, and stop reason in plain English.
+4. Ask for explicit approval of named current actions before running `fast-setup-apply`.
+5. Adapt project-specific owner facts only through a separate approval.
+6. Validate, route to the First Session Card or Daily Cockpit, and stop before product work.
+
+The contract covers installation, validation, orientation, and next-safe-action identification. It does not certify the full idea-to-production journey, guarantee deployment or operations, or turn generated `ready_for_orientation` evidence into approval for product work.
 
 ## Shared Command Surface
 
 Every adapter should point back to the same repo-level commands:
+- `npx @precodeos/precodeos fast-setup-preview --target <target-project-root>`
 - `bash scripts/install-git-hooks.sh`
 - `bash scripts/session-start.sh`
 - `bash scripts/checkpoint.sh`

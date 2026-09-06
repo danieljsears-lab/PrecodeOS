@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-08-04
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -26,17 +26,16 @@ This protocol is intentionally non-mutating. It produces setup-plan evidence onl
 
 ## Command
 
-Use the setup plan from the PrecodeOS package checkout after Bootstrap Confidence:
+Use the canonical agent-operated npm preview first. Local Python commands are the transparent advanced fallback:
 
 ```bash
-npm view @precodeos/precodeos version
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
 
-Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The optional npm setup preview is a read-only preview entry over the same setup plan. Fast verified setup preview is also read-only and exposes the underlying Bootstrap command sequence before any apply decision. It has no postinstall behavior and writes nothing by default. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
+Npm is the canonical acquisition path; the coding agent handles command syntax and explains every field to the user. Fast verified setup preview is read-only, exposes its underlying Bootstrap commands, and does not create postinstall behavior, copy approval, owner-file approval, release-channel behavior, or package-manager authority. GitHub/local Python remains the advanced fallback.
 
 Structured output is available with:
 
@@ -91,6 +90,8 @@ The setup-plan output should include:
 - `generated_evidence_only`: `true`
 - `not_authority_for`
 - `next_manual_gate`
+
+The npm fast-setup preview must add the shared support contract, prerequisite status, plain-English proposed actions, current approval IDs, recovery route, next safe action, stop reason, and evidence-only orientation result without changing the setup plan's authority.
 
 Each action should include:
 

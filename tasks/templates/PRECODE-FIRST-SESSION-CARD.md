@@ -9,12 +9,14 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-08-04
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
 Use this card after PrecodeOS is installed or when a first working session feels too heavy.
+
+Before using the card, confirm setup validation passed or the setup flow emitted evidence-only `ready_for_orientation`. That result permits orientation only; it does not approve product work, a PRD, a bead, or coding.
 
 This card gives a compact build-order path for builders. It is shareable as the builder's official first-session flow when a live call or first solo session needs steps in one place. It reinforces Guided Setup and the Daily Cockpit by pointing to them at the right moment. It is not a new start page, workflow, command wrapper, setup helper, generated report, skill catalog, registry, optional pack, installer, updater, release channel, or package manager.
 
@@ -39,7 +41,7 @@ Use this order when you need one visible path:
 
 | Stage | What to do | Where it lives |
 |---|---|---|
-| Setup | Install, refresh, or run fast verified setup preview/apply with approved action IDs, validate, then stop. | `docs/PRECODE-GUIDED-SETUP.md` |
+| Setup | Use the canonical agent-operated npm preview/apply path with plain-English actions and approved action IDs, validate, establish `ready_for_orientation`, then stop. | `docs/PRECODE-GUIDED-SETUP.md` |
 | Start | Begin the working session and make the agent explain the current state before editing. | `docs/PRECODE-DAILY-COCKPIT.md` |
 | Idea/Packet | If the idea is rough, use First PRD Walkthrough; if a packet exists, keep it as evidence for intake. | Daily Cockpit `Ideation: use First PRD Walkthrough for my rough idea.` |
 | Intake | Summarize reviewed source material before promoting anything into owner files or PRDs. | Daily Cockpit / Support Runbook route |

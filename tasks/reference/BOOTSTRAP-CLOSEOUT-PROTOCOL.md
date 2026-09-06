@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-08-29
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -29,11 +29,10 @@ All preview and guidance modes are non-mutating generated evidence. They do not 
 
 ## Commands
 
-Use these modes from the PrecodeOS package checkout after source and target are clear:
+Use npm as the canonical agent-operated path after source and target are clear. Local Python modes remain the transparent advanced fallback:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
-npm view @precodeos/precodeos version
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
@@ -48,7 +47,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
 ```
 
-Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The optional npm fast setup, upgrade, and update-plan previews delegate to the same non-mutating Bootstrap evidence from the package source. The optional npm `fast-setup-apply` command delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python setup or upgrade apply path and prints validation; the optional npm `apply-package-owned` command is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the same Python upgrade-apply path. These npm commands do not approve package updates, dirty-file overwrites, owner-file adaptation, hooks, CI, executable release-channel behavior, package-manager behavior, rollback automation, task selection, PRD approval, or bead activation. Upgrade preview may include advisory `release_reference` metadata from local `package.json` and read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md` and groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets. No PrecodeOS command may query npm, resolve dist-tags, select a channel, or treat `latest` as overwrite permission; the external npm availability preflight is command availability only, not registry freshness or update permission.
+Npm is the canonical agent-operated acquisition and setup path. Its previews delegate to non-mutating Bootstrap evidence; apply delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions. GitHub/local Python is the advanced fallback. No PrecodeOS command may treat a registry version or `latest` as overwrite permission, adapt owner files without separate approval, mutate CI or hooks, automate rollback, choose work, approve PRDs or beads, or make generated output authoritative.
 
 For existing Precode targets, missing package-owned files marked `review_package_copy_candidate` may be copied only by explicit action ID:
 

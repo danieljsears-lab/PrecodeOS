@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.53
-Last updated: 2026-08-29
+Document version: v0.1.54
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -338,7 +338,7 @@ Use `docs/PRECODE-GUIDED-SETUP.md` as the setup guide and `docs/PRECODE-PACKAGE-
 For a new project, copy public package files by supervised group, not by blind overwrite:
 
 - active memory templates: `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md`
-- active work state: create a fresh target `tasks/todo.md`; do not copy the package source's active work file
+- active work state: create target `tasks/todo.md` from `tasks/templates/PRECODE-TODO-TEMPLATE.md`; the npm package excludes PrecodeOS's live active-work file
 - product and project owner files
 - public orientation docs, including committed `docs-html/` generated reading pages
 - agent shims and adapters

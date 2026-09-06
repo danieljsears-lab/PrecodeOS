@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-08-09
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -28,10 +28,9 @@ The approved copy set may include `.gitignore` when the target lacks one so gene
 
 ## Command
 
-Run the command from the PrecodeOS package checkout after reviewing the supervised setup plan:
+After the agent explains current actions and the user approves exact IDs, use the canonical npm apply. Local Python commands are the transparent advanced fallback:
 
 ```bash
-npm view @precodeos/precodeos version
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID>
@@ -51,7 +50,7 @@ python3 scripts/bootstrap-check.py --source <precode-package-root> --target <tar
 
 `--apply-supervised-setup` requires `--supervised-setup-plan`. The setup plan remains visible in output so the copied, skipped, and blocked apply results can be traced to reviewed action IDs.
 
-Use npm only after `npm view @precodeos/precodeos version` confirms external availability; if npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. `--fast-verified-setup-apply` delegates approved current `SP-ID` actions to the same Python setup apply path and prints validation next steps after approved apply. Fresh setup validation comes after copied package files, fresh active work state, exactly one setup or orientation `in_progress` bead, owner-file template adaptation with preserved anchors and authority contracts, and git trackability review. It is a facade, not an installer, setup approval shortcut, package manager, rollback helper, or support-only hidden setup path. Availability is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
+`fast-setup-apply` is the canonical agent-operated facade after exact current IDs are approved. It delegates to the Python apply authority and prints validation and recovery guidance. Fresh setup still requires active-work state, separately approved owner-file adaptation, preserved anchors and authority contracts, Git inspection, and validation before orientation. It is not an installer, approval shortcut, package manager, rollback helper, or hidden support path.
 
 Package upgrade preview and upgrade apply are separate closeout behavior governed by `tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md`. Supervised Setup Apply remains limited to fresh or nearly empty targets.
 
@@ -72,7 +71,15 @@ Apply output should include a `supervised_setup_apply` object with:
 - `blocked`
 - `validation_next_step`
 - `target_mutation_allowed`
+- `support`
+- `prerequisite_status`
+- `recovery_route`
+- `next_safe_action`
+- `stop_reason`
+- `orientation_result`
 - `not_authority_for`
+
+An applied copy may report `pending_validation`; it must not report `ready_for_orientation` until project-specific state and validation have separately passed. Any orientation result is evidence only and never approves product work.
 
 Each copied, skipped, or blocked item should include:
 
@@ -124,7 +131,7 @@ The package keeps fixture coverage for the refusal contract in `scripts/bootstra
 After an applied setup copy:
 
 - inspect target Git status
-- create or adapt fresh `tasks/todo.md`, author exactly one setup or orientation bead marked `in_progress`, and preserve package template anchors and authority contract fields
+- create target `tasks/todo.md` from `tasks/templates/PRECODE-TODO-TEMPLATE.md`, author exactly one setup or orientation bead marked `in_progress`, and preserve package template anchors and authority contract fields
 - adapt owner files manually with user-approved facts before product implementation starts
 - confirm copied files are not hidden by target `.gitignore`; no output from a `git check-ignore` sweep is the clean signal even when the command exits nonzero because no paths matched
 - run `bash scripts/validate-memory.sh` from the installed Precode root after active state and owner files are ready

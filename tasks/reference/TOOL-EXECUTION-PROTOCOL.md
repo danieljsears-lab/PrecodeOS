@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.25
-Last updated: 2026-08-18
+Document version: v0.1.26
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -30,7 +30,7 @@ Use `tasks/reference/RALPH-LOOP-PROTOCOL.md` when a host or user wants a bounded
 
 Use `tasks/prds/PRD-043-agent-access-level-guidance.md` when changing the plain-language access model itself. Tool Execution owns the shared access ladder for every prompt, adapter, Run Contract, command classification, and reader-doc explanation. Access levels are guidance over the existing tool-call classes, `files_in_play`, Run Contracts, approval gates, and stop conditions. They are not permission grants, runtime enforcement, sandbox policy, command approval, schema-backed access metadata, or host-plugin configuration.
 
-Use `scripts/precode_cli.py`, the optional local `precode` console command, or the optional npm `precodeos` entry only as a facade over trusted repo commands. A wrapper command inherits the underlying command's tool-call class, approval gates, side effects, and evidence limits. It must print the underlying command before running it and must not approve work, hide mutation, widen files in play, mutate external systems, define package update behavior, define release-channel behavior, or make generated output authoritative. The npm entry is limited to read-only setup, fast verified setup, upgrade, and update-plan previews plus `fast-setup-apply` delegation for explicitly approved current `SP-ID` or `UP-ID` copy actions and `apply-package-owned` delegation for explicitly approved missing package-owned `UP-ID` actions. It must not expose postinstall target mutation, dirty-file overwrite, owner-file adaptation, registry lookup, dist-tag resolution, channel selection, rollback automation, or package-manager behavior. Updater compatibility policy metadata is evidence interpretation governed by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`; update-plan preview metadata is grouped generated evidence governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; approved package-owned apply is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`. None of these metadata or facade paths is a registry lookup, dist-tag resolver, channel selector, or package-manager permission.
+Use `precodeos` as the canonical agent-operated setup facade and local Python commands as its transparent advanced fallback. Every facade inherits the underlying command's tool class, approvals, side effects, and evidence limits; it must expose the underlying command and must not approve work, hide mutation, widen files in play, mutate external systems, define update channels, or make generated output authoritative. Npm preview is read-only. Apply delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions and cannot adapt owner files, overwrite dirty paths, install hooks, change CI, select work, approve PRDs, activate beads, or approve product work.
 
 Bootstrap setup diagnosis is command output evidence. It can name source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions, but it does not approve command execution, copying, repair, rollback, setup/update mutation, product work, or package-manager behavior.
 

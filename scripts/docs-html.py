@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.10
-# Last updated: 2026-08-04
+# Version: v0.1.11
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1453,10 +1453,10 @@ def render_cockpit_strip() -> str:
         <span>Capture what transpired, changed, was learned, parked, or needs promotion.</span>
       </a>
     </div>
-    <div class="cockpit-catalog-row" aria-label="Daily Cockpit catalogs">
+    <div class="cockpit-catalog-row" aria-label="Daily Cockpit references">
       <span>Reference shelves</span>
-      <a href="#full-prompt-patterns-catalog">Prompt Patterns Catalog</a>
-      <a href="#full-protocol-catalog">Protocol Catalog</a>
+      <a href="../tasks/reference/PROMPT-PATTERNS.md">Prompt Patterns</a>
+      <a href="#prompt-and-protocol-reference">Protocol Routing</a>
       <a href="#precode-prompts-protocols">Copyable HTML Cards</a>
     </div>
   </div>
@@ -1549,7 +1549,7 @@ def render_doc_page(doc: Doc, docs: list[Doc], previous_doc: Doc | None, next_do
     cockpit_strip = render_cockpit_strip() if is_cockpit else ""
     hero_summary = (
         "Daily operating surface: run the Daily Loop, choose Next, check Health, capture Diary. "
-        "Prompt and protocol catalogs stay below as reference shelves."
+        "Complete prompt and protocol details stay in their owner files and generated reference cards."
         if is_cockpit
         else doc.summary
     )

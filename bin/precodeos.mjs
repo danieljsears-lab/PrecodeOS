@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Version: v0.1.3
-// Last updated: 2026-07-31
+// Version: v0.2.0
+// Last updated: 2026-09-06
 // Owner: PrecodeOS
 // Created by Dan Sears / Recode.
 // SPDX-License-Identifier: Apache-2.0
@@ -11,7 +11,7 @@ import { spawnSync } from "node:child_process";
 const BIN_DIR = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(BIN_DIR, "..");
 const BOUNDARY_NOTE =
-  "precodeos is an optional npm entry for PrecodeOS setup, fast verified setup, upgrade, update-plan previews, " +
+  "precodeos is the canonical agent-operated npm entry for PrecodeOS setup, fast verified setup, upgrade, update-plan previews, " +
   "approved SP-ID or UP-ID copy delegation, and local usage-evidence review. It delegates to Python scripts; " +
   "preview and review output, including updater compatibility policy metadata, is generated evidence only.";
 
@@ -141,12 +141,22 @@ function main() {
     console.log(usage());
     return 0;
   }
+  const nodeMajor = Number.parseInt(process.versions.node.split(".", 1)[0], 10);
+  if (!Number.isInteger(nodeMajor) || nodeMajor < 18) {
+    console.error(`precodeos: Node.js 18 or newer is required; detected ${process.versions.node}. Ask the coding agent to install or select a supported Node.js version, then rerun the same command.`);
+    return 1;
+  }
+  const python = spawnSync("python3", ["--version"], { encoding: "utf8" });
+  if (python.error || python.status !== 0) {
+    console.error("precodeos: Python 3 is required by the current repo-native setup delegate. Ask the coding agent to install or locate Python 3, then rerun the same command.");
+    return 1;
+  }
   const command = commandFor(parsed);
   console.log(BOUNDARY_NOTE);
   console.log(`Underlying command: ${command.map(shellQuote).join(" ")}`);
   const result = spawnSync(command[0], command.slice(1), {
     cwd: PACKAGE_ROOT,
-    env: process.env,
+    env: { ...process.env, PRECODEOS_NPM_NODE_VERSION: process.versions.node },
     stdio: "inherit",
   });
   if (result.error) {

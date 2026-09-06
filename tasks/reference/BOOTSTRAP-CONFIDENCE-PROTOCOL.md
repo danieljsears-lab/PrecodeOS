@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.9
-Last updated: 2026-08-04
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -26,16 +26,21 @@ Use this protocol before guided setup, support-assisted setup, existing repo int
 
 ## V1 Command
 
-Use the helper from the PrecodeOS package checkout:
+The canonical v1 path is agent-operated npm preview:
+
+```bash
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
+```
+
+The agent must explain package version, support status, prerequisites, target classification, proposed actions, approval IDs, validation, recovery route, next safe action, and stop reason in plain English. The local Python helper is the transparent advanced fallback:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root>
 ```
 
-Optional npm preview entry:
+Additional npm commands:
 
 ```bash
-npm view @precodeos/precodeos version
 npx @precodeos/precodeos setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
@@ -44,7 +49,7 @@ npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
 npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
 ```
 
-Use the npm entry only after the external `npm view @precodeos/precodeos version` availability preflight succeeds. If npm is unavailable, unverified, returns 404, or fails on a live call, use the Python/local checkout command. The npm entry delegates to this protocol's `--supervised-setup-plan`, `--fast-verified-setup-preview`, `--fast-verified-setup-apply`, `--upgrade-preview`, `--update-plan-preview`, or approved package-owned `--apply-upgrade-preview` modes from the package source. Preview modes write nothing by default. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python source of truth and prints the validation command; `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python source of truth. The npm entry has no postinstall behavior and does not approve broad copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, task selection, PRD approval, or bead activation. PrecodeOS commands perform no npm registry lookup or dist-tag resolution; the availability preflight is command availability only, not registry freshness, copy approval, update permission, release-channel behavior, or package-manager behavior.
+The npm entry is the canonical acquisition and setup surface. It delegates to the Python Bootstrap authority, has no postinstall behavior, and keeps preview read-only. Apply accepts only explicitly approved current `SP-ID` or `UP-ID` copy actions. GitHub/local Python is the advanced fallback when npm fails or direct provenance inspection is needed. Neither path approves owner-file adaptation, overwrite, hooks, CI changes, product work, package updates, rollback, PRDs, beads, or transitions.
 
 Optional modes:
 
@@ -99,6 +104,8 @@ Bootstrap Confidence output should include:
 - `excluded_paths`
 - `conflicts`
 - `missing_dependencies`
+- `support`
+- `prerequisite_status`
 - `recommended_next_step`
 - `stop_conditions`
 
@@ -119,6 +126,8 @@ Setup diagnosis should include:
 When `--preview-manifest` is used, output should also include an `install_update_preview` object with action categories and a next setup gate. The preview is governed by `tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md`.
 
 When `--supervised-setup-plan` is used, output should also include a `supervised_setup_plan` object. The setup plan is governed by `tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md`.
+
+When `--fast-verified-setup-preview` is used, output should also include human-readable `proposed_actions`, underlying `current_action_ids`, `recovery_route`, `next_safe_action`, `stop_reason`, and an evidence-only `orientation_result`. `orientation_result` must not approve product work.
 
 When `--upgrade-preview` is used, output should also include a `package_upgrade_preview` object with package-state classification, advisory `release_reference` metadata from the local package source, read-only updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, copy/action IDs, `identity_collisions`, `deferred_package_dev_identity_paths`, and the same non-authority warnings as Bootstrap Closeout. A `blocked_identity_collision` action is never copyable. `release_reference` must report that registry lookup and dist-tag resolution were not performed, and that `latest` is not overwrite permission. Compatibility policy metadata explains evidence thresholds and blocked cases; it does not add an npm update-plan preview, npm apply behavior, registry lookup, dist-tag resolution, or package-manager behavior.
 
@@ -146,7 +155,7 @@ Public file groups:
 | File group | Include |
 |---|---|
 | Active memory templates | `AGENT.md`, `DECISIONS.md`, `OPERATING-CONSTRAINTS.md` |
-| Active work state | Create a fresh target `tasks/todo.md`; do not copy the package source's active work file. |
+| Active work state | Create a fresh target `tasks/todo.md` from `tasks/templates/PRECODE-TODO-TEMPLATE.md`; the npm package excludes PrecodeOS's live active-work file. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` |
 | Product and project owner files | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
 | Public orientation docs | `.gitignore`, `README.md`, `docs/`, `docs-html/`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `TRADEMARK.md`, `NOTICE`, `LICENSE` |

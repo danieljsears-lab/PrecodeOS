@@ -6,17 +6,21 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.4
-Last updated: 2026-07-11
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 Read `AGENT.md`, then `DECISIONS.md`, then `tasks/todo.md`.
 
 ## Cursor Surfaces
 
-- Cursor project rules live under `.cursor/rules/`.
-- `.cursor/rules/precode-os.mdc` is a thin adapter shim only.
-- Do not duplicate shared workflow rules into Cursor-specific files.
+- Cursor uses the shipped root `AGENTS.md` compatibility shim for the shared Precode core.
+- This adapter is explanatory guidance; it is not auto-loaded authority and does not compete with `AGENTS.md`.
+- Do not create a Precode-owned `.cursor/rules` tree unless repeated evidence establishes a root-shim gap.
 - Shared repo scripts remain the canonical command surface.
+
+## V1 Setup Contract
+
+Follow the **V1 Agent-Operated Setup Contract** in `adapters/ADAPTER-INDEX.md`. Do not introduce Cursor-specific setup semantics or approval rules.
 
 ## Shared Command Surface
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-07-26
+# Version: v0.1.6
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -67,6 +67,7 @@ HTML_ANCHOR_PATTERN = re.compile(r"<a\s+[^>]*id=[\"']([^\"']+)[\"']", re.IGNOREC
 COMMENT_ANCHOR_PATTERN = re.compile(r"<!--\s*ANCHOR:\s*([a-zA-Z0-9_.:-]+)\s*-->")
 CONTRACT_PATTERN = re.compile(r"^>\s*AUTHORITY:\s*(.+)$", re.MULTILINE)
 REVIEWED_DUPLICATE_HEADING_PATTERNS = {
+    ("approval gates", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md")),
     ("accessibility advisor fit interview", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("action categories", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
     ("advisory check", ("tasks/reference/CONTEXT-ENGINEERING-PROTOCOL.md", "tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md", "tasks/reference/LOCAL-HYGIENE-PROTOCOL.md", "tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md", "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md", "tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md", "tasks/reference/TOOL-EXECUTION-PROTOCOL.md", "tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md")),
@@ -78,6 +79,7 @@ REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("branch rules", ("tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
     ("builder prompt", ("tasks/reference/BOOTSTRAP-CLOSEOUT-PROTOCOL.md", "tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md", "tasks/reference/INSTALL-UPDATE-MANIFEST-PROTOCOL.md", "tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-APPLY-PROTOCOL.md", "tasks/reference/SUPERVISED-SETUP-PLAN-PROTOCOL.md")),
     ("check task suitability before work", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md", "tasks/reference/PROMPT-PATTERNS.md")),
+    ("check task suitability before work", ("docs/PRECODE-USER-GUIDE.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("check the vibe to agentic boundary", ("docs/PRECODE-DAILY-COCKPIT.md", "docs/PRECODE-USER-GUIDE.md")),
     ("client engagement intake", ("docs/PRECODE-SUPPORT-RUNBOOK.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("close the session", ("docs/PRECODE-DAILY-COCKPIT.md", "tasks/reference/PROMPT-PATTERNS.md")),
@@ -113,18 +115,21 @@ REVIEWED_DUPLICATE_HEADING_PATTERNS = {
     ("product discovery interview skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("project glossary cards", ("tasks/reference/MEMORY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
     ("release candidate evidence profile", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),
+    ("release readiness skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("required inputs", ("tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/REVIEW-LANES-PROTOCOL.md")),
     ("required output", ("tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md")),
     ("review acceptance skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("routing mapping", ("adapters/ANTIGRAVITY.md", "adapters/CLAUDE.md", "adapters/CODEX.md", "adapters/COPILOT.md", "adapters/CURSOR.md", "adapters/GEMINI.md")),
     ("session close behavior", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md")),
     ("shared command surface", ("adapters/ADAPTER-INDEX.md", "adapters/ANTIGRAVITY.md", "adapters/CLAUDE.md", "adapters/CODEX.md", "adapters/COPILOT.md", "adapters/CURSOR.md", "adapters/GEMINI.md")),
+    ("safe existing file refresh with audit report", ("docs/PRECODE-GUIDED-SETUP.md", "tasks/reference/PROMPT-PATTERNS.md")),
     ("skill extension review skill", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/SKILL-PLAYBOOK-PROTOCOL.md")),
     ("source inputs", ("tasks/reference/BEAD-BUILD-JOURNAL-PROTOCOL.md", "tasks/reference/LEARNING-DIARY-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),
     ("start here", ("README.md", "llms.txt")),
     ("team merge and re entry review pack", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/TEAM-COLLABORATION-PROTOCOL.md")),
     ("the line precode holds", ("docs/PRECODE-MANIFESTO.md", "docs/PRECODE-OS-README.md")),
     ("v1 command", ("tasks/reference/BOOTSTRAP-CONFIDENCE-PROTOCOL.md", "tasks/reference/EXISTING-REPO-INTAKE-PROTOCOL.md")),
+    ("v1 setup contract", ("adapters/CLAUDE.md", "adapters/CODEX.md", "adapters/CURSOR.md", "adapters/GEMINI.md")),
     ("verification and release evidence review", ("tasks/reference/PROMPT-PATTERNS.md", "tasks/reference/RELEASE-READINESS-PROTOCOL.md")),
     ("what is a bead", ("README.md", "docs/PRECODE-USER-GUIDE.md")),
     ("when to use", ("tasks/reference/HYPOTHESIS-REVIEW-PROTOCOL.md", "tasks/reference/PRODUCT-DISCOVERY-VALIDATION-PROTOCOL.md", "tasks/reference/UBIQUITOUS-LANGUAGE-PROTOCOL.md")),

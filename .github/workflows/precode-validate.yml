@@ -1,5 +1,5 @@
-# Version: v0.1.2
-# Last updated: 2026-07-26
+# Version: v0.2.0
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 name: Precode Validate
 
@@ -28,6 +28,36 @@ jobs:
 
       - name: Enforced file inventory check
         run: python3 scripts/file-inventory.py --check
+
+      - name: Enforced bootstrap contract fixtures
+        run: python3 scripts/bootstrap-check.py --self-test
+
+      - name: Enforced adapter conformance
+        run: python3 scripts/adapter-conformance-check.py
+
+      - name: Enforced npm distribution boundary
+        run: python3 scripts/npm-package-check.py
+
+      - name: Enforced state and dependency fixtures
+        run: |
+          python3 scripts/precode_state.py --self-test
+          python3 scripts/dependency-gate-check.py --self-test
+
+      - name: Enforced lifecycle and clarity scenarios
+        run: |
+          python3 scripts/bead-transition-scenario-check.py
+          python3 scripts/clarity-scenario-check.py
+
+      - name: Enforced generated documentation freshness
+        run: |
+          python3 scripts/docs-html.py --check
+          python3 scripts/prd-html.py --check
+
+      - name: Enforced extension boundary check
+        run: python3 scripts/extension-check.py
+
+      - name: Advisory package knowledge check
+        run: python3 scripts/package-knowledge-lint.py --check
 
       - name: Advisory completion check
         run: python3 scripts/completion-check.py

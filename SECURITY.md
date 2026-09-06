@@ -7,8 +7,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.6
-Last updated: 2026-08-04
+Document version: v0.2.7
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -37,14 +37,14 @@ Confirmed package constraints:
 
 - Runtime dependencies: none declared in `pyproject.toml`.
 - Local CLI: `scripts/precode_cli.py` is a facade over curated repo commands and must print underlying commands before running them.
-- Setup mutation: `scripts/bootstrap-check.py` apply modes must require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. The optional npm `apply-package-owned` command may only delegate approved missing package-owned `UP-ID` actions to the Python upgrade-apply path; it must not implement copy logic in JavaScript. Advisory release-reference metadata in upgrade preview is generated evidence only; it is not update permission or broad npm updater behavior.
+- Setup mutation: the canonical npm facade delegates to `scripts/bootstrap-check.py`; apply modes require explicit approved action IDs and refuse broad copy, overwrite, owner-file adaptation, hook/CI installation, app-code edits, executable release-channel behavior, package-manager behavior, and rollback automation. `scripts/npm-package-check.py` prevents PrecodeOS's live `tasks/todo.md`, package-development PRDs and beads, and generated PRD HTML from entering the npm distribution; a clean todo template is distributed instead. Adapter conformance and package checks are evidence, not release approval.
 - Product Code Quality Snapshot: `scripts/product-code-quality-snapshot.py` may identify likely project-owned lint/check commands as Project Linter Evidence, but discovery is not execution. It must not run lint, tests, typechecks, package managers, fixers, app code, or external commands beyond read-only repository inspection by default. If a user wants to run a suggested command, normal Tool Execution approval and sensitive-surface review still apply.
 - Generated evidence: files under `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, generated docs, and generated PRD review pages must not approve tasks, commands, transitions, releases, or implementation acceptance.
 - Usage evidence and telemetry: PrecodeOS does not collect default outbound telemetry. `scripts/usage-evidence-review.py`, `precode usage-evidence-review`, and `precodeos usage-evidence-review` are local, opt-in, read-only, no-write, no-submit, no-network generated-evidence reviews over safe local Precode ledgers and generated freshness signals with explicit unknowns. Sanitized sharing must be user-reviewed and submitted deliberately. `scripts/cohort-support-evidence-rollup.py --setup-friction` reads only explicit packet files and does not collect transcripts, create support records, submit evidence, or call endpoints. Any future outbound analytics requires separate approval for consent, privacy, retention, hosted endpoint ownership, security review, and public documentation.
 - External systems: GitHub helpers and scheduled audits are read-only by default unless a separate approved path explicitly allows mutation.
 - CI: GitHub Actions should use least privilege, preserve read-only validation unless an explicit maintainer decision changes it, and must not require secrets for ordinary package validation.
 
-Deterministic local regression fixtures cover the main copy and command boundaries: setup/apply refusal, upgrade/apply refusal, overwrite refusal, unknown or non-copy action IDs, secret/local/generated path exclusions, optional CLI facade command visibility, Ralph approval-needed command handling, and generated-refresh evidence demotion. These fixtures protect refusal behavior; they are not vulnerability certification, command approval, release approval, or external-system evidence.
+Deterministic local regression fixtures cover the main copy and command boundaries, npm distribution, and Codex, Claude Code, Cursor, and Gemini adapter conformance. These fixtures protect contract behavior; they are not vulnerability certification, usability evidence, command approval, release approval, or external-system evidence.
 
 ## Package Security Review Expectations
 

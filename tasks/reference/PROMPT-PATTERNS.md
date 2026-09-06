@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.86
-Last updated: 2026-08-29
+Document version: v0.1.87
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -20,7 +20,7 @@ They are prompts, not authority. The agent must still follow active memory, the 
 
 Start, Ask Precode, Ideation, Check, Acceptance, Queue, Build, Prove, Review, Close, and Recover are the normal daily prompt aliases inside the Daily Cockpit path, not separate start pages.
 
-Advanced surfaces are conditional "only when this happens" prompts. Beginner-facing cockpit guidance should show trigger summaries behind the Daily Loop / Next / Health / Diary operating surface and route here or to the owner protocol for detailed use. The Daily Cockpit may also expose the full Prompt Patterns and Protocol catalogs as lower-page reference shelves for learning and lookup. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Agent Access Level Check, Artifact Chooser, Ask Precode, approved-bead handoff, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm. Do not start with the Artifact Chooser when the user only has a rough idea, needs the active task, is stuck, or is asking whether work should continue.
+Advanced surfaces are conditional "only when this happens" prompts. Beginner-facing cockpit guidance should show trigger summaries behind the Daily Loop / Next / Health / Diary operating surface and route here or to one owner protocol for detail. Keep Review Lanes, Release Readiness, Goal Frames, Ralph, Attribution, Hypothesis Review, Plan Loop, Build-React-Learn, Agent Access Level Check, Artifact Chooser, Ask Precode, approved-bead handoff, team coordination, reversal, and proof tracing behind the stage, risk, support, stable-docs question, evidence, or explicit-question trigger that justifies them. Do not present them as peer routes for the first-product spine or the normal every-bead rhythm.
 
 Skill playbooks are invoked through normal workflow moments, not a beginner-facing skill catalog. Use Ask Precode for stable docs questions, Workflow Selection when the next path depends on current state, Ideation for rough ideas and artifact routing, Review for acceptance or advisory review moments, and Skill / Extension Review only when a proposed skill, adapter, protocol, generated report, command wrapper, or integration needs maintainer-style shape review. Skill playbooks remain read-only prompt playbooks; they do not approve work, install skills, add registries, create optional packs, run mutating commands, or replace owner protocols.
 
@@ -117,7 +117,7 @@ Expected output: a short filing recommendation with one primary destination, any
 
 ## Daily Prompt Aliases
 
-These aliases are the lean builder-facing prompt layer behind `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit may expose them in its full Prompt Patterns Catalog as reference rows, while this file remains the expanded prompt authority. They are shorthand for the expanded prompts in this catalog and the owner protocols. They must not become command-wrapper behavior, active memory, task authority, generated proof, PRD approval, bead activation, review acceptance, transition approval, release approval, setup/update permission, rollback permission, or external mutation permission.
+These aliases are the lean builder-facing prompt layer behind `docs/PRECODE-DAILY-COCKPIT.md`. The cockpit routes here for complete prompt bodies while this file remains the prompt authority. They must not become command-wrapper behavior, active memory, task authority, generated proof, PRD approval, bead activation, review acceptance, transition approval, release approval, setup/update permission, rollback permission, or external mutation permission.
 
 Alias guardrail floor:
 
@@ -440,17 +440,15 @@ This workflow refreshes existing package-owned files only. It is not a broad upd
 ```text
 Run Fast Verified Setup for this target.
 
-Use my clean PrecodeOS package checkout as the source and my target project as the target.
+Use the official PrecodeOS npm package and my current project as the target.
 
-First confirm source, target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh.
+First confirm target, current folder, target kind, current git status if available, files that must not be copied or edited, and whether this is fresh setup, existing app intake, or existing Precode refresh.
 
-If the PrecodeOS package still needs to be cloned, clone it outside the target project folder and confirm the target project's git status does not show the clone as untracked or nested. If the target folder does not exist yet, create only that target folder before Bootstrap Confidence. If this project intentionally uses `<repo-root>/precode` as the installed Precode root, use `--target <repo-root>/precode` and record that project-specific topology later in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal default.
+If the target folder does not exist yet, create only that target folder before Bootstrap Confidence. If this project intentionally uses `<repo-root>/precode` as the installed Precode root, use `--target <repo-root>/precode` and record that project-specific topology later in `PROJECT-CONTEXT.md` or `CODEBASE-GUIDE.md`; do not treat `precode/` as the universal default.
 
-If using npm, first run `npm view @precodeos/precodeos version`; if it is unavailable or unverified, skip npm and use the Python/local checkout commands. Then run the preview only:
+Run the preview only:
 
 npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
-
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 
 Show the underlying command sequence, route, current candidate `SP-ID` or `UP-ID` actions, blockers, required reusable setup support files, and validation prerequisites.
 
@@ -460,18 +458,18 @@ If I approve current action IDs, apply only those copy actions with:
 
 npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
 
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID|UP-ID>
-
 After any approved copy, show copied, skipped, blocked, validation next steps, and what remains unapproved. Then stop before owner-file adaptation or validation if fresh active work state is not complete.
 
-For fresh setup only, create or adapt the active work state before validation: create a fresh target `tasks/todo.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Adapt owner files from package templates, preserve anchors and authority contract fields, and use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
+For fresh setup only, create or adapt the active work state before validation: create target `tasks/todo.md` from `tasks/templates/PRECODE-TODO-TEMPLATE.md`, author exactly one small setup or orientation bead under `tasks/beads/`, mark that bead `in_progress`, and point `tasks/todo.md` at it. Adapt owner files from package templates, preserve anchors and authority contract fields, and use user-approved facts only when adapting `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, or `tasks/todo.md`; mark uncertain facts as assumptions or open questions. Do not use `bead-transition.py` to approve setup or start product work.
 
 Before the first target commit, run a git trackability sweep over installed files. If `git check-ignore` prints no ignored paths, treat that as clean even if the command exits nonzero because no files matched. For first setup validation, run only `bash scripts/validate-memory.sh` and `python3 scripts/file-inventory.py --check` from the installed Precode root. Do not run `python3 scripts/prd-html.py` as first setup validation.
 ```
 
-Expected output: source and target confirmation, route, underlying command sequence, current candidate action IDs, explicit stop-before-mutation status, copied/skipped/blocked apply summary when approved, fresh active-work-state status when needed, owner-file assumptions or open questions, git trackability result, and the validation commands only after fresh setup prerequisites are complete.
+Expected output: package version and support status, target confirmation, prerequisite status, route, plain-English proposed actions, underlying action IDs, explicit stop-before-mutation status, recovery route, next safe action, stop reason, copied/skipped/blocked apply summary when approved, fresh active-work-state status when needed, owner-file assumptions or open questions, git trackability result, and the validation commands only after fresh setup prerequisites are complete.
 
 This is a transparent facade over existing Bootstrap setup and refresh paths, not an installer, updater, prepared starter-target authority, support-only setup path, rollback helper, package manager, task selector, PRD approval, bead activation, or generated-output authority.
+
+The npm path above is canonical. If npm is unavailable or package provenance needs direct inspection, use the advanced GitHub and Python fallback in `docs/PRECODE-GUIDED-SETUP.md`; the fallback preserves the same approval and recovery contract and is not a beginner prerequisite.
 
 ### Package Upgrade Preview
 

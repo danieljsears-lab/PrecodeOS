@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.5.11
-# Last updated: 2026-08-29
+# Version: v0.6.0
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import shlex
 import shutil
 import subprocess
@@ -17,6 +18,31 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+
+CERTIFIED_PLATFORM = "macOS"
+CERTIFIED_ADAPTERS = [
+    {
+        "adapter": "Codex",
+        "support_status": "certified_for_launch",
+        "evidence_basis": "conformance-certified; external no-help session result pending",
+    },
+    {
+        "adapter": "Claude Code",
+        "support_status": "certified_for_launch",
+        "evidence_basis": "conformance-certified; external no-help session result pending",
+    },
+    {
+        "adapter": "Cursor",
+        "support_status": "certified_for_launch",
+        "evidence_basis": "conformance-certified; external usability evidence pending",
+    },
+    {
+        "adapter": "Gemini",
+        "support_status": "certified_for_launch",
+        "evidence_basis": "conformance-certified; external usability evidence pending",
+    },
+]
 
 
 PUBLIC_FILE_GROUPS: list[dict[str, Any]] = [
@@ -104,7 +130,7 @@ SOURCE_REQUIRED_PATHS = [
     "AGENT.md",
     "DECISIONS.md",
     "OPERATING-CONSTRAINTS.md",
-    "tasks/todo.md",
+    "tasks/templates/PRECODE-TODO-TEMPLATE.md",
     "docs/PRECODE-GUIDED-SETUP.md",
 ]
 REQUIRED_SETUP_SUPPORT_PATHS = [
@@ -280,7 +306,8 @@ def validation_command(target_root: str) -> str:
 
 def fresh_setup_validation_next_step(target_root: str) -> str:
     return (
-        "Inspect target git status. Before validation, create fresh `tasks/todo.md`, author exactly one setup or "
+        "Inspect target git status. Before validation, create fresh `tasks/todo.md` from "
+        "`tasks/templates/PRECODE-TODO-TEMPLATE.md`, author exactly one setup or "
         "orientation bead marked `in_progress`, point `tasks/todo.md` at that bead, and adapt owner files from package "
         f"templates with preserved anchors and authority contracts; then run `{validation_command(target_root)}` and "
         "`python3 scripts/file-inventory.py --check` from the installed Precode root."
@@ -343,6 +370,42 @@ def dependency_status() -> list[str]:
     if shutil.which("git") is None:
         missing.append("git")
     return missing
+
+
+def support_contract() -> dict[str, Any]:
+    detected = platform.system() or "unknown"
+    return {
+        "certified_platform": CERTIFIED_PLATFORM,
+        "detected_platform": detected,
+        "platform_status": "certified" if detected == "Darwin" else "preview",
+        "certified_adapters": CERTIFIED_ADAPTERS,
+        "claim_boundary": (
+            "Self-serve support covers installation, validation, orientation, and next-safe-action identification. "
+            "It does not establish full idea-to-production self-serve readiness or guarantee deployment and operations."
+        ),
+    }
+
+
+def prerequisite_contract(missing_dependencies: list[str]) -> list[dict[str, str]]:
+    npm_node_version = os.environ.get("PRECODEOS_NPM_NODE_VERSION", "").strip()
+    return [
+        {
+            "prerequisite": "Node.js 18 or newer",
+            "status": "available" if npm_node_version else "not_checked_in_python_fallback",
+            "detected_version": npm_node_version or "not reported",
+            "handled_by": "the npm entry and certified coding agent",
+        },
+        {
+            "prerequisite": "Python 3",
+            "status": "available",
+            "handled_by": "the certified coding agent; users should not need Python knowledge",
+        },
+        {
+            "prerequisite": "Git",
+            "status": "missing" if "git" in missing_dependencies else "available",
+            "handled_by": "the certified coding agent for safe state inspection and recovery evidence",
+        },
+    ]
 
 
 def git_metadata(root: Path) -> dict[str, Any]:
@@ -1347,6 +1410,7 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
     approval_prefix = "none"
     current_action_ids: list[str] = []
     underlying_commands: list[str] = []
+    proposed_actions: list[dict[str, str]] = []
     next_manual_gate = "Resolve blockers and rerun fast verified setup preview."
 
     if kind in {"empty", "nearly_empty"}:
@@ -1354,6 +1418,15 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
         approval_prefix = "SP"
         plan = payload["supervised_setup_plan"]
         current_action_ids = action_ids(plan["actions"], "review_copy_candidate")
+        proposed_actions = [
+            {
+                "approval_id": str(action["id"]),
+                "path": str(action["path"]),
+                "plain_english": f"Copy the package-owned {action['path']} surface into the target without overwriting an existing path.",
+            }
+            for action in plan["actions"]
+            if action["category"] == "review_copy_candidate"
+        ]
         underlying_commands = [
             bootstrap_command(payload, "--fast-verified-setup-preview"),
             bootstrap_command(payload, "--supervised-setup-plan"),
@@ -1369,6 +1442,15 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
         approval_prefix = "UP"
         plan = payload["npm_update_plan_preview"]
         current_action_ids = list(plan["grouped_action_ids"]["candidate_package_copy"])
+        proposed_actions = [
+            {
+                "approval_id": str(action["id"]),
+                "path": str(action["path"]),
+                "plain_english": f"Copy the missing package-owned {action['path']} surface; preserve every existing target path.",
+            }
+            for action in payload["package_upgrade_preview"]["actions"]
+            if action["id"] in current_action_ids
+        ]
         underlying_commands = [
             bootstrap_command(payload, "--fast-verified-setup-preview"),
             bootstrap_command(payload, "--upgrade-preview"),
@@ -1391,6 +1473,11 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
     else:
         underlying_commands = [bootstrap_command(payload)]
 
+    stop_reason = "; ".join(blockers)
+    if not stop_reason and kind == "existing_project":
+        stop_reason = "Existing-project intake and conflict review must finish before any setup mutation is proposed."
+    recovery_route = bootstrap_command(payload, "--recovery-guidance")
+
     return {
         "preview_kind": "fast_verified_setup_preview",
         "status": "blocked" if blockers else payload["status"],
@@ -1400,10 +1487,22 @@ def build_fast_verified_setup_preview(payload: dict[str, Any]) -> dict[str, Any]
         "route": route,
         "approval_prefix": approval_prefix,
         "current_action_ids": current_action_ids,
+        "proposed_actions": proposed_actions,
         "underlying_commands": underlying_commands,
         "writes_by_default": False,
         "target_mutation_allowed": False,
         "generated_evidence_only": True,
+        "support": payload["support"],
+        "prerequisite_status": payload["prerequisite_status"],
+        "recovery_route": recovery_route,
+        "next_safe_action": next_manual_gate,
+        "stop_reason": stop_reason,
+        "orientation_result": {
+            "status": "not_ready_for_orientation",
+            "reason": "Approved copying, project-specific owner-file adaptation, and target validation remain separate gates.",
+            "generated_evidence_only": True,
+            "approves_product_work": False,
+        },
         "next_manual_gate": next_manual_gate,
         "validation_command_after_apply": validation_command(str(payload["target_root"])),
         "fresh_setup_validation_prerequisites": (
@@ -1469,6 +1568,8 @@ def build_fast_verified_setup_apply(payload: dict[str, Any], approved_action_ids
     if all_blocked:
         status = "blocked"
 
+    orientation_status = "pending_validation" if status == "applied" else "not_ready_for_orientation"
+
     return {
         "apply_kind": "fast_verified_setup_apply",
         "status": status,
@@ -1497,6 +1598,23 @@ def build_fast_verified_setup_apply(payload: dict[str, Any], approved_action_ids
         ),
         "target_mutation_allowed": status == "applied",
         "generated_evidence_only": status != "applied",
+        "support": payload["support"],
+        "prerequisite_status": payload["prerequisite_status"],
+        "recovery_route": bootstrap_command(payload, "--recovery-guidance"),
+        "next_safe_action": (
+            fresh_setup_validation_next_step(str(payload["target_root"]))
+            if status == "applied" and route == "fresh_or_nearly_empty_setup"
+            else validation_command(str(payload["target_root"]))
+            if status == "applied"
+            else "Resolve the stop reason and rerun fast-setup-preview."
+        ),
+        "stop_reason": "; ".join(item["reason"] for item in all_blocked),
+        "orientation_result": {
+            "status": orientation_status,
+            "reason": "Target validation and orientation routing remain required after approved copying.",
+            "generated_evidence_only": True,
+            "approves_product_work": False,
+        },
         "not_authority_for": [
             "owner-file adaptation",
             "overwriting target material",
@@ -2121,6 +2239,8 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "excluded_paths": EXCLUDED_PATHS,
         "conflicts": conflicts,
         "missing_dependencies": missing_dependencies,
+        "support": support_contract(),
+        "prerequisite_status": prerequisite_contract(missing_dependencies),
         "recommended_next_step": recommended_next_step(kind, missing_source_paths, conflicts),
         "stop_conditions": STOP_CONDITIONS,
         "writes_by_default": False,
@@ -2146,9 +2266,21 @@ def render_plain(payload: dict[str, Any]) -> str:
         f"- Source: `{payload['source_root']}`",
         f"- Target: `{payload['target_root']}`",
         f"- Target kind: `{payload['target_kind']}`",
+        f"- Package version: `{payload['source_provenance'].get('package_version', 'unverifiable')}`",
+        f"- Platform support: `{payload['support']['platform_status']}` on `{payload['support']['detected_platform']}`; certified platform is `{payload['support']['certified_platform']}`",
         f"- Recommended next step: {payload['recommended_next_step']}",
         "- Read-only default: yes; this command does not copy, edit, install hooks, change CI, or write app code.",
     ]
+    lines.append("\nCertified launch adapters:")
+    lines.extend(
+        f"- {item['adapter']}: {item['evidence_basis']}"
+        for item in payload["support"]["certified_adapters"]
+    )
+    lines.append("\nPrerequisite status:")
+    lines.extend(
+        f"- {item['prerequisite']}: `{item['status']}` — {item['handled_by']}"
+        for item in payload["prerequisite_status"]
+    )
     if diagnosis:
         lines.extend(
             [
@@ -2467,6 +2599,10 @@ def render_fast_verified_setup_preview_plain(payload: dict[str, Any]) -> str:
         f"- Preview status: `{preview['status']}`",
         f"- Route: `{preview['route']}`",
         f"- Approval prefix: `{preview['approval_prefix']}`",
+        f"- Next safe action: {preview['next_safe_action']}",
+        f"- Recovery route: `{preview['recovery_route']}`",
+        f"- Stop reason: {preview['stop_reason'] or 'none'}",
+        f"- Orientation result: `{preview['orientation_result']['status']}` (evidence only; does not approve product work)",
         "- Target mutation allowed: no",
         "- Writes by default: no",
         "- Generated evidence only: yes",
@@ -2478,6 +2614,12 @@ def render_fast_verified_setup_preview_plain(payload: dict[str, Any]) -> str:
     if preview["current_action_ids"]:
         lines.append("\nCurrent candidate approval IDs:")
         lines.extend(f"- `{action_id}`" for action_id in preview["current_action_ids"])
+    if preview["proposed_actions"]:
+        lines.append("\nProposed actions in plain English:")
+        lines.extend(
+            f"- `{action['approval_id']}` — {action['plain_english']}"
+            for action in preview["proposed_actions"]
+        )
     if preview.get("fresh_setup_validation_prerequisites"):
         lines.append(f"\nFresh setup validation prerequisites: {preview['fresh_setup_validation_prerequisites']}")
     else:
@@ -2512,6 +2654,10 @@ def render_fast_verified_setup_apply_plain(payload: dict[str, Any]) -> str:
         f"- Apply kind: `{summary['apply_kind']}`",
         f"- Apply status: `{summary['status']}`",
         f"- Route: `{summary['route']}`",
+        f"- Next safe action: {summary['next_safe_action']}",
+        f"- Recovery route: `{summary['recovery_route']}`",
+        f"- Stop reason: {summary['stop_reason'] or 'none'}",
+        f"- Orientation result: `{summary['orientation_result']['status']}` (evidence only; does not approve product work)",
         "- Scope: explicit current SP-ID or UP-ID copy actions delegated to the Python Bootstrap source of truth.",
         "- This apply mode does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, query registries, resolve dist-tags, define release channels, provide rollback automation, provide package-manager behavior, select tasks, approve PRDs, or activate beads.",
         "\nUnderlying command:",
@@ -2579,6 +2725,7 @@ def make_source(root: Path) -> None:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n", encoding="utf-8")
+    (root / "tasks" / "todo.md").write_text("fixture active work\n", encoding="utf-8")
     (root / ".gitignore").write_text("__pycache__/\n*.py[cod]\n", encoding="utf-8")
     (root / "package.json").write_text(
         json.dumps({"name": "@precodeos/precodeos", "version": "1.0.0-beta.1"}, indent=2) + "\n",

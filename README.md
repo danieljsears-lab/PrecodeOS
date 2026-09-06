@@ -1,9 +1,9 @@
 # PrecodeOS
 <!-- ANCHOR: readme -->
 
-> AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
-> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.
-> LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific PrecodeOS guide or protocol.
+> AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, support boundary, and curated navigation for PrecodeOS.
+> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update permission, or maintainer-private roadmap authority.
+> LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific guide or protocol.
 > CLASS: reference
 
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)
@@ -11,391 +11,174 @@
 
 ## Start Here
 
-This README is the public package compass: use it to decide whether PrecodeOS fits, how to adopt it, and which canonical document to open next. It is not the daily operating surface once work has started.
+PrecodeOS is a repo-native control layer that helps people shape ideas and develop software with AI coding agents while keeping intent, scope, evidence, approval, and recovery visible to the human builder.
 
-Use this first-reader route and stop at the first surface that matches your situation:
+Use one route:
 
-1. If PrecodeOS is not installed in the target project, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
-2. If PrecodeOS is installed or you are already working in a PrecodeOS repo, use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) as the practical first working surface.
-3. If you only have a rough idea, still start from the Daily Cockpit and use `Ideation: use First PRD Walkthrough for my rough idea.`
-4. If setup, state, checks, or generated reports feel broken or confusing, use [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) or say `I am stuck, help me.`
+1. Not installed: open [Guided Setup](docs/PRECODE-GUIDED-SETUP.md).
+2. Installed: open the [Daily Cockpit](docs/PRECODE-DAILY-COCKPIT.md).
+3. Rough idea: in the Daily Cockpit, say `Ideation: use First PRD Walkthrough for my rough idea.`
+4. Broken or confusing state: open [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) or say `I am stuck, help me.`
 
-Do not read the docs as competing start pages. `README.md` is the compass, Guided Setup is setup only, Daily Cockpit is the normal stop-here operating surface, User Guide is the annex/manual, OS README is the concept explainer, Troubleshooting is symptom lookup, and Support Runbook is helper-facing.
+`README.md` is the compass. Guided Setup owns setup. Daily Cockpit is the normal operating surface. User Guide is the annex. Troubleshooting owns symptom lookup. Do not read them as competing start pages.
 
-When work involves Codex, Claude Code, Cursor, Copilot, Gemini, or another host coding agent, use the Daily Cockpit as the builder control surface. The cockpit is where you decide what to ask, what state and proof matter, what approval remains, and when to stop. The host agent executes only inside approved Precode bounds; PrecodeOS does not add a dashboard, generated panel, agent shell, runtime, command wrapper, task selector, or approval shortcut.
+## V1 Support Boundary
 
-## What It Is
+The September 2026 v1 self-serve claim is deliberately bounded to **installation, validation, orientation, and next-safe-action identification**. PrecodeOS supports production-readiness governance and professional output quality; it does not guarantee that an unassisted user can complete the full idea-to-production journey, and deployment or operations remain optional ecosystem capabilities.
 
-Learn more: `https://www.precodeos.org`.
+| Surface | V1 position | Evidence boundary |
+|---|---|---|
+| Audience | Nontechnical and semi-technical AI-assisted builders | Nontechnical no-help readiness remains gated by external sessions |
+| Platform | macOS certified | Windows remains preview until platform-specific setup and recovery testing |
+| Acquisition | npm primary | GitHub/local Python is the transparent advanced fallback |
+| Codex | Certified for launch | Conformance-certified; external no-help result pending |
+| Claude Code | Certified for launch | Conformance-certified; external no-help result pending |
+| Cursor | Certified for launch | Conformance-certified; external usability evidence pending |
+| Gemini | Certified for launch | Conformance-certified; external usability evidence pending |
 
-PrecodeOS is an AI anti-drift "Builder OS" for solo software builders using AI coding agents. 
+Certification means the Precode instruction, approval, validation, recovery, and output contract conforms on the named host. It does not claim equal usability evidence across hosts.
 
-PrecodeOS brings proven engineering discipline, practices and patterns to AI-assisted building without asking a non-technical builder to become an engineering manager. It keeps the repository clear about intent, scope, proof, approval, and recovery, so any coding agent has safer rails to work inside.
+## Quickstart
 
-It feels like a small, powerful and opinionated operating system for supporting AI-assisted development workflow: it shows what matters, what is active, what is proven, and when to stop. 
+Give a certified coding agent this prompt from the project you want to use:
 
-PrecodeOS keeps active AI-agent context intentionally tiny across three small files.
+```text
+Set up PrecodeOS in this project using the official npm package.
 
-PrecodeOS cares about:
+Identify and confirm this project folder as the target. Run:
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 
-- stopping shallow "vibe" work from becoming production code
-- turning vague intent into explicit artifacts
-- preserving parked intent in a Candidate Queue without turning it into active work
-- giving the agent bounded context
-- making the next safe action legible
-- using review as more than rubber-stamping
-- preserving cross-session continuity
-- making AI development repeatable enough that a non-technical solo builder can trust it
+Explain the package version, support status, prerequisites, target classification, proposed actions, approval IDs, validation requirements, recovery route, next safe action, and stop reason in plain English.
 
-## How It Works
+Do not mutate the target until I approve named current actions. Apply only the approved SP-ID or UP-ID values. Treat owner-file adaptation as a separate approval. Validate, route me to the First Session Card or Daily Cockpit, and stop before product work.
+```
 
-PrecodeOS is a repo-native control layer for AI coding work. 
+Preview is read-only. The agent may propose this apply command only after showing current actions and receiving explicit approval:
 
-It uses build loops, bead contracts, recorded checks, advisory loop health, closeout evidence, and human-gated transitions to keep agentic iteration grounded, recoverable, and inspectable.
+```bash
+npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
+```
 
-It lives inside a repository as Markdown owner files, execution contracts, validation scripts, compilers, generated evidence, and thin AI-tool adapters. It does not replace Codex, Claude, Cursor, Copilot, Gemini, or other coding agents, and it does not run the agent; you run the agent.
+The npm entry is a transparent Node facade over the package's Python setup authority. It has no postinstall mutation, does not overwrite existing paths, does not adapt owner files, and does not install hooks, change CI, run app code, select tasks, approve PRDs, activate beads, or approve product work. A generated `ready_for_orientation` result, when available, is evidence only.
 
-Taken together, those files form an advisory repo-native harness for agentic work: owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades make the work inspectable without becoming approval authority. The harness is not an agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer.
+For npm failure or advanced inspection, use the [GitHub and local Python fallback in Guided Setup](docs/PRECODE-GUIDED-SETUP.md#advanced-github-and-python-fallback). Do not make GitHub cloning or Python command knowledge a beginner prerequisite.
 
-Technically, PrecodeOS is a markdown-canonical, script-enforced governance kernel underneath fast AI workflows. It keeps product intent, design judgment, acceptance, proof, and recovery as durable repo-owned control surfaces instead of hidden chat assumptions.
+## What It Does
 
-## Who It's For
+PrecodeOS gives an AI-assisted project a durable, inspectable operating model:
 
-PrecodeOS is for solo builders who want the speed and capability of AI coding agents without relinquishing control of the project to the agent.
+- tiny active memory across `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`
+- one active bead with bounded files in play
+- one owner per durable product, architecture, API, data, security, or acceptance fact
+- explicit human approval at setup, product, review, transition, release, and risky-action gates
+- checks and manual verification over agent confidence
+- recovery-before-momentum behavior
+- generated output as evidence, never authority
+- thin tool adapters over one shared core
 
-It helps builders, especially non-technical builders, create production-grade software by preserving project truth: what is active, what is authoritative, what changed, what was proven, who approved the next step, and how to recover when the thread gets lost through structured context and persistent artifacts.
+It is intentionally not an agent runtime, dashboard, sandbox, hosted control plane, registry, marketplace, package manager, telemetry system, or role-agent framework.
 
-Its core differentiators are tiny active memory, explicit authority ownership, one current execution unit, recorded evidence, advisory next-step guidance, file-scope guardrails, and human-gated transitions.
+## Who It Is For
 
-## The Problem(s) It Addresses
+PrecodeOS is for builders who can open a project folder and use a certified coding agent but should not need Git internals, Python knowledge, shell fluency, or approval-ID interpretation.
 
-AI coding agents are fast, powerful and easy to use, but their failure modes are common and predictable:
+Use it when work is durable, user-facing, sensitive, multi-file, hard to prove, or likely to span sessions. Skip it for a throwaway sketch where mistakes are cheap and nothing needs durable ownership.
 
-- scope quietly widens, drift quietly occurs, hallucinations happen
-- stale chat or file context overrides current intent
-- generated summaries or reports become instructions
-- the agent claims work is done without enough proof
-- the next task starts before the user approves it
-- handoff state gets lost between sessions or tools
-- sensitive work gets treated like ordinary implementation
-
-PrecodeOS matters because AI coding agents can move faster than a builder can understand, verify, and recover from (especially a non-technical builder). It addresses those failure modes by making the important boundaries explicit. 
-
-Project intent and truth is fragile. PrecodeOS prevents and controls for quiet unseen AI drift. It is AI anti-drift.
-
-## When To Use PrecodeOS
-
-PrecodeOS is worth it when the cost of getting lost is bigger than the cost of adding structure.
-
-| Use PrecodeOS when...                                        | Skip it when...                                              |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| You are building a real product, multi-page app, or MVP you expect to keep improving. | You are making a quick sketch, tiny demo, or throwaway experiment. |
-| The idea is fuzzy and needs to become buildable instructions. | You already know the exact change and it is small, obvious, and low-risk. |
-| AI needs to remember decisions across multiple steps, sessions, or files. | You only need one quick task and drift would not really matter. |
-| You want checkpoints because mistakes, regressions, or confusion would be painful. | Mistakes are cheap and you are comfortable moving fast without much process. |
-| Future-you, another human, a client, or another agent will need to understand what happened. | It is just you for an hour and there is nothing worth preserving. |
-
-**The bright line**: quick sketches, tiny demos, and throwaway experiments can stay loose. Switch to PrecodeOS when the work is durable, user-facing, sensitive, multi-file, hard to prove, or something you expect to revisit. If a mistake would be expensive to understand, undo, explain, or trust later, do not let vibe coding harden into production code.
+The evidence does not yet support an unqualified “creates production-grade software” claim. The narrower claim is useful and defensible: PrecodeOS supplies production-readiness governance and professional-quality decision, scope, proof, review, and recovery surfaces. The project still needs its own implementation, testing, security, deployment, and operational competence.
 
 ## Core Invariants
 
-PrecodeOS treats the repository as the control surface for AI-assisted software work. Its core architecture is built around a few invariants:
-
-- **Tiny active memory:** only the minimum files needed to start the current session are always loaded.
-- **One active unit of work:** the current task is represented by a bead contract, not by chat momentum.
-- **One owner per durable fact:** product, architecture, API, data, security, and acceptance truth live in explicit owner files.
-- **Design judgment before code:** product intent, acceptance, and proof expectations are written down before AI speed turns weak understanding into implementation.
-- **Evidence over confidence:** checks and closeout evidence matter more than agent claims.
-- **Generated output is not authority:** reports summarize state, but they do not choose work or approve completion.
-- **Human approval at transitions:** agents can propose; humans approve direction, acceptance, sensitive actions, and task transitions.
-- **Tool-neutral core:** AI-tool-specific files are adapters, not separate operating systems.
-
-That is the line PrecodeOS holds: a lightweight governance kernel for agentic development that determines how agents can inspect, draft, build, explain, and propose, while the builder remains the authority for direction, risk, acceptance, and the next approved step.
-
-## What You Can Build
-
-- MVPs with clearer product intent before code.
-- Existing projects with safer agent boundaries.
-- Multi-session agent work with durable handoff.
-- Founder or builder projects that need structure without heavyweight process.
-- Product discovery, PRDs, small execution beads, and recorded proof.
+- **Tiny active memory:** load only what the current session needs.
+- **One active unit:** a bead, not chat momentum, defines current work.
+- **One owner per fact:** durable truth has a named home.
+- **Design judgment before code:** shape intent and acceptance before implementation.
+- **Evidence over confidence:** recorded checks and manual verification support completion claims.
+- **Generated output is not authority:** reports summarize; they do not decide.
+- **Human approval at transitions:** agents propose; humans approve.
+- **Tool-neutral core:** adapters translate the same operating model.
 
 ## Capability Snapshot
 
-| Builder job | PrecodeOS capability |
-|---|---|
-| Adopt | Guided setup, existing repo intake, supervised setup plans, upgrade preview, and recovery guidance. |
-| Orient | Tiny active memory, session start, next-step guidance, file inventory, and docs compass. |
-| Decide | Product discovery, First PRD Walkthrough, Local Source Intake, Candidate Queue, and Plan Mode candidate shaping. |
-| Plan | PRD shards, owner files, decomposition guidance, bead schemas, and generated PRD review pages with reader-facing PRD clusters. |
-| Build | One active bead, files-in-play guardrails, bounded Ralph attempts, and tool-neutral adapters. |
-| Prove | Recorded checks, verification guidance, closeout evidence, proof tracing, and generated health/progress reports. |
-| Review | Review lanes, prompt-only multi-lane review invocation, PRD handoff readiness, engineering-quality guidance, Product Code Quality Snapshot evidence, release-readiness evidence, and human approval gates. |
-| Recover | Troubleshooting, recovery protocol routing, OS checkpoints, state checks, and safe stuck-user prompts. |
-| Collaborate | Small-team coordination, branch/worktree re-entry guidance, GitHub evidence intake, and build attribution evidence. |
+| Builder job | Capability | V1 evidence posture |
+|---|---|---|
+| Adopt | Agent-operated npm preview/apply, target classification, Existing Repo Intake, recovery | Launch-critical |
+| Orient | First Session Card, Daily Cockpit, tiny active memory, next-step guidance | Launch-critical |
+| Shape | Idea coach, Product Brief, Conviction Packet, Local Source Intake | Structurally present; full self-serve spine not demonstrated |
+| Specify | PRDs, acceptance, conditional architecture shaping, owner files | Stronger for semi-technical builders |
+| Build | One active bead, files-in-play guardrails, recorded tool/check evidence | Requires project-specific technical capability |
+| Review | Review lanes, quality guidance, release-readiness evidence, human gates | Advisory; does not accept or release |
+| Recover | Troubleshooting, state checks, checkpoints, blocked escape paths | Core product promise |
 
-Capability surfaces are advisory unless their owning Markdown file or explicit human gate says otherwise. Generated reports, generated HTML, command facades, adapters, and preview outputs improve visibility; they do not choose work, approve PRDs, activate beads, accept review, approve transitions, or provide package-manager behavior.
-
-Agent access levels are plain-language guidance for what an agent may do before work or a command starts: `inspect`, `verify`, `local-change`, `sensitive`, `external-change`, or `destructive`. They map to Tool Execution classes, files in play, Run Contracts, approval gates, and stop conditions. They do not enforce permissions, approve commands, add sandbox behavior, create schema metadata, or grant full developer parity by default.
-
-## Quickstart Install
-
-Clone the public repository and run the first memory check:
-
-```bash
-git clone https://github.com/danieljsears-lab/PrecodeOS.git
-cd PrecodeOS
-bash scripts/validate-memory.sh
-```
-
-Optional npm preview entry:
-
-```bash
-npm view @precodeos/precodeos version
-npx @precodeos/precodeos setup-preview --target <target-project-root>
-npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
-npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
-npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
-npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
-npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
-npx @precodeos/precodeos usage-evidence-review
-```
-
-Before using `npx @precodeos/precodeos ...`, check availability with `npm view @precodeos/precodeos version`. If npm is unavailable, unverified, returns 404, or fails during a live call, use the adjacent Python/local checkout command instead. The npm entry is acquisition, preview, and local review by default. It runs the same Bootstrap Confidence setup-plan, fast verified setup preview, upgrade-preview, update-plan-preview, or usage-evidence review checks from the package source, writes nothing in preview and review modes, and does not approve copying, owner-file adaptation, dirty-file overwrite, hook installation, CI changes, app commands, app-code edits, executable release-channel behavior, package-manager updates, rollback automation, telemetry collection, evidence submission, task selection, PRD approval, or bead activation.
-
-Fast verified setup preview is a transparent shortcut over the existing Bootstrap command sequence. It exposes the underlying commands and current `SP-ID` or `UP-ID` candidates. `fast-setup-apply` delegates only explicitly approved current `SP-ID` or `UP-ID` copy actions to the Python Bootstrap apply paths and then prints the exact validation command; it is not an installer, updater, starter-branch authority, rollback helper, support-only hidden setup, package manager, PRD approval, bead activation, or generated-output authority. Upgrade preview may show advisory release-reference metadata from the local package source, such as package name, package version, inferred prerelease label, and stable/latest/pinned term guidance. It may also show updater compatibility policy metadata from `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, including evidence thresholds, blocked cases, and clone-first support guidance. Update-plan preview is governed by `tasks/prds/PRD-042-npm-update-plan-preview.md`; it groups current `UP-ID` evidence into candidate copy, manual-review, blocked, and deferred buckets with same-session freshness and validation prompts. `apply-package-owned` is governed by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md` and delegates only explicitly approved missing package-owned `UP-ID` copy actions to the Python upgrade-apply path. `usage-evidence-review` delegates to `scripts/usage-evidence-review.py` and summarizes safe local ledgers, check freshness, generated freshness, session-friction findings, scheduled-audit presence, and spend-import presence with explicit unknowns. PrecodeOS commands do not query npm, resolve dist-tags, select a channel, overwrite dirty files, adapt owner files, collect telemetry, submit evidence, create issues, or make `latest` safe to overwrite into an active Precode project. The external `npm view` preflight checks command availability only; package state, compatibility policy, update-plan metadata, usage-evidence output, and generated apply output are evidence, not authority or update permission.
-
-Optional local command facade:
-
-```bash
-python3 scripts/precode_cli.py --help
-python3 scripts/precode_cli.py validate
-python3 scripts/precode_cli.py usage-evidence-review
-```
-
-For a local editable console command, run `python3 -m pip install -e .` from the package checkout, then use `precode --help`. The `precode` command is only a curated wrapper over documented repo scripts. It prints the underlying command before running it, preserves exit codes, and does not approve tasks, setup, transitions, releases, package updates, or generated evidence as authority.
-
-The optional facade, generated router output, run-contract sidecars, and recorded-check ledger are part of PrecodeOS's advisory harness contract. They make boundaries visible for humans and agents, but Markdown owner files, protocols, active beads, recorded proof, and explicit human gates remain the source of authority.
-
-Before copying PrecodeOS into another project, run Bootstrap Confidence against the package checkout and the target folder. For empty or nearly empty targets, use the supervised setup plan and apply only explicitly approved copy action IDs:
-
-```bash
-npm view @precodeos/precodeos version
-npx @precodeos/precodeos setup-preview --target <target-project-root>
-npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --supervised-setup-plan --apply-supervised-setup --approve-action <SP-ID>
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <SP-ID>
-```
-
-The apply mode is deliberately narrow: it copies only approved setup-plan copy actions and does not adapt owner files, overwrite target material, install hooks, change CI, run app commands, write app code, install a CLI, provide package-manager behavior, define executable release channels, or automate rollback.
-
-Bootstrap output includes setup diagnosis fields that name source/target clarity, target state, partial setup classification, recommended route, validation-after-apply, and forbidden next actions. Use those fields to decide whether the next safe path is fresh setup, Existing Repo Intake, package-owned refresh, recovery guidance, first-session orientation, or product work. The diagnosis is generated evidence only; it does not approve copying, repair, rollback, setup/update mutation, product work, PRD approval, bead activation, review acceptance, command approval, or package-manager behavior.
-
-For existing projects, run Existing Repo Intake first, then use the adaptation plan only as a non-mutating checklist:
-
-```bash
-python3 scripts/existing-repo-intake.py --source <precode-package-root> --target <target-project-root>
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --existing-project-adaptation-plan
-```
-
-For existing Precode targets, use upgrade preview before any package repair or update copy, and use update-plan preview when grouped current `UP-ID` evidence and validation prompts would clarify the refresh discussion. Treat compatibility policy and update-plan metadata as evidence only. Only missing package-owned files marked `review_package_copy_candidate` can be copied, and only by approved action ID:
-
-```bash
-npm view @precodeos/precodeos version
-npx @precodeos/precodeos upgrade-preview --target <existing-precode-root>
-npx @precodeos/precodeos update-plan-preview --target <existing-precode-root>
-npx @precodeos/precodeos fast-setup-preview --target <existing-precode-root>
-npx @precodeos/precodeos fast-setup-apply --target <existing-precode-root> --approve-action <UP-ID>
-npx @precodeos/precodeos apply-package-owned --target <existing-precode-root> --approve-action <UP-ID>
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --update-plan-preview
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-apply --approve-action <UP-ID>
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --upgrade-preview --apply-upgrade-preview --approve-action <UP-ID>
-```
-
-If setup is partial or confusing, use recovery guidance. It is diagnostic only and does not automate rollback, destructive cleanup, dirty-file overwrites, hooks, CI, executable release-channel behavior, or package-manager behavior:
-
-```bash
-python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --recovery-guidance
-```
-
-To adapt PrecodeOS into a target project, start with these files:
-
-- `docs/PRECODE-GUIDED-SETUP.md` for the step-by-step setup path and copy boundaries.
-- `PRODUCT.md` for the product promise, users, strategy, bets, success signals, and voice.
-- `PROJECT-CONTEXT.md` for stack, app directory, conventions, checks, and integration boundaries.
-- `DECISIONS.md` for hard decisions and open questions.
-- `tasks/todo.md` for the active work pointer.
-
-Do not add more active-memory files. If a topic needs durable detail, give it a clear owner file or use the existing reference map.
-
-## How PrecodeOS Works
-
-PrecodeOS keeps three small files as active memory:
-
-- `AGENT.md`
-- `DECISIONS.md`
-- `tasks/todo.md`
-
-Everything else is reference, template, evidence, adapter, archive, or generated output.
-
-Normal work follows a simple path:
+## First Product Spine
 
 ```text
-orient -> decide -> plan -> build -> prove -> recover when needed
+Idea -> Brief -> Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close
 ```
 
-For builders, the practical path is the Daily Cockpit path. Its first screen has four first-class sections: Daily Loop, Next, Health, and Diary. Daily Loop reflects the repeated build loop `Active -> Changed -> Proven -> Parked -> Approval -> Next`; Next asks what safe workflow, proof, parking, transition, or recovery move comes next; Health asks whether the state and evidence are coherent enough to continue; and Diary asks what transpired, changed, was learned, or should be promoted. The first-product spine remains `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`; Architecture Shaping is conditional for architecture-sensitive approved PRDs, not a universal bead prerequisite. Use Release Readiness only when user-facing shipping risk appears; it prepares evidence and approval questions, not deployment action.
-
-Begin in the project repo that contains your app and PrecodeOS files. Open the Daily Cockpit, run `bash scripts/session-start.sh`, inspect Daily Loop, Next, Health, and Diary, and only then approve work. If you only have a rough idea, use `Ideation: use First PRD Walkthrough for my rough idea.` from the Daily Cockpit before PRD shaping or coding. If the idea becomes a future candidate or the candidate needs an implementation plan, enter Plan Mode first; do not let the agent turn a plan, queue entry, or implementation plan into permission to build. PrecodeOS is not an app to launch; it is the operating layer inside the repo you are building from.
-
-For implementation work, PrecodeOS uses beads: small execution contracts that name the current task, primary authority, files in play, checks, stop conditions, and proof needed.
-
-For evidence, use recorded checks:
-
-```bash
-bash scripts/record-check.sh -- <command>
-```
-
-Generated reports such as `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, `logs/build-attribution-ledger.md`, and files under `logs/` are evidence only. They do not choose tasks, approve work, score contributors, or replace owner files. `OS-HEALTH.md` includes a Doctor Dashboard that explains warning sources, plain-English triage labels, owner commands, and repair paths while keeping `scripts/next-step.py` as the next-decision owner.
-
-Session close may print a Closeout Evidence work digest and suggested commit message. The suggestion is an advisory draft from bead evidence only; it does not stage files, commit, push, accept review, approve transition, or activate another bead.
-
-Raw reference files, notes, documents, screenshots, research, and links belong in `project-evidence/` when the project wants to keep them in the repo. They are evidence only until reviewed conclusions are promoted into owner files through Local Source Intake.
-
-For the immediate "what now?" question, keep the command surface small:
-
-```bash
-python3 scripts/precode_cli.py --dry-run next
-bash scripts/session-start.sh
-python3 scripts/next-step.py
-python3 scripts/loop-health.py
-python3 scripts/os-health.py
-bash scripts/record-check.sh -- <command>
-```
-
-Setup, support, and recovery commands such as `bootstrap-check.py`, `existing-repo-intake.py`, `validate-memory.sh`, `file-inventory.py --check`, `state-check.py`, `files-in-play-check.py`, `completion-check.py`, and `bead-transition.py --json` belong in Guided Setup, the Support Runbook, or Troubleshooting when the symptom calls for them. Advanced evidence and review commands such as task suitability, Ralph, Candidate Queue, attribution, team collaboration, PRD handoff, release readiness, proof tracing, and review lanes are conditional surfaces, not the beginner daily loop. For beginner-facing docs, give trigger summaries and route detailed use to Prompt Patterns or the owner protocol. The Daily Cockpit now also carries full Prompt Patterns and Protocol catalogs as reference shelves; the expanded bodies remain authoritative in Prompt Patterns and protocol owner files.
-
-`precode_cli.py` and the optional `precode` console command are local facades over documented repo scripts. They are not required for normal use and do not replace Markdown owner files or underlying scripts. Command maps are reader guidance only; they do not approve work, choose tasks, change tool-call classes, or make generated output authoritative.
-
-`session-start.sh` shows the Context Pack and the same Router Decision that `next-step.py` prints on its own. The router may name one next protocol to load and a rough context footprint, and its JSON shape is regression-covered for adapters and diagnostics, but it is generated guidance only. When accepted-hold output shows next-work source reconciliation, compare the router pointer, Closeout next bead, Handback or Noticed recommendation, and existing bead-file readiness before transition approval.
-
-`loop-health.py` checks whether the current build loop is focused, stoppable, closeable, evidenced, easy to steer, and free of obvious work-graph drift. It evaluates the loop, not the builder, and gives one advisory next move for reducing drift.
-
-`task-suitability-check.py --check` reports advisory `continue`, `clarify`, `route`, `split`, `block`, or `stop` guidance when a request may be too vague, broad, proof-unclear, approval-gated, or not ready as one bead. It does not choose work, approve PRDs, activate beads, authorize implementation, accept review, approve commands, or create proof.
-
-`os-health.py` refreshes `OS-HEALTH.md` and `logs/os-health.json`, including the Doctor Dashboard diagnostic summary. The dashboard is generated evidence only; it explains which existing warning source matters, gives a plain-English safe ask and do-not-approve warning, and points to the owner command or protocol.
-
-`ralph-loop.py` is a bounded bead-attempt engine for testable work. Use it only when the active bead has clear checks and retry boundaries; its `logs/ralph-attempts.jsonl` and `logs/ralph-summary.md` outputs are generated evidence, not acceptance or transition approval.
-
-`CANDIDATE-QUEUE.md` is the user-facing place for parked intent: ideas, research leads, stale or blocked candidates, PRD candidates, product-value ratings, themes, and near-bead sketches. It is upstream of PRDs and beads. It is not active memory, not a product backlog, not task selection, and not permission to code.
-
-When an idea needs shaping into future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and before developing an implementation plan for a selected candidate. Plan Packets, queue entries, and implementation plans are evidence only until the normal PRD, owner-file, decomposition, and approval gates are satisfied.
-
-When one bead is already approved and you need to hand it to a host agent for scoped implementation, use `Use Approved-Bead Handoff for the current approved bead.` from Prompt Patterns. The handoff must restate active bead, authority, files in play, allowed actions, proof, checks, stop conditions, blocked escape, review-return shape, approval gates, and generated-report warning before editing. It does not activate beads, choose tasks, accept review, approve transition, create generated handoff output, mutate external systems, or treat generated reports as authority.
-
-When host-agent work returns, use the Daily Cockpit Host-Agent Return Loop: `Prepare -> Bound -> Send -> Return -> Prove -> Review -> Close/Next`. Ask `Review returned agent work before I accept it.` before acceptance, especially after AFK, handoff, branch, PR, cloud-agent, or teammate return. The return review must name changed files, checks and results, manual verification, proof still missing, approval still required, parked follow-ups, forbidden actions not taken, and next safe prompt. It does not accept implementation, approve review, approve transition, activate another bead, mutate external systems, or make generated HTML, generated reports, screenshots, PR status, chat summaries, or agent confidence into proof.
+`Owner Files?` is the reviewed promotion gate for stable facts. `Architecture?` is conditional for auth, data, APIs, integrations, migrations, external services, or other meaningful technical risk. Six setup-and-orientation sessions do not prove this complete spine; it requires separate validation.
 
 ## Project Map
 
-| Area | What lives there |
+| Area | Location |
 |---|---|
 | Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
-| User docs | `docs/*.md` |
-| Project truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, root owner files |
-| Work units | `tasks/prds/`, `tasks/prds-html/`, `tasks/beads/`, `tasks/templates/` |
-| Protocols | `tasks/reference/`, including skill playbooks |
-| Raw project evidence | `project-evidence/` |
-| Agent surfaces | `modes/`, `adapters/`, shims, skill playbooks, and `.agents/README.md` for host-skill boundaries |
-| Scripts | `scripts/` |
-| Evidence | `logs/`, `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md` |
+| Owner truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
+| Work | `CANDIDATE-QUEUE.md`, `tasks/prds/`, `tasks/beads/`, `tasks/templates/` |
+| Protocols and prompts | `tasks/reference/` |
+| Agent compatibility | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/` |
+| Validation and evidence | `scripts/`, `logs/`, generated health and progress reports |
+
+The npm package excludes PrecodeOS's live `tasks/todo.md`, package-development PRDs, package-development beads, and generated PRD HTML. It includes a clean todo template instead. Package-development state remains in the public source repository for transparency but is not distributed as target-project state.
 
 ## Docs Compass
 
-| If you need to... | Go to |
+| Need | Open |
 |---|---|
-| Set up PrecodeOS in a project | [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md) |
-| Help someone else adopt PrecodeOS | [`PRECODE-SUPPORT-RUNBOOK.md`](docs/PRECODE-SUPPORT-RUNBOOK.md) |
-| Start or resume daily PrecodeOS work | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
-| Run the Daily Loop, Next, Health, and Diary cockpit | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then use its full Prompt Patterns and Protocol catalogs only as reference |
-| Learn the deeper operating manual after the cockpit points you there | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), starting with its compact action map |
-| Use a compact first-session checklist after setup validates | [`PRECODE-FIRST-SESSION-CARD.md`](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
-| Understand the conceptual Builder OS model | [`PRECODE-OS-README.md`](docs/PRECODE-OS-README.md) |
-| Learn how software work maps to AI agents | [`HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md`](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Start from a rough idea | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md), then `Ideation: use First PRD Walkthrough for my rough idea.` |
-| Work with an agent right now | [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) |
-| Troubleshoot setup, state, checks, or generated reports | [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
-| Recover when state, scope, or proof feels wrong | [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md), then [`PRECODE-TROUBLESHOOTING.md`](docs/PRECODE-TROUBLESHOOTING.md) |
-| Use Claude Code in a first-session or guided cohort setting | [`CLAUDE-CODE-FIELD-GUIDE.md`](docs/CLAUDE-CODE-FIELD-GUIDE.md) |
-| Browse the generated docs reading surface | [`docs-html/index.html`](docs-html/index.html) |
-| Review generated PRD scan pages and clusters | [`tasks/prds-html/index.html`](tasks/prds-html/index.html) |
-| Review parked ideas and future candidates | [`CANDIDATE-QUEUE.md`](CANDIDATE-QUEUE.md) with [`CANDIDATE-QUEUE-PROTOCOL.md`](tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md) |
-| Ask a stable documentation question | [`PROMPT-PATTERNS.md`](tasks/reference/PROMPT-PATTERNS.md), then `Use Ask Precode.` |
-| Review architecture, trust boundaries, or limitations | [`PRECODE-ARCHITECTURE-OVERVIEW.md`](docs/PRECODE-ARCHITECTURE-OVERVIEW.md) |
-| Find the exact public package owner file, script, protocol, skill playbook, or relationship | [`PRECODE-PACKAGE-FILE-INVENTORY.md`](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
-| Take a maintainer or contributor action | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`GOVERNANCE.md`](GOVERNANCE.md), or [`TRADEMARK.md`](TRADEMARK.md) |
+| Install or recover setup | [Guided Setup](docs/PRECODE-GUIDED-SETUP.md) |
+| Run daily work | [Daily Cockpit](docs/PRECODE-DAILY-COCKPIT.md) |
+| Use a one-page first session | [First Session Card](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
+| Get deeper operating guidance | [User Guide](docs/PRECODE-USER-GUIDE.md) |
+| Understand the model | [OS README](docs/PRECODE-OS-README.md) |
+| Learn the software-building bridge | [How To Build Software With Precode](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
+| Diagnose a symptom | [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) |
+| Find an owner or file contract | [Package File Inventory](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
+| Browse prompts | [Prompt Patterns](tasks/reference/PROMPT-PATTERNS.md) |
+| Select one workflow | [Workflow Selection Protocol](tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md) |
 
-Do not start by browsing `tasks/reference/`. Protocols are loaded when the user guide, the README compass, active memory, or an agent prompt such as "use workflow selection" calls for one.
+Do not begin by browsing every protocol. Start from the route that matches the current moment and load one deeper surface only when needed.
 
-Ask Precode is conditional docs help, not a start page.
+## For Agents
+
+Load `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`, then explain the active bead, primary authority, files in play, checks, and stop conditions before editing.
+
+Treat generated reports as evidence. Before sensitive, destructive, external, dependency, or broad cleanup work, name the access level and ask for explicit approval. If setup or state is confusing, route to Guided Setup or Troubleshooting instead of guessing.
 
 ## For Reviewers And Contributors
 
-PrecodeOS is designed to be inspectable:
-
-- Markdown files hold human-readable authority.
-- Scripts validate memory, enforce version metadata and file inventory drift, and check public-repo hygiene, files in play, and completion evidence.
-- GitHub Actions runs read-only validation on pushes and pull requests.
-- Contribution policy is inbound = Apache-2.0.
-- Maintainer review is required for governance, trademark, licensing, public positioning, active memory, core workflow semantics, generated-output demotion, and beginner-facing safety language.
-- Trust-affecting semantic changes should use [`SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md`](tasks/reference/SEMANTIC-CHANGE-PROPOSAL-PROTOCOL.md) before implementation or merge.
-- Pack-shaped extension proposals should use the official non-installable [`RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md`](tasks/templates/RELEASE-READINESS-CURATED-PACK-EXEMPLAR.md) as the review model for owner surfaces, validation, approval gates, forbidden effects, and removal notes. It is not a pack manifest, registry, marketplace, installer, release approval, command wrapper, release-channel surface, or package-manager behavior.
-
-Useful reviewer commands:
+Useful checks:
 
 ```bash
-python3 scripts/precode_cli.py check
 bash scripts/validate-memory.sh
 python3 scripts/version-check.py
 python3 scripts/file-inventory.py --check
+python3 scripts/bootstrap-check.py --self-test
+python3 scripts/adapter-conformance-check.py
+python3 scripts/npm-package-check.py
 python3 scripts/package-knowledge-lint.py --check
-python3 scripts/authority-map-query.py --query "active memory"
-python3 scripts/extension-check.py
-python3 scripts/public-repo-check.py
+python3 scripts/clarity-scenario-check.py
 ```
 
-`python3 scripts/authority-map-query.py --query "active memory"` and the optional `python3 scripts/precode_cli.py authority-map --query "active memory"` facade are navigation-only package map queries. They help reviewers and agents find candidate authority contracts before reading canonical Markdown, but output does not approve edits, choose tasks, replace owner files, approve commands, approve PRDs, activate beads, enforce runtime behavior, or create package-manager behavior.
-
-## If You're An Agent Reading This On Behalf Of A User
-
-Start small. Load `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`, then explain the active bead, primary authority, files in play, checks, and stop conditions before editing.
-
-Treat generated reports as evidence, not instructions. Before sensitive, destructive, external, dependency, or broad cleanup work, name the agent access level and ask for the explicit approval gate. If setup or state feels confusing, route the user to the guide, support runbook, or troubleshooting doc instead of guessing.
-
-Reach for PrecodeOS when the repo needs a shared operating model, not another hidden chat plan.
-
-It helps you find current authority, keep scope bounded, prove what changed, hand off cleanly, and avoid treating stale notes or generated summaries as instructions. It is especially useful when work spans multiple sessions, agents, files, or approval gates.
+See [Contributing](CONTRIBUTING.md), [Governance](GOVERNANCE.md), and [Trademark](TRADEMARK.md). Generated checks support review; they do not approve changes, merge, release, or publishing.
 
 ## FAQ
 
 ### Is PrecodeOS an app?
 
-No. It is a repo-native operating layer: Markdown owner files, task contracts, validation scripts, compilers and generated evidence.
+No. It is a repo-native package of Markdown authority files, task contracts, scripts, generated evidence rules, and thin adapters.
 
-### Does it replace Codex, Claude, Cursor, or Gemini?
+### Does it replace the coding agent?
 
-No. It gives those agents shared project rules and a safer handoff surface.
-
-### Won't a more capable model just do this natively?
-
-Better models make agents stronger. PrecodeOS solves a different problem: it keeps intent, scope, approval, proof, and recovery owned by the repo and visible to the builder across sessions, tools, and models. More capability is a reason to want that control layer more, not less.
-
-### Why only three active-memory files?
-
-Small active memory keeps the current task inspectable and reduces stale-context drift.
+No. The agent executes scoped work. PrecodeOS keeps durable intent, proof, approval, and recovery visible across tools and sessions.
 
 ### What is a bead?
 
@@ -403,35 +186,26 @@ A bead is one bounded unit of work with scope, owner files, checks, stop conditi
 
 ### Are generated reports authority?
 
-No. `OS-HEALTH.md`, `PRECODE-HELP.md`, `PROGRESS.md`, `logs/work-graph.md`, and `logs/` are evidence only.
+No. They are evidence and navigation only.
 
-The Doctor Dashboard inside OS Health is also evidence only. It explains diagnostics in plain English, but it does not select work, approve transitions, approve commands, or replace `scripts/next-step.py`.
+### Is v1 ready for nontechnical self-serve use?
 
-### Where should I start?
+Not yet proven. The launch gate requires three of three safe no-help completions for that persona. If only semi-technical participants pass, v1 will narrow its self-serve audience and keep nontechnical adoption in preview or guided use.
 
-Use [`PRECODE-DAILY-COCKPIT.md`](docs/PRECODE-DAILY-COCKPIT.md) for daily work and [`PRECODE-USER-GUIDE.md`](docs/PRECODE-USER-GUIDE.md) for deeper operating guidance. For setup, use [`PRECODE-GUIDED-SETUP.md`](docs/PRECODE-GUIDED-SETUP.md).
+## Release Status
 
-## Beta
-
-PrecodeOS is early. Expect sharp edges, review source before execution, and use public GitHub Issues for narrow feedback or package-bug intake when something feels clumsy or underpowered. If you share usage evidence, review it with `tasks/templates/SANITIZED-SUBMITTED-EVIDENCE-PACKET.md` or `python3 scripts/sanitized-evidence-pack.py --review <packet-file>` before pasting only safe excerpts. When multiple explicit cohort/support packet files exist, `python3 scripts/cohort-support-evidence-rollup.py --packet <packet-file>` or `precode cohort-support-rollup --packet <packet-file>` can summarize repeated patterns without scanning by default or submitting evidence; add `--setup-friction` only for the setup-specific support lens. Issues, labels, comments, pull requests, reviews, checks, project boards, pasted packet excerpts, and rollups are source evidence only until reviewed and promoted into Precode owner files or maintainer decisions; they do not choose tasks, approve PRDs, activate beads, approve merge, approve release, authorize telemetry, or replace maintainer review.
+The package remains prerelease until the September launch gates pass. Safety, authority integrity, package integrity, truthful claims, orientation, and recovery are pass/fail gates; roadmap scores cannot compensate for failure.
 
 ## License, Trademark, And Provenance
 
-PrecodeOS is open source under the Apache License 2.0. See [`LICENSE`](LICENSE) for terms and [`NOTICE`](NOTICE) for creator attribution.
+PrecodeOS is open source under Apache License 2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and [TRADEMARK.md](TRADEMARK.md).
 
 Created by Dan Sears / Recode. Canonical site: <https://www.precodeos.org>.
-
-PrecodeOS(TM) and Precode(TM) are trademarks of Dan Sears / Recode. Apache-2.0 does not grant trademark rights or permission to present a fork, derivative, product, service, or organization as official PrecodeOS. See [`TRADEMARK.md`](TRADEMARK.md).
 
 ## Document Metadata
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.59
-Last updated: 2026-08-04
-
-AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, and curated navigation for PrecodeOS.
-NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update behavior, or maintainer-private roadmap authority.
-LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific PrecodeOS guide or protocol.
-CLASS: reference
+Document version: v0.2.0
+Last updated: 2026-09-06

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.32
-Last updated: 2026-08-29
+Document version: v0.1.33
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -31,6 +31,8 @@ Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` when an extension exposes comma
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when an extension introduces a new integration boundary, provider abstraction, workflow state, audit trail, or other reusable implementation shape.
 
 PrecodeOS's existing owner files, protocols, scripts, generated sidecars, recorded checks, adapters, and transparent command facades form an advisory repo-native harness contract. Treat harness hardening as boundary and contract work, not as permission to add a Harness Protocol, agent runtime, sandbox, command approval layer, registry, optional pack, package manager, install/update system, or enforcement layer. The optional npm `precodeos` entry is allowed as transparent setup/fast-setup/upgrade/update-plan preview delegation, approved current `SP-ID` or `UP-ID` copy delegation over Bootstrap Confidence, and local usage-evidence review delegation; it may show advisory local release-reference metadata, updater compatibility policy metadata, grouped update-plan metadata, `fast-setup-apply` delegation for explicit current `SP-ID` or `UP-ID` approvals, `apply-package-owned` delegation for explicit current `UP-ID` approvals, and `usage-evidence-review` delegation to `scripts/usage-evidence-review.py`, but it must not add postinstall behavior, JavaScript copy logic, dirty-file overwrite, owner-file adaptation, registry lookup, dist-tag resolution, executable release-channel behavior, package-manager updates, rollback automation, telemetry collection, evidence submission, issue creation, or a support-only hidden install process. Updater compatibility policy is owned by `tasks/prds/PRD-041-npm-updater-evidence-and-compatibility-policy.md`, update-plan preview is owned by `tasks/prds/PRD-042-npm-update-plan-preview.md`, approved package-owned apply is owned by `tasks/prds/PRD-047-npm-approved-package-owned-apply.md`, local usage evidence review is owned by `tasks/prds/PRD-048-precode-usage-evidence-review.md`, and none approves extensions, commands, broad updater behavior, telemetry, or package-manager behavior.
+
+Until the v1 gates pass, new user-facing surface area must retire a larger surface or solve an observed external-session failure. Registries, marketplaces, telemetry, hosted state, broad installers/updaters, additional command facades, and role-agent systems remain deferred.
 
 Setup diagnosis clarity is an additive Bootstrap output contract owned by `tasks/prds/PRD-050-setup-diagnosis-clarity-hardening.md`. It may clarify source/target state, partial setup, missing reusable setup support files, route, validation-after-apply, and forbidden next actions, but it must not create a new command, setup router, support-only setup path, prepared starter-target authority, package-manager behavior, generated-output authority, command approval, or mutation permission.
 
