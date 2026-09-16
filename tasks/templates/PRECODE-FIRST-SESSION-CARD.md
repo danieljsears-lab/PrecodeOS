@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.0
+Document version: v0.2.1
 Last updated: 2026-09-06
 
 ## Purpose
@@ -47,7 +47,7 @@ Use this order when you need one visible path:
 | Intake | Summarize reviewed source material before promoting anything into owner files or PRDs. | Daily Cockpit / Support Runbook route |
 | Owner Files? | If intake found stable facts for `PRODUCT.md`, `PROJECT-CONTEXT.md`, `DECISIONS.md`, `tasks/todo.md`, or another owner file, run Source-To-Promotion Hygiene Review, get user approval, apply only approved facts, then re-validate before PRD shaping. If no owner-file facts need promotion, say so and continue to PRD shaping. | Prompt Patterns / Support Runbook route |
 | PRD | Shape and review requirements before any build work starts. | Daily Cockpit / How-To route |
-| Architecture? | If the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, run Architecture Shaping before bead decomposition. If the work is low-risk, proceed to bead decomposition and record the skip reason in the PRD architecture-impact section or bead notes. | Architecture Shaping Protocol / Workflow Selection route |
+| Architecture? | If the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, run Architecture Shaping and activate only the relevant architecture, API, data, security, codebase, and acceptance owners before bead decomposition. If the work is low-risk, proceed to bead decomposition and record the skip reason in the PRD architecture-impact section or bead notes. | Architecture Shaping Protocol / PRD Handoff Readiness Packet |
 | Bead | Break approved work into one bounded active slice. | Daily Cockpit route |
 | Proof | Record checks and manual evidence for the active bead. | Daily Cockpit `Prove` path |
 | Review | Decide accept, revise, split, block, or stop from evidence. | Daily Cockpit `Review` path |
@@ -73,6 +73,7 @@ If my idea or source packet is not reviewed, route me to Ideation or Intake befo
 If intake found stable facts that should live in owner files, run Source-To-Promotion Hygiene Review, ask for approval before edits, and re-validate before PRD shaping.
 If there is no approved PRD or active bead, stop before coding and tell me what approval is missing.
 If the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, run Architecture Shaping before bead decomposition.
+Use Progressive Production-Readiness Activation inside that bridge to identify only the owner files justified by explicit PRD facts; treat command output as advisory evidence and ask before promoting durable decisions.
 If the approved PRD is low-risk, continue to bead decomposition and record the Architecture Shaping skip reason in the PRD architecture-impact section or bead notes.
 
 Do not approve setup, choose work, approve a PRD, create or activate beads, approve review or transition, write code, overwrite files, run app commands, or treat this card as a replacement for Guided Setup, Daily Cockpit, or the owning protocols.

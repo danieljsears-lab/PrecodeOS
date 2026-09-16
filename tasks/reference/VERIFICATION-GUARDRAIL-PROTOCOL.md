@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.18
-Last updated: 2026-08-18
+Document version: v0.1.20
+Last updated: 2026-09-09
 
 ## Purpose
 
@@ -93,6 +93,8 @@ Use `tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md` when deciding wheth
 
 Manual-verification status matching is boundary-aware and treats explicitly negated prose such as `No missing fields` or `nothing was blocked` as clear evidence when the surrounding structured fields are complete. Genuine status values such as `pending`, `missing`, `blocked`, `not recorded`, or `failed` remain review-blocking. Closeout refresh must preserve multiline manual-verification content rather than reducing it to the first line.
 
+Structured manual verification recognizes `Who checked`, `What was checked`, `Environment`, `Result`, and `Remaining uncertainty` only as labels at the start of the value or after a sentence, semicolon, or line boundary. Use `:` for new records; legacy comma-delimited labels remain valid. A field name appearing only in prose does not satisfy the structure check.
+
 Use `tasks/reference/RELEASE-READINESS-PROTOCOL.md` when proof is being prepared for user-project shipping, deployment readiness, smoke evidence, browser/manual release checks, docs freshness, rollback or blocked escape, or post-release review. Release readiness does not weaken sensitive-surface gates or approve release actions.
 
 For release-relevant work, proof should trace the requirement or behavior being shipped to the evidence lane and recorded source that proves it. The trace can live in Closeout Evidence, a release-readiness note, or a Release Candidate Evidence Profile. If the requirement or behavior proven, evidence lane, recorded source, smoke path, docs/support freshness, rollback or blocked escape, approvals still required, or decision state is unclear, treat the work as `needs evidence` before release review. This is an evidence-quality warning, not release approval, review acceptance, or generated proof.
@@ -118,6 +120,8 @@ Use `tasks/prds/PRD-023-implemented-bead-reversal-workflow.md` when proof is nee
 ## Minimum Expectations
 
 Use the smallest proof that controls the risk.
+
+When Progressive Production-Readiness Activation names architecture, API, data, security, or codebase owners, `ACCEPTANCE.md` should record the corresponding observable behavior, evidence lane, sensitive-path proof when relevant, rollback or blocked escape, and remaining uncertainty. The activation packet is routing evidence only; it cannot create proof, accept work, or certify readiness.
 
 | Work type | Minimum expectation |
 |---|---|

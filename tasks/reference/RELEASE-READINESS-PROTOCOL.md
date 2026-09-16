@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-08-06
+Document version: v0.1.9
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -70,6 +70,8 @@ Before release approval, prepare a short release-readiness note with:
 - accessibility advisory status when the Accessibility Advisor was invoked, an owner file required it, or release confidence depends on it
 
 Use existing Closeout Evidence where possible. Do not duplicate proof in a separate report unless the release-relevant bead needs a concise shipping summary.
+
+If release-readiness review exposes a durable architecture, API, data, security, codebase, or acceptance omission, route it back through Progressive Production-Readiness Activation to the matching owner file. Keep the release note as evidence framing; do not store the durable decision only in release text or treat the activation packet as release approval.
 
 ## Release Candidate Evidence Profile
 

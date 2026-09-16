@@ -7,7 +7,7 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.2.7
+Document version: v0.2.8
 Last updated: 2026-09-06
 
 ## Purpose
@@ -28,6 +28,10 @@ Do not store secrets, credentials, private keys, dashboard values, production co
 - Secrets:
 - External services:
 - Destructive actions:
+
+## Risk-Triggered Target-Project Guidance
+
+Use this section only when an approved PRD identifies a sensitive-surface risk. Record allowed and denied access, protected data, secret or environment boundaries, external-service boundaries, destructive-action approval, recovery or blocked escape, and the evidence needed for human review. Store no secrets or production values here. Completing this section does not certify security, compliance, or production readiness.
 
 ## PrecodeOS Package Security Posture
 

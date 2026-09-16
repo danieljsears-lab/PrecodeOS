@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRD-051 -- Progressive Production-Readiness Activation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6f82;
+      --line: #d8dee8;
+      --accent: #0f766e;
+      --accent-2: #3949ab;
+      --warn: #9a3412;
+      --code: #eef2f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent-2); text-decoration-thickness: 1px; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 28px max(24px, calc((100vw - 1120px) / 2));
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .eyebrow { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.35rem; letter-spacing: 0; }
+    h3 { margin-top: 24px; font-size: 1.1rem; letter-spacing: 0; }
+    h4 { margin-top: 20px; font-size: 1rem; letter-spacing: 0; }
+    .summary, .notice, .card, .toc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .notice { border-left: 4px solid var(--warn); }
+    .summary-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .metric { background: #f9fafb; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 0.8rem; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .status { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; background: #e5e7eb; }
+    .status.approved { background: #d1fae5; color: #065f46; }
+    .status.pass { background: #d1fae5; color: #065f46; }
+    .status.warning { background: #ffedd5; color: #9a3412; }
+    .status.draft, .status.needs-info { background: #ffedd5; color: #9a3412; }
+    .status.superseded { background: #e5e7eb; color: #4b5563; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef2f7; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: var(--code); border-radius: 4px; padding: 1px 4px; }
+    pre { overflow-x: auto; background: #111827; color: #f9fafb; border-radius: 8px; padding: 14px; }
+    pre code { background: transparent; padding: 0; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 16px; }
+    .toc a { display: block; margin: 6px 0; font-size: 0.9rem; }
+    .toc .level-3 { margin-left: 12px; color: var(--muted); }
+    .empty, .muted { color: var(--muted); }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .source-links a { font-weight: 600; }
+    .clusters { margin: 20px 0 24px; }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .cluster-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cluster-card h3 { margin: 0 0 6px; }
+    .cluster-card p { margin: 0 0 10px; }
+    .cluster-list { margin: 0; padding-left: 20px; }
+    .cluster-list li { margin: 7px 0; }
+    .cluster-list span { color: var(--muted); }
+    .source-mini { display: inline-block; margin-left: 6px; font-size: 0.78rem; font-weight: 700; }
+    button {
+      appearance: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #99f6e4; outline-offset: 2px; }
+    .cockpit { margin: 18px 0; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .cockpit-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; }
+    .cockpit-header h3 { margin: 0 0 6px; }
+    .cockpit-header p { margin: 0; }
+    .cockpit-table textarea {
+      width: 100%;
+      min-width: 160px;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.35;
+      background: #ffffff;
+    }
+    .cockpit-export-label { display: block; margin: 14px 0 6px; font-weight: 700; }
+    .cockpit-export {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #ffffff;
+      color: var(--ink);
+    }
+    @media (max-width: 860px) {
+      header { padding: 24px 18px; }
+      main { padding: 18px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 18px; }
+      .cockpit-header { display: block; }
+      .cockpit-header button { margin-top: 12px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Generated PRD review surface</p>
+  <h1>PRD-051 -- Progressive Production-Readiness Activation</h1>
+  <p class="muted">Static HTML generated from <code>PRD-051-progressive-production-readiness-activation.md</code>. Markdown remains canonical.</p>
+  <div class="source-links">
+    <a href="index.html">PRD index</a>
+    <a href="../prds/PRD-051-progressive-production-readiness-activation.md#prd-051-progressive-production-readiness-activation">Canonical Markdown source</a>
+  </div>
+</header>
+<main>
+  <section class="notice">
+    <strong>Not authority:</strong> This HTML is a generated review convenience. It cannot approve PRDs, activate beads, choose tasks, accept implementation, write source Markdown, promote generated text, or replace <code>tasks/prds/*.md</code>.
+  </section>
+  <section class="summary-grid"><div class="metric"><span>Status</span><strong><span class="status approved">approved</span></strong></div><div class="metric"><span>Risk</span><strong>medium</strong></div><div class="metric"><span>Feature</span><strong>Progressive Production-Readiness Activation</strong></div><div class="metric"><span>Features status</span><strong>not compiled</strong></div><div class="metric"><span>Approval</span><strong>Dan Sears / Recode on 2026-09-06</strong></div><div class="metric"><span>Last updated</span><strong>2026-09-06</strong></div></section>
+  <section class="summary">
+    <h2 id="review-cues">Review Cues</h2>
+    <p><strong>Next safe review decision:</strong> Use the Markdown PRD for decomposition or review; do not treat this HTML page as approval, bead activation, or implementation permission.</p>
+    <p><strong>Authority:</strong> Public requirements for risk-triggered production-readiness owner guidance and advisory PRD handoff routing through the existing PRD Handoff Readiness command.</p>
+    <p><strong>Not authority:</strong> Active memory, task selection, PRD approval, owner-file edit approval, bead activation, implementation acceptance, review approval, release approval, production-readiness certification, security certification, compliance approval, generated proof, application-code inspection, deployment, external mutation, command-wrapper behavior, registry behavior, optional-pack behavior, install/update behavior, release-channel behavior, or package-manager behavior.</p>
+
+    <div class="card">
+      <h3>PRD Handoff Readiness</h3>
+      <p><strong>Status:</strong> <span class="status pass">pass</span></p>
+      <p><strong>Requirements found:</strong> 10</p>
+      <p><strong>Acceptance rows found:</strong> 6</p>
+      <p><strong>Next safe action:</strong> Ready for advisory PRD handoff review; use the Markdown PRD and normal approval gates before activation.</p>
+      <ul><li>No first-pass PRD handoff blockers found.</li></ul>
+      <p class="muted">Generated cue only. It does not approve PRDs, choose tasks, activate beads, accept implementation, write Markdown, persist browser edits, or replace the canonical PRD shard.</p>
+    </div>
+
+    <h3>Unresolved blockers and questions</h3>
+    <div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>External full-spine and target-user evidence remains pending after this maintainer-exception implementation.</td><td>Confidence in cognitive-load and user-outcome benefits.</td><td>No</td></tr></tbody></table></div>
+    <h3>Requirements</h3>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-051-FR01</code></td><td>Architecture Shaping must own a canonical risk-to-owner matrix for architecture, API, data, security, codebase, and acceptance/verification guidance.</td><td>P0</td><td>Existing protocol; no new workflow stage.</td></tr><tr><td><code>PRD-051-FR02</code></td><td>The six existing owner templates must include short conditional production-readiness guidance for durable decisions, boundaries, failure/recovery behavior, and evidence.</td><td>P0</td><td>No broad checklist or certification.</td></tr><tr><td><code>PRD-051-FR03</code></td><td><code>scripts/prd-handoff-readiness.py</code> must add <code>details.packet.production_readiness_activation</code> without adding or renaming a command.</td><td>P0</td><td>Stable nested advisory JSON.</td></tr><tr><td><code>PRD-051-FR04</code></td><td>Activation must derive only from explicit <code>risk_level</code>, Risk And Permission Model, Architecture / Project Context Impact, non-placeholder Module / Interface Candidates, and Acceptance Oracle content.</td><td>P0</td><td>No broad free-text keyword inference.</td></tr><tr><td><code>PRD-051-FR05</code></td><td>The activation block must expose status, triggering risk surfaces, source signals, recommended owner files, missing or unclear impacts, verification expectations, remaining uncertainty, next safe action, and <code>advisory_only: true</code>.</td><td>P0</td><td>No sensitive values echoed.</td></tr><tr><td><code>PRD-051-FR06</code></td><td>Activation alone must not change top-level pass/warning status or exit behavior.</td><td>P0</td><td>Existing PRD handoff blockers remain unchanged.</td></tr><tr><td><code>PRD-051-FR07</code></td><td>Workflow, PRD, decomposition, quality, verification, release, tool, and extension protocols must preserve owner promotion, evidence, approval, and generated-output boundaries.</td><td>P0</td><td>Cross-protocol coherence.</td></tr><tr><td><code>PRD-051-FR08</code></td><td>Prompt, first-session, cockpit, user, how-to, support, inventory, AI-navigation, and Navigator surfaces must expose the existing-command workflow without adding a peer route.</td><td>P1</td><td>Conditional discoverability.</td></tr><tr><td><code>PRD-051-FR09</code></td><td>Deterministic fixtures must cover low-risk non-activation, each owner family, all six owners, placeholder suppression, ambiguous medium/high risk, stable JSON, unchanged exit semantics, and forbidden certification/approval claims.</td><td>P1</td><td>Illustrative fixtures only.</td></tr><tr><td><code>PRD-051-FR10</code></td><td>Public generated docs and PRD HTML plus maintainer changelog, roadmap, journal, and private roadmap HTML must be refreshed with numeric public-package shortstats.</td><td>P1</td><td>Closeout follows validated public implementation.</td></tr></tbody></table></div>
+    <h3>Acceptance oracle export</h3>
+
+    <section class="cockpit" data-acceptance-cockpit data-source="PRD-051-progressive-production-readiness-activation.md">
+      <div class="cockpit-header">
+        <div>
+          <h3>Acceptance Oracle Export Cockpit</h3>
+          <p class="muted">Edit cells locally, then export a proposed Markdown replacement block. Apply it manually to <code>PRD-051-progressive-production-readiness-activation.md</code>; this page cannot write source files or approve PRD changes.</p>
+        </div>
+        <button type="button" data-export-markdown>Export Markdown</button>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Evidence lane</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Recorded source or evidence location</th><th>What this does not prove</th></tr></thead>
+          <tbody><tr><td><textarea data-cockpit-cell>`PRD-051-FR01` / `PRD-051-FR02`</textarea></td><td><textarea data-cockpit-cell>Risk-triggered guidance maps to the six existing owner families and remains optional for low-risk work.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Inspect protocol and six owner templates.</textarea></td><td><textarea data-cockpit-cell>Public Markdown sources</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td><td><textarea data-cockpit-cell>Production fitness or target-user value.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-051-FR03` / `PRD-051-FR05`</textarea></td><td><textarea data-cockpit-cell>Existing PRD handoff command emits the stable nested activation block.</textarea></td><td><textarea data-cockpit-cell>`unit`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/prd-handoff-readiness.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Inspect representative JSON.</textarea></td><td><textarea data-cockpit-cell>Deterministic synthetic PRDs</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td><td><textarea data-cockpit-cell>Application correctness or production readiness.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-051-FR04` / `PRD-051-FR06`</textarea></td><td><textarea data-cockpit-cell>Placeholder text does not activate guidance and activation alone does not change top-level status.</textarea></td><td><textarea data-cockpit-cell>`unit`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/prd-handoff-readiness.py --self-test`</textarea></td><td><textarea data-cockpit-cell>Compare low-risk, ambiguous, and activated fixtures.</textarea></td><td><textarea data-cockpit-cell>Deterministic synthetic PRDs</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td><td><textarea data-cockpit-cell>External usability or cognitive-load reduction.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-051-FR07` / `PRD-051-FR08`</textarea></td><td><textarea data-cockpit-cell>Protocols and reader surfaces route durable decisions and proof without adding approval or certification.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>`python3 scripts/clarity-scenario-check.py`</textarea></td><td><textarea data-cockpit-cell>Review public wording.</textarea></td><td><textarea data-cockpit-cell>Public Markdown sources</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td><td><textarea data-cockpit-cell>Human approval or release approval.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-051-FR09`</textarea></td><td><textarea data-cockpit-cell>All specified synthetic routing cases pass and remain explicitly illustrative.</textarea></td><td><textarea data-cockpit-cell>`unit`</textarea></td><td><textarea data-cockpit-cell>PRD handoff self-test and clarity scenario check</textarea></td><td><textarea data-cockpit-cell>Inspect fixture labels and failures.</textarea></td><td><textarea data-cockpit-cell>Synthetic fixtures</textarea></td><td><textarea data-cockpit-cell>command output</textarea></td><td><textarea data-cockpit-cell>Evidence-backed project validation.</textarea></td></tr><tr><td><textarea data-cockpit-cell>`PRD-051-FR10`</textarea></td><td><textarea data-cockpit-cell>Generated surfaces and maintainer history are current with actual numeric shortstats.</textarea></td><td><textarea data-cockpit-cell>`static`</textarea></td><td><textarea data-cockpit-cell>PRD/docs/roadmap HTML checks</textarea></td><td><textarea data-cockpit-cell>Inspect implemented-candidate row and journal card.</textarea></td><td><textarea data-cockpit-cell>Markdown sources and scoped diff</textarea></td><td><textarea data-cockpit-cell>generated surfaces</textarea></td><td><textarea data-cockpit-cell>Release approval.</textarea></td></tr></tbody>
+        </table>
+      </div>
+      <label class="cockpit-export-label" for="acceptance-export-prd-051-progressive-production-readiness-activation">Proposed Markdown replacement block</label>
+      <textarea id="acceptance-export-prd-051-progressive-production-readiness-activation" class="cockpit-export" data-export-output readonly>## Acceptance Oracle Matrix
+
+| Requirement ID | Expected behavior | Evidence lane | Automated check | Manual check | Fixture or data needed | Recorded source or evidence location | What this does not prove |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `PRD-051-FR01` / `PRD-051-FR02` | Risk-triggered guidance maps to the six existing owner families and remains optional for low-risk work. | `static` | `python3 scripts/clarity-scenario-check.py` | Inspect protocol and six owner templates. | Public Markdown sources | command output | Production fitness or target-user value. |
+| `PRD-051-FR03` / `PRD-051-FR05` | Existing PRD handoff command emits the stable nested activation block. | `unit` | `python3 scripts/prd-handoff-readiness.py --self-test` | Inspect representative JSON. | Deterministic synthetic PRDs | command output | Application correctness or production readiness. |
+| `PRD-051-FR04` / `PRD-051-FR06` | Placeholder text does not activate guidance and activation alone does not change top-level status. | `unit` | `python3 scripts/prd-handoff-readiness.py --self-test` | Compare low-risk, ambiguous, and activated fixtures. | Deterministic synthetic PRDs | command output | External usability or cognitive-load reduction. |
+| `PRD-051-FR07` / `PRD-051-FR08` | Protocols and reader surfaces route durable decisions and proof without adding approval or certification. | `static` | `python3 scripts/clarity-scenario-check.py` | Review public wording. | Public Markdown sources | command output | Human approval or release approval. |
+| `PRD-051-FR09` | All specified synthetic routing cases pass and remain explicitly illustrative. | `unit` | PRD handoff self-test and clarity scenario check | Inspect fixture labels and failures. | Synthetic fixtures | command output | Evidence-backed project validation. |
+| `PRD-051-FR10` | Generated surfaces and maintainer history are current with actual numeric shortstats. | `static` | PRD/docs/roadmap HTML checks | Inspect implemented-candidate row and journal card. | Markdown sources and scoped diff | generated surfaces | Release approval. |</textarea>
+      <p class="muted">Proposal only: manually review and paste into the canonical Markdown PRD, then regenerate and check <code>tasks/prds-html/</code>. No approval, write-back, task selection, bead activation, or implementation acceptance happens here.</p>
+    </section>
+
+    <h3>Risk and permission model</h3>
+    <h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none; the diagnostic only recognizes explicit PRD labels.</li><li>Payments: none.</li><li>User data: no PRD field values may be copied into the routing payload.</li><li>Uploads: none.</li><li>External services: none; no network lookup is added.</li><li>Secrets: do not echo secret or environment values from PRDs.</li><li>Destructive actions: none; the public command remains read-only.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before: promoting diagnostic recommendations into owner files, decomposing risky work, or taking any release or external action.</li><li>Stop if: routing requires free-text inference, application-code inspection, secret values, a new command, or certification semantics.</li><li>Escalate when: explicit PRD fields conflict or do not identify a durable owner.</li></ul>
+    <h3>Agent context</h3>
+    <ul><li>Primary authority file: <code>tasks/prds/PRD-051-progressive-production-readiness-activation.md</code></li><li>Secondary reference files: <code>tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md</code>, <code>tasks/reference/PRD-PROTOCOL.md</code>, <code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code>, <code>tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md</code>, <code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code>, <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code>, <code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code>, and <code>tasks/reference/EXTENSION-PROTOCOL.md</code>.</li><li>Files or folders likely in play: six root owner templates, <code>scripts/prd-handoff-readiness.py</code>, <code>scripts/clarity-scenario-check.py</code>, public docs/navigation, generated docs and PRD HTML, maintainer roadmap/history.</li><li>Files or folders out of scope: active memory, adapters, shims, application code, external systems, package managers, registries, optional packs.</li><li>Required checks: PRD handoff self-test, clarity scenarios, package validation, generated-surface freshness, public/private hygiene, roadmap checks.</li><li>Manual verification: inspect low-risk, ambiguous, and all-six-owner outputs plus public wording and rendered history.</li><li>Forbidden assumptions: synthetic fixtures are user evidence; completing owner templates proves readiness; generated routing approves owner edits or decomposition.</li></ul>
+    <h3>Bead proposals</h3>
+    <div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B###-progressive-production-readiness-activation</code></td><td><code>PRD-051-FR01</code> through <code>PRD-051-FR10</code></td><td>Six owners, existing command, protocols, docs, validation, generated surfaces, numeric shortstats, and roadmap closeout agree.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>fresh_context_recommended</code></td><td><code>tasks/prds/PRD-051-progressive-production-readiness-activation.md</code></td><td>script self-test, clarity scenarios, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+  </section>
+  <div class="layout">
+    <article>
+      <h1 id="prd-051-progressive-production-readiness-activation">PRD-051 -- Progressive Production-Readiness Activation</h1>
+<h2 id="summary">Summary</h2>
+<p>Progressive Production-Readiness Activation makes consequential architecture, API, data, security, codebase, and verification omissions visible only when an approved PRD&#x27;s explicit risk and impact fields warrant the guidance. It strengthens existing owner files and extends the existing PRD Handoff Readiness Packet; it does not add a new command, protocol, required stage, or production framework.</p>
+<p>The implementation proceeds by explicit maintainer exception before full first-product-spine or external usability evidence exists. Deterministic synthetic fixtures replace the roadmap&#x27;s requested evidence-backed project example for this slice. Those fixtures prove routing behavior only; they are illustrative validation, not target-user evidence or proof that the feature reduces cognitive load.</p>
+<h2 id="problem">Problem</h2>
+<p>Architecture, API, data, codebase, and target-project security owner templates provide too little help when a project becomes risky, while presenting comprehensive readiness guidance to every project would recreate the cognitive burden PrecodeOS is meant to reduce.</p>
+<p>The existing Architecture Shaping and PRD handoff surfaces already identify risks and owner impacts, but they do not return one stable six-owner activation view.</p>
+<h2 id="goals">Goals</h2>
+<ul><li>Strengthen the six existing owner families without making them mandatory for low-risk work.</li><li>Add explicit, repeatable risk-to-owner routing to the existing PRD Handoff Readiness Packet.</li><li>Promote durable decisions into owner files before risky decomposition.</li><li>Route release-readiness omissions back to the correct owner and proof path.</li><li>Preserve human approval and generated-evidence boundaries.</li></ul>
+<h2 id="non-goals">Non-Goals</h2>
+<ul><li>No new command, protocol, command facade, runtime, role-agent system, checklist engine, mandatory stack, or deployment playbook.</li><li>No universal production checklist, production-readiness score, certification, generated proof, release gate, owner-file mutation, PRD approval, bead activation, implementation acceptance, review approval, or release approval.</li><li>No free-text application analysis, AST parsing, secret inspection, external status lookup, provider integration, dashboard mutation, registry, optional pack, install/update behavior, release-channel behavior, or package-manager behavior.</li><li>No claim that synthetic fixtures are project evidence or target-user validation.</li></ul>
+<h2 id="requirements">Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead><tbody><tr><td><code>PRD-051-FR01</code></td><td>Architecture Shaping must own a canonical risk-to-owner matrix for architecture, API, data, security, codebase, and acceptance/verification guidance.</td><td>P0</td><td>Existing protocol; no new workflow stage.</td></tr><tr><td><code>PRD-051-FR02</code></td><td>The six existing owner templates must include short conditional production-readiness guidance for durable decisions, boundaries, failure/recovery behavior, and evidence.</td><td>P0</td><td>No broad checklist or certification.</td></tr><tr><td><code>PRD-051-FR03</code></td><td><code>scripts/prd-handoff-readiness.py</code> must add <code>details.packet.production_readiness_activation</code> without adding or renaming a command.</td><td>P0</td><td>Stable nested advisory JSON.</td></tr><tr><td><code>PRD-051-FR04</code></td><td>Activation must derive only from explicit <code>risk_level</code>, Risk And Permission Model, Architecture / Project Context Impact, non-placeholder Module / Interface Candidates, and Acceptance Oracle content.</td><td>P0</td><td>No broad free-text keyword inference.</td></tr><tr><td><code>PRD-051-FR05</code></td><td>The activation block must expose status, triggering risk surfaces, source signals, recommended owner files, missing or unclear impacts, verification expectations, remaining uncertainty, next safe action, and <code>advisory_only: true</code>.</td><td>P0</td><td>No sensitive values echoed.</td></tr><tr><td><code>PRD-051-FR06</code></td><td>Activation alone must not change top-level pass/warning status or exit behavior.</td><td>P0</td><td>Existing PRD handoff blockers remain unchanged.</td></tr><tr><td><code>PRD-051-FR07</code></td><td>Workflow, PRD, decomposition, quality, verification, release, tool, and extension protocols must preserve owner promotion, evidence, approval, and generated-output boundaries.</td><td>P0</td><td>Cross-protocol coherence.</td></tr><tr><td><code>PRD-051-FR08</code></td><td>Prompt, first-session, cockpit, user, how-to, support, inventory, AI-navigation, and Navigator surfaces must expose the existing-command workflow without adding a peer route.</td><td>P1</td><td>Conditional discoverability.</td></tr><tr><td><code>PRD-051-FR09</code></td><td>Deterministic fixtures must cover low-risk non-activation, each owner family, all six owners, placeholder suppression, ambiguous medium/high risk, stable JSON, unchanged exit semantics, and forbidden certification/approval claims.</td><td>P1</td><td>Illustrative fixtures only.</td></tr><tr><td><code>PRD-051-FR10</code></td><td>Public generated docs and PRD HTML plus maintainer changelog, roadmap, journal, and private roadmap HTML must be refreshed with numeric public-package shortstats.</td><td>P1</td><td>Closeout follows validated public implementation.</td></tr></tbody></table></div>
+<h2 id="acceptance-oracle-matrix">Acceptance Oracle Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Requirement ID</th><th>Expected behavior</th><th>Evidence lane</th><th>Automated check</th><th>Manual check</th><th>Fixture or data needed</th><th>Recorded source or evidence location</th><th>What this does not prove</th></tr></thead><tbody><tr><td><code>PRD-051-FR01</code> / <code>PRD-051-FR02</code></td><td>Risk-triggered guidance maps to the six existing owner families and remains optional for low-risk work.</td><td><code>static</code></td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Inspect protocol and six owner templates.</td><td>Public Markdown sources</td><td>command output</td><td>Production fitness or target-user value.</td></tr><tr><td><code>PRD-051-FR03</code> / <code>PRD-051-FR05</code></td><td>Existing PRD handoff command emits the stable nested activation block.</td><td><code>unit</code></td><td><code>python3 scripts/prd-handoff-readiness.py --self-test</code></td><td>Inspect representative JSON.</td><td>Deterministic synthetic PRDs</td><td>command output</td><td>Application correctness or production readiness.</td></tr><tr><td><code>PRD-051-FR04</code> / <code>PRD-051-FR06</code></td><td>Placeholder text does not activate guidance and activation alone does not change top-level status.</td><td><code>unit</code></td><td><code>python3 scripts/prd-handoff-readiness.py --self-test</code></td><td>Compare low-risk, ambiguous, and activated fixtures.</td><td>Deterministic synthetic PRDs</td><td>command output</td><td>External usability or cognitive-load reduction.</td></tr><tr><td><code>PRD-051-FR07</code> / <code>PRD-051-FR08</code></td><td>Protocols and reader surfaces route durable decisions and proof without adding approval or certification.</td><td><code>static</code></td><td><code>python3 scripts/clarity-scenario-check.py</code></td><td>Review public wording.</td><td>Public Markdown sources</td><td>command output</td><td>Human approval or release approval.</td></tr><tr><td><code>PRD-051-FR09</code></td><td>All specified synthetic routing cases pass and remain explicitly illustrative.</td><td><code>unit</code></td><td>PRD handoff self-test and clarity scenario check</td><td>Inspect fixture labels and failures.</td><td>Synthetic fixtures</td><td>command output</td><td>Evidence-backed project validation.</td></tr><tr><td><code>PRD-051-FR10</code></td><td>Generated surfaces and maintainer history are current with actual numeric shortstats.</td><td><code>static</code></td><td>PRD/docs/roadmap HTML checks</td><td>Inspect implemented-candidate row and journal card.</td><td>Markdown sources and scoped diff</td><td>generated surfaces</td><td>Release approval.</td></tr></tbody></table></div>
+<h2 id="risk-and-permission-model">Risk And Permission Model</h2>
+<h3 id="sensitive-surfaces">Sensitive Surfaces</h3>
+<ul><li>Auth: none; the diagnostic only recognizes explicit PRD labels.</li><li>Payments: none.</li><li>User data: no PRD field values may be copied into the routing payload.</li><li>Uploads: none.</li><li>External services: none; no network lookup is added.</li><li>Secrets: do not echo secret or environment values from PRDs.</li><li>Destructive actions: none; the public command remains read-only.</li></ul>
+<h3 id="human-approval-gates">Human Approval Gates</h3>
+<ul><li>Approval required before: promoting diagnostic recommendations into owner files, decomposing risky work, or taking any release or external action.</li><li>Stop if: routing requires free-text inference, application-code inspection, secret values, a new command, or certification semantics.</li><li>Escalate when: explicit PRD fields conflict or do not identify a durable owner.</li></ul>
+<h2 id="architecture-project-context-impact">Architecture / Project Context Impact</h2>
+<ul><li>Project context impact: minor</li><li><code>PROJECT-CONTEXT.md</code> loaded: yes</li><li>Architecture Shaping: completed</li><li>Architecture Brief evidence: the approved Level 2 implementation plan and canonical risk-to-owner matrix.</li><li>Architecture Shaping skip reason: not applicable.</li><li>Architecture authority updates needed: add the canonical risk-triggered matrix to Architecture Shaping and conditional guidance to <code>ARCHITECTURE.md</code>.</li><li>Route/API authority updates needed: extend the existing PRD handoff packet contract; add no route or command.</li><li>Schema authority updates needed: stable nested JSON fields only; no target-project data schema.</li><li>Security authority updates needed: preserve redaction, non-certification, non-mutation, and no-external-lookup boundaries.</li><li>Decision log updates needed: none; maintainer exceptions are recorded in this PRD and roadmap history.</li></ul>
+<h2 id="module-interface-candidates">Module / Interface Candidates</h2>
+<div class="table-wrap"><table><thead><tr><th>Candidate module or boundary</th><th>Public interface / caller expectation</th><th>Behavior contract</th><th>Test boundary</th><th>Owner file</th></tr></thead><tbody><tr><td>PRD handoff production-readiness activation</td><td>Existing <code>python3 scripts/prd-handoff-readiness.py --prd &amp;lt;path&amp;gt; --target ...</code> callers receive one additional nested advisory object.</td><td>Explicit-field routing only; top-level status and exit behavior remain stable.</td><td>self-test and clarity scenarios</td><td><code>tasks/prds/PRD-051-progressive-production-readiness-activation.md</code></td></tr></tbody></table></div>
+<h2 id="agent-context-contract">Agent Context Contract</h2>
+<ul><li>Primary authority file: <code>tasks/prds/PRD-051-progressive-production-readiness-activation.md</code></li><li>Secondary reference files: <code>tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md</code>, <code>tasks/reference/PRD-PROTOCOL.md</code>, <code>tasks/reference/DECOMPOSITION-PROTOCOL.md</code>, <code>tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md</code>, <code>tasks/reference/VERIFICATION-GUARDRAIL-PROTOCOL.md</code>, <code>tasks/reference/RELEASE-READINESS-PROTOCOL.md</code>, <code>tasks/reference/TOOL-EXECUTION-PROTOCOL.md</code>, and <code>tasks/reference/EXTENSION-PROTOCOL.md</code>.</li><li>Files or folders likely in play: six root owner templates, <code>scripts/prd-handoff-readiness.py</code>, <code>scripts/clarity-scenario-check.py</code>, public docs/navigation, generated docs and PRD HTML, maintainer roadmap/history.</li><li>Files or folders out of scope: active memory, adapters, shims, application code, external systems, package managers, registries, optional packs.</li><li>Required checks: PRD handoff self-test, clarity scenarios, package validation, generated-surface freshness, public/private hygiene, roadmap checks.</li><li>Manual verification: inspect low-risk, ambiguous, and all-six-owner outputs plus public wording and rendered history.</li><li>Forbidden assumptions: synthetic fixtures are user evidence; completing owner templates proves readiness; generated routing approves owner edits or decomposition.</li></ul>
+<h2 id="bead-proposals">Bead Proposals</h2>
+<div class="table-wrap"><table><thead><tr><th>Proposed bead</th><th>Requirement IDs</th><th>Done when</th><th>Delegation mode</th><th>Test strategy</th><th>Review context</th><th>Primary authority</th><th>Verification</th></tr></thead><tbody><tr><td><code>B###-progressive-production-readiness-activation</code></td><td><code>PRD-051-FR01</code> through <code>PRD-051-FR10</code></td><td>Six owners, existing command, protocols, docs, validation, generated surfaces, numeric shortstats, and roadmap closeout agree.</td><td><code>human_in_loop</code></td><td><code>static_only</code></td><td><code>fresh_context_recommended</code></td><td><code>tasks/prds/PRD-051-progressive-production-readiness-activation.md</code></td><td>script self-test, clarity scenarios, package/docs/PRD/roadmap checks</td></tr></tbody></table></div>
+<h2 id="open-questions">Open Questions</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Affects</th><th>Blocking?</th></tr></thead><tbody><tr><td>External full-spine and target-user evidence remains pending after this maintainer-exception implementation.</td><td>Confidence in cognitive-load and user-outcome benefits.</td><td>No</td></tr></tbody></table></div>
+<h2 id="approval">Approval</h2>
+<ul><li>Approved by: Dan Sears / Recode</li><li>Approved on: 2026-09-06</li><li>Approval notes: Implement the Level 2 diagnostic, strengthen all six owner families, use synthetic fixtures, record the evidence exceptions, and fold the overlapping owner-template candidate into closeout.</li></ul>
+    </article>
+    <nav class="toc" aria-label="Page contents">
+      <strong>Contents</strong>
+      <a class="level-2" href="#summary">Summary</a><a class="level-2" href="#problem">Problem</a><a class="level-2" href="#goals">Goals</a><a class="level-2" href="#non-goals">Non-Goals</a><a class="level-2" href="#requirements">Requirements</a><a class="level-2" href="#acceptance-oracle-matrix">Acceptance Oracle Matrix</a><a class="level-2" href="#risk-and-permission-model">Risk And Permission Model</a><a class="level-3" href="#sensitive-surfaces">Sensitive Surfaces</a><a class="level-3" href="#human-approval-gates">Human Approval Gates</a><a class="level-2" href="#architecture-project-context-impact">Architecture / Project Context Impact</a><a class="level-2" href="#module-interface-candidates">Module / Interface Candidates</a><a class="level-2" href="#agent-context-contract">Agent Context Contract</a><a class="level-2" href="#bead-proposals">Bead Proposals</a><a class="level-2" href="#open-questions">Open Questions</a><a class="level-2" href="#approval">Approval</a>
+    </nav>
+  </div>
+</main>
+
+
+<script>
+(() => {
+  const normalizeCell = (value) => value
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/\n/g, "<br>")
+    .replace(/\|/g, "&#124;")
+    .trim();
+
+  const tableToMarkdown = (cockpit) => {
+    const headers = Array.from(cockpit.querySelectorAll("thead th")).map((cell) => normalizeCell(cell.textContent || ""));
+    const rows = Array.from(cockpit.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("[data-cockpit-cell]")).map((cell) => normalizeCell(cell.value || ""))
+    );
+    const separator = headers.map(() => "---");
+    const line = (cells) => `| ${cells.join(" | ")} |`;
+    return [
+      "## Acceptance Oracle Matrix",
+      "",
+      line(headers),
+      line(separator),
+      ...rows.map(line),
+    ].join("\n");
+  };
+
+  document.querySelectorAll("[data-acceptance-cockpit]").forEach((cockpit) => {
+    const output = cockpit.querySelector("[data-export-output]");
+    const button = cockpit.querySelector("[data-export-markdown]");
+    const exportMarkdown = () => {
+      output.value = tableToMarkdown(cockpit);
+      output.focus();
+      output.select();
+    };
+    cockpit.addEventListener("input", exportMarkdown);
+    button.addEventListener("click", exportMarkdown);
+  });
+})();
+</script>
+
+</body>
+</html>

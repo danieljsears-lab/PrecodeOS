@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.0
+Document version: v0.2.1
 Last updated: 2026-09-06
 
 Use this cockpit after setup validates. Stop here for normal work unless it routes you to one specific setup, troubleshooting, prompt, or protocol surface.
@@ -89,7 +89,7 @@ The first-product spine is:
 Idea -> Brief -> Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close
 ```
 
-`Owner Files?` is an explicit source-promotion check. `Architecture?` is conditional for work touching auth, data, APIs, integrations, dependencies, migrations, external services, or multi-system behavior. Neither gate can be skipped because an agent is confident.
+`Owner Files?` is an explicit source-promotion check. `Architecture?` is conditional for work touching auth, data, APIs, integrations, dependencies, migrations, external services, or multi-system behavior. Inside that bridge, Progressive Production-Readiness Activation uses the existing PRD Handoff Readiness Packet to name only the architecture, API, data, security, codebase, and acceptance owners justified by explicit PRD facts. The packet is advisory evidence; it does not approve owner-file edits or certify readiness. Neither gate can be skipped because an agent is confident.
 
 ## Health
 

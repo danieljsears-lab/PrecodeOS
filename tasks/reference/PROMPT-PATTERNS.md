@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.87
+Document version: v0.1.88
 Last updated: 2026-09-06
 
 ## Purpose
@@ -1191,6 +1191,16 @@ Run python3 scripts/prd-handoff-readiness.py --prd <path> --target general.
 Summarize whether this PRD is ready for decomposition, design handoff, engineering handoff, or PRD review. Include the generated `details.packet` fields for PRD status, requirement IDs, open questions, Acceptance Oracle coverage, candidate bead or decomposition readiness, proof expectations, risks and permissions, owner protocols, blockers, and recommended next safe action.
 
 Treat the packet as generated evidence only. Do not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, create optional packs, imply package-manager behavior, or code.
+```
+
+## Progressive Production-Readiness Activation
+
+```text
+Run python3 scripts/prd-handoff-readiness.py --prd <approved-prd-path> --target decomposition.
+
+Show `details.packet.production_readiness_activation`: status, triggering risk surfaces, recommended owner files, missing or unclear owner impacts, verification expectations, remaining uncertainty, and next safe action. Use only explicit PRD risk and impact fields. Strengthen only the architecture, API, data, security, codebase, and acceptance owners that activate.
+
+Treat the output as advisory generated evidence. Do not inspect application code from keywords, echo sensitive PRD values, rewrite owner files, approve decomposition, activate beads, certify production readiness, or add a new command.
 ```
 
 ## Requirements Gap And Conflict Review

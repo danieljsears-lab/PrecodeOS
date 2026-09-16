@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.43
-Last updated: 2026-08-02
+Document version: v0.1.44
+Last updated: 2026-09-06
 
 ## Start Here: You Are Not Just Prompting
 
@@ -61,7 +61,7 @@ Use First PRD Walkthrough when you want the shortest safe route from rough idea 
 
 The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
-That means rough idea or messy notes become a Product Brief, then a reviewed packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then conditional Architecture Shaping when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. Low-risk approved PRDs can go straight to bead decomposition when the PRD or bead notes record why Architecture Shaping was skipped.
+That means rough idea or messy notes become a Product Brief, then a reviewed packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then conditional Architecture Shaping when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior. Progressive Production-Readiness Activation inside that bridge names only the existing architecture, API, data, security, codebase, and acceptance owners justified by explicit PRD facts. Then work proceeds to candidate decomposition and one approved active bead, recorded proof, human review, and closeout with explicit Close State. Low-risk approved PRDs can go straight to bead decomposition when the PRD or bead notes record why Architecture Shaping was skipped.
 
 Use this path when you are still asking, "What am I really trying to build?"
 

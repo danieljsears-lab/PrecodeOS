@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.17
-Last updated: 2026-07-13
+Document version: v0.1.18
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -39,6 +39,8 @@ Use `tasks/reference/LONG-HORIZON-PLANNING-PROTOCOL.md` when candidate beads, de
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` before decomposition when an approved PRD needs `PRD+architecture` or `PRD+architecture+test-plan` planning depth, or when it touches auth, data models, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system changes.
 
 Use `scripts/prd-handoff-readiness.py --prd <path> --target decomposition` when an approved PRD looks ready but the handoff into candidate beads is unclear. Unresolved PRD handoff blockers must route back to PRD amendment, Architecture Shaping, or unblocker planning before any bead activation. The packet is generated evidence only; it does not create candidate beads, choose their order, approve the PRD, or authorize implementation.
+
+When `details.packet.production_readiness_activation.status` is `activated`, review the named owner-file impacts before proposing risky beads and keep `ACCEPTANCE.md` evidence expectations aligned. When it is `needs_clarification`, clarify the explicit PRD risk or impact fields; do not infer application behavior from keywords. The nested status does not itself block or approve decomposition and does not change the command's top-level status.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` after or alongside Architecture Shaping when the candidate work needs an external service boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, deep module boundary, or direct-versus-pattern decision.
 

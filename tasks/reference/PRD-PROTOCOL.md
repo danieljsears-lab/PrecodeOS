@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-07-27
+Document version: v0.1.24
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -45,6 +45,8 @@ Use `tasks/reference/IDEA-TO-PRD-WORKFLOW.md` when the idea is rough, ambiguous,
 Use `tasks/reference/DECOMPOSITION-PROTOCOL.md` before deriving candidate beads or splitting approved feature work.
 
 Use `scripts/prd-handoff-readiness.py --prd <path>` when an approved PRD needs an advisory readiness packet before decomposition, design handoff, engineering handoff, or PRD review. The packet may summarize PRD status, requirement IDs, open questions, Acceptance Oracle coverage, candidate bead readiness, proof expectations, risks, owner protocols, blockers, and next safe action. It is generated evidence only: it does not approve the PRD, choose tasks, activate beads, accept implementation, mutate external tools, automate exports, create MCP behavior, create registries, create optional packs, or imply package-manager behavior.
+
+The packet also exposes `details.packet.production_readiness_activation`. It maps only explicit PRD risk, architecture-impact, module/interface, and Acceptance Oracle fields to the six existing owner families. `not_triggered`, `activated`, and `needs_clarification` are advisory routing states, not PRD approval, decomposition approval, production-readiness certification, or permission to rewrite owner files.
 
 Use `tasks/reference/INTENT-ORCHESTRATION-PROTOCOL.md` when tracing source intent through PRD requirements, bead proposals, recorded evidence, and review decisions.
 

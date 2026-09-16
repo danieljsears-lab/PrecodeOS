@@ -7,12 +7,16 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.1
-Last updated: 2026-06-23
+Document version: v0.1.2
+Last updated: 2026-09-06
 
 ## Acceptance Criteria
 
 Add project acceptance criteria here after PRD approval.
+
+## Risk-Triggered Production-Readiness Guidance
+
+When an approved PRD activates architecture, API, data, security, or codebase guidance, record the observable behavior, evidence lane, sensitive-path proof, rollback or blocked escape, and remaining uncertainty needed for human review. Use the narrowest proof that controls the risk. Passing these checks supports a human decision; it does not certify the project as production-ready, secure, compliant, scalable, or released.
 
 ## Optional EARS-Style Pattern
 

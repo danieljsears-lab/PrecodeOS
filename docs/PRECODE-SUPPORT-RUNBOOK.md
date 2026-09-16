@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.54
+Document version: v0.1.55
 Last updated: 2026-09-06
 
 ## Purpose
@@ -760,7 +760,7 @@ Use this routing when a builder arrives with messy notes, a Product Brief, guide
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
-Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then Architecture Shaping only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior, then candidate decomposition and one approved active bead, then recorded proof, human review, and closeout with explicit Close State. If Claude says an Architecture Brief is mandatory for every bead, correct it: the bridge is mandatory only for architecture-sensitive approved PRDs. Low-risk approved PRDs may proceed to bead decomposition with the skip reason recorded in PRD or bead notes. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.
+Support should translate that spine plainly: rough idea or messy notes become a Product Brief, then a reviewed Conviction Packet / Precode Ingestion Packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then Architecture Shaping only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior. Inside that bridge, Progressive Production-Readiness Activation may use the existing PRD Handoff Readiness Packet to name only the owner files justified by explicit PRD facts; its output is advisory and cannot approve edits or certify readiness. Then work proceeds to candidate decomposition and one approved active bead, recorded proof, human review, and closeout with explicit Close State. If Claude says an Architecture Brief or every owner template is mandatory for every bead, correct it: the bridge and owner guidance are risk-triggered. Low-risk approved PRDs may proceed to bead decomposition with the skip reason recorded in PRD or bead notes. Do not expose Product Ideation Workbook, Precode Idea Coach, Product Discovery, Candidate Queue, Hypothesis Review, Build-React-Learn, or Review Lanes as peer routes unless the current stage or risk actually calls for one.
 
 Advanced support surfaces such as Release Readiness, Goal Frames, Ralph, Attribution, Artifact Chooser, reversal, team coordination, and proof tracing are also conditional. Use them only when the current stage, risk, support role, recovery path, or explicit user question calls for one.
 

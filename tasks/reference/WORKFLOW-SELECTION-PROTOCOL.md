@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.28
-Last updated: 2026-08-04
+Document version: v0.1.29
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -134,6 +134,8 @@ Use the every-bead rhythm when the user needs a compact orientation across curre
 Use `tasks/reference/CANDIDATE-QUEUE-PROTOCOL.md` when the user needs a human-maintained place to capture multiple intents before they are ready for intake, discovery, PRD shaping, or decomposition. Candidate Queue review may rank candidates for review, assign product-value ratings, group themes, or sketch near-beads, but it must not choose next work or authorize implementation, approve PRDs, activate beads, mutate `tasks/todo.md`, or reserve `B###` IDs.
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` after PRD approval and before decomposition when workflow selection reveals auth, data model, API, integration, dependency, migration, external-service, multi-step workflow, or multi-system risk that a non-technical builder should approve or redirect before an AI coding agent derives beads.
+
+For those risk-triggered PRDs, use Progressive Production-Readiness Activation inside Architecture Shaping to identify which existing architecture, API, data, security, codebase, and acceptance owners need reviewed durable decisions. Low-risk work should not load or fill every owner. The activation view is routing evidence only; it does not add a workflow stage, approve an owner-file edit, or certify readiness.
 
 Use `tasks/reference/SYSTEM-DESIGN-PATTERN-PROTOCOL.md` when Architecture Shaping or workflow selection reveals a feature that needs an external boundary, state flow, strategy-style rule boundary, auth/access boundary, audit trail, or a plain-English implementation-shape choice before coding.
 

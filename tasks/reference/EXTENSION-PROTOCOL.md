@@ -9,7 +9,7 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.33
+Document version: v0.1.34
 Last updated: 2026-09-06
 
 ## Purpose
@@ -218,6 +218,8 @@ Generated markdown must clearly say it is not active memory, not a task plan, an
 Generated evidence should live under `logs/` unless a legacy Precode report already owns the surface.
 
 Generated JSON and JSONL files must be treated as evidence only. They may feed summaries, audits, or human review, but they must not directly rewrite active memory, bead state, PRDs, decisions, or product authority files.
+
+The existing PRD Handoff Readiness Packet may include `production_readiness_activation` as nested advisory routing over explicit PRD fields. This is an extension of an existing generated-evidence contract, not a new command, report, registry entry, runtime, or owner-file mutation path. Its output must remain subordinate to PRD and owner-file authority.
 
 Generated reports, sidecars, and public generated HTML added by an extension should be represented in `logs/authority-map.json` surface classes when the generated map is refreshed. The reserved `logs/precode-refresh-audit.md` report is generated evidence for one safe existing-file refresh; it may be created by that refresh path, must not overwrite an occupied user path, and must not be treated as package or project authority. This classification is orientation evidence only; it does not approve the extension, make generated output authoritative, or replace the owning protocol, adapter, PRD, decision, authority file, or approved bead.
 

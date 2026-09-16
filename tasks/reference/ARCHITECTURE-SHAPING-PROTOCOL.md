@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-05-29
+Document version: v0.2.0
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -41,6 +41,23 @@ Run Architecture Shaping when an approved PRD touches any of these surfaces:
 Skip Architecture Shaping when the work is simple copy, styling, docs-only behavior, or a small local change with no meaningful architecture risk.
 
 If the PRD is not approved, return to PRD shaping. If worth-building uncertainty is still material, use Product Discovery Validation instead.
+
+## Progressive Production-Readiness Activation
+
+After PRD approval, map explicit risk and impact facts to existing owner files. Activate only the rows that apply; do not present the matrix as a universal checklist.
+
+| Risk surface | Activate when explicit PRD facts identify | Durable owner | Minimum useful content |
+|---|---|---|---|
+| Architecture | system boundaries, multi-system flow, dependencies, environments, state, or recovery risk | `ARCHITECTURE.md` | chosen boundary, source of truth, failure behavior, recovery or blocked escape |
+| API | routes, callers, authorization boundary, integrations, jobs, webhooks, errors, or retries | `API.md` | caller contract, access boundary, failure behavior, compatibility, proof path |
+| Data | entities, schema, migrations, retention, audit history, destructive change, or rollback | `DATA-MODELS.md` | source of truth, lifecycle, migration/backfill, retention, rollback |
+| Security | auth/access, payments, personal data, uploads, secrets, external services, destructive action, or production configuration | `SECURITY.md` | allowed and denied access, protected data, sensitive boundary, approval, recovery |
+| Codebase | durable module placement, ownership, naming, shared boundary, or repository convention | `CODEBASE-GUIDE.md` | placement, owner, local convention, stable boundary |
+| Verification | any row above activates | `ACCEPTANCE.md` | observable behavior, evidence lane, sensitive-path proof, rollback or escape, uncertainty |
+
+`python3 scripts/prd-handoff-readiness.py --prd <path> --target decomposition` may expose the same mapping in `details.packet.production_readiness_activation`. The packet reads only explicit PRD fields and remains advisory generated evidence. It does not inspect application code, reveal sensitive values, approve owner-file edits, approve decomposition, or certify production readiness.
+
+If a release-readiness review finds a durable omission, route that omission back to the matching owner and acceptance evidence. Do not hide the decision in a release note, generated packet, or Architecture Brief.
 
 ## Interview Rules
 

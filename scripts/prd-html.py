@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.6
-# Last updated: 2026-08-04
+# Version: v0.2.7
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -78,8 +78,8 @@ PRD_CLUSTERS = (
     ),
     PrdCluster(
         title="Review / Proof / Release Evidence",
-        purpose="Release readiness, review lanes, verification, proof traceability, attribution, engineering quality, release-quality cues, and polish review.",
-        prd_ids=("PRD-005", "PRD-009", "PRD-018", "PRD-020", "PRD-024", "PRD-028", "PRD-038", "PRD-040", "PRD-044", "PRD-049"),
+        purpose="Release readiness, review lanes, verification, proof traceability, attribution, engineering quality, progressive production-readiness activation, release-quality cues, and polish review.",
+        prd_ids=("PRD-005", "PRD-009", "PRD-018", "PRD-020", "PRD-024", "PRD-028", "PRD-038", "PRD-040", "PRD-044", "PRD-049", "PRD-051"),
     ),
     PrdCluster(
         title="Generated / Review Surfaces And Package Structure",

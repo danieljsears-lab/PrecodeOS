@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.5
-Last updated: 2026-08-04
+Document version: v0.1.6
+Last updated: 2026-09-06
 
 ## Purpose
 
@@ -141,6 +141,8 @@ Use these as prompts for judgment, not as a broad checklist:
 - Ask the Standards Taxonomy question when an agent uses a professional standard name without saying what it means for this bead, which owner protocol applies, and what proof is enough.
 
 "Production-grade" is a direction for judgment. It is not a certification claim. Passing this quality floor does not prove the software is production-ready, secure, compliant, scalable, or released.
+
+For an approved PRD with explicit architecture, API, data, security, codebase, or verification risk, use Progressive Production-Readiness Activation through Architecture Shaping and the existing PRD Handoff Readiness Packet. Strengthen only the owners activated by project facts. Do not turn the Engineering Quality floor into a comprehensive readiness checklist or use diagnostic output as proof.
 
 ## Forbidden Uses
 

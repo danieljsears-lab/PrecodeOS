@@ -9,8 +9,8 @@
 > CLASS: reference
 
 Creator: Dan Sears / Recode
-Document version: v0.1.23
-Last updated: 2026-08-04
+Document version: v0.1.24
+Last updated: 2026-09-06
 Companion to: `docs/PRECODE-USER-GUIDE.md`
 
 ---
@@ -33,7 +33,7 @@ If you are still exploring an idea before the project exists, use First PRD Walk
 
 First-product spine: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
 
-Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packet / Precode Ingestion Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only. Bring it through Local Source Intake before PRD shaping; human PRD approval is required before decomposition, bead activation, or implementation. Architecture Shaping sits between approved PRD and decomposition only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior; low-risk work can proceed with the skip reason recorded in PRD or bead notes.
+Before Claude Code writes code, the pre-repo goal is a reviewed Conviction Packet / Precode Ingestion Packet: user, painful before moment, better after moment, current workaround or evidence, primary hypothesis or learning target, strongest evidence, weakest assumption, MVP-ready first slice, not-yet list, smallest learning step, and recommended next Precode path. That packet is evidence only. Bring it through Local Source Intake before PRD shaping; human PRD approval is required before decomposition, bead activation, or implementation. Architecture Shaping sits between approved PRD and decomposition only when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior; Progressive Production-Readiness Activation then names only the existing owner files justified by explicit PRD facts. Low-risk work can proceed with the skip reason recorded in PRD or bead notes.
 
 When an idea should become future work, use the Plan Mode Candidate Craft Loop: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Claude Code, use Plan Mode. If you are in Codex, use `/plan`; in another agent, ask for an equivalent read-only planning mode. Plan Mode is required before developing a Candidate Queue entry and again before developing an implementation plan for a selected candidate. Neither output approves a PRD, chooses tasks, activates a bead, updates `tasks/todo.md`, or permits code.
 

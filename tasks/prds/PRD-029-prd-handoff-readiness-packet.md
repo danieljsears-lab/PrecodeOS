@@ -9,6 +9,7 @@ related_prds:
   - PRD-018
   - PRD-024
   - PRD-028
+  - PRD-051
 ---
 
 # PRD-029 -- PRD Handoff Readiness Packet
@@ -22,8 +23,8 @@ related_prds:
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.0
-Last updated: 2026-06-24
+Document version: v0.1.1
+Last updated: 2026-09-06
 
 ## State
 
@@ -31,14 +32,14 @@ Last updated: 2026-06-24
 - Status: `approved`
 - Owner: `user`
 - Risk level: `medium`
-- Last updated: `2026-06-24`
+- Last updated: `2026-09-06`
 
 ## Feature Link
 
 - Feature: `PRD Handoff Readiness Packet`
 - `FEATURES.md` status: `not compiled`
 - Originating maintainer roadmap candidate: `PRD Handoff Readiness Packet`
-- Related PRDs: `PRD-018`, `PRD-024`, `PRD-028`
+- Related PRDs: `PRD-018`, `PRD-024`, `PRD-028`, `PRD-051`
 
 ## Source Inputs
 
@@ -115,8 +116,8 @@ A PRD can be approved enough to discuss while still being weak for decomposition
 | `PRD-029-FR02` | The script must require `--prd` unless `--self-test` is used. | P0 | PRD path points to canonical Markdown. |
 | `PRD-029-FR03` | The script must support `--target general|decomposition|design|engineering|review`, defaulting to `general`. | P0 | Target changes recommendation language only. |
 | `PRD-029-FR04` | Output must include `status`, `warnings`, `details.packet`, and `generated_report_warning`. | P0 | JSON stdout. |
-| `PRD-029-FR05` | Packet fields must cover PRD status, requirement IDs, open questions, acceptance oracle coverage, candidate bead/decomposition readiness, proof expectations, risks/permissions, owner protocols, blockers, and recommended next safe action. | P0 | Generated evidence only. |
-| `PRD-029-FR06` | `--self-test` must cover ready PRD, unapproved PRD, missing acceptance oracle, unresolved implementation-changing questions, missing proof expectations, and forbidden authority wording. | P0 | No external dependencies. |
+| `PRD-029-FR05` | Packet fields must cover PRD status, requirement IDs, open questions, acceptance oracle coverage, candidate bead/decomposition readiness, proof expectations, risks/permissions, owner protocols, Progressive Production-Readiness Activation, blockers, and recommended next safe action. | P0 | Generated evidence only; activation is owned by PRD-051. |
+| `PRD-029-FR06` | `--self-test` must cover ready PRD, unapproved PRD, missing acceptance oracle, unresolved implementation-changing questions, missing proof expectations, forbidden authority wording, low-risk non-activation, owner-family activation, placeholder suppression, and medium/high-risk ambiguity. | P0 | Synthetic fixtures; no external dependencies or user-evidence claim. |
 | `PRD-029-FR07` | Generated PRD HTML must include a compact handoff readiness cue from existing Markdown PRD content. | P1 | Static review cue only. |
 | `PRD-029-FR08` | Protocols, prompts, user docs, package inventory, AI navigation, maintainer changelog, roadmap, roadmap journal, and generated surfaces must be updated. | P1 | Maintainer follow-through. |
 
@@ -142,8 +143,8 @@ A PRD can be approved enough to discuss while still being weak for decomposition
 | `PRD-029-FR01` / `PRD-029-FR04` | Default checker prints advisory JSON with `details.packet` and writes no files. | `python3 scripts/prd-handoff-readiness.py --prd tasks/prds/PRD-029-prd-handoff-readiness-packet.md` | Inspect JSON. | Current PRD shard | command output |
 | `PRD-029-FR02` | Checker refuses normal runs without `--prd`. | `python3 scripts/prd-handoff-readiness.py --self-test` | Inspect argparse behavior if needed. | Synthetic fixtures | command output |
 | `PRD-029-FR03` | Target values are accepted and only change advisory recommendation language. | `python3 scripts/prd-handoff-readiness.py --self-test` | Review target language. | Synthetic fixtures | command output |
-| `PRD-029-FR05` | Packet exposes status, requirements, open questions, acceptance coverage, decomposition readiness, proof, risk, protocols, blockers, and next safe action. | `python3 scripts/prd-handoff-readiness.py --self-test` | Inspect JSON shape. | Synthetic fixtures | command output |
-| `PRD-029-FR06` | Ready, unapproved, missing acceptance, unresolved questions, missing proof, and forbidden wording fixtures are covered. | `python3 scripts/prd-handoff-readiness.py --self-test` | Review fixture failures if any. | Synthetic PRDs | command output |
+| `PRD-029-FR05` | Packet exposes status, requirements, open questions, acceptance coverage, decomposition readiness, proof, risk, protocols, nested production-readiness activation, blockers, and next safe action. | `python3 scripts/prd-handoff-readiness.py --self-test` | Inspect JSON shape. | Synthetic fixtures | command output |
+| `PRD-029-FR06` | Baseline handoff and production-readiness activation fixtures are covered without changing top-level status solely because activation occurs. | `python3 scripts/prd-handoff-readiness.py --self-test` | Review fixture failures if any. | Synthetic PRDs | command output |
 | `PRD-029-FR07` | PRD HTML renders a compact readiness cue without write-back behavior. | `python3 scripts/prd-html.py --check` | Inspect generated PRD HTML. | Markdown PRDs | `tasks/prds-html/*.html` |
 | `PRD-029-FR08` | Docs, protocols, inventory, roadmap, changelog, and generated surfaces are current. | docs, inventory, PRD HTML, and roadmap checks | Boundary review. | Markdown docs | generated surfaces |
 | `PRD-029-SEC01` / `PRD-029-SEC02` | Packet/checker behavior stays local, redacted, and non-mutating. | `python3 scripts/prd-handoff-readiness.py --self-test` | Review forbidden uses and source handling. | Synthetic fixtures | command output |

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.66
-# Last updated: 2026-09-06
+# Version: v0.1.68
+# Last updated: 2026-09-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -4390,6 +4390,18 @@ def assert_build_attribution_contract(failures: list[dict[str, str]]) -> int:
 
 def assert_prd_handoff_readiness_contract(failures: list[dict[str, str]]) -> int:
     required_terms_by_path = {
+        Path("tasks/prds/PRD-051-progressive-production-readiness-activation.md"): [
+            "Progressive Production-Readiness Activation",
+            "production_readiness_activation",
+            "synthetic fixtures",
+            "not target-user evidence",
+        ],
+        Path("tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md"): [
+            "Progressive Production-Readiness Activation",
+            "Risk surface",
+            "ACCEPTANCE.md",
+            "does not inspect application code",
+        ],
         Path("tasks/prds/PRD-029-prd-handoff-readiness-packet.md"): [
             "PRD Handoff Readiness Packet",
             "scripts/prd-handoff-readiness.py",
@@ -4419,21 +4431,25 @@ def assert_prd_handoff_readiness_contract(failures: list[dict[str, str]]) -> int
         Path("tasks/reference/PROMPT-PATTERNS.md"): [
             "PRD Handoff Readiness Packet",
             "details.packet",
+            "details.packet.production_readiness_activation",
             "Do not approve the PRD",
         ],
         Path("docs/PRECODE-USER-GUIDE.md"): [
             "PRD Handoff Readiness Packet",
             "python3 scripts/prd-handoff-readiness.py",
+            "Progressive Production-Readiness Activation",
             "Treat the packet as generated evidence only",
         ],
         Path("docs/PRECODE-PACKAGE-FILE-INVENTORY.md"): [
             "PRD-029",
             "scripts/prd-handoff-readiness.py",
+            "production-readiness certification",
             "PRD handoff readiness cues",
         ],
         Path("llms.txt"): [
             "scripts/prd-handoff-readiness.py",
             "PRD Handoff Readiness Packet",
+            "Progressive Production-Readiness Activation",
             "do not approve PRDs",
         ],
     }
@@ -4455,6 +4471,7 @@ def assert_prd_handoff_readiness_contract(failures: list[dict[str, str]]) -> int
         "acceptance_oracle_coverage",
         "candidate_bead_or_decomposition_readiness",
         "proof_expectations",
+        "production_readiness_activation",
         "blockers",
         "recommended_next_safe_action",
     ]:
@@ -4466,7 +4483,25 @@ def assert_prd_handoff_readiness_contract(failures: list[dict[str, str]]) -> int
             failures.append({"scenario": "prd handoff forbidden use", "expected": term, "actual": forbidden})
     if "generated evidence only" not in str(payload.get("generated_report_warning")):
         failures.append({"scenario": "prd handoff generated warning", "expected": "generated evidence only", "actual": str(payload.get("generated_report_warning"))})
-    return len(required_terms_by_path) + 2
+    activation = packet.get("production_readiness_activation") or {}
+    for key in [
+        "status",
+        "triggering_risk_surfaces",
+        "source_signals",
+        "recommended_owner_files",
+        "missing_or_unclear_owner_impacts",
+        "verification_expectations",
+        "remaining_uncertainty",
+        "recommended_next_safe_action",
+        "advisory_only",
+    ]:
+        if key not in activation:
+            failures.append({"scenario": "production readiness activation key", "expected": key, "actual": "missing"})
+    if activation.get("advisory_only") is not True:
+        failures.append({"scenario": "production readiness activation boundary", "expected": "advisory_only true", "actual": str(activation)})
+    if "certify production readiness" not in str(payload.get("generated_report_warning")):
+        failures.append({"scenario": "production readiness generated warning", "expected": "certify production readiness", "actual": str(payload.get("generated_report_warning"))})
+    return len(required_terms_by_path) + 4
 
 
 def release_evidence_fixture(closeout_lines: list[str], **overrides: Any) -> BeadRecord:
@@ -5420,6 +5455,15 @@ def assert_manual_verification_pending_marker_contract(failures: list[dict[str, 
         "failed.",
     ]
     structured_clear = clear_cases[0]
+    structured_cases = [
+        structured_clear,
+        "Who checked, Dan. What was checked, legacy bead compatibility. Environment, local. Result, pass. Remaining uncertainty, none.",
+    ]
+    unstructured_cases = [
+        "The person who checked the dashboard reported that what was checked in the staging environment gave a good result, and we noted the remaining uncertainty about caching.",
+        "Who checked: Claude Code drove a real browser against every result rather than accepting a report of it.",
+        "Who checked: . What was checked: UI. Environment: local. Result: pass. Remaining uncertainty: none.",
+    ]
 
     for value in clear_cases:
         if not manual_verification_clear(value):
@@ -5427,9 +5471,13 @@ def assert_manual_verification_pending_marker_contract(failures: list[dict[str, 
     for value in blocked_cases:
         if manual_verification_clear(value):
             failures.append({"scenario": "manual verification pending markers blocked status", "expected": "blocked", "actual": value})
-    if not manual_verification_structured(structured_clear):
-        failures.append({"scenario": "manual verification structured with QA vocabulary", "expected": "structured", "actual": structured_clear})
-    return len(clear_cases) + len(blocked_cases) + 1
+    for value in structured_cases:
+        if not manual_verification_structured(value):
+            failures.append({"scenario": "manual verification structural labels accepted", "expected": "structured", "actual": value})
+    for value in unstructured_cases:
+        if manual_verification_structured(value):
+            failures.append({"scenario": "manual verification prose or empty label rejected", "expected": "unstructured", "actual": value})
+    return len(clear_cases) + len(blocked_cases) + len(structured_cases) + len(unstructured_cases)
 
 
 def assert_support_defect_hardening_contract(failures: list[dict[str, str]]) -> int:

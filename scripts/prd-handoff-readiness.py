@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.0
-# Last updated: 2026-06-24
+# Version: v0.2.0
+# Last updated: 2026-09-06
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -13,14 +13,138 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from os_parser import extract_contract_values, parse_sections, split_frontmatter
+from os_parser import colon_bullets, extract_contract_values, parse_sections, split_frontmatter
 
 ROOT = Path(__file__).resolve().parents[1]
 VALID_TARGETS = {"general", "decomposition", "design", "engineering", "review"}
 GENERATED_WARNING = (
     "PRD handoff readiness packets are generated evidence only; they do not approve PRDs, "
-    "choose tasks, activate beads, accept implementation, mutate external tools, or replace Markdown PRD authority."
+    "choose tasks, activate beads, accept implementation, certify production readiness, mutate external tools, "
+    "or replace Markdown PRD and owner-file authority."
 )
+
+INACTIVE_VALUES = {"", "none", "no", "not applicable", "not needed", "n/a", "na", "skipped", "tbd", "unknown"}
+
+OWNER_LABELS = {
+    "architecture": "ARCHITECTURE.md",
+    "api": "API.md",
+    "data": "DATA-MODELS.md",
+    "security": "SECURITY.md",
+    "codebase": "CODEBASE-GUIDE.md",
+    "verification": "ACCEPTANCE.md",
+}
+
+
+def meaningful(value: Any) -> bool:
+    normalized = str(value or "").strip().strip("`").strip().lower()
+    if normalized in INACTIVE_VALUES:
+        return False
+    return re.match(r"^(?:none|no|not applicable|not needed|n/a|na|skipped|tbd|unknown)(?:\b|[.;:])", normalized) is None
+
+
+def non_placeholder_rows(section: str) -> list[list[str]]:
+    _, rows = first_table(section)
+    return [row for row in rows if any(meaningful(cell) for cell in row)]
+
+
+def production_readiness_activation(frontmatter: dict[str, Any], sections: dict[str, str]) -> dict[str, Any]:
+    """Map explicit PRD risk and impact fields to existing owner files without certifying readiness."""
+    risk = colon_bullets(sections.get("Risk And Permission Model", ""))
+    impact = colon_bullets(sections.get("Architecture / Project Context Impact", ""))
+    risk_level = str(frontmatter.get("risk_level") or "").strip().lower()
+    surfaces: set[str] = set()
+    source_signals: set[str] = set()
+
+    sensitive_keys = {"auth", "payments", "user_data", "personal_data", "uploads", "secrets", "destructive_actions"}
+    for key in sensitive_keys:
+        if meaningful(risk.get(key)):
+            surfaces.add("security")
+            source_signals.add(f"Risk And Permission Model:{key}")
+
+    if meaningful(risk.get("external_services")):
+        surfaces.update({"architecture", "api", "security"})
+        source_signals.add("Risk And Permission Model:external_services")
+
+    if meaningful(risk.get("dependency_changes")) or meaningful(risk.get("dashboard_manual_steps")):
+        surfaces.add("architecture")
+        source_signals.add("Risk And Permission Model:tool_and_environment_boundary")
+
+    if str(impact.get("project_context_impact") or "").strip().lower() in {"minor", "material"}:
+        surfaces.add("architecture")
+        source_signals.add("Architecture / Project Context Impact:project_context_impact")
+    if str(impact.get("architecture_shaping") or "").strip().lower() in {"needed", "completed"}:
+        surfaces.add("architecture")
+        source_signals.add("Architecture / Project Context Impact:architecture_shaping")
+
+    impact_owner_keys = {
+        "architecture_authority_updates_needed": "architecture",
+        "route_api_authority_updates_needed": "api",
+        "schema_authority_updates_needed": "data",
+        "security_authority_updates_needed": "security",
+    }
+    for key, surface in impact_owner_keys.items():
+        if meaningful(impact.get(key)):
+            surfaces.add(surface)
+            source_signals.add(f"Architecture / Project Context Impact:{key}")
+
+    if non_placeholder_rows(sections.get("Module / Interface Candidates", "")):
+        surfaces.add("codebase")
+        source_signals.add("Module / Interface Candidates:declared_boundary")
+
+    acceptance = acceptance_summary(sections, requirement_ids(sections.get("Requirements", "")))
+    if surfaces:
+        surfaces.add("verification")
+        source_signals.add("Acceptance Oracle Matrix:risk_triggered_proof")
+
+    missing: list[str] = []
+    impact_keys_by_surface = {
+        "architecture": "architecture_authority_updates_needed",
+        "api": "route_api_authority_updates_needed",
+        "data": "schema_authority_updates_needed",
+        "security": "security_authority_updates_needed",
+    }
+    for surface, key in impact_keys_by_surface.items():
+        if surface in surfaces and not meaningful(impact.get(key)):
+            missing.append(f"{OWNER_LABELS[surface]} impact is missing or unclear")
+    if "verification" in surfaces and (not acceptance["present"] or not acceptance["has_proof_columns"]):
+        missing.append("ACCEPTANCE.md evidence mapping is missing or unclear")
+
+    if surfaces:
+        status = "activated"
+    elif risk_level in {"medium", "high"}:
+        status = "needs_clarification"
+        missing.append("medium/high-risk PRD has no explicit production-readiness owner signals")
+    else:
+        status = "not_triggered"
+
+    expectations: list[str] = []
+    if surfaces:
+        expectations.append("record observable behavior, evidence lanes, and remaining uncertainty in ACCEPTANCE.md")
+    if surfaces & {"api", "data", "security"}:
+        expectations.append("use integration or structured manual evidence for connected or sensitive boundaries")
+    if surfaces & {"architecture", "data", "security"}:
+        expectations.append("name rollback or blocked escape before irreversible or production-facing action")
+
+    if status == "not_triggered":
+        next_action = "continue normal PRD handoff; record the low-risk Architecture Shaping skip reason before decomposition"
+    elif missing:
+        next_action = "review the named owner impacts and unresolved gaps before risky decomposition; do not treat this packet as approval"
+    else:
+        next_action = "promote reviewed durable decisions into the named owner files before risky decomposition"
+
+    return {
+        "status": status,
+        "triggering_risk_surfaces": sorted(surfaces),
+        "source_signals": sorted(source_signals),
+        "recommended_owner_files": [OWNER_LABELS[surface] for surface in OWNER_LABELS if surface in surfaces],
+        "missing_or_unclear_owner_impacts": sorted(set(missing)),
+        "verification_expectations": expectations,
+        "remaining_uncertainty": [
+            "This routing is derived from explicit PRD fields, not application-code inspection or external production evidence."
+        ],
+        "recommended_next_safe_action": next_action,
+        "advisory_only": True,
+    }
 
 
 def read_prd(path: Path) -> tuple[dict[str, Any], dict[str, str], dict[str, str], str]:
@@ -176,13 +300,16 @@ def build_payload(path: Path, target: str = "general") -> dict[str, Any]:
         },
         "risks_and_permissions": "present" if sections.get("Risk And Permission Model", "").strip() else "missing",
         "owner_protocols": protocols,
+        "production_readiness_activation": production_readiness_activation(frontmatter, sections),
         "blockers": blockers,
         "recommended_next_safe_action": next_safe_action(status, target, blockers),
         "forbidden_uses": [
             "PRD approval",
+            "owner-file edit approval",
             "bead activation",
             "task selection",
             "implementation acceptance",
+            "production-readiness certification",
             "external mutation",
             "export automation",
             "MCP behavior",
@@ -236,6 +363,121 @@ def self_test() -> dict[str, Any]:
             "target": "general",
             "warning": "forbidden authority wording",
         },
+        "low-risk placeholders do not activate": {
+            "status": "pass",
+            "text": fixture_prd(
+                status="approved",
+                risk_level="low",
+                extra="Background prose mentions payments, APIs, migrations, secrets, and production without declaring a structured risk.",
+            ),
+            "target": "general",
+            "activation": "not_triggered",
+            "owners": [],
+        },
+        "medium-risk ambiguity needs clarification": {
+            "status": "pass",
+            "text": fixture_prd(status="approved", risk_level="medium"),
+            "target": "general",
+            "activation": "needs_clarification",
+            "owners": [],
+        },
+        "architecture owner activates": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                architecture_impact="- Project context impact: material\n- Architecture Shaping: needed\n- Architecture authority updates needed: system boundary\n- Route/API authority updates needed: none\n- Schema authority updates needed: none\n- Security authority updates needed: none",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["ARCHITECTURE.md", "ACCEPTANCE.md"],
+        },
+        "api owner activates": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                architecture_impact="- Project context impact: none\n- Architecture Shaping: skipped\n- Architecture authority updates needed: none\n- Route/API authority updates needed: webhook contract\n- Schema authority updates needed: none\n- Security authority updates needed: none",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["API.md", "ACCEPTANCE.md"],
+        },
+        "data owner activates": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                architecture_impact="- Project context impact: none\n- Architecture Shaping: skipped\n- Architecture authority updates needed: none\n- Route/API authority updates needed: none\n- Schema authority updates needed: migration boundary\n- Security authority updates needed: none",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["DATA-MODELS.md", "ACCEPTANCE.md"],
+        },
+        "security owner activates": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                risk_model="- Auth: role boundary",
+                architecture_impact="- Project context impact: none\n- Architecture Shaping: skipped\n- Architecture authority updates needed: none\n- Route/API authority updates needed: none\n- Schema authority updates needed: none\n- Security authority updates needed: access policy",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["SECURITY.md", "ACCEPTANCE.md"],
+        },
+        "codebase owner activates": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                module_candidates="| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |\n|---|---|---|---|---|\n| Adapter | one caller | local boundary | static | CODEBASE-GUIDE.md |",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["CODEBASE-GUIDE.md", "ACCEPTANCE.md"],
+        },
+        "verification owner follows activated risk": {
+            "status": "pass",
+            "text": fixture_prd(
+                risk_level="medium",
+                architecture_impact="- Project context impact: none\n- Architecture Shaping: skipped\n- Architecture authority updates needed: none\n- Route/API authority updates needed: API contract\n- Schema authority updates needed: none\n- Security authority updates needed: none",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": ["API.md", "ACCEPTANCE.md"],
+        },
+        "all six owners activate from explicit fields": {
+            "status": "pass",
+            "text": fixture_prd(
+                status="approved",
+                risk_level="high",
+                risk_model="""### Sensitive Surfaces
+
+- Auth: role-gated account access
+- Payments:
+- User data: private account records
+- Uploads:
+- External services: fulfillment provider
+- Secrets: SYNTHETIC-SECRET-MUST-NOT-ECHO
+- Destructive actions: migration rollback
+
+### Human Approval Gates
+
+- Approval required before: external mutation
+""",
+                architecture_impact="""- Project context impact: material
+- Architecture Shaping: completed
+- Architecture authority updates needed: state and recovery boundary
+- Route/API authority updates needed: webhook contract
+- Schema authority updates needed: migration and retention
+- Security authority updates needed: access and secret boundary
+""",
+                module_candidates="""| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |
+|---|---|---|---|---|
+| Fulfillment adapter | Approved calls only | Isolate provider behavior | integration | CODEBASE-GUIDE.md |
+""",
+            ),
+            "target": "general",
+            "activation": "activated",
+            "owners": list(OWNER_LABELS.values()),
+            "not_echo": "SYNTHETIC-SECRET-MUST-NOT-ECHO",
+        },
     }
     failures: list[dict[str, str]] = []
     with tempfile.TemporaryDirectory() as tmp:
@@ -253,8 +495,39 @@ def self_test() -> dict[str, Any]:
             for key in ["prd_status", "requirement_ids", "acceptance_oracle_coverage", "blockers", "recommended_next_safe_action"]:
                 if key not in packet:
                     failures.append({"scenario": f"{name} packet key", "expected": key, "actual": "missing"})
+            activation = packet.get("production_readiness_activation") or {}
+            for key in [
+                "status",
+                "triggering_risk_surfaces",
+                "recommended_owner_files",
+                "missing_or_unclear_owner_impacts",
+                "verification_expectations",
+                "remaining_uncertainty",
+                "recommended_next_safe_action",
+                "advisory_only",
+            ]:
+                if key not in activation:
+                    failures.append({"scenario": f"{name} activation key", "expected": key, "actual": "missing"})
+            expected_activation = fixture.get("activation")
+            if expected_activation and activation.get("status") != expected_activation:
+                failures.append({"scenario": f"{name} activation", "expected": str(expected_activation), "actual": str(activation.get("status"))})
+            expected_owners = fixture.get("owners")
+            if expected_owners is not None and activation.get("recommended_owner_files") != expected_owners:
+                failures.append({"scenario": f"{name} owners", "expected": str(expected_owners), "actual": str(activation.get("recommended_owner_files"))})
+            if activation.get("advisory_only") is not True:
+                failures.append({"scenario": f"{name} advisory", "expected": "true", "actual": str(activation.get("advisory_only"))})
+            not_echo = fixture.get("not_echo")
+            if not_echo and str(not_echo) in json.dumps(payload):
+                failures.append({"scenario": f"{name} sensitive echo", "expected": "redacted", "actual": str(not_echo)})
             forbidden = " ".join(packet.get("forbidden_uses") or [])
-            for term in ["PRD approval", "bead activation", "implementation acceptance", "MCP behavior"]:
+            for term in [
+                "PRD approval",
+                "owner-file edit approval",
+                "bead activation",
+                "implementation acceptance",
+                "production-readiness certification",
+                "MCP behavior",
+            ]:
                 if term not in forbidden:
                     failures.append({"scenario": f"{name} forbidden uses", "expected": term, "actual": forbidden})
 
@@ -273,6 +546,10 @@ def fixture_prd(
     acceptance: bool = True,
     acceptance_headers: str = "| Requirement ID | Expected behavior | Automated check | Manual check | Evidence location |\n|---|---|---|---|---|",
     open_questions: str = "| Question | Blocking? |\n|---|---|\n| None. | No |",
+    risk_level: str = "low",
+    risk_model: str = "- Approval required before: none",
+    architecture_impact: str = "- Project context impact: none\n- Architecture Shaping: skipped\n- Architecture Shaping skip reason: low-risk fixture\n- Architecture authority updates needed: none\n- Route/API authority updates needed: none\n- Schema authority updates needed: none\n- Security authority updates needed: none",
+    module_candidates: str = "| Candidate module or boundary | Public interface / caller expectation | Behavior contract | Test boundary | Owner file |\n|---|---|---|---|---|",
     extra: str = "",
 ) -> str:
     acceptance_section = ""
@@ -285,7 +562,7 @@ def fixture_prd(
     return f"""---
 prd_id: PRD-999
 status: {status}
-risk_level: medium
+risk_level: {risk_level}
 feature_link: Fixture
 ---
 
@@ -313,7 +590,15 @@ Last updated: 2026-06-24
 {acceptance_section}
 ## Risk And Permission Model
 
-- Approval required before implementation.
+{risk_model}
+
+## Architecture / Project Context Impact
+
+{architecture_impact}
+
+## Module / Interface Candidates
+
+{module_candidates}
 
 ## Agent Context Contract
 

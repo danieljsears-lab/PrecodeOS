@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.48
-# Last updated: 2026-08-18
+# Version: v0.1.49
+# Last updated: 2026-09-09
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -700,8 +700,12 @@ def manual_verification_structured(value: str) -> bool:
         return False
     if "not applicable" in normalized or normalized.strip() == "n/a":
         return True
+    normalized = re.sub(r"^\s*manual verification\s*:\s*", "", normalized, count=1)
     required = ("who checked", "what was checked", "environment", "result", "remaining uncertainty")
-    return all(field in normalized for field in required)
+    return all(
+        re.search(rf"(?:^|[.;\n])\s*{re.escape(field)}\s*[:,]\s*(?![.;\n])\S", normalized, re.MULTILINE)
+        for field in required
+    )
 
 
 def reversal_trigger_present(text: str) -> bool:
