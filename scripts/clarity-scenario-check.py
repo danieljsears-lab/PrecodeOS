@@ -34,6 +34,7 @@ from os_compiler import (
     reversal_workflow_quality,
     reversal_trigger_present,
     run_contract_quality,
+    path_matches_scope,
     session_friction_review,
     stable_fix_eligibility,
     team_collaboration_preview,
@@ -5718,6 +5719,31 @@ def passing_checks(current: BeadRecord) -> dict[tuple[str, str], dict[str, Any]]
 def main() -> int:
     failures: list[dict[str, str]] = []
     loop_health = load_loop_health_module()
+
+    scope_cases = [
+        ("../frontend/app/api/pias3d/[...path]/route.ts", "../frontend/app/api/pias3d/[...path]/route.ts", True),
+        ("../frontend/app/api/pias/jobs/[jobId]/route.ts", "../frontend/app/api/pias/jobs/[jobId]/route.ts", True),
+        ("../frontend/app/api/pias/jobs/[jobId]/pools/[poolId]/route.ts", "../frontend/app/api/pias/jobs/[jobId]/pools/[poolId]/route.ts", True),
+        ("src/components/portal.tsx", "src/components/portal.tsx", True),
+        ("src/components/portal.tsx", "src", True),
+        ("src/abc.ts", "src/[abc]*.ts", True),
+        ("src/xyz.ts", "src/[abc]*.ts", False),
+        ("src/components/portal.tsx", "src/[abc]*.ts", False),
+    ]
+    for path, allowed, expected in scope_cases:
+        if path_matches_scope(path, allowed) is not expected:
+            failures.append({
+                "scenario": f"path scope matching: {path} against {allowed}",
+                "expected": str(expected),
+                "actual": str(path_matches_scope(path, allowed)),
+            })
+    for path, allowed, expected in scope_cases[:3]:
+        if path_matches_scope(allowed, path) is not expected:
+            failures.append({
+                "scenario": f"path scope reverse matching: {allowed} against {path}",
+                "expected": str(expected),
+                "actual": str(path_matches_scope(allowed, path)),
+            })
 
     next_scenarios = [
         ("missing bead", (next_payload(None)["details"] or {}).get("user_decision"), "repair state"),

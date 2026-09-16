@@ -203,9 +203,11 @@ def path_matches_scope(path: str, allowed: str) -> bool:
     cleaned_allowed = allowed.strip().strip('"').rstrip("/")
     if not cleaned_path or not cleaned_allowed:
         return False
+    if cleaned_path == cleaned_allowed or cleaned_path.startswith(f"{cleaned_allowed}/"):
+        return True
     if any(char in cleaned_allowed for char in "*?[]"):
         return fnmatch(cleaned_path, cleaned_allowed)
-    return cleaned_path == cleaned_allowed or cleaned_path.startswith(f"{cleaned_allowed}/")
+    return False
 
 
 def generated_guardrail_allowed(path: str) -> bool:
