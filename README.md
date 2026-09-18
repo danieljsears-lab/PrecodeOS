@@ -1,211 +1,189 @@
 # PrecodeOS
 <!-- ANCHOR: readme -->
 
-> AUTHORITY: Public GitHub landing page, beginner-first orientation, quickstart, support boundary, and curated navigation for PrecodeOS.
-> NOT_AUTHORITY: Active memory, task selection, PRD approval, bead activation, generated evidence, implementation status, package update permission, or maintainer-private roadmap authority.
-> LOAD_WHEN: A user, contributor, reviewer, or AI assistant needs the public package compass before choosing a more specific guide or protocol.
+> AUTHORITY: Public GitHub landing page, public positioning, beginner orientation, quickstart, and curated navigation for PrecodeOS.
+> NOT_AUTHORITY: Active project state, task selection, product approval, implementation status, generated evidence, or package-release authority.
 > CLASS: reference
 
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
-## Start Here
+## Build With AI Without Losing The Plot
 
-PrecodeOS is a repo-native control layer that helps people shape ideas and develop software with AI coding agents while keeping intent, scope, evidence, approval, and recovery visible to the human builder.
+AI coding agents make the first mile of software creation dramatically easier: more people can describe an idea and see prototype software appear. It's fast and easy, but not durable. The second mile to production-grade is a lot harder. That is where intent, scope, proof, maintainability, and recovery begin to drift.
 
-Use one route:
+PrecodeOS is an anti-drift operating system for AI-assisted agentic building. It encodes a practical set of proven product, software engineering, quality, collaboration, and agent-operating patterns into one opinionated, repo-native system.
 
-1. Not installed: open [Guided Setup](docs/PRECODE-GUIDED-SETUP.md).
-2. Installed: open the [Daily Cockpit](docs/PRECODE-DAILY-COCKPIT.md).
-3. Rough idea: in the Daily Cockpit, say `Ideation: use First PRD Walkthrough for my rough idea.`
-4. Broken or confusing state: open [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) or say `I am stuck, help me.`
+Precode keeps intent, scope, decisions, evidence, approval, and recovery visible while people and AI agents turn ideas into working software. It is designed as an explicit bridge between nontechnical and semitechnical builders and professional software engineering patterns and practices.
 
-`README.md` is the compass. Guided Setup owns setup. Daily Cockpit is the normal operating surface. User Guide is the annex. Troubleshooting owns symptom lookup. Do not read them as competing start pages.
+The promise is human agency and dependable building. Accessibility, maintainability, and unification follow from that operating model.
 
-## V1 Support Boundary
+## What PrecodeOS Is
 
-The September 2026 v1 self-serve claim is deliberately bounded to **installation, validation, orientation, and next-safe-action identification**. PrecodeOS supports production-readiness governance and professional output quality; it does not guarantee that an unassisted user can complete the full idea-to-production journey, and deployment or operations remain optional ecosystem capabilities.
+PrecodeOS is a repo-native control layer around the coding agent that supports the builder and the project. Important project truth lives in readable files inside the repository. Structured workflows and small scripts help the agent and builder understand:
 
-| Surface | V1 position | Evidence boundary |
-|---|---|---|
-| Audience | Nontechnical and semi-technical AI-assisted builders | Nontechnical no-help readiness remains gated by external sessions |
-| Platform | macOS certified | Windows remains preview until platform-specific setup and recovery testing |
-| Acquisition | npm primary | GitHub/local Python is the transparent advanced fallback |
-| Codex | Certified for launch | Conformance-certified; external no-help result pending |
-| Claude Code | Certified for launch | Conformance-certified; external no-help result pending |
-| Cursor | Certified for launch | Conformance-certified; external usability evidence pending |
-| Gemini | Certified for launch | Conformance-certified; external usability evidence pending |
+- what the project is trying to achieve;
+- what is active now;
+- what the agent may change;
+- what evidence is needed;
+- what requires human approval; and
+- how to recover when the work becomes unclear.
 
-Certification means the Precode instruction, approval, validation, recovery, and output contract conforms on the named host. It does not claim equal usability evidence across hosts.
+“OS” describes the operating layer around AI-assisted software work. PrecodeOS is not a replacement operating system, an application runtime, or an autonomous agent.
 
-## Quickstart
+Precode encodes proven engineering practice into reusable structures and workflows so those practices are available when they matter, including builders with strong ideas, domain knowledge, and motivation who have not previously had technical leverage. It does not remove the need for technical judgment, testing, security review, deployment expertise, or operational responsibility.
 
-Give a certified coding agent this prompt from the project you want to use:
+## Why It Exists
+
+Code generation is becoming cheap and fast. Human judgment, verification, direction, and reliable recovery are becoming the scarce controls. The hardest problem in AI-assisted building is whether the project can remain understandable, bounded, provable, and recoverable as the agent moves quickly.
+
+Without an operating model like Precode:
+
+- intent gets lost in chat conversations;
+- scope expands through momentum and invisible model-made "additions";
+- stale context competes with current decisions;
+- a confident LLM answer gets mistaken for evidence;
+- a prototype quietly becomes a durable system; and
+- the builder loses the ability to stop or recover.
+
+Precode gives the project a durable structure for moving from an idea to a reviewed, maintainable slice of software without handing ownership to the agent.
+
+## How Precode Works
 
 ```text
-Set up PrecodeOS in this project using the official npm package.
-
-Identify and confirm this project folder as the target. Run:
-npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
-
-Explain the package version, support status, prerequisites, target classification, proposed actions, approval IDs, validation requirements, recovery route, next safe action, and stop reason in plain English.
-
-Do not mutate the target until I approve named current actions. Apply only the approved SP-ID or UP-ID values. Treat owner-file adaptation as a separate approval. Validate, route me to the First Session Card or Daily Cockpit, and stop before product work.
+Shape the work
+        ↓
+Prepare the context
+        ↓
+Govern execution
+        ↓
+Establish trust
+        ↓
+Sustain, recover, or continue
 ```
 
-Preview is read-only. The agent may propose this apply command only after showing current actions and receiving explicit approval:
+### 1. Shape The Work
 
-```bash
-npx @precodeos/precodeos fast-setup-apply --target <target-project-root> --approve-action <SP-ID|UP-ID>
-```
+**Plain English:** Decide what is worth building before implementation outruns intent.
 
-The npm entry is a transparent Node facade over the package's Python setup authority. It has no postinstall mutation, does not overwrite existing paths, does not adapt owner files, and does not install hooks, change CI, run app code, select tasks, approve PRDs, activate beads, or approve product work. A generated `ready_for_orientation` result, when available, is evidence only.
+Precode supports discovery, hypotheses, shared language, product briefs, PRDs, acceptance criteria, and risk-sensitive architecture shaping. It helps separate a rough idea, a learning question, an approved product direction, and an executable slice.
 
-For npm failure or advanced inspection, use the [GitHub and local Python fallback in Guided Setup](docs/PRECODE-GUIDED-SETUP.md#advanced-github-and-python-fallback). Do not make GitHub cloning or Python command knowledge a beginner prerequisite.
+### 2. Prepare The Context
 
-## What It Does
+**Plain English:** Give the agent the right information without asking it to remember everything.
 
-PrecodeOS gives an AI-assisted project a durable, inspectable operating model:
+Precode uses repo-native context, tiny active memory, named owner files, source intake, workflow routing, and proven prompt patterns. Durable facts have a home. The current session loads only the context it needs.
 
-- tiny active memory across `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`
-- one active bead with bounded files in play
-- one owner per durable product, architecture, API, data, security, or acceptance fact
-- explicit human approval at setup, product, review, transition, release, and risky-action gates
-- checks and manual verification over agent confidence
-- recovery-before-momentum behavior
-- generated output as evidence, never authority
-- thin tool adapters over one shared core
+### 3. Govern Execution
 
-It is intentionally not an agent runtime, dashboard, sandbox, hosted control plane, registry, marketplace, package manager, telemetry system, or role-agent framework.
+**Plain English:** Let the agent move quickly inside a boundary the builder can understand.
+
+An approved bead is one bounded unit of work with scope, owner files, files in play, checks, stop conditions, and closeout evidence. A work graph preserves relationships among intent, decisions, dependencies, work, proof, blockers, and follow-up. Adaptive depth adds more planning and review when risk warrants it; bounded loops keep iteration stoppable.
+
+### 4. Establish Trust
+
+**Plain English:** Replace “the agent says it is done” with observable evidence and human review.
+
+Precode connects implementation to recorded checks, manual verification, review decisions, acceptance, and explicit approval at meaningful transitions. Generated reports can summarize state, but they do not become authority or approve work by themselves.
+
+### 5. Sustain The Project
+
+**Plain English:** Keep the project understandable after the current session ends.
+
+Handoff, collaboration, recovery, state repair, release-readiness preparation, tool-neutral adapters, and extension boundaries help the project continue across people, sessions, branches, and coding agents.
+
+## The Engineering Patterns Precode Brings Together
+
+Precode turns mature product and engineering practices into lightweight repo-native capabilities and habits that a builder and agent can use together:
+
+| Pattern | What it means in Precode |
+|---|---|
+| Product engineering | Clarify users, outcomes, assumptions, evidence, and the smallest valuable slice. |
+| Software engineering | Shape architecture, data, APIs, security, acceptance, and maintainability when risk warrants it. |
+| Prompt engineering | Improve the instruction and govern what that instruction may cause through context, scope, proof, and approval. |
+| Context engineering | Give the agent the right repo-owned information without asking it to remember everything. |
+| Harness engineering | Use protocols, scripts, adapters, and checks to shape what the agent can inspect, propose, verify, and report. |
+| Loop engineering      | Turn approved intent into a bounded execution contract (a bead), then structure iteration as build, check, review, and recovery. |
+| Work graph engineering   | Preserve relationships among intent, decisions, dependencies, beads, checks, and follow-up. |
+| Quality engineering | Tie completion claims to checks, verification, review, and known uncertainty. |
+| Collaboration and compound engineering | Make ownership, handoffs, re-entry, reusable learning, and cross-tool continuity visible. |
+| Safety and control engineering | Keep authority explicit and preserve human approval at consequential transitions. |
+
+These structures make professional practices easier to use. They do not make expertise unnecessary.
+
+## How Precode Compares
+
+Precode complements several approaches builders may already know:
+
+| Approach | What it provides | What Precode adds or integrates |
+|---|---|---|
+| Vibe coding | Fast, conversational exploration | A path from exploration to durable, bounded, reviewable work. |
+| Coding agents | Code generation, editing, and iteration | Project context, authority, scope, proof, approval, and recovery. |
+| Traditional SDLC | Mature planning, quality, and delivery practices | A lighter, repo-native form adapted to AI speed and individual builders. |
+| Project management | Work visibility, assignment, and prioritization | Product-to-code traceability, execution contracts, evidence, and recovery. |
+| Prompt engineering | Better instructions and model outputs | A governed context and workflow around the prompt. |
+| Agent frameworks | Agent coordination, tools, and automation | Human-owned product judgment, durable project authority, and bounded execution. |
+
+PrecodeOS is the repo-owned control layer around whatever agent you run, not another competing agent.
+
+## What It Makes Possible
+
+| Dimension | Builder outcome |
+|---|---|
+| Intent | Important decisions survive beyond the conversation that produced them. |
+| Context | The agent can work from current, inspectable project truth. |
+| Language | Builder language, product language, and implementation language stay aligned. |
+| Work graph | Dependencies, evidence, blockers, and follow-up remain visible. |
+| Execution | Work happens in one bounded, reviewable slice at a time. |
+| Iteration | The agent can try, check, stop, and recover without open-ended drift. |
+| Proof | Completion is connected to evidence rather than confidence alone. |
+| Control | The builder remains the owner of intent, risk, approval, and acceptance. |
+| Recovery | Confusion becomes a route to inspection and repair instead of more guessing. |
+| Portability | The operating model persists across sessions, collaborators, and coding agents. |
 
 ## Who It Is For
 
-PrecodeOS is for builders who can open a project folder and use a certified coding agent but should not need Git internals, Python knowledge, shell fluency, or approval-ID interpretation.
+PrecodeOS is for:
 
-Use it when work is durable, user-facing, sensitive, multi-file, hard to prove, or likely to span sessions. Skip it for a throwaway sketch where mistakes are cheap and nothing needs durable ownership.
+- nontechnical builders who want to use AI coding tools without becoming an approval machine for work they cannot understand;
+- semi-technical builders who want professional structure without adopting a heavyweight process;
+- technical builders who want traceability, bounded execution, evidence, and recovery across sessions and tools; and
+- reviewers and collaborators who need to see what was intended, what changed, what was proven, and what remains uncertain.
 
-The evidence does not yet support an unqualified “creates production-grade software” claim. The narrower claim is useful and defensible: PrecodeOS supplies production-readiness governance and professional-quality decision, scope, proof, review, and recovery surfaces. The project still needs its own implementation, testing, security, deployment, and operational competence.
+For a throwaway sketch where mistakes are cheap and nothing needs to survive, the full model may be unnecessary. Use more structure when the work is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited.
 
-## Core Invariants
+## Try PrecodeOS
 
-- **Tiny active memory:** load only what the current session needs.
-- **One active unit:** a bead, not chat momentum, defines current work.
-- **One owner per fact:** durable truth has a named home.
-- **Design judgment before code:** shape intent and acceptance before implementation.
-- **Evidence over confidence:** recorded checks and manual verification support completion claims.
-- **Generated output is not authority:** reports summarize; they do not decide.
-- **Human approval at transitions:** agents propose; humans approve.
-- **Tool-neutral core:** adapters translate the same operating model.
+The npm entry is the shortest setup route. From the project you want to use:
 
-## Capability Snapshot
-
-| Builder job | Capability | V1 evidence posture |
-|---|---|---|
-| Adopt | Agent-operated npm preview/apply, target classification, Existing Repo Intake, recovery | Launch-critical |
-| Orient | First Session Card, Daily Cockpit, tiny active memory, next-step guidance | Launch-critical |
-| Shape | Idea coach, Product Brief, Conviction Packet, Local Source Intake | Structurally present; full self-serve spine not demonstrated |
-| Specify | PRDs, acceptance, conditional architecture shaping, owner files | Stronger for semi-technical builders |
-| Build | One active bead, files-in-play guardrails, recorded tool/check evidence | Requires project-specific technical capability |
-| Review | Review lanes, quality guidance, release-readiness evidence, human gates | Advisory; does not accept or release |
-| Recover | Troubleshooting, state checks, checkpoints, blocked escape paths | Core product promise |
-
-## First Product Spine
-
-```text
-Idea -> Brief -> Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close
+```bash
+npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 ```
 
-`Owner Files?` is the reviewed promotion gate for stable facts. `Architecture?` is conditional for auth, data, APIs, integrations, migrations, external services, or other meaningful technical risk. Six setup-and-orientation sessions do not prove this complete spine; it requires separate validation.
+The preview shows what setup proposes before changes are applied. Review the result, then follow [Guided Setup](docs/PRECODE-GUIDED-SETUP.md) for the complete installation, validation, and orientation route.
 
-## Project Map
-
-| Area | Location |
-|---|---|
-| Active memory | `AGENT.md`, `DECISIONS.md`, `tasks/todo.md` |
-| Owner truth | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` |
-| Work | `CANDIDATE-QUEUE.md`, `tasks/prds/`, `tasks/beads/`, `tasks/templates/` |
-| Protocols and prompts | `tasks/reference/` |
-| Agent compatibility | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `adapters/` |
-| Validation and evidence | `scripts/`, `logs/`, generated health and progress reports |
-
-The npm package excludes PrecodeOS's live `tasks/todo.md`, package-development PRDs, package-development beads, and generated PRD HTML. It includes a clean todo template instead. Package-development state remains in the public source repository for transparency but is not distributed as target-project state.
-
-## Docs Compass
+## Where To Go Next
 
 | Need | Open |
 |---|---|
 | Install or recover setup | [Guided Setup](docs/PRECODE-GUIDED-SETUP.md) |
-| Run daily work | [Daily Cockpit](docs/PRECODE-DAILY-COCKPIT.md) |
-| Use a one-page first session | [First Session Card](tasks/templates/PRECODE-FIRST-SESSION-CARD.md) |
-| Get deeper operating guidance | [User Guide](docs/PRECODE-USER-GUIDE.md) |
-| Understand the model | [OS README](docs/PRECODE-OS-README.md) |
-| Learn the software-building bridge | [How To Build Software With Precode](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
-| Diagnose a symptom | [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) |
-| Find an owner or file contract | [Package File Inventory](docs/PRECODE-PACKAGE-FILE-INVENTORY.md) |
-| Browse prompts | [Prompt Patterns](tasks/reference/PROMPT-PATTERNS.md) |
-| Select one workflow | [Workflow Selection Protocol](tasks/reference/WORKFLOW-SELECTION-PROTOCOL.md) |
+| Begin daily work | [Daily Cockpit](docs/PRECODE-DAILY-COCKPIT.md) |
+| Understand the operating model | [PrecodeOS Explainer](docs/PRECODE-OS-README.md) |
+| Learn the software-building workflow | [How To Build Software With Precode](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
+| Diagnose a confusing state | [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) |
 
-Do not begin by browsing every protocol. Start from the route that matches the current moment and load one deeper surface only when needed.
+## License And Provenance
 
-## For Agents
-
-Load `AGENT.md`, `DECISIONS.md`, and `tasks/todo.md`, then explain the active bead, primary authority, files in play, checks, and stop conditions before editing.
-
-Treat generated reports as evidence. Before sensitive, destructive, external, dependency, or broad cleanup work, name the access level and ask for explicit approval. If setup or state is confusing, route to Guided Setup or Troubleshooting instead of guessing.
-
-## For Reviewers And Contributors
-
-Useful checks:
-
-```bash
-bash scripts/validate-memory.sh
-python3 scripts/version-check.py
-python3 scripts/file-inventory.py --check
-python3 scripts/bootstrap-check.py --self-test
-python3 scripts/adapter-conformance-check.py
-python3 scripts/npm-package-check.py
-python3 scripts/package-knowledge-lint.py --check
-python3 scripts/clarity-scenario-check.py
-```
-
-See [Contributing](CONTRIBUTING.md), [Governance](GOVERNANCE.md), and [Trademark](TRADEMARK.md). Generated checks support review; they do not approve changes, merge, release, or publishing.
-
-## FAQ
-
-### Is PrecodeOS an app?
-
-No. It is a repo-native package of Markdown authority files, task contracts, scripts, generated evidence rules, and thin adapters.
-
-### Does it replace the coding agent?
-
-No. The agent executes scoped work. PrecodeOS keeps durable intent, proof, approval, and recovery visible across tools and sessions.
-
-### What is a bead?
-
-A bead is one bounded unit of work with scope, owner files, checks, stop conditions, and closeout evidence.
-
-### Are generated reports authority?
-
-No. They are evidence and navigation only.
-
-### Is v1 ready for nontechnical self-serve use?
-
-Not yet proven. The launch gate requires three of three safe no-help completions for that persona. If only semi-technical participants pass, v1 will narrow its self-serve audience and keep nontechnical adoption in preview or guided use.
-
-## Release Status
-
-The package remains prerelease until the September launch gates pass. Safety, authority integrity, package integrity, truthful claims, orientation, and recovery are pass/fail gates; roadmap scores cannot compensate for failure.
-
-## License, Trademark, And Provenance
-
-PrecodeOS is open source under Apache License 2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and [TRADEMARK.md](TRADEMARK.md).
+PrecodeOS is open source under the Apache License 2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and [TRADEMARK.md](TRADEMARK.md).
 
 Created by Dan Sears / Recode. Canonical site: <https://www.precodeos.org>.
+
+PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. All trademark and brand rights are reserved. See [TRADEMARK.md](TRADEMARK.md) for brand-use guidance.
 
 ## Document Metadata
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.2.0
-Last updated: 2026-09-06
+Document version: v0.3.0
+Last updated: 2026-09-17
