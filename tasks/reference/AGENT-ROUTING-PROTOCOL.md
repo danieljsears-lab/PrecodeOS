@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.8
-Last updated: 2026-08-06
+Document version: v0.1.9
+Last updated: 2026-09-20
 
 ## Purpose
 
@@ -40,6 +40,8 @@ Use the cheapest tier that can safely complete the current work.
 Escalate only when the current tier cannot safely decide. De-escalate when the next step becomes mechanical.
 
 ## Routing Rules
+
+Before choosing a model, delegation path, or tool route for software work, apply the Engineering Quality Standards Protocol's Engineering Judgment Defaults: keep the intended outcome and smallest useful change visible, identify the owner surface and proof path, and notice risk triggers. Route revealed architecture, security, data, dependency, deployment, external-service, command, or release risk to its existing owner protocol. Routing tier and model capability never authorize broader scope, mutation, approval, or bypass of those boundaries.
 
 - Model choice, reasoning effort, subagent choice, or access-level label must not override the active bead, files in play, stop conditions, approval gates, or review requirements.
 - Agent access level must not be inferred from model capability. A stronger model can still be limited to `inspect` or `verify` when the active bead, Run Contract, or approval state does not allow mutation.

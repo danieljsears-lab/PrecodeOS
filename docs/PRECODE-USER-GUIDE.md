@@ -766,6 +766,8 @@ The checker output is advisory JSON only. It does not choose tasks, rank work, a
 
 ### Ask For The Engineering Quality Floor
 
+Precode applies a small set of engineering judgment defaults whenever an agent is asked to build or change software: clarify the outcome and smallest useful change, identify the owner surface and proof path, notice risk triggers, route to the existing protocol, and make uncertainty or stop conditions visible. This is background guidance, not a new step you must run for every task.
+
 Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.
 
 Say this:

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.29
-Last updated: 2026-09-06
+Document version: v0.1.30
+Last updated: 2026-09-20
 
 ## Purpose
 
@@ -45,6 +45,8 @@ Active memory remains exactly:
 - `tasks/todo.md`
 
 ## Workflow Decision Path
+
+Before selecting a build, change, review, or repair path, apply the Engineering Judgment Defaults in `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: clarify the intended outcome, smallest useful change, owner surface, proof path, and visible risk triggers. Use task suitability when the request is broad or unclear; use the existing owner protocol when a risk trigger appears. This is a compact routing aid, not a required ceremony for every bead and not permission to select work or authorize implementation.
 
 When broad durable intent is present, check whether a reviewed Goal Frame exists before choosing a workflow:
 

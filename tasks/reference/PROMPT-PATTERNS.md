@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.88
-Last updated: 2026-09-06
+Document version: v0.1.89
+Last updated: 2026-09-20
 
 ## Purpose
 
@@ -978,6 +978,16 @@ Before editing, confirm the active bead, the primary authority file, the files i
 ```
 
 ## Engineering Quality Floor
+
+### Ambient Engineering Judgment Defaults
+
+Use these defaults whenever you ask an agent to build or change software. They are background guidance, not a new skill, stage, score, or approval gate:
+
+```text
+Apply Precode's Engineering Judgment Defaults while you work. Keep the intended outcome and smallest useful change visible, identify the owner surface and narrowest proof path, notice sensitive or approval-sensitive risks, route those risks to the existing owner protocol, and tell me what uncertainty or stop condition matters. Do not turn this into a checklist for tiny work, a quality score, certification, or permission to act.
+```
+
+For a tiny copy or styling change, the agent may apply these defaults silently. For meaningful logic or shared-surface changes, ask it to show the compact Engineering Quality Floor. For auth, private data, payments, migrations, dependencies, deployment, external services, destructive actions, or unclear proof, it should stop and route before coding.
 
 ```text
 Before coding, show me the engineering quality standard you are applying here.

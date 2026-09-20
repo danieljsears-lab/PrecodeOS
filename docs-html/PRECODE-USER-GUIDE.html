@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-09-06">
+  <meta name="generated-at" content="2026-09-20">
   <title>How To Use PrecodeOS · PrecodeOS Docs</title>
   <style>
 :root {
@@ -736,6 +736,7 @@ Do not choose tasks, approve a PRD, activate a bead, authorize implementation, a
 <pre><code class="language-bash">python3 scripts/task-suitability-check.py --check</code></pre>
 <p>The checker output is advisory JSON only. It does not choose tasks, rank work, approve a PRD, activate a bead, authorize implementation, accept review, approve commands, or create proof.</p>
 <h3 id="ask-for-the-engineering-quality-floor"><a class="heading-anchor" href="#ask-for-the-engineering-quality-floor" aria-label="Link to Ask For The Engineering Quality Floor">#</a>Ask For The Engineering Quality Floor</h3>
+<p>Precode applies a small set of engineering judgment defaults whenever an agent is asked to build or change software: clarify the outcome and smallest useful change, identify the owner surface and proof path, notice risk triggers, route to the existing protocol, and make uncertainty or stop conditions visible. This is background guidance, not a new step you must run for every task.</p>
 <p>Use this when the agent is about to code and you want to know whether it is applying practical engineering judgment.</p>
 <p>Say this:</p>
 <pre><code class="language-text">Before coding, show me the engineering quality standard you are applying here.</code></pre>

@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.6
-Last updated: 2026-09-06
+Document version: v0.1.7
+Last updated: 2026-09-20
 
 ## Purpose
 
@@ -31,6 +31,20 @@ Active memory remains exactly:
 - `tasks/todo.md`
 
 ## Quality Floor
+
+### Engineering Judgment Defaults
+
+For any request to build or change software, apply these defaults in the background and surface only the parts that matter to the current risk:
+
+- identify the intended outcome and the smallest useful change
+- identify where the behavior, state, data, configuration, or provider call belongs
+- name the narrowest check, test, or manual verification that could prove the requested behavior
+- notice secrets, auth, payments, private data, migrations, dependencies, external services, deployment, destructive actions, and other approval-sensitive surfaces
+- route a revealed risk to the existing owner protocol instead of inventing a parallel checklist
+- state material uncertainty and stop conditions in plain language
+- preserve human approval for consequential product, architecture, release, and external-action decisions
+
+These defaults are an ambient behavior contract, not a new required stage, checker, score, verdict, certification, active-memory file, skill registry, or application-code analyzer. Low-risk work may use one short sentence or no visible quality explanation. Meaningful shared-surface work should expose the compact quality floor. High-risk work should stop and route to the relevant owner protocol.
 
 Before coding, the agent should briefly answer:
 
