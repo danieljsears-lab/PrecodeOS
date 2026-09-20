@@ -95,6 +95,8 @@ Forbidden v1 shape:
 
 ## Review And Merge Evidence
 
+When risk or context load is high, the coordinator may request a fresh-context review of returned work. The reviewer should inspect the assigned bead, primary authority, changed files, recorded checks, manual verification, and unresolved risks independently of the contributor's narrative. This is optional review evidence, not automatic subagent execution or a replacement for coordinator review.
+
 Before a contributor branch is merged or re-entered into the integration branch, the contributor should provide:
 
 - assigned bead and branch/worktree

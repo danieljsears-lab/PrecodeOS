@@ -22,6 +22,12 @@ When a lane reviews proof quality, it may ask for a requirement-to-proof trace: 
 
 Multi-Lane Review Invocation is a prompt-only way to run a small named bundle of existing Review Lanes against one named review target. It is not a new lane, lane logic engine, generated report, checker, scorecard, subagent pattern, command wrapper, task runner, or approval gate.
 
+### Optional Fresh-Context Review
+
+For higher-risk or context-heavy work, a reviewer may inspect the named artifact, active bead, authority, changed files, checks, and manual verification from a fresh context rather than relying on the implementer's session narrative. Use this selectively when independent interpretation could expose scope drift, missing proof, or a false-done claim.
+
+Fresh-context review is an evidence-quality practice, not a required subagent runtime or automatic dispatch rule. The reviewer returns findings, missing proof, acceptance questions, and a recommendation under this protocol. Review output remains advisory and cannot accept implementation, approve a PRD, activate a bead, approve a transition, approve release, or mutate anything.
+
 ## When To Use Review Lanes
 
 Use a Review Lane when one active bead is complete or nearly complete and the review would benefit from a named specialist lens, when one draft PRD needs a named pre-approval product-quality lens, or when a bounded package documentation/reference surface needs a named cross-reference and freshness review.

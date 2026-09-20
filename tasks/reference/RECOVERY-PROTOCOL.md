@@ -91,6 +91,12 @@ If the classifier says `recovery_repair`, stay in this protocol until the sympto
 
 ## First Move
 
+### Systematic Diagnosis
+
+Before attempting repair, separate symptom from cause. Reproduce or characterize the failure when safe, identify the first observable divergence, trace the relevant owner file or state transition backward to the earliest supported cause, and distinguish confirmed evidence from hypotheses. Prefer a narrow falsifiable check over repeated cleanup or speculative edits.
+
+If the evidence does not distinguish among plausible causes, stop and name the missing observation. Do not treat a successful-looking retry, generated diagnosis, or agent confidence as root-cause proof. Root-cause analysis remains evidence for a human recovery decision; it does not approve repair, rollback, deletion, overwrite, regeneration, or transition.
+
 When a user says "I think I broke something" or "I am stuck, help me," do this:
 
 1. Stop implementation.

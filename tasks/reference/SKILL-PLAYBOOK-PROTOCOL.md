@@ -45,6 +45,14 @@ Use the Context Layer Matrix in `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when de
 
 A prompt playbook may tell an agent to inspect files and summarize. It must not tell an agent to edit files, write generated evidence, approve transitions, run installers, mutate external systems, or treat command output as authority.
 
+### Staged Understanding And Verification Practice
+
+When a skill-style workflow precedes a change, the host agent should briefly write back the intended outcome, affected surface, constraints, success criteria, and assumptions inferred rather than stated by the user. The user can correct that understanding before the workflow presents its next artifact.
+
+Approval is artifact-scoped. Approval of the written-back understanding does not approve a design; approval of a design does not approve an implementation plan; and approval of an implementation plan does not approve code, review acceptance, transition, release, or external mutation. The playbook must name the next artifact and the approval still required.
+
+Before declaring a workflow complete, the host agent should identify the narrowest recorded check, test, manual verification, or source evidence that supports the claim, state what the evidence does not prove, and name unresolved uncertainty. These are read-only invocation practices, not automatic skill activation, mandatory subagent execution, or a second operating model.
+
 ## Beginner Invocation And Review Ergonomics
 
 Skill playbooks should be easy to invoke without becoming a second operating model. Keep beginner action language behind the Daily Cockpit Daily Loop / Next / Health / Diary operating surface, Prompt Patterns, Ask Precode, Workflow Selection, Ideation, Review, and other workflow moments that already exist. The cockpit routes to Prompt Patterns or one owner protocol for detailed bodies and authority boundaries instead of embedding complete catalogs.

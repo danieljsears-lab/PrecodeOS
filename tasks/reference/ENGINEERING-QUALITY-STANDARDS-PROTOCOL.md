@@ -66,6 +66,24 @@ The answer should be short enough for a beginner to approve, challenge, or redir
 
 Do not turn every implementation into a long checklist. If the user asks for this prompt during a tiny task, answer briefly and continue inside the active bead.
 
+### Proportional Test-First Practice
+
+For behavior-changing code, prefer a test-first cycle when a reliable automated test can express the expected behavior: write or identify the failing or absent behavior, run it to establish the gap, make the smallest change, then rerun the focused and relevant broader checks. Record the check and result through the existing proof path.
+
+Do not impose TDD mechanically on documentation, configuration-only changes, exploratory spikes, generated reading-surface refreshes, or evidence-only reviews. For those shapes, use the narrowest meaningful validation instead. TDD is an engineering practice, not a certification, universal gate, or permission to expand an active bead.
+
+### Implementation-Plan Quality Check
+
+When a plan is needed, review it before implementation for:
+
+- exact files or file families and their owner responsibilities
+- interfaces, inputs, outputs, and dependencies that later tasks rely on
+- a named test, check, or manual-verification path for each meaningful behavior
+- unresolved placeholders, contradictory requirements, or hidden scope
+- the highest-risk uncovered inputs or failure modes
+
+This is advisory planning guidance. It does not create plan authority, approve a bead, or replace PRD, Architecture Shaping, Verification Guardrail, review, or human approval.
+
 ## Routing
 
 Route to existing protocols when the quality-floor answer reveals higher risk:

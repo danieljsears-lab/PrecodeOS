@@ -46,6 +46,20 @@ Active memory remains exactly:
 
 ## Workflow Decision Path
 
+### Proportional Work Classification
+
+Before routing toward implementation, classify the request using the lightest path that can preserve correctness:
+
+| Path | Use when | Required pre-implementation artifact |
+|---|---|---|
+| Spike | The question is feasibility-oriented and the output is an answer or disposable probe. | Approved question and probe; report findings as evidence. |
+| Bounded | An existing flow is understood and the change has one narrow outcome. | Short in-chat design with scope, files, proof, and stop conditions. |
+| Architectural | The work creates a new subsystem, changes shared interfaces, or restructures how components fit together. | Reviewed design/specification followed by a reviewed implementation plan. |
+
+State the classification so the user can correct it. Approval applies only to the artifact actually presented: approval of an idea does not approve a design, approval of a design does not approve an implementation plan, and approval of a plan does not approve review, transition, release, or external mutation. Read-only exploration may continue before approval; implementation may not.
+
+If hidden complexity appears, stop and upgrade the request to the heavier path. Do not silently absorb new interfaces, systems, approval-sensitive surfaces, or independent outcomes into a bounded task. This classification is routing guidance, not a new task selector, approval gate, runtime, or authority layer.
+
 Before selecting a build, change, review, or repair path, apply the Engineering Judgment Defaults in `tasks/reference/ENGINEERING-QUALITY-STANDARDS-PROTOCOL.md`: clarify the intended outcome, smallest useful change, owner surface, proof path, and visible risk triggers. Use task suitability when the request is broad or unclear; use the existing owner protocol when a risk trigger appears. This is a compact routing aid, not a required ceremony for every bead and not permission to select work or authorize implementation.
 
 When broad durable intent is present, check whether a reviewed Goal Frame exists before choosing a workflow:
