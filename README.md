@@ -35,9 +35,9 @@ Without an operating model like Precode:
 
 Precode gives the project a durable structure for moving from an idea to a reviewed, maintainable slice of software without handing ownership to the agent.
 
-## What PrecodeOS Is
+## The Nature of PrecodeOS
 
-PrecodeOS is a repo-native control layer around the coding agent that supports the builder and the project. Important project truth lives in readable files inside the repository. Structured workflows and small scripts help the agent and builder understand:
+PrecodeOS is a repo-native control layer around the coding agent that supports the builder and the project. Important project truth lives in readable files inside the repository. Structured workflows and small scripts help the agent and builder work together and understand:
 
 - what the project is trying to achieve;
 - what is active now;
@@ -48,11 +48,11 @@ PrecodeOS is a repo-native control layer around the coding agent that supports t
 
 “OS” describes the operating layer around AI-assisted software work. PrecodeOS is not a replacement operating system, an application runtime, or an autonomous agent.
 
-Precode encodes proven engineering practice into reusable structures and workflows so those practices are available when they matter, including builders with strong ideas, domain knowledge, and motivation who have not previously had technical leverage. It does not remove the need for technical judgment, testing, security review, deployment expertise, or operational responsibility.
+Precode encodes proven engineering practice into reusable structures and workflows so those practices are available when they matter, empowering builders with strong ideas, domain knowledge, and motivation who have not previously had technical leverage. It does not remove the need for technical judgment, testing, security review, deployment expertise, or operational responsibility.
 
 ## The Core Precode Flow
 
-PrecodeOS’s user journey is a guided loop between human intent, agent execution, evidence, review, and the next safe move:
+PrecodeOS’s user journey - the Precode Flow - is a guided loop between human intent, agent execution, evidence, review, and the next safe move:
 
 ```text
 Understand → Shape → Decide → Bound → Build → Prove → Review → Continue
@@ -63,13 +63,13 @@ Understand → Shape → Decide → Bound → Build → Prove → Review → Con
 The flow is human-directed. It does not assume that every idea should become code, that every planned item should be implemented, or that every completed build should continue to the next one.
 
 1. **Understand** — Start from current project truth, the problem, the user, and what is already known. Load the smallest relevant context and identify uncertainty.
-2. **Shape** — Turn a rough idea or request into clearer intent, assumptions, language, evidence, and a smallest useful outcome. A rough idea is not yet a requirement.
-3. **Decide** — Decide whether to explore, research, amend product direction, shape architecture, or move toward implementation. A PRD defines an intended destination; it is not yet permission to code.
-4. **Bound** — Turn approved intent into one bead: a bounded execution contract with an outcome, authority, files in play, checks, stop conditions, and required proof. A bead is not just a task.
+2. **Shape** — Turn a rough idea or request into clearer intent, assumptions, language, evidence, and a smallest useful outcome. Why? A rough idea is not yet a requirement.
+3. **Decide** — Decide whether to explore, research, amend product direction, shape architecture, or move toward implementation. Why? A PRD defines an intended destination; it is not yet permission to code.
+4. **Bound** — Turn approved intent into one bead: a bounded execution contract with an outcome, authority, files in play, checks, stop conditions, and required proof. Why? A bead is not just a task.
 5. **Build** — Let the agent work inside that boundary using the context, prompts, tools, and technical depth appropriate to the risk.
-6. **Prove** — Check what changed, perform required verification, record evidence, and identify what remains uncertain. Building is not completion, and agent confidence is not proof.
-7. **Review** — A human reviews the result against the intended outcome, scope, evidence, and risks before accepting it or deciding what happens next. Review is part of the work, not an optional afterthought.
-8. **Continue or recover** — Close the work, preserve learning, hand off, split, block, or choose the next safe move. If state, scope, proof, or direction becomes unclear, recover to the appropriate earlier stage. Recovery and continuation are part of the method, not exceptions.
+6. **Prove** — Check what changed, perform required verification, record evidence, and identify what remains uncertain. Why? Building is not completion, and agent confidence is not proof.
+7. **Review** — A human reviews the result against the intended outcome, scope, evidence, and risks before accepting it or deciding what happens next. Why? Review is part of the work, not an optional afterthought.
+8. **Continue or recover** — Close the work, preserve learning, hand off, split, block, or choose the next safe move. If state, scope, proof, or direction becomes unclear, recover to the appropriate earlier stage. Why? Recovery and continuation are part of the method, not exceptions.
 
 The flow is supported by five layers of Precode’s **capability architecture**. The capability architecture describes what Precode provides; the core flow describes how a builder and agent use those capabilities over the life of a piece of work.
 
@@ -105,7 +105,7 @@ Precode uses repo-native context, tiny active memory, named owner files, source 
 
 **Plain English:** Let the agent move quickly inside a boundary the builder can understand.
 
-An approved bead is one bounded unit of work with scope, owner files, files in play, checks, stop conditions, and closeout evidence. A work graph preserves relationships among intent, decisions, dependencies, work, proof, blockers, and follow-up. Adaptive depth adds more planning and review when risk warrants it; bounded loops keep iteration stoppable.
+Precode uses beads. An approved bead is one bounded unit of work with scope, owner files, files in play, checks, stop conditions, and closeout evidence. A work graph preserves relationships among intent, decisions, dependencies, work, proof, blockers, and follow-up. Adaptive depth adds more planning and review when risk warrants it; bounded loops keep iteration stoppable.
 
 ### 4. Establish Trust
 
@@ -170,7 +170,7 @@ Precode complements several approaches builders may already know:
 
 PrecodeOS is the repo-owned control layer around whatever agent you run, not another competing agent.
 
-## What It Makes Possible
+## What PrecodeOS Makes Possible
 
 | Dimension | Builder outcome |
 |---|---|
@@ -194,7 +194,7 @@ PrecodeOS is for:
 - technical builders who want traceability, bounded execution, evidence, and recovery across sessions and tools; and
 - reviewers and collaborators who need to see what was intended, what changed, what was proven, and what remains uncertain.
 
-For a throwaway sketch where mistakes are cheap and nothing needs to survive, the full model may be unnecessary. Use more structure when the work is durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited.
+For a throwaway sketch or rough prototype where mistakes are cheap and nothing needs to survive, the full PrecodeOS model may be unnecessary. Use more structure when that work needs to be durable, user-facing, sensitive, multi-file, ambiguous, release-relevant, hard to prove, or likely to be revisited.
 
 ## Try PrecodeOS
 

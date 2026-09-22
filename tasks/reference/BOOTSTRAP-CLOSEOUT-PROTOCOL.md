@@ -8,6 +8,10 @@
 
 Creator: Dan Sears / Recode
 License: Apache-2.0
+
+## Persistent package baseline
+
+Existing-file refresh also requires the target-local package metadata file `.precode/package-baseline.json`. It records verified source hashes from fresh approved setup or approved package-owned refresh. A target file is refreshable only when it matches that baseline and differs from the current source. A file differing from both is preserved as a committed customization. Missing, malformed, stale, or unsupported baseline metadata blocks refresh; Git cleanliness, `HEAD`, the source tree, and refresh audit reports never establish a baseline. Baseline updates merge only verified copied/current package hashes and never erase evidence for preserved customizations. Preview remains read-only, RF-ID approval remains mandatory, and the target and baseline hashes are revalidated before apply.
 Copyright: (c) 2026 Dan Sears / Recode
 Document version: v0.2.0
 Last updated: 2026-09-06

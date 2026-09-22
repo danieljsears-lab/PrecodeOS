@@ -205,6 +205,8 @@ APPLY_ALLOWED_TARGET_KINDS = {"empty", "nearly_empty"}
 OWNER_GROUPS = {"active_memory", "active_work_state", "product_and_project_owner_files"}
 UPGRADE_DEFERRED_PATHS = {".githooks/", ".github/workflows/"}
 REFRESH_AUDIT_RELATIVE_PATH = "logs/precode-refresh-audit.md"
+PACKAGE_BASELINE_RELATIVE_PATH = ".precode/package-baseline.json"
+PACKAGE_BASELINE_VERSION = 1
 SECRET_OR_LOCAL_PARTS = {
     ".agent-state",
     ".claude",
@@ -483,6 +485,76 @@ def git_metadata(root: Path) -> dict[str, Any]:
         "remote": remote_result.stdout.strip() or "not recorded",
         "modified_paths": sorted(set(modified_paths)),
     }
+
+
+def package_baseline_path(target_root: Path) -> Path:
+    return target_root / PACKAGE_BASELINE_RELATIVE_PATH
+
+
+def package_file_paths(source_root: Path, groups: list[dict[str, Any]]) -> list[str]:
+    paths: list[str] = []
+    for group in groups:
+        if str(group.get("group")) in OWNER_GROUPS:
+            continue
+        for path in iter_source_group_files(source_root, group):
+            source_path = source_root / path
+            if source_path.is_file() and not source_path.is_symlink():
+                paths.append(path)
+    return sorted(set(paths))
+
+
+def load_package_baseline(target_root: Path, expected_paths: list[str]) -> dict[str, Any]:
+    path = package_baseline_path(target_root)
+    if not path.is_file():
+        return {"status": "missing", "path": path.as_posix(), "entries": {}}
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return {"status": "unreadable", "path": path.as_posix(), "entries": {}, "reason": str(exc)}
+    if not isinstance(document, dict) or document.get("manifest_version") != PACKAGE_BASELINE_VERSION:
+        return {"status": "unsupported", "path": path.as_posix(), "entries": {}, "reason": "unsupported manifest version"}
+    entries = document.get("files")
+    if not isinstance(entries, dict):
+        return {"status": "malformed", "path": path.as_posix(), "entries": {}, "reason": "files must be an object"}
+    invalid = [p for p in expected_paths if not isinstance(entries.get(p), str) or len(entries[p]) != 64]
+    if invalid:
+        return {"status": "incomplete", "path": path.as_posix(), "entries": entries, "reason": f"missing or invalid entries: {', '.join(invalid[:5])}"}
+    return {
+        "status": "valid",
+        "path": path.as_posix(),
+        "entries": {str(k): str(v) for k, v in entries.items()},
+        "manifest_version": document.get("manifest_version"),
+        "source_provenance": document.get("source_provenance", {}),
+        "updated_at": document.get("updated_at"),
+    }
+
+
+def write_package_baseline(
+    target_root: Path,
+    source_root: Path,
+    groups: list[dict[str, Any]],
+    paths: list[str],
+    existing: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    entries = dict((existing or {}).get("entries", {}))
+    updated: list[str] = []
+    for relative_path in paths:
+        source_path = source_root / relative_path
+        if source_path.is_file() and not source_path.is_symlink():
+            entries[relative_path] = file_digest(source_path)
+            updated.append(relative_path)
+    baseline_path = package_baseline_path(target_root)
+    baseline_path.parent.mkdir(parents=True, exist_ok=True)
+    document = {
+        "manifest_version": PACKAGE_BASELINE_VERSION,
+        "source_provenance": source_provenance(source_root),
+        "files": dict(sorted(entries.items())),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    temporary = baseline_path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(baseline_path)
+    return {"path": baseline_path.as_posix(), "updated": updated, "file_count": len(entries)}
 
 
 def source_provenance(source_root: Path) -> dict[str, Any]:
@@ -1226,6 +1298,10 @@ def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, An
     actions: list[dict[str, Any]] = []
     action_index = 1
     modified = set(git_state.get("modified_paths", []))
+    baseline = payload.get("package_baseline", {"status": "missing", "entries": {}})
+    baseline_entries = baseline.get("entries", {})
+    baseline_file = package_baseline_path(target_root)
+    baseline_file_hash = file_digest(baseline_file) if baseline_file.is_file() else None
     for group in payload["public_file_groups"]:
         group_name = str(group["group"])
         if group_name in OWNER_GROUPS:
@@ -1248,14 +1324,20 @@ def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, An
             elif path in modified:
                 category = "preserve_local_modification"
                 reason = "target path has local Git changes; preserve user work and do not overwrite"
+            elif baseline.get("status") != "valid":
+                category = "blocked_uncertain_baseline"
+                reason = f"trusted package baseline is unavailable: {baseline.get('reason', baseline.get('status', 'unknown'))}"
+            elif target_hash != baseline_entries.get(path):
+                category = "preserve_local_customization"
+                reason = "target differs from both the trusted package baseline and current source; preserve committed customization"
             elif not git_state["available"]:
                 category = "blocked_uncertain_ownership"
                 reason = "target Git state is unknown; ownership and local modification status cannot be verified"
             else:
                 category = "refresh_existing_package_file"
-                reason = "existing package-owned file differs from the identified public source checkout"
+                reason = "target matches the trusted package baseline and differs from the identified public source checkout"
             action = numbered_action("RF", action_index, category, path, reason, group_name)
-            action.update({"source_sha256": source_hash, "target_sha256": target_hash})
+            action.update({"source_sha256": source_hash, "target_sha256": target_hash, "baseline_sha256": baseline_entries.get(path)})
             actions.append(action)
             action_index += 1
     return {
@@ -1266,6 +1348,8 @@ def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, An
         "target_kind": payload["target_kind"],
         "source_provenance": payload["source_provenance"],
         "target_git": git_state,
+        "package_baseline": baseline,
+        "baseline_file_sha256": baseline_file_hash,
         "actions": actions,
         "approved_action_category": "refresh_existing_package_file",
         "writes_by_default": False,
@@ -1281,7 +1365,7 @@ def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, An
             "package-manager updates",
             "rollback automation",
         ],
-        "next_manual_gate": "User must approve specific RF-ID actions before existing package-owned files are refreshed.",
+        "next_manual_gate": "User must approve specific RF-ID actions before existing package-owned files are refreshed; uncertain baseline or preserved customization actions are never refreshable.",
     }
 
 
@@ -1905,6 +1989,24 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
         else:
             blocked.append(result)
 
+    baseline_update = None
+    if not blocked and copied:
+        baseline_paths: list[str] = []
+        for item in copied:
+            relative_path = str(item["path"]).rstrip("/")
+            source_path = source_root / relative_path
+            if source_path.is_file():
+                baseline_paths.append(relative_path)
+            elif source_path.is_dir():
+                baseline_paths.extend(
+                    candidate.relative_to(source_root).as_posix()
+                    for candidate in source_path.rglob("*")
+                    if candidate.is_file() and not candidate.is_symlink()
+                )
+        baseline_update = write_package_baseline(
+            target_root, source_root, payload["public_file_groups"], baseline_paths
+        )
+
     status = "blocked" if blocked else "applied"
     return {
         "apply_kind": "supervised_setup_apply",
@@ -1916,6 +2018,7 @@ def apply_supervised_setup(payload: dict[str, Any], approved_action_ids: list[st
         "copied": copied,
         "skipped": skipped,
         "blocked": blocked,
+        "baseline_update": baseline_update,
         "validation_next_step": (
             fresh_setup_validation_next_step(str(payload["target_root"]))
             if status == "applied"
@@ -2064,6 +2167,13 @@ def apply_existing_file_refresh(payload: dict[str, Any], approved_action_ids: li
         blocked.append({"path": "<target>", "reason": "existing-file refresh requires an existing Precode target"})
     if not preview["target_git"].get("available"):
         blocked.append({"path": "<target>", "reason": "target Git state is unknown; refusing existing-file refresh"})
+    baseline = load_package_baseline(target_root, package_file_paths(source_root, payload["public_file_groups"]))
+    if baseline.get("status") != "valid":
+        blocked.append({"path": PACKAGE_BASELINE_RELATIVE_PATH, "reason": f"trusted package baseline is unavailable: {baseline.get('reason', baseline.get('status', 'unknown'))}"})
+    expected_baseline_hash = preview.get("baseline_file_sha256")
+    actual_baseline_hash = file_digest(package_baseline_path(target_root)) if package_baseline_path(target_root).is_file() else None
+    if expected_baseline_hash != actual_baseline_hash:
+        blocked.append({"path": PACKAGE_BASELINE_RELATIVE_PATH, "reason": "package baseline changed after preview; rerun refresh preview"})
     actions = {str(action["id"]): action for action in preview["actions"]}
     for action_id in sorted(approved):
         action = actions.get(action_id)
@@ -2097,6 +2207,18 @@ def apply_existing_file_refresh(payload: dict[str, Any], approved_action_ids: li
             shutil.copy2(source_path, target_path)
             after = file_digest(target_path)
             copied.append({"path": path, "before_sha256": before, "after_sha256": after, "source_sha256": file_digest(source_path)})
+        if copied:
+            baseline_update = write_package_baseline(
+                target_root,
+                source_root,
+                payload["public_file_groups"],
+                [str(item["path"]) for item in copied],
+                existing=baseline,
+            )
+        else:
+            baseline_update = None
+    else:
+        baseline_update = None
     for action in preview["actions"]:
         action_id = str(action["id"])
         if action_id not in approved:
@@ -2110,6 +2232,7 @@ def apply_existing_file_refresh(payload: dict[str, Any], approved_action_ids: li
         "refreshed": copied,
         "skipped": skipped,
         "blocked": blocked,
+        "baseline_update": baseline_update,
         "target_mutation_allowed": not blocked,
         "generated_evidence_only": False,
         "validation_next_step": "Run Precode validation and rerun --refresh-existing-preview." if not blocked else "Resolve blockers and rerun --refresh-existing-preview.",
@@ -2167,6 +2290,7 @@ def write_refresh_audit_report(payload: dict[str, Any]) -> str:
         f"- Target: `{payload['target_root']}`",
         f"- Source provenance: `{json.dumps(payload.get('source_provenance', {}), sort_keys=True)}`",
         f"- Target Git at inspection: `{json.dumps(payload.get('target_git', {}), sort_keys=True)}`",
+        f"- Package baseline: `{json.dumps(preview.get('package_baseline', {}), sort_keys=True)}`",
         f"- Refresh status: `{report_status}`",
         "",
         "## Scope and exclusions",
@@ -2175,11 +2299,13 @@ def write_refresh_audit_report(payload: dict[str, Any]) -> str:
         "",
         "## File dispositions",
         "",
-        "| Action | Category | Path | Source SHA-256 | Target SHA-256 | Reason |",
-        "|---|---|---|---|---|---|",
+        "| Action | Category | Path | Baseline SHA-256 | Source SHA-256 | Target SHA-256 | Reason |",
+        "|---|---|---|---|---|---|---|",
     ]
     for action in preview.get("actions", []):
-        lines.append(f"| {action['id']} | {action['category']} | `{action['path']}` | `{action.get('source_sha256', '')}` | `{action.get('target_sha256', '')}` | {action['reason']} |")
+        lines.append(f"| {action['id']} | {action['category']} | `{action['path']}` | `{action.get('baseline_sha256', '')}` | `{action.get('source_sha256', '')}` | `{action.get('target_sha256', '')}` | {action['reason']} |")
+    baseline_update = apply.get("baseline_update")
+    lines.extend(["", "## Baseline update", "", f"- `{json.dumps(baseline_update, sort_keys=True) if baseline_update else 'none'}`"])
     lines.extend(["", "## Approved and refreshed files", "", f"Approved action IDs: `{', '.join(apply.get('approved_actions', [])) or 'none'}`", ""])
     for item in apply.get("refreshed", []):
         lines.append(f"- `{item['path']}`: `{item['before_sha256']}` -> `{item['after_sha256']}`")
@@ -2251,6 +2377,10 @@ def build_payload(source_raw: str, target_raw: str) -> dict[str, Any]:
         "target_kind": kind,
         "setup_diagnosis": diagnosis,
         "public_file_groups": PUBLIC_FILE_GROUPS,
+        "package_baseline": load_package_baseline(
+            target,
+            package_file_paths(source, PUBLIC_FILE_GROUPS),
+        ) if kind == "existing_precode" else {"status": "not_applicable", "entries": {}},
         "excluded_paths": EXCLUDED_PATHS,
         "conflicts": conflicts,
         "missing_dependencies": missing_dependencies,
@@ -2578,6 +2708,7 @@ def render_existing_file_refresh_plain(payload: dict[str, Any]) -> str:
         f"- Status: `{preview['status']}`",
         f"- Source provenance: `{json.dumps(preview['source_provenance'], sort_keys=True)}`",
         f"- Target Git state: `{preview['target_git']['status']}`",
+        f"- Package baseline: `{preview.get('package_baseline', {}).get('status', 'unknown')}` at `{preview.get('package_baseline', {}).get('path', PACKAGE_BASELINE_RELATIVE_PATH)}`",
         "- Scope: existing package-owned files only; missing files and user-created files are excluded.",
         "- Writes by default: no",
         "- Generated evidence only: yes",
@@ -2587,7 +2718,7 @@ def render_existing_file_refresh_plain(payload: dict[str, Any]) -> str:
     for action in preview["actions"]:
         lines.append(
             f"- {action['id']} {action['category']}: `{action['path']}` — {action['reason']} "
-            f"(source {action.get('source_sha256', '')}; target {action.get('target_sha256', '')})"
+            f"(baseline {action.get('baseline_sha256', '')}; source {action.get('source_sha256', '')}; target {action.get('target_sha256', '')})"
         )
     lines.append("\nRefresh warning: only explicitly approved RF-ID refresh_existing_package_file actions may replace existing files.")
     if "existing_file_refresh_apply" in payload:
@@ -3097,16 +3228,57 @@ def self_test() -> int:
             check=True,
             capture_output=True,
         )
+        write_package_baseline(
+            refresh_target,
+            refresh_target,
+            PUBLIC_FILE_GROUPS,
+            package_file_paths(refresh_target, PUBLIC_FILE_GROUPS),
+        )
         (refresh_target / "user-created.txt").write_text("must remain\n", encoding="utf-8")
         refresh_payload = build_payload(refresh_source.as_posix(), refresh_target.as_posix())
         refresh_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(refresh_payload)
         refresh_actions = refresh_payload["existing_file_refresh_preview"]["actions"]
         refresh_action = next(action for action in refresh_actions if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
         assert refresh_action["category"] == "refresh_existing_package_file"
+        committed_custom_target = base / "committed-custom-target"
+        make_source(committed_custom_target)
+        write_package_baseline(
+            committed_custom_target,
+            committed_custom_target,
+            PUBLIC_FILE_GROUPS,
+            package_file_paths(committed_custom_target, PUBLIC_FILE_GROUPS),
+        )
+        (committed_custom_target / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("committed customization\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(committed_custom_target), "init"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(committed_custom_target), "add", "."], check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-C", str(committed_custom_target), "-c", "user.name=Precode Test", "-c", "user.email=precode@example.invalid", "commit", "-m", "customization"],
+            check=True,
+            capture_output=True,
+        )
+        committed_payload = build_payload(refresh_source.as_posix(), committed_custom_target.as_posix())
+        committed_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(committed_payload)
+        committed_action = next(action for action in committed_payload["existing_file_refresh_preview"]["actions"] if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
+        assert committed_action["category"] == "preserve_local_customization"
+        missing_baseline_target = base / "missing-baseline-target"
+        make_source(missing_baseline_target)
+        subprocess.run(["git", "-C", str(missing_baseline_target), "init"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(missing_baseline_target), "add", "."], check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-C", str(missing_baseline_target), "-c", "user.name=Precode Test", "-c", "user.email=precode@example.invalid", "commit", "-m", "fixture"],
+            check=True,
+            capture_output=True,
+        )
+        (refresh_source / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("another refresh\n", encoding="utf-8")
+        missing_payload = build_payload(refresh_source.as_posix(), missing_baseline_target.as_posix())
+        missing_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(missing_payload)
+        missing_action = next(action for action in missing_payload["existing_file_refresh_preview"]["actions"] if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
+        assert missing_action["category"] == "blocked_uncertain_baseline"
         assert not any(action["path"] == "user-created.txt" for action in refresh_actions)
         refresh_payload["existing_file_refresh_apply"] = apply_existing_file_refresh(refresh_payload, [refresh_action["id"]])
         assert refresh_payload["existing_file_refresh_apply"]["status"] == "applied"
-        assert (refresh_target / "docs" / "PRECODE-GUIDED-SETUP.md").read_text(encoding="utf-8") == "public beta refresh\n"
+        assert (refresh_target / "docs" / "PRECODE-GUIDED-SETUP.md").read_text(encoding="utf-8") == "another refresh\n"
+        (refresh_source / "docs" / "PRECODE-GUIDED-SETUP.md").write_text("another refresh\n", encoding="utf-8")
         assert (refresh_target / "user-created.txt").read_text(encoding="utf-8") == "must remain\n"
         refresh_payload["refresh_validation"] = []
         refresh_payload["refresh_residual_preview"] = build_existing_file_refresh_preview(build_payload(refresh_source.as_posix(), refresh_target.as_posix()))

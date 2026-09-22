@@ -265,6 +265,8 @@ Safe path:
 
 During support-assisted package refresh, duplicate PRD/bead IDs are a refresh blocker. Run `bootstrap-check.py --upgrade-preview` before copying package files, preserve the target project's existing PRDs/beads, and do not copy incoming package development PRDs or beads that collide with target IDs.
 
+Existing-file refresh also requires `.precode/package-baseline.json`, created by approved package-owned setup or refresh. A clean Git tree is not sufficient: a target file that differs from both the recorded baseline and the current package is preserved as a committed customization, while missing or invalid baseline metadata blocks refresh. Do not create a baseline from `HEAD`, current target files, Git status, or an audit report; route those targets to manual review or safe missing-file repair.
+
 Do not patch generated reports as a substitute for fixing active memory.
 
 ### Required Setup Support Files Are Missing
