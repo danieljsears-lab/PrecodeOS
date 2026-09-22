@@ -476,16 +476,17 @@ python3 scripts/file-inventory.py --check</code></pre>
 <p>Stop when:</p>
 <ul><li>source or target is unclear</li><li>source and target are the same folder</li><li>the target is missing</li><li>existing files or Git state cannot be classified safely</li><li>a prerequisite is missing</li><li>the current proposal lacks plain-English actions and current approval IDs</li><li>validation fails or an orientation result overstates what was proven</li></ul>
 <h2 id="safe-existing-file-refresh-with-audit-report"><a class="heading-anchor" href="#safe-existing-file-refresh-with-audit-report" aria-label="Link to Safe Existing File Refresh With Audit Report">#</a>Safe Existing-File Refresh With Audit Report</h2>
-<p>Existing-file refresh is an advanced, explicit path for Git-clean, package-owned files that already exist and differ from source. Preview first:</p>
+<p>Existing-file refresh is an advanced, explicit path for package-owned files that already exist and differ from source. Git state is resolved from the enclosing repository, so a target in a repository subdirectory is supported. Preview first:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;existing-precode-root&gt; --refresh-existing-preview</code></pre>
 <p>Only approved current <code>RF-ID</code> actions may refresh eligible files, and the target hash must still match the preview:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;existing-precode-root&gt; --refresh-existing-preview --apply-refresh-existing --approve-action &lt;RF-ID&gt;</code></pre>
-<p>User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Apply writes an audit report; the report is evidence, not future permission or rollback authority.</p>
+<p>User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Current Git dirtiness does not detect a customization that was committed previously; persistent package baselines are a separate hardening candidate and are not yet available. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.</p>
 <h2 id="advanced-github-and-python-fallback"><a class="heading-anchor" href="#advanced-github-and-python-fallback" aria-label="Link to Advanced GitHub And Python Fallback">#</a>Advanced GitHub And Python Fallback</h2>
 <p>Use this only when npm is unavailable, package provenance needs direct inspection, or a technically comfortable operator deliberately chooses the transparent fallback.</p>
 <pre><code class="language-bash">git clone https://github.com/danieljsears-lab/PrecodeOS.git
 cd PrecodeOS
 python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-preview</code></pre>
+<p>When PrecodeOS is installed inside an existing Git repository, its changed-file guardrail resolves the enclosing work tree and reports paths relative to the PrecodeOS install root.</p>
 <p>For an approved copy action:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;target-project-root&gt; --fast-verified-setup-apply --approve-action &lt;SP-ID|UP-ID&gt;</code></pre>
 <p>The local commands have the same authority, approval, overwrite, validation, and recovery boundaries as npm. This fallback is not the beginner path and does not create a second setup contract.</p>

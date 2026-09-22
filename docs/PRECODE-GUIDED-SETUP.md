@@ -150,7 +150,7 @@ Stop when:
 
 ## Safe Existing-File Refresh With Audit Report
 
-Existing-file refresh is an advanced, explicit path for Git-clean, package-owned files that already exist and differ from source. Preview first:
+Existing-file refresh is an advanced, explicit path for package-owned files that already exist and differ from source. Git state is resolved from the enclosing repository, so a target in a repository subdirectory is supported. Preview first:
 
 ```bash
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --refresh-existing-preview
@@ -162,7 +162,7 @@ Only approved current `RF-ID` actions may refresh eligible files, and the target
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
 ```
 
-User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
+User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Current Git dirtiness does not detect a customization that was committed previously; persistent package baselines are a separate hardening candidate and are not yet available. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
 
 ## Advanced GitHub And Python Fallback
 
@@ -173,6 +173,8 @@ git clone https://github.com/danieljsears-lab/PrecodeOS.git
 cd PrecodeOS
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <target-project-root> --fast-verified-setup-preview
 ```
+
+When PrecodeOS is installed inside an existing Git repository, its changed-file guardrail resolves the enclosing work tree and reports paths relative to the PrecodeOS install root.
 
 For an approved copy action:
 

@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 from fnmatch import fnmatch
+import os
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -181,9 +182,26 @@ COMMAND_GENERATED_REFRESH_TERMS = {"os-health", "next-step", "file-inventory", "
 
 
 def git_status_changed_paths(root: Path) -> tuple[list[str], str | None]:
-    if not (root / ".git").exists():
-        return [], "git status unavailable: workspace root is not a git checkout"
-    result = subprocess.run(["git", "status", "--short"], cwd=root, check=False, capture_output=True, text=True)
+    root = root.resolve()
+    toplevel = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if toplevel.returncode != 0:
+        return [], "git status unavailable: workspace root is not inside a git checkout"
+    git_root = Path(toplevel.stdout.strip()).resolve()
+    if not git_root:
+        return [], "git status unavailable: Git did not return a work tree root"
+
+    result = subprocess.run(
+        ["git", "status", "--short"],
+        cwd=git_root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
     if result.returncode != 0:
         message = (result.stderr or result.stdout or "git status unavailable").strip()
         return [], message
@@ -194,7 +212,10 @@ def git_status_changed_paths(root: Path) -> tuple[list[str], str | None]:
         value = line[3:].strip() if len(line) > 3 else line.strip()
         if " -> " in value:
             value = value.split(" -> ", 1)[1]
-        paths.append(value)
+        value = value.strip().strip('"')
+        if not value:
+            continue
+        paths.append(os.path.relpath(git_root / value, root))
     return paths, None
 
 

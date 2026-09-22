@@ -16,7 +16,24 @@ PrecodeOS is an anti-drift operating system for AI-assisted agentic building. It
 
 Precode keeps intent, scope, decisions, evidence, approval, and recovery visible while people and AI agents turn ideas into working software. It is designed as an explicit bridge between nontechnical and semitechnical builders and professional software engineering patterns and practices.
 
+PrecodeOS describes **how a builder and agent move from uncertain intent to bounded, evidenced, recoverable software work**.
+
 The promise is human agency and dependable building. Accessibility, maintainability, and unification follow from that operating model.
+
+## Why It Exists
+
+Code generation is becoming cheap and fast. Human judgment, verification, direction, and reliable recovery are becoming the scarce controls. The hardest problem in AI-assisted building is whether the project can remain understandable, bounded, provable, and recoverable as the agent moves quickly.
+
+Without an operating model like Precode:
+
+- intent gets lost in chat conversations;
+- scope expands through momentum and invisible model-made "additions";
+- stale context competes with current decisions;
+- a confident LLM answer gets mistaken for evidence;
+- a prototype quietly becomes a system; and
+- the builder loses the ability to stop or recover.
+
+Precode gives the project a durable structure for moving from an idea to a reviewed, maintainable slice of software without handing ownership to the agent.
 
 ## What PrecodeOS Is
 
@@ -33,22 +50,32 @@ PrecodeOS is a repo-native control layer around the coding agent that supports t
 
 Precode encodes proven engineering practice into reusable structures and workflows so those practices are available when they matter, including builders with strong ideas, domain knowledge, and motivation who have not previously had technical leverage. It does not remove the need for technical judgment, testing, security review, deployment expertise, or operational responsibility.
 
-## Why It Exists
+## The Core Precode Flow
 
-Code generation is becoming cheap and fast. Human judgment, verification, direction, and reliable recovery are becoming the scarce controls. The hardest problem in AI-assisted building is whether the project can remain understandable, bounded, provable, and recoverable as the agent moves quickly.
+PrecodeOS’s user journey is a guided loop between human intent, agent execution, evidence, review, and the next safe move:
 
-Without an operating model like Precode:
+```text
+Understand → Shape → Decide → Bound → Build → Prove → Review → Continue
+                                      ↑                         │
+                                      └──── Recover ────────────┘
+```
 
-- intent gets lost in chat conversations;
-- scope expands through momentum and invisible model-made "additions";
-- stale context competes with current decisions;
-- a confident LLM answer gets mistaken for evidence;
-- a prototype quietly becomes a durable system; and
-- the builder loses the ability to stop or recover.
+The flow is human-directed. It does not assume that every idea should become code, that every planned item should be implemented, or that every completed build should continue to the next one.
 
-Precode gives the project a durable structure for moving from an idea to a reviewed, maintainable slice of software without handing ownership to the agent.
+1. **Understand** — Start from current project truth, the problem, the user, and what is already known. Load the smallest relevant context and identify uncertainty.
+2. **Shape** — Turn a rough idea or request into clearer intent, assumptions, language, evidence, and a smallest useful outcome. A rough idea is not yet a requirement.
+3. **Decide** — Decide whether to explore, research, amend product direction, shape architecture, or move toward implementation. A PRD defines an intended destination; it is not yet permission to code.
+4. **Bound** — Turn approved intent into one bead: a bounded execution contract with an outcome, authority, files in play, checks, stop conditions, and required proof. A bead is not just a task.
+5. **Build** — Let the agent work inside that boundary using the context, prompts, tools, and technical depth appropriate to the risk.
+6. **Prove** — Check what changed, perform required verification, record evidence, and identify what remains uncertain. Building is not completion, and agent confidence is not proof.
+7. **Review** — A human reviews the result against the intended outcome, scope, evidence, and risks before accepting it or deciding what happens next. Review is part of the work, not an optional afterthought.
+8. **Continue or recover** — Close the work, preserve learning, hand off, split, block, or choose the next safe move. If state, scope, proof, or direction becomes unclear, recover to the appropriate earlier stage. Recovery and continuation are part of the method, not exceptions.
 
-## How Precode Works
+The flow is supported by five layers of Precode’s **capability architecture**. The capability architecture describes what Precode provides; the core flow describes how a builder and agent use those capabilities over the life of a piece of work.
+
+## Precode’s Capability Architecture
+
+The five layers below describe Precode’s **capability architecture**. They are distinct from the Core Precode Flow, which describes the builder’s user journey.
 
 ```text
 Shape the work
@@ -110,6 +137,23 @@ Precode turns mature product and engineering practices into lightweight repo-nat
 | Safety and control engineering | Keep authority explicit and preserve human approval at consequential transitions. |
 
 These structures make professional practices easier to use. They do not make expertise unnecessary.
+
+## Relationship To The Engineering Lenses
+
+The Core Precode Flow is where the engineering lenses become practical:
+
+| Flow stage | Engineering lenses most visible |
+|---|---|
+| Understand | Context engineering and product engineering |
+| Shape | Product engineering, prompt engineering, language, and discovery |
+| Decide | Product engineering, software engineering, risk, and evidence |
+| Bound | Harness engineering, beads, work graphs, and scope control |
+| Build | Prompt, context, harness, and loop engineering |
+| Prove | Quality engineering, verification, and evidence |
+| Review | Human control, software engineering, and collaboration |
+| Continue or recover | Compound engineering, recovery, handoff, and work graphs |
+
+These lenses are not separate products or academic prerequisites. Precode incorporates their useful practices into one repo-native operating model so the builder does not need to master each discipline before using it.
 
 ## How Precode Compares
 

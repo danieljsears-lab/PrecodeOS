@@ -410,11 +410,26 @@ def prerequisite_contract(missing_dependencies: list[str]) -> list[dict[str, str
 
 def git_metadata(root: Path) -> dict[str, Any]:
     """Return conservative local Git evidence without changing repository state."""
-    if not (root / ".git").exists():
+    try:
+        toplevel_probe = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
         return {
             "available": False,
             "status": "unknown",
-            "reason": "target is not a Git working tree",
+            "reason": f"could not resolve Git working tree: {exc}",
+            "modified_paths": [],
+        }
+    if toplevel_probe.returncode != 0:
+        return {
+            "available": False,
+            "status": "unknown",
+            "reason": "target is not inside a Git working tree",
             "modified_paths": [],
         }
     try:
