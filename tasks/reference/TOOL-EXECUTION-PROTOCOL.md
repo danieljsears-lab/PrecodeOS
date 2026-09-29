@@ -40,6 +40,10 @@ The Authority Map Query CLI is a read-only navigation command for maintainer, co
 
 Product Code Quality Snapshot may discover likely project-owned lint/check commands from manifests or common config files, but that discovery is not command approval. `python3 scripts/product-code-quality-snapshot.py` does not run lint, tests, typechecks, package managers, fixers, or app code. Running any suggested command remains a separate user-approved tool action under this protocol.
 
+Its optional Confidence Readout Layer only translates already-collected snapshot evidence into observed, interpretation, uncertainty, and human-action fields. It does not add command execution, approval, generated proof, numeric confidence, or code-quality certification.
+
+Behavioral Repo-Shape Signals are likewise read-only history/file-tree inspection. They cannot establish agent attribution, approve work, create proof, or authorize any command.
+
 `python3 scripts/prd-handoff-readiness.py --prd <path> --target ...` may return nested Progressive Production-Readiness Activation routing. It remains the existing read-only command and must not echo sensitive PRD values, inspect application code, mutate owner files, approve decomposition, or certify readiness. Activation alone does not change the command's top-level status or exit behavior.
 
 `scripts/clarity-scenario-check.py` includes regression fixtures for command classification, generated-refresh demotion, optional CLI facade delegation, missing setup-apply approval, and Ralph approval-needed attempt handling. These fixtures prove boundary wording and refusal behavior stay stable; they are not command approval or verification proof for unrelated work.

@@ -60,12 +60,15 @@ if [[ ! -d "$cwd" ]]; then
   exit 1
 fi
 
-state_json="$(python3 scripts/execution-state.py "$repo_root")"
-current_bead="$(python3 - "$state_json" <<'PY'
+state_path="$(mktemp "${TMPDIR:-/tmp}/precode-execution-state.XXXXXX")"
+trap 'rm -f "$state_path"' EXIT
+python3 scripts/execution-state.py "$repo_root" >"$state_path"
+current_bead="$(python3 - "$state_path" <<'PY'
 import json
 import sys
+from pathlib import Path
 
-state = json.loads(sys.argv[1])
+state = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 print(state.get("current_bead") or "")
 PY
 )"

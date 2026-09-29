@@ -35,6 +35,8 @@ V1 is active-bead-first. It gathers evidence from the active bead, declared file
 
 The snapshot is evidence gathering, not code-quality judgment. It does not run linters or tests by default, parse app code, score quality, certify "decent code", approve acceptance, or replace Engineering Quality Review Lane.
 
+The snapshot may include an additive Behavioral Repo-Shape Signals group: history-only, language-agnostic cues for agent-thrash, repeated file coupling, change/frequency-plus-size hotspots, and oversized changes. Each cue states what was observed, its limited interpretation, its uncertainty, and a human action. The group never claims agent attribution when git cannot establish a trustworthy session boundary.
+
 ## Problem
 
 Engineering Quality floor, repo heuristics, and Engineering Quality Review Lane already help before and after implementation. The gap is evidence assembly. A builder can still ask, "did the AI write decent code?", while the agent has changed undeclared files, skipped project checks, touched configuration or dependencies, or produced proof that does not match the scope.
@@ -68,6 +70,8 @@ Builders need that evidence made legible without being asked to trust a score.
 | `PRD-049-FR07` | Prompt Patterns, Daily Cockpit, User Guide, README, AI navigation, Tool Execution, Security, and Package File Inventory must expose the snapshot without making it a start route, required stage, score, gate, proof, or approval. | P1 | Discoverability without route inflation. |
 | `PRD-049-FR08` | Clarity scenario coverage and script self-test must protect advisory-only boundaries, active-bead-first default, Project Linter Evidence wording, and no score/certification/gate language. | P1 | Deterministic package checks. |
 | `PRD-049-FR09` | Generated PRD HTML, generated public docs HTML, maintainer changelog, roadmap implemented history, roadmap journal, and generated private roadmap HTML must be refreshed with numeric shortstats. | P1 | Maintainer closeout. |
+| `PRD-049-FR10` | Snapshot output may include history-only Behavioral Repo-Shape Signals for agent-thrash, repeated file coupling, change/frequency-plus-size hotspots, and oversized changes. | P0 | Advisory human-look cues; no quality score or gate. |
+| `PRD-049-FR11` | Behavioral signals must use minimum-evidence, noise-exclusion, sparse-history, squashed-commit, and unavailable-session guardrails. | P0 | Absence of a signal is never health evidence. |
 
 ## Acceptance Criteria
 
@@ -80,6 +84,7 @@ Builders need that evidence made legible without being asked to trust a score.
 | `PRD-049-FR06` / `PRD-049-FR07` | Protocols, prompts, docs, AI navigation, security, tool execution, and inventory route the snapshot as advisory evidence only. | Clarity scenario and source review. |
 | `PRD-049-FR08` | Self-test and clarity scenario checks fail if score/certification/gate language or command-running behavior appears. | `python3 scripts/product-code-quality-snapshot.py --self-test` and `python3 scripts/clarity-scenario-check.py` |
 | `PRD-049-FR09` | Roadmap, journal, changelog, generated docs, generated PRD HTML, and generated roadmap HTML are current with numeric shortstats. | Maintainer checks and rendered surface inspection. |
+| `PRD-049-FR10` / `PRD-049-FR11` | Self-test and source review cover repeated-file history, coupling, broad changes, sparse history, excluded noise, unavailable history, conservative interpretation, and advisory-only boundaries. | Script self-test and source review. |
 
 ## Required Validation
 
@@ -105,7 +110,9 @@ git diff --check
 
 ## Boundaries
 
-Product Code Quality Snapshot is a local advisory evidence packet. It can make scope drift, missing proof, changed-file breadth, and likely project-owned lint/check commands visible before acceptance. It cannot decide whether code is good, certify code quality, approve review, approve release, or replace human judgment.
+Product Code Quality Snapshot is a local advisory evidence packet. It can make scope drift, missing proof, changed-file breadth, likely project-owned lint/check commands, and history-only behavioral repo-shape cues visible before acceptance. It cannot decide whether code is good, certify code quality, approve review, approve release, or replace human judgment.
+
+Behavioral signals use a bounded recent history window and exclude generated, vendored, dependency, lock, build, coverage, and evidence noise. Sparse or unavailable history produces an explicit unknown. Agent-thrash is only a possible repeated-change cue: git history does not prove agent attribution or a single session. Coupling can be inflated by bead-shaped or squashed commits, and hotspots are localization hints rather than defect findings.
 
 Project Linter Evidence is discovery only. The snapshot may identify likely existing commands and explain their probable scope, but running those commands is a separate tool action under normal Tool Execution approval rules.
 

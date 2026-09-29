@@ -839,6 +839,8 @@ python3 scripts/product-code-quality-snapshot.py --active-bead --json
 
 Expected output: advisory evidence with the active bead path, primary authority, declared files in play, declared checks, changed files, undeclared changed files, repo-shape risk signals, Project Linter Evidence, missing proof, review questions, and recommended next action.
 
+The output may also include Behavioral Repo-Shape Signals: history-only cues for possible repeated changes to one file (agent-thrash), repeated file coupling, hotspots, or an unusually broad change. These mean “worth a human look,” not “bad code” or “unhealthy code.” Sparse history or an unavailable session boundary is reported as unknown.
+
 Project Linter Evidence is discovery only. The snapshot may identify likely project-owned lint/check commands, but it does not run lint, tests, typechecks, package managers, fixers, or app code. Running a suggested command is a separate user-approved tool action under Tool Execution Protocol.
 
 Use whole-codebase mode only when you explicitly want broader changed-file health evidence:
@@ -848,6 +850,8 @@ python3 scripts/product-code-quality-snapshot.py --whole-codebase --json
 ```
 
 The snapshot does not certify code quality, certify decent code, certify production readiness, accept review, approve release, create generated proof, create follow-up tasks, choose work, replace tests or linters, or create a checker gate. If the snapshot raises real concerns, use it as evidence for Engineering Quality Review Lane before acceptance.
+
+If the evidence is difficult to interpret, ask for the optional Confidence Readout Layer. It restates each cue as what was observed, what it may indicate, what remains uncertain, and what a human should ask or inspect next. It is not a confidence score, verdict, certificate, approval shortcut, or proof that the code is healthy. Missing evidence remains unknown.
 
 ### Command Surface Triage
 

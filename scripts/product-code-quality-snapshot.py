@@ -7,10 +7,13 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import fnmatch
 import json
+import itertools
 import subprocess
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -48,9 +51,197 @@ DOES_NOT = [
     "create command-wrapper, registry, optional-pack, install/update, release-channel, or package-manager behavior",
 ]
 
+BEHAVIORAL_SIGNAL_WARNING = (
+    "Behavioral repo-shape signals are history-only advisory cues; they identify areas worth a human look, "
+    "not bad code, unhealthy code, or approval decisions."
+)
+NOISE_PREFIXES = (".git/", "node_modules/", "vendor/", "dist/", "build/", "coverage/", "logs/")
+NOISE_NAMES = {"package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock", "uv.lock"}
+
+
+def confidence_readout(
+    active_bead: dict[str, Any],
+    summary: dict[str, Any],
+    risks: list[str],
+    missing: list[str],
+    git_warnings: list[str],
+) -> dict[str, Any]:
+    """Translate snapshot evidence into advisory, human-readable next questions."""
+    rows: list[dict[str, str]] = []
+    changed_count = int(summary.get("changed_files_count") or 0)
+    undeclared_count = int(summary.get("undeclared_changed_files_count") or 0)
+
+    if git_warnings:
+        rows.append(
+            {
+                "observed": "Git changed-file history was not fully available.",
+                "interpretation": "The snapshot cannot honestly judge whether the visible change set stayed in bounds.",
+                "uncertainty": "High: repository history or status evidence is incomplete.",
+                "human_action": "Inspect the repository state manually before relying on this readout.",
+            }
+        )
+    elif not changed_count:
+        rows.append(
+            {
+                "observed": "No changed files were visible from git status.",
+                "interpretation": "There is not enough change evidence for a meaningful code-change readout.",
+                "uncertainty": "High: no visible change is not evidence that the code is healthy.",
+                "human_action": "Confirm the intended change and repository state before review.",
+            }
+        )
+    else:
+        rows.append(
+            {
+                "observed": f"Git status shows {changed_count} changed file(s).",
+                "interpretation": "The readout has a concrete changed-file set to compare with the active bead.",
+                "uncertainty": "The snapshot does not inspect application-code correctness.",
+                "human_action": "Compare the changed files with the bead, owner file, and declared proof.",
+            }
+        )
+
+    if undeclared_count:
+        rows.append(
+            {
+                "observed": f"{undeclared_count} changed file(s) fall outside the declared active-bead scope.",
+                "interpretation": "The work may be broader than the current bead or its declaration may be stale.",
+                "uncertainty": "The signal identifies scope mismatch, not a defect in the code.",
+                "human_action": "Pause acceptance and reconcile the files with the bead before review.",
+            }
+        )
+    elif changed_count:
+        rows.append(
+            {
+                "observed": "No undeclared changed files were found in the visible change set.",
+                "interpretation": "The visible file scope is consistent with the active-bead declaration.",
+                "uncertainty": "Scope alignment does not prove behavior, maintainability, or release readiness.",
+                "human_action": "Continue with declared checks and human review of the evidence.",
+            }
+        )
+
+    if risks:
+        rows.append(
+            {
+                "observed": "Repo-shape risk signals: " + "; ".join(risks) + ".",
+                "interpretation": "The change shape deserves a closer human look at boundaries, proof, or review routing.",
+                "uncertainty": "These are advisory shape cues and cannot determine code quality.",
+                "human_action": "Ask which risk needs Closeout Evidence, an owner-file update, or another Review Lane.",
+            }
+        )
+
+    if missing:
+        rows.append(
+            {
+                "observed": "Evidence gaps: " + "; ".join(missing) + ".",
+                "interpretation": "The available packet does not fully support the claims a human may want to review.",
+                "uncertainty": "Unknowns remain; missing evidence must not be interpreted as a positive result.",
+                "human_action": "Fill the narrowest proof gap or route the uncertainty to the appropriate human review.",
+            }
+        )
+
+    if not rows:
+        rows.append(
+            {
+                "observed": "The snapshot found no additional warning or evidence gap.",
+                "interpretation": "No extra advisory cue was identified from the available Precode evidence.",
+                "uncertainty": "This does not mean the code is healthy or certified.",
+                "human_action": "Use normal human review and the declared proof path.",
+            }
+        )
+
+    return {
+        "purpose": "Translate observed Precode evidence into a plain-language human review conversation.",
+        "advisory_only": True,
+        "rows": rows,
+        "does_not": [
+            "compute numeric confidence",
+            "score or certify code quality",
+            "treat missing signals as evidence of health",
+            "approve implementation, review, or release",
+            "replace tests, linters, or human judgment",
+        ],
+    }
+
 
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.is_file() else ""
+
+
+def excluded_behavior_path(path: str) -> bool:
+    clean = path.lstrip("./")
+    return clean.startswith(NOISE_PREFIXES) or Path(clean).name in NOISE_NAMES
+
+
+def git_history(root: Path, since: str = "48 hours ago") -> tuple[list[tuple[str, str]], list[str]]:
+    """Return (commit timestamp, path) rows without treating history as attribution."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "log", "--since", since, "--format=%H%x09%cI", "--name-only", "--diff-filter=AMCR"],
+            check=False, capture_output=True, text=True, timeout=5,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return [], [f"could not read git history: {exc}"]
+    if result.returncode != 0:
+        return [], [f"could not read git history: {result.stderr.strip() or result.stdout.strip() or result.returncode}"]
+    rows: list[tuple[str, str]] = []
+    timestamp = ""
+    for line in result.stdout.splitlines():
+        if "\t" in line and len(line.split("\t", 1)[0]) == 40:
+            _, timestamp = line.split("\t", 1)
+            continue
+        path = line.strip()
+        if path and timestamp and not excluded_behavior_path(path):
+            rows.append((timestamp, path))
+    return rows, []
+
+
+def behavioral_repo_shape_signals(root: Path, changed_paths: list[str]) -> tuple[dict[str, Any], list[str]]:
+    rows, warnings = git_history(root)
+    usable = [(stamp, path) for stamp, path in rows if not excluded_behavior_path(path)]
+    file_counts = Counter(path for _, path in usable)
+    commit_paths: dict[str, set[str]] = {}
+    # A commit hash is intentionally not exposed; this is a conservative co-occurrence readout.
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "log", "--since", "48 hours ago", "--format=%H", "--name-only", "--diff-filter=AMCR"],
+            check=False, capture_output=True, text=True, timeout=5,
+        )
+        current = ""
+        for line in result.stdout.splitlines():
+            if len(line.strip()) == 40 and " " not in line.strip():
+                current = line.strip()
+                commit_paths.setdefault(current, set())
+            elif current and line.strip() and not excluded_behavior_path(line.strip()):
+                commit_paths[current].add(line.strip())
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        warnings.append(f"could not read commit co-occurrence history: {exc}")
+
+    signals: list[dict[str, Any]] = []
+    changed_set = {path for path in changed_paths if not excluded_behavior_path(path)}
+    if len(usable) < 3:
+        signals.append({"name": "history", "observed": "fewer than three usable recent file-change observations", "interpretation": "history is too sparse for an honest behavioral readout", "uncertainty": "insufficient history; absence of a signal is not evidence of health", "human_action": "use normal bounded review and gather more history before relying on this lens"})
+    else:
+        thrash = [path for path, count in file_counts.items() if count >= 3 and (not changed_set or path in changed_set)]
+        if thrash:
+            signals.append({"name": "agent-thrash", "observed": f"{', '.join(sorted(thrash)[:5])} appears in at least three recent change events", "interpretation": "the same area may be receiving repeated regeneration or repair", "uncertainty": "git history cannot establish agent attribution or a true session boundary", "human_action": "ask the agent to explain the repeated changes or re-scope the work"})
+        coupling: list[str] = []
+        for paths in commit_paths.values():
+            for left, right in itertools.combinations(sorted(paths), 2):
+                if sum(left in paths and right in paths for paths in commit_paths.values()) >= 2:
+                    coupling.append(f"{left} + {right}")
+        if coupling:
+            signals.append({"name": "change-coupling", "observed": f"{', '.join(sorted(set(coupling))[:3])} co-occur repeatedly", "interpretation": "these files may be behaviorally coupled", "uncertainty": "bead-shaped or squashed commits can inflate co-occurrence", "human_action": "ask whether the files should remain together or be separated"})
+        hotspots = []
+        for path, count in file_counts.items():
+            candidate = root / path
+            if count >= 2 and candidate.is_file() and candidate.stat().st_size >= 500:
+                hotspots.append(path)
+        if hotspots:
+            signals.append({"name": "hotspot", "observed": f"{', '.join(sorted(hotspots)[:5])} combines repeated change history with a larger file", "interpretation": "this area may deserve focused review because change is concentrated here", "uncertainty": "central or frequently used files are not defects; this is a localization hint only", "human_action": "ask whether the file has a bounded owner and whether the change can stay understandable"})
+        if changed_set:
+            broad = sorted(changed_set)
+            if len(broad) >= 8 or len({Path(path).parts[0] for path in broad}) >= 4:
+                signals.append({"name": "oversized-change", "observed": f"{len(broad)} non-noise files span {len({Path(path).parts[0] for path in broad})} top-level areas", "interpretation": "the change may be broader than one bounded concern", "uncertainty": "broad scope can be intentional and is not a defect finding", "human_action": "ask whether the work should be split before acceptance"})
+    return {"advisory_only": True, "history_window": "48 hours", "signals": signals, "excluded_noise": sorted(set(path for _, path in rows if excluded_behavior_path(path))), "warning": BEHAVIORAL_SIGNAL_WARNING}, warnings
 
 
 def todo_current_bead(root: Path) -> str:
@@ -379,6 +570,9 @@ def build_payload(root: Path, mode: str) -> dict[str, Any]:
     risks = repo_shape_risks(summary, active_bead.get("declared_checks", []), mode)
     missing = missing_proof(active_bead, risks, linter_rows)
     warnings = bead_warnings + git_warnings + risks + missing
+    behavioral_signals, behavioral_warnings = behavioral_repo_shape_signals(root, changed_paths)
+    warnings.extend(behavioral_warnings)
+    readout = confidence_readout(active_bead, summary, risks, missing, git_warnings)
     return {
         "tool": "product-code-quality-snapshot",
         "snapshot_mode": mode,
@@ -396,6 +590,8 @@ def build_payload(root: Path, mode: str) -> dict[str, Any]:
         "missing_proof": missing,
         "review_questions": review_questions(mode, risks, linter_rows),
         "recommended_next_action": recommended_next_action(risks, missing, mode),
+        "confidence_readout": readout,
+        "behavioral_repo_shape_signals": behavioral_signals,
         "warnings": warnings,
         "advisory_warning": ADVISORY_WARNING,
         "does_not": DOES_NOT,
@@ -437,6 +633,20 @@ def render_plain(payload: dict[str, Any]) -> str:
     lines.extend(f"- {item}" for item in missing) if missing else lines.append("- none")
     lines.extend(["", "Review questions:"])
     lines.extend(f"- {item}" for item in payload.get("review_questions") or [])
+    lines.extend(["", "Confidence readout (advisory):"])
+    for row in payload["confidence_readout"]["rows"]:
+        lines.extend(
+            [
+                f"- Observed: {row['observed']}",
+                f"  Interpretation: {row['interpretation']}",
+                f"  Uncertainty: {row['uncertainty']}",
+                f"  Human action: {row['human_action']}",
+            ]
+        )
+    lines.extend(["", "Behavioral repo-shape signals (advisory; human-look only):"])
+    for signal in payload["behavioral_repo_shape_signals"]["signals"]:
+        lines.extend([f"- {signal['name']}: {signal['observed']}", f"  Interpretation: {signal['interpretation']}", f"  Uncertainty: {signal['uncertainty']}", f"  Human action: {signal['human_action']}"])
+    lines.append(f"- {payload['behavioral_repo_shape_signals']['warning']}")
     lines.extend(["", f"Recommended next action: {payload['recommended_next_action']}", payload["advisory_warning"]])
     return "\n".join(lines) + "\n"
 
@@ -493,6 +703,22 @@ checks:
             failures.append("likely lint/check command was not discovered")
         if active_payload["project_linter_evidence"]["runs_commands"]:
             failures.append("snapshot claims to run commands")
+        behavioral = active_payload["behavioral_repo_shape_signals"]
+        if not behavioral["advisory_only"] or "health" not in behavioral["warning"]:
+            failures.append("behavioral signals are missing advisory boundary")
+        if any("score" in str(signal).lower() or "certif" in str(signal).lower() for signal in behavioral["signals"]):
+            failures.append("behavioral signals contain score/certification language")
+        readout = active_payload["confidence_readout"]
+        if not readout["advisory_only"] or not readout["rows"]:
+            failures.append("confidence readout is missing advisory rows")
+        row_text = " ".join(" ".join([*row.keys(), *row.values()]) for row in readout["rows"]).lower().replace("_", " ")
+        for term in ("observed", "interpretation", "uncertainty", "human action"):
+            if term not in row_text:
+                failures.append(f"confidence readout missing field: {term}")
+        if "healthy" in row_text and "not" not in row_text:
+            failures.append("confidence readout implies absence of signal is healthy")
+        if any(term in row_text for term in ("score", "certif")):
+            failures.append("confidence readout contains score or certification language")
         forbidden = " ".join(active_payload["does_not"]).lower()
         for term in ("run linters", "score code quality", "certify decent code", "approve implementation"):
             if term not in forbidden:
