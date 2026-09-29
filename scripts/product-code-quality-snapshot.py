@@ -55,6 +55,11 @@ BEHAVIORAL_SIGNAL_WARNING = (
     "Behavioral repo-shape signals are history-only advisory cues; they identify areas worth a human look, "
     "not bad code, unhealthy code, or approval decisions."
 )
+INDENTATION_WARNING = (
+    "Tier-2 indentation complexity is structural advisory evidence; deep indentation is worth a human look, "
+    "not evidence of bad code, unhealthy code, or an approval decision."
+)
+INDENTATION_REVIEW_DEPTH = 6
 NOISE_PREFIXES = (".git/", "node_modules/", "vendor/", "dist/", "build/", "coverage/", "logs/")
 NOISE_NAMES = {"package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock", "uv.lock"}
 
@@ -242,6 +247,61 @@ def behavioral_repo_shape_signals(root: Path, changed_paths: list[str]) -> tuple
             if len(broad) >= 8 or len({Path(path).parts[0] for path in broad}) >= 4:
                 signals.append({"name": "oversized-change", "observed": f"{len(broad)} non-noise files span {len({Path(path).parts[0] for path in broad})} top-level areas", "interpretation": "the change may be broader than one bounded concern", "uncertainty": "broad scope can be intentional and is not a defect finding", "human_action": "ask whether the work should be split before acceptance"})
     return {"advisory_only": True, "history_window": "48 hours", "signals": signals, "excluded_noise": sorted(set(path for _, path in rows if excluded_behavior_path(path))), "warning": BEHAVIORAL_SIGNAL_WARNING}, warnings
+
+
+def indentation_complexity(root: Path, changed_paths: list[str]) -> dict[str, Any]:
+    """Measure leading indentation shape without interpreting application language."""
+    findings: list[dict[str, Any]] = []
+    uncertainties: list[str] = []
+    scanned = 0
+    for relative in changed_paths:
+        if excluded_behavior_path(relative):
+            continue
+        path = root / relative
+        if not path.is_file() or path.stat().st_size > 2_000_000:
+            continue
+        try:
+            raw = path.read_bytes()
+            if b"\x00" in raw:
+                uncertainties.append(f"could not inspect binary-like file: {relative}")
+                continue
+            text = raw.decode("utf-8")
+        except (OSError, UnicodeDecodeError):
+            uncertainties.append(f"could not inspect unreadable or non-UTF-8 file: {relative}")
+            continue
+        scanned += 1
+        depths: list[int] = []
+        deep_lines: list[int] = []
+        saw_tab = saw_space = False
+        for number, line in enumerate(text.splitlines(), 1):
+            stripped = line.lstrip()
+            if not stripped or stripped.startswith(("#", "//", "/*", "*", "<!--")):
+                continue
+            prefix = line[: len(line) - len(line.lstrip(" \t"))]
+            saw_tab = saw_tab or "\t" in prefix
+            saw_space = saw_space or " " in prefix
+            depth = len(prefix)
+            depths.append(depth)
+            if depth >= INDENTATION_REVIEW_DEPTH:
+                deep_lines.append(number)
+        if saw_tab and saw_space:
+            uncertainties.append(f"mixed tabs and spaces make indentation shape uncertain: {relative}")
+        if depths and max(depths) >= INDENTATION_REVIEW_DEPTH:
+            findings.append({
+                "path": relative,
+                "max_depth": max(depths),
+                "deep_line_count": len(deep_lines),
+                "sample_lines": deep_lines[:5],
+            })
+    return {
+        "advisory_only": True,
+        "tier": "Tier 2 structural read; no language semantics",
+        "review_depth": INDENTATION_REVIEW_DEPTH,
+        "scanned_file_count": scanned,
+        "signals": findings[:10],
+        "uncertainties": uncertainties[:10],
+        "warning": INDENTATION_WARNING,
+    }
 
 
 def todo_current_bead(root: Path) -> str:
@@ -572,6 +632,7 @@ def build_payload(root: Path, mode: str) -> dict[str, Any]:
     warnings = bead_warnings + git_warnings + risks + missing
     behavioral_signals, behavioral_warnings = behavioral_repo_shape_signals(root, changed_paths)
     warnings.extend(behavioral_warnings)
+    indentation_signals = indentation_complexity(root, changed_paths)
     readout = confidence_readout(active_bead, summary, risks, missing, git_warnings)
     return {
         "tool": "product-code-quality-snapshot",
@@ -592,6 +653,7 @@ def build_payload(root: Path, mode: str) -> dict[str, Any]:
         "recommended_next_action": recommended_next_action(risks, missing, mode),
         "confidence_readout": readout,
         "behavioral_repo_shape_signals": behavioral_signals,
+        "indentation_complexity": indentation_signals,
         "warnings": warnings,
         "advisory_warning": ADVISORY_WARNING,
         "does_not": DOES_NOT,
@@ -647,6 +709,14 @@ def render_plain(payload: dict[str, Any]) -> str:
     for signal in payload["behavioral_repo_shape_signals"]["signals"]:
         lines.extend([f"- {signal['name']}: {signal['observed']}", f"  Interpretation: {signal['interpretation']}", f"  Uncertainty: {signal['uncertainty']}", f"  Human action: {signal['human_action']}"])
     lines.append(f"- {payload['behavioral_repo_shape_signals']['warning']}")
+    indentation = payload["indentation_complexity"]
+    lines.extend(["", "Tier-2 indentation complexity (advisory; human-look only):"])
+    lines.append(f"- Scanned files: {indentation['scanned_file_count']}; review depth: {indentation['review_depth']}")
+    for signal in indentation["signals"]:
+        lines.append(f"- {signal['path']}: max depth {signal['max_depth']}; {signal['deep_line_count']} line(s) at or beyond review depth; sample lines {signal['sample_lines']}")
+    for uncertainty in indentation["uncertainties"]:
+        lines.append(f"- Uncertainty: {uncertainty}")
+    lines.append(f"- {indentation['warning']}")
     lines.extend(["", f"Recommended next action: {payload['recommended_next_action']}", payload["advisory_warning"]])
     return "\n".join(lines) + "\n"
 
@@ -719,6 +789,24 @@ checks:
             failures.append("confidence readout implies absence of signal is healthy")
         if any(term in row_text for term in ("score", "certif")):
             failures.append("confidence readout contains score or certification language")
+        shallow = active_payload["indentation_complexity"]
+        if shallow["signals"]:
+            failures.append("shallow fixture unexpectedly reports indentation complexity")
+        (root / "src" / "deep.js").write_text("a\n  b\n    c\n      d\n        e\n          f\n", encoding="utf-8")
+        deep = indentation_complexity(root, ["src/deep.js"])
+        if not deep["signals"] or deep["signals"][0]["max_depth"] != 10:
+            failures.append("depth-6 indentation signal missing or incorrect")
+        if not deep["advisory_only"] or "human look" not in deep["warning"]:
+            failures.append("indentation signal is missing advisory boundary")
+        (root / "src" / "mixed.js").write_text("\tvalue\n  other\n", encoding="utf-8")
+        mixed = indentation_complexity(root, ["src/mixed.js"])
+        if not mixed["uncertainties"]:
+            failures.append("mixed indentation uncertainty missing")
+        (root / "node_modules").mkdir()
+        (root / "node_modules" / "deep.js").write_text("          ignored\n", encoding="utf-8")
+        excluded = indentation_complexity(root, ["node_modules/deep.js"])
+        if excluded["signals"] or excluded["scanned_file_count"]:
+            failures.append("excluded noise file was inspected")
         forbidden = " ".join(active_payload["does_not"]).lower()
         for term in ("run linters", "score code quality", "certify decent code", "approve implementation"):
             if term not in forbidden:

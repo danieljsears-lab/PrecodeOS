@@ -226,6 +226,8 @@ Product Code Quality Snapshot may be used as evidence for this lane when the use
 
 The snapshot may also provide history-only Behavioral Repo-Shape Signals, including a possible repeated-change/agent-thrash cue, coupling, hotspots, and oversized changes. These are advisory human-look prompts only; git history cannot establish agent attribution or acceptance authority.
 
+The snapshot may also provide Tier-2 indentation-complexity evidence: leading-whitespace depth, a possible depth-6 human-look cue, and explicit uncertainty for mixed or unreadable input. This is structural evidence only; it does not parse application semantics, establish poor code, score quality, or replace project checks.
+
 The snapshot's optional Confidence Readout Layer translates that evidence into four-part human review cues: observed, interpretation, uncertainty, and human action. It helps a nontechnical builder understand what to inspect or ask next; it does not add evidence, compute confidence, score code, or replace this review lane.
 
 The Engineering Quality Review Lane complements the Engineering Quality Standards Protocol and is owned as a package capability by `tasks/prds/PRD-038-engineering-quality-review-lane.md`. Product Code Quality Snapshot is owned by `tasks/prds/PRD-049-product-code-quality-snapshot.md` and can feed this lane as evidence. The Standards Protocol is the pre-coding quality floor; this lane is post-implementation review input. It does not replace Security, Release / Docs Freshness, Dependency Graph, PRD Quality, Verification Guardrail, Tool Execution, Architecture Shaping, System Design Pattern, or Release Readiness.

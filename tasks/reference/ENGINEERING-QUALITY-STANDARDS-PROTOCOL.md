@@ -156,6 +156,8 @@ Project Linter Evidence is discovery only. The snapshot may identify likely exis
 
 Product Code Quality Snapshot sits between repo heuristics and Engineering Quality Review Lane: repo heuristics warn when changed-file shape contradicts the quality-floor answer; the snapshot assembles a fuller evidence packet; Engineering Quality Review Lane uses that evidence for a human acceptance conversation. The snapshot does not inspect app code deeply, parse ASTs, install linters, mutate lint config, auto-fix code, score code quality, certify decent code, certify production readiness, approve implementation, accept review, approve release, create generated proof, create a checker gate, create follow-up tasks, or replace tests, linters, Review Lanes, Release Readiness, Verification Guardrail, Tool Execution, Architecture Shaping, or System Design Pattern.
 
+The snapshot may also include a Tier-2 indentation-complexity group. It reads leading whitespace only, reports a depth-6 human-look cue, and identifies mixed indentation or unreadable/binary-like files as uncertainty. It does not parse language semantics, distinguish meaningful nesting from formatting, run a formatter or linter, score code quality, or treat absence of a cue as evidence of health.
+
 The snapshot may include Behavioral Repo-Shape Signals: recent history-only cues for possible agent-thrash, repeated file coupling, hotspots, and oversized changes. They are literal observations with uncertainty and a human-look action. Sparse history, excluded generated/vendor/lock/build noise, squashed commits, and unavailable session boundaries must remain explicit; no signal or absence of signal is a quality verdict or gate.
 
 ### Confidence Readout Layer

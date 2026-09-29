@@ -841,6 +841,8 @@ Expected output: advisory evidence with the active bead path, primary authority,
 
 The output may also include Behavioral Repo-Shape Signals: history-only cues for possible repeated changes to one file (agent-thrash), repeated file coupling, hotspots, or an unusually broad change. These mean “worth a human look,” not “bad code” or “unhealthy code.” Sparse history or an unavailable session boundary is reported as unknown.
 
+The output may also include Tier-2 indentation complexity: a read-only leading-whitespace cue when a file reaches depth 6 or greater. This is structural evidence for a human look, not a quality score or verdict. Mixed indentation and unreadable/binary-like files are reported as uncertainty, and missing indentation signals do not imply healthy code.
+
 Project Linter Evidence is discovery only. The snapshot may identify likely project-owned lint/check commands, but it does not run lint, tests, typechecks, package managers, fixers, or app code. Running a suggested command is a separate user-approved tool action under Tool Execution Protocol.
 
 Use whole-codebase mode only when you explicitly want broader changed-file health evidence:

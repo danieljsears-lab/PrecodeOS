@@ -44,6 +44,8 @@ Its optional Confidence Readout Layer only translates already-collected snapshot
 
 Behavioral Repo-Shape Signals are likewise read-only history/file-tree inspection. They cannot establish agent attribution, approve work, create proof, or authorize any command.
 
+Tier-2 indentation complexity is also read-only leading-whitespace inspection. It does not run formatters, linters, tests, package managers, or fixers, and it does not authorize any command.
+
 `python3 scripts/prd-handoff-readiness.py --prd <path> --target ...` may return nested Progressive Production-Readiness Activation routing. It remains the existing read-only command and must not echo sensitive PRD values, inspect application code, mutate owner files, approve decomposition, or certify readiness. Activation alone does not change the command's top-level status or exit behavior.
 
 `scripts/clarity-scenario-check.py` includes regression fixtures for command classification, generated-refresh demotion, optional CLI facade delegation, missing setup-apply approval, and Ralph approval-needed attempt handling. These fixtures prove boundary wording and refusal behavior stay stable; they are not command approval or verification proof for unrelated work.

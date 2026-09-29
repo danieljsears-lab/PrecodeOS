@@ -1024,6 +1024,8 @@ Run `python3 scripts/product-code-quality-snapshot.py --active-bead --json`. Tre
 
 If present, also read the Behavioral Repo-Shape Signals group as history-only “worth a human look” cues. Agent-thrash is a possible repeated-change signal, not proven agent attribution; ask the agent to explain or re-scope rather than treating it as a quality verdict.
 
+If present, also read the Tier-2 indentation-complexity group as a structural “worth a human look” cue. A depth-6 observation may reflect nesting or formatting; mixed indentation or unreadable files remain uncertain. Do not treat it as a quality verdict, score, certificate, gate, or proof.
+
 If the evidence is hard for a nontechnical builder to interpret, ask for the optional Confidence Readout Layer. It must separate each cue into what was observed, what it may indicate, what remains uncertain, and what human action is appropriate next. Treat missing evidence as unknown; do not ask for a confidence score, verdict, certificate, or approval shortcut.
 
 Project Linter Evidence is discovery only. Do not run lint, tests, typechecks, package managers, fixers, or app code from the snapshot unless I separately approve the exact command under Tool Execution Protocol. Do not treat the snapshot as proof, implementation approval, review acceptance, code-quality score, decent-code certification, production-readiness certification, follow-up task creation, or a checker gate.
