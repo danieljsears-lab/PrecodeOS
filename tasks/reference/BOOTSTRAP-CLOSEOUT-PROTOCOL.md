@@ -14,7 +14,7 @@ License: Apache-2.0
 Existing-file refresh also requires the target-local package metadata file `.precode/package-baseline.json`. It records verified source hashes from fresh approved setup or approved package-owned refresh. A target file is refreshable only when it matches that baseline and differs from the current source. A file differing from both is preserved as a committed customization. Missing, malformed, stale, or unsupported baseline metadata blocks refresh; Git cleanliness, `HEAD`, the source tree, and refresh audit reports never establish a baseline. Baseline updates merge only verified copied/current package hashes and never erase evidence for preserved customizations. Preview remains read-only, RF-ID approval remains mandatory, and the target and baseline hashes are revalidated before apply.
 Copyright: (c) 2026 Dan Sears / Recode
 Document version: v0.2.0
-Last updated: 2026-09-06
+Last updated: 2026-10-01
 
 ## Purpose
 
@@ -95,12 +95,15 @@ The plan must include:
 - optional registry metadata status with `registry_lookup_performed: false` and `dist_tag_resolution_performed: false`
 - action summary counts
 - grouped current `UP-ID` lists for candidate package copy, manual review, blocked, and deferred actions
+- coupled package review groups that identify related action IDs and require the group to be reviewed together before any separate copy approval
 - same-session freshness requirement
 - validation prompts
 - next manual gate
 - generated-evidence and non-authority warnings
 
 The plan is not copy approval, package update permission, npm apply behavior, registry freshness, dist-tag resolution, release-channel behavior, package-manager behavior, rollback automation, owner-file adaptation approval, or generated-output authority.
+
+When multiple package-owned actions belong to the same declared file group, update-plan preview must expose that relationship as review evidence. Grouping does not create a bulk-apply permission: each eligible `UP-ID` remains subject to the current preview, explicit approval, and the existing Python apply refusal rules.
 
 ## Safe Existing-File Refresh
 

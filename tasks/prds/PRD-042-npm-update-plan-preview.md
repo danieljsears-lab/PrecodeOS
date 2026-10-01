@@ -3,7 +3,7 @@ prd_id: PRD-042
 status: approved
 owner: Dan Sears / Recode
 created: 2026-07-24
-last_updated: 2026-07-24
+last_updated: 2026-10-01
 risk_level: high
 feature_link: npm Update Plan Preview
 features_status: not compiled
@@ -45,6 +45,7 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 - Expose the plan through `--update-plan-preview` and the optional npm `precodeos update-plan-preview` command.
 - Reuse upgrade-preview evidence and PRD-041 compatibility policy metadata instead of creating a separate updater subsystem.
 - Group current `UP-ID` actions into candidate package-copy, manual-review, blocked, and deferred buckets.
+- Expose coupled package-file review groups so related actions are reviewed together before any separate copy approval.
 - Name same-session freshness, clone-first support, validation prompts, optional registry metadata status, and non-authority limits.
 - Keep copy approval and mutation behavior out of update-plan preview.
 
@@ -57,7 +58,7 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 | ID | Requirement | Priority | Notes |
 |---|---|---:|---|
 | `PRD-042-FR01` | `scripts/bootstrap-check.py --update-plan-preview` must include `package_upgrade_preview` evidence and a separate `npm_update_plan_preview` object. | P0 | The plan summarizes, not replaces, upgrade preview. |
-| `PRD-042-FR02` | The plan must expose action summary counts, grouped current `UP-ID` lists, same-session freshness requirements, validation prompts, optional registry metadata status, and non-authority limits. | P0 | Action IDs remain advisory evidence. |
+| `PRD-042-FR02` | The plan must expose action summary counts, grouped current `UP-ID` lists, coupled review groups, same-session freshness requirements, validation prompts, optional registry metadata status, and non-authority limits. | P0 | Action IDs remain advisory evidence; grouping does not create bulk-apply permission. |
 | `PRD-042-FR03` | `bin/precodeos.mjs` and `scripts/precode_cli.py` may expose read-only `update-plan-preview` delegation to Bootstrap Confidence. | P0 | No npm apply flags or approval IDs. |
 | `PRD-042-FR04` | Public setup, support, troubleshooting, user, package-inventory, protocol, and AI-readable navigation surfaces must frame update-plan preview as generated evidence only. | P0 | Prevents package-manager drift. |
 | `PRD-042-FR05` | Bootstrap self-test and clarity fixtures must cover update-plan JSON/plain shape, facade delegation, no registry lookup, no dist-tag resolution, no copy approval from update-plan preview, and no mutation authority. | P0 | Text-contract and payload regression only. |
@@ -68,7 +69,7 @@ Without a grouped update-plan preview, users may either skip blocker review or o
 | Requirement | Acceptance check | Evidence |
 |---|---|---|
 | `PRD-042-FR01` | `--update-plan-preview --json` includes both `package_upgrade_preview` and `npm_update_plan_preview`. | `python3 scripts/bootstrap-check.py --self-test`. |
-| `PRD-042-FR02` | The plan reports grouped `UP-ID` buckets, counts, `same_session_requirement`, `validation_prompts`, `optional_registry_metadata`, and non-authority warnings. | Bootstrap self-test and manual JSON review. |
+| `PRD-042-FR02` | The plan reports grouped `UP-ID` buckets, coupled review groups, counts, `same_session_requirement`, `validation_prompts`, `optional_registry_metadata`, and non-authority warnings. | Bootstrap self-test and manual JSON review. |
 | `PRD-042-FR03` | `precodeos update-plan-preview --target <existing-precode-root>` and `python3 scripts/precode_cli.py update-plan-preview --target <existing-precode-root>` print/delegate to `--update-plan-preview`; update-plan preview still exposes no approval flags. | `python3 scripts/clarity-scenario-check.py`. |
 | `PRD-042-FR04` | Public docs/protocols/navigation describe update-plan preview without implying update permission. | Docs review and docs HTML freshness. |
 | `PRD-042-FR05` | Fixtures fail if registry/dist-tag lookup, npm apply exposure, package-manager behavior, or generated-output authority appears. | Clarity scenario and bootstrap self-test. |

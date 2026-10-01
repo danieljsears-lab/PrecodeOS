@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Version: v0.6.0
-# Last updated: 2026-09-06
+# Last updated: 2026-10-01
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -1384,6 +1384,29 @@ def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
         "blocked": [str(action["id"]) for action in actions if action["category"] == "blocked_identity_collision"],
         "deferred": [str(action["id"]) for action in actions if action["category"] == "deferred_package_dev_identity"],
     }
+    review_groups: list[dict[str, Any]] = []
+    by_group: dict[str, list[dict[str, Any]]] = {}
+    for action in actions:
+        by_group.setdefault(str(action.get("group", "ungrouped")), []).append(action)
+    for group_name in sorted(by_group):
+        group_actions = by_group[group_name]
+        reviewable = [
+            action for action in group_actions
+            if action.get("category") not in {"current", "preserve_existing"}
+        ]
+        if not reviewable:
+            continue
+        review_groups.append({
+            "group": group_name,
+            "action_ids": [str(action["id"]) for action in group_actions],
+            "reviewable_action_ids": [str(action["id"]) for action in reviewable],
+            "paths": [str(action["path"]) for action in group_actions],
+            "review_scope": (
+                "review this coupled package group together before approving any copy action"
+                if len(group_actions) > 1
+                else "review this package action before any separate approval"
+            ),
+        })
     validation_prompts = [
         "Confirm source package root and target existing-Precode root before interpreting this plan.",
         "Review package-state classification, dirty paths, identity collisions, and deferred package-development identities.",
@@ -1432,6 +1455,7 @@ def build_update_plan_preview(payload: dict[str, Any]) -> dict[str, Any]:
             "deferred_count": len(grouped_action_ids["deferred"]),
         },
         "grouped_action_ids": grouped_action_ids,
+        "review_groups": review_groups,
         "actions": actions,
         "blockers": preview["blockers"],
         "dirty_package_paths": preview["dirty_package_paths"],
@@ -2669,6 +2693,10 @@ def render_update_plan_preview_plain(payload: dict[str, Any]) -> str:
     if plan["grouped_action_ids"]["deferred"]:
         lines.append("\nDeferred IDs:")
         lines.extend(f"- {item}" for item in plan["grouped_action_ids"]["deferred"])
+    if plan.get("review_groups"):
+        lines.append("\nCoupled review groups:")
+        for group in plan["review_groups"]:
+            lines.append(f"- `{group['group']}`: {group['review_scope']}; actions {', '.join(group['reviewable_action_ids'])}")
     lines.append("\nValidation prompts:")
     lines.extend(f"- {item}" for item in plan["validation_prompts"])
     lines.append(
@@ -3164,11 +3192,17 @@ def self_test() -> int:
         assert len(upgrade_copy_ids) == 1
         assert upgrade_copy_ids[0] in update_plan["grouped_action_ids"]["candidate_package_copy"]
         assert update_plan["action_summary"]["candidate_package_copy_count"] >= 1
+        assert any(
+            group["group"] == "public_orientation_docs"
+            and upgrade_copy_ids[0] in group["reviewable_action_ids"]
+            for group in update_plan["review_groups"]
+        )
         rendered_update_plan = render_update_plan_preview_plain(existing_precode_payload)
         assert "Npm Update Plan Preview" in rendered_update_plan
         assert "Registry lookup performed: no" in rendered_update_plan
         assert "not package update permission" in rendered_update_plan
         assert "Dist-tag resolution performed: no" in rendered_update_plan
+        assert "Coupled review groups:" in rendered_update_plan
         fast_precode_target = base / "fast-existing-precode-target"
         make_source(fast_precode_target)
         fast_precode_payload = build_payload(source.as_posix(), fast_precode_target.as_posix())
