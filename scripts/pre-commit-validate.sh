@@ -6,13 +6,13 @@
 # SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$repo_root"
+package_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$package_root"
 
 declare -a staged_paths=()
 while IFS= read -r path; do
   [[ -n "$path" ]] && staged_paths+=("$path")
-done < <(git diff --cached --name-only --diff-filter=ACMR)
+done < <(git -C "$package_root" diff --cached --name-only --relative --diff-filter=ACMR)
 
 if [[ ${#staged_paths[@]} -eq 0 ]]; then
   echo "pre-commit: no staged files to validate"
@@ -28,10 +28,10 @@ declare -a staged_python=()
 for path in "${staged_paths[@]}"; do
   case "$path" in
     *.sh)
-      [[ -f "$path" ]] && staged_shell+=("$path")
+      [[ -f "$package_root/$path" ]] && staged_shell+=("$package_root/$path")
       ;;
     *.py)
-      [[ -f "$path" ]] && staged_python+=("$path")
+      [[ -f "$package_root/$path" ]] && staged_python+=("$package_root/$path")
       ;;
   esac
 done

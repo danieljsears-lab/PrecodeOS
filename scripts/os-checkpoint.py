@@ -10,6 +10,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -33,6 +34,18 @@ def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         check=False,
     )
+
+
+def git_root(root: Path) -> Path | None:
+    result = run_git(root, "rev-parse", "--show-toplevel")
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    return Path(result.stdout.strip()).resolve()
+
+
+def package_path(root: Path, worktree_path: str) -> str:
+    absolute = (git_root(root) or root) / worktree_path
+    return normalize(os.path.relpath(absolute, root))
 
 
 def normalize(path: str) -> str:
@@ -71,18 +84,26 @@ def git_dirty_paths(root: Path) -> set[str]:
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
         if path:
-            dirty.add(normalize(path))
+            dirty.add(package_path(root, path))
     return dirty
 
 
 def is_tracked(root: Path, path: str) -> bool:
-    result = run_git(root, "ls-files", "--error-unmatch", "--", path)
+    worktree = git_root(root)
+    if worktree is None:
+        return False
+    worktree_path = os.path.relpath(root / path, worktree)
+    result = run_git(root, "ls-files", "--error-unmatch", "--", worktree_path)
     return result.returncode == 0
 
 
 def git_blob(root: Path, path: str) -> bytes | None:
+    worktree = git_root(root)
+    if worktree is None:
+        return None
+    worktree_path = os.path.relpath(root / path, worktree)
     result = subprocess.run(
-        ["git", "show", f"HEAD:{path}"],
+        ["git", "show", f"HEAD:{worktree_path}"],
         cwd=root,
         capture_output=True,
         check=False,

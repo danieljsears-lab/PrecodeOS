@@ -179,7 +179,7 @@ Do not modify files inside precode/ except when the active bead explicitly allow
 
 ### Commit-Hook Or OS-Integrity Triage
 
-If a builder shows a screenshot or agent summary that claims the commit hook, `write-guard.sh`, or `os-integrity-check.py` is broken, treat it as indirect evidence until the current terminal output is available. Do not recommend reinstalling PrecodeOS, overwriting files, using `--no-verify`, or patching hook scripts from a screenshot alone.
+If a builder shows a screenshot or agent summary that claims the commit hook, `write-guard.sh`, or `os-integrity-check.py` is broken, treat it as indirect evidence until the current terminal output is available. The validation path supports PrecodeOS installed at a repository root or beneath an enclosing Git work tree and reports package-relative paths. Do not recommend reinstalling PrecodeOS, overwriting files, using `--no-verify`, or patching hook scripts from a screenshot alone.
 
 Support can say:
 

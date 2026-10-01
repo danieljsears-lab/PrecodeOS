@@ -80,6 +80,8 @@ python3 scripts/os-integrity-check.py --staged --strict
 
 Strict mode blocks high-risk protected-source commits that lack a valid scoped checkpoint. Outside strict mode, findings are advisory evidence only.
 
+When PrecodeOS is installed beneath an enclosing Git work tree, the checks resolve Git's work-tree-relative paths back to the PrecodeOS root before comparing paths with checkpoints or protected surfaces. Package files remain package-relative; unrelated enclosing-project files remain visible as paths such as `../frontend/page.tsx`. The shipped hook resolves its validator from the package location, so invocation from either the enclosing Git root or the package root uses the same validation boundary.
+
 The checker does not:
 
 - approve work

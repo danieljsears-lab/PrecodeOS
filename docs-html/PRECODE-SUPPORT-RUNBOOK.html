@@ -489,7 +489,7 @@ Stop and explain the issue before changing anything when the error appears to in
 
 Do not modify files inside precode/ except when the active bead explicitly allows that exact Precode control-layer change. If a Precode framework file appears to cause the error, surface the symptom and escalation path to the support lead or maintainer instead of patching it casually.</code></pre>
 <h3 id="commit-hook-or-os-integrity-triage"><a class="heading-anchor" href="#commit-hook-or-os-integrity-triage" aria-label="Link to Commit Hook Or OS Integrity Triage">#</a>Commit-Hook Or OS-Integrity Triage</h3>
-<p>If a builder shows a screenshot or agent summary that claims the commit hook, <code>write-guard.sh</code>, or <code>os-integrity-check.py</code> is broken, treat it as indirect evidence until the current terminal output is available. Do not recommend reinstalling PrecodeOS, overwriting files, using <code>--no-verify</code>, or patching hook scripts from a screenshot alone.</p>
+<p>If a builder shows a screenshot or agent summary that claims the commit hook, <code>write-guard.sh</code>, or <code>os-integrity-check.py</code> is broken, treat it as indirect evidence until the current terminal output is available. The validation path supports PrecodeOS installed at a repository root or beneath an enclosing Git work tree and reports package-relative paths. Do not recommend reinstalling PrecodeOS, overwriting files, using <code>--no-verify</code>, or patching hook scripts from a screenshot alone.</p>
 <p>Support can say:</p>
 <pre><code class="language-text">That screenshot is not the actual Precode error output. It looks like an old maintainer/Codex note about a commit-hook gap, and the latest PrecodeOS repo should include the hook dependency files.
 

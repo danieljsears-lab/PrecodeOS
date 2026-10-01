@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-bash scripts/pre-commit-validate.sh
+hook_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bash "$hook_dir/../scripts/pre-commit-validate.sh"

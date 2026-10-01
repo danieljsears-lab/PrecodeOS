@@ -10,6 +10,7 @@ import argparse
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import subprocess
 from typing import Any
@@ -49,6 +50,18 @@ def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def git_root(root: Path) -> Path | None:
+    result = run_git(root, "rev-parse", "--show-toplevel")
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    return Path(result.stdout.strip()).resolve()
+
+
+def package_path(root: Path, worktree_path: str) -> str:
+    absolute = (git_root(root) or root) / worktree_path
+    return normalize(os.path.relpath(absolute, root))
+
+
 def git_head(root: Path) -> str:
     result = run_git(root, "rev-parse", "HEAD")
     return result.stdout.strip() if result.returncode == 0 else ""
@@ -57,7 +70,7 @@ def git_head(root: Path) -> str:
 def git_paths(root: Path, *, staged: bool) -> list[str]:
     if staged:
         result = run_git(root, "diff", "--cached", "--name-only", "--diff-filter=ACMR")
-        return sorted(line for line in result.stdout.splitlines() if line) if result.returncode == 0 else []
+        return sorted(package_path(root, line) for line in result.stdout.splitlines() if line) if result.returncode == 0 else []
 
     paths: set[str] = set()
     for args in (
@@ -67,7 +80,7 @@ def git_paths(root: Path, *, staged: bool) -> list[str]:
     ):
         result = run_git(root, *args)
         if result.returncode == 0:
-            paths.update(line for line in result.stdout.splitlines() if line)
+            paths.update(package_path(root, line) for line in result.stdout.splitlines() if line)
     return sorted(paths)
 
 
