@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.2
-Last updated: 2026-09-20
+Document version: v0.3.3
+Last updated: 2026-10-01
 
 ## Purpose
 
@@ -48,7 +48,7 @@ This document is curated. Generated support lives in `logs/file-inventory.json` 
 | Public generated docs site | `docs-html/*.html` | Committed HTML reading surface generated from `docs/*.md` and selected root public docs such as `CANDIDATE-QUEUE.md`, with progress cues, section links, source Markdown links, and Daily Cockpit prompt/protocol copy cards; easier to navigate, but not authority. |
 | Project authority templates | `PRODUCT.md`, `PROJECT-CONTEXT.md`, `FEATURES.md`, `ACCEPTANCE.md`, `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, `CODEBASE-GUIDE.md` | Target-project owner files and reference templates. Architecture, API, data, security, codebase, and acceptance include short risk-triggered production-readiness guidance; low-risk work should not fill every owner, and completing templates does not certify readiness. `SECURITY.md` also records PrecodeOS package-security posture for local package surfaces. |
 | Candidate Queue | `CANDIDATE-QUEUE.md` | User-maintained parked intent, candidate evidence, review ordering, product-value ratings, themes, near-bead sketches, status, and promotion targets before PRDs or beads; not task authority. |
-| Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing, engineering quality standards, skill playbooks, and copyable prompt patterns. |
+| Protocols | `tasks/reference/*.md` | Durable Precode rules and playbooks outside active memory, including agent routing, engineering quality standards, skill playbooks, and copyable prompt patterns. A file in this shared family is package-owned for enforcement only when it carries a PrecodeOS authority contract; project notes in the same directory remain project-owned. |
 | Reusable templates | `tasks/templates/*.md` | Copyable builder, workflow, first-session, evidence, and exemplar-review templates that produce source evidence, prompts, checklists, completion evidence, public-safe cohort snapshots, and non-installable pack review shapes, not task authority. |
 | Execution docs | `tasks/todo.md`, `tasks/beads/*.md`, `tasks/prds/*.md` | Current work, bead contracts, and PRD shards. |
 | Generated PRD review surface | `tasks/prds-html/*.html` | Committed static HTML review pages generated from non-template PRD shards, including reader-facing PRD clusters when the package cluster map matches the current PRD set, a target-safe unclustered index when it does not, PRD handoff readiness cues, and export-only Acceptance Oracle Matrix proposal controls; easier to inspect, but not authority. |
@@ -477,8 +477,9 @@ Command surface triage is documentation guidance, not a registry or wrapper laye
 ## Maintenance Rules
 
 - Add new PrecodeOS-owned files here when they become durable surfaces.
+- In shared directories such as `tasks/reference/`, package ownership is established by a PrecodeOS authority contract plus inventory coverage; directory placement alone does not make a project record package-owned.
 - Add generated outputs by family when they are timestamped or high-churn.
 - Keep `logs/file-inventory.json` regenerated with `python3 scripts/file-inventory.py`.
-- Run `python3 scripts/file-inventory.py --check` before accepting inventory-sensitive changes; warnings fail the check but do not become task selection, edit approval, generated-output authority, or automatic repair.
+- Run `python3 scripts/file-inventory.py --check` before accepting inventory-sensitive changes; package-owned violations fail the check, while project-owned omissions remain outside enforcement. Findings do not become task selection, edit approval, generated-output authority, or automatic repair.
 - Run `python3 scripts/package-knowledge-lint.py --check` when package docs, protocols, navigation, shims, or generated sidecar references may have drifted; use `review_required`, `disposition`, and plain-path-reference counts to separate new drift from audit-reviewed intentional advisory patterns. If stale generated sidecar cues appear, refresh the owning generated evidence and rerun the check instead of hand-editing generated JSON.
 - Keep `CODEBASE-GUIDE.md` focused on target-project code layout.

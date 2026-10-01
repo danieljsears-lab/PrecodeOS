@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.2.0
-# Last updated: 2026-07-26
+# Version: v0.2.1
+# Last updated: 2026-10-01
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -47,6 +47,7 @@ def write_inventory_fixture(root: Path) -> None:
         "Last updated: 2026-07-26\n\n"
         "`docs/PRECODE-PACKAGE-FILE-INVENTORY.md`\n"
         "`scripts/*.py`\n"
+        "`tasks/reference/*.md`\n"
         "`docs-html/*.html`\n"
         "`tasks/prds-html/*.html`\n",
     )
@@ -70,6 +71,11 @@ def self_test() -> int:
         if exit_code(clean_payload) != 0:
             failures.append({"scenario": "clean fixture exit", "expected": "0", "actual": str(clean_payload.get("warnings"))})
 
+        write_fixture(clean / "tasks" / "reference" / "project-note.md", "# Project note\n")
+        project_only_payload = check_payload(compile_file_inventory(clean))
+        if exit_code(project_only_payload) != 0:
+            failures.append({"scenario": "project-only note exit", "expected": "0", "actual": str(project_only_payload.get("warnings"))})
+
         drift = Path(tmp) / "drift"
         write_inventory_fixture(drift)
         write_fixture(drift / "docs" / "UNVERSIONED.md", "# Missing Contract\n")
@@ -79,11 +85,20 @@ def self_test() -> int:
         if not drift_payload.get("warnings"):
             failures.append({"scenario": "drift fixture warnings", "expected": "inventory warnings", "actual": "none"})
 
+        mixed = Path(tmp) / "mixed"
+        write_inventory_fixture(mixed)
+        write_fixture(mixed / "tasks" / "reference" / "project-note.md", "# Project note\n")
+        write_fixture(mixed / "tasks" / "reference" / "package-protocol.md", "> AUTHORITY: Package protocol.\n")
+        mixed_payload = check_payload(compile_file_inventory(mixed))
+        warnings = mixed_payload.get("warnings") or []
+        if exit_code(mixed_payload) == 0 or not any("package-protocol.md" in warning for warning in warnings):
+            failures.append({"scenario": "mixed package/project fixture", "expected": "package-only failure", "actual": str(warnings)})
+
     payload = {
         "tool": "file-inventory",
         "mode": "self-test",
         "status": "pass" if not failures else "fail",
-        "scenario_count": 2,
+        "scenario_count": 4,
         "failures": failures,
     }
     print(json.dumps(payload, indent=2, sort_keys=True))

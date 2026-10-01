@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.24
-Last updated: 2026-08-04
+Document version: v0.1.25
+Last updated: 2026-10-01
 
 ## Purpose
 
@@ -320,6 +320,7 @@ Likely causes:
 - file metadata is missing or stale
 - generated or private files are being considered public
 - expected package files are missing
+- a shared-directory file is being treated as package-owned because it has a PrecodeOS authority contract
 
 First check:
 
@@ -332,6 +333,7 @@ Safe path:
 - decide whether the warning is source truth, generated evidence, or a package-boundary issue
 - update `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a new public file is intentional
 - keep private local planning material and generated reports out of public setup instructions
+- files in shared families such as `tasks/reference/` are enforced only when they carry a PrecodeOS authority contract and are covered by the public package inventory; ordinary project notes do not need PrecodeOS headers
 
 Do not treat an advisory inventory warning as task selection or transition approval.
 

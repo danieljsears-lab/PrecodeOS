@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.1
-# Last updated: 2026-07-26
+# Version: v0.1.2
+# Last updated: 2026-10-01
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -407,6 +407,13 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
     return any(rel.startswith(prefix) and token in inventory_text for prefix, token in family_tokens)
 
 
+def package_owned_markdown(rel: str, text: str, inventory_text: str) -> bool:
+    """Keep shared project records outside package-owned enforcement."""
+    if rel.startswith("tasks/reference/"):
+        return bool(extract_contract_values(text)) and inventory_family_covered(rel, inventory_text)
+    return True
+
+
 def compile_file_inventory(root: Path) -> dict[str, Any]:
     warnings: list[str] = []
     package_inventory_rel = "docs/PRECODE-PACKAGE-FILE-INVENTORY.md"
@@ -416,17 +423,19 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
     for path in maintained_markdown_docs(root):
         rel = rel_path(path, root)
         text = read_text(path)
+        package_owned = package_owned_markdown(rel, text, package_inventory_text)
         contract = extract_contract_values(text)
         metadata = document_version_metadata(text)
-        if not contract:
+        if package_owned and not contract:
             warnings.append(f"{rel} is missing an authority contract")
-        if not metadata.get("version") or not metadata.get("last_updated"):
+        if package_owned and (not metadata.get("version") or not metadata.get("last_updated")):
             warnings.append(f"{rel} is missing version metadata")
-        if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
+        if package_owned and package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
         docs.append(
             {
                 "path": rel,
+                "package_owned": package_owned,
                 "family": inventory_family_for(rel),
                 "title": heading_title(text),
                 "anchor": extract_anchor(text),
@@ -580,4 +589,3 @@ def compile_shim_index(root: Path) -> dict[str, Any]:
         "canonical_source": "AGENT.md",
         "shims": shims,
     }
-

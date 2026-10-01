@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="PrecodeOS docs-html.py">
-  <meta name="generated-at" content="2026-09-20">
+  <meta name="generated-at" content="2026-10-01">
   <title>PrecodeOS Troubleshooting · PrecodeOS Docs</title>
   <style>
 :root {
@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Troubleshooting</h1>
   <p class="lede">Use this guide when PrecodeOS feels confusing or broken.</p>
-  <p class="meta"><a href="../docs/PRECODE-TROUBLESHOOTING.md">Source Markdown</a><span>v0.1.24</span><span>Updated 2026-08-04</span></p>
+  <p class="meta"><a href="../docs/PRECODE-TROUBLESHOOTING.md">Source Markdown</a><span>v0.1.25</span><span>Updated 2026-10-01</span></p>
 
 </section>
 <section class="content layout">
@@ -531,11 +531,11 @@ bash scripts/validate-memory.sh</code></pre>
 <p>The reference scan is advisory. It can surface stale or external labels, but it does not reserve an ID, prove what should be built next, approve a transition, or make prose references authoritative.</p>
 <h3 id="file-inventory-check-fails-or-warns"><a class="heading-anchor" href="#file-inventory-check-fails-or-warns" aria-label="Link to file inventory check Fails Or Warns">#</a><code>file-inventory --check</code> Fails Or Warns</h3>
 <p>Likely causes:</p>
-<ul><li>new public docs are not listed in the inventory</li><li>file metadata is missing or stale</li><li>generated or private files are being considered public</li><li>expected package files are missing</li></ul>
+<ul><li>new public docs are not listed in the inventory</li><li>file metadata is missing or stale</li><li>generated or private files are being considered public</li><li>expected package files are missing</li><li>a shared-directory file is being treated as package-owned because it has a PrecodeOS authority contract</li></ul>
 <p>First check:</p>
 <pre><code class="language-bash">python3 scripts/file-inventory.py --check</code></pre>
 <p>Safe path:</p>
-<ul><li>decide whether the warning is source truth, generated evidence, or a package-boundary issue</li><li>update <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> when a new public file is intentional</li><li>keep private local planning material and generated reports out of public setup instructions</li></ul>
+<ul><li>decide whether the warning is source truth, generated evidence, or a package-boundary issue</li><li>update <code>docs/PRECODE-PACKAGE-FILE-INVENTORY.md</code> when a new public file is intentional</li><li>keep private local planning material and generated reports out of public setup instructions</li><li>files in shared families such as <code>tasks/reference/</code> are enforced only when they carry a PrecodeOS authority contract and are covered by the public package inventory; ordinary project notes do not need PrecodeOS headers</li></ul>
 <p>Do not treat an advisory inventory warning as task selection or transition approval.</p>
 <h3 id="existing-project-has-conflict-or-overwrite-risk"><a class="heading-anchor" href="#existing-project-has-conflict-or-overwrite-risk" aria-label="Link to Existing Project Has Conflict Or Overwrite Risk">#</a>Existing Project Has Conflict Or Overwrite Risk</h3>
 <p>Likely conflicts:</p>
