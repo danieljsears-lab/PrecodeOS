@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.0
-Last updated: 2026-09-06
+Document version: v0.2.1
+Last updated: 2026-10-01
 
 ## What This Guide Is For
 
@@ -162,7 +162,7 @@ Only approved current `RF-ID` actions may refresh eligible files, and the target
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
 ```
 
-User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Current Git dirtiness does not detect a customization that was committed previously; persistent package baselines are a separate hardening candidate and are not yet available. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
+User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Approved package-owned setup and approved refresh create or update the persistent package baseline. Existing installs created before baseline support do not have an automatic or self-service baseline migration path; do not create a baseline from `HEAD`, current target files, Git status, an audit report, or hand-converged files. Treat those targets as manual-review cases unless a future supervised baseline-adoption workflow is explicitly provided. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
 
 ## Advanced GitHub And Python Fallback
 

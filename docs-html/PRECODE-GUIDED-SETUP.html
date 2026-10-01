@@ -416,7 +416,7 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
   <p class="eyebrow">PrecodeOS Doc</p>
   <h1>PrecodeOS Guided Setup</h1>
   <p class="lede">Use this guide only for setup, validation, recovery, and orientation. After setup validates, go to tasks/templates/PRECODE FIRST SESSION CARD.md or docs/PRECODE DAILY COCKPIT.md and stop before product work unless the user separat</p>
-  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.2.0</span><span>Updated 2026-09-06</span></p>
+  <p class="meta"><a href="../docs/PRECODE-GUIDED-SETUP.md">Source Markdown</a><span>v0.2.1</span><span>Updated 2026-10-01</span></p>
 
 </section>
 <section class="content layout">
@@ -480,7 +480,7 @@ python3 scripts/file-inventory.py --check</code></pre>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;existing-precode-root&gt; --refresh-existing-preview</code></pre>
 <p>Only approved current <code>RF-ID</code> actions may refresh eligible files, and the target hash must still match the preview:</p>
 <pre><code class="language-bash">python3 scripts/bootstrap-check.py --source &lt;precode-package-root&gt; --target &lt;existing-precode-root&gt; --refresh-existing-preview --apply-refresh-existing --approve-action &lt;RF-ID&gt;</code></pre>
-<p>User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Current Git dirtiness does not detect a customization that was committed previously; persistent package baselines are a separate hardening candidate and are not yet available. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.</p>
+<p>User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Approved package-owned setup and approved refresh create or update the persistent package baseline. Existing installs created before baseline support do not have an automatic or self-service baseline migration path; do not create a baseline from <code>HEAD</code>, current target files, Git status, an audit report, or hand-converged files. Treat those targets as manual-review cases unless a future supervised baseline-adoption workflow is explicitly provided. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.</p>
 <h2 id="advanced-github-and-python-fallback"><a class="heading-anchor" href="#advanced-github-and-python-fallback" aria-label="Link to Advanced GitHub And Python Fallback">#</a>Advanced GitHub And Python Fallback</h2>
 <p>Use this only when npm is unavailable, package provenance needs direct inspection, or a technically comfortable operator deliberately chooses the transparent fallback.</p>
 <pre><code class="language-bash">git clone https://github.com/danieljsears-lab/PrecodeOS.git
