@@ -90,6 +90,36 @@ Builder-facing document roles are intentionally contracted. Not installed routes
 
 ## Core Relationship Map
 
+```text
+AGENT.md + DECISIONS.md + tasks/todo.md
+  -> owner/reference files and approved bead
+  -> bounded implementation
+  -> recorded checks and closeout/review
+
+Public Markdown docs
+  -> scripts/docs-html.py
+  -> docs-html/*.html
+  -> easier reading and navigation; Markdown remains authoritative
+
+Protocols + templates + adapters + compatibility shims
+  -> shared package rules and tool-specific routing
+  -> host-agent guidance without a second operating model
+
+Validation and compiler scripts
+  -> logs/*.json, logs/*.jsonl, and generated reports
+  -> current-state evidence and navigation aids; source files remain authoritative
+
+Raw/source evidence + reviewed memory
+  -> manual review and promotion
+  -> DECISIONS.md, owner/reference files, protocols, PRDs, or approved beads
+
+Public repository package surfaces
+  -> npm distribution profile
+  -> clean target-project package view with development state and private material excluded
+```
+
+The map is a compact orientation aid. It describes relationships among existing package surfaces; it does not add workflow authority, select tasks, approve work, or make generated output authoritative.
+
 ## Private Local Material
 
 Private local planning, strategy, and review material is intentionally outside the public package inventory. Public package docs and scripts must remain complete and functional when that material is absent.

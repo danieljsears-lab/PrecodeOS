@@ -438,6 +438,32 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Manual promotion is the rule: decisions go to <code>DECISIONS.md</code>, product requirements to PRDs and compiled <code>FEATURES.md</code>, architecture/API/data/security facts to their owner files, execution work to approved beads, repeated process lessons to protocols, adapters, or skill playbooks, and maintainer roadmap history to <code>_maintainer/</code> only. Question-To-Artifact Filing can recommend a destination for useful chat, planning, review, discovery, memory, source-intake, or maintainer answers, but it does not write files, approve promotion, choose tasks, activate beads, update active memory, or create generated-report authority.</p>
 <p>Builder-facing document roles are intentionally contracted. Not installed routes to <code>docs/PRECODE-GUIDED-SETUP.md</code>; installed or working routes to <code>docs/PRECODE-DAILY-COCKPIT.md</code>; rough ideas use <code>Ideation: use First PRD Walkthrough for my rough idea.</code>; broken or confusing state routes to Troubleshooting or <code>I am stuck, help me.</code> The Daily Cockpit keeps Daily Loop, Next, Health, and Diary on the operating surface and routes to <code>tasks/reference/PROMPT-PATTERNS.md</code> or one named protocol only when needed. The First Session Card is a compact post-setup aid, not a fifth route. Host agents execute inside approved Precode bounds; generated cards and reports remain evidence or navigation only.</p>
 <h2 id="core-relationship-map"><a class="heading-anchor" href="#core-relationship-map" aria-label="Link to Core Relationship Map">#</a>Core Relationship Map</h2>
+<pre><code class="language-text">AGENT.md + DECISIONS.md + tasks/todo.md
+  -&gt; owner/reference files and approved bead
+  -&gt; bounded implementation
+  -&gt; recorded checks and closeout/review
+
+Public Markdown docs
+  -&gt; scripts/docs-html.py
+  -&gt; docs-html/*.html
+  -&gt; easier reading and navigation; Markdown remains authoritative
+
+Protocols + templates + adapters + compatibility shims
+  -&gt; shared package rules and tool-specific routing
+  -&gt; host-agent guidance without a second operating model
+
+Validation and compiler scripts
+  -&gt; logs/*.json, logs/*.jsonl, and generated reports
+  -&gt; current-state evidence and navigation aids; source files remain authoritative
+
+Raw/source evidence + reviewed memory
+  -&gt; manual review and promotion
+  -&gt; DECISIONS.md, owner/reference files, protocols, PRDs, or approved beads
+
+Public repository package surfaces
+  -&gt; npm distribution profile
+  -&gt; clean target-project package view with development state and private material excluded</code></pre>
+<p>The map is a compact orientation aid. It describes relationships among existing package surfaces; it does not add workflow authority, select tasks, approve work, or make generated output authoritative.</p>
 <h2 id="private-local-material"><a class="heading-anchor" href="#private-local-material" aria-label="Link to Private Local Material">#</a>Private Local Material</h2>
 <p>Private local planning, strategy, and review material is intentionally outside the public package inventory. Public package docs and scripts must remain complete and functional when that material is absent.</p>
 <h3 id="npm-distribution-profile"><a class="heading-anchor" href="#npm-distribution-profile" aria-label="Link to Npm Distribution Profile">#</a>Npm Distribution Profile</h3>
