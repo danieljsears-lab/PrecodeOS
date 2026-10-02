@@ -46,10 +46,10 @@ def write_inventory_fixture(root: Path) -> None:
         "Document version: v0.1.0\n"
         "Last updated: 2026-07-26\n\n"
         "`docs/PRECODE-PACKAGE-FILE-INVENTORY.md`\n"
-        "`scripts/*.py`\n"
-        "`tasks/reference/*.md`\n"
-        "`docs-html/*.html`\n"
-        "`tasks/prds-html/*.html`\n",
+        "`scripts/good.py`\n"
+        "`tasks/reference/package-protocol.md`\n"
+        "`docs-html/index.html`\n"
+        "`tasks/prds-html/PRD-999.html`\n",
     )
 
 
@@ -72,12 +72,20 @@ def self_test() -> int:
             failures.append({"scenario": "clean fixture exit", "expected": "0", "actual": str(clean_payload.get("warnings"))})
 
         write_fixture(clean / "tasks" / "reference" / "project-note.md", "# Project note\n")
+        write_fixture(clean / "tasks" / "reference" / "contract-note.md", "> AUTHORITY: Project note.\n")
+        write_fixture(clean / "tasks" / "archive" / "archived-note.md", "# Archived project note\n")
+        write_fixture(clean / "scripts" / "project-check.sh", "#!/bin/sh\necho project\n")
         project_only_payload = check_payload(compile_file_inventory(clean))
         if exit_code(project_only_payload) != 0:
-            failures.append({"scenario": "project-only note exit", "expected": "0", "actual": str(project_only_payload.get("warnings"))})
+            failures.append({"scenario": "project-owned files exit", "expected": "0", "actual": str(project_only_payload.get("warnings"))})
 
         drift = Path(tmp) / "drift"
         write_inventory_fixture(drift)
+        write_fixture(
+            drift / "docs" / "PRECODE-PACKAGE-FILE-INVENTORY.md",
+            (drift / "docs" / "PRECODE-PACKAGE-FILE-INVENTORY.md").read_text(encoding="utf-8")
+            + "`docs/UNVERSIONED.md`\n",
+        )
         write_fixture(drift / "docs" / "UNVERSIONED.md", "# Missing Contract\n")
         drift_payload = check_payload(compile_file_inventory(drift))
         if exit_code(drift_payload) == 0:
@@ -87,6 +95,11 @@ def self_test() -> int:
 
         mixed = Path(tmp) / "mixed"
         write_inventory_fixture(mixed)
+        write_fixture(
+            mixed / "docs" / "PRECODE-PACKAGE-FILE-INVENTORY.md",
+            (mixed / "docs" / "PRECODE-PACKAGE-FILE-INVENTORY.md").read_text(encoding="utf-8")
+            + "`tasks/reference/package-protocol.md`\n",
+        )
         write_fixture(mixed / "tasks" / "reference" / "project-note.md", "# Project note\n")
         write_fixture(mixed / "tasks" / "reference" / "package-protocol.md", "> AUTHORITY: Package protocol.\n")
         mixed_payload = check_payload(compile_file_inventory(mixed))
@@ -98,7 +111,7 @@ def self_test() -> int:
         "tool": "file-inventory",
         "mode": "self-test",
         "status": "pass" if not failures else "fail",
-        "scenario_count": 4,
+        "scenario_count": 7,
         "failures": failures,
     }
     print(json.dumps(payload, indent=2, sort_keys=True))

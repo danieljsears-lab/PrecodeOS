@@ -507,7 +507,7 @@ Command surface triage is documentation guidance, not a registry or wrapper laye
 ## Maintenance Rules
 
 - Add new PrecodeOS-owned files here when they become durable surfaces.
-- In shared directories such as `tasks/reference/`, package ownership is established by a PrecodeOS authority contract plus inventory coverage; directory placement alone does not make a project record package-owned.
+- Package ownership is established by an explicit file entry in this curated inventory. Authority contracts and directory placement provide metadata and navigation context, but neither makes a project record package-owned; this applies to shared directories such as `tasks/reference/`, `tasks/beads/`, `tasks/archive/`, and `scripts/`.
 - Add generated outputs by family when they are timestamped or high-churn.
 - Keep `logs/file-inventory.json` regenerated with `python3 scripts/file-inventory.py`.
 - Run `python3 scripts/file-inventory.py --check` before accepting inventory-sensitive changes; package-owned violations fail the check, while project-owned omissions remain outside enforcement. Findings do not become task selection, edit approval, generated-output authority, or automatic repair.

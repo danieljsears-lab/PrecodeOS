@@ -407,11 +407,24 @@ def inventory_family_covered(rel: str, inventory_text: str) -> bool:
     return any(rel.startswith(prefix) and token in inventory_text for prefix, token in family_tokens)
 
 
-def package_owned_markdown(rel: str, text: str, inventory_text: str) -> bool:
-    """Keep shared project records outside package-owned enforcement."""
-    if rel.startswith("tasks/reference/"):
-        return bool(extract_contract_values(text)) and inventory_family_covered(rel, inventory_text)
-    return True
+def inventory_explicit_paths(inventory_text: str) -> set[str]:
+    """Return explicit package paths named by the curated public inventory."""
+    paths: set[str] = set()
+    for line in inventory_text.splitlines():
+        for token in re.findall(r"`([^`]+)`", line):
+            candidate = token.strip().lstrip("./")
+            if not candidate or any(marker in candidate for marker in ("*", "<", ">", " ")):
+                continue
+            if candidate.startswith(("/", "http://", "https://")):
+                continue
+            if "/" in candidate or candidate.endswith((".md", ".py", ".sh", ".yml", ".yaml", ".json", ".html")):
+                paths.add(candidate)
+    return paths
+
+
+def package_owned_path(rel: str, inventory_text: str) -> bool:
+    """Package ownership comes from an explicit curated inventory entry."""
+    return rel in inventory_explicit_paths(inventory_text)
 
 
 def compile_file_inventory(root: Path) -> dict[str, Any]:
@@ -423,7 +436,7 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
     for path in maintained_markdown_docs(root):
         rel = rel_path(path, root)
         text = read_text(path)
-        package_owned = package_owned_markdown(rel, text, package_inventory_text)
+        package_owned = package_owned_path(rel, package_inventory_text)
         contract = extract_contract_values(text)
         metadata = document_version_metadata(text)
         if package_owned and not contract:
@@ -451,21 +464,23 @@ def compile_file_inventory(root: Path) -> dict[str, Any]:
     for path in sorted((root / "scripts").glob("*.py")) + sorted((root / "scripts").glob("*.sh")):
         rel = rel_path(path, root)
         header = script_header(path)
-        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
+        package_owned = package_owned_path(rel, package_inventory_text)
+        if package_owned and (not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS"):
             warnings.append(f"{rel} is missing script version header metadata")
-        if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
+        if package_owned and package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        scripts.append({"path": rel, "family": "script", **header})
+        scripts.append({"path": rel, "family": "script", "package_owned": package_owned, **header})
 
     workflows: list[dict[str, Any]] = []
     for path in workflow_paths(root):
         rel = rel_path(path, root)
         header = script_header(path)
-        if not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS":
+        package_owned = package_owned_path(rel, package_inventory_text)
+        if package_owned and (not header.get("version") or not header.get("last_updated") or header.get("owner") != "PrecodeOS"):
             warnings.append(f"{rel} is missing workflow version header metadata")
-        if package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
+        if package_owned and package_inventory_text and not inventory_family_covered(rel, package_inventory_text):
             warnings.append(f"{rel} is not referenced in {package_inventory_rel}")
-        workflows.append({"path": rel, "family": "workflow", **header})
+        workflows.append({"path": rel, "family": "workflow", "package_owned": package_owned, **header})
 
     docs_html: list[dict[str, Any]] = []
     for path in docs_html_paths(root):

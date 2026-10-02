@@ -333,7 +333,7 @@ Safe path:
 - decide whether the warning is source truth, generated evidence, or a package-boundary issue
 - update `docs/PRECODE-PACKAGE-FILE-INVENTORY.md` when a new public file is intentional
 - keep private local planning material and generated reports out of public setup instructions
-- files in shared families such as `tasks/reference/` are enforced only when they carry a PrecodeOS authority contract and are covered by the public package inventory; ordinary project notes do not need PrecodeOS headers
+- files are enforced only when their exact path is explicitly listed in the public package inventory; ordinary project files do not need PrecodeOS headers, even when they use a shared directory or authority-contract format
 
 Do not treat an advisory inventory warning as task selection or transition approval.
 
