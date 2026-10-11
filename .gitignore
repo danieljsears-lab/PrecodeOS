@@ -30,6 +30,9 @@ logs/*.yaml
 # OS junk
 .DS_Store
 
+# Website artifacts maintained outside the repository
+/website/
+
 # Python, test, and coverage caches
 __pycache__/
 *.py[cod]
