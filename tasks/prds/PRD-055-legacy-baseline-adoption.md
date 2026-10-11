@@ -12,6 +12,10 @@ related_prds:
   - PRD-041
 ---
 
+Creator: Dan Sears / Recode
+Document version: v0.1.0
+Last updated: 2026-10-11
+
 # PRD-055 -- Legacy Package Baseline Adoption
 <!-- ANCHOR: prd-055-legacy-baseline-adoption -->
 
