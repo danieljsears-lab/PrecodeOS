@@ -59,7 +59,7 @@ After at most three high-level product or business questions, ask for a Product 
 
 Use First PRD Walkthrough when you want the shortest safe route from rough idea to PRD readiness. It is the same evidence-first path in plain language: Product Ideation Workbook and Precode Idea Coach as ordered steps, then Product Brief, Challenge And Clarity, Conviction Packet, Local Source Intake, and PRD shaping. It does not approve a PRD, create beads, update owner files, create a roadmap or backlog, or authorize coding.
 
-The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close`.
+The first-product spine is: `Idea -> Brief -> Packet -> Intake -> PRD -> Architecture? -> Bead -> Branch/Worktree -> Change -> PR -> Proof -> Review -> Close -> Merge/Re-entry -> Release`.
 
 That means rough idea or messy notes become a Product Brief, then a reviewed packet, then Local Source Intake, then human-reviewed PRD shaping and approval, then conditional Architecture Shaping when the approved PRD touches auth, data, APIs, integrations, dependencies, migrations, external services, multi-step workflows, or multi-system behavior. Progressive Production-Readiness Activation inside that bridge names only the existing architecture, API, data, security, codebase, and acceptance owners justified by explicit PRD facts. Then work proceeds to candidate decomposition and one approved active bead, recorded proof, human review, and closeout with explicit Close State. Low-risk approved PRDs can go straight to bead decomposition when the PRD or bead notes record why Architecture Shaping was skipped.
 

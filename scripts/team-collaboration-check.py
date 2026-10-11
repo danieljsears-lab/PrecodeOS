@@ -173,6 +173,12 @@ def self_test(root: Path) -> dict[str, Any]:
             "approve merge",
             "GitHub mutation",
         ],
+        "core PR contract": [
+            "core integration boundary",
+            "provider-neutral",
+            "proposed integration record",
+            "PR state",
+        ],
     }
     protocol_path = root / "tasks" / "reference" / "TEAM-COLLABORATION-PROTOCOL.md"
     prompt_path = root / "tasks" / "reference" / "PROMPT-PATTERNS.md"

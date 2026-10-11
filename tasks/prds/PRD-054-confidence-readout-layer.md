@@ -1,5 +1,5 @@
 ---
-prd_id: PRD-052
+prd_id: PRD-054
 status: approved
 owner: Dan Sears / Recode
 created: 2026-09-29
@@ -13,7 +13,7 @@ related_prds:
   - PRD-049
 ---
 
-# PRD-052 -- Confidence Readout Layer
+# PRD-054 -- Confidence Readout Layer
 <!-- ANCHOR: prd-052-confidence-readout-layer -->
 
 > AUTHORITY: Public requirements for translating existing Product Code Quality Snapshot evidence into plain-language human review cues.

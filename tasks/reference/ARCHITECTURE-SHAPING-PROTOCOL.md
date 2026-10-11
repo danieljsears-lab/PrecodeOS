@@ -40,6 +40,20 @@ Run Architecture Shaping when an approved PRD touches any of these surfaces:
 
 Skip Architecture Shaping when the work is simple copy, styling, docs-only behavior, or a small local change with no meaningful architecture risk.
 
+## Optional Mermaid Views
+
+When a diagram would clarify a real architecture decision, prefer three separate Mermaid views rather than one exhaustive map:
+
+1. **System context:** a `flowchart` showing users, the product boundary, and external systems.
+2. **Container / architecture:** a `flowchart` showing frontends, APIs, services, data stores, queues, and providers.
+3. **Detailed flow:** a `sequenceDiagram` for interactions or a `stateDiagram-v2` for lifecycle, approval, blocked, retry, and recovery behavior.
+
+Use the views selectively and keep each diagram focused on one question. Mermaid is an optional Markdown notation and review aid. It does not replace `ARCHITECTURE.md`, `API.md`, `DATA-MODELS.md`, `SECURITY.md`, or `ACCEPTANCE.md`, and it is not proof of implementation behavior.
+
+Use an entity-relationship diagram when data ownership or relationships are material. Use user journeys or timelines when they clarify a builder workflow, rollout, migration, or decision sequence. Use Git graphs, Gantt charts, and class diagrams only when the specific question requires them; they are not default architecture views.
+
+Do not add sensitive values, credentials, unsupported implementation claims, or private infrastructure details to diagrams. Do not require diagrams for every project, add a renderer or dependency, synchronize diagrams automatically, validate them as a checker gate, or treat rendered output as package authority. If prose or a table is clearer, use prose or a table.
+
 If the PRD is not approved, return to PRD shaping. If worth-building uncertainty is still material, use Product Discovery Validation instead.
 
 ## Progressive Production-Readiness Activation

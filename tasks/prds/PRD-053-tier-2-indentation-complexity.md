@@ -1,3 +1,17 @@
+---
+prd_id: PRD-053
+status: approved
+owner: Dan Sears / Recode
+created: 2026-09-29
+last_updated: 2026-09-29
+risk_level: low
+feature_link: Tier-2 Indentation Complexity
+features_status: not compiled
+related_prds:
+  - PRD-049
+  - PRD-039
+---
+
 # PRD-053 -- Tier-2 Indentation Complexity
 <!-- ANCHOR: prd-053-tier-2-indentation-complexity -->
 

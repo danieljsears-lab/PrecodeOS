@@ -162,7 +162,14 @@ Only approved current `RF-ID` actions may refresh eligible files, and the target
 python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --refresh-existing-preview --apply-refresh-existing --approve-action <RF-ID>
 ```
 
-User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Approved package-owned setup and approved refresh create or update the persistent package baseline. Existing installs created before baseline support do not have an automatic or self-service baseline migration path; do not create a baseline from `HEAD`, current target files, Git status, an audit report, or hand-converged files. Treat those targets as manual-review cases unless a future supervised baseline-adoption workflow is explicitly provided. Do not approve a differing clean file when you have reason to believe it contains committed local work. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
+User-created files, owner files, active memory, dirty files, missing files, secrets, hooks, CI, PRDs, beads, and generated evidence remain excluded. Approved package-owned setup and approved refresh create or update the persistent package baseline. For an older install without a baseline, use the read-only legacy preview and then approve the complete eligible package-file set with an operator attestation:
+
+```bash
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --legacy-baseline-preview
+python3 scripts/bootstrap-check.py --source <precode-package-root> --target <existing-precode-root> --legacy-baseline-preview --apply-legacy-baseline --baseline-attestation "I reviewed and accept this present package-owned state." --approve-action <LB-ID>
+```
+
+Every eligible `LB-ID` must be approved. Missing, dirty, or ambiguous files remain blocked. The resulting baseline records accepted present-state provenance; it does not prove historical pristine state. Do not create a baseline from `HEAD`, current target files, Git status, an audit report, or hand-converged files. Apply writes an audit report; the report is evidence, not future permission or rollback authority.
 
 ## Advanced GitHub And Python Fallback
 

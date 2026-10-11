@@ -592,6 +592,8 @@ Do not edit files, approve work, activate a bead, run mutating commands, or star
 
 ### Small Team Collaboration Lane
 
+Pull requests are a core, provider-neutral integration boundary: a proposed integration record connecting an isolated change to its proof, review, closeout, and merge/re-entry decision.
+
 ```text
 Use the Small Team Collaboration Lane.
 

@@ -24,6 +24,16 @@ Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` before any GitHub tool call tha
 
 Use `tasks/reference/TEAM-COLLABORATION-PROTOCOL.md` when GitHub branches, pull requests, reviews, or checks are used to coordinate a small team working on one product build.
 
+## Pull Requests As A Core Precode Contract
+
+PrecodeOS treats a pull request as a core integration boundary, not merely an advanced GitHub feature. The provider-neutral contract and lifecycle are defined in the Small Team Collaboration Protocol; GitHub supplies one external evidence surface for that contract.
+
+`Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Branch/Worktree -> Change -> PR -> Proof -> Review -> Close -> Merge/Re-entry -> Release`
+
+GitHub PR state may be draft, open, changes requested, review approved, checks passing or failing, conflicted, stale, merged, closed without merge, unavailable, or not configured. These are evidence states. They do not accept implementation, approve merge, approve release, promote owner-file truth, choose work, activate beads, or authorize GitHub mutation.
+
+Precode may inspect and summarize branch, PR, review, check, conflict, and re-entry evidence; compare it with the assigned bead and primary authority; identify missing proof or drift; and prepare review questions. Humans decide acceptance, merge, release, owner-file promotion, and all external mutation.
+
 Active memory remains exactly:
 
 - `AGENT.md`

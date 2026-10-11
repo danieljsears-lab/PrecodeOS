@@ -151,7 +151,7 @@ Product Discovery Validation is optional. Use it when an idea is broad, risky, m
 
 Use the Plan Loop when the builder has already done intake or PRD shaping and explicitly wants to explore a feature angle before committing it to PRD amendment, Architecture Shaping, Decomposition, a candidate bead, activation, or code. It produces a Plan Packet as evidence only, not a PRD, backlog, bead, or implementation plan.
 
-Use the Plan Mode Candidate Craft Loop when an idea should become future candidate work or a selected candidate needs an implementation plan: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Build`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The loop does not approve PRDs, choose tasks, activate beads, update `tasks/todo.md`, authorize implementation, or code.
+Use the Plan Mode Candidate Craft Loop when an idea should become future candidate work or a selected candidate needs an implementation plan: `Idea -> Plan Mode -> Candidate Queue -> Plan Mode -> Implementation Plan -> Approved Bead -> Branch/Worktree -> Change -> PR -> Proof -> Review -> Close`. In Codex, use `/plan`; in Claude Code, use Plan Mode; in other agents, use an equivalent read-only planning mode. The loop does not approve PRDs, choose tasks, activate beads, update `tasks/todo.md`, authorize implementation, accept a PR, approve merge, or approve release.
 
 Do not use discovery for tiny fixes, clear bugs, or follow-through from an approved PRD.
 

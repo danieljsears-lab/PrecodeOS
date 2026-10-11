@@ -535,6 +535,7 @@ def write_package_baseline(
     groups: list[dict[str, Any]],
     paths: list[str],
     existing: dict[str, Any] | None = None,
+    adoption: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     entries = dict((existing or {}).get("entries", {}))
     updated: list[str] = []
@@ -551,6 +552,8 @@ def write_package_baseline(
         "files": dict(sorted(entries.items())),
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
+    if adoption:
+        document["adoption"] = adoption
     temporary = baseline_path.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(baseline_path)
@@ -1366,6 +1369,120 @@ def build_existing_file_refresh_preview(payload: dict[str, Any]) -> dict[str, An
             "rollback automation",
         ],
         "next_manual_gate": "User must approve specific RF-ID actions before existing package-owned files are refreshed; uncertain baseline or preserved customization actions are never refreshable.",
+    }
+
+
+def build_legacy_baseline_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    """Classify an older target before any first-baseline adoption."""
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    blockers = list(payload["blockers"])
+    if payload["target_kind"] != "existing_precode":
+        blockers.append("legacy baseline adoption applies only to existing Precode targets")
+    if not payload["target_git"].get("available"):
+        blockers.append("target Git state is unknown; legacy baseline adoption requires a Git working tree")
+    package_paths = package_file_paths(source_root, payload["public_file_groups"])
+    existing_baseline = load_package_baseline(target_root, package_paths)
+    actions: list[dict[str, Any]] = []
+    for index, path in enumerate(package_paths, 1):
+        source_path = source_root / path
+        target_path = target_root / path
+        modified = path in set(payload["target_git"].get("modified_paths", []))
+        if not target_path.is_file():
+            category = "legacy_baseline_missing_target"
+            reason = "package-owned target file is missing; baseline adoption cannot establish its provenance"
+        elif modified:
+            category = "legacy_baseline_blocked_dirty"
+            reason = "target path has local Git changes; resolve and review before baseline adoption"
+        elif file_digest(target_path) == file_digest(source_path):
+            category = "review_legacy_baseline_adoption"
+            reason = "target matches the inspected package source; operator must attest present-state adoption"
+        else:
+            category = "review_legacy_baseline_adoption"
+            reason = "target differs from the inspected package source; operator must attest package ownership and present-state acceptance"
+        action = numbered_action("LB", index, category, path, reason, "legacy_baseline")
+        action.update({
+            "source_sha256": file_digest(source_path),
+            "target_sha256": file_digest(target_path) if target_path.is_file() else None,
+            "target_modified": modified,
+        })
+        actions.append(action)
+    return {
+        "preview_kind": "legacy_baseline_preview",
+        "status": "blocked" if blockers else "warning",
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "target_kind": payload["target_kind"],
+        "source_provenance": payload["source_provenance"],
+        "target_git": payload["target_git"],
+        "existing_baseline": existing_baseline,
+        "actions": actions,
+        "approved_action_category": "review_legacy_baseline_adoption",
+        "writes_by_default": False,
+        "target_mutation_allowed": False,
+        "generated_evidence_only": True,
+        "attestation_required": True,
+        "attestation_boundary": "An attestation accepts the inspected present state; it does not prove historical pristine state or authorize unrelated files.",
+        "not_authority_for": ["automatic baseline inference", "historical cleanliness", "user-file mutation", "package updates", "rollback automation"],
+        "next_manual_gate": "Provide an operator attestation and approve specific LB-ID actions; missing, dirty, and ambiguous paths remain blocked.",
+        "blockers": blockers,
+    }
+
+
+def apply_legacy_baseline(payload: dict[str, Any], approved_action_ids: list[str], attestation: str) -> dict[str, Any]:
+    if "legacy_baseline_preview" not in payload:
+        raise ValueError("legacy baseline apply requires --legacy-baseline-preview")
+    preview = payload["legacy_baseline_preview"]
+    source_root = Path(str(payload["source_root"]))
+    target_root = Path(str(payload["target_root"]))
+    approved = set(approved_action_ids)
+    blocked: list[dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
+    if not approved:
+        blocked.append({"path": "<approval>", "reason": "at least one --approve-action LB-ID is required"})
+    if len(attestation.strip()) < 20:
+        blocked.append({"path": "<attestation>", "reason": "a non-trivial operator attestation is required"})
+    if preview.get("blockers"):
+        blocked.extend({"path": "<preview>", "reason": str(item)} for item in preview["blockers"])
+    actions = {str(action["id"]): action for action in preview["actions"]}
+    eligible = {action_id for action_id, action in actions.items() if action["category"] == "review_legacy_baseline_adoption"}
+    if approved != eligible:
+        blocked.append({"path": "<approval>", "reason": "first-baseline adoption requires explicit approval for every eligible package-owned file; approve the complete LB-ID set"})
+    for action_id in sorted(approved):
+        action = actions.get(action_id)
+        if action is None:
+            blocked.append({"path": action_id, "reason": "approved action ID is not present in the legacy baseline preview"})
+            continue
+        if action["category"] != "review_legacy_baseline_adoption":
+            blocked.append({"path": str(action["path"]), "reason": f"{action_id} is {action['category']}; only review_legacy_baseline_adoption is eligible"})
+            continue
+        target_path = target_root / str(action["path"])
+        if not target_path.is_file() or file_digest(target_path) != action.get("target_sha256"):
+            blocked.append({"path": str(action["path"]), "reason": "target changed after preview or is no longer a regular file; rerun preview"})
+    baseline_update = None
+    if not blocked:
+        baseline_update = write_package_baseline(
+            target_root,
+            source_root,
+            payload["public_file_groups"],
+            [str(actions[action_id]["path"]) for action_id in sorted(approved)],
+            adoption={"kind": "operator_attested_present_state", "attestation": attestation.strip()},
+        )
+    for action in preview["actions"]:
+        if str(action["id"]) not in approved:
+            skipped.append({"path": str(action["path"]), "reason": f"{action['id']} was not approved"})
+    return {
+        "apply_kind": "legacy_baseline_apply",
+        "status": "blocked" if blocked else "applied",
+        "source_root": payload["source_root"],
+        "target_root": payload["target_root"],
+        "approved_actions": sorted(approved),
+        "baseline_update": baseline_update,
+        "operator_attestation_recorded": bool(baseline_update),
+        "blocked": blocked,
+        "skipped": skipped,
+        "target_mutation_allowed": not blocked,
+        "validation_next_step": "Run Precode validation and ordinary refresh preview." if not blocked else "Resolve blockers and rerun legacy baseline preview.",
     }
 
 
@@ -3308,6 +3425,25 @@ def self_test() -> int:
         missing_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(missing_payload)
         missing_action = next(action for action in missing_payload["existing_file_refresh_preview"]["actions"] if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
         assert missing_action["category"] == "blocked_uncertain_baseline"
+        legacy_target = base / "legacy-baseline-target"
+        make_source(legacy_target)
+        subprocess.run(["git", "-C", str(legacy_target), "init"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(legacy_target), "add", "."], check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-C", str(legacy_target), "-c", "user.name=Precode Test", "-c", "user.email=precode@example.invalid", "commit", "-m", "legacy fixture"],
+            check=True,
+            capture_output=True,
+        )
+        legacy_payload = build_payload(refresh_source.as_posix(), legacy_target.as_posix())
+        legacy_payload["legacy_baseline_preview"] = build_legacy_baseline_preview(legacy_payload)
+        legacy_action = next(action for action in legacy_payload["legacy_baseline_preview"]["actions"] if action["path"] == "docs/PRECODE-GUIDED-SETUP.md")
+        assert legacy_action["category"] == "review_legacy_baseline_adoption"
+        legacy_ids = [action["id"] for action in legacy_payload["legacy_baseline_preview"]["actions"] if action["category"] == "review_legacy_baseline_adoption"]
+        legacy_apply = apply_legacy_baseline(legacy_payload, legacy_ids, "Dan accepts this present package-owned state for baseline adoption.")
+        assert legacy_apply["status"] == "applied"
+        assert (legacy_target / PACKAGE_BASELINE_RELATIVE_PATH).is_file()
+        rejected_legacy = apply_legacy_baseline(legacy_payload, legacy_ids, "too short")
+        assert rejected_legacy["status"] == "blocked"
         assert not any(action["path"] == "user-created.txt" for action in refresh_actions)
         refresh_payload["existing_file_refresh_apply"] = apply_existing_file_refresh(refresh_payload, [refresh_action["id"]])
         assert refresh_payload["existing_file_refresh_apply"]["status"] == "applied"
@@ -3591,6 +3727,21 @@ def main() -> int:
         help="apply explicitly approved RF-ID existing package-file refresh actions and write an audit report",
     )
     parser.add_argument(
+        "--legacy-baseline-preview",
+        action="store_true",
+        help="include a read-only, operator-attested first-baseline preview for older Precode installs",
+    )
+    parser.add_argument(
+        "--apply-legacy-baseline",
+        action="store_true",
+        help="write an explicitly approved first baseline for selected legacy package files",
+    )
+    parser.add_argument(
+        "--baseline-attestation",
+        default="",
+        help="operator attestation required for --apply-legacy-baseline",
+    )
+    parser.add_argument(
         "--approve-action",
         action="append",
         default=[],
@@ -3611,6 +3762,8 @@ def main() -> int:
         parser.error("--apply-upgrade-preview requires --upgrade-preview")
     if args.apply_refresh_existing and not args.refresh_existing_preview:
         parser.error("--apply-refresh-existing requires --refresh-existing-preview")
+    if args.apply_legacy_baseline and not args.legacy_baseline_preview:
+        parser.error("--apply-legacy-baseline requires --legacy-baseline-preview")
     if args.fast_verified_setup_apply and not args.approve_action:
         parser.error("--fast-verified-setup-apply requires at least one --approve-action <SP-ID|UP-ID>")
 
@@ -3633,6 +3786,8 @@ def main() -> int:
         args.upgrade_preview
         or args.update_plan_preview
         or args.refresh_existing_preview
+        or args.legacy_baseline_preview
+        or args.apply_legacy_baseline
         or (args.fast_verified_setup_preview and target_route_kind == "existing_precode")
         or (args.fast_verified_setup_apply and "UP" in fast_apply_prefixes)
     )
@@ -3646,6 +3801,8 @@ def main() -> int:
         payload["package_upgrade_preview"] = build_upgrade_preview(payload)
     if args.refresh_existing_preview or args.apply_refresh_existing:
         payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(payload)
+    if args.legacy_baseline_preview or args.apply_legacy_baseline:
+        payload["legacy_baseline_preview"] = build_legacy_baseline_preview(payload)
     if args.update_plan_preview or needs_existing_precode:
         payload["npm_update_plan_preview"] = build_update_plan_preview(payload)
     if args.recovery_guidance:
@@ -3661,6 +3818,12 @@ def main() -> int:
         residual_payload["existing_file_refresh_preview"] = build_existing_file_refresh_preview(residual_payload)
         payload["refresh_residual_preview"] = residual_payload["existing_file_refresh_preview"]
         payload["refresh_report_path"] = write_refresh_audit_report(payload)
+    if args.apply_legacy_baseline:
+        payload["legacy_baseline_apply"] = apply_legacy_baseline(
+            payload,
+            args.approve_action,
+            args.baseline_attestation,
+        )
     if args.fast_verified_setup_preview or args.fast_verified_setup_apply:
         payload["fast_verified_setup_preview"] = build_fast_verified_setup_preview(payload)
     if args.fast_verified_setup_apply:
@@ -3682,6 +3845,8 @@ def main() -> int:
             print(render_upgrade_apply_plain(payload))
         elif args.apply_refresh_existing:
             print(render_existing_file_refresh_plain(payload))
+        elif args.apply_legacy_baseline or args.legacy_baseline_preview:
+            print(json.dumps(payload.get("legacy_baseline_apply", payload.get("legacy_baseline_preview", {})), indent=2, sort_keys=True))
         elif args.refresh_existing_preview:
             print(render_existing_file_refresh_plain(payload))
         elif args.update_plan_preview:

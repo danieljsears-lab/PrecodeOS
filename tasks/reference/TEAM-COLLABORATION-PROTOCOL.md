@@ -18,6 +18,20 @@ Small Team Collaboration Lane helps 2-5 people work on the same product build wi
 
 The lane is built into PrecodeOS, but it is not default-active and not a separate module. It is invoked explicitly, recorded in shared repo authority, and confirmed by each teammate in their own branch or worktree context.
 
+## Core Pull Request Contract
+
+PrecodeOS treats a pull request (PR) as a core integration boundary and the proposed integration record for a change developed in an isolated branch or worktree. The contract is provider-neutral; GitHub is one external realization of it. A PR connects the active bead, primary authority, changed files, proof, review, closeout, and integration decision.
+
+The core flow is:
+
+`Idea -> Brief -> Packet -> Intake -> PRD -> Bead -> Branch/Worktree -> Change -> PR -> Proof -> Review -> Close -> Merge/Re-entry -> Release`
+
+The terms remain distinct: `Change` is implementation in a branch or worktree; `PR` is the proposed integration and its evidence; `Proof` is recorded checks and manual verification; `Review` evaluates the bead, authority, proof, and risks; `Acceptance` is the human decision that scope is satisfied; `Merge` integrates repository state; `Close` records Precode completion and next action; `Re-entry` reviews merged or returned work against current integration state; and `Release` is a separate package or product decision.
+
+Every PR handoff should name the assigned bead and primary authority, branch/worktree, contributor and role, objective and scope, changed files and owner-file impacts, recorded checks, manual verification where needed, Closeout Evidence or current closeout draft, unresolved risks/conflicts/uncertainty, review findings and required actions, merge/re-entry recommendation, and forbidden actions not taken.
+
+PR state is evidence only: draft, open, changes requested, review approved, checks passing or failing, conflicted or stale, merged, closed without merge, unavailable, or not configured. No PR state constitutes implementation acceptance, merge approval, release approval, or owner-file promotion. Direct-to-main is an explicit exception for tiny, non-semantic, low-risk corrections that do not affect public meaning, validation, setup, release, boundaries, or workflow semantics.
+
 Active memory remains exactly:
 
 - `AGENT.md`

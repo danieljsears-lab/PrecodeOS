@@ -9,7 +9,7 @@ features_status: not compiled
 related_prds:
   - PRD-025
   - PRD-028
-last_updated: 2026-07-27
+last_updated: 2026-10-11
 ---
 
 # PRD-032 -- GitHub Collaboration Hub
@@ -23,7 +23,7 @@ last_updated: 2026-07-27
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.1.2
+Document version: v0.2.0
 Last updated: 2026-08-04
 
 ## State
@@ -74,6 +74,8 @@ Last updated: 2026-08-04
 ## Summary
 
 PrecodeOS should accept public GitHub feedback and package-bug intake without letting GitHub become a second operating system.
+
+Pull requests are also a core PrecodeOS integration concept. A PR is the proposed integration record for a change developed in an isolated branch or worktree. GitHub is one external realization of that provider-neutral contract. PR evidence connects the assigned bead, primary authority, changed files, proof, review, closeout, and integration decision; it does not itself accept implementation, approve merge, approve release, or promote owner-file truth.
 
 The GitHub Collaboration Hub opens narrow intake for adoption friction and package bugs. Issues, labels, comments, pull requests, reviews, checks, and project boards remain external evidence until reviewed and promoted into the correct Precode owner file.
 
@@ -139,6 +141,8 @@ PrecodeOS now has enough release evidence, package trust guidance, and read-only
 | `PRD-032-FR07` | `scripts/clarity-scenario-check.py` must guard collaboration-hub wording across templates, protocols, policy, and prompts. | P1 | Contract coverage. |
 | `PRD-032-FR08` | Maintainer changelog, roadmap, roadmap journal, and generated reading surfaces must be refreshed after implementation. | P1 | Maintainer-history follow-through. |
 | `PRD-032-FR09` | GitHub feedback and package-bug intake may include reviewed sanitized usage-evidence packet excerpts, but issue templates and helpers must not submit packets automatically. | P0 | PRD-048 owns the packet helper boundary. |
+| `PRD-032-FR10` | Public and maintainer surfaces must represent PRs as a core, provider-neutral integration boundary connecting branch/worktree change to proof, review, closeout, and merge/re-entry. | P0 | GitHub remains evidence and external mutation remains human-controlled. |
+| `PRD-032-FR11` | PR guidance must distinguish change, PR, proof, review, acceptance, merge, close, re-entry, and release, and must represent draft/open/review/check/conflict/merge/closure/unavailable states as evidence only. | P0 | No state alone approves work or release. |
 
 ## Acceptance Oracle Matrix
 

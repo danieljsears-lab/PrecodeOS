@@ -86,7 +86,9 @@ Next: name the safest next Precode move, the owner source, the approval still re
 The first-product spine is:
 
 ```text
-Idea -> Brief -> Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Proof -> Review -> Close
+Idea -> Brief -> Packet -> Intake -> Owner Files? -> PRD -> Architecture? -> Bead -> Branch/Worktree -> Change -> PR -> Proof -> Review -> Close -> Merge/Re-entry -> Release
+
+PR is the core, provider-neutral proposed integration record for an isolated change. It connects bead scope to proof, review, closeout, and integration; its external status never becomes acceptance, merge approval, release approval, or owner-file authority.
 ```
 
 `Owner Files?` is an explicit source-promotion check. `Architecture?` is conditional for work touching auth, data, APIs, integrations, dependencies, migrations, external services, or multi-system behavior. Inside that bridge, Progressive Production-Readiness Activation uses the existing PRD Handoff Readiness Packet to name only the architecture, API, data, security, codebase, and acceptance owners justified by explicit PRD facts. The packet is advisory evidence; it does not approve owner-file edits or certify readiness. Neither gate can be skipped because an agent is confident.

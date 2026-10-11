@@ -3,6 +3,7 @@
 
 > AUTHORITY: Public GitHub landing page, public positioning, beginner orientation, quickstart, and curated navigation for PrecodeOS.
 > NOT_AUTHORITY: Active project state, task selection, product approval, implementation status, generated evidence, or package-release authority.
+> LOAD_WHEN: Orienting to PrecodeOS, choosing the public entry route, or locating package documentation.
 > CLASS: reference
 
 [![Precode Validate](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml/badge.svg)](https://github.com/danieljsears-lab/PrecodeOS/actions/workflows/precode-validate.yml)

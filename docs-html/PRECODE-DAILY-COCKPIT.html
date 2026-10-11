@@ -469,7 +469,9 @@ footer { max-width: 1040px; margin: 0 auto; padding: 16px 32px 42px; color: var(
 <p>Use this before continuing:</p>
 <pre><code class="language-text">Next: name the safest next Precode move, the owner source, the approval still required, the stop condition, and what generated evidence does not decide.</code></pre>
 <p>The first-product spine is:</p>
-<pre><code class="language-text">Idea -&gt; Brief -&gt; Packet -&gt; Intake -&gt; Owner Files? -&gt; PRD -&gt; Architecture? -&gt; Bead -&gt; Proof -&gt; Review -&gt; Close</code></pre>
+<pre><code class="language-text">Idea -&gt; Brief -&gt; Packet -&gt; Intake -&gt; Owner Files? -&gt; PRD -&gt; Architecture? -&gt; Bead -&gt; Branch/Worktree -&gt; Change -&gt; PR -&gt; Proof -&gt; Review -&gt; Close -&gt; Merge/Re-entry -&gt; Release
+
+PR is the core, provider-neutral proposed integration record for an isolated change. It connects bead scope to proof, review, closeout, and integration; its external status never becomes acceptance, merge approval, release approval, or owner-file authority.</code></pre>
 <p><code>Owner Files?</code> is an explicit source-promotion check. <code>Architecture?</code> is conditional for work touching auth, data, APIs, integrations, dependencies, migrations, external services, or multi-system behavior. Inside that bridge, Progressive Production-Readiness Activation uses the existing PRD Handoff Readiness Packet to name only the architecture, API, data, security, codebase, and acceptance owners justified by explicit PRD facts. The packet is advisory evidence; it does not approve owner-file edits or certify readiness. Neither gate can be skipped because an agent is confident.</p>
 <h2 id="health"><a class="heading-anchor" href="#health" aria-label="Link to Health">#</a>Health</h2>
 <p>Health asks whether state and evidence are coherent enough to continue. It does not decide what to build or accept work.</p>
@@ -2000,7 +2002,7 @@ Return: Short answer, Sources, What this does not decide, and Next safe prompt.<
 
 <article class="reference-card">
   <h4>Small Team Collaboration Lane</h4>
-  <p>Copyable Precode prompt for Small Team Collaboration Lane.</p>
+  <p>Pull requests are a core, provider neutral integration boundary: a proposed integration record connecting an isolated change to its proof, review, closeout, and merge/re entry decision.</p>
   <div class="label-row"><strong>When to use</strong><span>Use when this workflow moment applies.</span></div>
 
 <div class="copy-block">

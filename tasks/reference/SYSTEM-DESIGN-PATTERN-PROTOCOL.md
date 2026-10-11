@@ -20,6 +20,16 @@ Use it when a feature feels bigger than a text or styling change, when an agent 
 
 Use `tasks/reference/ARCHITECTURE-SHAPING-PROTOCOL.md` first when an approved PRD needs a founder-readable risk and boundary bridge before bead proposals. Architecture Shaping asks what risks and boundaries must be clear; this protocol answers what implementation shape may fit that risk.
 
+## Optional Mermaid Communication
+
+Use Mermaid only when it makes a design boundary, interaction, state transition, relationship, or workflow easier to inspect. Keep architecture communication at three levels:
+
+- **System context:** users, product, and external systems.
+- **Container / architecture:** frontend, API, services, data, queues, and providers.
+- **Detailed flow:** a sequence or state diagram for a specific interaction or lifecycle.
+
+Keep these as separate diagrams, each with a short purpose statement. Prefer `flowchart`, `sequenceDiagram`, and `stateDiagram-v2`; use `erDiagram`, `journey`, `timeline`, `gitGraph`, `gantt`, or `classDiagram` only when the question specifically calls for them. The diagram is explanatory evidence, not an implementation contract, checker gate, generated authority, or substitute for the relevant owner file.
+
 Use `tasks/reference/TOOL-EXECUTION-PROTOCOL.md` for agent access levels when the question is about what the coding agent may inspect, verify, mutate locally, handle as sensitive, change externally, or stop before doing. Do not confuse those guidance-only access levels with target-application auth, roles, permissions, or runtime enforcement.
 
 Active memory remains exactly:

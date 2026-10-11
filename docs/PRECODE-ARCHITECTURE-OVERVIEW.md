@@ -119,6 +119,18 @@ Precode is designed to work across Codex, Claude, Cursor, Gemini, Antigravity, G
 
 ## System Architecture
 
+### Three-Level Architecture Views
+
+PrecodeOS supports an optional Mermaid convention for architecture communication. Keep architecture diagrams at three separate levels so each one answers a useful question:
+
+1. **System context:** users, the product, and external systems.
+2. **Container / architecture:** frontend, API, services, data, queues, and providers.
+3. **Detailed flows:** a sequence diagram for interactions or a state diagram for lifecycle, approval, blocked, retry, and recovery behavior.
+
+The same convention can use entity-relationship diagrams for data ownership, user journeys for builder workflows, timelines for migrations or rollout sequences, and Git graphs, Gantt charts, or class diagrams when a specific question warrants them. These are optional Markdown communication aids. They do not replace owner files, become package authority, serve as implementation proof, or require a Mermaid renderer or dependency.
+
+Use one diagram per question, label system boundaries explicitly, add a short purpose statement, and link the diagram to the authoritative owner file or requirement. Do not create diagrams merely because the syntax is available; prose or a table is preferable when it communicates the decision more clearly.
+
 ### System Shape
 
 PrecodeOS lives mostly at the repo root. In an adopted project, it surrounds application code with a governance layer. In this repository, PrecodeOS is the maintained package itself, so package maintenance is source/document/script review and static validation rather than launching an app.
