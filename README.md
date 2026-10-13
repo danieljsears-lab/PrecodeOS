@@ -207,6 +207,8 @@ npx @precodeos/precodeos fast-setup-preview --target <target-project-root>
 
 The preview shows what setup proposes before changes are applied. Review the result, then follow [Guided Setup](docs/PRECODE-GUIDED-SETUP.md) for the complete installation, validation, and orientation route.
 
+PrecodeOS's npm primary route covers installation, validation, orientation, and next-safe-action identification.
+
 ## Where To Go Next
 
 | Need | Open |
@@ -216,6 +218,14 @@ The preview shows what setup proposes before changes are applied. Review the res
 | Understand the operating model | [PrecodeOS Explainer](docs/PRECODE-OS-README.md) |
 | Learn the software-building workflow | [How To Build Software With Precode](docs/HOW-TO-BUILD-SOFTWARE-WITH-PRECODE.md) |
 | Diagnose a confusing state | [Troubleshooting](docs/PRECODE-TROUBLESHOOTING.md) |
+
+## Maintainer Validation
+
+Package maintainers can run the public-package documentation check with:
+
+```bash
+python3 scripts/package-knowledge-lint.py --check
+```
 
 ## License And Provenance
 
@@ -230,5 +240,5 @@ PrecodeOS™ and Precode™ are trademarks of Dan Sears / Recode. All trademark 
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.3.0
-Last updated: 2026-09-17
+Document version: v0.3.1
+Last updated: 2026-10-12

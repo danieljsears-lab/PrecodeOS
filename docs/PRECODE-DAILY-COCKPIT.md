@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: (c) 2026 Dan Sears / Recode
-Document version: v0.2.1
-Last updated: 2026-09-06
+Document version: v0.2.2
+Last updated: 2026-10-12
 
 Use this cockpit after setup validates. Stop here for normal work unless it routes you to one specific setup, troubleshooting, prompt, or protocol surface.
 
@@ -73,7 +73,7 @@ Next identifies one safe move. It does not choose tasks, rank parked ideas as im
 | Rough idea | `Ideation: use First PRD Walkthrough for my rough idea.` | Idea -> Brief -> Packet -> Intake -> PRD, without approval or coding |
 | Workflow unclear | `Use the Workflow Selection Protocol.` | One route, owner, approval, and stop condition |
 | Future idea | `Queue: review Candidate Queue as parked intent.` | Parked evidence, not active work |
-| Work may be complete | `Close: run session close and show Close State.` | Digest, proof, gaps, approvals, and next-safe-action evidence |
+| Work may be complete | `Close: run session close and show Close State.` | Digest, proof, advisory change disposition and commit-group suggestions, gaps, approvals, and next-safe-action evidence |
 | Something is wrong | `I am stuck, help me.` | Symptom, owner surface, up to three safe checks, recovery route, forbidden actions |
 | Returning after handoff | `Re-enter after AFK or handoff.` | Reloaded state and one continue, review, split, block, or handoff recommendation |
 

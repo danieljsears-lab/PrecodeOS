@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.49
-# Last updated: 2026-09-09
+# Version: v0.1.50
+# Last updated: 2026-10-12
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -2603,6 +2603,87 @@ def inline_commit_message_suggestion(suggestion: dict[str, Any]) -> str:
     return f"Subject: {subject} | Body: {body} | Advisory only; does not stage, commit, push, accept review, or approve transition."
 
 
+def change_disposition(
+    bead: BeadRecord,
+    *,
+    changed_paths: list[str] | None = None,
+) -> dict[str, Any]:
+    """Classify changed paths and suggest commit boundaries without mutating Git."""
+    paths = sorted({str(path).strip() for path in (changed_paths or []) if str(path).strip()})
+    declared = set(bead.files_in_play)
+    if bead.primary_authority:
+        declared.add(bead.primary_authority)
+
+    groups: dict[str, dict[str, Any]] = {
+        "implementation-or-product": {
+            "paths": [],
+            "reason": "implementation, tests, or project behavior belong together around the active bead objective",
+            "commit_subject": f"Complete {commit_subject_fragment(first_bullet(bead.sections.get('Objective', '')) or bead.title)}",
+        },
+        "precode-support": {
+            "paths": [],
+            "reason": "Precode protocols, tooling, package guidance, or support surfaces may be reviewed separately when independently coherent",
+            "commit_subject": "Update Precode support surfaces",
+        },
+        "generated-evidence": {
+            "paths": [],
+            "reason": "generated evidence is non-authoritative and should not be mistaken for source changes",
+            "commit_subject": "Refresh generated evidence",
+        },
+        "other-or-project-owned": {
+            "paths": [],
+            "reason": "material outside the two primary groups needs explicit user disposition before commit planning",
+            "commit_subject": "Review additional changed material",
+        },
+    }
+
+    for path in paths:
+        if path.startswith(("logs/", "docs-html/", "tasks/prds-html/")):
+            group = "generated-evidence"
+        elif path.startswith(("scripts/", "tasks/reference/", "tasks/prds/", "docs/", "adapters/", "modes/", "_maintainer/")) or Path(path).name in {
+            "README.md", "llms.txt", "pyproject.toml", "package.json", "package-lock.json", ".gitignore",
+        }:
+            group = "precode-support"
+        elif path.startswith(("tests/", "src/", "app/", "lib/")):
+            group = "implementation-or-product"
+        else:
+            group = "other-or-project-owned"
+        groups[group]["paths"].append(path)
+
+    changed_not_declared = [
+        path for path in paths
+        if declared and not any(path == item or path.startswith(f"{item.rstrip('/')}/") for item in declared)
+    ]
+    warnings: list[str] = []
+    if changed_not_declared:
+        warnings.append("some changed paths are outside files_in_play or primary_authority; review them before commit planning")
+    if groups["other-or-project-owned"]["paths"]:
+        warnings.append("other-or-project-owned material requires explicit disposition and is not silently assigned to the bead")
+    nonempty = [name for name, value in groups.items() if value["paths"]]
+    if len(nonempty) > 1:
+        warnings.append("multiple change groups are present; separate commits are advisory and may be combined when atomicity requires it")
+
+    for value in groups.values():
+        if value["paths"]:
+            value["suggested_message"] = {
+                "subject": value["commit_subject"],
+                "body": f"Advisory draft only. Review {len(value['paths'])} path(s) in this group against the active bead and proof before use.",
+            }
+        else:
+            value.pop("suggested_message", None)
+
+    return {
+        "advisory_only": True,
+        "generated_evidence_only": True,
+        "groups": {name: value for name, value in groups.items() if value["paths"]},
+        "changed_paths": paths,
+        "changed_not_declared": changed_not_declared,
+        "warnings": warnings,
+        "recommended_commit_boundary": "Review the proposed groups; do not force a split when implementation and support changes must remain atomic.",
+        "forbidden_actions": ["stage files", "commit", "amend", "push", "install hooks", "approve review", "approve transition"],
+    }
+
+
 def completion_handoff_quality(
     root: Path,
     todo: dict[str, Any],
@@ -2743,11 +2824,13 @@ def completion_handoff_quality(
         check_results=bead_rows,
         next_safe_action=next_safe_action,
     )
+    disposition = change_disposition(bead, changed_paths=changed)
 
     details = {
         "current_bead": bead.rel_path,
         "work_digest": work_digest,
         "commit_message_suggestion": commit_suggestion,
+        "change_disposition": disposition,
         "closeout_status": "complete" if not close_state.get("blockers") else "incomplete",
         "closeout_blockers": close_state.get("blockers", []),
         "promotion_status": "eligible" if promotion_state.get("eligible") else "blocked",

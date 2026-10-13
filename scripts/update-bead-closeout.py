@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.5
-# Last updated: 2026-08-18
+# Version: v0.1.6
+# Last updated: 2026-10-12
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -12,6 +12,7 @@ from pathlib import Path
 
 from os_compiler import (
     advisory_commit_message_suggestion,
+    change_disposition,
     close_readiness,
     closeout_work_digest,
     follow_up_suggestion,
@@ -30,6 +31,7 @@ CLOSEOUT_LABELS = [
     ("Result", "result"),
     ("Work digest", "work_digest"),
     ("Suggested commit message", "suggested_commit_message"),
+    ("Change disposition", "change_disposition"),
     ("Manual verification", "manual_verification"),
     ("Files changed", "files_changed"),
     ("Next bead", "next_bead"),
@@ -160,6 +162,10 @@ def main(argv: list[str] | None = None) -> int:
                 changed_summary=files_changed,
                 next_safe_action=bead.closeout.get("next_bead", "not evaluated"),
             )
+        ),
+        "change_disposition": json.dumps(
+            change_disposition(bead, changed_paths=bead.closeout.get("files_changed", "").split(", ") if bead.closeout.get("files_changed") else []),
+            sort_keys=True,
         ),
         "manual_verification": bead.closeout.get("manual_verification", "not recorded"),
         "files_changed": files_changed,

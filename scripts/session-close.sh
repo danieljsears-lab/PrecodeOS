@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Version: v0.1.4
-# Last updated: 2026-07-26
+# Version: v0.1.5
+# Last updated: 2026-10-12
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -40,6 +40,12 @@ print("Completion And Handoff Readiness")
 print(f"- Work digest: {details.get('work_digest', 'not recorded')}")
 commit_suggestion = details.get("commit_message_suggestion") or {}
 print(f"- Suggested commit subject: {commit_suggestion.get('subject', 'not recorded')}")
+disposition = details.get("change_disposition") or {}
+print("- Change disposition: advisory grouping only; review before any commit")
+for group, group_details in disposition.get("groups", {}).items():
+    print(f"  - {group}: {', '.join(group_details.get('paths', []))}")
+for warning in disposition.get("warnings", [])[:4]:
+    print(f"  - Warning: {warning}")
 print(f"- Closeout status: {details.get('closeout_status', 'unknown')}")
 print(f"- Promotion status: {details.get('promotion_status', 'unknown')}")
 print(f"- Manual verification: {details.get('manual_verification', 'unknown')}")

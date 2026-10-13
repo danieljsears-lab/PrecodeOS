@@ -78,4 +78,5 @@ Add project-specific checks only after an owner file or approved bead names them
 - Parked follow-ups: pending
 - Work digest: pending
 - Suggested commit message: pending
+- Change disposition: pending; advisory grouping of implementation/product, Precode support, generated evidence, and other/project-owned changes
 - Next safe action: pending

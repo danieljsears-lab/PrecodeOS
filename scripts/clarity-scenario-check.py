@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Version: v0.1.68
-# Last updated: 2026-09-09
+# Version: v0.1.69
+# Last updated: 2026-10-12
 # Owner: PrecodeOS
 # Created by Dan Sears / Recode.
 # SPDX-License-Identifier: Apache-2.0
@@ -19,6 +19,7 @@ from os_compiler import (
     BeadRecord,
     accessibility_advisory_gate_quality,
     advisory_commit_message_suggestion,
+    change_disposition,
     bead_depth_quality,
     build_attribution_ledger,
     command_classification,
@@ -3697,6 +3698,47 @@ def assert_advisory_commit_message_contract(failures: list[dict[str, str]]) -> N
             failures.append({"scenario": "advisory commit message forbidden action", "expected": term, "actual": forbidden})
 
 
+def assert_change_disposition_contract(failures: list[dict[str, str]]) -> None:
+    fixture = bead(
+        title="B999 - Change Disposition Fixture",
+        primary_authority="tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+        files_in_play=[
+            "src/product.py",
+            "scripts/os_compiler.py",
+            "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+        ],
+        sections={"Objective": "Add closeout change classification."},
+    )
+    disposition = change_disposition(
+        fixture,
+        changed_paths=[
+            "src/product.py",
+            "scripts/os_compiler.py",
+            "tasks/reference/SESSION-COMPLETION-HANDOFF-PROTOCOL.md",
+            "logs/check-results.jsonl",
+            "notes/user-reference.md",
+        ],
+    )
+    groups = disposition.get("groups", {})
+    for group in ("implementation-or-product", "precode-support", "generated-evidence", "other-or-project-owned"):
+        if group not in groups:
+            failures.append({"scenario": "change disposition group coverage", "expected": group, "actual": json.dumps(groups, sort_keys=True)})
+    if not disposition.get("advisory_only") or not disposition.get("generated_evidence_only"):
+        failures.append({"scenario": "change disposition advisory flags", "expected": "advisory generated evidence", "actual": json.dumps(disposition, sort_keys=True)[:300]})
+    if not disposition.get("changed_not_declared"):
+        failures.append({"scenario": "change disposition undeclared warning", "expected": "notes/user-reference.md", "actual": json.dumps(disposition, sort_keys=True)[:300]})
+    forbidden = " ".join(str(item).lower() for item in disposition.get("forbidden_actions") or [])
+    for term in ("stage files", "commit", "push", "approve review", "approve transition"):
+        if term not in forbidden:
+            failures.append({"scenario": "change disposition forbidden action", "expected": term, "actual": forbidden})
+    empty = change_disposition(fixture, changed_paths=[])
+    if empty.get("groups") or empty.get("changed_paths") or empty.get("warnings"):
+        failures.append({"scenario": "change disposition empty input", "expected": "empty advisory disposition", "actual": json.dumps(empty, sort_keys=True)[:300]})
+    unknown = change_disposition(fixture, changed_paths=["custom/tool.py"])
+    if "other-or-project-owned" not in unknown.get("groups", {}):
+        failures.append({"scenario": "change disposition unknown path", "expected": "other-or-project-owned", "actual": json.dumps(unknown, sort_keys=True)[:300]})
+
+
 def assert_review_lanes_contract(failures: list[dict[str, str]]) -> None:
     protocol_text = Path("tasks/reference/REVIEW-LANES-PROTOCOL.md").read_text(encoding="utf-8").lower()
     prompt_text = Path("tasks/reference/PROMPT-PATTERNS.md").read_text(encoding="utf-8").lower()
@@ -6178,6 +6220,7 @@ def main() -> int:
     first_prd_walkthrough_scenario_count = 0
     assert_accessibility_advisory_gate_contract(failures)
     assert_advisory_commit_message_contract(failures)
+    assert_change_disposition_contract(failures)
     assert_review_lanes_contract(failures)
     team_collaboration_scenario_count = 0
     github_collaboration_scenario_count = assert_github_collaboration_hub_contract(failures)

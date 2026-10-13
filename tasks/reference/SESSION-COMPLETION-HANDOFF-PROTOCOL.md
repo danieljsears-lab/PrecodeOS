@@ -9,8 +9,8 @@
 Creator: Dan Sears / Recode
 License: Apache-2.0
 Copyright: © 2026 Dan Sears / Recode
-Document version: v0.1.27
-Last updated: 2026-08-18
+Document version: v0.1.28
+Last updated: 2026-10-12
 
 ## Purpose
 
@@ -64,6 +64,7 @@ Closeout Evidence should include:
 - result
 - work digest: a concise evidence-only summary of the bead theme or objective, changed files or behavior, recorded proof, manual verification, parked follow-ups, approval state, and next safe action
 - suggested commit message: an advisory subject/body draft derived from the active bead, work digest, changed-file summary, recorded checks, manual verification, review decision, parked follow-ups, and next safe action
+- change disposition: an advisory classification of changed paths into implementation/product, Precode support, generated evidence, or other/project-owned material, with reviewable commit-group suggestions and warnings for undeclared or unrelated paths
 - manual verification
 - files changed
 - next bead
@@ -86,6 +87,8 @@ Closeout Evidence should include:
 Closeout auto-refresh may update known generated labeled bullets from recorded evidence, but it should preserve extra human-authored closeout lines instead of silently erasing them. If generated and manual evidence disagree, treat that as review input to reconcile in the bead, not as automatic acceptance.
 
 The work digest and suggested commit message are orientation only. They may be printed by session close, completion checks, OS Health, handoff packets, and the bead build journal, but they do not accept implementation, approve review, approve transition, activate the next bead, stage files, commit, push, or replace the detailed Closeout Evidence fields they summarize.
+
+Change disposition is also advisory generated evidence. It may suggest separate commit groups and per-group message drafts, but the user decides whether to split or combine them. It must distinguish package/support surfaces, generated evidence, and other project-owned material without treating file extensions as authority. It must warn about changed paths outside `files_in_play` or `primary_authority` and must not absorb unrelated working-tree changes into bead scope. No disposition path stages files, creates or amends commits, pushes, installs hooks, accepts review, or approves transition.
 
 For medium/high-risk code-changing beads, prefer a fresh-context review. The implementing context may be near its reasoning limit, so review should reload active memory, the bead, primary authority, parent PRD when relevant, and the diff or evidence from a clean context before acceptance.
 
