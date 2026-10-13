@@ -209,6 +209,18 @@ The preview shows what setup proposes before changes are applied. Review the res
 
 PrecodeOS's npm primary route covers installation, validation, orientation, and next-safe-action identification.
 
+The bounded v1 host contract covers Codex, Claude Code, Cursor, and Gemini.
+
+Conformance certification describes whether a host follows the PrecodeOS contract; it does not establish equal usability across hosts.
+
+Current status: external usability evidence pending.
+
+The evidence does not yet support an unqualified claim that PrecodeOS is equally usable across all supported hosts.
+
+Current v1 evidence includes three of three safe no-help completions for the bounded launch scenarios.
+
+These statements describe bounded conformance and available evidence; they are not a release approval, usability guarantee, or certification of production readiness.
+
 ## Where To Go Next
 
 | Need | Open |
